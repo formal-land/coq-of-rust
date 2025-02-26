@@ -13,646 +13,775 @@ Module ascii.
           {
             name := "Null";
             item := StructTuple [];
-            discriminant := Some 0;
           };
           {
             name := "StartOfHeading";
             item := StructTuple [];
-            discriminant := Some 1;
           };
           {
             name := "StartOfText";
             item := StructTuple [];
-            discriminant := Some 2;
           };
           {
             name := "EndOfText";
             item := StructTuple [];
-            discriminant := Some 3;
           };
           {
             name := "EndOfTransmission";
             item := StructTuple [];
-            discriminant := Some 4;
           };
           {
             name := "Enquiry";
             item := StructTuple [];
-            discriminant := Some 5;
           };
           {
             name := "Acknowledge";
             item := StructTuple [];
-            discriminant := Some 6;
           };
           {
             name := "Bell";
             item := StructTuple [];
-            discriminant := Some 7;
           };
           {
             name := "Backspace";
             item := StructTuple [];
-            discriminant := Some 8;
           };
           {
             name := "CharacterTabulation";
             item := StructTuple [];
-            discriminant := Some 9;
           };
           {
             name := "LineFeed";
             item := StructTuple [];
-            discriminant := Some 10;
           };
           {
             name := "LineTabulation";
             item := StructTuple [];
-            discriminant := Some 11;
           };
           {
             name := "FormFeed";
             item := StructTuple [];
-            discriminant := Some 12;
           };
           {
             name := "CarriageReturn";
             item := StructTuple [];
-            discriminant := Some 13;
           };
           {
             name := "ShiftOut";
             item := StructTuple [];
-            discriminant := Some 14;
           };
           {
             name := "ShiftIn";
             item := StructTuple [];
-            discriminant := Some 15;
           };
           {
             name := "DataLinkEscape";
             item := StructTuple [];
-            discriminant := Some 16;
           };
           {
             name := "DeviceControlOne";
             item := StructTuple [];
-            discriminant := Some 17;
           };
           {
             name := "DeviceControlTwo";
             item := StructTuple [];
-            discriminant := Some 18;
           };
           {
             name := "DeviceControlThree";
             item := StructTuple [];
-            discriminant := Some 19;
           };
           {
             name := "DeviceControlFour";
             item := StructTuple [];
-            discriminant := Some 20;
           };
           {
             name := "NegativeAcknowledge";
             item := StructTuple [];
-            discriminant := Some 21;
           };
           {
             name := "SynchronousIdle";
             item := StructTuple [];
-            discriminant := Some 22;
           };
           {
             name := "EndOfTransmissionBlock";
             item := StructTuple [];
-            discriminant := Some 23;
           };
           {
             name := "Cancel";
             item := StructTuple [];
-            discriminant := Some 24;
           };
           {
             name := "EndOfMedium";
             item := StructTuple [];
-            discriminant := Some 25;
           };
           {
             name := "Substitute";
             item := StructTuple [];
-            discriminant := Some 26;
           };
           {
             name := "Escape";
             item := StructTuple [];
-            discriminant := Some 27;
           };
           {
             name := "InformationSeparatorFour";
             item := StructTuple [];
-            discriminant := Some 28;
           };
           {
             name := "InformationSeparatorThree";
             item := StructTuple [];
-            discriminant := Some 29;
           };
           {
             name := "InformationSeparatorTwo";
             item := StructTuple [];
-            discriminant := Some 30;
           };
           {
             name := "InformationSeparatorOne";
             item := StructTuple [];
-            discriminant := Some 31;
           };
           {
             name := "Space";
             item := StructTuple [];
-            discriminant := Some 32;
           };
           {
             name := "ExclamationMark";
             item := StructTuple [];
-            discriminant := Some 33;
           };
           {
             name := "QuotationMark";
             item := StructTuple [];
-            discriminant := Some 34;
           };
           {
             name := "NumberSign";
             item := StructTuple [];
-            discriminant := Some 35;
           };
           {
             name := "DollarSign";
             item := StructTuple [];
-            discriminant := Some 36;
           };
           {
             name := "PercentSign";
             item := StructTuple [];
-            discriminant := Some 37;
           };
           {
             name := "Ampersand";
             item := StructTuple [];
-            discriminant := Some 38;
           };
           {
             name := "Apostrophe";
             item := StructTuple [];
-            discriminant := Some 39;
           };
           {
             name := "LeftParenthesis";
             item := StructTuple [];
-            discriminant := Some 40;
           };
           {
             name := "RightParenthesis";
             item := StructTuple [];
-            discriminant := Some 41;
           };
           {
             name := "Asterisk";
             item := StructTuple [];
-            discriminant := Some 42;
           };
           {
             name := "PlusSign";
             item := StructTuple [];
-            discriminant := Some 43;
           };
           {
             name := "Comma";
             item := StructTuple [];
-            discriminant := Some 44;
           };
           {
             name := "HyphenMinus";
             item := StructTuple [];
-            discriminant := Some 45;
           };
           {
             name := "FullStop";
             item := StructTuple [];
-            discriminant := Some 46;
           };
           {
             name := "Solidus";
             item := StructTuple [];
-            discriminant := Some 47;
           };
           {
             name := "Digit0";
             item := StructTuple [];
-            discriminant := Some 48;
           };
           {
             name := "Digit1";
             item := StructTuple [];
-            discriminant := Some 49;
           };
           {
             name := "Digit2";
             item := StructTuple [];
-            discriminant := Some 50;
           };
           {
             name := "Digit3";
             item := StructTuple [];
-            discriminant := Some 51;
           };
           {
             name := "Digit4";
             item := StructTuple [];
-            discriminant := Some 52;
           };
           {
             name := "Digit5";
             item := StructTuple [];
-            discriminant := Some 53;
           };
           {
             name := "Digit6";
             item := StructTuple [];
-            discriminant := Some 54;
           };
           {
             name := "Digit7";
             item := StructTuple [];
-            discriminant := Some 55;
           };
           {
             name := "Digit8";
             item := StructTuple [];
-            discriminant := Some 56;
           };
           {
             name := "Digit9";
             item := StructTuple [];
-            discriminant := Some 57;
           };
           {
             name := "Colon";
             item := StructTuple [];
-            discriminant := Some 58;
           };
           {
             name := "Semicolon";
             item := StructTuple [];
-            discriminant := Some 59;
           };
           {
             name := "LessThanSign";
             item := StructTuple [];
-            discriminant := Some 60;
           };
           {
             name := "EqualsSign";
             item := StructTuple [];
-            discriminant := Some 61;
           };
           {
             name := "GreaterThanSign";
             item := StructTuple [];
-            discriminant := Some 62;
           };
           {
             name := "QuestionMark";
             item := StructTuple [];
-            discriminant := Some 63;
           };
           {
             name := "CommercialAt";
             item := StructTuple [];
-            discriminant := Some 64;
           };
           {
             name := "CapitalA";
             item := StructTuple [];
-            discriminant := Some 65;
           };
           {
             name := "CapitalB";
             item := StructTuple [];
-            discriminant := Some 66;
           };
           {
             name := "CapitalC";
             item := StructTuple [];
-            discriminant := Some 67;
           };
           {
             name := "CapitalD";
             item := StructTuple [];
-            discriminant := Some 68;
           };
           {
             name := "CapitalE";
             item := StructTuple [];
-            discriminant := Some 69;
           };
           {
             name := "CapitalF";
             item := StructTuple [];
-            discriminant := Some 70;
           };
           {
             name := "CapitalG";
             item := StructTuple [];
-            discriminant := Some 71;
           };
           {
             name := "CapitalH";
             item := StructTuple [];
-            discriminant := Some 72;
           };
           {
             name := "CapitalI";
             item := StructTuple [];
-            discriminant := Some 73;
           };
           {
             name := "CapitalJ";
             item := StructTuple [];
-            discriminant := Some 74;
           };
           {
             name := "CapitalK";
             item := StructTuple [];
-            discriminant := Some 75;
           };
           {
             name := "CapitalL";
             item := StructTuple [];
-            discriminant := Some 76;
           };
           {
             name := "CapitalM";
             item := StructTuple [];
-            discriminant := Some 77;
           };
           {
             name := "CapitalN";
             item := StructTuple [];
-            discriminant := Some 78;
           };
           {
             name := "CapitalO";
             item := StructTuple [];
-            discriminant := Some 79;
           };
           {
             name := "CapitalP";
             item := StructTuple [];
-            discriminant := Some 80;
           };
           {
             name := "CapitalQ";
             item := StructTuple [];
-            discriminant := Some 81;
           };
           {
             name := "CapitalR";
             item := StructTuple [];
-            discriminant := Some 82;
           };
           {
             name := "CapitalS";
             item := StructTuple [];
-            discriminant := Some 83;
           };
           {
             name := "CapitalT";
             item := StructTuple [];
-            discriminant := Some 84;
           };
           {
             name := "CapitalU";
             item := StructTuple [];
-            discriminant := Some 85;
           };
           {
             name := "CapitalV";
             item := StructTuple [];
-            discriminant := Some 86;
           };
           {
             name := "CapitalW";
             item := StructTuple [];
-            discriminant := Some 87;
           };
           {
             name := "CapitalX";
             item := StructTuple [];
-            discriminant := Some 88;
           };
           {
             name := "CapitalY";
             item := StructTuple [];
-            discriminant := Some 89;
           };
           {
             name := "CapitalZ";
             item := StructTuple [];
-            discriminant := Some 90;
           };
           {
             name := "LeftSquareBracket";
             item := StructTuple [];
-            discriminant := Some 91;
           };
           {
             name := "ReverseSolidus";
             item := StructTuple [];
-            discriminant := Some 92;
           };
           {
             name := "RightSquareBracket";
             item := StructTuple [];
-            discriminant := Some 93;
           };
           {
             name := "CircumflexAccent";
             item := StructTuple [];
-            discriminant := Some 94;
           };
           {
             name := "LowLine";
             item := StructTuple [];
-            discriminant := Some 95;
           };
           {
             name := "GraveAccent";
             item := StructTuple [];
-            discriminant := Some 96;
           };
           {
             name := "SmallA";
             item := StructTuple [];
-            discriminant := Some 97;
           };
           {
             name := "SmallB";
             item := StructTuple [];
-            discriminant := Some 98;
           };
           {
             name := "SmallC";
             item := StructTuple [];
-            discriminant := Some 99;
           };
           {
             name := "SmallD";
             item := StructTuple [];
-            discriminant := Some 100;
           };
           {
             name := "SmallE";
             item := StructTuple [];
-            discriminant := Some 101;
           };
           {
             name := "SmallF";
             item := StructTuple [];
-            discriminant := Some 102;
           };
           {
             name := "SmallG";
             item := StructTuple [];
-            discriminant := Some 103;
           };
           {
             name := "SmallH";
             item := StructTuple [];
-            discriminant := Some 104;
           };
           {
             name := "SmallI";
             item := StructTuple [];
-            discriminant := Some 105;
           };
           {
             name := "SmallJ";
             item := StructTuple [];
-            discriminant := Some 106;
           };
           {
             name := "SmallK";
             item := StructTuple [];
-            discriminant := Some 107;
           };
           {
             name := "SmallL";
             item := StructTuple [];
-            discriminant := Some 108;
           };
           {
             name := "SmallM";
             item := StructTuple [];
-            discriminant := Some 109;
           };
           {
             name := "SmallN";
             item := StructTuple [];
-            discriminant := Some 110;
           };
           {
             name := "SmallO";
             item := StructTuple [];
-            discriminant := Some 111;
           };
           {
             name := "SmallP";
             item := StructTuple [];
-            discriminant := Some 112;
           };
           {
             name := "SmallQ";
             item := StructTuple [];
-            discriminant := Some 113;
           };
           {
             name := "SmallR";
             item := StructTuple [];
-            discriminant := Some 114;
           };
           {
             name := "SmallS";
             item := StructTuple [];
-            discriminant := Some 115;
           };
           {
             name := "SmallT";
             item := StructTuple [];
-            discriminant := Some 116;
           };
           {
             name := "SmallU";
             item := StructTuple [];
-            discriminant := Some 117;
           };
           {
             name := "SmallV";
             item := StructTuple [];
-            discriminant := Some 118;
           };
           {
             name := "SmallW";
             item := StructTuple [];
-            discriminant := Some 119;
           };
           {
             name := "SmallX";
             item := StructTuple [];
-            discriminant := Some 120;
           };
           {
             name := "SmallY";
             item := StructTuple [];
-            discriminant := Some 121;
           };
           {
             name := "SmallZ";
             item := StructTuple [];
-            discriminant := Some 122;
           };
           {
             name := "LeftCurlyBracket";
             item := StructTuple [];
-            discriminant := Some 123;
           };
           {
             name := "VerticalLine";
             item := StructTuple [];
-            discriminant := Some 124;
           };
           {
             name := "RightCurlyBracket";
             item := StructTuple [];
-            discriminant := Some 125;
           };
           {
             name := "Tilde";
             item := StructTuple [];
-            discriminant := Some 126;
           };
           {
             name := "Delete";
             item := StructTuple [];
-            discriminant := Some 127;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AsciiChar_Null :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Null" 0.
+    Axiom IsDiscriminant_AsciiChar_StartOfHeading :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::StartOfHeading" 1.
+    Axiom IsDiscriminant_AsciiChar_StartOfText :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::StartOfText" 2.
+    Axiom IsDiscriminant_AsciiChar_EndOfText :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::EndOfText" 3.
+    Axiom IsDiscriminant_AsciiChar_EndOfTransmission :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::EndOfTransmission" 4.
+    Axiom IsDiscriminant_AsciiChar_Enquiry :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Enquiry" 5.
+    Axiom IsDiscriminant_AsciiChar_Acknowledge :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Acknowledge" 6.
+    Axiom IsDiscriminant_AsciiChar_Bell :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Bell" 7.
+    Axiom IsDiscriminant_AsciiChar_Backspace :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Backspace" 8.
+    Axiom IsDiscriminant_AsciiChar_CharacterTabulation :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CharacterTabulation" 9.
+    Axiom IsDiscriminant_AsciiChar_LineFeed :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LineFeed" 10.
+    Axiom IsDiscriminant_AsciiChar_LineTabulation :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LineTabulation" 11.
+    Axiom IsDiscriminant_AsciiChar_FormFeed :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::FormFeed" 12.
+    Axiom IsDiscriminant_AsciiChar_CarriageReturn :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CarriageReturn" 13.
+    Axiom IsDiscriminant_AsciiChar_ShiftOut :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::ShiftOut" 14.
+    Axiom IsDiscriminant_AsciiChar_ShiftIn :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::ShiftIn" 15.
+    Axiom IsDiscriminant_AsciiChar_DataLinkEscape :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::DataLinkEscape" 16.
+    Axiom IsDiscriminant_AsciiChar_DeviceControlOne :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::DeviceControlOne" 17.
+    Axiom IsDiscriminant_AsciiChar_DeviceControlTwo :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::DeviceControlTwo" 18.
+    Axiom IsDiscriminant_AsciiChar_DeviceControlThree :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::DeviceControlThree" 19.
+    Axiom IsDiscriminant_AsciiChar_DeviceControlFour :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::DeviceControlFour" 20.
+    Axiom IsDiscriminant_AsciiChar_NegativeAcknowledge :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::NegativeAcknowledge" 21.
+    Axiom IsDiscriminant_AsciiChar_SynchronousIdle :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SynchronousIdle" 22.
+    Axiom IsDiscriminant_AsciiChar_EndOfTransmissionBlock :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::EndOfTransmissionBlock" 23.
+    Axiom IsDiscriminant_AsciiChar_Cancel :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Cancel" 24.
+    Axiom IsDiscriminant_AsciiChar_EndOfMedium :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::EndOfMedium" 25.
+    Axiom IsDiscriminant_AsciiChar_Substitute :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Substitute" 26.
+    Axiom IsDiscriminant_AsciiChar_Escape :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Escape" 27.
+    Axiom IsDiscriminant_AsciiChar_InformationSeparatorFour :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::InformationSeparatorFour" 28.
+    Axiom IsDiscriminant_AsciiChar_InformationSeparatorThree :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::InformationSeparatorThree" 29.
+    Axiom IsDiscriminant_AsciiChar_InformationSeparatorTwo :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::InformationSeparatorTwo" 30.
+    Axiom IsDiscriminant_AsciiChar_InformationSeparatorOne :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::InformationSeparatorOne" 31.
+    Axiom IsDiscriminant_AsciiChar_Space :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Space" 32.
+    Axiom IsDiscriminant_AsciiChar_ExclamationMark :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::ExclamationMark" 33.
+    Axiom IsDiscriminant_AsciiChar_QuotationMark :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::QuotationMark" 34.
+    Axiom IsDiscriminant_AsciiChar_NumberSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::NumberSign" 35.
+    Axiom IsDiscriminant_AsciiChar_DollarSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::DollarSign" 36.
+    Axiom IsDiscriminant_AsciiChar_PercentSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::PercentSign" 37.
+    Axiom IsDiscriminant_AsciiChar_Ampersand :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Ampersand" 38.
+    Axiom IsDiscriminant_AsciiChar_Apostrophe :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Apostrophe" 39.
+    Axiom IsDiscriminant_AsciiChar_LeftParenthesis :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LeftParenthesis" 40.
+    Axiom IsDiscriminant_AsciiChar_RightParenthesis :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::RightParenthesis" 41.
+    Axiom IsDiscriminant_AsciiChar_Asterisk :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Asterisk" 42.
+    Axiom IsDiscriminant_AsciiChar_PlusSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::PlusSign" 43.
+    Axiom IsDiscriminant_AsciiChar_Comma :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Comma" 44.
+    Axiom IsDiscriminant_AsciiChar_HyphenMinus :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::HyphenMinus" 45.
+    Axiom IsDiscriminant_AsciiChar_FullStop :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::FullStop" 46.
+    Axiom IsDiscriminant_AsciiChar_Solidus :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Solidus" 47.
+    Axiom IsDiscriminant_AsciiChar_Digit0 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit0" 48.
+    Axiom IsDiscriminant_AsciiChar_Digit1 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit1" 49.
+    Axiom IsDiscriminant_AsciiChar_Digit2 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit2" 50.
+    Axiom IsDiscriminant_AsciiChar_Digit3 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit3" 51.
+    Axiom IsDiscriminant_AsciiChar_Digit4 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit4" 52.
+    Axiom IsDiscriminant_AsciiChar_Digit5 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit5" 53.
+    Axiom IsDiscriminant_AsciiChar_Digit6 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit6" 54.
+    Axiom IsDiscriminant_AsciiChar_Digit7 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit7" 55.
+    Axiom IsDiscriminant_AsciiChar_Digit8 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit8" 56.
+    Axiom IsDiscriminant_AsciiChar_Digit9 :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Digit9" 57.
+    Axiom IsDiscriminant_AsciiChar_Colon :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Colon" 58.
+    Axiom IsDiscriminant_AsciiChar_Semicolon :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Semicolon" 59.
+    Axiom IsDiscriminant_AsciiChar_LessThanSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LessThanSign" 60.
+    Axiom IsDiscriminant_AsciiChar_EqualsSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::EqualsSign" 61.
+    Axiom IsDiscriminant_AsciiChar_GreaterThanSign :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::GreaterThanSign" 62.
+    Axiom IsDiscriminant_AsciiChar_QuestionMark :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::QuestionMark" 63.
+    Axiom IsDiscriminant_AsciiChar_CommercialAt :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CommercialAt" 64.
+    Axiom IsDiscriminant_AsciiChar_CapitalA :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalA" 65.
+    Axiom IsDiscriminant_AsciiChar_CapitalB :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalB" 66.
+    Axiom IsDiscriminant_AsciiChar_CapitalC :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalC" 67.
+    Axiom IsDiscriminant_AsciiChar_CapitalD :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalD" 68.
+    Axiom IsDiscriminant_AsciiChar_CapitalE :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalE" 69.
+    Axiom IsDiscriminant_AsciiChar_CapitalF :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalF" 70.
+    Axiom IsDiscriminant_AsciiChar_CapitalG :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalG" 71.
+    Axiom IsDiscriminant_AsciiChar_CapitalH :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalH" 72.
+    Axiom IsDiscriminant_AsciiChar_CapitalI :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalI" 73.
+    Axiom IsDiscriminant_AsciiChar_CapitalJ :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalJ" 74.
+    Axiom IsDiscriminant_AsciiChar_CapitalK :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalK" 75.
+    Axiom IsDiscriminant_AsciiChar_CapitalL :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalL" 76.
+    Axiom IsDiscriminant_AsciiChar_CapitalM :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalM" 77.
+    Axiom IsDiscriminant_AsciiChar_CapitalN :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalN" 78.
+    Axiom IsDiscriminant_AsciiChar_CapitalO :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalO" 79.
+    Axiom IsDiscriminant_AsciiChar_CapitalP :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalP" 80.
+    Axiom IsDiscriminant_AsciiChar_CapitalQ :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalQ" 81.
+    Axiom IsDiscriminant_AsciiChar_CapitalR :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalR" 82.
+    Axiom IsDiscriminant_AsciiChar_CapitalS :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalS" 83.
+    Axiom IsDiscriminant_AsciiChar_CapitalT :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalT" 84.
+    Axiom IsDiscriminant_AsciiChar_CapitalU :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalU" 85.
+    Axiom IsDiscriminant_AsciiChar_CapitalV :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalV" 86.
+    Axiom IsDiscriminant_AsciiChar_CapitalW :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalW" 87.
+    Axiom IsDiscriminant_AsciiChar_CapitalX :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalX" 88.
+    Axiom IsDiscriminant_AsciiChar_CapitalY :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalY" 89.
+    Axiom IsDiscriminant_AsciiChar_CapitalZ :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CapitalZ" 90.
+    Axiom IsDiscriminant_AsciiChar_LeftSquareBracket :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LeftSquareBracket" 91.
+    Axiom IsDiscriminant_AsciiChar_ReverseSolidus :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::ReverseSolidus" 92.
+    Axiom IsDiscriminant_AsciiChar_RightSquareBracket :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::RightSquareBracket" 93.
+    Axiom IsDiscriminant_AsciiChar_CircumflexAccent :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::CircumflexAccent" 94.
+    Axiom IsDiscriminant_AsciiChar_LowLine :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LowLine" 95.
+    Axiom IsDiscriminant_AsciiChar_GraveAccent :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::GraveAccent" 96.
+    Axiom IsDiscriminant_AsciiChar_SmallA :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallA" 97.
+    Axiom IsDiscriminant_AsciiChar_SmallB :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallB" 98.
+    Axiom IsDiscriminant_AsciiChar_SmallC :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallC" 99.
+    Axiom IsDiscriminant_AsciiChar_SmallD :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallD" 100.
+    Axiom IsDiscriminant_AsciiChar_SmallE :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallE" 101.
+    Axiom IsDiscriminant_AsciiChar_SmallF :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallF" 102.
+    Axiom IsDiscriminant_AsciiChar_SmallG :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallG" 103.
+    Axiom IsDiscriminant_AsciiChar_SmallH :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallH" 104.
+    Axiom IsDiscriminant_AsciiChar_SmallI :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallI" 105.
+    Axiom IsDiscriminant_AsciiChar_SmallJ :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallJ" 106.
+    Axiom IsDiscriminant_AsciiChar_SmallK :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallK" 107.
+    Axiom IsDiscriminant_AsciiChar_SmallL :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallL" 108.
+    Axiom IsDiscriminant_AsciiChar_SmallM :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallM" 109.
+    Axiom IsDiscriminant_AsciiChar_SmallN :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallN" 110.
+    Axiom IsDiscriminant_AsciiChar_SmallO :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallO" 111.
+    Axiom IsDiscriminant_AsciiChar_SmallP :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallP" 112.
+    Axiom IsDiscriminant_AsciiChar_SmallQ :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallQ" 113.
+    Axiom IsDiscriminant_AsciiChar_SmallR :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallR" 114.
+    Axiom IsDiscriminant_AsciiChar_SmallS :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallS" 115.
+    Axiom IsDiscriminant_AsciiChar_SmallT :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallT" 116.
+    Axiom IsDiscriminant_AsciiChar_SmallU :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallU" 117.
+    Axiom IsDiscriminant_AsciiChar_SmallV :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallV" 118.
+    Axiom IsDiscriminant_AsciiChar_SmallW :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallW" 119.
+    Axiom IsDiscriminant_AsciiChar_SmallX :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallX" 120.
+    Axiom IsDiscriminant_AsciiChar_SmallY :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallY" 121.
+    Axiom IsDiscriminant_AsciiChar_SmallZ :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::SmallZ" 122.
+    Axiom IsDiscriminant_AsciiChar_LeftCurlyBracket :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" 123.
+    Axiom IsDiscriminant_AsciiChar_VerticalLine :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::VerticalLine" 124.
+    Axiom IsDiscriminant_AsciiChar_RightCurlyBracket :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::RightCurlyBracket" 125.
+    Axiom IsDiscriminant_AsciiChar_Tilde :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Tilde" 126.
+    Axiom IsDiscriminant_AsciiChar_Delete :
+      M.IsDiscriminant "core::ascii::ascii_char::AsciiChar::Delete" 127.
     
     Module Impl_core_marker_Copy_for_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
@@ -660,8 +789,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_ascii_ascii_char_AsciiChar.
     
@@ -681,8 +811,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ascii_ascii_char_AsciiChar.
     
@@ -706,8 +837,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ascii_ascii_char_AsciiChar.
@@ -718,8 +850,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ascii_ascii_char_AsciiChar.
     
@@ -766,8 +899,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ascii_ascii_char_AsciiChar.
     
@@ -829,8 +963,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_ascii_ascii_char_AsciiChar.
     
@@ -900,8 +1035,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_ascii_ascii_char_AsciiChar.
     
@@ -956,8 +1092,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_ascii_ascii_char_AsciiChar.
     
@@ -1295,8 +1432,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u8.
     
@@ -1320,8 +1458,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u16.
     
@@ -1345,8 +1484,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u32.
     
@@ -1370,8 +1510,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u64.
     
@@ -1395,8 +1536,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u128.
     
@@ -1420,8 +1562,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ascii::ascii_char::AsciiChar" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_char.
     
@@ -1561,8 +1704,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_ascii_ascii_char_AsciiChar.
     
@@ -1793,25 +1937,23 @@ Module ascii.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
-                              M.alloc (|
-                                M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_trait_method (|
+                                  "core::convert::From",
                                   Ty.path "usize",
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u8" ],
-                                    "from",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    BinOp.Wrap.shr (|
-                                      M.read (| byte |),
-                                      Value.Integer IntegerKind.I32 4
-                                    |)
-                                  ]
-                                |)
+                                  [],
+                                  [ Ty.path "u8" ],
+                                  "from",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  BinOp.Wrap.shr (|
+                                    M.read (| byte |),
+                                    Value.Integer IntegerKind.I32 4
+                                  |)
+                                ]
                               |)
                             |)
                           |) in
@@ -1819,24 +1961,22 @@ Module ascii.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
-                              M.alloc (|
-                                M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_trait_method (|
+                                  "core::convert::From",
                                   Ty.path "usize",
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u8" ],
-                                    "from",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    BinOp.bit_and
-                                      (M.read (| byte |))
-                                      (Value.Integer IntegerKind.U8 15)
-                                  ]
-                                |)
+                                  [],
+                                  [ Ty.path "u8" ],
+                                  "from",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  BinOp.bit_and
+                                    (M.read (| byte |))
+                                    (Value.Integer IntegerKind.U8 15)
+                                ]
                               |)
                             |)
                           |) in
@@ -1975,8 +2115,9 @@ Module ascii.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ascii_ascii_char_AsciiChar.
   End ascii_char.

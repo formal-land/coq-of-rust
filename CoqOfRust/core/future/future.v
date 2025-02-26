@@ -10,7 +10,8 @@ Module future.
       Definition Self (F : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ F ].
       
       (*     type Output = F::Output; *)
-      Definition _Output (F : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (F : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::future::future::Future" [] [] F "Output".
       
       (*
           fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
@@ -25,7 +26,10 @@ Module future.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
               M.get_trait_method (| "core::future::future::Future", F, [], [], "poll", [], [] |),
               [
                 M.call_closure (|
@@ -87,8 +91,9 @@ Module future.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output F)); ("poll", InstanceField.Method (poll F)) ].
     End Impl_core_future_future_Future_where_core_marker_Sized_F_where_core_future_future_Future_F_where_core_marker_Unpin_F_for_ref_mut_F.
@@ -97,7 +102,13 @@ Module future.
       Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
       
       (*     type Output = <<P as ops::Deref>::Target as Future>::Output; *)
-      Definition _Output (P : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (P : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "core::future::future::Future"
+          []
+          []
+          (Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target")
+          "Output".
       
       (*
           fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
@@ -112,10 +123,20 @@ Module future.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [
+                  Ty.associated_in_trait
+                    "core::future::future::Future"
+                    []
+                    []
+                    (Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target")
+                    "Output"
+                ],
               M.get_trait_method (|
                 "core::future::future::Future",
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target",
                 [],
                 [],
                 "poll",
@@ -127,7 +148,12 @@ Module future.
                   Ty.apply
                     (Ty.path "core::pin::Pin")
                     []
-                    [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target" ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
@@ -146,8 +172,9 @@ Module future.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output P)); ("poll", InstanceField.Method (poll P)) ].
     End Impl_core_future_future_Future_where_core_ops_deref_DerefMut_P_for_core_pin_Pin_P.

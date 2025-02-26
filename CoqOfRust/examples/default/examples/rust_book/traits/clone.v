@@ -33,8 +33,9 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_clone_Unit.
 
@@ -54,8 +55,9 @@ Module Impl_core_clone_Clone_for_clone_Unit.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_clone_Unit.
 
@@ -63,7 +65,12 @@ Module Impl_core_marker_Copy_for_clone_Unit.
   Definition Self : Ty.t := Ty.path "clone::Unit".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_clone_Unit.
 
 (* StructTuple
@@ -163,8 +170,9 @@ Module Impl_core_clone_Clone_for_clone_Pair.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_clone_Pair.
 
@@ -228,8 +236,9 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_clone_Pair.
 
@@ -288,7 +297,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -354,7 +363,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -457,7 +466,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -524,7 +533,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -612,7 +621,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

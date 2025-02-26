@@ -60,16 +60,17 @@ Module ffi.
         {
           name := "__variant1";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "__variant2";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_c_void___variant1 : M.IsDiscriminant "core::ffi::c_void::__variant1" 0.
+  Axiom IsDiscriminant_c_void___variant2 : M.IsDiscriminant "core::ffi::c_void::__variant2" 1.
   
   Module Impl_core_fmt_Debug_for_core_ffi_c_void.
     Definition Self : Ty.t := Ty.path "core::ffi::c_void".
@@ -126,8 +127,9 @@ Module ffi.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_ffi_c_void.
 End ffi.

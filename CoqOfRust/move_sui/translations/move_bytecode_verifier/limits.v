@@ -4327,7 +4327,14 @@ Module limits.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
                                                                                                             "new_v1",
-                                                                                                            [],
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1;
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1
+                                                                                                            ],
                                                                                                             []
                                                                                                           |),
                                                                                                           [

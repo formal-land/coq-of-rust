@@ -244,7 +244,10 @@ Module bls12_381.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
-                                                                [],
+                                                                [
+                                                                  Value.Integer IntegerKind.Usize 2;
+                                                                  Value.Integer IntegerKind.Usize 2
+                                                                ],
                                                                 []
                                                               |),
                                                               [
@@ -1328,7 +1331,7 @@ Module bls12_381.
                                     [ Value.Integer IntegerKind.Usize 32 ]
                                     [],
                                   "with_last_byte",
-                                  [ Value.Integer IntegerKind.Usize 32 ],
+                                  [],
                                   []
                                 |),
                                 [ M.read (| result |) ]

@@ -38,7 +38,7 @@ Module str.
                         [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                       M.get_trait_method (|
                         "core::str::pattern::Searcher",
-                        Ty.associated,
+                        Ty.associated_in_trait "core::str::pattern::Pattern" [] [] Self "Searcher",
                         [],
                         [],
                         "next_match",
@@ -50,7 +50,12 @@ Module str.
                           Pointer.Kind.MutRef,
                           M.alloc (|
                             M.call_closure (|
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                Self
+                                "Searcher",
                               M.get_trait_method (|
                                 "core::str::pattern::Pattern",
                                 Self,
@@ -96,7 +101,7 @@ Module str.
                     Ty.path "core::str::pattern::SearchStep",
                     M.get_trait_method (|
                       "core::str::pattern::Searcher",
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] Self "Searcher",
                       [],
                       [],
                       "next",
@@ -108,7 +113,12 @@ Module str.
                         Pointer.Kind.MutRef,
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::str::pattern::Pattern"
+                              []
+                              []
+                              Self
+                              "Searcher",
                             M.get_trait_method (|
                               "core::str::pattern::Pattern",
                               Self,
@@ -176,7 +186,7 @@ Module str.
                     Ty.path "core::str::pattern::SearchStep",
                     M.get_trait_method (|
                       "core::str::pattern::ReverseSearcher",
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] Self "Searcher",
                       [],
                       [],
                       "next_back",
@@ -188,7 +198,12 @@ Module str.
                         Pointer.Kind.MutRef,
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::str::pattern::Pattern"
+                              []
+                              []
+                              Self
+                              "Searcher",
                             M.get_trait_method (|
                               "core::str::pattern::Pattern",
                               Self,
@@ -270,7 +285,12 @@ Module str.
                             Ty.path "core::str::pattern::SearchStep",
                             M.get_trait_method (|
                               "core::str::pattern::Searcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                Self
+                                "Searcher",
                               [],
                               [],
                               "next",
@@ -282,7 +302,12 @@ Module str.
                                 Pointer.Kind.MutRef,
                                 M.alloc (|
                                   M.call_closure (|
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "core::str::pattern::Pattern"
+                                      []
+                                      []
+                                      Self
+                                      "Searcher",
                                     M.get_trait_method (|
                                       "core::str::pattern::Pattern",
                                       Self,
@@ -425,7 +450,11 @@ Module str.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -533,7 +562,12 @@ Module str.
                             Ty.path "core::str::pattern::SearchStep",
                             M.get_trait_method (|
                               "core::str::pattern::ReverseSearcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                Self
+                                "Searcher",
                               [],
                               [],
                               "next_back",
@@ -545,7 +579,12 @@ Module str.
                                 Pointer.Kind.MutRef,
                                 M.alloc (|
                                   M.call_closure (|
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "core::str::pattern::Pattern"
+                                      []
+                                      []
+                                      Self
+                                      "Searcher",
                                     M.get_trait_method (|
                                       "core::str::pattern::Pattern",
                                       Self,
@@ -704,7 +743,11 @@ Module str.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -801,21 +844,25 @@ Module str.
           {
             name := "Match";
             item := StructTuple [ Ty.path "usize"; Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Reject";
             item := StructTuple [ Ty.path "usize"; Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Done";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_SearchStep_Match :
+      M.IsDiscriminant "core::str::pattern::SearchStep::Match" 0.
+    Axiom IsDiscriminant_SearchStep_Reject :
+      M.IsDiscriminant "core::str::pattern::SearchStep::Reject" 1.
+    Axiom IsDiscriminant_SearchStep_Done :
+      M.IsDiscriminant "core::str::pattern::SearchStep::Done" 2.
     
     Module Impl_core_marker_Copy_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
@@ -823,8 +870,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_str_pattern_SearchStep.
     
@@ -849,8 +897,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_SearchStep.
     
@@ -879,8 +928,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_str_pattern_SearchStep.
@@ -891,8 +941,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_pattern_SearchStep.
     
@@ -1094,8 +1145,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_str_pattern_SearchStep.
     
@@ -1233,8 +1285,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_SearchStep.
     
@@ -1831,8 +1884,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_CharSearcher.
     
@@ -2031,8 +2085,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_CharSearcher.
     
@@ -3044,8 +3099,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("haystack", InstanceField.Method haystack);
@@ -4040,8 +4096,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("next_back", InstanceField.Method next_back);
@@ -4055,8 +4112,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharSearcher.
     
@@ -4552,8 +4610,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty _Searcher);
@@ -4607,8 +4666,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::MultiCharEq"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [ ("matches", InstanceField.Method (matches F)) ].
     End Impl_core_str_pattern_MultiCharEq_where_core_ops_function_FnMut_F_Tuple_char__for_F.
     
@@ -4685,8 +4745,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::MultiCharEq"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [ ("matches", InstanceField.Method (matches N)) ].
     End Impl_core_str_pattern_MultiCharEq_for_array_N_char.
     
@@ -4769,8 +4830,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::MultiCharEq"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [ ("matches", InstanceField.Method (matches N)) ].
     End Impl_core_str_pattern_MultiCharEq_for_ref__array_N_char.
     
@@ -4851,8 +4913,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::MultiCharEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("matches", InstanceField.Method matches) ].
     End Impl_core_str_pattern_MultiCharEq_for_ref__slice_char.
     
@@ -4980,8 +5043,9 @@ Module str.
         forall (C : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C)
           (* Instance *) [ ("clone", InstanceField.Method (clone C)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_C_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
     
@@ -5073,8 +5137,9 @@ Module str.
         forall (C : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt C)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_C_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
     
@@ -5129,8 +5194,9 @@ Module str.
         forall (C : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          (Self C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C)
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty (_Searcher C));
@@ -5391,8 +5457,9 @@ Module str.
         forall (C : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          (Self C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C)
           (* Instance *)
           [ ("haystack", InstanceField.Method (haystack C)); ("next", InstanceField.Method (next C))
           ].
@@ -5630,8 +5697,9 @@ Module str.
         forall (C : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          (Self C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back C)) ].
     End Impl_core_str_pattern_ReverseSearcher_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
     
@@ -5643,8 +5711,9 @@ Module str.
         forall (C : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          (Self C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C)
           (* Instance *) [].
     End Impl_core_str_pattern_DoubleEndedSearcher_where_core_str_pattern_MultiCharEq_C_for_core_str_pattern_MultiCharEqSearcher_C.
     
@@ -5653,7 +5722,18 @@ Module str.
         name := "CharArraySearcher";
         const_params := [ "N" ];
         ty_params := [];
-        fields := [ Ty.associated ];
+        fields :=
+          [
+            Ty.associated_in_trait
+              "core::str::pattern::Pattern"
+              []
+              []
+              (Ty.apply
+                (Ty.path "core::str::pattern::MultiCharEqPattern")
+                []
+                [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ])
+              "Searcher"
+          ];
       } *)
     
     Module Impl_core_clone_Clone_for_core_str_pattern_CharArraySearcher_N.
@@ -5711,8 +5791,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [ ("clone", InstanceField.Method (clone N)) ].
     End Impl_core_clone_Clone_for_core_str_pattern_CharArraySearcher_N.
     
@@ -5772,8 +5853,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_CharArraySearcher_N.
     
@@ -5782,7 +5864,19 @@ Module str.
         name := "CharArrayRefSearcher";
         const_params := [ "N" ];
         ty_params := [];
-        fields := [ Ty.associated ];
+        fields :=
+          [
+            Ty.associated_in_trait
+              "core::str::pattern::Pattern"
+              []
+              []
+              (Ty.apply
+                (Ty.path "core::str::pattern::MultiCharEqPattern")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "char" ] ]
+                ])
+              "Searcher"
+          ];
       } *)
     
     Module Impl_core_clone_Clone_for_core_str_pattern_CharArrayRefSearcher_N.
@@ -5850,8 +5944,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [ ("clone", InstanceField.Method (clone N)) ].
     End Impl_core_clone_Clone_for_core_str_pattern_CharArrayRefSearcher_N.
     
@@ -5911,8 +6006,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_CharArrayRefSearcher_N.
     
@@ -6182,8 +6278,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty (_Searcher N));
@@ -6381,8 +6478,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *)
           [
             ("haystack", InstanceField.Method (haystack N));
@@ -6538,8 +6636,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back N));
@@ -6556,8 +6655,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [].
     End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArraySearcher_N.
     
@@ -6863,8 +6963,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty (_Searcher N));
@@ -7082,8 +7183,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *)
           [
             ("haystack", InstanceField.Method (haystack N));
@@ -7254,8 +7356,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back N));
@@ -7272,8 +7375,9 @@ Module str.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          (Self N)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N)
           (* Instance *) [].
     End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharArrayRefSearcher_N.
     
@@ -7282,7 +7386,18 @@ Module str.
         name := "CharSliceSearcher";
         const_params := [];
         ty_params := [];
-        fields := [ Ty.associated ];
+        fields :=
+          [
+            Ty.associated_in_trait
+              "core::str::pattern::Pattern"
+              []
+              []
+              (Ty.apply
+                (Ty.path "core::str::pattern::MultiCharEqPattern")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "char" ] ] ])
+              "Searcher"
+          ];
       } *)
     
     Module Impl_core_clone_Clone_for_core_str_pattern_CharSliceSearcher.
@@ -7343,8 +7458,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_CharSliceSearcher.
     
@@ -7401,8 +7517,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_CharSliceSearcher.
     
@@ -7583,8 +7700,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("haystack", InstanceField.Method haystack);
@@ -7723,8 +7841,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("next_back", InstanceField.Method next_back);
@@ -7739,8 +7858,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_str_pattern_DoubleEndedSearcher_for_core_str_pattern_CharSliceSearcher.
     
@@ -7984,8 +8104,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty _Searcher);
@@ -8003,7 +8124,15 @@ Module str.
         name := "CharPredicateSearcher";
         const_params := [];
         ty_params := [ "F" ];
-        fields := [ Ty.associated ];
+        fields :=
+          [
+            Ty.associated_in_trait
+              "core::str::pattern::Pattern"
+              []
+              []
+              (Ty.apply (Ty.path "core::str::pattern::MultiCharEqPattern") [] [ F ])
+              "Searcher"
+          ];
       } *)
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_F_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
@@ -8055,8 +8184,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [ ("clone", InstanceField.Method (clone F)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_F_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
     
@@ -8203,8 +8333,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
     End Impl_core_fmt_Debug_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
     
@@ -8371,8 +8502,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [
             ("haystack", InstanceField.Method (haystack F));
@@ -8514,8 +8646,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back F));
@@ -8532,8 +8665,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::DoubleEndedSearcher"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [].
     End Impl_core_str_pattern_DoubleEndedSearcher_where_core_ops_function_FnMut_F_Tuple_char__for_core_str_pattern_CharPredicateSearcher_F.
     
@@ -8782,8 +8916,9 @@ Module str.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty (_Searcher F));
@@ -9406,8 +9541,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty _Searcher);
@@ -9719,9 +9855,7 @@ Module str.
                                                             ]
                                                           |)
                                                         |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)
                                                     |)
                                                   |)
@@ -10220,8 +10354,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Pattern"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Searcher", InstanceField.Ty _Searcher);
@@ -10360,8 +10495,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_StrSearcher.
     
@@ -10447,8 +10583,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_StrSearcher.
     
@@ -10462,16 +10599,19 @@ Module str.
           {
             name := "Empty";
             item := StructTuple [ Ty.path "core::str::pattern::EmptyNeedle" ];
-            discriminant := None;
           };
           {
             name := "TwoWay";
             item := StructTuple [ Ty.path "core::str::pattern::TwoWaySearcher" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_StrSearcherImpl_Empty :
+      M.IsDiscriminant "core::str::pattern::StrSearcherImpl::Empty" 0.
+    Axiom IsDiscriminant_StrSearcherImpl_TwoWay :
+      M.IsDiscriminant "core::str::pattern::StrSearcherImpl::TwoWay" 1.
     
     Module Impl_core_clone_Clone_for_core_str_pattern_StrSearcherImpl.
       Definition Self : Ty.t := Ty.path "core::str::pattern::StrSearcherImpl".
@@ -10555,8 +10695,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_StrSearcherImpl.
     
@@ -10653,8 +10794,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_StrSearcherImpl.
     
@@ -10832,8 +10974,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_EmptyNeedle.
     
@@ -10956,8 +11099,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_EmptyNeedle.
     
@@ -12102,8 +12246,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Searcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("haystack", InstanceField.Method haystack);
@@ -13038,8 +13183,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::ReverseSearcher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("next_back", InstanceField.Method next_back);
@@ -13308,8 +13454,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_pattern_TwoWaySearcher.
     
@@ -13542,8 +13689,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_pattern_TwoWaySearcher.
     
@@ -14401,7 +14549,12 @@ Module str.
                                                 |) in
                                               M.return_ (|
                                                 M.call_closure (|
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "core::str::pattern::TwoWayStrategy"
+                                                    []
+                                                    []
+                                                    S
+                                                    "Output",
                                                   M.get_trait_method (|
                                                     "core::str::pattern::TwoWayStrategy",
                                                     S,
@@ -14475,7 +14628,12 @@ Module str.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "core::str::pattern::TwoWayStrategy"
+                                                  []
+                                                  []
+                                                  S
+                                                  "Output",
                                                 M.get_trait_method (|
                                                   "core::str::pattern::TwoWayStrategy",
                                                   S,
@@ -14778,7 +14936,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -14786,21 +14944,17 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      self
-                                                                                    |)
-                                                                                  |),
-                                                                                  "core::str::pattern::TwoWaySearcher",
-                                                                                  "position"
-                                                                                |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "core::str::pattern::TwoWaySearcher",
+                                                                                "position"
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -15089,7 +15243,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -15097,21 +15251,17 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      self
-                                                                                    |)
-                                                                                  |),
-                                                                                  "core::str::pattern::TwoWaySearcher",
-                                                                                  "position"
-                                                                                |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "core::str::pattern::TwoWaySearcher",
+                                                                                "position"
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -15322,7 +15472,12 @@ Module str.
                               |) in
                             M.return_ (|
                               M.call_closure (|
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::str::pattern::TwoWayStrategy"
+                                  []
+                                  []
+                                  S
+                                  "Output",
                                 M.get_trait_method (|
                                   "core::str::pattern::TwoWayStrategy",
                                   S,
@@ -15553,7 +15708,12 @@ Module str.
                                                 |) in
                                               M.return_ (|
                                                 M.call_closure (|
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "core::str::pattern::TwoWayStrategy"
+                                                    []
+                                                    []
+                                                    S
+                                                    "Output",
                                                   M.get_trait_method (|
                                                     "core::str::pattern::TwoWayStrategy",
                                                     S,
@@ -15621,7 +15781,12 @@ Module str.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "core::str::pattern::TwoWayStrategy"
+                                                  []
+                                                  []
+                                                  S
+                                                  "Output",
                                                 M.get_trait_method (|
                                                   "core::str::pattern::TwoWayStrategy",
                                                   S,
@@ -15966,7 +16131,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -15974,47 +16139,45 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              BinOp.Wrap.sub (|
-                                                                                M.read (|
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        self
-                                                                                      |)
-                                                                                    |),
-                                                                                    "core::str::pattern::TwoWaySearcher",
-                                                                                    "end"
-                                                                                  |)
-                                                                                |),
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ],
-                                                                                    "len",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          needle
-                                                                                        |)
-                                                                                      |)
+                                                                          BinOp.Wrap.add (|
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
                                                                                     |)
-                                                                                  ]
+                                                                                  |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
+                                                                                  "end"
                                                                                 |)
                                                                               |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        needle
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -16298,7 +16461,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -16306,47 +16469,45 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              BinOp.Wrap.sub (|
-                                                                                M.read (|
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        self
-                                                                                      |)
-                                                                                    |),
-                                                                                    "core::str::pattern::TwoWaySearcher",
-                                                                                    "end"
-                                                                                  |)
-                                                                                |),
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ],
-                                                                                    "len",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          needle
-                                                                                        |)
-                                                                                      |)
+                                                                          BinOp.Wrap.add (|
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
                                                                                     |)
-                                                                                  ]
+                                                                                  |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
+                                                                                  "end"
                                                                                 |)
                                                                               |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        needle
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -16561,7 +16722,12 @@ Module str.
                               |) in
                             M.return_ (|
                               M.call_closure (|
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::str::pattern::TwoWayStrategy"
+                                  []
+                                  []
+                                  S
+                                  "Output",
                                 M.get_trait_method (|
                                   "core::str::pattern::TwoWayStrategy",
                                   S,
@@ -16691,9 +16857,7 @@ Module str.
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| arr |) |),
-                                  M.alloc (|
-                                    BinOp.Wrap.add (| M.read (| left |), M.read (| offset |) |)
-                                  |)
+                                  BinOp.Wrap.add (| M.read (| left |), M.read (| offset |) |)
                                 |)
                               |) in
                             M.match_operator (|
@@ -16970,16 +17134,14 @@ Module str.
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| arr |) |),
-                                  M.alloc (|
-                                    BinOp.Wrap.sub (|
-                                      M.read (| n |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| n |),
+                                    BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          Value.Integer IntegerKind.Usize 1,
-                                          M.read (| right |)
-                                        |),
-                                        M.read (| offset |)
-                                      |)
+                                        Value.Integer IntegerKind.Usize 1,
+                                        M.read (| right |)
+                                      |),
+                                      M.read (| offset |)
                                     |)
                                   |)
                                 |)
@@ -16988,16 +17150,14 @@ Module str.
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| arr |) |),
-                                  M.alloc (|
-                                    BinOp.Wrap.sub (|
-                                      M.read (| n |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| n |),
+                                    BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          Value.Integer IntegerKind.Usize 1,
-                                          M.read (| left |)
-                                        |),
-                                        M.read (| offset |)
-                                      |)
+                                        Value.Integer IntegerKind.Usize 1,
+                                        M.read (| left |)
+                                      |),
+                                      M.read (| offset |)
                                     |)
                                   |)
                                 |)
@@ -17278,6 +17438,7 @@ Module str.
     }
     *)
     
+    
     Module Impl_core_str_pattern_TwoWayStrategy_for_core_str_pattern_MatchOnly.
       Definition Self : Ty.t := Ty.path "core::str::pattern::MatchOnly".
       
@@ -17334,8 +17495,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::TwoWayStrategy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -17353,6 +17515,7 @@ Module str.
       variants := [];
     }
     *)
+    
     
     Module Impl_core_str_pattern_TwoWayStrategy_for_core_str_pattern_RejectAndMatch.
       Definition Self : Ty.t := Ty.path "core::str::pattern::RejectAndMatch".
@@ -17408,8 +17571,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::TwoWayStrategy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -17637,7 +17801,7 @@ Module str.
                   M.copy (|
                     M.SubPointer.get_array_field (|
                       M.deref (| M.read (| needle |) |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                      Value.Integer IntegerKind.Usize 0
                     |)
                   |) in
                 let~ last_byte_offset : Ty.path "usize" :=
@@ -17785,7 +17949,7 @@ Module str.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| needle |) |),
-                                                            idx
+                                                            M.read (| idx |)
                                                           |)
                                                         |),
                                                         M.read (| first_probe |)
@@ -18006,7 +18170,7 @@ Module str.
                           [ Value.Integer IntegerKind.Usize 16 ]
                           [ Ty.path "u8" ],
                         "splat",
-                        [ Value.Integer IntegerKind.Usize 16 ],
+                        [],
                         []
                       |),
                       [ M.read (| first_probe |) ]
@@ -18029,14 +18193,14 @@ Module str.
                           [ Value.Integer IntegerKind.Usize 16 ]
                           [ Ty.path "u8" ],
                         "splat",
-                        [ Value.Integer IntegerKind.Usize 16 ],
+                        [],
                         []
                       |),
                       [
                         M.read (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| needle |) |),
-                            second_probe_offset
+                            M.read (| second_probe_offset |)
                           |)
                         |)
                       ]
@@ -18756,7 +18920,7 @@ Module str.
                                                     [ Value.Integer IntegerKind.Usize 16 ]
                                                     [ Ty.path "i8" ],
                                                   "to_bitmask",
-                                                  [ Value.Integer IntegerKind.Usize 16 ],
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| both |) ]
@@ -18932,7 +19096,7 @@ Module str.
                                                             M.write (|
                                                               M.SubPointer.get_array_field (|
                                                                 masks,
-                                                                j
+                                                                M.read (| j |)
                                                               |),
                                                               M.call_closure (|
                                                                 Ty.path "u16",
@@ -19073,7 +19237,7 @@ Module str.
                                                           M.copy (|
                                                             M.SubPointer.get_array_field (|
                                                               masks,
-                                                              j
+                                                              M.read (| j |)
                                                             |)
                                                           |) in
                                                         M.match_operator (|

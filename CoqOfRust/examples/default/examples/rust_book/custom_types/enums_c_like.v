@@ -11,21 +11,22 @@ Enum Number
       {
         name := "Zero";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "One";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Two";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Number_Zero : M.IsDiscriminant "enums_c_like::Number::Zero" 0.
+Axiom IsDiscriminant_Number_One : M.IsDiscriminant "enums_c_like::Number::One" 1.
+Axiom IsDiscriminant_Number_Two : M.IsDiscriminant "enums_c_like::Number::Two" 2.
 
 (*
 Enum Color
@@ -37,21 +38,22 @@ Enum Color
       {
         name := "Red";
         item := StructTuple [];
-        discriminant := Some 16711680;
       };
       {
         name := "Green";
         item := StructTuple [];
-        discriminant := Some 65280;
       };
       {
         name := "Blue";
         item := StructTuple [];
-        discriminant := Some 255;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Color_Red : M.IsDiscriminant "enums_c_like::Color::Red" 16711680.
+Axiom IsDiscriminant_Color_Green : M.IsDiscriminant "enums_c_like::Color::Green" 65280.
+Axiom IsDiscriminant_Color_Blue : M.IsDiscriminant "enums_c_like::Color::Blue" 255.
 
 (*
 fn main() {
@@ -80,7 +82,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -155,7 +157,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

@@ -46,8 +46,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_sync_Arc_T_A.
   
@@ -58,8 +59,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_sync_Arc_T_A.
   
@@ -70,8 +72,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::panic::unwind_safe::UnwindSafe"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_panic_unwind_safe_UnwindSafe_A_for_alloc_sync_Arc_T_A.
   
@@ -82,8 +85,9 @@ Module sync.
       forall (T U A : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ U; A ] ]
         (Self T U A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [] [ U; A ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_sync_Arc_U_A_for_alloc_sync_Arc_T_A.
   
@@ -95,9 +99,10 @@ Module sync.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
-        (Self T U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [] [ U; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ U; Ty.path "alloc::alloc::Global" ] ]
+        (Self T U)
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_sync_Arc_U_alloc_alloc_Global_for_alloc_sync_Arc_T_alloc_alloc_Global.
   
@@ -3837,7 +3842,11 @@ Module sync.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_const",
-                                                                        [],
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ],
                                                                         []
                                                                       |),
                                                                       [
@@ -8749,8 +8758,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_sync_Weak_T_A.
   
@@ -8761,8 +8771,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_sync_Weak_T_A.
   
@@ -8773,8 +8784,9 @@ Module sync.
       forall (T U A : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ U; A ] ]
         (Self T U A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::sync::Weak") [] [ U; A ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_sync_Weak_U_A_for_alloc_sync_Weak_T_A.
   
@@ -8786,9 +8798,10 @@ Module sync.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
-        (Self T U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::sync::Weak") [] [ U; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ U; Ty.path "alloc::alloc::Global" ] ]
+        (Self T U)
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_sync_Weak_U_alloc_alloc_Global_for_alloc_sync_Weak_T_alloc_alloc_Global.
   
@@ -8817,7 +8830,12 @@ Module sync.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -8839,8 +8857,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Weak_T_A.
   
@@ -8958,8 +8977,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_for_alloc_sync_ArcInner_T.
   
@@ -8970,8 +8990,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_for_alloc_sync_ArcInner_T.
   
@@ -10916,8 +10937,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::sync::ArcFromSlice"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from_slice", InstanceField.Method (from_slice T)) ].
   End Impl_alloc_sync_ArcFromSlice_where_core_clone_Clone_T_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
@@ -10962,8 +10984,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::sync::ArcFromSlice"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from_slice", InstanceField.Method (from_slice T)) ].
   End Impl_alloc_sync_ArcFromSlice_where_core_marker_Copy_T_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
@@ -11121,8 +11144,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
   End Impl_core_clone_Clone_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_sync_Arc_T_A.
   
@@ -11177,8 +11201,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T A)); ("deref", InstanceField.Method (deref T A)) ].
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
@@ -11190,8 +11215,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -11202,8 +11228,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Weak_T_A.
   
@@ -11214,8 +11241,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -11227,8 +11255,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Receiver"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
   
@@ -11490,7 +11519,7 @@ Module sync.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
-                                                [],
+                                                [ Value.Integer IntegerKind.Usize 1 ],
                                                 []
                                               |),
                                               [
@@ -11547,8 +11576,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -13416,8 +13446,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
   End Impl_core_clone_Clone_where_core_marker_Sized_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_sync_Weak_T_A.
   
@@ -13452,8 +13483,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_alloc_sync_Weak_T_alloc_alloc_Global.
   
@@ -13716,7 +13748,7 @@ Module sync.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_const",
-                                                        [],
+                                                        [ Value.Integer IntegerKind.Usize 1 ],
                                                         []
                                                       |),
                                                       [
@@ -13847,8 +13879,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Weak_T_A.
   
@@ -13976,8 +14009,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "alloc::sync::ArcEqIdent"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T; A ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T; (* A *) A ]
         (* Instance *)
         [ ("eq", InstanceField.Method (eq T A)); ("ne", InstanceField.Method (ne T A)) ].
   End Impl_alloc_sync_ArcEqIdent_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_T_A_for_alloc_sync_Arc_T_A.
@@ -14137,8 +14171,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "alloc::sync::ArcEqIdent"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T; A ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T; (* A *) A ]
         (* Instance *)
         [ ("eq", InstanceField.Method (eq T A)); ("ne", InstanceField.Method (ne T A)) ].
   End Impl_alloc_sync_ArcEqIdent_where_core_marker_Sized_T_where_alloc_rc_MarkerEq_T_where_core_alloc_Allocator_A_T_A_for_alloc_sync_Arc_T_A.
@@ -14212,8 +14247,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq T A)); ("ne", InstanceField.Method (ne T A)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
@@ -14515,8 +14551,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp T A));
@@ -14596,8 +14633,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T A)) ].
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -14608,8 +14646,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -14668,8 +14707,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -14728,8 +14768,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -14801,8 +14842,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -14843,8 +14885,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
   
@@ -15186,8 +15229,9 @@ Module sync.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_alloc_sync_Arc_str_alloc_alloc_Global.
   
@@ -15520,8 +15564,9 @@ Module sync.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_alloc_sync_Arc_core_ffi_c_str_CStr_alloc_alloc_Global.
   
@@ -15881,8 +15926,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
@@ -15933,8 +15979,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("hash", InstanceField.Method (hash T A)) ].
   End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -15970,8 +16017,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
   
@@ -16025,8 +16073,9 @@ Module sync.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
   End Impl_core_convert_From_array_N_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
@@ -16074,9 +16123,10 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
@@ -16181,8 +16231,9 @@ Module sync.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_sync_Arc_str_alloc_alloc_Global.
   
@@ -16247,8 +16298,9 @@ Module sync.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_sync_Arc_str_alloc_alloc_Global.
   
@@ -16283,8 +16335,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_marker_Sized_T_where_core_alloc_Allocator_A_alloc_boxed_Box_T_A_for_alloc_sync_Arc_T_A.
   
@@ -16457,12 +16510,13 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_where_core_clone_Clone_A_alloc_vec_Vec_T_A_for_alloc_sync_Arc_slice_T_A.
   
-  Module Impl_core_convert_From_where_alloc_borrow_ToOwned_B_where_core_marker_Sized_B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_ref__B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_associated_type_alloc_borrow_Cow_B_for_alloc_sync_Arc_B_alloc_alloc_Global.
+  Module Impl_core_convert_From_where_alloc_borrow_ToOwned_B_where_core_marker_Sized_B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_ref__B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_associated_in_trait_alloc_borrow_ToOwned___B_Owned_alloc_borrow_Cow_B_for_alloc_sync_Arc_B_alloc_alloc_Global.
     Definition Self (B : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "alloc::sync::Arc") [] [ B; Ty.path "alloc::alloc::Global" ].
     
@@ -16532,7 +16586,7 @@ Module sync.
                             []
                             [ B; Ty.path "alloc::alloc::Global" ],
                           [],
-                          [ Ty.associated ],
+                          [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
                           "from",
                           [],
                           []
@@ -16550,10 +16604,11 @@ Module sync.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ]
         (Self B)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ]
         (* Instance *) [ ("from", InstanceField.Method (from B)) ].
-  End Impl_core_convert_From_where_alloc_borrow_ToOwned_B_where_core_marker_Sized_B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_ref__B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_associated_type_alloc_borrow_Cow_B_for_alloc_sync_Arc_B_alloc_alloc_Global.
+  End Impl_core_convert_From_where_alloc_borrow_ToOwned_B_where_core_marker_Sized_B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_ref__B_where_core_convert_From_alloc_sync_Arc_B_alloc_alloc_Global_associated_in_trait_alloc_borrow_ToOwned___B_Owned_alloc_borrow_Cow_B_for_alloc_sync_Arc_B_alloc_alloc_Global.
   
   Module Impl_core_convert_From_alloc_sync_Arc_str_alloc_alloc_Global_for_alloc_sync_Arc_slice_u8_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -16611,12 +16666,11 @@ Module sync.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "alloc::sync::Arc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+        [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
         ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_sync_Arc_str_alloc_alloc_Global_for_alloc_sync_Arc_slice_u8_alloc_alloc_Global.
   
@@ -16806,12 +16860,10 @@ Module sync.
       forall (N : Value.t) (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "alloc::sync::Arc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
-        ]
+        [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ] ]
+        (Self N T A)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T A));
@@ -16844,7 +16896,7 @@ Module sync.
               [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "alloc::sync::ToArcSlice",
-              Ty.associated,
+              Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter",
               [],
               [ T ],
               "to_arc_slice",
@@ -16853,7 +16905,12 @@ Module sync.
             |),
             [
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -16874,8 +16931,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* A *) T ]
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
   End Impl_core_iter_traits_collect_FromIterator_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
@@ -16943,8 +17001,9 @@ Module sync.
       forall (T I : Ty.t),
       M.IsTraitInstance
         "alloc::sync::ToArcSlice"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T I)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("to_arc_slice", InstanceField.Method (to_arc_slice T I)) ].
   End Impl_alloc_sync_ToArcSlice_where_core_iter_traits_iterator_Iterator_I_T_for_I.
   
@@ -17142,7 +17201,14 @@ Module sync.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_v1",
-                                                                            [],
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1;
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ],
                                                                             []
                                                                           |),
                                                                           [
@@ -17273,7 +17339,7 @@ Module sync.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
-                                        [],
+                                        [ Value.Integer IntegerKind.Usize 1 ],
                                         []
                                       |),
                                       [
@@ -17307,8 +17373,9 @@ Module sync.
       forall (T I : Ty.t),
       M.IsTraitInstance
         "alloc::sync::ToArcSlice"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T I)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("to_arc_slice", InstanceField.Method (to_arc_slice T I)) ].
   End Impl_alloc_sync_ToArcSlice_where_core_iter_traits_marker_TrustedLen_I_T_for_I.
   
@@ -17356,8 +17423,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow T A)) ].
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_sync_Arc_T_A.
   
@@ -17405,8 +17473,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_sync_Arc_T_A.
   
@@ -17417,8 +17486,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::marker::Unpin"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
@@ -18140,8 +18210,9 @@ Module sync.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_UniqueArcUninit_T_A.
   
@@ -18356,8 +18427,9 @@ Module sync.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::error::Error"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("description", InstanceField.Method (description T));

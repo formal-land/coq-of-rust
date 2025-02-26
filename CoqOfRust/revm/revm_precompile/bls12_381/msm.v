@@ -240,7 +240,7 @@ Module bls12_381.
                               M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
                             |)
                           |),
-                          index
+                          M.read (| index |)
                         |)
                       |))
                   |) in

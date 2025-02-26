@@ -108,7 +108,10 @@ Module serializer.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
-                                                          [],
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 3;
+                                                            Value.Integer IntegerKind.Usize 2
+                                                          ],
                                                           []
                                                         |),
                                                         [
@@ -1428,7 +1431,10 @@ Module serializer.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
-                                                        [],
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 4;
+                                                          Value.Integer IntegerKind.Usize 3
+                                                        ],
                                                         []
                                                       |),
                                                       [
@@ -2013,7 +2019,10 @@ Module serializer.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
-                                                            [],
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 3;
+                                                              Value.Integer IntegerKind.Usize 2
+                                                            ],
                                                             []
                                                           |),
                                                           [
@@ -2934,8 +2943,9 @@ Module serializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_serializer_CommonSerializer.
   
@@ -3168,8 +3178,9 @@ Module serializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_serializer_ModuleSerializer.
   
@@ -3260,7 +3271,10 @@ Module serializer.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
-                                                          [],
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 2;
+                                                            Value.Integer IntegerKind.Usize 2
+                                                          ],
                                                           []
                                                         |),
                                                         [
@@ -4526,8 +4540,9 @@ Module serializer.
     Axiom Implements :
       M.IsTraitInstance
         "move_binary_format::serializer::CommonTables"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("get_module_handles", InstanceField.Method get_module_handles);
@@ -12982,7 +12997,11 @@ Module serializer.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
-                                                                            [],
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ],
                                                                             []
                                                                           |),
                                                                           [
@@ -14225,7 +14244,14 @@ Module serializer.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_v1",
-                                                                    [],
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ],
                                                                     []
                                                                   |),
                                                                   [
@@ -22695,7 +22721,7 @@ Module serializer.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [

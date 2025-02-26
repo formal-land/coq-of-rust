@@ -162,8 +162,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_dec2flt_decimal_Decimal.
       
@@ -197,8 +198,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::default::Default"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("default", InstanceField.Method default) ].
       End Impl_core_default_Default_for_core_num_dec2flt_decimal_Decimal.
       
@@ -283,10 +285,12 @@ Module num.
                                     "core::num::dec2flt::decimal::Decimal",
                                     "digits"
                                   |),
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::num::dec2flt::decimal::Decimal",
-                                    "num_digits"
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::num::dec2flt::decimal::Decimal",
+                                      "num_digits"
+                                    |)
                                   |)
                                 |),
                                 M.read (| digit |)
@@ -429,17 +433,15 @@ Module num.
                                               "core::num::dec2flt::decimal::Decimal",
                                               "digits"
                                             |),
-                                            M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::num::dec2flt::decimal::Decimal",
-                                                    "num_digits"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.Usize 1
-                                              |)
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::num::dec2flt::decimal::Decimal",
+                                                  "num_digits"
+                                                |)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
                                             |)
                                           |)
                                         |),
@@ -753,7 +755,7 @@ Module num.
                                                                       "core::num::dec2flt::decimal::Decimal",
                                                                       "digits"
                                                                     |),
-                                                                    i
+                                                                    M.read (| i |)
                                                                   |)
                                                                 |))
                                                             |)
@@ -808,7 +810,7 @@ Module num.
                                             "core::num::dec2flt::decimal::Decimal",
                                             "digits"
                                           |),
-                                          dp
+                                          M.read (| dp |)
                                         |)
                                       |),
                                       Value.Integer IntegerKind.U8 5
@@ -832,7 +834,7 @@ Module num.
                                                       "core::num::dec2flt::decimal::Decimal",
                                                       "digits"
                                                     |),
-                                                    dp
+                                                    M.read (| dp |)
                                                   |)
                                                 |),
                                                 Value.Integer IntegerKind.U8 5
@@ -886,11 +888,9 @@ Module num.
                                                             "core::num::dec2flt::decimal::Decimal",
                                                             "digits"
                                                           |),
-                                                          M.alloc (|
-                                                            BinOp.Wrap.sub (|
-                                                              M.read (| dp |),
-                                                              Value.Integer IntegerKind.Usize 1
-                                                            |)
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (| dp |),
+                                                            Value.Integer IntegerKind.Usize 1
                                                           |)
                                                         |)
                                                       |)),
@@ -1120,7 +1120,7 @@ Module num.
                                                     "core::num::dec2flt::decimal::Decimal",
                                                     "digits"
                                                   |),
-                                                  read_index
+                                                  M.read (| read_index |)
                                                 |)
                                               |)),
                                             M.read (| shift |)
@@ -1176,7 +1176,7 @@ Module num.
                                                       "core::num::dec2flt::decimal::Decimal",
                                                       "digits"
                                                     |),
-                                                    write_index
+                                                    M.read (| write_index |)
                                                   |),
                                                   M.cast (Ty.path "u8") (M.read (| remainder |))
                                                 |)
@@ -1319,7 +1319,7 @@ Module num.
                                                       "core::num::dec2flt::decimal::Decimal",
                                                       "digits"
                                                     |),
-                                                    write_index
+                                                    M.read (| write_index |)
                                                   |),
                                                   M.cast (Ty.path "u8") (M.read (| remainder |))
                                                 |)
@@ -1603,7 +1603,7 @@ Module num.
                                                           "core::num::dec2flt::decimal::Decimal",
                                                           "digits"
                                                         |),
-                                                        read_index
+                                                        M.read (| read_index |)
                                                       |)
                                                     |))
                                                 |)
@@ -1902,7 +1902,7 @@ Module num.
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "digits"
                                                 |),
-                                                read_index
+                                                M.read (| read_index |)
                                               |)
                                             |))
                                         |)
@@ -1928,7 +1928,7 @@ Module num.
                                             "core::num::dec2flt::decimal::Decimal",
                                             "digits"
                                           |),
-                                          write_index
+                                          M.read (| write_index |)
                                         |),
                                         M.read (| new_digit |)
                                       |)
@@ -2028,7 +2028,7 @@ Module num.
                                                     "core::num::dec2flt::decimal::Decimal",
                                                     "digits"
                                                   |),
-                                                  write_index
+                                                  M.read (| write_index |)
                                                 |),
                                                 M.read (| new_digit |)
                                               |)
@@ -3748,7 +3748,7 @@ Module num.
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "digits"
                                                 |),
-                                                i
+                                                M.read (| i |)
                                               |),
                                               Value.Integer IntegerKind.U8 0
                                             |)
@@ -3875,7 +3875,7 @@ Module num.
                       M.SubPointer.get_array_field (|
                         M.get_constant
                           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE",
-                        shift
+                        M.read (| shift |)
                       |)
                     |) in
                   let~ x_b : Ty.path "u16" :=
@@ -3883,9 +3883,7 @@ Module num.
                       M.SubPointer.get_array_field (|
                         M.get_constant
                           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift::TABLE",
-                        M.alloc (|
-                          BinOp.Wrap.add (| M.read (| shift |), Value.Integer IntegerKind.Usize 1 |)
-                        |)
+                        BinOp.Wrap.add (| M.read (| shift |), Value.Integer IntegerKind.Usize 1 |)
                       |)
                     |) in
                   let~ num_new_digits : Ty.path "usize" :=
@@ -4204,7 +4202,7 @@ Module num.
                                                                           "core::num::dec2flt::decimal::Decimal",
                                                                           "digits"
                                                                         |),
-                                                                        i
+                                                                        M.read (| i |)
                                                                       |)
                                                                     |),
                                                                     M.read (| p5 |)
@@ -4240,7 +4238,7 @@ Module num.
                                                                                   "core::num::dec2flt::decimal::Decimal",
                                                                                   "digits"
                                                                                 |),
-                                                                                i
+                                                                                M.read (| i |)
                                                                               |)
                                                                             |),
                                                                             M.read (| p5 |)

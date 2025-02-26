@@ -72,8 +72,9 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (Self T)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self T)
       (* Instance *) [ ("default", InstanceField.Method (default T)) ].
 End Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_stack_AbstractStack_T.
 
@@ -145,8 +146,9 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (Self T)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self T)
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_AbstractStack_T.
 
@@ -2091,21 +2093,25 @@ Enum AbsStackError
       {
         name := "ElementNotEqual";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Underflow";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Overflow";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_AbsStackError_ElementNotEqual :
+  M.IsDiscriminant "move_abstract_stack::AbsStackError::ElementNotEqual" 0.
+Axiom IsDiscriminant_AbsStackError_Underflow :
+  M.IsDiscriminant "move_abstract_stack::AbsStackError::Underflow" 1.
+Axiom IsDiscriminant_AbsStackError_Overflow :
+  M.IsDiscriminant "move_abstract_stack::AbsStackError::Overflow" 2.
 
 Module Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
@@ -2127,8 +2133,9 @@ Module Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
@@ -2139,8 +2146,9 @@ Module Impl_core_marker_StructuralPartialEq_for_move_abstract_stack_AbsStackErro
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_move_abstract_stack_AbsStackError.
 
@@ -2187,8 +2195,9 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
 
@@ -2258,8 +2267,9 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
 
@@ -2321,8 +2331,9 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
 
@@ -2342,8 +2353,9 @@ Module Impl_core_clone_Clone_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_move_abstract_stack_AbsStackError.
 
@@ -2351,7 +2363,12 @@ Module Impl_core_marker_Copy_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_move_abstract_stack_AbsStackError.
 
 Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
@@ -2423,8 +2440,9 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
 
@@ -2483,7 +2501,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -2533,7 +2551,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -2582,7 +2600,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -2616,7 +2634,8 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.

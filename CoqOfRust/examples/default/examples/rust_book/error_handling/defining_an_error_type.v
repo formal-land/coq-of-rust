@@ -33,8 +33,9 @@ Module Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_defining_an_error_type_DoubleError.
 
@@ -54,8 +55,9 @@ Module Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_defining_an_error_type_DoubleError.
 
@@ -88,7 +90,12 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -111,8 +118,9 @@ Module Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_defining_an_error_type_DoubleError.
 
@@ -387,7 +395,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -457,7 +466,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [

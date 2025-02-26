@@ -106,7 +106,7 @@ Module transaction.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       [ Ty.path "u64" ]
                     |),
                     [
@@ -143,7 +143,7 @@ Module transaction.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       [ Ty.path "u128" ]
                     |),
                     [
@@ -175,7 +175,7 @@ Module transaction.
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "saturating_mul",
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                    [],
                     []
                   |),
                   [ M.read (| max_blob_fee |); M.read (| blob_gas |) ]
@@ -386,8 +386,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip4844::Eip4844Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -591,8 +592,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip4844::Eip4844Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -881,8 +883,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip4844::Eip4844Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -1171,8 +1174,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip4844::Eip4844Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));

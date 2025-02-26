@@ -13,16 +13,19 @@ Module ops.
           {
             name := "Continue";
             item := StructTuple [ C ];
-            discriminant := None;
           };
           {
             name := "Break";
             item := StructTuple [ B ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_ControlFlow_Continue :
+      M.IsDiscriminant "core::ops::control_flow::ControlFlow::Continue" 0.
+    Axiom IsDiscriminant_ControlFlow_Break :
+      M.IsDiscriminant "core::ops::control_flow::ControlFlow::Break" 1.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_B_where_core_fmt_Debug_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
@@ -120,8 +123,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt B C)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_B_where_core_fmt_Debug_C_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -210,8 +214,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *) [ ("clone", InstanceField.Method (clone B C)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_B_where_core_clone_Clone_C_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -223,8 +228,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_B_where_core_marker_Copy_C_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -236,8 +242,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -386,8 +393,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -427,8 +435,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq B C))
           ].
@@ -550,8 +559,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *) [ ("hash", InstanceField.Method (hash B C)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_B_where_core_hash_Hash_C_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -651,8 +661,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::Try"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C)
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output B C));
@@ -712,15 +723,15 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::FromResidual"
-          (Self B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* R *)
             Ty.apply
               (Ty.path "core::ops::control_flow::ControlFlow")
               []
               [ B; Ty.path "core::convert::Infallible" ]
           ]
+          (Self B C)
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual B C)) ].
     End Impl_core_ops_try_trait_FromResidual_core_ops_control_flow_ControlFlow_B_core_convert_Infallible_for_core_ops_control_flow_ControlFlow_B_C.
     
@@ -739,8 +750,9 @@ Module ops.
         forall (B C : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::Residual"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ C ]
           (Self B C)
-          (* Trait polymorphic types *) [ (* O *) C ]
           (* Instance *) [ ("TryType", InstanceField.Ty (_TryType B C)) ].
     End Impl_core_ops_try_trait_Residual_C_for_core_ops_control_flow_ControlFlow_B_core_convert_Infallible.
     
@@ -1086,9 +1098,12 @@ Module ops.
       Smpl Add apply AssociatedFunction_map_continue : is_associated.
     End Impl_core_ops_control_flow_ControlFlow_B_C.
     
-    Module Impl_core_ops_control_flow_ControlFlow_R_associated_type.
+    Module Impl_core_ops_control_flow_ControlFlow_R_associated_in_trait_core_ops_try_trait_Try___R_Output.
       Definition Self (R : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ R; Ty.associated ].
+        Ty.apply
+          (Ty.path "core::ops::control_flow::ControlFlow")
+          []
+          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ].
       
       (*
           pub(crate) fn from_try(r: R) -> Self {
@@ -1111,7 +1126,10 @@ Module ops.
                     Ty.apply
                       (Ty.path "core::ops::control_flow::ControlFlow")
                       []
-                      [ Ty.associated; Ty.associated ],
+                      [
+                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual";
+                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                      ],
                     M.get_trait_method (|
                       "core::ops::try_trait::Try",
                       R,
@@ -1158,7 +1176,14 @@ Module ops.
                                 "core::ops::try_trait::FromResidual",
                                 R,
                                 [],
-                                [ Ty.associated ],
+                                [
+                                  Ty.associated_in_trait
+                                    "core::ops::try_trait::Try"
+                                    []
+                                    []
+                                    R
+                                    "Residual"
+                                ],
                                 "from_residual",
                                 [],
                                 []
@@ -1240,6 +1265,6 @@ Module ops.
         forall (R : Ty.t),
         M.IsAssociatedFunction (Self R) "into_try" (into_try R).
       Smpl Add apply AssociatedFunction_into_try : is_associated.
-    End Impl_core_ops_control_flow_ControlFlow_R_associated_type.
+    End Impl_core_ops_control_flow_ControlFlow_R_associated_in_trait_core_ops_try_trait_Try___R_Output.
   End control_flow.
 End ops.

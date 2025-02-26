@@ -17,8 +17,9 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_contract_ref_AccountId.
 
@@ -30,8 +31,9 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_contract_ref_AccountId.
 
@@ -39,7 +41,12 @@ Module Impl_core_marker_Copy_for_contract_ref_AccountId.
   Definition Self : Ty.t := Ty.path "contract_ref::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_ref_AccountId.
 
 Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
@@ -80,8 +87,9 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_contract_ref_FlipperError.
 

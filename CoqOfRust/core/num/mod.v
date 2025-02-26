@@ -6068,7 +6068,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -14097,7 +14097,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -22126,7 +22126,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -30155,7 +30155,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -38219,7 +38219,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -46319,7 +46319,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -48683,7 +48683,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -56425,7 +56425,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -63480,7 +63480,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -70491,7 +70491,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -77520,7 +77520,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -84472,7 +84472,7 @@ Module num.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -89008,31 +89008,32 @@ Module num.
         {
           name := "Nan";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Infinite";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Zero";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Subnormal";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Normal";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_FpCategory_Nan : M.IsDiscriminant "core::num::FpCategory::Nan" 0.
+  Axiom IsDiscriminant_FpCategory_Infinite : M.IsDiscriminant "core::num::FpCategory::Infinite" 1.
+  Axiom IsDiscriminant_FpCategory_Zero : M.IsDiscriminant "core::num::FpCategory::Zero" 2.
+  Axiom IsDiscriminant_FpCategory_Subnormal : M.IsDiscriminant "core::num::FpCategory::Subnormal" 3.
+  Axiom IsDiscriminant_FpCategory_Normal : M.IsDiscriminant "core::num::FpCategory::Normal" 4.
   
   Module Impl_core_marker_Copy_for_core_num_FpCategory.
     Definition Self : Ty.t := Ty.path "core::num::FpCategory".
@@ -89040,8 +89041,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_num_FpCategory.
   
@@ -89061,8 +89063,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_num_FpCategory.
   
@@ -89072,8 +89075,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_num_FpCategory.
   
@@ -89120,8 +89124,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_num_FpCategory.
   
@@ -89145,8 +89150,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_num_FpCategory.
@@ -89234,8 +89240,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_num_FpCategory.
   
@@ -89272,8 +89279,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_isize.
@@ -89311,8 +89319,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i8.
@@ -89350,8 +89359,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i16.
@@ -89389,8 +89399,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i32.
@@ -89428,8 +89439,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i64.
@@ -89467,8 +89479,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i128.
@@ -89506,8 +89519,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_usize.
@@ -89545,8 +89559,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u8.
@@ -89584,8 +89599,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u16.
@@ -89623,8 +89639,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u32.
@@ -89662,8 +89679,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u64.
@@ -89701,8 +89719,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u128.
@@ -89768,7 +89787,12 @@ Module num.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -89813,7 +89837,12 @@ Module num.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,

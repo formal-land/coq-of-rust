@@ -12,22 +12,18 @@ Module transaction_argument.
         {
           name := "U8";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [ Ty.path "u64" ];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [ Ty.path "u128" ];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [ Ty.path "move_core_types::account_address::AccountAddress" ];
-          discriminant := None;
         };
         {
           name := "U8Vector";
@@ -39,31 +35,45 @@ Module transaction_argument.
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ];
-          discriminant := None;
         };
         {
           name := "Bool";
           item := StructTuple [ Ty.path "bool" ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [ Ty.path "u32" ];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [ Ty.path "move_core_types::u256::U256" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TransactionArgument_U8 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U8" 0.
+  Axiom IsDiscriminant_TransactionArgument_U64 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U64" 1.
+  Axiom IsDiscriminant_TransactionArgument_U128 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U128" 2.
+  Axiom IsDiscriminant_TransactionArgument_Address :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::Address" 3.
+  Axiom IsDiscriminant_TransactionArgument_U8Vector :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U8Vector" 4.
+  Axiom IsDiscriminant_TransactionArgument_Bool :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::Bool" 5.
+  Axiom IsDiscriminant_TransactionArgument_U16 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U16" 6.
+  Axiom IsDiscriminant_TransactionArgument_U32 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U32" 7.
+  Axiom IsDiscriminant_TransactionArgument_U256 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U256" 8.
   
   Module Impl_core_clone_Clone_for_move_core_types_transaction_argument_TransactionArgument.
     Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::TransactionArgument".
@@ -354,8 +364,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_transaction_argument_TransactionArgument.
   
@@ -671,8 +682,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_transaction_argument_TransactionArgument.
   
@@ -763,8 +775,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_transaction_argument_TransactionArgument.
@@ -775,8 +788,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_transaction_argument_TransactionArgument.
   
@@ -1222,8 +1236,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_transaction_argument_TransactionArgument.
   
@@ -1257,7 +1272,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1290,7 +1308,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1323,7 +1344,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1356,7 +1380,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1389,7 +1416,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1448,7 +1478,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1481,7 +1514,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1514,7 +1550,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1547,7 +1586,10 @@ Module transaction_argument.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -1575,8 +1617,9 @@ Module transaction_argument.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_transaction_argument_TransactionArgument.
     Module Impl_serde_de_Deserialize_for_move_core_types_transaction_argument_TransactionArgument.
@@ -1595,7 +1638,7 @@ Module transaction_argument.
                 []
                 [
                   Ty.path "move_core_types::transaction_argument::TransactionArgument";
-                  Ty.associated
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
                 ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
@@ -1626,8 +1669,9 @@ Module transaction_argument.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_transaction_argument_TransactionArgument.
     Module Impl_serde_de_Deserialize_for_move_core_types_transaction_argument_VecBytes.
@@ -1643,7 +1687,10 @@ Module transaction_argument.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::transaction_argument::VecBytes"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::transaction_argument::VecBytes";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1670,8 +1717,9 @@ Module transaction_argument.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_transaction_argument_VecBytes.
   End underscore.
@@ -1736,7 +1784,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -1817,7 +1866,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -1898,7 +1948,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -1979,7 +2030,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -2062,7 +2114,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -2153,7 +2206,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -2262,7 +2316,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -2343,7 +2398,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -2424,7 +2480,8 @@ Module transaction_argument.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -2490,8 +2547,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_transaction_argument_TransactionArgument.
   
@@ -2664,9 +2722,10 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+        [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_transaction_argument_TransactionArgument_for_move_core_types_runtime_value_MoveValue.
   
@@ -3081,7 +3140,14 @@ Module transaction_argument.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
                                                                                                             "new_v1",
-                                                                                                            [],
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1;
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1
+                                                                                                            ],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -3308,7 +3374,14 @@ Module transaction_argument.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
-                                                                        [],
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ],
                                                                         []
                                                                       |),
                                                                       [
@@ -3439,9 +3512,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::runtime_value::MoveValue" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::runtime_value::MoveValue" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_move_core_types_runtime_value_MoveValue_for_move_core_types_transaction_argument_TransactionArgument.
@@ -3773,8 +3846,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_transaction_argument_VecBytes.
   
@@ -3825,8 +3899,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_transaction_argument_VecBytes.
   
@@ -3855,8 +3930,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_transaction_argument_VecBytes.
@@ -3867,8 +3943,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_transaction_argument_VecBytes.
   
@@ -3926,8 +4003,9 @@ Module transaction_argument.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_transaction_argument_VecBytes.
   

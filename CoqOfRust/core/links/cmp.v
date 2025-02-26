@@ -28,11 +28,7 @@ Definition run_max_by {T F : Set} `{Link T} `{Link F}
 Proof.
   destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
   run_symbolic.
-  run_symbolic_closure. {
-    apply (run_call_once compare (Ref.immediate _ v1, Ref.immediate _ v2)).
-  }
-  intros [ordering|]; run_symbolic.
-  destruct ordering; run_symbolic.
+  cbn in *; destruct_all Ordering.t; run_symbolic.
 Defined.
 Smpl Add apply run_max_by : run_closure.
 
@@ -53,28 +49,28 @@ Smpl Add apply run_max_by : run_closure.
 Module Ord.
   Definition Run_cmp (Self : Set) `{Link Self} : Set :=
     {cmp @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "cmp" cmp *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "cmp" cmp *
       forall (self other : Ref.t Pointer.Kind.Ref Self),
         {{ cmp [] [] [ φ self; φ other ] 🔽 Ordering.t }}
     }.
 
   Definition Run_max (Self : Set) `{Link Self} : Set :=
     {max @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "max" max *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "max" max *
       forall (self other : Self),
         {{ max [] [] [ φ self; φ other ] 🔽 Self }}
     }.
 
   Definition Run_min (Self : Set) `{Link Self} : Set :=
     {min @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "min" min *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "min" min *
       forall (self other : Self),
         {{ min [] [] [ φ self; φ other ] 🔽 Self }}
     }.
 
   Definition Run_clamp (Self : Set) `{Link Self} : Set :=
     {clamp @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "clamp" clamp *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "clamp" clamp *
       forall (self min max : Self),
         {{ clamp [] [] [ φ self; φ min; φ max ] 🔽 Self }}
     }.

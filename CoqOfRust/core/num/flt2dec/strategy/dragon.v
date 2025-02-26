@@ -283,11 +283,9 @@ Module num.
                                                         "core::num::flt2dec::strategy::dragon::POW10"
                                                     |)
                                                   |),
-                                                  M.alloc (|
-                                                    BinOp.bit_and
-                                                      (M.read (| n |))
-                                                      (Value.Integer IntegerKind.Usize 7)
-                                                  |)
+                                                  BinOp.bit_and
+                                                    (M.read (| n |))
+                                                    (Value.Integer IntegerKind.Usize 7)
                                                 |)
                                               |)
                                             ]
@@ -353,11 +351,9 @@ Module num.
                                                   "core::num::flt2dec::strategy::dragon::POW10"
                                               |)
                                             |),
-                                            M.alloc (|
-                                              BinOp.bit_and
-                                                (M.read (| n |))
-                                                (Value.Integer IntegerKind.Usize 7)
-                                            |)
+                                            BinOp.bit_and
+                                              (M.read (| n |))
+                                              (Value.Integer IntegerKind.Usize 7)
                                           |)
                                         |),
                                         BinOp.bit_and
@@ -423,7 +419,7 @@ Module num.
                                                   "core::num::flt2dec::strategy::dragon::POW10"
                                               |)
                                             |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 8 |)
+                                            Value.Integer IntegerKind.Usize 8
                                           |)
                                         |),
                                         Value.Integer IntegerKind.I32 8
@@ -886,7 +882,7 @@ Module num.
                                                     "core::num::flt2dec::strategy::dragon::POW10"
                                                 |)
                                               |),
-                                              largest
+                                              M.read (| largest |)
                                             |)
                                           |)
                                         ]
@@ -949,7 +945,7 @@ Module num.
                                       M.get_constant "core::num::flt2dec::strategy::dragon::POW10"
                                     |)
                                   |),
-                                  n
+                                  M.read (| n |)
                                 |)
                               |),
                               Value.Integer IntegerKind.I32 1
@@ -2634,7 +2630,7 @@ Module num.
                                   M.write (|
                                     M.SubPointer.get_array_field (|
                                       M.deref (| M.read (| buf |) |),
-                                      i
+                                      M.read (| i |)
                                     |),
                                     M.call_closure (|
                                       Ty.apply
@@ -3083,7 +3079,7 @@ Module num.
                                       M.write (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| buf |) |),
-                                          i
+                                          M.read (| i |)
                                         |),
                                         M.call_closure (|
                                           Ty.apply
@@ -5386,7 +5382,7 @@ Module num.
                                                           M.write (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| buf |) |),
-                                                              i
+                                                              M.read (| i |)
                                                             |),
                                                             M.call_closure (|
                                                               Ty.apply
@@ -5574,11 +5570,9 @@ Module num.
                                                     M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| buf |) |),
-                                                        M.alloc (|
-                                                          BinOp.Wrap.sub (|
-                                                            M.read (| len |),
-                                                            Value.Integer IntegerKind.Usize 1
-                                                          |)
+                                                        BinOp.Wrap.sub (|
+                                                          M.read (| len |),
+                                                          Value.Integer IntegerKind.Usize 1
                                                         |)
                                                       |)
                                                     |)
@@ -5783,7 +5777,7 @@ Module num.
                                                   M.write (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| buf |) |),
-                                                      len
+                                                      M.read (| len |)
                                                     |),
                                                     M.call_closure (|
                                                       Ty.apply

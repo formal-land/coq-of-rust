@@ -45,7 +45,12 @@ Module instructions.
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "RuntimeFlag",
                                           [],
                                           [],
                                           "spec_id",
@@ -81,7 +86,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -139,7 +149,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -177,7 +192,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -220,7 +240,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -253,10 +278,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u64" ]
                                         |),
                                         [
@@ -264,7 +286,12 @@ Module instructions.
                                             Ty.path "u64",
                                             M.get_trait_method (|
                                               "revm_context_interface::cfg::Cfg",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::cfg::CfgGetter"
+                                                []
+                                                []
+                                                H
+                                                "Cfg",
                                               [],
                                               [],
                                               "chain_id",
@@ -276,7 +303,17 @@ Module instructions.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "revm_context_interface::cfg::CfgGetter"
+                                                          []
+                                                          []
+                                                          H
+                                                          "Cfg"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "revm_context_interface::cfg::CfgGetter",
                                                       H,
@@ -314,7 +351,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -400,7 +442,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -438,7 +485,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -481,7 +533,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -546,7 +603,12 @@ Module instructions.
                                                       "alloy_primitives::bits::address::Address",
                                                     M.get_trait_method (|
                                                       "revm_context_interface::block::Block",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_context_interface::block::BlockGetter"
+                                                        []
+                                                        []
+                                                        H
+                                                        "Block",
                                                       [],
                                                       [],
                                                       "beneficiary",
@@ -561,7 +623,14 @@ Module instructions.
                                                             Ty.apply
                                                               (Ty.path "&")
                                                               []
-                                                              [ Ty.associated ],
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "revm_context_interface::block::BlockGetter"
+                                                                  []
+                                                                  []
+                                                                  H
+                                                                  "Block"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "revm_context_interface::block::BlockGetter",
                                                               H,
@@ -603,7 +672,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -689,7 +763,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -727,7 +806,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -770,7 +854,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -803,10 +892,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u64" ]
                                         |),
                                         [
@@ -814,7 +900,12 @@ Module instructions.
                                             Ty.path "u64",
                                             M.get_trait_method (|
                                               "revm_context_interface::block::Block",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::block::BlockGetter"
+                                                []
+                                                []
+                                                H
+                                                "Block",
                                               [],
                                               [],
                                               "timestamp",
@@ -826,7 +917,17 @@ Module instructions.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "revm_context_interface::block::BlockGetter"
+                                                          []
+                                                          []
+                                                          H
+                                                          "Block"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "revm_context_interface::block::BlockGetter",
                                                       H,
@@ -864,7 +965,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -950,7 +1056,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -988,7 +1099,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1031,7 +1147,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -1064,10 +1185,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u64" ]
                                         |),
                                         [
@@ -1075,7 +1193,12 @@ Module instructions.
                                             Ty.path "u64",
                                             M.get_trait_method (|
                                               "revm_context_interface::block::Block",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::block::BlockGetter"
+                                                []
+                                                []
+                                                H
+                                                "Block",
                                               [],
                                               [],
                                               "number",
@@ -1087,7 +1210,17 @@ Module instructions.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "revm_context_interface::block::BlockGetter"
+                                                          []
+                                                          []
+                                                          H
+                                                          "Block"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "revm_context_interface::block::BlockGetter",
                                                       H,
@@ -1125,7 +1258,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1219,7 +1357,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -1257,7 +1400,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1307,7 +1455,12 @@ Module instructions.
                                     Ty.path "revm_specification::hardfork::SpecId",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "RuntimeFlag",
                                       [],
                                       [],
                                       "spec_id",
@@ -1345,7 +1498,12 @@ Module instructions.
                                             Ty.path "bool",
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::StackTrait",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Stack",
                                               [],
                                               [],
                                               "push",
@@ -1418,7 +1576,12 @@ Module instructions.
                                                           ],
                                                         M.get_trait_method (|
                                                           "revm_context_interface::block::Block",
-                                                          Ty.associated,
+                                                          Ty.associated_in_trait
+                                                            "revm_context_interface::block::BlockGetter"
+                                                            []
+                                                            []
+                                                            H
+                                                            "Block",
                                                           [],
                                                           [],
                                                           "prevrandao",
@@ -1433,7 +1596,14 @@ Module instructions.
                                                                 Ty.apply
                                                                   (Ty.path "&")
                                                                   []
-                                                                  [ Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "revm_context_interface::block::BlockGetter"
+                                                                      []
+                                                                      []
+                                                                      H
+                                                                      "Block"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "revm_context_interface::block::BlockGetter",
                                                                   H,
@@ -1476,7 +1646,12 @@ Module instructions.
                                               Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
                                                 [],
                                                 [],
                                                 "set_instruction_result",
@@ -1522,7 +1697,12 @@ Module instructions.
                                             Ty.path "bool",
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::StackTrait",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Stack",
                                               [],
                                               [],
                                               "push",
@@ -1548,7 +1728,12 @@ Module instructions.
                                                   [],
                                                 M.get_trait_method (|
                                                   "revm_context_interface::block::Block",
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "revm_context_interface::block::BlockGetter"
+                                                    []
+                                                    []
+                                                    H
+                                                    "Block",
                                                   [],
                                                   [],
                                                   "difficulty",
@@ -1560,7 +1745,17 @@ Module instructions.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
-                                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "revm_context_interface::block::BlockGetter"
+                                                              []
+                                                              []
+                                                              H
+                                                              "Block"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "revm_context_interface::block::BlockGetter",
                                                           H,
@@ -1599,7 +1794,12 @@ Module instructions.
                                               Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
                                                 [],
                                                 [],
                                                 "set_instruction_result",
@@ -1687,7 +1887,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -1725,7 +1930,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1768,7 +1978,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -1801,10 +2016,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u64" ]
                                         |),
                                         [
@@ -1812,7 +2024,12 @@ Module instructions.
                                             Ty.path "u64",
                                             M.get_trait_method (|
                                               "revm_context_interface::block::Block",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::block::BlockGetter"
+                                                []
+                                                []
+                                                H
+                                                "Block",
                                               [],
                                               [],
                                               "gas_limit",
@@ -1824,7 +2041,17 @@ Module instructions.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "revm_context_interface::block::BlockGetter"
+                                                          []
+                                                          []
+                                                          H
+                                                          "Block"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "revm_context_interface::block::BlockGetter",
                                                       H,
@@ -1862,7 +2089,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1943,7 +2175,12 @@ Module instructions.
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "RuntimeFlag",
                                           [],
                                           [],
                                           "spec_id",
@@ -1979,7 +2216,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2037,7 +2279,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -2075,7 +2322,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2118,7 +2370,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -2151,10 +2408,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u64" ]
                                         |),
                                         [
@@ -2162,7 +2416,12 @@ Module instructions.
                                             Ty.path "u64",
                                             M.get_trait_method (|
                                               "revm_context_interface::block::Block",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::block::BlockGetter"
+                                                []
+                                                []
+                                                H
+                                                "Block",
                                               [],
                                               [],
                                               "basefee",
@@ -2174,7 +2433,17 @@ Module instructions.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "revm_context_interface::block::BlockGetter"
+                                                          []
+                                                          []
+                                                          H
+                                                          "Block"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "revm_context_interface::block::BlockGetter",
                                                       H,
@@ -2212,7 +2481,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2296,7 +2570,12 @@ Module instructions.
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "RuntimeFlag",
                                           [],
                                           [],
                                           "spec_id",
@@ -2332,7 +2611,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2390,7 +2674,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -2428,7 +2717,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2471,7 +2765,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -2504,10 +2803,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u128" ]
                                         |),
                                         [
@@ -2530,7 +2826,12 @@ Module instructions.
                                                   [ Ty.path "u128" ],
                                                 M.get_trait_method (|
                                                   "revm_context_interface::block::Block",
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "revm_context_interface::block::BlockGetter"
+                                                    []
+                                                    []
+                                                    H
+                                                    "Block",
                                                   [],
                                                   [],
                                                   "blob_gasprice",
@@ -2542,7 +2843,17 @@ Module instructions.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
-                                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "revm_context_interface::block::BlockGetter"
+                                                              []
+                                                              []
+                                                              H
+                                                              "Block"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "revm_context_interface::block::BlockGetter",
                                                           H,
@@ -2582,7 +2893,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",

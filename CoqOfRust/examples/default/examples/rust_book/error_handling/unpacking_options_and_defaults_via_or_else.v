@@ -11,31 +11,37 @@ Enum Fruit
       {
         name := "Apple";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Orange";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Banana";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Kiwi";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Lemon";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Fruit_Apple :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Apple" 0.
+Axiom IsDiscriminant_Fruit_Orange :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Orange" 1.
+Axiom IsDiscriminant_Fruit_Banana :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Banana" 2.
+Axiom IsDiscriminant_Fruit_Kiwi :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi" 3.
+Axiom IsDiscriminant_Fruit_Lemon :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Lemon" 4.
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Definition Self : Ty.t := Ty.path "unpacking_options_and_defaults_via_or_else::Fruit".
@@ -137,8 +143,9 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
 
@@ -216,7 +223,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -291,7 +298,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -401,7 +408,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

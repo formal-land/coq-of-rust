@@ -86,8 +86,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Axiom Implements :
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("Item", InstanceField.Ty _Item); ("next", InstanceField.Method next) ].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
@@ -174,7 +175,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -210,7 +211,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -303,7 +304,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -396,7 +397,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -489,7 +490,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -582,7 +583,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -685,7 +686,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 2;
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ],
                                                 []
                                               |),
                                               [
@@ -763,7 +767,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -897,7 +901,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 2;
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ],
                                                 []
                                               |),
                                               [
@@ -975,7 +982,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -1150,7 +1157,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 2;
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ],
                                                 []
                                               |),
                                               [
@@ -1239,7 +1249,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -1393,7 +1403,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 1
+                                              ],
                                               []
                                             |),
                                             [

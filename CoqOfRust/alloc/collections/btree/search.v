@@ -14,26 +14,31 @@ Module collections.
             {
               name := "Included";
               item := StructTuple [ T ];
-              discriminant := None;
             };
             {
               name := "Excluded";
               item := StructTuple [ T ];
-              discriminant := None;
             };
             {
               name := "AllIncluded";
               item := StructTuple [];
-              discriminant := None;
             };
             {
               name := "AllExcluded";
               item := StructTuple [];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_SearchBound_Included :
+        M.IsDiscriminant "alloc::collections::btree::search::SearchBound::Included" 0.
+      Axiom IsDiscriminant_SearchBound_Excluded :
+        M.IsDiscriminant "alloc::collections::btree::search::SearchBound::Excluded" 1.
+      Axiom IsDiscriminant_SearchBound_AllIncluded :
+        M.IsDiscriminant "alloc::collections::btree::search::SearchBound::AllIncluded" 2.
+      Axiom IsDiscriminant_SearchBound_AllExcluded :
+        M.IsDiscriminant "alloc::collections::btree::search::SearchBound::AllExcluded" 3.
       
       Module Impl_alloc_collections_btree_search_SearchBound_T.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -134,7 +139,6 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::KV"
                       ]
                   ];
-              discriminant := None;
             };
             {
               name := "GoDown";
@@ -152,11 +156,15 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::Edge"
                       ]
                   ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_SearchResult_Found :
+        M.IsDiscriminant "alloc::collections::btree::search::SearchResult::Found" 0.
+      Axiom IsDiscriminant_SearchResult_GoDown :
+        M.IsDiscriminant "alloc::collections::btree::search::SearchResult::GoDown" 1.
       
       (*
       Enum IndexResult
@@ -168,16 +176,19 @@ Module collections.
             {
               name := "KV";
               item := StructTuple [ Ty.path "usize" ];
-              discriminant := None;
             };
             {
               name := "Edge";
               item := StructTuple [ Ty.path "usize" ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_IndexResult_KV :
+        M.IsDiscriminant "alloc::collections::btree::search::IndexResult::KV" 0.
+      Axiom IsDiscriminant_IndexResult_Edge :
+        M.IsDiscriminant "alloc::collections::btree::search::IndexResult::Edge" 1.
       
       Module Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
         Definition Self (BorrowType K V : Ty.t) : Ty.t :=
@@ -680,7 +691,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_const",
-                                                          [],
+                                                          [ Value.Integer IntegerKind.Usize 1 ],
                                                           []
                                                         |),
                                                         [
@@ -724,7 +735,7 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_const",
-                                                          [],
+                                                          [ Value.Integer IntegerKind.Usize 1 ],
                                                           []
                                                         |),
                                                         [
@@ -879,7 +890,11 @@ Module collections.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_const",
-                                                                              [],
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  1
+                                                                              ],
                                                                               []
                                                                             |),
                                                                             [
@@ -925,7 +940,11 @@ Module collections.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_const",
-                                                                              [],
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  1
+                                                                              ],
                                                                               []
                                                                             |),
                                                                             [

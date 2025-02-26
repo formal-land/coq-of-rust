@@ -19,6 +19,10 @@ Module Impl_u64.
     {{ num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
     run_symbolic.
+    run_symbolic_closure. {
+      apply intrinsics.run_saturating_add.
+    }
+    intros []; run_symbolic.
   Defined.
   Smpl Add apply run_saturating_add : run_closure.
 

@@ -203,7 +203,9 @@ struct Stack {
     value: Vec<Value>,
 } *)
 Module Stack.
-  Record t := { value : list Value.t }.
+  Record t : Set := {
+    value : list Value.t;
+  }.
   (* 
   impl Stack {
       fn last_n(&self, n: usize) -> PartialVMResult<impl ExactSizeIterator<Item = &Value>> {

@@ -96,8 +96,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileOutput.
   
@@ -169,8 +170,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_precompile_interface_PrecompileOutput.
   
@@ -180,8 +182,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_precompile_interface_PrecompileOutput.
   
@@ -250,8 +253,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileOutput.
   
@@ -287,8 +291,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_precompile_interface_PrecompileOutput.
@@ -372,8 +377,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_precompile_interface_PrecompileOutput.
   
@@ -423,16 +429,19 @@ Module interface.
         {
           name := "Error";
           item := StructTuple [ Ty.path "revm_precompile::interface::PrecompileError" ];
-          discriminant := None;
         };
         {
           name := "Fatal";
           item := StructRecord [ ("msg", Ty.path "alloc::string::String") ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_PrecompileErrors_Error :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileErrors::Error" 0.
+  Axiom IsDiscriminant_PrecompileErrors_Fatal :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileErrors::Fatal" 1.
   
   Module Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileErrors.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileErrors".
@@ -516,8 +525,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileErrors.
   
@@ -618,8 +628,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_precompile_interface_PrecompileErrors.
   
@@ -629,8 +640,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_precompile_interface_PrecompileErrors.
   
@@ -784,8 +796,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileErrors.
   
@@ -821,8 +834,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_precompile_interface_PrecompileErrors.
@@ -940,8 +954,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_precompile_interface_PrecompileErrors.
   
@@ -984,9 +999,9 @@ Module interface.
       forall (DB TXERROR : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
         (Self DB TXERROR)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_precompile::interface::PrecompileErrors" ]
         (* Instance *) [ ("from", InstanceField.Method (from DB TXERROR)) ].
   End Impl_core_convert_From_revm_precompile_interface_PrecompileErrors_for_revm_context_interface_result_EVMError_DB_TXERROR.
   
@@ -996,8 +1011,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_precompile_interface_PrecompileErrors.
   
@@ -1107,8 +1123,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_precompile_interface_PrecompileErrors.
   
@@ -1122,71 +1139,85 @@ Module interface.
         {
           name := "OutOfGas";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Blake2WrongLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Blake2WrongFinalIndicatorFlag";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModexpExpOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModexpBaseOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModexpModOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Bn128FieldPointNotAMember";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Bn128AffineGFailedToCreate";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Bn128PairLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobInvalidInputLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobMismatchedVersion";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobVerifyKzgProofFailed";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Other";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_PrecompileError_OutOfGas :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::OutOfGas" 0.
+  Axiom IsDiscriminant_PrecompileError_Blake2WrongLength :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Blake2WrongLength" 1.
+  Axiom IsDiscriminant_PrecompileError_Blake2WrongFinalIndicatorFlag :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag" 2.
+  Axiom IsDiscriminant_PrecompileError_ModexpExpOverflow :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::ModexpExpOverflow" 3.
+  Axiom IsDiscriminant_PrecompileError_ModexpBaseOverflow :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::ModexpBaseOverflow" 4.
+  Axiom IsDiscriminant_PrecompileError_ModexpModOverflow :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::ModexpModOverflow" 5.
+  Axiom IsDiscriminant_PrecompileError_Bn128FieldPointNotAMember :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember" 6.
+  Axiom IsDiscriminant_PrecompileError_Bn128AffineGFailedToCreate :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate" 7.
+  Axiom IsDiscriminant_PrecompileError_Bn128PairLength :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Bn128PairLength" 8.
+  Axiom IsDiscriminant_PrecompileError_BlobInvalidInputLength :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::BlobInvalidInputLength" 9.
+  Axiom IsDiscriminant_PrecompileError_BlobMismatchedVersion :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::BlobMismatchedVersion" 10.
+  Axiom IsDiscriminant_PrecompileError_BlobVerifyKzgProofFailed :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed" 11.
+  Axiom IsDiscriminant_PrecompileError_Other :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Other" 12.
   
   Module Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileError.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileError".
@@ -1393,8 +1424,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileError.
   
@@ -1804,8 +1836,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_precompile_interface_PrecompileError.
   
@@ -1815,8 +1848,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_precompile_interface_PrecompileError.
   
@@ -1914,8 +1948,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileError.
   
@@ -1944,8 +1979,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_precompile_interface_PrecompileError.
@@ -2036,8 +2072,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_precompile_interface_PrecompileError.
   
@@ -2133,9 +2170,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_precompile::interface::PrecompileError" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_precompile::interface::PrecompileError" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_precompile_interface_PrecompileError_for_revm_precompile_interface_PrecompileErrors.
   
@@ -2145,8 +2182,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_precompile_interface_PrecompileError.
   
@@ -2411,8 +2449,9 @@ Module interface.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_precompile_interface_PrecompileError.
 End interface.

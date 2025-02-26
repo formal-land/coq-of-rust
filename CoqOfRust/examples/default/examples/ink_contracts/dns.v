@@ -61,8 +61,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (Self K V)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self K V)
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_dns_Mapping_K_V.
 
@@ -193,8 +194,9 @@ Module Impl_core_default_Default_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_AccountId.
 
@@ -219,8 +221,9 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_dns_AccountId.
 
@@ -228,7 +231,12 @@ Module Impl_core_marker_Copy_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_dns_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
@@ -237,8 +245,9 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 
@@ -274,8 +283,9 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
@@ -292,9 +302,10 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      Self
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
 
@@ -365,21 +376,22 @@ Enum Event
       {
         name := "Register";
         item := StructTuple [ Ty.path "dns::Register" ];
-        discriminant := None;
       };
       {
         name := "SetAddress";
         item := StructTuple [ Ty.path "dns::SetAddress" ];
-        discriminant := None;
       };
       {
         name := "Transfer";
         item := StructTuple [ Ty.path "dns::Transfer" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Register : M.IsDiscriminant "dns::Event::Register" 0.
+Axiom IsDiscriminant_Event_SetAddress : M.IsDiscriminant "dns::Event::SetAddress" 1.
+Axiom IsDiscriminant_Event_Transfer : M.IsDiscriminant "dns::Event::Transfer" 2.
 
 Module Impl_dns_Env.
   Definition Self : Ty.t := Ty.path "dns::Env".
@@ -694,8 +706,9 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_dns_DomainNameService.
 
@@ -709,16 +722,17 @@ Enum Error
       {
         name := "NameAlreadyExists";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CallerIsNotOwner";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_NameAlreadyExists : M.IsDiscriminant "dns::Error::NameAlreadyExists" 0.
+Axiom IsDiscriminant_Error_CallerIsNotOwner : M.IsDiscriminant "dns::Error::CallerIsNotOwner" 1.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
@@ -726,8 +740,9 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 
@@ -774,8 +789,9 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
 
@@ -799,8 +815,9 @@ Module Impl_core_cmp_Eq_for_dns_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_dns_Error.

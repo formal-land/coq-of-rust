@@ -75,8 +75,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_account_address_AccountAddress.
   
@@ -137,8 +138,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_account_address_AccountAddress.
   
@@ -167,8 +169,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_account_address_AccountAddress.
@@ -179,8 +182,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_account_address_AccountAddress.
   
@@ -231,8 +235,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_account_address_AccountAddress.
   
@@ -280,8 +285,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_account_address_AccountAddress.
   
@@ -306,8 +312,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_account_address_AccountAddress.
   
@@ -317,8 +324,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_account_address_AccountAddress.
   
@@ -433,11 +441,9 @@ Module account_address.
                 M.write (|
                   M.SubPointer.get_array_field (|
                     addr,
-                    M.alloc (|
-                      BinOp.Wrap.sub (|
-                        M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
-                        Value.Integer IntegerKind.Usize 1
-                      |)
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
+                      Value.Integer IntegerKind.Usize 1
                     |)
                   |),
                   Value.Integer IntegerKind.U8 1
@@ -481,11 +487,9 @@ Module account_address.
                 M.write (|
                   M.SubPointer.get_array_field (|
                     addr,
-                    M.alloc (|
-                      BinOp.Wrap.sub (|
-                        M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
-                        Value.Integer IntegerKind.Usize 1
-                      |)
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
+                      Value.Integer IntegerKind.Usize 1
                     |)
                   |),
                   Value.Integer IntegerKind.U8 2
@@ -573,7 +577,7 @@ Module account_address.
             Ty.path "alloc::string::String",
             M.get_trait_method (|
               "alloc::string::ToString",
-              Ty.associated,
+              Ty.associated_unknown,
               [],
               [],
               "to_string",
@@ -585,7 +589,7 @@ Module account_address.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (|
                       Ty.path "move_core_types::account_address::AccountAddress",
                       "to_canonical_display",
@@ -1278,7 +1282,8 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -1519,7 +1524,8 @@ Module account_address.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -1811,8 +1817,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_slice_u8_for_move_core_types_account_address_AccountAddress.
   
@@ -1858,8 +1865,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
   End Impl_core_ops_deref_Deref_for_move_core_types_account_address_AccountAddress.
@@ -1888,7 +1896,12 @@ Module account_address.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1942,8 +1955,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_account_address_AccountAddress.
   
@@ -1971,7 +1985,12 @@ Module account_address.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -2025,8 +2044,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_account_address_AccountAddress.
   
@@ -2128,7 +2148,7 @@ Module account_address.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -2551,8 +2571,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::LowerHex"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_LowerHex_for_move_core_types_account_address_AccountAddress.
   
@@ -2654,7 +2675,7 @@ Module account_address.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -3077,8 +3098,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::UpperHex"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_UpperHex_for_move_core_types_account_address_AccountAddress.
   
@@ -3111,15 +3133,15 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
         [
-          (* T *)
           Ty.apply
             (Ty.path "array")
             [ M.unevaluated_const (M.get_constant "move_core_types::account_address_discriminant") ]
             [ Ty.path "u8" ]
         ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_array_expr_u8_for_move_core_types_account_address_AccountAddress.
   
@@ -3162,9 +3184,10 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+        Self
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_ref__slice_u8_for_move_core_types_account_address_AccountAddress.
@@ -3213,12 +3236,10 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-        ]
+        [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] ]
+        Self
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_alloc_vec_Vec_u8_alloc_alloc_Global_for_move_core_types_account_address_AccountAddress.
@@ -3265,9 +3286,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::account_address::AccountAddress" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::account_address::AccountAddress" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_account_address_AccountAddress_for_alloc_vec_Vec_u8_alloc_alloc_Global.
   
@@ -3313,12 +3334,10 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::account_address::AccountAddress" ]
-        ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::account_address::AccountAddress" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_account_address_AccountAddress_for_alloc_vec_Vec_u8_alloc_alloc_Global.
   
@@ -3352,9 +3371,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::account_address::AccountAddress" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::account_address::AccountAddress" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_account_address_AccountAddress_for_array_expr_u8.
   
@@ -3388,12 +3407,10 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::account_address::AccountAddress" ]
-        ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::account_address::AccountAddress" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_account_address_AccountAddress_for_array_expr_u8.
   
@@ -3439,12 +3456,10 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::account_address::AccountAddress" ]
-        ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::account_address::AccountAddress" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_account_address_AccountAddress_for_alloc_string_String.
   
@@ -3487,8 +3502,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_alloc_string_String_for_move_core_types_account_address_AccountAddress.
@@ -3574,8 +3590,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_move_core_types_account_address_AccountAddress.
@@ -3648,7 +3665,15 @@ Module account_address.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
+                                        ];
                                       Ty.path "alloc::string::String"
                                     ],
                                   M.get_trait_method (|
@@ -3656,7 +3681,15 @@ Module account_address.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.path "alloc::string::String"; Ty.associated ],
+                                      [
+                                        Ty.path "alloc::string::String";
+                                        Ty.associated_in_trait
+                                          "serde::de::Deserializer"
+                                          []
+                                          []
+                                          D
+                                          "Error"
+                                      ],
                                     [],
                                     [],
                                     "branch",
@@ -3668,7 +3701,15 @@ Module account_address.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.path "alloc::string::String"; Ty.associated ],
+                                        [
+                                          Ty.path "alloc::string::String";
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
+                                        ],
                                       M.get_trait_method (|
                                         "serde::de::Deserialize",
                                         Ty.path "alloc::string::String",
@@ -3704,7 +3745,12 @@ Module account_address.
                                                 [
                                                   Ty.path
                                                     "move_core_types::account_address::AccountAddress";
-                                                  Ty.associated
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
@@ -3714,7 +3760,12 @@ Module account_address.
                                                   [
                                                     Ty.path
                                                       "move_core_types::account_address::AccountAddress";
-                                                    Ty.associated
+                                                    Ty.associated_in_trait
+                                                      "serde::de::Deserializer"
+                                                      []
+                                                      []
+                                                      D
+                                                      "Error"
                                                   ],
                                                 [],
                                                 [
@@ -3723,7 +3774,12 @@ Module account_address.
                                                     []
                                                     [
                                                       Ty.path "core::convert::Infallible";
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "serde::de::Deserializer"
+                                                        []
+                                                        []
+                                                        D
+                                                        "Error"
                                                     ]
                                                 ],
                                                 "from_residual",
@@ -3756,7 +3812,7 @@ Module account_address.
                               []
                               [
                                 Ty.path "move_core_types::account_address::AccountAddress";
-                                Ty.associated
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
@@ -3770,13 +3826,13 @@ Module account_address.
                               "map_err",
                               [],
                               [
-                                Ty.associated;
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error";
                                 Ty.function
                                   [
                                     Ty.path
                                       "move_core_types::account_address::AccountAddressParseError"
                                   ]
-                                  Ty.associated
+                                  (Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error")
                               ]
                             |),
                             [
@@ -3826,7 +3882,7 @@ Module account_address.
                               |);
                               M.get_trait_method (|
                                 "serde::de::Error",
-                                Ty.associated,
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error",
                                 [],
                                 [],
                                 "custom",
@@ -3854,7 +3910,15 @@ Module account_address.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
+                                        ];
                                       Ty.path "move_core_types::account_address::deserialize::Value"
                                     ],
                                   M.get_trait_method (|
@@ -3865,7 +3929,12 @@ Module account_address.
                                       [
                                         Ty.path
                                           "move_core_types::account_address::deserialize::Value";
-                                        Ty.associated
+                                        Ty.associated_in_trait
+                                          "serde::de::Deserializer"
+                                          []
+                                          []
+                                          D
+                                          "Error"
                                       ],
                                     [],
                                     [],
@@ -3881,7 +3950,12 @@ Module account_address.
                                         [
                                           Ty.path
                                             "move_core_types::account_address::deserialize::Value";
-                                          Ty.associated
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
                                         ],
                                       M.get_trait_method (|
                                         "serde::de::Deserialize",
@@ -3919,7 +3993,12 @@ Module account_address.
                                                 [
                                                   Ty.path
                                                     "move_core_types::account_address::AccountAddress";
-                                                  Ty.associated
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
@@ -3929,7 +4008,12 @@ Module account_address.
                                                   [
                                                     Ty.path
                                                       "move_core_types::account_address::AccountAddress";
-                                                    Ty.associated
+                                                    Ty.associated_in_trait
+                                                      "serde::de::Deserializer"
+                                                      []
+                                                      []
+                                                      D
+                                                      "Error"
                                                   ],
                                                 [],
                                                 [
@@ -3938,7 +4022,12 @@ Module account_address.
                                                     []
                                                     [
                                                       Ty.path "core::convert::Infallible";
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "serde::de::Deserializer"
+                                                        []
+                                                        []
+                                                        D
+                                                        "Error"
                                                     ]
                                                 ],
                                                 "from_residual",
@@ -3998,8 +4087,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::Deserialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
   End Impl_serde_de_Deserialize_for_move_core_types_account_address_AccountAddress.
   
@@ -4054,7 +4144,10 @@ Module account_address.
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.associated; Ty.associated ],
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                          ],
                         M.get_trait_method (|
                           "serde::ser::Serialize",
                           Ty.path "alloc::string::String",
@@ -4091,7 +4184,10 @@ Module account_address.
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.associated; Ty.associated ],
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                          ],
                         M.get_trait_method (|
                           "serde::ser::Serializer",
                           S,
@@ -4134,8 +4230,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "serde::ser::Serialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
   End Impl_serde_ser_Serialize_for_move_core_types_account_address_AccountAddress.
   
@@ -4163,8 +4260,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_account_address_AccountAddressParseError.
   
@@ -4174,8 +4272,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_account_address_AccountAddressParseError.
   
@@ -4209,8 +4308,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_account_address_AccountAddressParseError.
   
@@ -4242,7 +4342,12 @@ Module account_address.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -4305,8 +4410,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_account_address_AccountAddressParseError.
   
@@ -4316,8 +4422,9 @@ Module account_address.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_move_core_types_account_address_AccountAddressParseError.
 End account_address.

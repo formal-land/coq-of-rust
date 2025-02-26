@@ -12,21 +12,25 @@ Module checked.
         {
           name := "DivisionByZero";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonPositiveLogarithm";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NegativeSquareRoot";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_MathError_DivisionByZero :
+    M.IsDiscriminant "result::checked::MathError::DivisionByZero" 0.
+  Axiom IsDiscriminant_MathError_NonPositiveLogarithm :
+    M.IsDiscriminant "result::checked::MathError::NonPositiveLogarithm" 1.
+  Axiom IsDiscriminant_MathError_NegativeSquareRoot :
+    M.IsDiscriminant "result::checked::MathError::NegativeSquareRoot" 2.
   
   Module Impl_core_fmt_Debug_for_result_checked_MathError.
     Definition Self : Ty.t := Ty.path "result::checked::MathError".
@@ -100,8 +104,9 @@ Module checked.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_checked_MathError.
   
@@ -320,7 +325,8 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -404,7 +410,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
-                                    [],
+                                    [
+                                      Value.Integer IntegerKind.Usize 1;
+                                      Value.Integer IntegerKind.Usize 1
+                                    ],
                                     []
                                   |),
                                   [
@@ -494,7 +503,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
-                                            [],
+                                            [
+                                              Value.Integer IntegerKind.Usize 1;
+                                              Value.Integer IntegerKind.Usize 1
+                                            ],
                                             []
                                           |),
                                           [
@@ -591,7 +603,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

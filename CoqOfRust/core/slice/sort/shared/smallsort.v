@@ -115,8 +115,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *)
               [
                 ("small_sort_threshold", InstanceField.Method (small_sort_threshold T));
@@ -197,8 +198,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *)
               [
                 ("small_sort_threshold", InstanceField.Method (small_sort_threshold T));
@@ -279,8 +281,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::UnstableSmallSortTypeImpl"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *)
               [
                 ("small_sort_threshold", InstanceField.Method (small_sort_threshold T));
@@ -371,8 +374,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::UnstableSmallSortTypeImpl"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *)
               [
                 ("small_sort_threshold", InstanceField.Method (small_sort_threshold T));
@@ -549,8 +553,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::UnstableSmallSortFreezeTypeImpl"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *)
               [
                 ("small_sort_threshold", InstanceField.Method (small_sort_threshold T));
@@ -568,8 +573,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::CopyMarker"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *) [].
         End Impl_core_slice_sort_shared_smallsort_CopyMarker_where_core_marker_Copy_T_for_T.
         
@@ -868,8 +874,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::shared::smallsort::UnstableSmallSortFreezeTypeImpl"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *)
               [
                 ("small_sort_threshold", InstanceField.Method (small_sort_threshold T));
@@ -2160,8 +2167,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::ops::drop::Drop"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
         End Impl_core_ops_drop_Drop_for_core_slice_sort_shared_smallsort_CopyOnDrop_T.
         
@@ -6604,7 +6612,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

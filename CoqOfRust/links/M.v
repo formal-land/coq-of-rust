@@ -4,6 +4,17 @@ Import List.ListNotations.
 
 Local Open Scope list.
 
+Axiom IsTraitAssociatedType_eq :
+  forall
+    (trait_name : string)
+    (trait_consts : list Value.t)
+    (trait_tys : list Ty.t)
+    (self_ty : Ty.t)
+    (associated_type_name : string)
+    (ty : Ty.t),
+  IsTraitAssociatedType trait_name trait_consts trait_tys self_ty associated_type_name ty ->
+  Ty.associated_in_trait trait_name trait_consts trait_tys self_ty associated_type_name = ty.
+
 Class Link (A : Set) : Set := {
   Φ : Ty.t;
   φ : A -> Value.t;
@@ -42,6 +53,8 @@ End OfTy.
 
 Smpl Create of_value.
 Smpl Add reflexivity : of_value.
+(* Because some types contain constant parameters *)
+Smpl Add smpl of_value : of_ty.
 
 Module OfValue.
   Inductive t (value' : Value.t) : Type :=
@@ -76,7 +89,29 @@ Module OfValue.
   Proof.
     reflexivity.
   Qed.
+
+  Ltac rewrite_get_value_of_value_eq :=
+    match goal with
+    | |- context [ get_value (of_value _) ] =>
+      rewrite get_value_of_value_eq
+    end.
+
+  Lemma value_of_value_eq (value : Value.t)
+    (of_value : OfValue.t value) :
+    value = φ (get_value of_value).
+  Proof.
+    destruct of_value.
+    subst.
+    reflexivity.
+  Qed.
 End OfValue.
+
+(** Implementation of the primitive Rust operator for equality check *)
+Module PrimitiveEq.
+  Class Trait (A : Set) : Set := {
+    eqb : A -> A -> bool;
+  }.
+End PrimitiveEq.
 
 Module Bool.
   Global Instance IsLink : Link bool := {
@@ -99,6 +134,10 @@ Module Bool.
     eapply OfValue.Make with (A := bool); smpl of_value.
   Defined.
   Smpl Add apply of_value : of_value.
+
+  Global Instance IsPrimitiveEq : PrimitiveEq.Trait bool := {
+    PrimitiveEq.eqb := Bool.eqb;
+  }.
 End Bool.
 
 Module Integer.
@@ -187,6 +226,10 @@ Module Integer.
     OfValue.t (Value.Integer kind value).
   Proof. eapply OfValue.Make with (A := t kind); smpl of_value. Defined.
   Smpl Add apply of_value : of_value.
+
+  Global Instance IsPrimitiveEq {kind : IntegerKind.t} : PrimitiveEq.Trait (t kind) := {
+    PrimitiveEq.eqb x y := x.(value) =? y.(value);
+  }.
 End Integer.
 
 (** ** Integer kinds for better readability *)
@@ -354,17 +397,35 @@ Module Ref.
     reflexivity.
   Qed.
 
+  Ltac rewrite_deref_eq :=
+    match goal with
+    | |- context [ M.deref (φ _) ] =>
+      rewrite deref_eq
+    end.
+
   Lemma borrow_eq {A : Set} `{Link A} (kind : Pointer.Kind.t) (ref : t Pointer.Kind.Raw A) :
     M.borrow kind (φ ref) = M.pure (φ (cast_to kind ref)).
   Proof.
     reflexivity.
   Qed.
 
+  Ltac rewrite_borrow_eq :=
+    match goal with
+    | |- context [ M.borrow _ (φ _) ] =>
+      rewrite borrow_eq
+    end.
+
   Lemma cast_cast_eq {A : Set} `{Link A} (kind1 kind2 kind3 : Pointer.Kind.t) (ref : t kind1 A) :
     cast_to kind3 (cast_to kind2 ref) = cast_to kind3 ref.
   Proof.
     reflexivity.
   Qed.
+
+  Ltac rewrite_cast_cast_eq :=
+    match goal with
+    | |- context [ cast_to _ (cast_to _ _) ] =>
+      rewrite cast_cast_eq
+    end.
 
   Definition of_ty_ref ty' :
     OfTy.t ty' ->
@@ -411,7 +472,7 @@ Module Ref.
   Smpl Add apply of_ty_mut_pointer : of_ty.
 
   (** We can make the conversion of values for immediate pointers that are used in Rust `const`. *)
-  Lemma of_value_with {A : Set} `{Link A} (value : A) value' :
+  Lemma of_value_with_immediate {A : Set} `{Link A} (value : A) value' :
     value' = φ value ->
     Value.Pointer {|
       Pointer.kind := Pointer.Kind.Raw;
@@ -420,9 +481,9 @@ Module Ref.
   Proof.
     now intros; subst.
   Qed.
-  Smpl Add apply of_value_with : of_value.
+  Smpl Add apply of_value_with_immediate : of_value.
 
-  Definition of_value (value' : Value.t) :
+  Definition of_value_immediate (value' : Value.t) :
     OfValue.t value' ->
     OfValue.t (Value.Pointer {|
       Pointer.kind := Pointer.Kind.Raw;
@@ -433,7 +494,24 @@ Module Ref.
     eapply OfValue.Make with (A := t Pointer.Kind.Raw A).
     smpl of_value; eassumption.
   Defined.
-  Smpl Add apply of_value : of_value.
+  Smpl Add apply of_value_immediate : of_value.
+
+  Lemma of_value_with_of_core {A : Set} `{Link A} (kind : Pointer.Kind.t) (ref : Ref.t kind A) :
+    Value.Pointer {| Pointer.kind := kind; Pointer.core := Ref.to_core ref |} =
+    φ ref.
+  Proof.
+    reflexivity.
+  Qed.
+  Smpl Add apply of_value_with_of_core : of_value.
+
+  Definition of_value_of_core {kind1 kind2 : Pointer.Kind.t} {A : Set} `{Link A}
+      (ref : Ref.t kind1 A) :
+    OfValue.t (Value.Pointer {| Pointer.kind := kind2; Pointer.core := Ref.to_core ref |}).
+  Proof.
+    eapply OfValue.Make with (A := t kind2 A) (value := cast_to kind2 ref).
+    reflexivity.
+  Defined.
+  Smpl Add apply of_value_of_core : of_value.
 End Ref.
 
 Module SubPointer.
@@ -676,14 +754,14 @@ Module Run.
     let ref := Ref.immediate Pointer.Kind.Raw value in
     {{ k (φ value) 🔽 R, Output }} ->
     {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k 🔽 R, Output }}
-  | CallPrimitiveStateWrite {A : Set} `{Link A}
-      (ref_core : Ref.Core.t A)
-      (value : A) (value' : Value.t)
+  | CallPrimitiveStateWrite
+      (value' : Value.t) (of_value : OfValue.t value')
+      (ref' : Value.t)
+      (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value))
       (k : Value.t -> M) :
-    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
-    value' = φ value ->
+    ref' = φ ref ->
     {{ k (φ tt) 🔽 R, Output }} ->
-    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k 🔽 R, Output }}
+    {{ LowM.CallPrimitive (Primitive.StateWrite ref' value') k 🔽 R, Output }}
   | CallPrimitiveGetSubPointer {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (index : Pointer.Index.t)
@@ -699,8 +777,20 @@ Module Run.
       LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) index) k 🔽
       R, Output
     }}
-  | CallPrimitiveAreEqual {A : Set} `{Link A}
-      (x y : A) (x' y' : Value.t)
+  | CallPrimitiveAreEqualBool
+      (x y : bool) (x' y' : Value.t)
+      (k : Value.t -> M) :
+    x' = φ x ->
+    y' = φ y ->
+    (forall (b : bool),
+      {{ k (φ b) 🔽 R, Output }}
+    ) ->
+    {{
+      LowM.CallPrimitive (Primitive.AreEqual x' y') k 🔽
+      R, Output
+    }}
+  | CallPrimitiveAreEqualInteger {kind : IntegerKind.t}
+      (x y : Integer.t kind) (x' y' : Value.t)
       (k : Value.t -> M) :
     x' = φ x ->
     y' = φ y ->
@@ -739,7 +829,7 @@ Module Run.
       (method : PolymorphicFunction.t)
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (method generic_consts generic_tys)) in
-    IsTraitMethod.t trait_name self_ty trait_tys method_name method ->
+    IsTraitMethod.t trait_name trait_consts trait_tys self_ty method_name method ->
     {{ k closure 🔽 R, Output }} ->
     {{ LowM.CallPrimitive
         (Primitive.GetTraitMethod
@@ -884,7 +974,7 @@ Proof.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* Write *)
-    apply (LowM.CallPrimitive (Primitive.StateWrite ref_core value)).
+    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) (OfValue.get_value of_value))).
     intros _.
     exact (evaluate _ _ _ _ _ run).
   }
@@ -896,14 +986,17 @@ Proof.
     | H : forall _, _ |- _ => apply (H {| Ref.core := sub_ref_core |})
     end.
   }
-  { (* AreEqual *)
-    apply (LowM.CallPrimitive (Primitive.AreEqual x y)).
-    intros b.
+  { (* AreEqualBool *)
     eapply evaluate.
     match goal with
-    | H : forall _, _ |- _ => apply (H b)
+    | H : forall _, _ |- _ => apply (H (PrimitiveEq.eqb x y))
     end.
-
+  }
+  { (* AreEqualInteger *)
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H (PrimitiveEq.eqb x y))
+    end.
   }
   { (* CallPrimitiveGetFunction *)
     exact (evaluate _ _ _ _ _ run).
@@ -960,7 +1053,11 @@ Ltac run_symbolic_state_read_immediate :=
   apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
-  eapply Run.CallPrimitiveStateWrite; [now repeat smpl of_value |].
+  unshelve eapply Run.CallPrimitiveStateWrite; [
+    now repeat smpl of_value |
+    |
+    now repeat smpl of_value |
+  ].
 
 Ltac run_symbolic_get_function :=
   eapply Run.CallPrimitiveGetFunction; [smpl is_function |].
@@ -977,16 +1074,53 @@ Ltac run_symbolic_get_trait_method :=
 
 Smpl Create run_closure.
 
+Ltac as_of_values elements :=
+  match elements with
+  | [] => constr:(@nil Value.t)
+  | ?element :: ?elements =>
+    let elements := as_of_values elements in
+    constr:(
+      (let value := OfValue.get_value (value' := element) ltac:(repeat smpl of_value) in
+      φ value) ::
+      elements
+    )
+  end.
+
+Ltac as_of_tys elements :=
+  match elements with
+  | [] => constr:(@nil Ty.t)
+  | ?element :: ?elements =>
+    let elements := as_of_tys elements in
+    constr:(
+      (Φ (OfTy.get_Set (ty' := element) ltac:(repeat smpl of_ty))) ::
+      elements
+    )
+  end.
+
+(** We put all the parameters of a function call in a form where each element is the image of some
+    value of the link side. *)
+Ltac prepare_call :=
+  match goal with
+  | |- {{ ?f ?consts ?tys ?arguments 🔽 _ }} =>
+    let consts' := as_of_values consts in
+    let tys' := as_of_tys tys in
+    let arguments' := as_of_values arguments in
+    change consts with consts';
+    change tys with tys';
+    change arguments with arguments';
+    try with_strategy opaque [f Φ] cbn
+  end.
+
 Ltac run_symbolic_closure :=
-  unshelve eapply Run.CallClosure; [repeat smpl of_ty | |].
+  unshelve eapply Run.CallClosure; [repeat smpl of_ty | try prepare_call |].
 
 Ltac run_symbolic_closure_auto :=
   unshelve eapply Run.CallClosure; [
-    repeat smpl of_ty |
+    now repeat smpl of_ty |
+    prepare_call;
     now (
-      smpl run_closure ||
       match goal with
-      | H : _ |- _ => apply H
+      | H : _ |- _ => simple apply H
       end
     ) |
     intros []
@@ -999,13 +1133,27 @@ Ltac run_sub_pointer :=
     smpl run_sub_pointer
   |]; intro.
 
+Lemma if_then_else_bool_eq (condition : bool) then_ else_ :
+  M.if_then_else_bool (φ condition) then_ else_ =
+  if condition then then_ else else_.
+Proof.
+  now destruct condition.
+Qed.
+
+Ltac rewrite_if_then_else_bool_eq :=
+  match goal with
+  | |- context [ M.if_then_else_bool (φ ?condition) ?then_ ?else_ ] =>
+    rewrite (if_then_else_bool_eq condition then_ else_)
+  end.
+
 Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
-      rewrite OfValue.get_value_of_value_eq ||
-      rewrite Ref.deref_eq ||
-      rewrite Ref.borrow_eq ||
-      rewrite Ref.cast_cast_eq
+      OfValue.rewrite_get_value_of_value_eq ||
+      Ref.rewrite_deref_eq ||
+      Ref.rewrite_borrow_eq ||
+      Ref.rewrite_cast_cast_eq ||
+      rewrite_if_then_else_bool_eq
     ));
     reflexivity
   |].
@@ -1015,6 +1163,23 @@ Ltac run_rewrites :=
     autorewrite with run_constant;
     reflexivity
   |].
+
+Ltac change_cast_integer :=
+  match goal with
+  | |- context [ M.cast (Ty.path ?x) _ ] =>
+    change (Ty.path x) with (Φ U8.t) ||
+    change (Ty.path x) with (Φ U16.t) ||
+    change (Ty.path x) with (Φ U32.t) ||
+    change (Ty.path x) with (Φ U64.t) ||
+    change (Ty.path x) with (Φ U128.t) ||
+    change (Ty.path x) with (Φ Usize.t) ||
+    change (Ty.path x) with (Φ I8.t) ||
+    change (Ty.path x) with (Φ I16.t) ||
+    change (Ty.path x) with (Φ I32.t) ||
+    change (Ty.path x) with (Φ I64.t) ||
+    change (Ty.path x) with (Φ I128.t) ||
+    change (Ty.path x) with (Φ Isize.t)
+  end.
 
 Ltac run_symbolic_one_step_immediate :=
   match goal with
@@ -1038,6 +1203,14 @@ Ltac run_symbolic_one_step_immediate :=
 Ltac run_symbolic_let :=
   unshelve eapply Run.Let; [repeat smpl of_ty | |].
 
+Ltac run_symbolic_are_equal_bool :=
+  eapply Run.CallPrimitiveAreEqualBool;
+    [now repeat smpl of_value | now repeat smpl of_value | intros []].
+
+Ltac run_symbolic_are_equal_integer :=
+  eapply Run.CallPrimitiveAreEqualInteger;
+    [now repeat smpl of_value | now repeat smpl of_value | intros []].
+
 Smpl Create run_symbolic.
 
 (** We should use this tactic instead of the ones above, as this one calls all the others. *)
@@ -1054,6 +1227,39 @@ Ltac run_symbolic :=
     )
   )).
 
+Axiom is_discriminant_tuple_eq :
+  forall
+    (kind : IntegerKind.t)
+    (variant_name : string) (fields : list Value.t)
+    (discriminant : Z),
+  M.IsDiscriminant variant_name discriminant ->
+  M.cast (Φ (Integer.t kind)) (Value.StructTuple variant_name fields) =
+  Value.Integer kind (Integer.normalize_wrap kind discriminant).
+
+Axiom is_discriminant_record_eq :
+  forall
+    (kind : IntegerKind.t)
+    (variant_name : string) (fields : list (string * Value.t))
+    (discriminant : Z),
+  M.IsDiscriminant variant_name discriminant ->
+  M.cast (Φ (Integer.t kind)) (Value.StructRecord variant_name fields) =
+  Value.Integer kind (Integer.normalize_wrap kind discriminant).
+
+Module Function1.
+  Record t {A Output : Set} `{Link A} `{Link Output} : Set := {
+    f : list Value.t -> M;
+    run : forall (a : A),
+      {{ f [ φ a ] 🔽 Output }};
+  }.
+  Arguments t _ _ {_ _}.
+
+  Global Instance IsLink (A Output : Set) `{Link A} `{Link Output} :
+      Link (t A Output) := {
+    Φ := Ty.function [Φ A] (Φ Output);
+    φ x := Value.Closure (existS (_, _) x.(f));
+  }.
+End Function1.
+
 Module Function2.
   Record t {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output} : Set := {
     f : list Value.t -> M;
@@ -1067,7 +1273,35 @@ Module Function2.
     Φ := Ty.function [Φ A1; Φ A2] (Φ Output);
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
+
+  Definition of_ty (ty1 ty2 ty3 : Ty.t) :
+    OfTy.t ty1 ->
+    OfTy.t ty2 ->
+    OfTy.t ty3 ->
+    OfTy.t (Ty.function [ty1; ty2] ty3).
+  Proof.
+    intros [A1] [A2] [Output].
+    eapply OfTy.Make with (A := t A1 A2 Output).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
 End Function2.
+
+Module Function3.
+  Record t {A1 A2 A3 Output : Set} `{Link A1} `{Link A2} `{Link A3} `{Link Output} : Set := {
+    f : list Value.t -> M;
+    run : forall (a1 : A1) (a2 : A2) (a3 : A3),
+      {{ f [ φ a1; φ a2; φ a3 ] 🔽 Output }};
+  }.
+  Arguments t _ _ _ _ {_ _ _ _}.
+
+  Global Instance IsLink (A1 A2 A3 Output : Set) `{Link A1} `{Link A2} `{Link A3} `{Link Output} :
+      Link (t A1 A2 A3 Output) := {
+    Φ := Ty.function [Φ A1; Φ A2; Φ A3] (Φ Output);
+    φ x := Value.Closure (existS (_, _) x.(f));
+  }.
+End Function3.
 
 Module OneElementTuple.
   (** There are no tuples of one element in Coq so we have to create it. This is different than the

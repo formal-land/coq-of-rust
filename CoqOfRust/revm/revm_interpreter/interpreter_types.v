@@ -24,7 +24,12 @@ Module interpreter_types.
           let offset := M.alloc (| offset |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::MemoryTrait"
+              []
+              []
+              Self
+              "{{synthetic}}",
             M.get_trait_method (|
               "revm_interpreter::interpreter_types::MemoryTrait",
               Self,
@@ -307,7 +312,7 @@ Module interpreter_types.
                   [],
                   [],
                   "popn_top",
-                  [],
+                  [ Value.Integer IntegerKind.Usize 0 ],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -421,7 +426,7 @@ Module interpreter_types.
                   [],
                   [],
                   "popn",
-                  [],
+                  [ Value.Integer IntegerKind.Usize 1 ],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -558,10 +563,7 @@ Module interpreter_types.
                                           ]
                                           [],
                                         "to_be_bytes",
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ],
+                                        [ Value.Integer IntegerKind.Usize 20 ],
                                         []
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, value |) ]

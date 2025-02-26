@@ -33,7 +33,14 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::iter::adapters::map_windows::Buffer")
                       [ N ]
-                      [ Ty.associated ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]
                   ])
             ];
         } *)
@@ -123,7 +130,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -168,7 +175,14 @@ Module iter.
                                     M.get_function (|
                                       "core::mem::size_of",
                                       [],
-                                      [ Ty.associated ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
+                                      ]
                                     |),
                                     []
                                   |),
@@ -243,7 +257,7 @@ Module iter.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
-                                                [],
+                                                [ Value.Integer IntegerKind.Usize 1 ],
                                                 []
                                               |),
                                               [
@@ -293,7 +307,7 @@ Module iter.
                               [ N ]
                               [ I ],
                             "new",
-                            [ N ],
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -458,7 +472,18 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "&")
                                                 []
-                                                [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ]
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ N ]
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        I
+                                                        "Item"
+                                                    ]
                                                 ]
                                             ],
                                           M.get_trait_method (|
@@ -474,7 +499,14 @@ Module iter.
                                                     Ty.apply
                                                       (Ty.path "array")
                                                       [ N ]
-                                                      [ Ty.associated ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          I
+                                                          "Item"
+                                                      ]
                                                   ]
                                               ],
                                             [],
@@ -533,15 +565,29 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::map_windows::Buffer")
                                           [ N ]
-                                          [ Ty.associated ]
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ]
                                       ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::map_windows::Buffer")
                                         [ N ]
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ],
                                       "try_from_iter",
-                                      [ N ],
+                                      [],
                                       [ I ]
                                     |),
                                     [
@@ -565,7 +611,17 @@ Module iter.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       I,
@@ -619,7 +675,14 @@ Module iter.
                                                 (Ty.path
                                                   "core::iter::adapters::map_windows::Buffer")
                                                 [ N ]
-                                                [ Ty.associated ]
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ]
                                             ] :=
                                         M.alloc (|
                                           M.call_closure (|
@@ -631,7 +694,14 @@ Module iter.
                                                   (Ty.path
                                                     "core::iter::adapters::map_windows::Buffer")
                                                   [ N ]
-                                                  [ Ty.associated ]
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      I
+                                                      "Item"
+                                                  ]
                                               ],
                                             M.get_associated_function (|
                                               Ty.apply
@@ -642,7 +712,14 @@ Module iter.
                                                     (Ty.path
                                                       "core::iter::adapters::map_windows::Buffer")
                                                     [ N ]
-                                                    [ Ty.associated ]
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        I
+                                                        "Item"
+                                                    ]
                                                 ],
                                               "take",
                                               [],
@@ -677,9 +754,16 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::map_windows::Buffer")
                                               [ N ]
-                                              [ Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item"
+                                              ],
                                             "push",
-                                            [ N ],
+                                            [],
                                             []
                                           |),
                                           [
@@ -704,7 +788,19 @@ Module iter.
                             Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item"
+                                  ]
+                              ]
                           ],
                         M.get_associated_function (|
                           Ty.apply
@@ -718,7 +814,14 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map_windows::Buffer")
                                     [ N ]
-                                    [ Ty.associated ]
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
                                 ]
                             ],
                           "map",
@@ -727,7 +830,19 @@ Module iter.
                             Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ];
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item"
+                                  ]
+                              ];
                             Ty.function
                               [
                                 Ty.apply
@@ -737,13 +852,32 @@ Module iter.
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map_windows::Buffer")
                                       [ N ]
-                                      [ Ty.associated ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
+                                      ]
                                   ]
                               ]
                               (Ty.apply
                                 (Ty.path "&")
                                 []
-                                [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ])
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ N ]
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
+                                ])
                           ]
                         |),
                         [
@@ -759,7 +893,14 @@ Module iter.
                                     Ty.apply
                                       (Ty.path "core::iter::adapters::map_windows::Buffer")
                                       [ N ]
-                                      [ Ty.associated ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
+                                      ]
                                   ]
                               ],
                             M.get_associated_function (|
@@ -770,7 +911,14 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map_windows::Buffer")
                                     [ N ]
-                                    [ Ty.associated ]
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
                                 ],
                               "as_ref",
                               [],
@@ -791,9 +939,16 @@ Module iter.
                             Ty.apply
                               (Ty.path "core::iter::adapters::map_windows::Buffer")
                               [ N ]
-                              [ Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ],
                             "as_array_ref",
-                            [ N ],
+                            [],
                             []
                           |)
                         ]
@@ -900,7 +1055,14 @@ Module iter.
                                                         (Ty.path
                                                           "core::iter::adapters::map_windows::Buffer")
                                                         [ N ]
-                                                        [ Ty.associated ]
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::iter::traits::iterator::Iterator"
+                                                            []
+                                                            []
+                                                            I
+                                                            "Item"
+                                                        ]
                                                     ],
                                                   "is_some",
                                                   [],
@@ -1222,7 +1384,7 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                 "transpose",
-                                [ N ],
+                                [],
                                 []
                               |),
                               [
@@ -1593,7 +1755,7 @@ Module iter.
                                         [ N ]
                                         [ T ],
                                       "buffer_ptr",
-                                      [ N ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -1806,7 +1968,7 @@ Module iter.
                                                 [ N ]
                                                 [ T ],
                                               "buffer_mut_ptr",
-                                              [ N ],
+                                              [],
                                               []
                                             |),
                                             [
@@ -1930,7 +2092,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ],
                         "buffer_mut_ptr",
-                        [ N ],
+                        [],
                         []
                       |),
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -2483,7 +2645,7 @@ Module iter.
                                   [ N ]
                                   [ T ],
                                 "as_uninit_array_mut",
-                                [ N ],
+                                [],
                                 []
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, buffer |) ]
@@ -2516,7 +2678,7 @@ Module iter.
                                       [ N ]
                                       [ T ],
                                     "as_array_ref",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
@@ -2538,12 +2700,13 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *) [ ("clone", InstanceField.Method (clone N T)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_iter_adapters_map_windows_Buffer_N_T.
       
-      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindowsInner_N_I.
+      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_map_windows_MapWindowsInner_N_I.
         Definition Self (N : Value.t) (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindowsInner") [ N ] [ I ].
         
@@ -2599,7 +2762,14 @@ Module iter.
                           Ty.apply
                             (Ty.path "core::iter::adapters::map_windows::Buffer")
                             [ N ]
-                            [ Ty.associated ]
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
                         ],
                       M.get_trait_method (|
                         "core::clone::Clone",
@@ -2610,7 +2780,14 @@ Module iter.
                             Ty.apply
                               (Ty.path "core::iter::adapters::map_windows::Buffer")
                               [ N ]
-                              [ Ty.associated ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]
                           ],
                         [],
                         [],
@@ -2637,10 +2814,11 @@ Module iter.
           forall (N : Value.t) (I : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self N I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I)
             (* Instance *) [ ("clone", InstanceField.Method (clone N I)) ].
-      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindowsInner_N_I.
+      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_map_windows_MapWindowsInner_N_I.
       
       Module Impl_core_ops_drop_Drop_for_core_iter_adapters_map_windows_Buffer_N_T.
         Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
@@ -2729,7 +2907,7 @@ Module iter.
                                       [ N ]
                                       [ T ],
                                     "buffer_mut_ptr",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [
@@ -2775,12 +2953,13 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::ops::drop::Drop"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *) [ ("drop", InstanceField.Method (drop N T)) ].
       End Impl_core_ops_drop_Drop_for_core_iter_adapters_map_windows_Buffer_N_T.
       
-      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
         Definition Self (N : Value.t) (I F R : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
@@ -2813,7 +2992,19 @@ Module iter.
                         Ty.apply
                           (Ty.path "&")
                           []
-                          [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ] :=
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]
+                          ] :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
@@ -2829,7 +3020,19 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "&")
                                     []
-                                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ N ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ]
+                                    ]
                                 ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
@@ -2840,7 +3043,19 @@ Module iter.
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ N ]
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ]
+                                      ]
                                   ],
                                 [],
                                 [],
@@ -2857,7 +3072,19 @@ Module iter.
                                       Ty.apply
                                         (Ty.path "&")
                                         []
-                                        [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ N ]
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item"
+                                            ]
+                                        ]
                                     ],
                                   M.get_associated_function (|
                                     Ty.apply
@@ -2865,7 +3092,7 @@ Module iter.
                                       [ N ]
                                       [ I ],
                                     "next_window",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [
@@ -2945,7 +3172,19 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "&")
                                     []
-                                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.associated ] ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ N ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            I
+                                            "Item"
+                                        ]
+                                    ]
                                 ]
                             ],
                             "call_mut",
@@ -3003,7 +3242,7 @@ Module iter.
                     [ N ]
                     [ I ],
                   "size_hint",
-                  [ N ],
+                  [],
                   []
                 |),
                 [
@@ -3024,17 +3263,18 @@ Module iter.
           forall (N : Value.t) (I F R : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self N I F R)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I F R)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item N I F R));
               ("next", InstanceField.Method (next N I F R));
               ("size_hint", InstanceField.Method (size_hint N I F R))
             ].
-      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
         Definition Self (N : Value.t) (I F R : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
@@ -3042,12 +3282,13 @@ Module iter.
           forall (N : Value.t) (I F R : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self N I F R)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I F R)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
         Definition Self (N : Value.t) (I F R : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
@@ -3055,10 +3296,11 @@ Module iter.
           forall (N : Value.t) (I F R : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self N I F R)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I F R)
             (* Instance *) [].
-      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_type__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_ref__array_N_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
       Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
         Definition Self (N : Value.t) (I F : Ty.t) : Ty.t :=
@@ -3161,12 +3403,13 @@ Module iter.
           forall (N : Value.t) (I F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self N I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt N I F)) ].
       End Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
       
-      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
         Definition Self (N : Value.t) (I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ].
         
@@ -3242,10 +3485,11 @@ Module iter.
           forall (N : Value.t) (I F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self N I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I F)
             (* Instance *) [ ("clone", InstanceField.Method (clone N I F)) ].
-      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_type_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
+      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_map_windows_MapWindows_N_I_F.
     End map_windows.
   End adapters.
 End iter.

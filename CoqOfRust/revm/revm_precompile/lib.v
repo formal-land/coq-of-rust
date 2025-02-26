@@ -192,8 +192,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_revm_precompile_Precompiles.
 
@@ -291,8 +292,9 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_revm_precompile_Precompiles.
 
@@ -358,8 +360,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
 
@@ -1476,12 +1479,12 @@ Module Impl_revm_precompile_Precompiles.
                                                 Ty.path "revm_precompile::Precompiles",
                                                 "extend",
                                                 [],
-                                                [ Ty.associated ]
+                                                [ Ty.associated_unknown ]
                                               |),
                                               [
                                                 M.borrow (| Pointer.Kind.MutRef, precompiles |);
                                                 M.call_closure (|
-                                                  Ty.associated,
+                                                  Ty.associated_unknown,
                                                   M.get_function (|
                                                     "revm_precompile::bls12_381::precompiles",
                                                     [],
@@ -2068,7 +2071,12 @@ Module Impl_revm_precompile_Precompiles.
                   ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    impl_IntoIterator_Item___PrecompileWithAddress_
+                    "IntoIter",
                   [],
                   [],
                   "collect",
@@ -2085,7 +2093,12 @@ Module Impl_revm_precompile_Precompiles.
                 |),
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      impl_IntoIterator_Item___PrecompileWithAddress_
+                      "IntoIter",
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       impl_IntoIterator_Item___PrecompileWithAddress_,
@@ -2658,8 +2671,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
 
@@ -2726,8 +2740,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
 
@@ -2756,10 +2771,9 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__a
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *)
       [
-        (* T *)
         Ty.tuple
           [
             Ty.path "alloy_primitives::bits::address::Address";
@@ -2777,6 +2791,7 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__a
                 ])
           ]
       ]
+      Self
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__alloy_primitives_bytes__Bytesu64Tocore_result_Result_revm_precompile_interface_PrecompileOutput_revm_precompile_interface_PrecompileErrors__for_revm_precompile_PrecompileWithAddress.
 
@@ -2829,8 +2844,9 @@ Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_al
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "revm_precompile::PrecompileWithAddress" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "revm_precompile::PrecompileWithAddress" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_alloy_primitives_bits_address_Address_ref__alloy_primitives_bytes__Bytesu64Tocore_result_Result_revm_precompile_interface_PrecompileOutput_revm_precompile_interface_PrecompileErrors_.
 
@@ -2906,47 +2922,60 @@ Enum PrecompileSpecId
       {
         name := "HOMESTEAD";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "BYZANTIUM";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ISTANBUL";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "BERLIN";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CANCUN";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "PRAGUE";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "LATEST";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
 
+Axiom IsDiscriminant_PrecompileSpecId_HOMESTEAD :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::HOMESTEAD" 0.
+Axiom IsDiscriminant_PrecompileSpecId_BYZANTIUM :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::BYZANTIUM" 1.
+Axiom IsDiscriminant_PrecompileSpecId_ISTANBUL :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::ISTANBUL" 2.
+Axiom IsDiscriminant_PrecompileSpecId_BERLIN :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::BERLIN" 3.
+Axiom IsDiscriminant_PrecompileSpecId_CANCUN :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::CANCUN" 4.
+Axiom IsDiscriminant_PrecompileSpecId_PRAGUE :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::PRAGUE" 5.
+Axiom IsDiscriminant_PrecompileSpecId_LATEST :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::LATEST" 6.
+
 Module Impl_core_marker_Copy_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_revm_precompile_PrecompileSpecId.
 
 Module Impl_core_clone_Clone_for_revm_precompile_PrecompileSpecId.
@@ -2965,8 +2994,9 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_revm_precompile_PrecompileSpecId.
 
@@ -3077,8 +3107,9 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
 
@@ -3088,8 +3119,9 @@ Module Impl_core_marker_StructuralPartialEq_for_revm_precompile_PrecompileSpecId
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_revm_precompile_PrecompileSpecId.
 
@@ -3136,8 +3168,9 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
 
@@ -3161,8 +3194,9 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
@@ -3218,8 +3252,9 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::hash::Hash"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
 
@@ -3281,8 +3316,9 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
 
@@ -3352,8 +3388,9 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
 
@@ -3386,8 +3423,9 @@ Module Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precom
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "revm_specification::hardfork::SpecId" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "revm_specification::hardfork::SpecId" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precompile_PrecompileSpecId.
 
@@ -3724,52 +3762,28 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                   Value.Integer IntegerKind.U8 0;
                   Value.Integer IntegerKind.U8 0;
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 0 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 1 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 2 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 2 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 3 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 3 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 4 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 4 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 5 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 5 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 6 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 6 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 7 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 7 |)
                   |)
                 ]
             ]

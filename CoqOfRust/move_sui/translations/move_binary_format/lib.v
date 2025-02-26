@@ -11,107 +11,132 @@ Enum IndexKind
       {
         name := "ModuleHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "StructHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FunctionHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FieldHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FriendDeclaration";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FunctionInstantiation";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FieldInstantiation";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "StructDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "StructDefInstantiation";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FunctionDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FieldDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Signature";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Identifier";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "AddressIdentifier";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ConstantPool";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "LocalPool";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CodeDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "TypeParameter";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "MemberCount";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
 
+Axiom IsDiscriminant_IndexKind_ModuleHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::ModuleHandle" 0.
+Axiom IsDiscriminant_IndexKind_StructHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::StructHandle" 1.
+Axiom IsDiscriminant_IndexKind_FunctionHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::FunctionHandle" 2.
+Axiom IsDiscriminant_IndexKind_FieldHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::FieldHandle" 3.
+Axiom IsDiscriminant_IndexKind_FriendDeclaration :
+  M.IsDiscriminant "move_binary_format::IndexKind::FriendDeclaration" 4.
+Axiom IsDiscriminant_IndexKind_FunctionInstantiation :
+  M.IsDiscriminant "move_binary_format::IndexKind::FunctionInstantiation" 5.
+Axiom IsDiscriminant_IndexKind_FieldInstantiation :
+  M.IsDiscriminant "move_binary_format::IndexKind::FieldInstantiation" 6.
+Axiom IsDiscriminant_IndexKind_StructDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::StructDefinition" 7.
+Axiom IsDiscriminant_IndexKind_StructDefInstantiation :
+  M.IsDiscriminant "move_binary_format::IndexKind::StructDefInstantiation" 8.
+Axiom IsDiscriminant_IndexKind_FunctionDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::FunctionDefinition" 9.
+Axiom IsDiscriminant_IndexKind_FieldDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::FieldDefinition" 10.
+Axiom IsDiscriminant_IndexKind_Signature :
+  M.IsDiscriminant "move_binary_format::IndexKind::Signature" 11.
+Axiom IsDiscriminant_IndexKind_Identifier :
+  M.IsDiscriminant "move_binary_format::IndexKind::Identifier" 12.
+Axiom IsDiscriminant_IndexKind_AddressIdentifier :
+  M.IsDiscriminant "move_binary_format::IndexKind::AddressIdentifier" 13.
+Axiom IsDiscriminant_IndexKind_ConstantPool :
+  M.IsDiscriminant "move_binary_format::IndexKind::ConstantPool" 14.
+Axiom IsDiscriminant_IndexKind_LocalPool :
+  M.IsDiscriminant "move_binary_format::IndexKind::LocalPool" 15.
+Axiom IsDiscriminant_IndexKind_CodeDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::CodeDefinition" 16.
+Axiom IsDiscriminant_IndexKind_TypeParameter :
+  M.IsDiscriminant "move_binary_format::IndexKind::TypeParameter" 17.
+Axiom IsDiscriminant_IndexKind_MemberCount :
+  M.IsDiscriminant "move_binary_format::IndexKind::MemberCount" 18.
+
 Module Impl_core_marker_Copy_for_move_binary_format_IndexKind.
   Definition Self : Ty.t := Ty.path "move_binary_format::IndexKind".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_move_binary_format_IndexKind.
 
 Module Impl_core_clone_Clone_for_move_binary_format_IndexKind.
@@ -130,8 +155,9 @@ Module Impl_core_clone_Clone_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_move_binary_format_IndexKind.
 
@@ -404,8 +430,9 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
 
@@ -429,8 +456,9 @@ Module Impl_core_cmp_Eq_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_move_binary_format_IndexKind.
@@ -486,8 +514,9 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::hash::Hash"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_core_hash_Hash_for_move_binary_format_IndexKind.
 
@@ -549,8 +578,9 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
 
@@ -560,8 +590,9 @@ Module Impl_core_marker_StructuralPartialEq_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_move_binary_format_IndexKind.
 
@@ -608,8 +639,9 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
 
@@ -679,8 +711,9 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
 
@@ -1057,8 +1090,9 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_move_binary_format_IndexKind.
 
@@ -1072,27 +1106,36 @@ Enum SignatureTokenKind
       {
         name := "Value";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Reference";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "MutableReference";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
 
+Axiom IsDiscriminant_SignatureTokenKind_Value :
+  M.IsDiscriminant "move_binary_format::SignatureTokenKind::Value" 0.
+Axiom IsDiscriminant_SignatureTokenKind_Reference :
+  M.IsDiscriminant "move_binary_format::SignatureTokenKind::Reference" 1.
+Axiom IsDiscriminant_SignatureTokenKind_MutableReference :
+  M.IsDiscriminant "move_binary_format::SignatureTokenKind::MutableReference" 2.
+
 Module Impl_core_marker_Copy_for_move_binary_format_SignatureTokenKind.
   Definition Self : Ty.t := Ty.path "move_binary_format::SignatureTokenKind".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_move_binary_format_SignatureTokenKind.
 
 Module Impl_core_clone_Clone_for_move_binary_format_SignatureTokenKind.
@@ -1111,8 +1154,9 @@ Module Impl_core_clone_Clone_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_move_binary_format_SignatureTokenKind.
 
@@ -1188,8 +1232,9 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
 
@@ -1213,8 +1258,9 @@ Module Impl_core_cmp_Eq_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_move_binary_format_SignatureTokenKind.
@@ -1277,8 +1323,9 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
 
@@ -1288,8 +1335,9 @@ Module Impl_core_marker_StructuralPartialEq_for_move_binary_format_SignatureToke
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_move_binary_format_SignatureTokenKind.
 
@@ -1336,8 +1384,9 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
 
@@ -1407,8 +1456,9 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
 
@@ -1500,7 +1550,8 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.

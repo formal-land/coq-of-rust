@@ -13,16 +13,19 @@ Module intrinsics.
           {
             name := "Normal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Cleanup";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_BasicBlock_Normal :
+      M.IsDiscriminant "core::intrinsics::mir::BasicBlock::Normal" 0.
+    Axiom IsDiscriminant_BasicBlock_Cleanup :
+      M.IsDiscriminant "core::intrinsics::mir::BasicBlock::Cleanup" 1.
     
     (*
     Enum UnwindTerminateReason
@@ -34,16 +37,19 @@ Module intrinsics.
           {
             name := "Abi";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InCleanup";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_UnwindTerminateReason_Abi :
+      M.IsDiscriminant "core::intrinsics::mir::UnwindTerminateReason::Abi" 0.
+    Axiom IsDiscriminant_UnwindTerminateReason_InCleanup :
+      M.IsDiscriminant "core::intrinsics::mir::UnwindTerminateReason::InCleanup" 1.
     
     (* StructTuple
       {

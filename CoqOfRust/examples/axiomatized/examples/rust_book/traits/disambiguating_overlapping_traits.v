@@ -23,8 +23,9 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
   Axiom Implements :
     M.IsTraitInstance
       "disambiguating_overlapping_traits::UsernameWidget"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_overlapping_traits_Form.
 
@@ -36,8 +37,9 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
   Axiom Implements :
     M.IsTraitInstance
       "disambiguating_overlapping_traits::AgeWidget"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("get", InstanceField.Method get) ].
 End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapping_traits_Form.
 

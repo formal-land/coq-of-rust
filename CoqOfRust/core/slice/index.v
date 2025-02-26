@@ -7,7 +7,8 @@ Module slice.
       Definition Self (T I : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*     type Output = I::Output; *)
-      Definition _Output (T I : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (T I : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
       
       (*
           fn index(&self, index: I) -> &I::Output {
@@ -25,7 +26,10 @@ Module slice.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     I,
@@ -49,8 +53,9 @@ Module slice.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "core::ops::index::Index"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* Idx *) I ]
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T I)); ("index", InstanceField.Method (index T I))
           ].
@@ -78,7 +83,11 @@ Module slice.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output"
+                        ],
                       M.get_trait_method (|
                         "core::slice::index::SliceIndex",
                         I,
@@ -104,8 +113,9 @@ Module slice.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "core::ops::index::IndexMut"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* Idx *) I ]
           (* Instance *) [ ("index_mut", InstanceField.Method (index_mut T I)) ].
     End Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_slice_T_I_for_slice_T.
     
@@ -172,7 +182,12 @@ Module slice.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -279,7 +294,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -376,7 +391,12 @@ Module slice.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -481,7 +501,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -576,7 +596,12 @@ Module slice.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -681,7 +706,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -735,7 +760,12 @@ Module slice.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -785,7 +815,12 @@ Module slice.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -999,8 +1034,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_usize.
       
@@ -1011,8 +1047,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_range_Range_usize.
       
@@ -1023,8 +1060,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_range_RangeTo_usize.
       
@@ -1035,8 +1073,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_range_RangeFrom_usize.
       
@@ -1046,8 +1085,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_range_RangeFull.
       
@@ -1058,8 +1098,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_range_RangeInclusive_usize.
       
@@ -1070,8 +1111,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_range_RangeToInclusive_usize.
       
@@ -1086,8 +1128,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
       
@@ -1097,8 +1140,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_range_Range_usize.
       
@@ -1109,8 +1153,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_range_RangeInclusive_usize.
       
@@ -1121,8 +1166,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_range_RangeFrom_usize.
       
@@ -1132,8 +1178,9 @@ Module slice.
         Axiom Implements :
           M.IsTraitInstance
             "core::slice::index::private_slice_index::Sealed"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_index_range_IndexRange.
     End private_slice_index.
@@ -1523,7 +1570,10 @@ Module slice.
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| slice |) |), self |)
+                  M.SubPointer.get_array_field (|
+                    M.deref (| M.read (| slice |) |),
+                    M.read (| self |)
+                  |)
                 |)
               |)
             |)))
@@ -1551,7 +1601,10 @@ Module slice.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.MutRef,
-                      M.SubPointer.get_array_field (| M.deref (| M.read (| slice |) |), self |)
+                      M.SubPointer.get_array_field (|
+                        M.deref (| M.read (| slice |) |),
+                        M.read (| self |)
+                      |)
                     |)
                   |)
                 |)
@@ -1564,8 +1617,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -2372,8 +2426,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -3301,8 +3356,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -3617,8 +3673,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -3933,8 +3990,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -4458,8 +4516,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -4774,8 +4833,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -4911,8 +4971,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -5410,8 +5471,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -5743,8 +5805,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -6107,8 +6170,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -8097,8 +8161,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));

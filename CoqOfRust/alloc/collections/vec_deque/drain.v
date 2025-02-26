@@ -539,8 +539,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
       
@@ -552,8 +553,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::marker::Sync"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [].
       End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
       
@@ -565,8 +567,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
       
@@ -946,8 +949,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::ops::drop::Drop"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
       End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
       
@@ -1212,8 +1216,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item T A));
@@ -1443,8 +1448,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [ ("next_back", InstanceField.Method (next_back T A)) ].
       End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
       
@@ -1456,8 +1462,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [].
       End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
       
@@ -1469,8 +1476,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.
     End drain.

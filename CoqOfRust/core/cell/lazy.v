@@ -13,21 +13,22 @@ Module cell.
           {
             name := "Uninit";
             item := StructTuple [ F ];
-            discriminant := None;
           };
           {
             name := "Init";
             item := StructTuple [ T ];
-            discriminant := None;
           };
           {
             name := "Poisoned";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_State_Uninit : M.IsDiscriminant "core::cell::lazy::State::Uninit" 0.
+    Axiom IsDiscriminant_State_Init : M.IsDiscriminant "core::cell::lazy::State::Init" 1.
+    Axiom IsDiscriminant_State_Poisoned : M.IsDiscriminant "core::cell::lazy::State::Poisoned" 2.
     
     (* StructRecord
       {
@@ -936,8 +937,9 @@ Module cell.
         forall (T F : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T F)); ("deref", InstanceField.Method (deref T F))
           ].
@@ -978,8 +980,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_lazy_LazyCell_T_ToT.
     
@@ -1100,7 +1103,7 @@ Module cell.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -1152,8 +1155,9 @@ Module cell.
         forall (T F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T F)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_lazy_LazyCell_T_F.
     
@@ -1172,7 +1176,12 @@ Module cell.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,

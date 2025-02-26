@@ -12,21 +12,27 @@ Module checked.
         {
           name := "DivisionByZero";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonPositiveLogarithm";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NegativeSquareRoot";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_MathError_DivisionByZero :
+    M.IsDiscriminant "result_chaining_with_question_mark::checked::MathError::DivisionByZero" 0.
+  Axiom IsDiscriminant_MathError_NonPositiveLogarithm :
+    M.IsDiscriminant
+      "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
+      1.
+  Axiom IsDiscriminant_MathError_NegativeSquareRoot :
+    M.IsDiscriminant "result_chaining_with_question_mark::checked::MathError::NegativeSquareRoot" 2.
   
   Module Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
     Definition Self : Ty.t := Ty.path "result_chaining_with_question_mark::checked::MathError".
@@ -36,8 +42,9 @@ Module checked.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_result_chaining_with_question_mark_checked_MathError.
   

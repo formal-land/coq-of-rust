@@ -68,8 +68,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_ascii_EscapeDefault.
   
@@ -121,7 +122,7 @@ Module ascii.
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "ascii",
-                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -156,7 +157,7 @@ Module ascii.
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "empty",
-                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   []
                 |),
                 []
@@ -189,7 +190,7 @@ Module ascii.
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "as_str",
-                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   []
                 |),
                 [
@@ -236,7 +237,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "next",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -275,7 +276,7 @@ Module ascii.
                       [ Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "len",
-                    [ Value.Integer IntegerKind.Usize 4 ],
+                    [],
                     []
                   |),
                   [
@@ -317,7 +318,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -348,7 +349,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "next_back",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -384,7 +385,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "advance_by",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -405,8 +406,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -439,7 +441,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "next_back",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -479,7 +481,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "advance_back_by",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -500,8 +502,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("next_back", InstanceField.Method next_back);
@@ -530,7 +533,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -550,8 +553,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("len", InstanceField.Method len) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ascii_EscapeDefault.
   
@@ -561,8 +565,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_ascii_EscapeDefault.
   
@@ -599,7 +604,7 @@ Module ascii.
                         [ Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "as_str",
-                      [ Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       []
                     |),
                     [
@@ -623,8 +628,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_ascii_EscapeDefault.
   
@@ -683,8 +689,9 @@ Module ascii.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_ascii_EscapeDefault.
 End ascii.

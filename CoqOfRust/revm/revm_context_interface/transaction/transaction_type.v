@@ -13,36 +13,55 @@ Module transaction.
           {
             name := "Legacy";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip2930";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip1559";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip4844";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip7702";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Custom";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_TransactionType_Legacy :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
+        0.
+    Axiom IsDiscriminant_TransactionType_Eip2930 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
+        1.
+    Axiom IsDiscriminant_TransactionType_Eip1559 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
+        2.
+    Axiom IsDiscriminant_TransactionType_Eip4844 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
+        3.
+    Axiom IsDiscriminant_TransactionType_Eip7702 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
+        4.
+    Axiom IsDiscriminant_TransactionType_Custom :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
+        5.
     
     Module Impl_core_clone_Clone_for_revm_context_interface_transaction_transaction_type_TransactionType.
       Definition Self : Ty.t :=
@@ -61,8 +80,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
@@ -73,8 +93,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
@@ -196,8 +217,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
@@ -208,8 +230,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
@@ -263,8 +286,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
@@ -289,8 +313,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_context_interface_transaction_transaction_type_TransactionType.
@@ -350,8 +375,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_context_interface_transaction_transaction_type_TransactionType.
   End transaction_type.

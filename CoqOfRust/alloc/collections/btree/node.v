@@ -627,8 +627,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Copy"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Copy_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_Type_.
       
@@ -663,8 +664,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V Type_)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_Type_.
       
@@ -679,8 +681,9 @@ Module collections.
           forall (BorrowType K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Sync"
-            (Self BorrowType K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self BorrowType K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Sync_where_core_marker_Sync_K_where_core_marker_Sync_V_for_alloc_collections_btree_node_NodeRef_BorrowType_K_V_Type_.
       
@@ -695,8 +698,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Sync_K_where_core_marker_Sync_V_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_Type_.
       
@@ -711,8 +715,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Send_K_where_core_marker_Send_V_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_Type_.
       
@@ -727,8 +732,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Send_K_where_core_marker_Send_V_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_Type_.
       
@@ -743,8 +749,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Send_K_where_core_marker_Send_V_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_Type_.
       
@@ -759,8 +766,9 @@ Module collections.
           forall (K V Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self K V Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V Type_)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Send_K_where_core_marker_Send_V_for_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_Type_.
       
@@ -1064,7 +1072,7 @@ Module collections.
                               "alloc::collections::btree::node::InternalNode",
                               "edges"
                             |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            Value.Integer IntegerKind.Usize 0
                           |)
                         |);
                         M.read (|
@@ -1813,7 +1821,7 @@ Module collections.
                                             ]
                                         ],
                                       "as_mut_slice",
-                                      [ Value.Integer IntegerKind.Usize 12 ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -4840,7 +4848,7 @@ Module collections.
                                             [ K ]
                                         ],
                                       "as_mut_slice",
-                                      [ Value.Integer IntegerKind.Usize 11 ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -4982,7 +4990,7 @@ Module collections.
                                             [ V ]
                                         ],
                                       "as_mut_slice",
-                                      [ Value.Integer IntegerKind.Usize 11 ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -6495,7 +6503,10 @@ Module collections.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
-                                                    [],
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 1;
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    ],
                                                     []
                                                   |),
                                                   [
@@ -7196,7 +7207,7 @@ Module collections.
                                 "alloc::collections::btree::node::InternalNode",
                                 "edges"
                               |),
-                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                              Value.Integer IntegerKind.Usize 0
                             |)
                           |)
                         ]
@@ -8030,8 +8041,9 @@ Module collections.
           forall (Node Type_ : Ty.t),
           M.IsTraitInstance
             "core::marker::Copy"
-            (Self Node Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self Node Type_)
             (* Instance *) [].
       End Impl_core_marker_Copy_where_core_marker_Copy_Node_for_alloc_collections_btree_node_Handle_Node_Type_.
       
@@ -8063,8 +8075,9 @@ Module collections.
           forall (Node Type_ : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self Node Type_)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self Node Type_)
             (* Instance *) [ ("clone", InstanceField.Method (clone Node Type_)) ].
       End Impl_core_clone_Clone_where_core_marker_Copy_Node_for_alloc_collections_btree_node_Handle_Node_Type_.
       
@@ -8508,8 +8521,9 @@ Module collections.
           forall (BorrowType K V NodeType HandleType : Ty.t),
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            (Self BorrowType K V NodeType HandleType)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self BorrowType K V NodeType HandleType)
             (* Instance *) [ ("eq", InstanceField.Method (eq BorrowType K V NodeType HandleType)) ].
       End Impl_core_cmp_PartialEq_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
       
@@ -9207,16 +9221,19 @@ Module collections.
             {
               name := "Left";
               item := StructTuple [ T ];
-              discriminant := None;
             };
             {
               name := "Right";
               item := StructTuple [ T ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_LeftOrRight_Left :
+        M.IsDiscriminant "alloc::collections::btree::node::LeftOrRight::Left" 0.
+      Axiom IsDiscriminant_LeftOrRight_Right :
+        M.IsDiscriminant "alloc::collections::btree::node::LeftOrRight::Right" 1.
       
       (*
       fn splitpoint(edge_idx: usize) -> (usize, LeftOrRight<usize>) {
@@ -24233,16 +24250,19 @@ Module collections.
             {
               name := "Leaf";
               item := StructTuple [ Leaf ];
-              discriminant := None;
             };
             {
               name := "Internal";
               item := StructTuple [ Internal ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_ForceResult_Leaf :
+        M.IsDiscriminant "alloc::collections::btree::node::ForceResult::Leaf" 0.
+      Axiom IsDiscriminant_ForceResult_Internal :
+        M.IsDiscriminant "alloc::collections::btree::node::ForceResult::Internal" 1.
       
       (* StructRecord
         {
@@ -24503,6 +24523,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum Internal
         {
@@ -24511,6 +24532,7 @@ Module collections.
           variants := [];
         }
         *)
+        
         
         (*
         Enum LeafOrInternal
@@ -24521,6 +24543,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum Owned
         {
@@ -24529,6 +24552,7 @@ Module collections.
           variants := [];
         }
         *)
+        
         
         (*
         Enum Dying
@@ -24539,6 +24563,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum DormantMut
         {
@@ -24547,6 +24572,7 @@ Module collections.
           variants := [];
         }
         *)
+        
         
         (* StructTuple
           {
@@ -24604,8 +24630,9 @@ Module collections.
           Axiom Implements :
             M.IsTraitInstance
               "alloc::collections::btree::node::marker::BorrowType"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *)
               [ ("value_TRAVERSAL_PERMIT", InstanceField.Constant value_TRAVERSAL_PERMIT) ].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_Owned.
@@ -24616,8 +24643,9 @@ Module collections.
           Axiom Implements :
             M.IsTraitInstance
               "alloc::collections::btree::node::marker::BorrowType"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_Dying.
         
@@ -24627,8 +24655,9 @@ Module collections.
           Axiom Implements :
             M.IsTraitInstance
               "alloc::collections::btree::node::marker::BorrowType"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_Immut.
         
@@ -24638,8 +24667,9 @@ Module collections.
           Axiom Implements :
             M.IsTraitInstance
               "alloc::collections::btree::node::marker::BorrowType"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_Mut.
         
@@ -24649,8 +24679,9 @@ Module collections.
           Axiom Implements :
             M.IsTraitInstance
               "alloc::collections::btree::node::marker::BorrowType"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_ValMut.
         
@@ -24660,8 +24691,9 @@ Module collections.
           Axiom Implements :
             M.IsTraitInstance
               "alloc::collections::btree::node::marker::BorrowType"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [].
         End Impl_alloc_collections_btree_node_marker_BorrowType_for_alloc_collections_btree_node_marker_DormantMut.
         
@@ -24674,6 +24706,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum Edge
         {
@@ -24682,6 +24715,7 @@ Module collections.
           variants := [];
         }
         *)
+        
       End marker.
       
       (*

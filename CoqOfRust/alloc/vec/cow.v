@@ -28,9 +28,10 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+          (Self T)
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_borrow_Cow_slice_T.
     
@@ -77,9 +78,10 @@ Module vec.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+          (Self N T)
           (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
     End Impl_core_convert_From_where_core_clone_Clone_T_ref__array_N_T_for_alloc_borrow_Cow_slice_T.
     
@@ -106,9 +108,10 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
+          [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
+          (Self T)
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_clone_Clone_T_alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_borrow_Cow_slice_T.
     
@@ -156,15 +159,15 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *)
             Ty.apply
               (Ty.path "&")
               []
               [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
           ]
+          (Self T)
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_clone_Clone_T_ref__alloc_vec_Vec_T_alloc_alloc_Global_for_alloc_borrow_Cow_slice_T.
     
@@ -207,8 +210,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::FromIterator"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
     End Impl_core_iter_traits_collect_FromIterator_where_core_clone_Clone_T_T_for_alloc_borrow_Cow_slice_T.
   End cow.

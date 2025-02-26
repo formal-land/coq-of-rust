@@ -1131,7 +1131,7 @@ Module Impl_Locals.
 End Impl_Locals.
 
 Module IntegerValue.
-  Inductive t : Type :=
+  Inductive t : Set :=
   | U8 : Z -> t
   | U16 : Z -> t
   | U32 : Z -> t

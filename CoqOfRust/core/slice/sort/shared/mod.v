@@ -14,8 +14,9 @@ Module slice.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::slice::sort::shared::FreezeMarker"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_slice_sort_shared_FreezeMarker_where_core_marker_Freeze_T_for_T.
       

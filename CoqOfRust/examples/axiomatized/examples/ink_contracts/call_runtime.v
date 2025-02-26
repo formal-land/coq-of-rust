@@ -17,8 +17,9 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
@@ -30,8 +31,9 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
@@ -39,7 +41,12 @@ Module Impl_core_marker_Copy_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -61,6 +68,7 @@ Enum MultiAddress
 }
 *)
 
+
 Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
   Definition Self : Ty.t :=
     Ty.apply
@@ -73,8 +81,9 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "call_runtime::AccountId" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::AccountId" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
@@ -97,11 +106,13 @@ Enum BalancesCall
                   [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
               ("value", Ty.path "u128")
             ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_BalancesCall_Transfer :
+  M.IsDiscriminant "call_runtime::BalancesCall::Transfer" 0.
 
 (*
 Enum RuntimeCall
@@ -113,11 +124,13 @@ Enum RuntimeCall
       {
         name := "Balances";
         item := StructTuple [ Ty.path "call_runtime::BalancesCall" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_RuntimeCall_Balances :
+  M.IsDiscriminant "call_runtime::RuntimeCall::Balances" 0.
 
 (* StructTuple
   {
@@ -135,8 +148,9 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
@@ -150,11 +164,13 @@ Enum RuntimeError
       {
         name := "CallRuntimeFailed";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_RuntimeError_CallRuntimeFailed :
+  M.IsDiscriminant "call_runtime::RuntimeError::CallRuntimeFailed" 0.
 
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
@@ -164,8 +180,9 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
@@ -175,8 +192,9 @@ Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
@@ -188,8 +206,9 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
@@ -201,8 +220,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
@@ -217,16 +237,19 @@ Enum EnvError
       {
         name := "CallRuntimeFailed";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "AnotherKindOfError";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_EnvError_CallRuntimeFailed :
+  M.IsDiscriminant "call_runtime::EnvError::CallRuntimeFailed" 0.
+Axiom IsDiscriminant_EnvError_AnotherKindOfError :
+  M.IsDiscriminant "call_runtime::EnvError::AnotherKindOfError" 1.
 
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
@@ -236,8 +259,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "call_runtime::EnvError" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::EnvError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 

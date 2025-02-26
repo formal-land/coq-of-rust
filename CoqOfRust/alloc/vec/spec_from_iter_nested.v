@@ -272,8 +272,9 @@ Module vec.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_iter_nested::SpecFromIterNested"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T; I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T I)) ].
     End Impl_alloc_vec_spec_from_iter_nested_SpecFromIterNested_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
     
@@ -369,7 +370,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -419,8 +420,9 @@ Module vec.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_iter_nested::SpecFromIterNested"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T; I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T I)) ].
     End Impl_alloc_vec_spec_from_iter_nested_SpecFromIterNested_where_core_iter_traits_marker_TrustedLen_I_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
   End spec_from_iter_nested.

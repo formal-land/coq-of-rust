@@ -664,7 +664,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| pivot |) |),
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                  Value.Integer IntegerKind.Usize 0
                                                 |)
                                               |)
                                             |) in
@@ -908,7 +908,7 @@ Module slice.
                                   Pointer.Kind.MutRef,
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| pivot |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |)
                                 |)
                               |) in
@@ -2771,8 +2771,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::ops::drop::Drop"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
         End Impl_core_ops_drop_Drop_for_core_slice_sort_unstable_quicksort_GapGuard_T.
         
@@ -2843,8 +2844,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::ops::drop::Drop"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
         End Impl_core_ops_drop_Drop_for_core_slice_sort_unstable_quicksort_GapGuardRaw_T.
       End quicksort.

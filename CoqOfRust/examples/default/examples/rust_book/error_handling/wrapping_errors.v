@@ -11,16 +11,18 @@ Enum DoubleError
       {
         name := "EmptyVec";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Parse";
         item := StructTuple [ Ty.path "core::num::error::ParseIntError" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_DoubleError_EmptyVec :
+  M.IsDiscriminant "wrapping_errors::DoubleError::EmptyVec" 0.
+Axiom IsDiscriminant_DoubleError_Parse : M.IsDiscriminant "wrapping_errors::DoubleError::Parse" 1.
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".
@@ -105,8 +107,9 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
 
@@ -160,7 +163,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -208,7 +211,7 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -243,8 +246,9 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
 
@@ -298,8 +302,9 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
   Axiom Implements :
     M.IsTraitInstance
       "core::error::Error"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("source", InstanceField.Method source) ].
 End Impl_core_error_Error_for_wrapping_errors_DoubleError.
 
@@ -323,8 +328,9 @@ Module Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_D
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "core::num::error::ParseIntError" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "core::num::error::ParseIntError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_core_num_error_ParseIntError_for_wrapping_errors_DoubleError.
 
@@ -689,7 +695,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -760,7 +767,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -862,7 +870,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
-                                      [],
+                                      [
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.Integer IntegerKind.Usize 1
+                                      ],
                                       []
                                     |),
                                     [

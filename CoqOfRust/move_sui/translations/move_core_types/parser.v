@@ -12,141 +12,151 @@ Module parser.
         {
           name := "U8Type";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U16Type";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U32Type";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U64Type";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U128Type";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U256Type";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BoolType";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AddressType";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "VectorType";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SignerType";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Whitespace";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "Name";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "U8";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "Bytes";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "True";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "False";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ColonColon";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Lt";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Gt";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Comma";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EOF";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Token_U8Type : M.IsDiscriminant "move_core_types::parser::Token::U8Type" 0.
+  Axiom IsDiscriminant_Token_U16Type : M.IsDiscriminant "move_core_types::parser::Token::U16Type" 1.
+  Axiom IsDiscriminant_Token_U32Type : M.IsDiscriminant "move_core_types::parser::Token::U32Type" 2.
+  Axiom IsDiscriminant_Token_U64Type : M.IsDiscriminant "move_core_types::parser::Token::U64Type" 3.
+  Axiom IsDiscriminant_Token_U128Type :
+    M.IsDiscriminant "move_core_types::parser::Token::U128Type" 4.
+  Axiom IsDiscriminant_Token_U256Type :
+    M.IsDiscriminant "move_core_types::parser::Token::U256Type" 5.
+  Axiom IsDiscriminant_Token_BoolType :
+    M.IsDiscriminant "move_core_types::parser::Token::BoolType" 6.
+  Axiom IsDiscriminant_Token_AddressType :
+    M.IsDiscriminant "move_core_types::parser::Token::AddressType" 7.
+  Axiom IsDiscriminant_Token_VectorType :
+    M.IsDiscriminant "move_core_types::parser::Token::VectorType" 8.
+  Axiom IsDiscriminant_Token_SignerType :
+    M.IsDiscriminant "move_core_types::parser::Token::SignerType" 9.
+  Axiom IsDiscriminant_Token_Whitespace :
+    M.IsDiscriminant "move_core_types::parser::Token::Whitespace" 10.
+  Axiom IsDiscriminant_Token_Name : M.IsDiscriminant "move_core_types::parser::Token::Name" 11.
+  Axiom IsDiscriminant_Token_Address :
+    M.IsDiscriminant "move_core_types::parser::Token::Address" 12.
+  Axiom IsDiscriminant_Token_U8 : M.IsDiscriminant "move_core_types::parser::Token::U8" 13.
+  Axiom IsDiscriminant_Token_U16 : M.IsDiscriminant "move_core_types::parser::Token::U16" 14.
+  Axiom IsDiscriminant_Token_U32 : M.IsDiscriminant "move_core_types::parser::Token::U32" 15.
+  Axiom IsDiscriminant_Token_U64 : M.IsDiscriminant "move_core_types::parser::Token::U64" 16.
+  Axiom IsDiscriminant_Token_U128 : M.IsDiscriminant "move_core_types::parser::Token::U128" 17.
+  Axiom IsDiscriminant_Token_U256 : M.IsDiscriminant "move_core_types::parser::Token::U256" 18.
+  Axiom IsDiscriminant_Token_Bytes : M.IsDiscriminant "move_core_types::parser::Token::Bytes" 19.
+  Axiom IsDiscriminant_Token_True : M.IsDiscriminant "move_core_types::parser::Token::True" 20.
+  Axiom IsDiscriminant_Token_False : M.IsDiscriminant "move_core_types::parser::Token::False" 21.
+  Axiom IsDiscriminant_Token_ColonColon :
+    M.IsDiscriminant "move_core_types::parser::Token::ColonColon" 22.
+  Axiom IsDiscriminant_Token_Lt : M.IsDiscriminant "move_core_types::parser::Token::Lt" 23.
+  Axiom IsDiscriminant_Token_Gt : M.IsDiscriminant "move_core_types::parser::Token::Gt" 24.
+  Axiom IsDiscriminant_Token_Comma : M.IsDiscriminant "move_core_types::parser::Token::Comma" 25.
+  Axiom IsDiscriminant_Token_EOF : M.IsDiscriminant "move_core_types::parser::Token::EOF" 26.
   
   Module Impl_core_cmp_Eq_for_move_core_types_parser_Token.
     Definition Self : Ty.t := Ty.path "move_core_types::parser::Token".
@@ -173,8 +183,9 @@ Module parser.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_parser_Token.
@@ -185,8 +196,9 @@ Module parser.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_parser_Token.
   
@@ -626,8 +638,9 @@ Module parser.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_parser_Token.
   
@@ -1436,8 +1449,9 @@ Module parser.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_parser_Token.
   
@@ -1999,7 +2013,14 @@ Module parser.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1;
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -2610,7 +2631,11 @@ Module parser.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_const",
-                                                                                              [],
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  1
+                                                                                              ],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -3018,7 +3043,11 @@ Module parser.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
-                                                                            [],
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ],
                                                                             []
                                                                           |),
                                                                           [
@@ -3603,7 +3632,11 @@ Module parser.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
-                                                                            [],
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ],
                                                                             []
                                                                           |),
                                                                           [
@@ -4061,7 +4094,11 @@ Module parser.
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
                                                                                   "new_const",
-                                                                                  [],
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  ],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -4381,7 +4418,11 @@ Module parser.
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
                                                                                   "new_const",
-                                                                                  [],
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  ],
                                                                                   []
                                                                                 |),
                                                                                 [
@@ -4933,7 +4974,11 @@ Module parser.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
-                                                                    [],
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ],
                                                                     []
                                                                   |),
                                                                   [
@@ -5432,7 +5477,7 @@ Module parser.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_const",
-                                                  [],
+                                                  [ Value.Integer IntegerKind.Usize 1 ],
                                                   []
                                                 |),
                                                 [
@@ -5709,7 +5754,10 @@ Module parser.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
-                                                            [],
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 2;
+                                                              Value.Integer IntegerKind.Usize 2
+                                                            ],
                                                             []
                                                           |),
                                                           [
@@ -6693,7 +6741,10 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 2;
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -9166,7 +9217,10 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 2;
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -11006,7 +11060,10 @@ Module parser.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 2;
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -12872,7 +12929,14 @@ Module parser.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2;
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -13106,7 +13170,10 @@ Module parser.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
-                                                        [],
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 1;
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ],
                                                         []
                                                       |),
                                                       [

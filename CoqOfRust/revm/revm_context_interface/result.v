@@ -12,8 +12,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::result::HaltReasonTrait"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_revm_context_interface_result_HaltReasonTrait_where_core_clone_Clone_HaltReasonT_where_core_fmt_Debug_HaltReasonT_where_core_cmp_PartialEq_HaltReasonT_where_core_cmp_Eq_HaltReasonT_where_core_convert_From_HaltReasonT_revm_context_interface_result_HaltReason_for_HaltReasonT.
   
@@ -113,8 +114,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -223,8 +225,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -236,8 +239,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -349,8 +353,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -390,8 +395,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -427,7 +433,6 @@ Module result.
                     ]);
                 ("output", Ty.path "revm_context_interface::result::Output")
               ];
-          discriminant := None;
         };
         {
           name := "Revert";
@@ -435,16 +440,21 @@ Module result.
             StructRecord
               [ ("gas_used", Ty.path "u64"); ("output", Ty.path "alloy_primitives::bytes_::Bytes")
               ];
-          discriminant := None;
         };
         {
           name := "Halt";
           item := StructRecord [ ("reason", HaltReasonT); ("gas_used", Ty.path "u64") ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_ExecutionResult_Success :
+    M.IsDiscriminant "revm_context_interface::result::ExecutionResult::Success" 0.
+  Axiom IsDiscriminant_ExecutionResult_Revert :
+    M.IsDiscriminant "revm_context_interface::result::ExecutionResult::Revert" 1.
+  Axiom IsDiscriminant_ExecutionResult_Halt :
+    M.IsDiscriminant "revm_context_interface::result::ExecutionResult::Halt" 2.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
@@ -719,8 +729,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -939,8 +950,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -952,8 +964,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -1408,8 +1421,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -1481,8 +1495,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -1809,8 +1824,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("hash", InstanceField.Method (hash HaltReasonT)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -2412,7 +2428,6 @@ Module result.
         {
           name := "Call";
           item := StructTuple [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-          discriminant := None;
         };
         {
           name := "Create";
@@ -2425,11 +2440,15 @@ Module result.
                   []
                   [ Ty.path "alloy_primitives::bits::address::Address" ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Output_Call :
+    M.IsDiscriminant "revm_context_interface::result::Output::Call" 0.
+  Axiom IsDiscriminant_Output_Create :
+    M.IsDiscriminant "revm_context_interface::result::Output::Create" 1.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_Output.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::Output".
@@ -2532,8 +2551,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_Output.
   
@@ -2643,8 +2663,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_Output.
   
@@ -2654,8 +2675,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_Output.
   
@@ -2868,8 +2890,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_Output.
   
@@ -2905,8 +2928,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_Output.
@@ -3053,8 +3077,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_Output.
   
@@ -3262,31 +3287,37 @@ Module result.
         {
           name := "Transaction";
           item := StructTuple [ TransactionError ];
-          discriminant := None;
         };
         {
           name := "Header";
           item := StructTuple [ Ty.path "revm_context_interface::result::InvalidHeader" ];
-          discriminant := None;
         };
         {
           name := "Database";
           item := StructTuple [ DBError ];
-          discriminant := None;
         };
         {
           name := "Custom";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "Precompile";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_EVMError_Transaction :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Transaction" 0.
+  Axiom IsDiscriminant_EVMError_Header :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Header" 1.
+  Axiom IsDiscriminant_EVMError_Database :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Database" 2.
+  Axiom IsDiscriminant_EVMError_Custom :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Custom" 3.
+  Axiom IsDiscriminant_EVMError_Precompile :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Precompile" 4.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_DBError_where_core_fmt_Debug_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
     Definition Self (DBError TransactionError : Ty.t) : Ty.t :=
@@ -3497,8 +3528,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt DBError TransactionError)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_DBError_where_core_fmt_Debug_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -3680,8 +3712,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [ ("clone", InstanceField.Method (clone DBError TransactionError)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_DBError_where_core_clone_Clone_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -3696,8 +3729,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -3986,8 +4020,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [ ("eq", InstanceField.Method (eq DBError TransactionError)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_where_core_cmp_PartialEq_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -4044,8 +4079,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -4078,8 +4114,9 @@ Module result.
       forall (DBError TX : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ DBError ]
         (Self DBError TX)
-        (* Trait polymorphic types *) [ (* T *) DBError ]
         (* Instance *) [ ("from", InstanceField.Method (from DBError TX)) ].
   End Impl_core_convert_From_where_revm_database_interface_DBErrorMarker_DBError_DBError_for_revm_context_interface_result_EVMError_DBError_TX.
   
@@ -4116,8 +4153,9 @@ Module result.
       forall (DB TX : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::result::FromStringError"
-        (Self DB TX)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DB TX)
         (* Instance *) [ ("from_string", InstanceField.Method (from_string DB TX)) ].
   End Impl_revm_context_interface_result_FromStringError_for_revm_context_interface_result_EVMError_DB_TX.
   
@@ -4149,9 +4187,10 @@ Module result.
       forall (DB : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self DB)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::InvalidTransaction" ]
+        [ Ty.path "revm_context_interface::result::InvalidTransaction" ]
+        (Self DB)
         (* Instance *) [ ("from", InstanceField.Method (from DB)) ].
   End Impl_core_convert_From_revm_context_interface_result_InvalidTransaction_for_revm_context_interface_result_EVMError_DB_revm_context_interface_result_InvalidTransaction.
   
@@ -4413,8 +4452,9 @@ Module result.
       forall (DBError TransactionValidationErrorT : Ty.t),
       M.IsTraitInstance
         "core::error::Error"
-        (Self DBError TransactionValidationErrorT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionValidationErrorT)
         (* Instance *)
         [ ("source", InstanceField.Method (source DBError TransactionValidationErrorT)) ].
   End Impl_core_error_Error_where_core_error_Error_DBError_where_core_error_Error_TransactionValidationErrorT_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
@@ -4481,7 +4521,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -4565,7 +4606,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -4651,7 +4693,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -4788,8 +4831,9 @@ Module result.
       forall (DBError TransactionValidationErrorT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self DBError TransactionValidationErrorT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionValidationErrorT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt DBError TransactionValidationErrorT)) ].
   End Impl_core_fmt_Display_where_core_fmt_Display_DBError_where_core_fmt_Display_TransactionValidationErrorT_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
   
@@ -4826,9 +4870,9 @@ Module result.
       forall (DBError TransactionValidationErrorT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::InvalidHeader" ]
         (Self DBError TransactionValidationErrorT)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::InvalidHeader" ]
         (* Instance *)
         [ ("from", InstanceField.Method (from DBError TransactionValidationErrorT)) ].
   End Impl_core_convert_From_revm_context_interface_result_InvalidHeader_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
@@ -4843,27 +4887,22 @@ Module result.
         {
           name := "PriorityFeeGreaterThanMaxFee";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "GasPriceLessThanBasefee";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallerGasLimitMoreThanBlock";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallGasCostMoreThanGasLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "RejectCallerWithCode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LackOfFundForMaxFee";
@@ -4893,128 +4932,197 @@ Module result.
                       Ty.path "alloc::alloc::Global"
                     ])
               ];
-          discriminant := None;
         };
         {
           name := "OverflowPaymentInTransaction";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceOverflowInTransaction";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceTooHigh";
           item := StructRecord [ ("tx", Ty.path "u64"); ("state", Ty.path "u64") ];
-          discriminant := None;
         };
         {
           name := "NonceTooLow";
           item := StructRecord [ ("tx", Ty.path "u64"); ("state", Ty.path "u64") ];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidChainId";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AccessListNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MaxFeePerBlobGasNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobVersionedHashesNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobGasPriceGreaterThanMax";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EmptyBlobs";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobCreateTransaction";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooManyBlobs";
           item := StructRecord [ ("max", Ty.path "usize"); ("have", Ty.path "usize") ];
-          discriminant := None;
         };
         {
           name := "BlobVersionNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofCrateShouldHaveToAddress";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AuthorizationListNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AuthorizationListInvalidFields";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EmptyAuthorizationList";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidAuthorizationList";
           item :=
             StructTuple
               [ Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ];
-          discriminant := None;
         };
         {
           name := "Eip2930NotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eip1559NotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eip4844NotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eip7702NotSupported";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InvalidTransaction_PriorityFeeGreaterThanMaxFee :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+      0.
+  Axiom IsDiscriminant_InvalidTransaction_GasPriceLessThanBasefee :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+      1.
+  Axiom IsDiscriminant_InvalidTransaction_CallerGasLimitMoreThanBlock :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
+      2.
+  Axiom IsDiscriminant_InvalidTransaction_CallGasCostMoreThanGasLimit :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
+      3.
+  Axiom IsDiscriminant_InvalidTransaction_RejectCallerWithCode :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode" 4.
+  Axiom IsDiscriminant_InvalidTransaction_LackOfFundForMaxFee :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee" 5.
+  Axiom IsDiscriminant_InvalidTransaction_OverflowPaymentInTransaction :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
+      6.
+  Axiom IsDiscriminant_InvalidTransaction_NonceOverflowInTransaction :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+      7.
+  Axiom IsDiscriminant_InvalidTransaction_NonceTooHigh :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::NonceTooHigh" 8.
+  Axiom IsDiscriminant_InvalidTransaction_NonceTooLow :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::NonceTooLow" 9.
+  Axiom IsDiscriminant_InvalidTransaction_CreateInitCodeSizeLimit :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
+      10.
+  Axiom IsDiscriminant_InvalidTransaction_InvalidChainId :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::InvalidChainId" 11.
+  Axiom IsDiscriminant_InvalidTransaction_AccessListNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+      12.
+  Axiom IsDiscriminant_InvalidTransaction_MaxFeePerBlobGasNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+      13.
+  Axiom IsDiscriminant_InvalidTransaction_BlobVersionedHashesNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
+      14.
+  Axiom IsDiscriminant_InvalidTransaction_BlobGasPriceGreaterThanMax :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+      15.
+  Axiom IsDiscriminant_InvalidTransaction_EmptyBlobs :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::EmptyBlobs" 16.
+  Axiom IsDiscriminant_InvalidTransaction_BlobCreateTransaction :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction" 17.
+  Axiom IsDiscriminant_InvalidTransaction_TooManyBlobs :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::TooManyBlobs" 18.
+  Axiom IsDiscriminant_InvalidTransaction_BlobVersionNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
+      19.
+  Axiom IsDiscriminant_InvalidTransaction_EofCrateShouldHaveToAddress :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+      20.
+  Axiom IsDiscriminant_InvalidTransaction_AuthorizationListNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
+      21.
+  Axiom IsDiscriminant_InvalidTransaction_AuthorizationListInvalidFields :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
+      22.
+  Axiom IsDiscriminant_InvalidTransaction_EmptyAuthorizationList :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+      23.
+  Axiom IsDiscriminant_InvalidTransaction_InvalidAuthorizationList :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
+      24.
+  Axiom IsDiscriminant_InvalidTransaction_Eip2930NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported" 25.
+  Axiom IsDiscriminant_InvalidTransaction_Eip1559NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported" 26.
+  Axiom IsDiscriminant_InvalidTransaction_Eip4844NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported" 27.
+  Axiom IsDiscriminant_InvalidTransaction_Eip7702NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported" 28.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidTransaction.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidTransaction".
@@ -5976,8 +6084,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidTransaction.
   
@@ -6606,8 +6715,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_InvalidTransaction.
   
@@ -6617,8 +6727,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7086,8 +7197,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7147,8 +7259,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_InvalidTransaction.
@@ -7480,8 +7593,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7491,8 +7605,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "revm_context_interface::transaction::TransactionError"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_revm_context_interface_transaction_TransactionError_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7518,9 +7633,10 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ]
+        [ Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_specification_eip7702_authorization_list_InvalidAuthorization_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7530,8 +7646,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7642,7 +7759,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -7694,7 +7811,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -7743,7 +7860,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -7796,7 +7913,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -7848,7 +7965,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -7910,7 +8027,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2
+                              ],
                               []
                             |),
                             [
@@ -8045,7 +8163,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8097,7 +8215,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8155,7 +8273,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
+                              ],
                               []
                             |),
                             [
@@ -8258,7 +8377,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
+                              ],
                               []
                             |),
                             [
@@ -8352,7 +8472,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8400,7 +8520,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8447,7 +8567,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8495,7 +8615,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8547,7 +8667,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8599,7 +8719,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8652,7 +8772,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8699,7 +8819,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8756,7 +8876,8 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
+                              ],
                               []
                             |),
                             [
@@ -8850,7 +8971,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8898,7 +9019,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -8950,7 +9071,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9002,7 +9123,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9054,7 +9175,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9102,7 +9223,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9150,7 +9271,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9198,7 +9319,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9246,7 +9367,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9308,8 +9429,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_context_interface_result_InvalidTransaction.
   
@@ -9323,16 +9445,19 @@ Module result.
         {
           name := "PrevrandaoNotSet";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ExcessBlobGasNotSet";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InvalidHeader_PrevrandaoNotSet :
+    M.IsDiscriminant "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet" 0.
+  Axiom IsDiscriminant_InvalidHeader_ExcessBlobGasNotSet :
+    M.IsDiscriminant "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet" 1.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidHeader.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidHeader".
@@ -9395,8 +9520,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidHeader.
   
@@ -9406,8 +9532,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_InvalidHeader.
   
@@ -9427,8 +9554,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_InvalidHeader.
   
@@ -9438,8 +9566,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_InvalidHeader.
   
@@ -9486,8 +9615,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidHeader.
   
@@ -9511,8 +9641,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_InvalidHeader.
@@ -9568,8 +9699,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_InvalidHeader.
   
@@ -9579,8 +9711,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_context_interface_result_InvalidHeader.
   
@@ -9632,7 +9765,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9680,7 +9813,7 @@ Module result.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9710,8 +9843,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_context_interface_result_InvalidHeader.
   
@@ -9725,26 +9859,31 @@ Module result.
         {
           name := "Stop";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Return";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SelfDestruct";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofReturnContract";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SuccessReason_Stop :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::Stop" 0.
+  Axiom IsDiscriminant_SuccessReason_Return :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::Return" 1.
+  Axiom IsDiscriminant_SuccessReason_SelfDestruct :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::SelfDestruct" 2.
+  Axiom IsDiscriminant_SuccessReason_EofReturnContract :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::EofReturnContract" 3.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_SuccessReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::SuccessReason".
@@ -9835,8 +9974,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_SuccessReason.
   
@@ -9856,8 +9996,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_SuccessReason.
   
@@ -9867,8 +10008,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_SuccessReason.
   
@@ -9878,8 +10020,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_SuccessReason.
   
@@ -9926,8 +10069,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_SuccessReason.
   
@@ -9951,8 +10095,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_SuccessReason.
@@ -10008,8 +10153,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_SuccessReason.
   
@@ -10023,121 +10169,145 @@ Module result.
         {
           name := "OutOfGas";
           item := StructTuple [ Ty.path "revm_context_interface::result::OutOfGasError" ];
-          discriminant := None;
         };
         {
           name := "OpcodeNotFound";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidFEOpcode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidJump";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NotActivated";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StackUnderflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StackOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfOffset";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateCollision";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PrecompileError";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateContractSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateContractStartingWithEF";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowPayment";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StateChangeDuringStaticCall";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallNotAllowedInsideStatic";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfFunds";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallTooDeep";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofAuxDataOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofAuxDataTooSmall";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SubRoutineStackOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEXTCALLTarget";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_HaltReason_OutOfGas :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OutOfGas" 0.
+  Axiom IsDiscriminant_HaltReason_OpcodeNotFound :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OpcodeNotFound" 1.
+  Axiom IsDiscriminant_HaltReason_InvalidFEOpcode :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::InvalidFEOpcode" 2.
+  Axiom IsDiscriminant_HaltReason_InvalidJump :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::InvalidJump" 3.
+  Axiom IsDiscriminant_HaltReason_NotActivated :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::NotActivated" 4.
+  Axiom IsDiscriminant_HaltReason_StackUnderflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::StackUnderflow" 5.
+  Axiom IsDiscriminant_HaltReason_StackOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::StackOverflow" 6.
+  Axiom IsDiscriminant_HaltReason_OutOfOffset :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OutOfOffset" 7.
+  Axiom IsDiscriminant_HaltReason_CreateCollision :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateCollision" 8.
+  Axiom IsDiscriminant_HaltReason_PrecompileError :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::PrecompileError" 9.
+  Axiom IsDiscriminant_HaltReason_NonceOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::NonceOverflow" 10.
+  Axiom IsDiscriminant_HaltReason_CreateContractSizeLimit :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateContractSizeLimit" 11.
+  Axiom IsDiscriminant_HaltReason_CreateContractStartingWithEF :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateContractStartingWithEF" 12.
+  Axiom IsDiscriminant_HaltReason_CreateInitCodeSizeLimit :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit" 13.
+  Axiom IsDiscriminant_HaltReason_OverflowPayment :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OverflowPayment" 14.
+  Axiom IsDiscriminant_HaltReason_StateChangeDuringStaticCall :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall" 15.
+  Axiom IsDiscriminant_HaltReason_CallNotAllowedInsideStatic :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic" 16.
+  Axiom IsDiscriminant_HaltReason_OutOfFunds :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OutOfFunds" 17.
+  Axiom IsDiscriminant_HaltReason_CallTooDeep :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CallTooDeep" 18.
+  Axiom IsDiscriminant_HaltReason_EofAuxDataOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::EofAuxDataOverflow" 19.
+  Axiom IsDiscriminant_HaltReason_EofAuxDataTooSmall :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::EofAuxDataTooSmall" 20.
+  Axiom IsDiscriminant_HaltReason_SubRoutineStackOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::SubRoutineStackOverflow" 21.
+  Axiom IsDiscriminant_HaltReason_InvalidEXTCALLTarget :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget" 22.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_HaltReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::HaltReason".
@@ -10835,8 +11005,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_HaltReason.
   
@@ -10861,8 +11032,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_HaltReason.
   
@@ -10872,8 +11044,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_HaltReason.
   
@@ -10883,8 +11056,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_HaltReason.
   
@@ -10990,8 +11164,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_HaltReason.
   
@@ -11020,8 +11195,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_HaltReason.
@@ -11112,8 +11288,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_HaltReason.
   
@@ -11127,36 +11304,43 @@ Module result.
         {
           name := "Basic";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MemoryLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Memory";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Precompile";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidOperand";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ReentrancySentry";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_OutOfGasError_Basic :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::Basic" 0.
+  Axiom IsDiscriminant_OutOfGasError_MemoryLimit :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::MemoryLimit" 1.
+  Axiom IsDiscriminant_OutOfGasError_Memory :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::Memory" 2.
+  Axiom IsDiscriminant_OutOfGasError_Precompile :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::Precompile" 3.
+  Axiom IsDiscriminant_OutOfGasError_InvalidOperand :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::InvalidOperand" 4.
+  Axiom IsDiscriminant_OutOfGasError_ReentrancySentry :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::ReentrancySentry" 5.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_OutOfGasError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::OutOfGasError".
@@ -11275,8 +11459,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_OutOfGasError.
   
@@ -11286,8 +11471,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_OutOfGasError.
   
@@ -11307,8 +11493,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_OutOfGasError.
   
@@ -11318,8 +11505,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_OutOfGasError.
   
@@ -11366,8 +11554,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_OutOfGasError.
   
@@ -11391,8 +11580,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_OutOfGasError.
@@ -11448,8 +11638,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_OutOfGasError.
 End result.

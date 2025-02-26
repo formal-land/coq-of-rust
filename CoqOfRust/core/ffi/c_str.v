@@ -17,8 +17,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_CStr.
     
@@ -68,8 +69,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
     
@@ -98,8 +100,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
@@ -148,8 +151,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_ffi_c_str_CStr.
     
@@ -208,8 +212,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ffi_c_str_FromBytesWithNulError.
     
@@ -219,8 +224,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesWithNulError.
     
@@ -270,8 +276,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulError.
     
@@ -300,8 +307,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulError.
@@ -360,8 +368,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_c_str_FromBytesWithNulError.
     
@@ -375,16 +384,19 @@ Module ffi.
           {
             name := "InteriorNul";
             item := StructTuple [ Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "NotNulTerminated";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_FromBytesWithNulErrorKind_InteriorNul :
+      M.IsDiscriminant "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul" 0.
+    Axiom IsDiscriminant_FromBytesWithNulErrorKind_NotNulTerminated :
+      M.IsDiscriminant "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated" 1.
     
     Module Impl_core_clone_Clone_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
@@ -451,8 +463,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -462,8 +475,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -561,8 +575,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -591,8 +606,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
@@ -684,8 +700,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -807,8 +824,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::error::Error"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("description", InstanceField.Method description) ].
     End Impl_core_error_Error_for_core_ffi_c_str_FromBytesWithNulError.
     
@@ -866,8 +884,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ffi_c_str_FromBytesUntilNulError.
     
@@ -877,8 +896,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
     
@@ -928,8 +948,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
     
@@ -958,8 +979,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesUntilNulError.
@@ -1017,8 +1039,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_c_str_FromBytesUntilNulError.
     
@@ -1049,7 +1072,7 @@ Module ffi.
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_const",
-                    [],
+                    [ Value.Integer IntegerKind.Usize 1 ],
                     []
                   |),
                   [
@@ -1075,8 +1098,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_ffi_c_str_FromBytesUntilNulError.
     
@@ -1104,7 +1128,12 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -1201,8 +1230,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_c_str_CStr.
     
@@ -1259,8 +1289,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_ref__core_ffi_c_str_CStr.
     
@@ -1480,7 +1511,10 @@ Module ffi.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 1;
+                                                Value.Integer IntegerKind.Usize 1
+                                              ],
                                               []
                                             |),
                                             [
@@ -1607,8 +1641,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_ffi_c_str_FromBytesWithNulError.
     
@@ -2524,8 +2559,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
     
@@ -2605,8 +2641,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_ffi_c_str_CStr.
     
@@ -2764,7 +2801,10 @@ Module ffi.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
-                                  [],
+                                  [
+                                    Value.Integer IntegerKind.Usize 2;
+                                    Value.Integer IntegerKind.Usize 2
+                                  ],
                                   []
                                 |),
                                 [
@@ -2876,9 +2916,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::index::Index"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
     End Impl_core_ops_index_Index_core_ops_range_RangeFrom_usize_for_core_ffi_c_str_CStr.
@@ -2903,8 +2944,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ffi::c_str::CStr" ]
           (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
     End Impl_core_convert_AsRef_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
     
@@ -3187,8 +3229,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ffi_c_str_Bytes.
     
@@ -3257,8 +3300,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_c_str_Bytes.
     
@@ -3268,8 +3312,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Send"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Send_for_core_ffi_c_str_Bytes.
     
@@ -3279,8 +3324,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_ffi_c_str_Bytes.
     
@@ -3587,8 +3633,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -3604,8 +3651,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_ffi_c_str_Bytes.
   End c_str.

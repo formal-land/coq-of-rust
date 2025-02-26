@@ -25,8 +25,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_bool.
@@ -50,8 +51,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_usize.
@@ -75,8 +77,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_u8.
@@ -100,8 +103,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_u16.
@@ -125,8 +129,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_u32.
@@ -150,8 +155,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_u64.
@@ -175,8 +181,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_u128.
@@ -200,8 +207,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_isize.
@@ -225,8 +233,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_i8.
@@ -250,8 +259,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_i16.
@@ -275,8 +285,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_i32.
@@ -300,8 +311,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_i64.
@@ -325,8 +337,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_i128.
@@ -354,8 +367,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_never.
@@ -383,8 +397,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_bool.
@@ -409,8 +424,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_usize.
@@ -435,8 +451,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_u8.
@@ -461,8 +478,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_u16.
@@ -487,8 +505,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_u32.
@@ -513,8 +532,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_u64.
@@ -539,8 +559,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_u128.
@@ -565,8 +586,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_isize.
@@ -591,8 +613,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_i8.
@@ -617,8 +640,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_i16.
@@ -643,8 +667,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_i32.
@@ -669,8 +694,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_i64.
@@ -695,8 +721,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_i128.
@@ -724,8 +751,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_bool.
@@ -750,8 +778,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_usize.
@@ -776,8 +805,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_u8.
@@ -802,8 +832,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_u16.
@@ -828,8 +859,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_u32.
@@ -854,8 +886,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_u64.
@@ -880,8 +913,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_u128.
@@ -906,8 +940,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_isize.
@@ -932,8 +967,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_i8.
@@ -958,8 +994,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_i16.
@@ -984,8 +1021,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_i32.
@@ -1010,8 +1048,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_i64.
@@ -1036,8 +1075,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_i128.
@@ -1065,8 +1105,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_bool.
@@ -1091,8 +1132,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_usize.
@@ -1117,8 +1159,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_u8.
@@ -1143,8 +1186,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_u16.
@@ -1169,8 +1213,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_u32.
@@ -1195,8 +1240,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_u64.
@@ -1221,8 +1267,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_u128.
@@ -1247,8 +1294,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_isize.
@@ -1273,8 +1321,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_i8.
@@ -1299,8 +1348,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_i16.
@@ -1325,8 +1375,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_i32.
@@ -1351,8 +1402,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_i64.
@@ -1377,8 +1429,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_i128.
@@ -1410,8 +1463,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_u8.
@@ -1440,8 +1494,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_u8.
@@ -1470,8 +1525,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_u8.
@@ -1500,8 +1556,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_u8.
@@ -1530,8 +1587,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_u8.
@@ -1560,8 +1618,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_u8.
@@ -1590,8 +1649,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_u8.
@@ -1620,8 +1680,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_u8.
@@ -1650,8 +1711,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_u8.
@@ -1680,8 +1742,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_u8.
@@ -1710,8 +1773,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_u8.
@@ -1740,8 +1804,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_u8.
@@ -1770,8 +1835,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_u16.
@@ -1800,8 +1866,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_u16.
@@ -1830,8 +1897,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_u16.
@@ -1860,8 +1928,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_u16.
@@ -1890,8 +1959,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_u16.
@@ -1920,8 +1990,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_u16.
@@ -1950,8 +2021,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_u16.
@@ -1980,8 +2052,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_u16.
@@ -2010,8 +2083,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_u16.
@@ -2040,8 +2114,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_u16.
@@ -2070,8 +2145,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_u16.
@@ -2100,8 +2176,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_u16.
@@ -2130,8 +2207,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_u32.
@@ -2160,8 +2238,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_u32.
@@ -2190,8 +2269,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_u32.
@@ -2220,8 +2300,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_u32.
@@ -2250,8 +2331,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_u32.
@@ -2280,8 +2362,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_u32.
@@ -2310,8 +2393,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_u32.
@@ -2340,8 +2424,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_u32.
@@ -2370,8 +2455,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_u32.
@@ -2400,8 +2486,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_u32.
@@ -2430,8 +2517,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_u32.
@@ -2460,8 +2548,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_u32.
@@ -2490,8 +2579,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_u64.
@@ -2520,8 +2610,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_u64.
@@ -2550,8 +2641,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_u64.
@@ -2580,8 +2672,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_u64.
@@ -2610,8 +2703,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_u64.
@@ -2640,8 +2734,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_u64.
@@ -2670,8 +2765,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_u64.
@@ -2700,8 +2796,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_u64.
@@ -2730,8 +2827,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_u64.
@@ -2760,8 +2858,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_u64.
@@ -2790,8 +2889,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_u64.
@@ -2820,8 +2920,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_u64.
@@ -2850,8 +2951,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_u128.
@@ -2880,8 +2982,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_u128.
@@ -2910,8 +3013,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_u128.
@@ -2940,8 +3044,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_u128.
@@ -2970,8 +3075,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_u128.
@@ -3000,8 +3106,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_u128.
@@ -3030,8 +3137,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_u128.
@@ -3060,8 +3168,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_u128.
@@ -3090,8 +3199,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_u128.
@@ -3120,8 +3230,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_u128.
@@ -3150,8 +3261,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_u128.
@@ -3180,8 +3292,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_u128.
@@ -3210,8 +3323,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_usize.
@@ -3240,8 +3354,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_usize.
@@ -3270,8 +3385,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_usize.
@@ -3300,8 +3416,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_usize.
@@ -3330,8 +3447,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_usize.
@@ -3360,8 +3478,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_usize.
@@ -3390,8 +3509,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_usize.
@@ -3420,8 +3540,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_usize.
@@ -3450,8 +3571,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_usize.
@@ -3480,8 +3602,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_usize.
@@ -3510,8 +3633,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_usize.
@@ -3540,8 +3664,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_usize.
@@ -3570,8 +3695,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_i8.
@@ -3600,8 +3726,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_i8.
@@ -3630,8 +3757,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_i8.
@@ -3660,8 +3788,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_i8.
@@ -3690,8 +3819,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_i8.
@@ -3720,8 +3850,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_i8.
@@ -3750,8 +3881,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_i8.
@@ -3780,8 +3912,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_i8.
@@ -3810,8 +3943,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_i8.
@@ -3840,8 +3974,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_i8.
@@ -3870,8 +4005,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_i8.
@@ -3900,8 +4036,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_i8.
@@ -3930,8 +4067,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_i16.
@@ -3960,8 +4098,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_i16.
@@ -3990,8 +4129,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_i16.
@@ -4020,8 +4160,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_i16.
@@ -4050,8 +4191,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_i16.
@@ -4080,8 +4222,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_i16.
@@ -4110,8 +4253,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_i16.
@@ -4140,8 +4284,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_i16.
@@ -4170,8 +4315,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_i16.
@@ -4200,8 +4346,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_i16.
@@ -4230,8 +4377,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_i16.
@@ -4260,8 +4408,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_i16.
@@ -4290,8 +4439,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_i32.
@@ -4320,8 +4470,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_i32.
@@ -4350,8 +4501,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_i32.
@@ -4380,8 +4532,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_i32.
@@ -4410,8 +4563,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_i32.
@@ -4440,8 +4594,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_i32.
@@ -4470,8 +4625,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_i32.
@@ -4500,8 +4656,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_i32.
@@ -4530,8 +4687,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_i32.
@@ -4560,8 +4718,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_i32.
@@ -4590,8 +4749,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_i32.
@@ -4620,8 +4780,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_i32.
@@ -4650,8 +4811,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_i64.
@@ -4680,8 +4842,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_i64.
@@ -4710,8 +4873,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_i64.
@@ -4740,8 +4904,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_i64.
@@ -4770,8 +4935,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_i64.
@@ -4800,8 +4966,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_i64.
@@ -4830,8 +4997,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_i64.
@@ -4860,8 +5028,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_i64.
@@ -4890,8 +5059,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_i64.
@@ -4920,8 +5090,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_i64.
@@ -4950,8 +5121,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_i64.
@@ -4980,8 +5152,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_i64.
@@ -5010,8 +5183,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_isize.
@@ -5040,8 +5214,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_isize.
@@ -5070,8 +5245,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_isize.
@@ -5100,8 +5276,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_isize.
@@ -5130,8 +5307,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_isize.
@@ -5160,8 +5338,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_isize.
@@ -5190,8 +5369,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_isize.
@@ -5220,8 +5400,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_isize.
@@ -5250,8 +5431,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_isize.
@@ -5280,8 +5462,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_isize.
@@ -5310,8 +5493,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_isize.
@@ -5340,8 +5524,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_isize.
@@ -5370,8 +5555,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u8_for_i128.
@@ -5400,8 +5586,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u16_for_i128.
@@ -5430,8 +5617,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u32_for_i128.
@@ -5460,8 +5648,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u64_for_i128.
@@ -5490,8 +5679,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_u128_for_i128.
@@ -5520,8 +5710,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_i128.
@@ -5550,8 +5741,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i8_for_i128.
@@ -5580,8 +5772,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i16_for_i128.
@@ -5610,8 +5803,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i32_for_i128.
@@ -5640,8 +5834,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i64_for_i128.
@@ -5670,8 +5865,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_i128_for_i128.
@@ -5700,8 +5896,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_isize_for_i128.
@@ -5733,8 +5930,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_u8.
@@ -5763,8 +5961,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_u8.
@@ -5793,8 +5992,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_u8.
@@ -5823,8 +6023,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_u8.
@@ -5853,8 +6054,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_u8.
@@ -5883,8 +6085,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_u8.
@@ -5913,8 +6116,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_u8.
@@ -5943,8 +6147,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_u8.
@@ -5973,8 +6178,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_u8.
@@ -6003,8 +6209,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_u8.
@@ -6033,8 +6240,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_u8.
@@ -6063,8 +6271,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_u8.
@@ -6093,8 +6302,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_u16.
@@ -6123,8 +6333,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_u16.
@@ -6153,8 +6364,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_u16.
@@ -6183,8 +6395,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_u16.
@@ -6213,8 +6426,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_u16.
@@ -6243,8 +6457,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_u16.
@@ -6273,8 +6488,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_u16.
@@ -6303,8 +6519,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_u16.
@@ -6333,8 +6550,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_u16.
@@ -6363,8 +6581,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_u16.
@@ -6393,8 +6612,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_u16.
@@ -6423,8 +6643,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_u16.
@@ -6453,8 +6674,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_u32.
@@ -6483,8 +6705,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_u32.
@@ -6513,8 +6736,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_u32.
@@ -6543,8 +6767,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_u32.
@@ -6573,8 +6798,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_u32.
@@ -6603,8 +6829,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_u32.
@@ -6633,8 +6860,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_u32.
@@ -6663,8 +6891,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_u32.
@@ -6693,8 +6922,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_u32.
@@ -6723,8 +6953,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_u32.
@@ -6753,8 +6984,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_u32.
@@ -6783,8 +7015,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_u32.
@@ -6813,8 +7046,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_u64.
@@ -6843,8 +7077,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_u64.
@@ -6873,8 +7108,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_u64.
@@ -6903,8 +7139,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_u64.
@@ -6933,8 +7170,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_u64.
@@ -6963,8 +7201,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_u64.
@@ -6993,8 +7232,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_u64.
@@ -7023,8 +7263,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_u64.
@@ -7053,8 +7294,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_u64.
@@ -7083,8 +7325,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_u64.
@@ -7113,8 +7356,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_u64.
@@ -7143,8 +7387,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_u64.
@@ -7173,8 +7418,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_u128.
@@ -7203,8 +7449,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_u128.
@@ -7233,8 +7480,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_u128.
@@ -7263,8 +7511,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_u128.
@@ -7293,8 +7542,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_u128.
@@ -7323,8 +7573,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_u128.
@@ -7353,8 +7604,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_u128.
@@ -7383,8 +7635,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_u128.
@@ -7413,8 +7666,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_u128.
@@ -7443,8 +7697,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_u128.
@@ -7473,8 +7728,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_u128.
@@ -7503,8 +7759,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_u128.
@@ -7533,8 +7790,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_usize.
@@ -7563,8 +7821,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_usize.
@@ -7593,8 +7852,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_usize.
@@ -7623,8 +7883,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_usize.
@@ -7653,8 +7914,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_usize.
@@ -7683,8 +7945,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_usize.
@@ -7713,8 +7976,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_usize.
@@ -7743,8 +8007,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_usize.
@@ -7773,8 +8038,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_usize.
@@ -7803,8 +8069,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_usize.
@@ -7833,8 +8100,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_usize.
@@ -7863,8 +8131,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_usize.
@@ -7893,8 +8162,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_i8.
@@ -7923,8 +8193,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_i8.
@@ -7953,8 +8224,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_i8.
@@ -7983,8 +8255,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_i8.
@@ -8013,8 +8286,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_i8.
@@ -8043,8 +8317,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_i8.
@@ -8073,8 +8348,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_i8.
@@ -8103,8 +8379,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_i8.
@@ -8133,8 +8410,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_i8.
@@ -8163,8 +8441,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_i8.
@@ -8193,8 +8472,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_i8.
@@ -8223,8 +8503,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_i8.
@@ -8253,8 +8534,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_i16.
@@ -8283,8 +8565,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_i16.
@@ -8313,8 +8596,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_i16.
@@ -8343,8 +8627,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_i16.
@@ -8373,8 +8658,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_i16.
@@ -8403,8 +8689,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_i16.
@@ -8433,8 +8720,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_i16.
@@ -8463,8 +8751,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_i16.
@@ -8493,8 +8782,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_i16.
@@ -8523,8 +8813,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_i16.
@@ -8553,8 +8844,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_i16.
@@ -8583,8 +8875,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_i16.
@@ -8613,8 +8906,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_i32.
@@ -8643,8 +8937,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_i32.
@@ -8673,8 +8968,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_i32.
@@ -8703,8 +8999,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_i32.
@@ -8733,8 +9030,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_i32.
@@ -8763,8 +9061,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_i32.
@@ -8793,8 +9092,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_i32.
@@ -8823,8 +9123,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_i32.
@@ -8853,8 +9154,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_i32.
@@ -8883,8 +9185,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_i32.
@@ -8913,8 +9216,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_i32.
@@ -8943,8 +9247,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_i32.
@@ -8973,8 +9278,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_i64.
@@ -9003,8 +9309,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_i64.
@@ -9033,8 +9340,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_i64.
@@ -9063,8 +9371,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_i64.
@@ -9093,8 +9402,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_i64.
@@ -9123,8 +9433,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_i64.
@@ -9153,8 +9464,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_i64.
@@ -9183,8 +9495,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_i64.
@@ -9213,8 +9526,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_i64.
@@ -9243,8 +9557,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_i64.
@@ -9273,8 +9588,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_i64.
@@ -9303,8 +9619,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_i64.
@@ -9333,8 +9650,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_i128.
@@ -9363,8 +9681,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_i128.
@@ -9393,8 +9712,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_i128.
@@ -9423,8 +9743,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_i128.
@@ -9453,8 +9774,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_i128.
@@ -9483,8 +9805,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_i128.
@@ -9513,8 +9836,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_i128.
@@ -9543,8 +9867,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_i128.
@@ -9573,8 +9898,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_i128.
@@ -9603,8 +9929,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_i128.
@@ -9633,8 +9960,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_i128.
@@ -9663,8 +9991,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_i128.
@@ -9693,8 +10022,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u8_for_isize.
@@ -9723,8 +10053,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u16_for_isize.
@@ -9753,8 +10084,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u32_for_isize.
@@ -9783,8 +10115,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u64_for_isize.
@@ -9813,8 +10146,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_u128_for_isize.
@@ -9843,8 +10177,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_isize.
@@ -9873,8 +10208,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i8_for_isize.
@@ -9903,8 +10239,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i16_for_isize.
@@ -9933,8 +10270,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i32_for_isize.
@@ -9963,8 +10301,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i64_for_isize.
@@ -9993,8 +10332,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_i128_for_isize.
@@ -10023,8 +10363,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_isize_for_isize.
@@ -10050,8 +10391,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_bool.
     
@@ -10073,8 +10415,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_usize.
     
@@ -10096,8 +10439,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_u8.
     
@@ -10119,8 +10463,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_u16.
     
@@ -10142,8 +10487,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_u32.
     
@@ -10165,8 +10511,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_u64.
     
@@ -10188,8 +10535,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_u128.
     
@@ -10211,8 +10559,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_isize.
     
@@ -10234,8 +10583,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_i8.
     
@@ -10257,8 +10607,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_i16.
     
@@ -10280,8 +10631,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_i32.
     
@@ -10303,8 +10655,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_i64.
     
@@ -10326,8 +10679,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_i128.
     
@@ -10352,8 +10706,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_bool.
     
@@ -10375,8 +10730,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_usize.
     
@@ -10398,8 +10754,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_u8.
     
@@ -10421,8 +10778,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_u16.
     
@@ -10444,8 +10802,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_u32.
     
@@ -10467,8 +10826,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_u64.
     
@@ -10490,8 +10850,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_u128.
     
@@ -10513,8 +10874,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_isize.
     
@@ -10536,8 +10898,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_i8.
     
@@ -10559,8 +10922,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_i16.
     
@@ -10582,8 +10946,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_i32.
     
@@ -10605,8 +10970,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_i64.
     
@@ -10628,8 +10994,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_i128.
     
@@ -10654,8 +11021,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_bool.
     
@@ -10677,8 +11045,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_usize.
     
@@ -10700,8 +11069,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_u8.
     
@@ -10723,8 +11093,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_u16.
     
@@ -10746,8 +11117,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_u32.
     
@@ -10769,8 +11141,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_u64.
     
@@ -10792,8 +11165,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_u128.
     
@@ -10815,8 +11189,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_isize.
     
@@ -10838,8 +11213,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_i8.
     
@@ -10861,8 +11237,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_i16.
     
@@ -10884,8 +11261,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_i32.
     
@@ -10907,8 +11285,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_i64.
     
@@ -10930,8 +11309,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_i128.
     
@@ -10960,8 +11340,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_u8.
     
@@ -10987,8 +11368,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_u8.
     
@@ -11014,8 +11396,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_u8.
     
@@ -11041,8 +11424,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_u8.
     
@@ -11068,8 +11452,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_u8.
     
@@ -11095,8 +11480,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_u8.
     
@@ -11122,8 +11508,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_u8.
     
@@ -11149,8 +11536,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_u8.
     
@@ -11176,8 +11564,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_u8.
     
@@ -11203,8 +11592,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_u8.
     
@@ -11230,8 +11620,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_u8.
     
@@ -11257,8 +11648,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_u8.
     
@@ -11284,8 +11676,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_u16.
     
@@ -11311,8 +11704,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_u16.
     
@@ -11338,8 +11732,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_u16.
     
@@ -11365,8 +11760,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_u16.
     
@@ -11392,8 +11788,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_u16.
     
@@ -11419,8 +11816,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_u16.
     
@@ -11446,8 +11844,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_u16.
     
@@ -11473,8 +11872,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_u16.
     
@@ -11500,8 +11900,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_u16.
     
@@ -11527,8 +11928,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_u16.
     
@@ -11554,8 +11956,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_u16.
     
@@ -11581,8 +11984,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_u16.
     
@@ -11608,8 +12012,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_u32.
     
@@ -11635,8 +12040,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_u32.
     
@@ -11662,8 +12068,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_u32.
     
@@ -11689,8 +12096,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_u32.
     
@@ -11716,8 +12124,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_u32.
     
@@ -11743,8 +12152,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_u32.
     
@@ -11770,8 +12180,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_u32.
     
@@ -11797,8 +12208,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_u32.
     
@@ -11824,8 +12236,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_u32.
     
@@ -11851,8 +12264,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_u32.
     
@@ -11878,8 +12292,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_u32.
     
@@ -11905,8 +12320,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_u32.
     
@@ -11932,8 +12348,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_u64.
     
@@ -11959,8 +12376,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_u64.
     
@@ -11986,8 +12404,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_u64.
     
@@ -12013,8 +12432,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_u64.
     
@@ -12040,8 +12460,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_u64.
     
@@ -12067,8 +12488,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_u64.
     
@@ -12094,8 +12516,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_u64.
     
@@ -12121,8 +12544,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_u64.
     
@@ -12148,8 +12572,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_u64.
     
@@ -12175,8 +12600,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_u64.
     
@@ -12202,8 +12628,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_u64.
     
@@ -12229,8 +12656,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_u64.
     
@@ -12256,8 +12684,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_u128.
     
@@ -12283,8 +12712,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_u128.
     
@@ -12310,8 +12740,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_u128.
     
@@ -12337,8 +12768,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_u128.
     
@@ -12364,8 +12796,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_u128.
     
@@ -12391,8 +12824,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_u128.
     
@@ -12418,8 +12852,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_u128.
     
@@ -12445,8 +12880,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_u128.
     
@@ -12472,8 +12908,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_u128.
     
@@ -12499,8 +12936,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_u128.
     
@@ -12526,8 +12964,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_u128.
     
@@ -12553,8 +12992,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_u128.
     
@@ -12580,8 +13020,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_usize.
     
@@ -12607,8 +13048,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_usize.
     
@@ -12634,8 +13076,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_usize.
     
@@ -12661,8 +13104,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_usize.
     
@@ -12688,8 +13132,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_usize.
     
@@ -12715,8 +13160,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_usize.
     
@@ -12742,8 +13188,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_usize.
     
@@ -12769,8 +13216,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_usize.
     
@@ -12796,8 +13244,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_usize.
     
@@ -12823,8 +13272,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_usize.
     
@@ -12850,8 +13300,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_usize.
     
@@ -12877,8 +13328,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_usize.
     
@@ -12904,8 +13356,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_i8.
     
@@ -12931,8 +13384,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_i8.
     
@@ -12958,8 +13412,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_i8.
     
@@ -12985,8 +13440,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_i8.
     
@@ -13012,8 +13468,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_i8.
     
@@ -13039,8 +13496,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_i8.
     
@@ -13066,8 +13524,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_i8.
     
@@ -13093,8 +13552,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_i8.
     
@@ -13120,8 +13580,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_i8.
     
@@ -13147,8 +13608,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_i8.
     
@@ -13174,8 +13636,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_i8.
     
@@ -13201,8 +13664,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_i8.
     
@@ -13228,8 +13692,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_i16.
     
@@ -13255,8 +13720,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_i16.
     
@@ -13282,8 +13748,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_i16.
     
@@ -13309,8 +13776,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_i16.
     
@@ -13336,8 +13804,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_i16.
     
@@ -13363,8 +13832,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_i16.
     
@@ -13390,8 +13860,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_i16.
     
@@ -13417,8 +13888,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_i16.
     
@@ -13444,8 +13916,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_i16.
     
@@ -13471,8 +13944,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_i16.
     
@@ -13498,8 +13972,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_i16.
     
@@ -13525,8 +14000,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_i16.
     
@@ -13552,8 +14028,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_i32.
     
@@ -13579,8 +14056,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_i32.
     
@@ -13606,8 +14084,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_i32.
     
@@ -13633,8 +14112,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_i32.
     
@@ -13660,8 +14140,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_i32.
     
@@ -13687,8 +14168,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_i32.
     
@@ -13714,8 +14196,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_i32.
     
@@ -13741,8 +14224,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_i32.
     
@@ -13768,8 +14252,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_i32.
     
@@ -13795,8 +14280,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_i32.
     
@@ -13822,8 +14308,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_i32.
     
@@ -13849,8 +14336,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_i32.
     
@@ -13876,8 +14364,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_i64.
     
@@ -13903,8 +14392,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_i64.
     
@@ -13930,8 +14420,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_i64.
     
@@ -13957,8 +14448,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_i64.
     
@@ -13984,8 +14476,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_i64.
     
@@ -14011,8 +14504,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_i64.
     
@@ -14038,8 +14532,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_i64.
     
@@ -14065,8 +14560,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_i64.
     
@@ -14092,8 +14588,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_i64.
     
@@ -14119,8 +14616,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_i64.
     
@@ -14146,8 +14644,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_i64.
     
@@ -14173,8 +14672,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_i64.
     
@@ -14200,8 +14700,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_i128.
     
@@ -14227,8 +14728,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_i128.
     
@@ -14254,8 +14756,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_i128.
     
@@ -14281,8 +14784,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_i128.
     
@@ -14308,8 +14812,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_i128.
     
@@ -14335,8 +14840,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_i128.
     
@@ -14362,8 +14868,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_i128.
     
@@ -14389,8 +14896,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_i128.
     
@@ -14416,8 +14924,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_i128.
     
@@ -14443,8 +14952,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_i128.
     
@@ -14470,8 +14980,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_i128.
     
@@ -14497,8 +15008,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_i128.
     
@@ -14524,8 +15036,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u8_for_isize.
     
@@ -14551,8 +15064,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u16_for_isize.
     
@@ -14578,8 +15092,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u32_for_isize.
     
@@ -14605,8 +15120,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u64_for_isize.
     
@@ -14632,8 +15148,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_u128_for_isize.
     
@@ -14659,8 +15176,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_isize.
     
@@ -14686,8 +15204,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i8_for_isize.
     
@@ -14713,8 +15232,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i16_for_isize.
     
@@ -14740,8 +15260,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i32_for_isize.
     
@@ -14767,8 +15288,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i64_for_isize.
     
@@ -14794,8 +15316,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_i128_for_isize.
     
@@ -14821,8 +15344,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_isize_for_isize.
     
@@ -14851,8 +15375,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_u8.
     
@@ -14878,8 +15403,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_u8.
     
@@ -14905,8 +15431,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_u8.
     
@@ -14932,8 +15459,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_u8.
     
@@ -14959,8 +15487,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_u8.
     
@@ -14986,8 +15515,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_u8.
     
@@ -15013,8 +15543,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_u8.
     
@@ -15040,8 +15571,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_u8.
     
@@ -15067,8 +15599,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_u8.
     
@@ -15094,8 +15627,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_u8.
     
@@ -15121,8 +15655,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_u8.
     
@@ -15148,8 +15683,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_u8.
     
@@ -15175,8 +15711,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_u16.
     
@@ -15202,8 +15739,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_u16.
     
@@ -15229,8 +15767,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_u16.
     
@@ -15256,8 +15795,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_u16.
     
@@ -15283,8 +15823,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_u16.
     
@@ -15310,8 +15851,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_u16.
     
@@ -15337,8 +15879,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_u16.
     
@@ -15364,8 +15907,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_u16.
     
@@ -15391,8 +15935,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_u16.
     
@@ -15418,8 +15963,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_u16.
     
@@ -15445,8 +15991,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_u16.
     
@@ -15472,8 +16019,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_u16.
     
@@ -15499,8 +16047,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_u32.
     
@@ -15526,8 +16075,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_u32.
     
@@ -15553,8 +16103,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_u32.
     
@@ -15580,8 +16131,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_u32.
     
@@ -15607,8 +16159,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_u32.
     
@@ -15634,8 +16187,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_u32.
     
@@ -15661,8 +16215,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_u32.
     
@@ -15688,8 +16243,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_u32.
     
@@ -15715,8 +16271,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_u32.
     
@@ -15742,8 +16299,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_u32.
     
@@ -15769,8 +16327,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_u32.
     
@@ -15796,8 +16355,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_u32.
     
@@ -15823,8 +16383,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_u64.
     
@@ -15850,8 +16411,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_u64.
     
@@ -15877,8 +16439,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_u64.
     
@@ -15904,8 +16467,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_u64.
     
@@ -15931,8 +16495,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_u64.
     
@@ -15958,8 +16523,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_u64.
     
@@ -15985,8 +16551,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_u64.
     
@@ -16012,8 +16579,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_u64.
     
@@ -16039,8 +16607,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_u64.
     
@@ -16066,8 +16635,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_u64.
     
@@ -16093,8 +16663,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_u64.
     
@@ -16120,8 +16691,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_u64.
     
@@ -16147,8 +16719,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_u128.
     
@@ -16174,8 +16747,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_u128.
     
@@ -16201,8 +16775,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_u128.
     
@@ -16228,8 +16803,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_u128.
     
@@ -16255,8 +16831,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_u128.
     
@@ -16282,8 +16859,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_u128.
     
@@ -16309,8 +16887,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_u128.
     
@@ -16336,8 +16915,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_u128.
     
@@ -16363,8 +16943,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_u128.
     
@@ -16390,8 +16971,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_u128.
     
@@ -16417,8 +16999,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_u128.
     
@@ -16444,8 +17027,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_u128.
     
@@ -16471,8 +17055,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_usize.
     
@@ -16498,8 +17083,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_usize.
     
@@ -16525,8 +17111,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_usize.
     
@@ -16552,8 +17139,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_usize.
     
@@ -16579,8 +17167,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_usize.
     
@@ -16606,8 +17195,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_usize.
     
@@ -16633,8 +17223,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_usize.
     
@@ -16660,8 +17251,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_usize.
     
@@ -16687,8 +17279,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_usize.
     
@@ -16714,8 +17307,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_usize.
     
@@ -16741,8 +17335,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_usize.
     
@@ -16768,8 +17363,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_usize.
     
@@ -16795,8 +17391,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_i8.
     
@@ -16822,8 +17419,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_i8.
     
@@ -16849,8 +17447,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_i8.
     
@@ -16876,8 +17475,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_i8.
     
@@ -16903,8 +17503,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_i8.
     
@@ -16930,8 +17531,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_i8.
     
@@ -16957,8 +17559,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_i8.
     
@@ -16984,8 +17587,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_i8.
     
@@ -17011,8 +17615,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_i8.
     
@@ -17038,8 +17643,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_i8.
     
@@ -17065,8 +17671,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_i8.
     
@@ -17092,8 +17699,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_i8.
     
@@ -17119,8 +17727,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_i16.
     
@@ -17146,8 +17755,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_i16.
     
@@ -17173,8 +17783,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_i16.
     
@@ -17200,8 +17811,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_i16.
     
@@ -17227,8 +17839,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_i16.
     
@@ -17254,8 +17867,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_i16.
     
@@ -17281,8 +17895,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_i16.
     
@@ -17308,8 +17923,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_i16.
     
@@ -17335,8 +17951,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_i16.
     
@@ -17362,8 +17979,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_i16.
     
@@ -17389,8 +18007,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_i16.
     
@@ -17416,8 +18035,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_i16.
     
@@ -17443,8 +18063,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_i32.
     
@@ -17470,8 +18091,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_i32.
     
@@ -17497,8 +18119,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_i32.
     
@@ -17524,8 +18147,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_i32.
     
@@ -17551,8 +18175,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_i32.
     
@@ -17578,8 +18203,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_i32.
     
@@ -17605,8 +18231,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_i32.
     
@@ -17632,8 +18259,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_i32.
     
@@ -17659,8 +18287,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_i32.
     
@@ -17686,8 +18315,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_i32.
     
@@ -17713,8 +18343,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_i32.
     
@@ -17740,8 +18371,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_i32.
     
@@ -17767,8 +18399,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_i64.
     
@@ -17794,8 +18427,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_i64.
     
@@ -17821,8 +18455,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_i64.
     
@@ -17848,8 +18483,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_i64.
     
@@ -17875,8 +18511,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_i64.
     
@@ -17902,8 +18539,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_i64.
     
@@ -17929,8 +18567,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_i64.
     
@@ -17956,8 +18595,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_i64.
     
@@ -17983,8 +18623,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_i64.
     
@@ -18010,8 +18651,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_i64.
     
@@ -18037,8 +18679,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_i64.
     
@@ -18064,8 +18707,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_i64.
     
@@ -18091,8 +18735,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_i128.
     
@@ -18118,8 +18763,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_i128.
     
@@ -18145,8 +18791,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_i128.
     
@@ -18172,8 +18819,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_i128.
     
@@ -18199,8 +18847,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_i128.
     
@@ -18226,8 +18875,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_i128.
     
@@ -18253,8 +18903,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_i128.
     
@@ -18280,8 +18931,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_i128.
     
@@ -18307,8 +18959,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_i128.
     
@@ -18334,8 +18987,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_i128.
     
@@ -18361,8 +19015,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_i128.
     
@@ -18388,8 +19043,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_i128.
     
@@ -18415,8 +19071,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u8_for_isize.
     
@@ -18442,8 +19099,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u16_for_isize.
     
@@ -18469,8 +19127,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u32_for_isize.
     
@@ -18496,8 +19155,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u64_for_isize.
     
@@ -18523,8 +19183,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_u128_for_isize.
     
@@ -18550,8 +19211,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_isize.
     
@@ -18577,8 +19239,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i8_for_isize.
     
@@ -18604,8 +19267,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i16_for_isize.
     
@@ -18631,8 +19295,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i32_for_isize.
     
@@ -18658,8 +19323,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i64_for_isize.
     
@@ -18685,8 +19351,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_i128_for_isize.
     
@@ -18712,8 +19379,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_isize_for_isize.
   End bit.

@@ -343,7 +343,12 @@ Module panicking.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -383,7 +388,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -430,7 +440,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -478,7 +493,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -526,7 +546,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -574,7 +599,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -626,7 +656,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -674,7 +709,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -722,7 +762,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -770,7 +815,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -815,7 +865,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -870,7 +925,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -922,7 +982,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -974,7 +1039,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1022,7 +1092,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1077,7 +1152,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1129,7 +1209,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1181,7 +1266,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1233,7 +1323,12 @@ Module panicking.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1282,7 +1377,12 @@ Module panicking.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1317,7 +1417,12 @@ Module panicking.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1382,7 +1487,12 @@ Module panicking.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1478,7 +1588,12 @@ Module panicking.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1572,7 +1687,12 @@ Module panicking.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -1973,21 +2093,22 @@ Module panicking.
         {
           name := "Eq";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Ne";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Match";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AssertKind_Eq : M.IsDiscriminant "core::panicking::AssertKind::Eq" 0.
+  Axiom IsDiscriminant_AssertKind_Ne : M.IsDiscriminant "core::panicking::AssertKind::Ne" 1.
+  Axiom IsDiscriminant_AssertKind_Match : M.IsDiscriminant "core::panicking::AssertKind::Match" 2.
   
   Module Impl_core_fmt_Debug_for_core_panicking_AssertKind.
     Definition Self : Ty.t := Ty.path "core::panicking::AssertKind".
@@ -2052,8 +2173,9 @@ Module panicking.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_panicking_AssertKind.
   
@@ -2198,8 +2320,9 @@ Module panicking.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_panicking_assert_matches_failed_Pattern.
   End assert_matches_failed.
@@ -2288,7 +2411,8 @@ Module panicking.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 4
+                            ],
                             []
                           |),
                           [
@@ -2412,7 +2536,8 @@ Module panicking.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 3
+                            ],
                             []
                           |),
                           [

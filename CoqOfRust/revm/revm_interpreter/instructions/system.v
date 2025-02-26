@@ -67,11 +67,16 @@ Module instructions.
                         ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          WIRE
+                          "Stack",
                         [],
                         [],
                         "popn_top",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
@@ -123,10 +128,7 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| top |) |) |)
@@ -153,9 +155,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |),
                                                             M.cast
@@ -168,9 +168,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |),
                                                             Value.Integer IntegerKind.U64 0
@@ -179,9 +177,7 @@ Module instructions.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| x |) |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U64 0
@@ -190,9 +186,7 @@ Module instructions.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| x |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 3
                                                           |)
                                                         |),
                                                         Value.Integer IntegerKind.U64 0
@@ -212,7 +206,12 @@ Module instructions.
                                                           Ty.tuple [],
                                                           M.get_trait_method (|
                                                             "revm_interpreter::interpreter_types::LoopControl",
-                                                            Ty.associated,
+                                                            Ty.associated_in_trait
+                                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                              []
+                                                              []
+                                                              WIRE
+                                                              "Control",
                                                             [],
                                                             [],
                                                             "set_instruction_result",
@@ -249,7 +248,7 @@ Module instructions.
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |)
                                         |))
                                     |)))
@@ -308,7 +307,12 @@ Module instructions.
                                                               ],
                                                             M.get_trait_method (|
                                                               "revm_interpreter::interpreter_types::LoopControl",
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                []
+                                                                []
+                                                                WIRE
+                                                                "Control",
                                                               [],
                                                               [],
                                                               "gas",
@@ -349,7 +353,12 @@ Module instructions.
                                                       Ty.tuple [],
                                                       M.get_trait_method (|
                                                         "revm_interpreter::interpreter_types::LoopControl",
-                                                        Ty.associated,
+                                                        Ty.associated_in_trait
+                                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                          []
+                                                          []
+                                                          WIRE
+                                                          "Control",
                                                         [],
                                                         [],
                                                         "set_instruction_result",
@@ -391,7 +400,12 @@ Module instructions.
                                               Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
                                                 [],
                                                 [],
                                                 "set_instruction_result",
@@ -469,10 +483,7 @@ Module instructions.
                                                   ]
                                                   [],
                                                 "as_limbs",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ],
+                                                [],
                                                 []
                                               |),
                                               [ M.borrow (| Pointer.Kind.Ref, offset |) ]
@@ -500,11 +511,9 @@ Module instructions.
                                                                             M.deref (|
                                                                               M.read (| x |)
                                                                             |),
-                                                                            M.alloc (|
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                0
-                                                                            |)
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0
                                                                           |)
                                                                         |),
                                                                         M.cast
@@ -520,11 +529,9 @@ Module instructions.
                                                                             M.deref (|
                                                                               M.read (| x |)
                                                                             |),
-                                                                            M.alloc (|
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                1
-                                                                            |)
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
                                                                           |)
                                                                         |),
                                                                         Value.Integer
@@ -537,11 +544,9 @@ Module instructions.
                                                                           M.deref (|
                                                                             M.read (| x |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              2
-                                                                          |)
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
                                                                         |)
                                                                       |),
                                                                       Value.Integer
@@ -554,11 +559,9 @@ Module instructions.
                                                                         M.deref (|
                                                                           M.read (| x |)
                                                                         |),
-                                                                        M.alloc (|
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            3
-                                                                        |)
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          3
                                                                       |)
                                                                     |),
                                                                     Value.Integer IntegerKind.U64 0
@@ -578,7 +581,12 @@ Module instructions.
                                                                       Ty.tuple [],
                                                                       M.get_trait_method (|
                                                                         "revm_interpreter::interpreter_types::LoopControl",
-                                                                        Ty.associated,
+                                                                        Ty.associated_in_trait
+                                                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                          []
+                                                                          []
+                                                                          WIRE
+                                                                          "Control",
                                                                         [],
                                                                         [],
                                                                         "set_instruction_result",
@@ -619,9 +627,7 @@ Module instructions.
                                                     (M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| x |) |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)
                                                     |))
                                                 |)))
@@ -673,7 +679,12 @@ Module instructions.
                                                       [ Ty.path "revm_interpreter::gas::Gas" ],
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::LoopControl",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "Control",
                                                       [],
                                                       [],
                                                       "gas",
@@ -711,7 +722,12 @@ Module instructions.
                                                     Ty.path "bool",
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::MemoryTrait",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "Memory",
                                                       [],
                                                       [],
                                                       "resize",
@@ -751,7 +767,12 @@ Module instructions.
                                                           Ty.tuple [],
                                                           M.get_trait_method (|
                                                             "revm_interpreter::interpreter_types::LoopControl",
-                                                            Ty.associated,
+                                                            Ty.associated_in_trait
+                                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                              []
+                                                              []
+                                                              WIRE
+                                                              "Control",
                                                             [],
                                                             [],
                                                             "set_instruction_result",
@@ -836,7 +857,17 @@ Module instructions.
                                                       ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::MemoryTrait"
+                                                        []
+                                                        []
+                                                        (Ty.associated_in_trait
+                                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                          []
+                                                          []
+                                                          WIRE
+                                                          "Memory")
+                                                        "{{synthetic}}'1",
                                                       [],
                                                       [],
                                                       "deref",
@@ -848,10 +879,25 @@ Module instructions.
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           M.call_closure (|
-                                                            Ty.associated,
+                                                            Ty.associated_in_trait
+                                                              "revm_interpreter::interpreter_types::MemoryTrait"
+                                                              []
+                                                              []
+                                                              (Ty.associated_in_trait
+                                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                []
+                                                                []
+                                                                WIRE
+                                                                "Memory")
+                                                              "{{synthetic}}'1",
                                                             M.get_trait_method (|
                                                               "revm_interpreter::interpreter_types::MemoryTrait",
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                []
+                                                                []
+                                                                WIRE
+                                                                "Memory",
                                                               [],
                                                               [],
                                                               "slice_len",
@@ -985,7 +1031,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -1023,7 +1074,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1066,7 +1122,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -1131,7 +1192,12 @@ Module instructions.
                                                       "alloy_primitives::bits::address::Address",
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::InputsTrait",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "Input",
                                                       [],
                                                       [],
                                                       "target_address",
@@ -1170,7 +1236,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1258,7 +1329,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -1296,7 +1372,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1339,7 +1420,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -1404,7 +1490,12 @@ Module instructions.
                                                       "alloy_primitives::bits::address::Address",
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::InputsTrait",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "Input",
                                                       [],
                                                       [],
                                                       "caller_address",
@@ -1443,7 +1534,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1528,7 +1624,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -1566,7 +1667,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1609,7 +1715,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -1642,10 +1753,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -1653,7 +1761,12 @@ Module instructions.
                                             Ty.path "usize",
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LegacyBytecode",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Bytecode",
                                               [],
                                               [],
                                               "bytecode_len",
@@ -1688,7 +1801,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -1779,11 +1897,16 @@ Module instructions.
                         ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          WIRE
+                          "Stack",
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [
@@ -1836,10 +1959,7 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, len |) ]
@@ -1865,9 +1985,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |),
                                                             M.cast
@@ -1880,9 +1998,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |),
                                                             Value.Integer IntegerKind.U64 0
@@ -1891,9 +2007,7 @@ Module instructions.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| x |) |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U64 0
@@ -1902,9 +2016,7 @@ Module instructions.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| x |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 3
                                                           |)
                                                         |),
                                                         Value.Integer IntegerKind.U64 0
@@ -1924,7 +2036,12 @@ Module instructions.
                                                           Ty.tuple [],
                                                           M.get_trait_method (|
                                                             "revm_interpreter::interpreter_types::LoopControl",
-                                                            Ty.associated,
+                                                            Ty.associated_in_trait
+                                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                              []
+                                                              []
+                                                              WIRE
+                                                              "Control",
                                                             [],
                                                             [],
                                                             "set_instruction_result",
@@ -1961,7 +2078,7 @@ Module instructions.
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |)
                                         |))
                                     |)))
@@ -2054,10 +2171,7 @@ Module instructions.
                                                         ]
                                                         [],
                                                       "as_limbs",
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ],
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.borrow (| Pointer.Kind.Ref, code_offset |) ]
@@ -2083,11 +2197,9 @@ Module instructions.
                                                                               M.deref (|
                                                                                 M.read (| x |)
                                                                               |),
-                                                                              M.alloc (|
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              |)
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
                                                                             |)
                                                                           |),
                                                                           Value.Integer
@@ -2100,11 +2212,9 @@ Module instructions.
                                                                               M.deref (|
                                                                                 M.read (| x |)
                                                                               |),
-                                                                              M.alloc (|
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              |)
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
                                                                             |)
                                                                           |),
                                                                           Value.Integer
@@ -2117,11 +2227,9 @@ Module instructions.
                                                                             M.deref (|
                                                                               M.read (| x |)
                                                                             |),
-                                                                            M.alloc (|
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                3
-                                                                            |)
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
                                                                           |)
                                                                         |),
                                                                         Value.Integer
@@ -2136,9 +2244,7 @@ Module instructions.
                                                                 |) in
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -2160,7 +2266,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::MemoryTrait",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Memory",
                                         [],
                                         [],
                                         "set_data",
@@ -2189,7 +2300,12 @@ Module instructions.
                                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LegacyBytecode",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Bytecode",
                                                 [],
                                                 [],
                                                 "bytecode_slice",
@@ -2288,7 +2404,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -2326,7 +2447,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2392,11 +2518,16 @@ Module instructions.
                         ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          WIRE
+                          "Stack",
                         [],
                         [],
                         "popn_top",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 0 ],
                         []
                       |),
                       [
@@ -2481,10 +2612,7 @@ Module instructions.
                                                 ]
                                                 [],
                                               "as_limbs",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
+                                              [],
                                               []
                                             |),
                                             [
@@ -2513,11 +2641,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          1
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -2526,11 +2652,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          2
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -2539,11 +2663,9 @@ Module instructions.
                                                                 M.read (|
                                                                   M.SubPointer.get_array_field (|
                                                                     M.deref (| M.read (| x |) |),
-                                                                    M.alloc (|
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        3
-                                                                    |)
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      3
                                                                   |)
                                                                 |),
                                                                 Value.Integer IntegerKind.U64 0
@@ -2556,9 +2678,7 @@ Module instructions.
                                                         |) in
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| x |) |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -2587,7 +2707,12 @@ Module instructions.
                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_trait_method (|
                                 "revm_interpreter::interpreter_types::InputsTrait",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                  []
+                                  []
+                                  WIRE
+                                  "Input",
                                 [],
                                 [],
                                 "input",
@@ -2907,7 +3032,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -2945,7 +3075,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -2988,7 +3123,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -3021,10 +3161,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -3052,7 +3189,12 @@ Module instructions.
                                                       ],
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::InputsTrait",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "Input",
                                                       [],
                                                       [],
                                                       "input",
@@ -3091,7 +3233,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -3177,7 +3324,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -3215,7 +3367,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -3258,7 +3415,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -3284,7 +3446,12 @@ Module instructions.
                                           [],
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::InputsTrait",
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "Input",
                                           [],
                                           [],
                                           "call_value",
@@ -3317,7 +3484,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -3405,11 +3577,16 @@ Module instructions.
                         ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          WIRE
+                          "Stack",
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [
@@ -3462,10 +3639,7 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, len |) ]
@@ -3491,9 +3665,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |),
                                                             M.cast
@@ -3506,9 +3678,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |),
                                                             Value.Integer IntegerKind.U64 0
@@ -3517,9 +3687,7 @@ Module instructions.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| x |) |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U64 0
@@ -3528,9 +3696,7 @@ Module instructions.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| x |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 3
                                                           |)
                                                         |),
                                                         Value.Integer IntegerKind.U64 0
@@ -3550,7 +3716,12 @@ Module instructions.
                                                           Ty.tuple [],
                                                           M.get_trait_method (|
                                                             "revm_interpreter::interpreter_types::LoopControl",
-                                                            Ty.associated,
+                                                            Ty.associated_in_trait
+                                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                              []
+                                                              []
+                                                              WIRE
+                                                              "Control",
                                                             [],
                                                             [],
                                                             "set_instruction_result",
@@ -3587,7 +3758,7 @@ Module instructions.
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |)
                                         |))
                                     |)))
@@ -3680,10 +3851,7 @@ Module instructions.
                                                         ]
                                                         [],
                                                       "as_limbs",
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ],
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.borrow (| Pointer.Kind.Ref, data_offset |) ]
@@ -3709,11 +3877,9 @@ Module instructions.
                                                                               M.deref (|
                                                                                 M.read (| x |)
                                                                               |),
-                                                                              M.alloc (|
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
-                                                                              |)
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
                                                                             |)
                                                                           |),
                                                                           Value.Integer
@@ -3726,11 +3892,9 @@ Module instructions.
                                                                               M.deref (|
                                                                                 M.read (| x |)
                                                                               |),
-                                                                              M.alloc (|
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              |)
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
                                                                             |)
                                                                           |),
                                                                           Value.Integer
@@ -3743,11 +3907,9 @@ Module instructions.
                                                                             M.deref (|
                                                                               M.read (| x |)
                                                                             |),
-                                                                            M.alloc (|
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                3
-                                                                            |)
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
                                                                           |)
                                                                         |),
                                                                         Value.Integer
@@ -3762,9 +3924,7 @@ Module instructions.
                                                                 |) in
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -3786,7 +3946,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::MemoryTrait",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Memory",
                                         [],
                                         [],
                                         "set_data",
@@ -3815,7 +3980,12 @@ Module instructions.
                                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::InputsTrait",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Input",
                                                 [],
                                                 [],
                                                 "input",
@@ -3897,7 +4067,12 @@ Module instructions.
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "RuntimeFlag",
                                           [],
                                           [],
                                           "spec_id",
@@ -3933,7 +4108,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -3991,7 +4171,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -4029,7 +4214,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -4072,7 +4262,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -4105,10 +4300,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "usize" ]
                                         |),
                                         [
@@ -4136,7 +4328,12 @@ Module instructions.
                                                       ],
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::ReturnData",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "ReturnData",
                                                       [],
                                                       [],
                                                       "buffer",
@@ -4175,7 +4372,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -4280,7 +4482,12 @@ Module instructions.
                                         Ty.path "revm_specification::hardfork::SpecId",
                                         M.get_trait_method (|
                                           "revm_interpreter::interpreter_types::RuntimeFlag",
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "RuntimeFlag",
                                           [],
                                           [],
                                           "spec_id",
@@ -4316,7 +4523,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -4367,11 +4579,16 @@ Module instructions.
                         ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          WIRE
+                          "Stack",
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [
@@ -4424,10 +4641,7 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, len |) ]
@@ -4453,9 +4667,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |),
                                                             M.cast
@@ -4468,9 +4680,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |),
                                                             Value.Integer IntegerKind.U64 0
@@ -4479,9 +4689,7 @@ Module instructions.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| x |) |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U64 0
@@ -4490,9 +4698,7 @@ Module instructions.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| x |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 3
                                                           |)
                                                         |),
                                                         Value.Integer IntegerKind.U64 0
@@ -4512,7 +4718,12 @@ Module instructions.
                                                           Ty.tuple [],
                                                           M.get_trait_method (|
                                                             "revm_interpreter::interpreter_types::LoopControl",
-                                                            Ty.associated,
+                                                            Ty.associated_in_trait
+                                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                              []
+                                                              []
+                                                              WIRE
+                                                              "Control",
                                                             [],
                                                             [],
                                                             "set_instruction_result",
@@ -4549,7 +4760,7 @@ Module instructions.
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |)
                                         |))
                                     |)))
@@ -4608,10 +4819,7 @@ Module instructions.
                                                 ]
                                                 [],
                                               "as_limbs",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
+                                              [],
                                               []
                                             |),
                                             [ M.borrow (| Pointer.Kind.Ref, offset |) ]
@@ -4635,11 +4843,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          1
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -4648,11 +4854,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          2
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -4661,11 +4865,9 @@ Module instructions.
                                                                 M.read (|
                                                                   M.SubPointer.get_array_field (|
                                                                     M.deref (| M.read (| x |) |),
-                                                                    M.alloc (|
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        3
-                                                                    |)
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      3
                                                                   |)
                                                                 |),
                                                                 Value.Integer IntegerKind.U64 0
@@ -4678,9 +4880,7 @@ Module instructions.
                                                         |) in
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| x |) |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -4745,7 +4945,12 @@ Module instructions.
                                                         ],
                                                       M.get_trait_method (|
                                                         "revm_interpreter::interpreter_types::ReturnData",
-                                                        Ty.associated,
+                                                        Ty.associated_in_trait
+                                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                          []
+                                                          []
+                                                          WIRE
+                                                          "ReturnData",
                                                         [],
                                                         [],
                                                         "buffer",
@@ -4774,7 +4979,12 @@ Module instructions.
                                                 Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "revm_interpreter::interpreter_types::RuntimeFlag",
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                    []
+                                                    []
+                                                    WIRE
+                                                    "RuntimeFlag",
                                                   [],
                                                   [],
                                                   "is_eof",
@@ -4809,7 +5019,12 @@ Module instructions.
                                               Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "Control",
                                                 [],
                                                 [],
                                                 "set_instruction_result",
@@ -4873,7 +5088,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::MemoryTrait",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Memory",
                                         [],
                                         [],
                                         "set_data",
@@ -4902,7 +5122,12 @@ Module instructions.
                                                 [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::ReturnData",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  WIRE
+                                                  "ReturnData",
                                                 [],
                                                 [],
                                                 "buffer",
@@ -4988,7 +5213,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::RuntimeFlag",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "RuntimeFlag",
                                       [],
                                       [],
                                       "is_eof",
@@ -5019,7 +5249,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -5077,7 +5312,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -5115,7 +5355,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -5181,11 +5426,16 @@ Module instructions.
                         ],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::StackTrait",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          WIRE
+                          "Stack",
                         [],
                         [],
                         "popn_top",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 0 ],
                         []
                       |),
                       [
@@ -5264,10 +5514,7 @@ Module instructions.
                                                 ]
                                                 [],
                                               "as_limbs",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
+                                              [],
                                               []
                                             |),
                                             [
@@ -5296,11 +5543,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          1
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -5309,11 +5554,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          2
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -5322,11 +5565,9 @@ Module instructions.
                                                                 M.read (|
                                                                   M.SubPointer.get_array_field (|
                                                                     M.deref (| M.read (| x |) |),
-                                                                    M.alloc (|
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        3
-                                                                    |)
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      3
                                                                   |)
                                                                 |),
                                                                 Value.Integer IntegerKind.U64 0
@@ -5339,9 +5580,7 @@ Module instructions.
                                                         |) in
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| x |) |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -5412,7 +5651,12 @@ Module instructions.
                                                       ],
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::ReturnData",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "ReturnData",
                                                       [],
                                                       [],
                                                       "buffer",
@@ -5557,7 +5801,12 @@ Module instructions.
                                                               ],
                                                             M.get_trait_method (|
                                                               "revm_interpreter::interpreter_types::ReturnData",
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                                []
+                                                                []
+                                                                WIRE
+                                                                "ReturnData",
                                                               [],
                                                               [],
                                                               "buffer",
@@ -5725,7 +5974,12 @@ Module instructions.
                                               [ Ty.path "revm_interpreter::gas::Gas" ],
                                             M.get_trait_method (|
                                               "revm_interpreter::interpreter_types::LoopControl",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                WIRE
+                                                "Control",
                                               [],
                                               [],
                                               "gas",
@@ -5763,7 +6017,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -5806,7 +6065,12 @@ Module instructions.
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::StackTrait",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        WIRE
+                                        "Stack",
                                       [],
                                       [],
                                       "push",
@@ -5839,10 +6103,7 @@ Module instructions.
                                             ]
                                             [],
                                           "from",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           [ Ty.path "u64" ]
                                         |),
                                         [
@@ -5865,7 +6126,12 @@ Module instructions.
                                                       [ Ty.path "revm_interpreter::gas::Gas" ],
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::LoopControl",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        WIRE
+                                                        "Control",
                                                       [],
                                                       [],
                                                       "gas",
@@ -5904,7 +6170,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          WIRE
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -6020,7 +6291,12 @@ Module instructions.
                                                       [ Ty.path "revm_interpreter::gas::Gas" ],
                                                     M.get_trait_method (|
                                                       "revm_interpreter::interpreter_types::LoopControl",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                        []
+                                                        []
+                                                        impl_InterpreterTypes
+                                                        "Control",
                                                       [],
                                                       [],
                                                       "gas",
@@ -6059,7 +6335,12 @@ Module instructions.
                                               Ty.tuple [],
                                               M.get_trait_method (|
                                                 "revm_interpreter::interpreter_types::LoopControl",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                  []
+                                                  []
+                                                  impl_InterpreterTypes
+                                                  "Control",
                                                 [],
                                                 [],
                                                 "set_instruction_result",
@@ -6102,7 +6383,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          impl_InterpreterTypes
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",
@@ -6176,8 +6462,7 @@ Module instructions.
                               ]
                               [],
                             "as_limbs",
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ],
+                            [],
                             []
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, memory_offset |) ]
@@ -6203,9 +6488,7 @@ Module instructions.
                                                     M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| x |) |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)
                                                     |),
                                                     M.cast
@@ -6216,9 +6499,7 @@ Module instructions.
                                                     M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| x |) |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 1
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 1
                                                       |)
                                                     |),
                                                     Value.Integer IntegerKind.U64 0
@@ -6227,9 +6508,7 @@ Module instructions.
                                                   M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| x |) |),
-                                                      M.alloc (|
-                                                        Value.Integer IntegerKind.Usize 2
-                                                      |)
+                                                      Value.Integer IntegerKind.Usize 2
                                                     |)
                                                   |),
                                                   Value.Integer IntegerKind.U64 0
@@ -6238,7 +6517,7 @@ Module instructions.
                                                 M.read (|
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| x |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                                    Value.Integer IntegerKind.Usize 3
                                                   |)
                                                 |),
                                                 Value.Integer IntegerKind.U64 0
@@ -6258,7 +6537,12 @@ Module instructions.
                                                   Ty.tuple [],
                                                   M.get_trait_method (|
                                                     "revm_interpreter::interpreter_types::LoopControl",
-                                                    Ty.associated,
+                                                    Ty.associated_in_trait
+                                                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                      []
+                                                      []
+                                                      impl_InterpreterTypes
+                                                      "Control",
                                                     [],
                                                     [],
                                                     "set_instruction_result",
@@ -6295,7 +6579,7 @@ Module instructions.
                                 (M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| x |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |)
                                 |))
                             |)))
@@ -6342,7 +6626,12 @@ Module instructions.
                                   [ Ty.path "revm_interpreter::gas::Gas" ],
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::LoopControl",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    impl_InterpreterTypes
+                                    "Control",
                                   [],
                                   [],
                                   "gas",
@@ -6380,7 +6669,12 @@ Module instructions.
                                 Ty.path "bool",
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::MemoryTrait",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    impl_InterpreterTypes
+                                    "Memory",
                                   [],
                                   [],
                                   "resize",
@@ -6420,7 +6714,12 @@ Module instructions.
                                       Ty.tuple [],
                                       M.get_trait_method (|
                                         "revm_interpreter::interpreter_types::LoopControl",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          []
+                                          []
+                                          impl_InterpreterTypes
+                                          "Control",
                                         [],
                                         [],
                                         "set_instruction_result",

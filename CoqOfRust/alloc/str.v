@@ -42,8 +42,9 @@ Module str.
       forall (S : Ty.t),
       M.IsTraitInstance
         "alloc::slice::Concat"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         (Self S)
-        (* Trait polymorphic types *) [ (* Item *) Ty.path "str" ]
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output S)); ("concat", InstanceField.Method (concat S)) ].
   End Impl_alloc_slice_Concat_where_core_borrow_Borrow_S_str_str_for_slice_S.
@@ -111,9 +112,9 @@ Module str.
       forall (S : Ty.t),
       M.IsTraitInstance
         "alloc::slice::Join"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (Self S)
-        (* Trait polymorphic types *)
-        [ (* Separator *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output S)); ("join", InstanceField.Method (join S)) ].
   End Impl_alloc_slice_Join_where_core_borrow_Borrow_S_str_ref__str_for_slice_S.
@@ -5152,8 +5153,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.path "str" ]
         (* Instance *) [ ("borrow", InstanceField.Method borrow) ].
   End Impl_core_borrow_Borrow_str_for_alloc_string_String.
   
@@ -5207,8 +5209,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::borrow::BorrowMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.path "str" ]
         (* Instance *) [ ("borrow_mut", InstanceField.Method borrow_mut) ].
   End Impl_core_borrow_BorrowMut_str_for_alloc_string_String.
   
@@ -5317,8 +5320,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::borrow::ToOwned"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Owned", InstanceField.Ty _Owned);
@@ -7453,13 +7457,13 @@ Module str.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           is_ascii,
-                                                          j
+                                                          M.read (| j |)
                                                         |),
                                                         BinOp.le (|
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| chunk |) |),
-                                                              j
+                                                              M.read (| j |)
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U8 127
@@ -7716,7 +7720,7 @@ Module str.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| out_chunk |) |),
-                                                          j
+                                                          M.read (| j |)
                                                         |),
                                                         M.call_closure (|
                                                           Ty.apply
@@ -7748,7 +7752,7 @@ Module str.
                                                                         M.deref (|
                                                                           M.read (| chunk |)
                                                                         |),
-                                                                        j
+                                                                        M.read (| j |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -7936,7 +7940,7 @@ Module str.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| slice |) |),
-                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                              Value.Integer IntegerKind.Usize 0
                             |)
                           |) in
                         let~ _ : Ty.tuple [] :=

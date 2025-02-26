@@ -12,21 +12,22 @@ Module fmt.
         {
           name := "Left";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Right";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Center";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Alignment_Left : M.IsDiscriminant "core::fmt::Alignment::Left" 0.
+  Axiom IsDiscriminant_Alignment_Right : M.IsDiscriminant "core::fmt::Alignment::Right" 1.
+  Axiom IsDiscriminant_Alignment_Center : M.IsDiscriminant "core::fmt::Alignment::Center" 2.
   
   Module Impl_core_marker_Copy_for_core_fmt_Alignment.
     Definition Self : Ty.t := Ty.path "core::fmt::Alignment".
@@ -34,8 +35,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_fmt_Alignment.
   
@@ -55,8 +57,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_fmt_Alignment.
   
@@ -123,8 +126,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_fmt_Alignment.
   
@@ -134,8 +138,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_fmt_Alignment.
   
@@ -182,8 +187,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_fmt_Alignment.
   
@@ -207,8 +213,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_fmt_Alignment.
@@ -231,8 +238,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_fmt_Error.
   
@@ -252,8 +260,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_fmt_Error.
   
@@ -284,8 +293,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_fmt_Error.
   
@@ -302,8 +312,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_core_fmt_Error.
   
@@ -327,8 +338,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_fmt_Error.
@@ -350,8 +362,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_fmt_Error.
   
@@ -372,8 +385,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_fmt_Error.
   
@@ -383,8 +397,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_fmt_Error.
   
@@ -405,8 +420,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_fmt_Error.
   
@@ -429,8 +445,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_core_fmt_Error.
   
@@ -605,8 +622,9 @@ Module fmt.
       forall (W : Ty.t),
       M.IsTraitInstance
         "core::fmt::Write"
-        (Self W)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W)
         (* Instance *)
         [
           ("write_str", InstanceField.Method (write_str W));
@@ -8012,8 +8030,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_fmt_Arguments.
   
@@ -8052,8 +8071,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_fmt_Arguments.
   
@@ -8431,7 +8451,7 @@ Module fmt.
                                                         |)
                                                       |)
                                                     |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                    Value.Integer IntegerKind.Usize 0
                                                   |)
                                                 |)
                                               |)
@@ -8652,8 +8672,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Send"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Send_for_core_fmt_Arguments.
   
@@ -8663,8 +8684,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Sync"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Sync_for_core_fmt_Arguments.
   
@@ -8707,8 +8729,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_fmt_Arguments.
   
@@ -8754,8 +8777,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_fmt_Arguments.
   
@@ -11098,8 +11122,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Write"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("write_str", InstanceField.Method write_str);
@@ -11144,8 +11169,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_fmt_Error.
   
@@ -11186,8 +11212,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_ref__T.
   
@@ -11228,8 +11255,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_ref_mut_T.
   
@@ -11270,8 +11298,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_ref__T.
   
@@ -11312,8 +11341,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_ref_mut_T.
   
@@ -11354,8 +11384,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Octal"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Octal_where_core_marker_Sized_T_where_core_fmt_Octal_T_for_ref__T.
   
@@ -11396,8 +11427,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Octal"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Octal_where_core_marker_Sized_T_where_core_fmt_Octal_T_for_ref_mut_T.
   
@@ -11438,8 +11470,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Binary"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Binary_where_core_marker_Sized_T_where_core_fmt_Binary_T_for_ref__T.
   
@@ -11480,8 +11513,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Binary"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Binary_where_core_marker_Sized_T_where_core_fmt_Binary_T_for_ref_mut_T.
   
@@ -11522,8 +11556,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::LowerHex"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_LowerHex_where_core_marker_Sized_T_where_core_fmt_LowerHex_T_for_ref__T.
   
@@ -11564,8 +11599,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::LowerHex"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_LowerHex_where_core_marker_Sized_T_where_core_fmt_LowerHex_T_for_ref_mut_T.
   
@@ -11606,8 +11642,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::UpperHex"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_UpperHex_where_core_marker_Sized_T_where_core_fmt_UpperHex_T_for_ref__T.
   
@@ -11648,8 +11685,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::UpperHex"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_UpperHex_where_core_marker_Sized_T_where_core_fmt_UpperHex_T_for_ref_mut_T.
   
@@ -11690,8 +11728,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::LowerExp"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_LowerExp_where_core_marker_Sized_T_where_core_fmt_LowerExp_T_for_ref__T.
   
@@ -11732,8 +11771,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::LowerExp"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_LowerExp_where_core_marker_Sized_T_where_core_fmt_LowerExp_T_for_ref_mut_T.
   
@@ -11774,8 +11814,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::UpperExp"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_UpperExp_where_core_marker_Sized_T_where_core_fmt_UpperExp_T_for_ref__T.
   
@@ -11816,8 +11857,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::UpperExp"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_UpperExp_where_core_marker_Sized_T_where_core_fmt_UpperExp_T_for_ref_mut_T.
   
@@ -11848,8 +11890,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_never.
   
@@ -11880,8 +11923,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_never.
   
@@ -11916,8 +11960,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_bool.
   
@@ -11977,8 +12022,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_bool.
   
@@ -13106,8 +13152,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_str.
   
@@ -13142,8 +13189,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_str.
   
@@ -13432,8 +13480,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_char.
   
@@ -13587,8 +13636,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_char.
   
@@ -13634,8 +13684,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -13921,8 +13972,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -13981,8 +14033,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_ref__T.
   
@@ -14046,8 +14099,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_ref_mut_T.
   
@@ -14092,8 +14146,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -14138,8 +14193,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -14553,8 +14609,9 @@ Module fmt.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt E D C B A Z Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_E_where_core_fmt_Debug_D_where_core_fmt_Debug_C_where_core_fmt_Debug_B_where_core_fmt_Debug_A_where_core_fmt_Debug_Z_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -14940,8 +14997,9 @@ Module fmt.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt D C B A Z Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_D_where_core_fmt_Debug_C_where_core_fmt_Debug_B_where_core_fmt_Debug_A_where_core_fmt_Debug_Z_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -15299,8 +15357,9 @@ Module fmt.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt C B A Z Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_C_where_core_fmt_Debug_B_where_core_fmt_Debug_A_where_core_fmt_Debug_Z_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -15629,8 +15688,9 @@ Module fmt.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt B A Z Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_B_where_core_fmt_Debug_A_where_core_fmt_Debug_Z_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -15931,8 +15991,9 @@ Module fmt.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt A Z Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_A_where_core_fmt_Debug_Z_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -16205,8 +16266,9 @@ Module fmt.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Z Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_Z_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -16446,8 +16508,9 @@ Module fmt.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Y X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_Y_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
   
@@ -16659,8 +16722,9 @@ Module fmt.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt X W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_X_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
   
@@ -16844,8 +16908,9 @@ Module fmt.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt W V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_W_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
   
@@ -17001,8 +17066,9 @@ Module fmt.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt V U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_V_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
   
@@ -17130,8 +17196,9 @@ Module fmt.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt U T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_U_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_U_T_.
   
@@ -17231,8 +17298,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_Tuple_T_.
   
@@ -17316,8 +17384,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_slice_T.
   
@@ -17352,8 +17421,9 @@ Module fmt.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_Tuple_.
   
@@ -17382,7 +17452,12 @@ Module fmt.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -17449,8 +17524,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -17551,8 +17627,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Copy_T_where_core_fmt_Debug_T_for_core_cell_Cell_T.
   
@@ -17691,7 +17768,7 @@ Module fmt.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -17743,8 +17820,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_core_cell_RefCell_T.
   
@@ -17803,8 +17881,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_core_cell_Ref_T.
   
@@ -17863,8 +17942,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_core_cell_RefMut_T.
   
@@ -17925,8 +18005,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
   
@@ -17987,8 +18068,9 @@ Module fmt.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_cell_SyncUnsafeCell_T.
 End fmt.

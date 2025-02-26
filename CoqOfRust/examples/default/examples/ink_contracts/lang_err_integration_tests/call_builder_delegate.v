@@ -15,11 +15,13 @@ Enum LangError
       {
         name := "CouldNotReadInput";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_LangError_CouldNotReadInput :
+  M.IsDiscriminant "call_builder_delegate::LangError::CouldNotReadInput" 0.
 
 (* StructRecord
   {
@@ -61,8 +63,9 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTest.
 

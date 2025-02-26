@@ -7029,7 +7029,14 @@ Module vec.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_v1",
-                                                                            [],
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1;
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ],
                                                                             []
                                                                           |),
                                                                           [
@@ -7312,7 +7319,7 @@ Module vec.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
-                                        [],
+                                        [ Value.Integer IntegerKind.Usize 1 ],
                                         []
                                       |),
                                       [
@@ -7383,7 +7390,12 @@ Module vec.
                 |));
               ("replace_with",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -8125,8 +8137,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "alloc::vec::ExtendFromWithinSpec"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("spec_extend_from_within", InstanceField.Method (spec_extend_from_within T A)) ].
   End Impl_alloc_vec_ExtendFromWithinSpec_where_core_clone_Clone_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
@@ -8317,8 +8330,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "alloc::vec::ExtendFromWithinSpec"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("spec_extend_from_within", InstanceField.Method (spec_extend_from_within T A)) ].
   End Impl_alloc_vec_ExtendFromWithinSpec_where_core_marker_Copy_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
@@ -8375,8 +8389,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T A)); ("deref", InstanceField.Method (deref T A)) ].
   End Impl_core_ops_deref_Deref_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
@@ -8440,8 +8455,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T A)) ].
   End Impl_core_ops_deref_DerefMut_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -8452,8 +8468,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -8593,8 +8610,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone T A));
@@ -8662,8 +8680,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("hash", InstanceField.Method (hash T A)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -8671,7 +8690,8 @@ Module vec.
     Definition Self (T I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ].
     
     (*     type Output = I::Output; *)
-    Definition _Output (T I A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (T I A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
     
     (*
         fn index(&self, index: I) -> &Self::Output {
@@ -8689,7 +8709,10 @@ Module vec.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
-                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                 M.get_trait_method (|
                   "core::ops::index::Index",
                   Ty.apply (Ty.path "slice") [] [ T ],
@@ -8735,8 +8758,9 @@ Module vec.
       forall (T I A : Ty.t),
       M.IsTraitInstance
         "core::ops::index::Index"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self T I A)
-        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *)
         [
           ("Output", InstanceField.Ty (_Output T I A));
@@ -8766,7 +8790,10 @@ Module vec.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                     M.get_trait_method (|
                       "core::ops::index::IndexMut",
                       Ty.apply (Ty.path "slice") [] [ T ],
@@ -8822,8 +8849,9 @@ Module vec.
       forall (T I A : Ty.t),
       M.IsTraitInstance
         "core::ops::index::IndexMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self T I A)
-        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *) [ ("index_mut", InstanceField.Method (index_mut T I A)) ].
   End Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
   
@@ -8848,14 +8876,27 @@ Module vec.
               "alloc::vec::spec_from_iter::SpecFromIter",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
               [],
-              [ T; Ty.associated ],
+              [
+                T;
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter"
+              ],
               "from_iter",
               [],
               []
             |),
             [
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -8876,8 +8917,9 @@ Module vec.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* A *) T ]
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
   End Impl_core_iter_traits_collect_FromIterator_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -9235,8 +9277,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T A));
@@ -9298,8 +9341,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T A));
@@ -9361,8 +9405,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T A));
@@ -9392,7 +9437,15 @@ Module vec.
               "alloc::vec::spec_extend::SpecExtend",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [],
-              [ T; Ty.associated ],
+              [
+                T;
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter"
+              ],
               "spec_extend",
               [],
               []
@@ -9400,7 +9453,12 @@ Module vec.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -9583,8 +9641,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* A *) T ]
         (* Instance *)
         [
           ("extend", InstanceField.Method (extend T A));
@@ -9616,7 +9675,15 @@ Module vec.
               "alloc::vec::spec_extend::SpecExtend",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
               [],
-              [ Ty.apply (Ty.path "&") [] [ T ]; Ty.associated ],
+              [
+                Ty.apply (Ty.path "&") [] [ T ];
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter"
+              ],
               "spec_extend",
               [],
               []
@@ -9624,7 +9691,12 @@ Module vec.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -9830,8 +9902,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
         (* Instance *)
         [
           ("extend", InstanceField.Method (extend T A));
@@ -9928,9 +10001,9 @@ Module vec.
       forall (T A1 A2 : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A2 ] ]
         (Self T A1 A2)
-        (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A2 ] ]
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T A1 A2)) ].
   End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A1_where_core_alloc_Allocator_A2_alloc_vec_Vec_T_A2_for_alloc_vec_Vec_T_A1.
   
@@ -9941,8 +10014,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -10028,8 +10102,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T A)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -10093,8 +10168,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -10129,8 +10205,9 @@ Module vec.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10197,8 +10274,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_vec_Vec_T_A.
   
@@ -10224,8 +10302,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
   End Impl_core_convert_AsRef_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_vec_Vec_T_A.
   
@@ -10254,8 +10333,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T A)) ].
   End Impl_core_convert_AsMut_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_vec_Vec_T_A.
   
@@ -10298,8 +10378,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
   End Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
   
@@ -10347,8 +10428,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T A)) ].
   End Impl_core_convert_AsMut_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
   
@@ -10379,9 +10461,10 @@ Module vec.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10412,9 +10495,10 @@ Module vec.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10456,7 +10540,7 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "array") [ N ] [ T ],
                   "as_slice",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
@@ -10470,9 +10554,10 @@ Module vec.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+        (Self N T)
         (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10514,7 +10599,7 @@ Module vec.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "array") [ N ] [ T ],
                   "as_mut_slice",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
@@ -10528,9 +10613,10 @@ Module vec.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]
+        (Self N T)
         (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10589,8 +10675,9 @@ Module vec.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
   End Impl_core_convert_From_array_N_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10626,10 +10713,10 @@ Module vec.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-        ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_alloc_borrow_ToOwned_slice_T_alloc_borrow_Cow_slice_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
   
@@ -10664,12 +10751,10 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ]
-        ]
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ] ]
+        (Self T A)
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_boxed_Box_slice_T_A_for_alloc_vec_Vec_T_A.
   
@@ -10705,8 +10790,9 @@ Module vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_boxed_Box_slice_T_A.
   
@@ -10755,8 +10841,9 @@ Module vec.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_vec_Vec_u8_alloc_alloc_Global.
   
@@ -10888,8 +10975,9 @@ Module vec.
       forall (N : Value.t) (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (Self N T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T A));

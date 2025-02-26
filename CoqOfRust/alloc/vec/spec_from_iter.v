@@ -41,8 +41,9 @@ Module vec.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_iter::SpecFromIter"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T; I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T I)) ].
     End Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
     
@@ -645,16 +646,16 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_iter::SpecFromIter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *) T;
-            (* I *)
+            T;
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")
               []
               [ T; Ty.path "alloc::alloc::Global" ]
           ]
+          (Self T)
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
     End Impl_alloc_vec_spec_from_iter_SpecFromIter_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_vec_Vec_T_alloc_alloc_Global.
   End spec_from_iter.

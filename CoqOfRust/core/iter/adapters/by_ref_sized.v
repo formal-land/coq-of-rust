@@ -68,8 +68,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_by_ref_sized_ByRefSized_I.
       
@@ -78,7 +79,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::by_ref_sized::ByRefSized") [] [ I ].
         
         (*     type Item = I::Item; *)
-        Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (I : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
         
         (*
             fn next(&mut self) -> Option<Self::Item> {
@@ -92,7 +94,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -230,7 +236,11 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -290,7 +300,7 @@ Module iter.
                         [],
                         [
                           B;
-                          Ty.associated;
+                          Ty.associated_unknown;
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ]
                         ]
                       |),
@@ -309,12 +319,21 @@ Module iter.
                         |);
                         M.read (| init |);
                         M.call_closure (|
-                          Ty.associated,
+                          Ty.associated_unknown,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
                             [],
-                            [ B; Ty.associated; F ]
+                            [
+                              B;
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item";
+                              F
+                            ]
                           |),
                           [ M.read (| f |) ]
                         |)
@@ -380,8 +399,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item I));
@@ -410,7 +430,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -504,7 +528,11 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   I,
@@ -564,7 +592,7 @@ Module iter.
                         [],
                         [
                           B;
-                          Ty.associated;
+                          Ty.associated_unknown;
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ]
                         ]
                       |),
@@ -583,12 +611,21 @@ Module iter.
                         |);
                         M.read (| init |);
                         M.call_closure (|
-                          Ty.associated,
+                          Ty.associated_unknown,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ B ],
                             "wrap_mut_2",
                             [],
-                            [ B; Ty.associated; F ]
+                            [
+                              B;
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item";
+                              F
+                            ]
                           |),
                           [ M.read (| f |) ]
                         |)
@@ -654,8 +691,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back I));

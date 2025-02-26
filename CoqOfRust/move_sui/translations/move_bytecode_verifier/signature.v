@@ -2800,7 +2800,7 @@ Module signature.
                                                                           ],
                                                                         M.get_trait_method (|
                                                                           "core::iter::traits::iterator::Iterator",
-                                                                          Ty.associated,
+                                                                          Ty.associated_unknown,
                                                                           [],
                                                                           [],
                                                                           "collect",
@@ -2820,7 +2820,7 @@ Module signature.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
-                                                                            Ty.associated,
+                                                                            Ty.associated_unknown,
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::StructHandle",
@@ -3793,21 +3793,19 @@ Module signature.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| function_handles |) |),
-                                                  M.alloc (|
-                                                    M.cast
-                                                      (Ty.path "usize")
-                                                      (M.read (|
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| func_def |) |),
-                                                            "move_binary_format::file_format::FunctionDefinition",
-                                                            "function"
-                                                          |),
-                                                          "move_binary_format::file_format::FunctionHandleIndex",
-                                                          0
-                                                        |)
-                                                      |))
-                                                  |)
+                                                  M.cast
+                                                    (Ty.path "usize")
+                                                    (M.read (|
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| func_def |) |),
+                                                          "move_binary_format::file_format::FunctionDefinition",
+                                                          "function"
+                                                        |),
+                                                        "move_binary_format::file_format::FunctionHandleIndex",
+                                                        0
+                                                      |)
+                                                    |))
                                                 |)
                                               |)
                                             |) in
@@ -5685,7 +5683,7 @@ Module signature.
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                                       "check_generic_instance",
                                                                       [],
-                                                                      [ Ty.associated ]
+                                                                      [ Ty.associated_unknown ]
                                                                     |),
                                                                     [
                                                                       M.borrow (|
@@ -5742,7 +5740,7 @@ Module signature.
                                                                         |)
                                                                       |);
                                                                       M.call_closure (|
-                                                                        Ty.associated,
+                                                                        Ty.associated_unknown,
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle",
@@ -6297,7 +6295,7 @@ Module signature.
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                                       "check_generic_instance",
                                                                       [],
-                                                                      [ Ty.associated ]
+                                                                      [ Ty.associated_unknown ]
                                                                     |),
                                                                     [
                                                                       M.borrow (|
@@ -6354,7 +6352,7 @@ Module signature.
                                                                         |)
                                                                       |);
                                                                       M.call_closure (|
-                                                                        Ty.associated,
+                                                                        Ty.associated_unknown,
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle",
@@ -6682,7 +6680,14 @@ Module signature.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
                                                                                                             "new_v1",
-                                                                                                            [],
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1;
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1
+                                                                                                            ],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -7584,7 +7589,14 @@ Module signature.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_v1",
-                                                                                              [],
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  2;
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  1
+                                                                                              ],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -8485,11 +8497,9 @@ Module signature.
                                             M.SubPointer.get_struct_record_field (|
                                               M.SubPointer.get_array_field (|
                                                 M.deref (| M.read (| type_parameters |) |),
-                                                M.alloc (|
-                                                  M.cast
-                                                    (Ty.path "usize")
-                                                    (M.read (| M.deref (| M.read (| idx |) |) |))
-                                                |)
+                                                M.cast
+                                                  (Ty.path "usize")
+                                                  (M.read (| M.deref (| M.read (| idx |) |) |))
                                               |),
                                               "move_binary_format::file_format::StructTypeParameter",
                                               "is_phantom"
@@ -10947,7 +10957,7 @@ Module signature.
                                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                   "check_generic_instance",
                                   [],
-                                  [ Ty.associated ]
+                                  [ Ty.associated_unknown ]
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -10993,7 +11003,7 @@ Module signature.
                                     |)
                                   |);
                                   M.call_closure (|
-                                    Ty.associated,
+                                    Ty.associated_unknown,
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::StructHandle",
                                       "type_param_constraints",
@@ -11316,7 +11326,10 @@ Module signature.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
-                                                            [],
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 2;
+                                                              Value.Integer IntegerKind.Usize 2
+                                                            ],
                                                             []
                                                           |),
                                                           [
@@ -11879,7 +11892,14 @@ Module signature.
                                                                                     Ty.path
                                                                                       "core::fmt::Arguments",
                                                                                     "new_v1",
-                                                                                    [],
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        3;
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        3
+                                                                                    ],
                                                                                     []
                                                                                   |),
                                                                                   [

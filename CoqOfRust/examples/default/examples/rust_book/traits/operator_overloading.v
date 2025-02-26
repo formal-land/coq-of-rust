@@ -49,8 +49,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_FooBar.
 
@@ -86,8 +87,9 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
 
@@ -123,7 +125,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
@@ -154,8 +156,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::arith::Add"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "operator_overloading::Bar" ]
       Self
-      (* Trait polymorphic types *) [ (* Rhs *) Ty.path "operator_overloading::Bar" ]
       (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
 End Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading_Foo.
 
@@ -191,7 +194,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
@@ -222,8 +225,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
   Axiom Implements :
     M.IsTraitInstance
       "core::ops::arith::Add"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "operator_overloading::Foo" ]
       Self
-      (* Trait polymorphic types *) [ (* Rhs *) Ty.path "operator_overloading::Foo" ]
       (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
 End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Bar.
 
@@ -250,7 +254,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -338,7 +342,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

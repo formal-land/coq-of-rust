@@ -72,21 +72,25 @@ Module journaled_state.
         {
           name := "OutOfFunds";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowPayment";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateCollision";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TransferError_OutOfFunds :
+    M.IsDiscriminant "revm_context_interface::journaled_state::TransferError::OutOfFunds" 0.
+  Axiom IsDiscriminant_TransferError_OverflowPayment :
+    M.IsDiscriminant "revm_context_interface::journaled_state::TransferError::OverflowPayment" 1.
+  Axiom IsDiscriminant_TransferError_CreateCollision :
+    M.IsDiscriminant "revm_context_interface::journaled_state::TransferError::CreateCollision" 2.
   
   Module Impl_core_marker_Copy_for_revm_context_interface_journaled_state_TransferError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::TransferError".
@@ -94,8 +98,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_journaled_state_TransferError.
   
@@ -115,8 +120,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_journaled_state_TransferError.
   
@@ -195,8 +201,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_journaled_state_TransferError.
   
@@ -206,8 +213,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_TransferError.
   
@@ -254,8 +262,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_TransferError.
   
@@ -279,8 +288,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_journaled_state_TransferError.
@@ -361,8 +371,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
@@ -372,8 +383,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
@@ -398,8 +410,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
@@ -409,8 +422,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
@@ -465,8 +479,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
@@ -495,8 +510,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_journaled_state_JournalCheckpoint.
@@ -579,8 +595,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_T_for_revm_context_interface_journaled_state_StateLoad_T.
   
@@ -652,8 +669,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_revm_context_interface_journaled_state_StateLoad_T.
   
@@ -698,8 +716,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_revm_context_interface_journaled_state_StateLoad_T.
   
@@ -711,8 +730,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_StateLoad_T.
   
@@ -776,8 +796,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_revm_context_interface_journaled_state_StateLoad_T.
   
@@ -817,8 +838,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_revm_context_interface_journaled_state_StateLoad_T.
@@ -861,8 +883,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
   End Impl_core_ops_deref_Deref_for_revm_context_interface_journaled_state_StateLoad_T.
@@ -907,8 +930,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
   End Impl_core_ops_deref_DerefMut_for_revm_context_interface_journaled_state_StateLoad_T.
   
@@ -1099,8 +1123,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_journaled_state_AccountLoad.
   
@@ -1172,8 +1197,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_journaled_state_AccountLoad.
   
@@ -1229,8 +1255,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_context_interface_journaled_state_AccountLoad.
   
@@ -1240,8 +1267,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_AccountLoad.
   
@@ -1318,8 +1346,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_AccountLoad.
   
@@ -1355,8 +1384,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_journaled_state_AccountLoad.
@@ -1400,8 +1430,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
   End Impl_core_ops_deref_Deref_for_revm_context_interface_journaled_state_AccountLoad.
@@ -1443,8 +1474,9 @@ Module journaled_state.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("deref_mut", InstanceField.Method deref_mut) ].
   End Impl_core_ops_deref_DerefMut_for_revm_context_interface_journaled_state_AccountLoad.
   
@@ -1543,8 +1575,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
@@ -1622,8 +1655,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
@@ -1679,8 +1713,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
@@ -1692,8 +1727,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
@@ -1780,8 +1816,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
@@ -1821,8 +1858,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
@@ -1866,8 +1904,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
   End Impl_core_ops_deref_Deref_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
@@ -1912,8 +1951,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
   End Impl_core_ops_deref_DerefMut_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
@@ -2187,7 +2227,22 @@ Module journaled_state.
   Axiom JournalDBError :
     forall (CTX : Ty.t),
     (Ty.apply (Ty.path "revm_context_interface::journaled_state::JournalDBError") [] [ CTX ]) =
-      Ty.associated.
+      (Ty.associated_in_trait
+        "revm_database_interface::Database"
+        []
+        []
+        (Ty.associated_in_trait
+          "revm_context_interface::journaled_state::Journal"
+          []
+          []
+          (Ty.associated_in_trait
+            "revm_context_interface::journaled_state::JournalGetter"
+            []
+            []
+            CTX
+            "Journal")
+          "Database")
+        "Error").
   
   (* Trait *)
   (* Empty module 'JournalGetter' *)
@@ -2196,7 +2251,13 @@ Module journaled_state.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
     
     (*     type Journal = T::Journal; *)
-    Definition _Journal (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Journal (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait
+        "revm_context_interface::journaled_state::JournalGetter"
+        []
+        []
+        T
+        "Journal".
     
     (*
         fn journal(&mut self) -> &mut Self::Journal {
@@ -2216,7 +2277,17 @@ Module journaled_state.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "revm_context_interface::journaled_state::JournalGetter"
+                          []
+                          []
+                          T
+                          "Journal"
+                      ],
                     M.get_trait_method (|
                       "revm_context_interface::journaled_state::JournalGetter",
                       T,
@@ -2255,7 +2326,17 @@ Module journaled_state.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
-                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "revm_context_interface::journaled_state::JournalGetter"
+                      []
+                      []
+                      T
+                      "Journal"
+                  ],
                 M.get_trait_method (|
                   "revm_context_interface::journaled_state::JournalGetter",
                   T,
@@ -2281,8 +2362,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::journaled_state::JournalGetter"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Journal", InstanceField.Ty (_Journal T));
@@ -2296,7 +2378,13 @@ Module journaled_state.
       Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*     type Journal = T::Journal; *)
-    Definition _Journal (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Journal (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait
+        "revm_context_interface::journaled_state::JournalGetter"
+        []
+        []
+        T
+        "Journal".
     
     (*
         fn journal(&mut self) -> &mut Self::Journal {
@@ -2316,7 +2404,17 @@ Module journaled_state.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "revm_context_interface::journaled_state::JournalGetter"
+                          []
+                          []
+                          T
+                          "Journal"
+                      ],
                     M.get_trait_method (|
                       "revm_context_interface::journaled_state::JournalGetter",
                       T,
@@ -2372,7 +2470,17 @@ Module journaled_state.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
-                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "revm_context_interface::journaled_state::JournalGetter"
+                      []
+                      []
+                      T
+                      "Journal"
+                  ],
                 M.get_trait_method (|
                   "revm_context_interface::journaled_state::JournalGetter",
                   T,
@@ -2415,8 +2523,9 @@ Module journaled_state.
       forall (T : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::journaled_state::JournalGetter"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Journal", InstanceField.Ty (_Journal T));

@@ -11,21 +11,22 @@ Enum Food
       {
         name := "CordonBleu";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Steak";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Sushi";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Food_CordonBleu : M.IsDiscriminant "combinators_and_then::Food::CordonBleu" 0.
+Axiom IsDiscriminant_Food_Steak : M.IsDiscriminant "combinators_and_then::Food::Steak" 1.
+Axiom IsDiscriminant_Food_Sushi : M.IsDiscriminant "combinators_and_then::Food::Sushi" 2.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
@@ -88,8 +89,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Food.
 
@@ -103,21 +105,22 @@ Enum Day
       {
         name := "Monday";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Tuesday";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Wednesday";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Day_Monday : M.IsDiscriminant "combinators_and_then::Day::Monday" 0.
+Axiom IsDiscriminant_Day_Tuesday : M.IsDiscriminant "combinators_and_then::Day::Tuesday" 1.
+Axiom IsDiscriminant_Day_Wednesday : M.IsDiscriminant "combinators_and_then::Day::Wednesday" 2.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Day".
@@ -179,8 +182,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 
@@ -410,7 +414,8 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2
+                            ],
                             []
                           |),
                           [
@@ -494,7 +499,8 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [

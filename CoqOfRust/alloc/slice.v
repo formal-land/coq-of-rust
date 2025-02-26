@@ -443,7 +443,7 @@ Module slice.
                                                   Pointer.Kind.MutRef,
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| slots |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |);
                                                 M.call_closure (|
@@ -522,8 +522,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::slice::hack::ConvertVec"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("to_vec", InstanceField.Method (to_vec T)) ].
     End Impl_alloc_slice_hack_ConvertVec_where_core_clone_Clone_T_for_T.
     
@@ -656,8 +657,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::slice::hack::ConvertVec"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("to_vec", InstanceField.Method (to_vec T)) ].
     End Impl_alloc_slice_hack_ConvertVec_where_core_marker_Copy_T_for_T.
   End hack.
@@ -2822,7 +2824,12 @@ Module slice.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "alloc::slice::Concat"
+              []
+              []
+              (Ty.apply (Ty.path "slice") [] [ T ])
+              "Output",
             M.get_trait_method (|
               "alloc::slice::Concat",
               Ty.apply (Ty.path "slice") [] [ T ],
@@ -2858,7 +2865,12 @@ Module slice.
           (let self := M.alloc (| self |) in
           let sep := M.alloc (| sep |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "alloc::slice::Join"
+              []
+              []
+              (Ty.apply (Ty.path "slice") [] [ T ])
+              "Output",
             M.get_trait_method (|
               "alloc::slice::Join",
               Ty.apply (Ty.path "slice") [] [ T ],
@@ -2894,7 +2906,12 @@ Module slice.
           (let self := M.alloc (| self |) in
           let sep := M.alloc (| sep |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "alloc::slice::Join"
+              []
+              []
+              (Ty.apply (Ty.path "slice") [] [ T ])
+              "Output",
             M.get_trait_method (|
               "alloc::slice::Join",
               Ty.apply (Ty.path "slice") [] [ T ],
@@ -3362,8 +3379,9 @@ Module slice.
       forall (T V : Ty.t),
       M.IsTraitInstance
         "alloc::slice::Concat"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T V)
-        (* Trait polymorphic types *) [ (* Item *) T ]
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output T V)); ("concat", InstanceField.Method (concat T V))
         ].
@@ -3833,8 +3851,9 @@ Module slice.
       forall (T V : Ty.t),
       M.IsTraitInstance
         "alloc::slice::Join"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ] ]
         (Self T V)
-        (* Trait polymorphic types *) [ (* Separator *) Ty.apply (Ty.path "&") [] [ T ] ]
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output T V)); ("join", InstanceField.Method (join T V)) ].
   End Impl_alloc_slice_Join_where_core_clone_Clone_T_where_core_borrow_Borrow_V_slice_T_ref__T_for_slice_V.
@@ -4296,9 +4315,10 @@ Module slice.
       forall (T V : Ty.t),
       M.IsTraitInstance
         "alloc::slice::Join"
-        (Self T V)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Separator *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T V)
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output T V)); ("join", InstanceField.Method (join T V)) ].
   End Impl_alloc_slice_Join_where_core_clone_Clone_T_where_core_borrow_Borrow_V_slice_T_ref__slice_T_for_slice_V.
@@ -4350,8 +4370,9 @@ Module slice.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow T A)) ].
   End Impl_core_borrow_Borrow_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
   
@@ -4407,8 +4428,9 @@ Module slice.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::borrow::BorrowMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut T A)) ].
   End Impl_core_borrow_BorrowMut_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_Vec_T_A.
   
@@ -4569,8 +4591,9 @@ Module slice.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "alloc::slice::SpecCloneIntoVec"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T; A ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T; (* A *) A ]
         (* Instance *) [ ("clone_into", InstanceField.Method (clone_into T A)) ].
   End Impl_alloc_slice_SpecCloneIntoVec_where_core_clone_Clone_T_where_core_alloc_Allocator_A_T_A_for_slice_T.
   
@@ -4629,8 +4652,9 @@ Module slice.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "alloc::slice::SpecCloneIntoVec"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T; A ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T; (* A *) A ]
         (* Instance *) [ ("clone_into", InstanceField.Method (clone_into T A)) ].
   End Impl_alloc_slice_SpecCloneIntoVec_where_core_marker_Copy_T_where_core_alloc_Allocator_A_T_A_for_slice_T.
   
@@ -4701,8 +4725,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::borrow::ToOwned"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Owned", InstanceField.Ty (_Owned T));
@@ -4835,8 +4860,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::slice::sort::stable::BufGuard"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("with_capacity", InstanceField.Method (with_capacity T));

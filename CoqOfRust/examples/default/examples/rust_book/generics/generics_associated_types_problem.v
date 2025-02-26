@@ -132,8 +132,9 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
   Axiom Implements :
     M.IsTraitInstance
       "generics_associated_types_problem::Contains"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "i32"; Ty.path "i32" ]
       Self
-      (* Trait polymorphic types *) [ (* A *) Ty.path "i32"; (* B *) Ty.path "i32" ]
       (* Instance *)
       [
         ("contains", InstanceField.Method contains);
@@ -233,7 +234,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 3 ],
                       []
                     |),
                     [
@@ -375,7 +376,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -461,7 +462,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -547,7 +548,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

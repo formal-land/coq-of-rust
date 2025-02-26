@@ -173,8 +173,9 @@ Module array.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
     End Impl_core_ops_drop_Drop_for_core_array_drain_Drain_T.
     
@@ -375,8 +376,9 @@ Module array.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -428,8 +430,9 @@ Module array.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("len", InstanceField.Method (len T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_array_drain_Drain_T.
     
@@ -440,8 +443,9 @@ Module array.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_array_drain_Drain_T.
     
@@ -519,8 +523,9 @@ Module array.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::unchecked_iterator::UncheckedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("next_unchecked", InstanceField.Method (next_unchecked T)) ].
     End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_array_drain_Drain_T.
   End drain.

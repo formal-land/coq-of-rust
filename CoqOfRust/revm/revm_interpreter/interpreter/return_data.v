@@ -58,8 +58,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_interpreter_interpreter_return_data_ReturnDataImpl.
     
@@ -117,8 +118,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_return_data_ReturnDataImpl.
     
@@ -154,8 +156,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_interpreter_interpreter_return_data_ReturnDataImpl.
     
@@ -237,8 +240,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::ReturnData"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("buffer", InstanceField.Method buffer); ("buffer_mut", InstanceField.Method buffer_mut)
           ].

@@ -73,8 +73,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [ ("clone", InstanceField.Method (clone F)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_F_for_core_iter_sources_from_fn_FromFn_F.
       
@@ -126,8 +127,9 @@ Module iter.
           forall (T F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self T F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T F)
             (* Instance *)
             [ ("Item", InstanceField.Ty (_Item T F)); ("next", InstanceField.Method (next T F)) ].
       End Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_from_fn_FromFn_F.
@@ -190,8 +192,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
       End Impl_core_fmt_Debug_for_core_iter_sources_from_fn_FromFn_F.
     End from_fn.

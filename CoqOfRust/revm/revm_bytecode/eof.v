@@ -17,7 +17,7 @@ Module eof.
                 [ Value.Integer IntegerKind.Usize 32 ]
                 [],
               "new",
-              [ Value.Integer IntegerKind.Usize 32 ],
+              [],
               []
             |),
             [ M.read (| M.get_constant "revm_bytecode::eof::EOF_MAGIC_HASH::RES" |) ]
@@ -173,8 +173,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_bytecode_eof_Eof.
   
@@ -257,8 +258,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_bytecode_eof_Eof.
   
@@ -268,8 +270,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_Eof.
   
@@ -385,8 +388,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_Eof.
   
@@ -429,8 +433,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_bytecode_eof_Eof.
@@ -545,8 +550,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_bytecode_eof_Eof.
   
@@ -716,8 +722,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_revm_bytecode_eof_Eof.
   
@@ -905,8 +912,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_Eof.
   
@@ -1130,8 +1138,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_bytecode_eof_Eof.
   
@@ -2625,106 +2634,127 @@ Module eof.
         {
           name := "MissingInput";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MissingBodyWithoutData";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "DanglingData";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidTypesSection";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidTypesSectionSize";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEOFMagicNumber";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEOFVersion";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidTypesKind";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidCodeKind";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidTerminalByte";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidDataKind";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidKindAfterCode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MismatchCodeAndTypesSize";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonSizes";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ShortInputForSizes";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ZeroSize";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooManyCodeSections";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ZeroCodeSections";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooManyContainerSections";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEOFSize";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_EofDecodeError_MissingInput :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::MissingInput" 0.
+  Axiom IsDiscriminant_EofDecodeError_MissingBodyWithoutData :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::MissingBodyWithoutData" 1.
+  Axiom IsDiscriminant_EofDecodeError_DanglingData :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::DanglingData" 2.
+  Axiom IsDiscriminant_EofDecodeError_InvalidTypesSection :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidTypesSection" 3.
+  Axiom IsDiscriminant_EofDecodeError_InvalidTypesSectionSize :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidTypesSectionSize" 4.
+  Axiom IsDiscriminant_EofDecodeError_InvalidEOFMagicNumber :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidEOFMagicNumber" 5.
+  Axiom IsDiscriminant_EofDecodeError_InvalidEOFVersion :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidEOFVersion" 6.
+  Axiom IsDiscriminant_EofDecodeError_InvalidTypesKind :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidTypesKind" 7.
+  Axiom IsDiscriminant_EofDecodeError_InvalidCodeKind :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidCodeKind" 8.
+  Axiom IsDiscriminant_EofDecodeError_InvalidTerminalByte :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidTerminalByte" 9.
+  Axiom IsDiscriminant_EofDecodeError_InvalidDataKind :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidDataKind" 10.
+  Axiom IsDiscriminant_EofDecodeError_InvalidKindAfterCode :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidKindAfterCode" 11.
+  Axiom IsDiscriminant_EofDecodeError_MismatchCodeAndTypesSize :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::MismatchCodeAndTypesSize" 12.
+  Axiom IsDiscriminant_EofDecodeError_NonSizes :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::NonSizes" 13.
+  Axiom IsDiscriminant_EofDecodeError_ShortInputForSizes :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::ShortInputForSizes" 14.
+  Axiom IsDiscriminant_EofDecodeError_ZeroSize :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::ZeroSize" 15.
+  Axiom IsDiscriminant_EofDecodeError_TooManyCodeSections :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::TooManyCodeSections" 16.
+  Axiom IsDiscriminant_EofDecodeError_ZeroCodeSections :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::ZeroCodeSections" 17.
+  Axiom IsDiscriminant_EofDecodeError_TooManyContainerSections :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::TooManyContainerSections" 18.
+  Axiom IsDiscriminant_EofDecodeError_InvalidEOFSize :
+    M.IsDiscriminant "revm_bytecode::eof::EofDecodeError::InvalidEOFSize" 19.
   
   Module Impl_core_clone_Clone_for_revm_bytecode_eof_EofDecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::EofDecodeError".
@@ -2742,8 +2772,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_bytecode_eof_EofDecodeError.
   
@@ -2753,8 +2784,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3071,8 +3103,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3127,8 +3160,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3138,8 +3172,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3186,8 +3221,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3211,8 +3247,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_bytecode_eof_EofDecodeError.
@@ -3283,8 +3320,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3346,8 +3384,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3703,8 +3742,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_bytecode_eof_EofDecodeError.
   
@@ -3714,8 +3754,9 @@ Module eof.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_bytecode_eof_EofDecodeError.
 End eof.

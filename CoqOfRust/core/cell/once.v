@@ -1138,7 +1138,7 @@ Module cell.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -1284,8 +1284,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_core_cell_once_OnceCell_T.
     
@@ -1405,7 +1406,7 @@ Module cell.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -1457,8 +1458,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_once_OnceCell_T.
     
@@ -1604,8 +1606,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_cell_once_OnceCell_T.
     
@@ -1682,8 +1685,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cell_once_OnceCell_T.
     
@@ -1694,8 +1698,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cell_once_OnceCell_T.
     
@@ -1741,8 +1746,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_T_for_core_cell_once_OnceCell_T.
     
@@ -1753,8 +1759,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_cell_once_OnceCell_T.
   End once.

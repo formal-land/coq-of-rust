@@ -11,31 +11,32 @@ Enum WebEvent
       {
         name := "PageLoad";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "PageUnload";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "KeyPress";
         item := StructTuple [ Ty.path "char" ];
-        discriminant := None;
       };
       {
         name := "Paste";
         item := StructTuple [ Ty.path "alloc::string::String" ];
-        discriminant := None;
       };
       {
         name := "Click";
         item := StructRecord [ ("x", Ty.path "i64"); ("y", Ty.path "i64") ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_WebEvent_PageLoad : M.IsDiscriminant "enums::WebEvent::PageLoad" 0.
+Axiom IsDiscriminant_WebEvent_PageUnload : M.IsDiscriminant "enums::WebEvent::PageUnload" 1.
+Axiom IsDiscriminant_WebEvent_KeyPress : M.IsDiscriminant "enums::WebEvent::KeyPress" 2.
+Axiom IsDiscriminant_WebEvent_Paste : M.IsDiscriminant "enums::WebEvent::Paste" 3.
+Axiom IsDiscriminant_WebEvent_Click : M.IsDiscriminant "enums::WebEvent::Click" 4.
 
 (*
 fn inspect(event: WebEvent) {
@@ -75,7 +76,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -121,7 +122,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -159,7 +160,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -229,7 +231,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -303,7 +306,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2
+                              ],
                               []
                             |),
                             [

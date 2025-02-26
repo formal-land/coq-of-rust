@@ -238,8 +238,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("clone", InstanceField.Method (clone T A));
@@ -343,8 +344,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
     End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -388,8 +390,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
     
@@ -983,7 +986,10 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 4;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
                                             [
@@ -1191,7 +1197,10 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 4;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
                                             [
@@ -1509,7 +1518,10 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 4;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
                                             [
@@ -1717,7 +1729,10 @@ Module collections.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 4;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ],
                                               []
                                             |),
                                             [
@@ -2198,7 +2213,10 @@ Module collections.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
-                                                  [],
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 4;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ],
                                                   []
                                                 |),
                                                 [
@@ -10120,7 +10138,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -10827,7 +10845,7 @@ Module collections.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -17447,8 +17465,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("eq", InstanceField.Method (eq T A)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -17460,8 +17479,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -17527,8 +17547,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T A)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -17589,8 +17610,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T A)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -17717,8 +17739,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("hash", InstanceField.Method (hash T A)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -17787,8 +17810,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::index::Index"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* Idx *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T A)); ("index", InstanceField.Method (index T A))
           ].
@@ -17864,8 +17888,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::index::IndexMut"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* Idx *) Ty.path "usize" ]
           (* Instance *) [ ("index_mut", InstanceField.Method (index_mut T A)) ].
     End Impl_core_ops_index_IndexMut_where_core_alloc_Allocator_A_usize_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -17899,14 +17924,27 @@ Module collections.
                   []
                   [ T; Ty.path "alloc::alloc::Global" ],
                 [],
-                [ T; Ty.associated ],
+                [
+                  T;
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter"
+                ],
                 "spec_from_iter",
                 [],
                 []
               |),
               [
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -17927,8 +17965,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::FromIterator"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
     End Impl_core_iter_traits_collect_FromIterator_T_for_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
     
@@ -17971,8 +18010,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -18023,8 +18063,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -18075,8 +18116,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -18110,7 +18152,15 @@ Module collections.
                       "alloc::collections::vec_deque::spec_extend::SpecExtend",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       [],
-                      [ T; Ty.associated ],
+                      [
+                        T;
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "IntoIter"
+                      ],
                       "spec_extend",
                       [],
                       []
@@ -18118,7 +18168,12 @@ Module collections.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "IntoIter",
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           I,
@@ -18262,8 +18317,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));
@@ -18298,7 +18354,15 @@ Module collections.
                       "alloc::collections::vec_deque::spec_extend::SpecExtend",
                       Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                       [],
-                      [ Ty.apply (Ty.path "&") [] [ T ]; Ty.associated ],
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "IntoIter"
+                      ],
                       "spec_extend",
                       [],
                       []
@@ -18306,7 +18370,12 @@ Module collections.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "IntoIter",
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           I,
@@ -18474,8 +18543,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ] ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));
@@ -18569,8 +18639,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -18645,8 +18716,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
     End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -19065,9 +19137,10 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ] ]
+          [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ] ]
+          (Self T A)
           (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
     End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_collections_vec_deque_VecDeque_T_A_for_alloc_vec_Vec_T_A.
     
@@ -19264,8 +19337,9 @@ Module collections.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
           (Self N T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
     End Impl_core_convert_From_array_N_T_for_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
   End vec_deque.

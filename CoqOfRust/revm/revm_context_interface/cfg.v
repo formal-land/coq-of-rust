@@ -10,7 +10,8 @@ Module cfg.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Spec (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Spec (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -48,7 +49,7 @@ Module cfg.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
                 "revm_context_interface::cfg::Cfg",
                 T,
@@ -303,8 +304,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::Cfg"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Spec", InstanceField.Ty (_Spec T));
@@ -323,7 +325,8 @@ Module cfg.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Spec (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Spec (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -361,7 +364,7 @@ Module cfg.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
                 "revm_context_interface::cfg::Cfg",
                 T,
@@ -616,8 +619,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::Cfg"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Spec", InstanceField.Ty (_Spec T));
@@ -637,7 +641,8 @@ Module cfg.
         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Spec (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Spec (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -675,7 +680,7 @@ Module cfg.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
                 "revm_context_interface::cfg::Cfg",
                 T,
@@ -930,8 +935,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::Cfg"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Spec", InstanceField.Ty (_Spec T));
@@ -951,7 +957,8 @@ Module cfg.
         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Spec (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Spec (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1006,7 +1013,7 @@ Module cfg.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
                 "revm_context_interface::cfg::Cfg",
                 T,
@@ -1397,8 +1404,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::Cfg"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Spec", InstanceField.Ty (_Spec T));
@@ -1417,7 +1425,8 @@ Module cfg.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Cfg (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Cfg (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition cfg (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1430,7 +1439,11 @@ Module cfg.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::cfg::CfgGetter",
                     T,
@@ -1456,8 +1469,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::CfgGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Cfg", InstanceField.Ty (_Cfg T)); ("cfg", InstanceField.Method (cfg T)) ].
     End Impl_revm_context_interface_cfg_CfgGetter_where_revm_context_interface_cfg_CfgGetter_T_where_core_marker_Sized_T_for_ref__T.
@@ -1465,7 +1479,8 @@ Module cfg.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Cfg (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Cfg (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition cfg (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1478,7 +1493,11 @@ Module cfg.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::cfg::CfgGetter",
                     T,
@@ -1504,8 +1523,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::CfgGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Cfg", InstanceField.Ty (_Cfg T)); ("cfg", InstanceField.Method (cfg T)) ].
     End Impl_revm_context_interface_cfg_CfgGetter_where_revm_context_interface_cfg_CfgGetter_T_where_core_marker_Sized_T_for_ref_mut_T.
@@ -1514,7 +1534,8 @@ Module cfg.
         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Cfg (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Cfg (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition cfg (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1527,7 +1548,11 @@ Module cfg.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::cfg::CfgGetter",
                     T,
@@ -1553,8 +1578,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::CfgGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Cfg", InstanceField.Ty (_Cfg T)); ("cfg", InstanceField.Method (cfg T)) ].
     End Impl_revm_context_interface_cfg_CfgGetter_where_revm_context_interface_cfg_CfgGetter_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
@@ -1563,7 +1589,8 @@ Module cfg.
         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Cfg (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Cfg (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition cfg (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1576,7 +1603,11 @@ Module cfg.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] [] T "Cfg"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::cfg::CfgGetter",
                     T,
@@ -1619,8 +1650,9 @@ Module cfg.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::CfgGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Cfg", InstanceField.Ty (_Cfg T)); ("cfg", InstanceField.Method (cfg T)) ].
     End Impl_revm_context_interface_cfg_CfgGetter_where_revm_context_interface_cfg_CfgGetter_T_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
@@ -1639,16 +1671,19 @@ Module cfg.
         {
           name := "Raw";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Analyse";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AnalysisKind_Raw :
+    M.IsDiscriminant "revm_context_interface::cfg::AnalysisKind::Raw" 0.
+  Axiom IsDiscriminant_AnalysisKind_Analyse :
+    M.IsDiscriminant "revm_context_interface::cfg::AnalysisKind::Analyse" 1.
   
   Module Impl_core_clone_Clone_for_revm_context_interface_cfg_AnalysisKind.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::AnalysisKind".
@@ -1691,8 +1726,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_cfg_AnalysisKind.
   
@@ -1710,8 +1746,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_context_interface_cfg_AnalysisKind.
   
@@ -1776,8 +1813,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_cfg_AnalysisKind.
   
@@ -1801,8 +1839,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_cfg_AnalysisKind.
@@ -1813,8 +1852,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_cfg_AnalysisKind.
   
@@ -1861,8 +1901,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_cfg_AnalysisKind.
   
@@ -1917,8 +1958,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_cfg_AnalysisKind.
   
@@ -1936,7 +1978,6 @@ Module cfg.
         {
           name := "Create";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Create2";
@@ -1949,11 +1990,15 @@ Module cfg.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [])
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_CreateScheme_Create :
+    M.IsDiscriminant "revm_context_interface::cfg::CreateScheme::Create" 0.
+  Axiom IsDiscriminant_CreateScheme_Create2 :
+    M.IsDiscriminant "revm_context_interface::cfg::CreateScheme::Create2" 1.
   
   Module Impl_core_clone_Clone_for_revm_context_interface_cfg_CreateScheme.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::CreateScheme".
@@ -1976,8 +2021,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_cfg_CreateScheme.
   
@@ -1987,8 +2033,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_cfg_CreateScheme.
   
@@ -2083,8 +2130,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_cfg_CreateScheme.
   
@@ -2113,8 +2161,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_cfg_CreateScheme.
@@ -2125,8 +2174,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_cfg_CreateScheme.
   
@@ -2248,8 +2298,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_cfg_CreateScheme.
   
@@ -2343,8 +2394,9 @@ Module cfg.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_cfg_CreateScheme.
   

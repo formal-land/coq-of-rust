@@ -59,8 +59,9 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (Self T)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self T)
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bounds_Ref_T.
 
@@ -90,7 +91,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -178,7 +179,7 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

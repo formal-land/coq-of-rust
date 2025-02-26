@@ -34,8 +34,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
     End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_ref__T.
@@ -47,8 +48,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref__T.
     
@@ -80,8 +82,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
     End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_ref_mut_T.
@@ -119,8 +122,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref_mut_T.
     
@@ -134,8 +138,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefPure"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref__T.
     
@@ -146,8 +151,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefPure"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref_mut_T.
     
@@ -161,8 +167,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Receiver"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref__T.
     
@@ -173,8 +180,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Receiver"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref_mut_T.
   End deref.

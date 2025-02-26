@@ -72,8 +72,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_hash_sip_SipHasher13.
     
@@ -130,8 +131,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_hash_sip_SipHasher13.
     
@@ -173,8 +175,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_hash_sip_SipHasher13.
     
@@ -247,8 +250,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_hash_sip_SipHasher24.
     
@@ -305,8 +309,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_hash_sip_SipHasher24.
     
@@ -348,8 +353,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_hash_sip_SipHasher24.
     
@@ -414,8 +420,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_hash_sip_SipHasher.
     
@@ -465,8 +472,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_hash_sip_SipHasher.
     
@@ -501,8 +509,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_hash_sip_SipHasher.
     
@@ -737,8 +746,9 @@ Module hash.
         forall (S : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self S)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self S)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt S)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_S_where_core_hash_sip_Sip_S_for_core_hash_sip_Hasher_S.
     
@@ -849,8 +859,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_hash_sip_State.
     
@@ -875,8 +886,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_hash_sip_State.
     
@@ -886,8 +898,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_hash_sip_State.
     
@@ -2002,8 +2015,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hasher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("write", InstanceField.Method write);
@@ -2142,8 +2156,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hasher"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("write", InstanceField.Method write);
@@ -3008,8 +3023,9 @@ Module hash.
         forall (S : Ty.t),
         M.IsTraitInstance
           "core::hash::Hasher"
-          (Self S)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self S)
           (* Instance *)
           [
             ("write", InstanceField.Method (write S));
@@ -3107,8 +3123,9 @@ Module hash.
         forall (S : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self S)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self S)
           (* Instance *) [ ("clone", InstanceField.Method (clone S)) ].
     End Impl_core_clone_Clone_where_core_hash_sip_Sip_S_for_core_hash_sip_Hasher_S.
     
@@ -3142,8 +3159,9 @@ Module hash.
         forall (S : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self S)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self S)
           (* Instance *) [ ("default", InstanceField.Method (default S)) ].
     End Impl_core_default_Default_where_core_hash_sip_Sip_S_for_core_hash_sip_Hasher_S.
     
@@ -3188,8 +3206,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_hash_sip_Sip13Rounds.
     
@@ -3209,8 +3228,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_hash_sip_Sip13Rounds.
     
@@ -3227,8 +3247,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_hash_sip_Sip13Rounds.
     
@@ -4672,8 +4693,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::sip::Sip"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("c_rounds", InstanceField.Method c_rounds); ("d_rounds", InstanceField.Method d_rounds)
           ].
@@ -4717,8 +4739,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_hash_sip_Sip24Rounds.
     
@@ -4738,8 +4761,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_hash_sip_Sip24Rounds.
     
@@ -4756,8 +4780,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_hash_sip_Sip24Rounds.
     
@@ -6903,8 +6928,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::sip::Sip"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("c_rounds", InstanceField.Method c_rounds); ("d_rounds", InstanceField.Method d_rounds)
           ].

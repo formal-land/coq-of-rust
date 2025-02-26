@@ -141,7 +141,7 @@ Module num.
                                                         M.SubPointer.get_array_field (|
                                                           M.get_constant
                                                             "core::num::dec2flt::slow::parse_long_mantissa::POWERS",
-                                                          n
+                                                          M.read (| n |)
                                                         |)
                                                       |))
                                                   |)));
@@ -469,7 +469,7 @@ Module num.
                                                   "core::num::dec2flt::decimal::Decimal",
                                                   "digits"
                                                 |),
-                                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                Value.Integer IntegerKind.Usize 0
                                               |),
                                               [
                                                 fun γ =>

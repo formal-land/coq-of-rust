@@ -308,8 +308,9 @@ Module host.
         forall (BLOCK TX CFG : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self BLOCK TX CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self BLOCK TX CFG)
           (* Instance *) [ ("clone", InstanceField.Method (clone BLOCK TX CFG)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_BLOCK_where_core_clone_Clone_TX_where_core_clone_Clone_CFG_where_revm_context_interface_block_Block_BLOCK_where_revm_context_interface_transaction_Transaction_TX_where_revm_context_interface_cfg_Cfg_CFG_for_revm_context_interface_host_dummy_DummyHost_BLOCK_TX_CFG.
     
@@ -516,8 +517,9 @@ Module host.
         forall (BLOCK TX CFG : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self BLOCK TX CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self BLOCK TX CFG)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt BLOCK TX CFG)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_BLOCK_where_core_fmt_Debug_TX_where_core_fmt_Debug_CFG_where_revm_context_interface_block_Block_BLOCK_where_revm_context_interface_transaction_Transaction_TX_where_revm_context_interface_cfg_Cfg_CFG_for_revm_context_interface_host_dummy_DummyHost_BLOCK_TX_CFG.
     
@@ -709,8 +711,9 @@ Module host.
         forall (BLOCK TX CFG : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self BLOCK TX CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self BLOCK TX CFG)
           (* Instance *) [ ("default", InstanceField.Method (default BLOCK TX CFG)) ].
     End Impl_core_default_Default_where_core_default_Default_BLOCK_where_core_default_Default_TX_where_core_default_Default_CFG_where_revm_context_interface_block_Block_BLOCK_where_revm_context_interface_transaction_Transaction_TX_where_revm_context_interface_cfg_Cfg_CFG_for_revm_context_interface_host_dummy_DummyHost_BLOCK_TX_CFG.
     
@@ -1028,8 +1031,9 @@ Module host.
         forall (BLOCK TX CFG : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::BlockGetter"
-          (Self BLOCK TX CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self BLOCK TX CFG)
           (* Instance *)
           [
             ("Block", InstanceField.Ty (_Block BLOCK TX CFG));
@@ -1080,8 +1084,9 @@ Module host.
         forall (BLOCK TX CFG : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::TransactionGetter"
-          (Self BLOCK TX CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self BLOCK TX CFG)
           (* Instance *)
           [
             ("Transaction", InstanceField.Ty (_Transaction BLOCK TX CFG));
@@ -1132,8 +1137,9 @@ Module host.
         forall (BLOCK TX CFG : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::cfg::CfgGetter"
-          (Self BLOCK TX CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self BLOCK TX CFG)
           (* Instance *)
           [
             ("Cfg", InstanceField.Ty (_Cfg BLOCK TX CFG));
@@ -2124,8 +2130,9 @@ Module host.
         forall (TX BLOCK CFG : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::host::Host"
-          (Self TX BLOCK CFG)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self TX BLOCK CFG)
           (* Instance *)
           [
             ("load_account_delegated", InstanceField.Method (load_account_delegated TX BLOCK CFG));

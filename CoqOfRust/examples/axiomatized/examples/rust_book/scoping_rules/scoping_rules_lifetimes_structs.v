@@ -17,8 +17,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
 
@@ -42,8 +43,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
 
@@ -57,16 +59,17 @@ Enum Either
       {
         name := "Num";
         item := StructTuple [ Ty.path "i32" ];
-        discriminant := None;
       };
       {
         name := "Ref";
         item := StructTuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Either_Num : M.IsDiscriminant "scoping_rules_lifetimes_structs::Either::Num" 0.
+Axiom IsDiscriminant_Either_Ref : M.IsDiscriminant "scoping_rules_lifetimes_structs::Either::Ref" 1.
 
 Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Definition Self : Ty.t := Ty.path "scoping_rules_lifetimes_structs::Either".
@@ -76,8 +79,9 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
 

@@ -12,17 +12,20 @@ Module check_bounds.
         {
           name := "Module";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModuleFunction";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_BoundsCheckingContext_Module :
+    M.IsDiscriminant "move_binary_format::check_bounds::BoundsCheckingContext::Module" 0.
+  Axiom IsDiscriminant_BoundsCheckingContext_ModuleFunction :
+    M.IsDiscriminant "move_binary_format::check_bounds::BoundsCheckingContext::ModuleFunction" 1.
   
   (* StructRecord
     {
@@ -10315,28 +10318,26 @@ Module check_bounds.
                             ]
                           |)
                         |),
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_trait_method (|
-                              "move_binary_format::internals::ModuleIndex",
-                              Ty.path "move_binary_format::file_format::FunctionHandleIndex",
-                              [],
-                              [],
-                              "into_index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| function_def |) |),
-                                  "move_binary_format::file_format::FunctionDefinition",
-                                  "function"
-                                |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "move_binary_format::internals::ModuleIndex",
+                            Ty.path "move_binary_format::file_format::FunctionHandleIndex",
+                            [],
+                            [],
+                            "into_index",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| function_def |) |),
+                                "move_binary_format::file_format::FunctionDefinition",
+                                "function"
                               |)
-                            ]
-                          |)
+                            |)
+                          ]
                         |)
                       |)
                     |)
@@ -10504,28 +10505,26 @@ Module check_bounds.
                             ]
                           |)
                         |),
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_trait_method (|
-                              "move_binary_format::internals::ModuleIndex",
-                              Ty.path "move_binary_format::file_format::SignatureIndex",
-                              [],
-                              [],
-                              "into_index",
-                              [],
-                              []
-                            |),
-                            [
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| function_handle |) |),
-                                  "move_binary_format::file_format::FunctionHandle",
-                                  "parameters"
-                                |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "move_binary_format::internals::ModuleIndex",
+                            Ty.path "move_binary_format::file_format::SignatureIndex",
+                            [],
+                            [],
+                            "into_index",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| function_handle |) |),
+                                "move_binary_format::file_format::FunctionHandle",
+                                "parameters"
                               |)
-                            ]
-                          |)
+                            |)
+                          ]
                         |)
                       |)
                     |)
@@ -17119,7 +17118,14 @@ Module check_bounds.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        2;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        1
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -17722,7 +17728,14 @@ Module check_bounds.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
                                                                                                             "new_v1",
-                                                                                                            [],
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                2;
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                2
+                                                                                                            ],
                                                                                                             []
                                                                                                           |),
                                                                                                           [
@@ -18760,7 +18773,10 @@ Module check_bounds.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
-                                          [],
+                                          [
+                                            Value.Integer IntegerKind.Usize 2;
+                                            Value.Integer IntegerKind.Usize 1
+                                          ],
                                           []
                                         |),
                                         [

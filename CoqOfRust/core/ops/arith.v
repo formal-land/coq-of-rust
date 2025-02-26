@@ -26,8 +26,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_usize.
@@ -52,8 +53,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_u8.
@@ -78,8 +80,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_u16.
@@ -104,8 +107,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_u32.
@@ -130,8 +134,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_u64.
@@ -156,8 +161,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_u128.
@@ -182,8 +188,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_isize.
@@ -208,8 +215,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_i8.
@@ -234,8 +242,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_i16.
@@ -260,8 +269,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_i32.
@@ -286,8 +296,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_i64.
@@ -312,8 +323,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_i128.
@@ -338,8 +350,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_f16.
@@ -364,8 +377,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_f32.
@@ -390,8 +404,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_f64.
@@ -416,8 +431,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_f128.
@@ -445,8 +461,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_usize.
@@ -471,8 +488,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_u8.
@@ -497,8 +515,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_u16.
@@ -523,8 +542,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_u32.
@@ -549,8 +569,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_u64.
@@ -575,8 +596,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_u128.
@@ -601,8 +623,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_isize.
@@ -627,8 +650,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_i8.
@@ -653,8 +677,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_i16.
@@ -679,8 +704,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_i32.
@@ -705,8 +731,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_i64.
@@ -731,8 +758,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_i128.
@@ -757,8 +785,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_f16.
@@ -783,8 +812,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_f32.
@@ -809,8 +839,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_f64.
@@ -835,8 +866,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_f128.
@@ -864,8 +896,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_usize.
@@ -890,8 +923,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_u8.
@@ -916,8 +950,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_u16.
@@ -942,8 +977,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_u32.
@@ -968,8 +1004,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_u64.
@@ -994,8 +1031,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_u128.
@@ -1020,8 +1058,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_isize.
@@ -1046,8 +1085,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_i8.
@@ -1072,8 +1112,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_i16.
@@ -1098,8 +1139,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_i32.
@@ -1124,8 +1166,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_i64.
@@ -1150,8 +1193,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_i128.
@@ -1176,8 +1220,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_f16.
@@ -1202,8 +1247,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_f32.
@@ -1228,8 +1274,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_f64.
@@ -1254,8 +1301,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_f128.
@@ -1283,8 +1331,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_usize.
@@ -1309,8 +1358,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_u8.
@@ -1335,8 +1385,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_u16.
@@ -1361,8 +1412,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_u32.
@@ -1387,8 +1439,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_u64.
@@ -1413,8 +1466,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_u128.
@@ -1439,8 +1493,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_isize.
@@ -1465,8 +1520,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_i8.
@@ -1491,8 +1547,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_i16.
@@ -1517,8 +1574,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_i32.
@@ -1543,8 +1601,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_i64.
@@ -1569,8 +1628,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_i128.
@@ -1595,8 +1655,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_f16.
@@ -1621,8 +1682,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_f32.
@@ -1647,8 +1709,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_f64.
@@ -1673,8 +1736,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_f128.
@@ -1702,8 +1766,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_usize.
@@ -1728,8 +1793,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_u8.
@@ -1754,8 +1820,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_u16.
@@ -1780,8 +1847,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_u32.
@@ -1806,8 +1874,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_u64.
@@ -1832,8 +1901,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_u128.
@@ -1858,8 +1928,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_isize.
@@ -1884,8 +1955,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_i8.
@@ -1910,8 +1982,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_i16.
@@ -1936,8 +2009,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_i32.
@@ -1962,8 +2036,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_i64.
@@ -1988,8 +2063,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_i128.
@@ -2014,8 +2090,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_f16.
@@ -2040,8 +2117,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_f32.
@@ -2066,8 +2144,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_f64.
@@ -2092,8 +2171,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_f128.
@@ -2120,8 +2200,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_isize.
@@ -2145,8 +2226,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_i8.
@@ -2170,8 +2252,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_i16.
@@ -2195,8 +2278,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_i32.
@@ -2220,8 +2304,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_i64.
@@ -2245,8 +2330,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_i128.
@@ -2270,8 +2356,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_f16.
@@ -2295,8 +2382,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_f32.
@@ -2320,8 +2408,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_f64.
@@ -2345,8 +2434,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_f128.
@@ -2372,8 +2462,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_usize.
     
@@ -2395,8 +2486,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_u8.
     
@@ -2418,8 +2510,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_u16.
     
@@ -2441,8 +2534,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_u32.
     
@@ -2464,8 +2558,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_u64.
     
@@ -2487,8 +2582,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_u128.
     
@@ -2510,8 +2606,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_isize.
     
@@ -2533,8 +2630,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_i8.
     
@@ -2556,8 +2654,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_i16.
     
@@ -2579,8 +2678,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_i32.
     
@@ -2602,8 +2702,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_i64.
     
@@ -2625,8 +2726,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_i128.
     
@@ -2648,8 +2750,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_f16.
     
@@ -2671,8 +2774,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_f32.
     
@@ -2694,8 +2798,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_f64.
     
@@ -2717,8 +2822,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_f128.
     
@@ -2743,8 +2849,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_usize.
     
@@ -2766,8 +2873,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_u8.
     
@@ -2789,8 +2897,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_u16.
     
@@ -2812,8 +2921,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_u32.
     
@@ -2835,8 +2945,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_u64.
     
@@ -2858,8 +2969,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_u128.
     
@@ -2881,8 +2993,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_isize.
     
@@ -2904,8 +3017,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_i8.
     
@@ -2927,8 +3041,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_i16.
     
@@ -2950,8 +3065,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_i32.
     
@@ -2973,8 +3089,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_i64.
     
@@ -2996,8 +3113,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_i128.
     
@@ -3019,8 +3137,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_f16.
     
@@ -3042,8 +3161,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_f32.
     
@@ -3065,8 +3185,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_f64.
     
@@ -3088,8 +3209,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_f128.
     
@@ -3114,8 +3236,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_usize.
     
@@ -3137,8 +3260,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_u8.
     
@@ -3160,8 +3284,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_u16.
     
@@ -3183,8 +3308,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_u32.
     
@@ -3206,8 +3332,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_u64.
     
@@ -3229,8 +3356,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_u128.
     
@@ -3252,8 +3380,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_isize.
     
@@ -3275,8 +3404,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_i8.
     
@@ -3298,8 +3428,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_i16.
     
@@ -3321,8 +3452,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_i32.
     
@@ -3344,8 +3476,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_i64.
     
@@ -3367,8 +3500,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_i128.
     
@@ -3390,8 +3524,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_f16.
     
@@ -3413,8 +3548,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_f32.
     
@@ -3436,8 +3572,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_f64.
     
@@ -3459,8 +3596,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_f128.
     
@@ -3485,8 +3623,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_usize.
     
@@ -3508,8 +3647,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_u8.
     
@@ -3531,8 +3671,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_u16.
     
@@ -3554,8 +3695,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_u32.
     
@@ -3577,8 +3719,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_u64.
     
@@ -3600,8 +3743,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_u128.
     
@@ -3623,8 +3767,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_isize.
     
@@ -3646,8 +3791,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_i8.
     
@@ -3669,8 +3815,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_i16.
     
@@ -3692,8 +3839,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_i32.
     
@@ -3715,8 +3863,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_i64.
     
@@ -3738,8 +3887,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_i128.
     
@@ -3761,8 +3911,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_f16.
     
@@ -3784,8 +3935,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_f32.
     
@@ -3807,8 +3959,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_f64.
     
@@ -3830,8 +3983,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_f128.
     
@@ -3856,8 +4010,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_usize.
     
@@ -3879,8 +4034,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_u8.
     
@@ -3902,8 +4058,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_u16.
     
@@ -3925,8 +4082,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_u32.
     
@@ -3948,8 +4106,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_u64.
     
@@ -3971,8 +4130,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_u128.
     
@@ -3994,8 +4154,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_isize.
     
@@ -4017,8 +4178,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_i8.
     
@@ -4040,8 +4202,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_i16.
     
@@ -4063,8 +4226,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_i32.
     
@@ -4086,8 +4250,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_i64.
     
@@ -4109,8 +4274,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_i128.
     
@@ -4132,8 +4298,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_f16.
     
@@ -4155,8 +4322,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_f32.
     
@@ -4178,8 +4346,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_f64.
     
@@ -4201,8 +4370,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_f128.
   End arith.

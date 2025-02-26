@@ -1041,7 +1041,7 @@ Module num.
                   M.deref (|
                     M.read (| M.get_constant "core::num::dec2flt::table::POWER_OF_FIVE_128" |)
                   |),
-                  index
+                  M.read (| index |)
                 |),
                 [
                   fun γ =>

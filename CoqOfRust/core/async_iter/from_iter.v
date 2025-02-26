@@ -53,8 +53,9 @@ Module async_iter.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_I_for_core_async_iter_from_iter_FromIter_I.
     
@@ -112,8 +113,9 @@ Module async_iter.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_async_iter_from_iter_FromIter_I.
     
@@ -125,8 +127,9 @@ Module async_iter.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::marker::Unpin"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *) [].
     End Impl_core_marker_Unpin_for_core_async_iter_from_iter_FromIter_I.
     
@@ -145,7 +148,12 @@ Module async_iter.
             [
               ("iter",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -169,7 +177,8 @@ Module async_iter.
         Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ].
       
       (*     type Item = I::Item; *)
-      Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
+      Definition _Item (I : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
       
       (*
           fn poll_next(mut self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
@@ -187,7 +196,11 @@ Module async_iter.
               "core::task::poll::Poll::Ready"
               [
                 M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -285,8 +298,9 @@ Module async_iter.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::async_iter::async_iter::AsyncIterator"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item I));

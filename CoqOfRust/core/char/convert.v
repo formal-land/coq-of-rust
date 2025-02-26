@@ -142,8 +142,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "char" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_char_for_u32.
     
@@ -169,8 +170,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "char" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_char_for_u64.
     
@@ -196,8 +198,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "char" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_char_for_u128.
     
@@ -293,8 +296,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "char" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_char_for_u8.
@@ -391,8 +395,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "char" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_char_for_u16.
@@ -417,8 +422,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_char.
     
@@ -477,8 +483,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_char_convert_ParseCharError.
     
@@ -536,8 +543,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_char_convert_ParseCharError.
     
@@ -547,8 +555,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_convert_ParseCharError.
     
@@ -598,8 +607,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_ParseCharError.
     
@@ -628,8 +638,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_char_convert_ParseCharError.
@@ -644,16 +655,19 @@ Module char.
           {
             name := "EmptyString";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "TooManyChars";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CharErrorKind_EmptyString :
+      M.IsDiscriminant "core::char::convert::CharErrorKind::EmptyString" 0.
+    Axiom IsDiscriminant_CharErrorKind_TooManyChars :
+      M.IsDiscriminant "core::char::convert::CharErrorKind::TooManyChars" 1.
     
     Module Impl_core_marker_Copy_for_core_char_convert_CharErrorKind.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
@@ -661,8 +675,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_char_convert_CharErrorKind.
     
@@ -682,8 +697,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_char_convert_CharErrorKind.
     
@@ -748,8 +764,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_char_convert_CharErrorKind.
     
@@ -759,8 +776,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_convert_CharErrorKind.
     
@@ -807,8 +825,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_CharErrorKind.
     
@@ -832,8 +851,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_char_convert_CharErrorKind.
@@ -899,8 +919,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::error::Error"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("description", InstanceField.Method description) ].
     End Impl_core_error_Error_for_core_char_convert_ParseCharError.
     
@@ -953,8 +974,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_char_convert_ParseCharError.
     
@@ -1080,8 +1102,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_char.
@@ -1207,8 +1230,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_char.
@@ -1227,8 +1251,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_char_convert_CharTryFromError.
     
@@ -1253,8 +1278,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_char_convert_CharTryFromError.
     
@@ -1311,8 +1337,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_char_convert_CharTryFromError.
     
@@ -1322,8 +1349,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_convert_CharTryFromError.
     
@@ -1373,8 +1401,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_CharTryFromError.
     
@@ -1403,8 +1432,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_char_convert_CharTryFromError.
@@ -1445,8 +1475,9 @@ Module char.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_char_convert_CharTryFromError.
     
@@ -1493,7 +1524,7 @@ Module char.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [

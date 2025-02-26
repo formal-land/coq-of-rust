@@ -195,9 +195,7 @@ Module num.
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant "core::num::dec2flt::float::pow10_fast_path::TABLE",
-                  M.alloc (|
-                    BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 15)
-                  |)
+                  BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 15)
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -346,8 +344,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::num::dec2flt::float::RawFloat"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *)
             [
               ("value_INFINITY", InstanceField.Constant value_INFINITY);
@@ -561,9 +560,7 @@ Module num.
               M.read (|
                 M.SubPointer.get_array_field (|
                   M.get_constant "core::num::dec2flt::float::pow10_fast_path::TABLE",
-                  M.alloc (|
-                    BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 31)
-                  |)
+                  BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 31)
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -710,8 +707,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::num::dec2flt::float::RawFloat"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *)
             [
               ("value_INFINITY", InstanceField.Constant value_INFINITY);

@@ -73,8 +73,9 @@ Module iter.
           forall (G : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self G)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self G)
             (* Instance *) [ ("clone", InstanceField.Method (clone G)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_G_for_core_iter_sources_from_coroutine_FromCoroutine_G.
       
@@ -83,7 +84,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::sources::from_coroutine::FromCoroutine") [] [ G ].
         
         (*     type Item = G::Yield; *)
-        Definition _Item (G : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (G : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
         
         (*
             fn next(&mut self) -> Option<Self::Item> {
@@ -106,7 +108,10 @@ Module iter.
                       Ty.apply
                         (Ty.path "core::ops::coroutine::CoroutineState")
                         []
-                        [ Ty.associated; Ty.tuple [] ],
+                        [
+                          Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::coroutine::Coroutine",
                         G,
@@ -178,8 +183,9 @@ Module iter.
           forall (G : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self G)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self G)
             (* Instance *)
             [ ("Item", InstanceField.Ty (_Item G)); ("next", InstanceField.Method (next G)) ].
       End Impl_core_iter_traits_iterator_Iterator_where_core_ops_coroutine_Coroutine_G_where_core_marker_Unpin_G_for_core_iter_sources_from_coroutine_FromCoroutine_G.
@@ -242,8 +248,9 @@ Module iter.
           forall (G : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self G)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self G)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt G)) ].
       End Impl_core_fmt_Debug_for_core_iter_sources_from_coroutine_FromCoroutine_G.
     End from_coroutine.

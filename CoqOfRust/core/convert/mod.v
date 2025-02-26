@@ -73,8 +73,9 @@ Module convert.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ U ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) U ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T U)) ].
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsRef_T_U_U_for_ref__T.
   
@@ -114,8 +115,9 @@ Module convert.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ U ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) U ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T U)) ].
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsRef_T_U_U_for_ref_mut_T.
   
@@ -160,8 +162,9 @@ Module convert.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ U ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) U ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T U)) ].
   End Impl_core_convert_AsMut_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_convert_AsMut_T_U_U_for_ref_mut_T.
   
@@ -191,8 +194,9 @@ Module convert.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::convert::Into"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ U ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) U ]
         (* Instance *) [ ("into", InstanceField.Method (into T U)) ].
   End Impl_core_convert_Into_where_core_convert_From_U_T_U_for_T.
   
@@ -218,8 +222,9 @@ Module convert.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_T.
   
@@ -245,8 +250,9 @@ Module convert.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "never" ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.path "never" ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_never_for_T.
   
@@ -254,7 +260,8 @@ Module convert.
     Definition Self (T U : Ty.t) : Ty.t := T.
     
     (*     type Error = U::Error; *)
-    Definition _Error (T U : Ty.t) : Ty.t := Ty.associated.
+    Definition _Error (T U : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::convert::TryFrom" [] [] U "Error".
     
     (*
         fn try_into(self) -> Result<U, U::Error> {
@@ -268,7 +275,10 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ U; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ U; Ty.associated_in_trait "core::convert::TryFrom" [] [] U "Error" ],
             M.get_trait_method (| "core::convert::TryFrom", U, [], [ T ], "try_from", [], [] |),
             [ M.read (| self |) ]
           |)))
@@ -279,8 +289,9 @@ Module convert.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::convert::TryInto"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ U ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) U ]
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error T U));
@@ -321,8 +332,9 @@ Module convert.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ U ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) U ]
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error T U));
@@ -352,8 +364,9 @@ Module convert.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T)) ].
   End Impl_core_convert_AsRef_slice_T_for_slice_T.
   
@@ -382,8 +395,9 @@ Module convert.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T)) ].
   End Impl_core_convert_AsMut_slice_T_for_slice_T.
   
@@ -407,8 +421,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_str_for_str.
   
@@ -435,8 +450,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
         (* Instance *) [ ("as_mut", InstanceField.Method as_mut) ].
   End Impl_core_convert_AsMut_str_for_str.
   
@@ -449,14 +465,16 @@ Module convert.
   }
   *)
   
+  
   Module Impl_core_marker_Copy_for_core_convert_Infallible.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".
     
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_convert_Infallible.
   
@@ -482,8 +500,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_convert_Infallible.
   
@@ -517,8 +536,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_convert_Infallible.
   
@@ -552,8 +572,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_convert_Infallible.
   
@@ -579,8 +600,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_convert_Infallible.
   
@@ -614,8 +636,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_convert_Infallible.
   
@@ -623,7 +646,12 @@ Module convert.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".
     
     Axiom Implements :
-      M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        Self
+        (* Instance *) [].
   End Impl_core_cmp_Eq_for_core_convert_Infallible.
   
   Module Impl_core_cmp_PartialOrd_for_core_convert_Infallible.
@@ -649,8 +677,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_core_convert_Infallible.
   
@@ -677,8 +706,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_convert_Infallible.
   
@@ -702,8 +732,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "never" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "never" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_never_for_core_convert_Infallible.
   
@@ -737,8 +768,9 @@ Module convert.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_convert_Infallible.
 End convert.

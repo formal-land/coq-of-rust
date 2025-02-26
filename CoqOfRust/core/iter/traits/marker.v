@@ -17,8 +17,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_marker_Sized_I_for_ref_mut_I.
       
@@ -32,8 +33,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_marker_Sized_I_for_ref_mut_I.
       

@@ -147,7 +147,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -224,10 +224,7 @@ Module instructions.
                                   ]
                                   [],
                                 "as_limbs_mut",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 []
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
@@ -1189,7 +1186,8 @@ Module instructions.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_const",
-                                                                [],
+                                                                [ Value.Integer IntegerKind.Usize 1
+                                                                ],
                                                                 []
                                                               |),
                                                               [
@@ -1341,8 +1339,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::instructions::utility::IntoU256"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("into_u256", InstanceField.Method into_u256) ].
     End Impl_revm_interpreter_instructions_utility_IntoU256_for_alloy_primitives_bits_address_Address.
     
@@ -1374,7 +1373,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_be_bytes",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [ Value.Integer IntegerKind.Usize 32 ],
                 []
               |),
               [
@@ -1393,8 +1392,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::instructions::utility::IntoU256"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("into_u256", InstanceField.Method into_u256) ].
     End Impl_revm_interpreter_instructions_utility_IntoU256_for_alloy_primitives_bits_fixed_FixedBytes_Usize_32.
     
@@ -1461,7 +1461,7 @@ Module instructions.
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
                         "to_be_bytes",
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                        [ Value.Integer IntegerKind.Usize 32 ],
                         []
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, self |) ]
@@ -1476,8 +1476,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::instructions::utility::IntoAddress"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("into_address", InstanceField.Method into_address) ].
     End Impl_revm_interpreter_instructions_utility_IntoAddress_for_ruint_Uint_Usize_256_Usize_4.
   End utility.

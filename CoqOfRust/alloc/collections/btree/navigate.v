@@ -207,8 +207,9 @@ Module collections.
           forall (K V : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
@@ -244,8 +245,9 @@ Module collections.
           forall (B K V : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self B K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B K V)
             (* Instance *) [ ("default", InstanceField.Method (default B K V)) ].
       End Impl_core_default_Default_for_alloc_collections_btree_navigate_LeafRange_B_K_V.
       
@@ -2725,7 +2727,6 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                       ]
                   ];
-              discriminant := None;
             };
             {
               name := "Edge";
@@ -2748,11 +2749,15 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::Edge"
                       ]
                   ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_LazyLeafHandle_Root :
+        M.IsDiscriminant "alloc::collections::btree::navigate::LazyLeafHandle::Root" 0.
+      Axiom IsDiscriminant_LazyLeafHandle_Edge :
+        M.IsDiscriminant "alloc::collections::btree::navigate::LazyLeafHandle::Edge" 1.
       
       Module Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LazyLeafHandle_alloc_collections_btree_node_marker_Immut_K_V.
         Definition Self (K V : Ty.t) : Ty.t :=
@@ -2819,8 +2824,9 @@ Module collections.
           forall (K V : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LazyLeafHandle_alloc_collections_btree_node_marker_Immut_K_V.
       
@@ -3026,8 +3032,9 @@ Module collections.
           forall (B K V : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self B K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B K V)
             (* Instance *) [ ("default", InstanceField.Method (default B K V)) ].
       End Impl_core_default_Default_for_alloc_collections_btree_navigate_LazyLeafRange_B_K_V.
       
@@ -3138,8 +3145,9 @@ Module collections.
           forall (K V : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
@@ -6265,7 +6273,10 @@ Module collections.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
-                                                          [],
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 1;
+                                                            Value.Integer IntegerKind.Usize 0
+                                                          ],
                                                           []
                                                         |),
                                                         [
@@ -13661,7 +13672,6 @@ Module collections.
                       []
                       [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ]
                   ];
-              discriminant := None;
             };
             {
               name := "Internal";
@@ -13678,16 +13688,21 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::Internal"
                       ]
                   ];
-              discriminant := None;
             };
             {
               name := "InternalKV";
               item := StructTuple [];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_Position_Leaf :
+        M.IsDiscriminant "alloc::collections::btree::navigate::Position::Leaf" 0.
+      Axiom IsDiscriminant_Position_Internal :
+        M.IsDiscriminant "alloc::collections::btree::navigate::Position::Internal" 1.
+      Axiom IsDiscriminant_Position_InternalKV :
+        M.IsDiscriminant "alloc::collections::btree::navigate::Position::InternalKV" 2.
       
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.

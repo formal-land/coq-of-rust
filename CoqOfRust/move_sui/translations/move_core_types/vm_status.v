@@ -100,36 +100,43 @@ Module vm_status.
         {
           name := "Validation";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Verification";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvariantViolation";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Deserialization";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Execution";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Unknown";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_StatusType_Validation :
+    M.IsDiscriminant "move_core_types::vm_status::StatusType::Validation" 0.
+  Axiom IsDiscriminant_StatusType_Verification :
+    M.IsDiscriminant "move_core_types::vm_status::StatusType::Verification" 1.
+  Axiom IsDiscriminant_StatusType_InvariantViolation :
+    M.IsDiscriminant "move_core_types::vm_status::StatusType::InvariantViolation" 2.
+  Axiom IsDiscriminant_StatusType_Deserialization :
+    M.IsDiscriminant "move_core_types::vm_status::StatusType::Deserialization" 3.
+  Axiom IsDiscriminant_StatusType_Execution :
+    M.IsDiscriminant "move_core_types::vm_status::StatusType::Execution" 4.
+  Axiom IsDiscriminant_StatusType_Unknown :
+    M.IsDiscriminant "move_core_types::vm_status::StatusType::Unknown" 5.
   
   Module Impl_core_clone_Clone_for_move_core_types_vm_status_StatusType.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
@@ -221,8 +228,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_vm_status_StatusType.
   
@@ -232,8 +240,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_vm_status_StatusType.
   
@@ -280,8 +289,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusType.
   
@@ -305,8 +315,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusType.
@@ -428,8 +439,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_vm_status_StatusType.
   
@@ -484,8 +496,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_vm_status_StatusType.
   
@@ -499,1041 +512,1317 @@ Module vm_status.
         {
           name := "UNKNOWN_VALIDATION_STATUS";
           item := StructTuple [];
-          discriminant := Some 0;
         };
         {
           name := "INVALID_SIGNATURE";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "INVALID_AUTH_KEY";
           item := StructTuple [];
-          discriminant := Some 2;
         };
         {
           name := "SEQUENCE_NUMBER_TOO_OLD";
           item := StructTuple [];
-          discriminant := Some 3;
         };
         {
           name := "SEQUENCE_NUMBER_TOO_NEW";
           item := StructTuple [];
-          discriminant := Some 4;
         };
         {
           name := "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE";
           item := StructTuple [];
-          discriminant := Some 5;
         };
         {
           name := "TRANSACTION_EXPIRED";
           item := StructTuple [];
-          discriminant := Some 6;
         };
         {
           name := "SENDING_ACCOUNT_DOES_NOT_EXIST";
           item := StructTuple [];
-          discriminant := Some 7;
         };
         {
           name := "REJECTED_WRITE_SET";
           item := StructTuple [];
-          discriminant := Some 8;
         };
         {
           name := "INVALID_WRITE_SET";
           item := StructTuple [];
-          discriminant := Some 9;
         };
         {
           name := "EXCEEDED_MAX_TRANSACTION_SIZE";
           item := StructTuple [];
-          discriminant := Some 10;
         };
         {
           name := "UNKNOWN_SCRIPT";
           item := StructTuple [];
-          discriminant := Some 11;
         };
         {
           name := "UNKNOWN_MODULE";
           item := StructTuple [];
-          discriminant := Some 12;
         };
         {
           name := "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND";
           item := StructTuple [];
-          discriminant := Some 13;
         };
         {
           name := "MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS";
           item := StructTuple [];
-          discriminant := Some 14;
         };
         {
           name := "GAS_UNIT_PRICE_BELOW_MIN_BOUND";
           item := StructTuple [];
-          discriminant := Some 15;
         };
         {
           name := "GAS_UNIT_PRICE_ABOVE_MAX_BOUND";
           item := StructTuple [];
-          discriminant := Some 16;
         };
         {
           name := "INVALID_GAS_SPECIFIER";
           item := StructTuple [];
-          discriminant := Some 17;
         };
         {
           name := "SENDING_ACCOUNT_FROZEN";
           item := StructTuple [];
-          discriminant := Some 18;
         };
         {
           name := "UNABLE_TO_DESERIALIZE_ACCOUNT";
           item := StructTuple [];
-          discriminant := Some 19;
         };
         {
           name := "CURRENCY_INFO_DOES_NOT_EXIST";
           item := StructTuple [];
-          discriminant := Some 20;
         };
         {
           name := "INVALID_MODULE_PUBLISHER";
           item := StructTuple [];
-          discriminant := Some 21;
         };
         {
           name := "NO_ACCOUNT_ROLE";
           item := StructTuple [];
-          discriminant := Some 22;
         };
         {
           name := "BAD_CHAIN_ID";
           item := StructTuple [];
-          discriminant := Some 23;
         };
         {
           name := "SEQUENCE_NUMBER_TOO_BIG";
           item := StructTuple [];
-          discriminant := Some 24;
         };
         {
           name := "BAD_TRANSACTION_FEE_CURRENCY";
           item := StructTuple [];
-          discriminant := Some 25;
         };
         {
           name := "FEATURE_UNDER_GATING";
           item := StructTuple [];
-          discriminant := Some 26;
         };
         {
           name := "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 27;
         };
         {
           name := "SIGNERS_CONTAIN_DUPLICATES";
           item := StructTuple [];
-          discriminant := Some 28;
         };
         {
           name := "SEQUENCE_NONCE_INVALID";
           item := StructTuple [];
-          discriminant := Some 29;
         };
         {
           name := "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST";
           item := StructTuple [];
-          discriminant := Some 30;
         };
         {
           name := "UNKNOWN_VERIFICATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 1000;
         };
         {
           name := "INDEX_OUT_OF_BOUNDS";
           item := StructTuple [];
-          discriminant := Some 1001;
         };
         {
           name := "INVALID_SIGNATURE_TOKEN";
           item := StructTuple [];
-          discriminant := Some 1003;
         };
         {
           name := "RECURSIVE_STRUCT_DEFINITION";
           item := StructTuple [];
-          discriminant := Some 1005;
         };
         {
           name := "FIELD_MISSING_TYPE_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1006;
         };
         {
           name := "INVALID_FALL_THROUGH";
           item := StructTuple [];
-          discriminant := Some 1007;
         };
         {
           name := "NEGATIVE_STACK_SIZE_WITHIN_BLOCK";
           item := StructTuple [];
-          discriminant := Some 1009;
         };
         {
           name := "INVALID_MAIN_FUNCTION_SIGNATURE";
           item := StructTuple [];
-          discriminant := Some 1011;
         };
         {
           name := "DUPLICATE_ELEMENT";
           item := StructTuple [];
-          discriminant := Some 1012;
         };
         {
           name := "INVALID_MODULE_HANDLE";
           item := StructTuple [];
-          discriminant := Some 1013;
         };
         {
           name := "UNIMPLEMENTED_HANDLE";
           item := StructTuple [];
-          discriminant := Some 1014;
         };
         {
           name := "LOOKUP_FAILED";
           item := StructTuple [];
-          discriminant := Some 1017;
         };
         {
           name := "TYPE_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 1020;
         };
         {
           name := "MISSING_DEPENDENCY";
           item := StructTuple [];
-          discriminant := Some 1021;
         };
         {
           name := "POP_WITHOUT_DROP_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1023;
         };
         {
           name := "BR_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1025;
         };
         {
           name := "ABORT_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1026;
         };
         {
           name := "STLOC_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1027;
         };
         {
           name := "STLOC_UNSAFE_TO_DESTROY_ERROR";
           item := StructTuple [];
-          discriminant := Some 1028;
         };
         {
           name := "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED";
           item := StructTuple [];
-          discriminant := Some 1029;
         };
         {
           name := "RET_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1030;
         };
         {
           name := "RET_BORROWED_MUTABLE_REFERENCE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1031;
         };
         {
           name := "FREEZEREF_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1032;
         };
         {
           name := "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1033;
         };
         {
           name := "BORROWFIELD_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1034;
         };
         {
           name := "BORROWFIELD_BAD_FIELD_ERROR";
           item := StructTuple [];
-          discriminant := Some 1035;
         };
         {
           name := "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1036;
         };
         {
           name := "COPYLOC_UNAVAILABLE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1037;
         };
         {
           name := "COPYLOC_WITHOUT_COPY_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1038;
         };
         {
           name := "COPYLOC_EXISTS_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1039;
         };
         {
           name := "MOVELOC_UNAVAILABLE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1040;
         };
         {
           name := "MOVELOC_EXISTS_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1041;
         };
         {
           name := "BORROWLOC_REFERENCE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1042;
         };
         {
           name := "BORROWLOC_UNAVAILABLE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1043;
         };
         {
           name := "BORROWLOC_EXISTS_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1044;
         };
         {
           name := "CALL_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1045;
         };
         {
           name := "CALL_BORROWED_MUTABLE_REFERENCE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1046;
         };
         {
           name := "PACK_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1047;
         };
         {
           name := "UNPACK_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1048;
         };
         {
           name := "READREF_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1049;
         };
         {
           name := "READREF_WITHOUT_COPY_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1050;
         };
         {
           name := "READREF_EXISTS_MUTABLE_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1051;
         };
         {
           name := "WRITEREF_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1052;
         };
         {
           name := "WRITEREF_WITHOUT_DROP_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1053;
         };
         {
           name := "WRITEREF_EXISTS_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1054;
         };
         {
           name := "WRITEREF_NO_MUTABLE_REFERENCE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1055;
         };
         {
           name := "INTEGER_OP_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1056;
         };
         {
           name := "BOOLEAN_OP_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1057;
         };
         {
           name := "EQUALITY_OP_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1058;
         };
         {
           name := "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT";
           item := StructTuple [];
-          discriminant := Some 1059;
         };
         {
           name := "BORROWGLOBAL_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1060;
         };
         {
           name := "BORROWGLOBAL_WITHOUT_KEY_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1061;
         };
         {
           name := "MOVEFROM_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1062;
         };
         {
           name := "MOVEFROM_WITHOUT_KEY_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1063;
         };
         {
           name := "MOVETO_TYPE_MISMATCH_ERROR";
           item := StructTuple [];
-          discriminant := Some 1064;
         };
         {
           name := "MOVETO_WITHOUT_KEY_ABILITY";
           item := StructTuple [];
-          discriminant := Some 1065;
         };
         {
           name := "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER";
           item := StructTuple [];
-          discriminant := Some 1067;
         };
         {
           name := "NO_MODULE_HANDLES";
           item := StructTuple [];
-          discriminant := Some 1068;
         };
         {
           name := "POSITIVE_STACK_SIZE_AT_BLOCK_END";
           item := StructTuple [];
-          discriminant := Some 1069;
         };
         {
           name := "MISSING_ACQUIRES_ANNOTATION";
           item := StructTuple [];
-          discriminant := Some 1070;
         };
         {
           name := "EXTRANEOUS_ACQUIRES_ANNOTATION";
           item := StructTuple [];
-          discriminant := Some 1071;
         };
         {
           name := "DUPLICATE_ACQUIRES_ANNOTATION";
           item := StructTuple [];
-          discriminant := Some 1072;
         };
         {
           name := "INVALID_ACQUIRES_ANNOTATION";
           item := StructTuple [];
-          discriminant := Some 1073;
         };
         {
           name := "GLOBAL_REFERENCE_ERROR";
           item := StructTuple [];
-          discriminant := Some 1074;
         };
         {
           name := "CONSTRAINT_NOT_SATISFIED";
           item := StructTuple [];
-          discriminant := Some 1075;
         };
         {
           name := "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 1076;
         };
         {
           name := "LOOP_IN_INSTANTIATION_GRAPH";
           item := StructTuple [];
-          discriminant := Some 1077;
         };
         {
           name := "ZERO_SIZED_STRUCT";
           item := StructTuple [];
-          discriminant := Some 1080;
         };
         {
           name := "LINKER_ERROR";
           item := StructTuple [];
-          discriminant := Some 1081;
         };
         {
           name := "INVALID_CONSTANT_TYPE";
           item := StructTuple [];
-          discriminant := Some 1082;
         };
         {
           name := "MALFORMED_CONSTANT_DATA";
           item := StructTuple [];
-          discriminant := Some 1083;
         };
         {
           name := "EMPTY_CODE_UNIT";
           item := StructTuple [];
-          discriminant := Some 1084;
         };
         {
           name := "INVALID_LOOP_SPLIT";
           item := StructTuple [];
-          discriminant := Some 1085;
         };
         {
           name := "INVALID_LOOP_BREAK";
           item := StructTuple [];
-          discriminant := Some 1086;
         };
         {
           name := "INVALID_LOOP_CONTINUE";
           item := StructTuple [];
-          discriminant := Some 1087;
         };
         {
           name := "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP";
           item := StructTuple [];
-          discriminant := Some 1088;
         };
         {
           name := "TOO_MANY_LOCALS";
           item := StructTuple [];
-          discriminant := Some 1089;
         };
         {
           name := "GENERIC_MEMBER_OPCODE_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 1090;
         };
         {
           name := "FUNCTION_RESOLUTION_FAILURE";
           item := StructTuple [];
-          discriminant := Some 1091;
         };
         {
           name := "INVALID_OPERATION_IN_SCRIPT";
           item := StructTuple [];
-          discriminant := Some 1094;
         };
         {
           name := "DUPLICATE_MODULE_NAME";
           item := StructTuple [];
-          discriminant := Some 1095;
         };
         {
           name := "BACKWARD_INCOMPATIBLE_MODULE_UPDATE";
           item := StructTuple [];
-          discriminant := Some 1096;
         };
         {
           name := "CYCLIC_MODULE_DEPENDENCY";
           item := StructTuple [];
-          discriminant := Some 1097;
         };
         {
           name := "NUMBER_OF_ARGUMENTS_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 1098;
         };
         {
           name := "INVALID_PARAM_TYPE_FOR_DESERIALIZATION";
           item := StructTuple [];
-          discriminant := Some 1099;
         };
         {
           name := "FAILED_TO_DESERIALIZE_ARGUMENT";
           item := StructTuple [];
-          discriminant := Some 1100;
         };
         {
           name := "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 1101;
         };
         {
           name := "CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE";
           item := StructTuple [];
-          discriminant := Some 1102;
         };
         {
           name := "EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION";
           item := StructTuple [];
-          discriminant := Some 1103;
         };
         {
           name := "INVALID_FRIEND_DECL_WITH_SELF";
           item := StructTuple [];
-          discriminant := Some 1104;
         };
         {
           name := "INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS";
           item := StructTuple [];
-          discriminant := Some 1105;
         };
         {
           name := "INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES";
           item := StructTuple [];
-          discriminant := Some 1106;
         };
         {
           name := "CYCLIC_MODULE_FRIENDSHIP";
           item := StructTuple [];
-          discriminant := Some 1107;
         };
         {
           name := "INVALID_PHANTOM_TYPE_PARAM_POSITION";
           item := StructTuple [];
-          discriminant := Some 1108;
         };
         {
           name := "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1109;
         };
         {
           name := "VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR";
           item := StructTuple [];
-          discriminant := Some 1110;
         };
         {
           name := "LOOP_MAX_DEPTH_REACHED";
           item := StructTuple [];
-          discriminant := Some 1111;
         };
         {
           name := "TOO_MANY_TYPE_PARAMETERS";
           item := StructTuple [];
-          discriminant := Some 1112;
         };
         {
           name := "TOO_MANY_PARAMETERS";
           item := StructTuple [];
-          discriminant := Some 1113;
         };
         {
           name := "TOO_MANY_BASIC_BLOCKS";
           item := StructTuple [];
-          discriminant := Some 1114;
         };
         {
           name := "VALUE_STACK_OVERFLOW";
           item := StructTuple [];
-          discriminant := Some 1115;
         };
         {
           name := "TOO_MANY_TYPE_NODES";
           item := StructTuple [];
-          discriminant := Some 1116;
         };
         {
           name := "VALUE_STACK_PUSH_OVERFLOW";
           item := StructTuple [];
-          discriminant := Some 1117;
         };
         {
           name := "MAX_DEPENDENCY_DEPTH_REACHED";
           item := StructTuple [];
-          discriminant := Some 1118;
         };
         {
           name := "MAX_FUNCTION_DEFINITIONS_REACHED";
           item := StructTuple [];
-          discriminant := Some 1119;
         };
         {
           name := "MAX_STRUCT_DEFINITIONS_REACHED";
           item := StructTuple [];
-          discriminant := Some 1120;
         };
         {
           name := "MAX_FIELD_DEFINITIONS_REACHED";
           item := StructTuple [];
-          discriminant := Some 1121;
         };
         {
           name := "TOO_MANY_BACK_EDGES";
           item := StructTuple [];
-          discriminant := Some 1122;
         };
         {
           name := "RESERVED_VERIFICATION_ERROR_1";
           item := StructTuple [];
-          discriminant := Some 1123;
         };
         {
           name := "RESERVED_VERIFICATION_ERROR_2";
           item := StructTuple [];
-          discriminant := Some 1124;
         };
         {
           name := "RESERVED_VERIFICATION_ERROR_3";
           item := StructTuple [];
-          discriminant := Some 1125;
         };
         {
           name := "RESERVED_VERIFICATION_ERROR_4";
           item := StructTuple [];
-          discriminant := Some 1126;
         };
         {
           name := "RESERVED_VERIFICATION_ERROR_5";
           item := StructTuple [];
-          discriminant := Some 1127;
         };
         {
           name := "TOO_MANY_VECTOR_ELEMENTS";
           item := StructTuple [];
-          discriminant := Some 1128;
         };
         {
           name := "IDENTIFIER_TOO_LONG";
           item := StructTuple [];
-          discriminant := Some 1129;
         };
         {
           name := "PROGRAM_TOO_COMPLEX";
           item := StructTuple [];
-          discriminant := Some 1130;
         };
         {
           name := "UNKNOWN_INVARIANT_VIOLATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 2000;
         };
         {
           name := "EMPTY_VALUE_STACK";
           item := StructTuple [];
-          discriminant := Some 2003;
         };
         {
           name := "PC_OVERFLOW";
           item := StructTuple [];
-          discriminant := Some 2005;
         };
         {
           name := "VERIFICATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 2006;
         };
         {
           name := "STORAGE_ERROR";
           item := StructTuple [];
-          discriminant := Some 2008;
         };
         {
           name := "INTERNAL_TYPE_ERROR";
           item := StructTuple [];
-          discriminant := Some 2009;
         };
         {
           name := "EVENT_KEY_MISMATCH";
           item := StructTuple [];
-          discriminant := Some 2010;
         };
         {
           name := "UNREACHABLE";
           item := StructTuple [];
-          discriminant := Some 2011;
         };
         {
           name := "VM_STARTUP_FAILURE";
           item := StructTuple [];
-          discriminant := Some 2012;
         };
         {
           name := "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION";
           item := StructTuple [];
-          discriminant := Some 2015;
         };
         {
           name := "VERIFIER_INVARIANT_VIOLATION";
           item := StructTuple [];
-          discriminant := Some 2016;
         };
         {
           name := "UNEXPECTED_VERIFIER_ERROR";
           item := StructTuple [];
-          discriminant := Some 2017;
         };
         {
           name := "UNEXPECTED_DESERIALIZATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 2018;
         };
         {
           name := "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES";
           item := StructTuple [];
-          discriminant := Some 2019;
         };
         {
           name := "FAILED_TO_DESERIALIZE_RESOURCE";
           item := StructTuple [];
-          discriminant := Some 2020;
         };
         {
           name := "TYPE_RESOLUTION_FAILURE";
           item := StructTuple [];
-          discriminant := Some 2021;
         };
         {
           name := "DUPLICATE_NATIVE_FUNCTION";
           item := StructTuple [];
-          discriminant := Some 2022;
         };
         {
           name := "ARITHMETIC_OVERFLOW";
           item := StructTuple [];
-          discriminant := Some 2023;
         };
         {
           name := "UNKNOWN_BINARY_ERROR";
           item := StructTuple [];
-          discriminant := Some 3000;
         };
         {
           name := "MALFORMED";
           item := StructTuple [];
-          discriminant := Some 3001;
         };
         {
           name := "BAD_MAGIC";
           item := StructTuple [];
-          discriminant := Some 3002;
         };
         {
           name := "UNKNOWN_VERSION";
           item := StructTuple [];
-          discriminant := Some 3003;
         };
         {
           name := "UNKNOWN_TABLE_TYPE";
           item := StructTuple [];
-          discriminant := Some 3004;
         };
         {
           name := "UNKNOWN_SIGNATURE_TYPE";
           item := StructTuple [];
-          discriminant := Some 3005;
         };
         {
           name := "UNKNOWN_SERIALIZED_TYPE";
           item := StructTuple [];
-          discriminant := Some 3006;
         };
         {
           name := "UNKNOWN_OPCODE";
           item := StructTuple [];
-          discriminant := Some 3007;
         };
         {
           name := "BAD_HEADER_TABLE";
           item := StructTuple [];
-          discriminant := Some 3008;
         };
         {
           name := "UNEXPECTED_SIGNATURE_TYPE";
           item := StructTuple [];
-          discriminant := Some 3009;
         };
         {
           name := "DUPLICATE_TABLE";
           item := StructTuple [];
-          discriminant := Some 3010;
         };
         {
           name := "UNKNOWN_ABILITY";
           item := StructTuple [];
-          discriminant := Some 3013;
         };
         {
           name := "UNKNOWN_NATIVE_STRUCT_FLAG";
           item := StructTuple [];
-          discriminant := Some 3014;
         };
         {
           name := "BAD_U16";
           item := StructTuple [];
-          discriminant := Some 3017;
         };
         {
           name := "BAD_U32";
           item := StructTuple [];
-          discriminant := Some 3018;
         };
         {
           name := "BAD_U64";
           item := StructTuple [];
-          discriminant := Some 3019;
         };
         {
           name := "BAD_U128";
           item := StructTuple [];
-          discriminant := Some 3020;
         };
         {
           name := "BAD_U256";
           item := StructTuple [];
-          discriminant := Some 3021;
         };
         {
           name := "VALUE_SERIALIZATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 3022;
         };
         {
           name := "VALUE_DESERIALIZATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 3023;
         };
         {
           name := "CODE_DESERIALIZATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 3024;
         };
         {
           name := "INVALID_FLAG_BITS";
           item := StructTuple [];
-          discriminant := Some 3025;
         };
         {
           name := "TRAILING_BYTES";
           item := StructTuple [];
-          discriminant := Some 3026;
         };
         {
           name := "UNKNOWN_RUNTIME_STATUS";
           item := StructTuple [];
-          discriminant := Some 4000;
         };
         {
           name := "EXECUTED";
           item := StructTuple [];
-          discriminant := Some 4001;
         };
         {
           name := "OUT_OF_GAS";
           item := StructTuple [];
-          discriminant := Some 4002;
         };
         {
           name := "RESOURCE_DOES_NOT_EXIST";
           item := StructTuple [];
-          discriminant := Some 4003;
         };
         {
           name := "RESOURCE_ALREADY_EXISTS";
           item := StructTuple [];
-          discriminant := Some 4004;
         };
         {
           name := "MISSING_DATA";
           item := StructTuple [];
-          discriminant := Some 4008;
         };
         {
           name := "DATA_FORMAT_ERROR";
           item := StructTuple [];
-          discriminant := Some 4009;
         };
         {
           name := "ABORTED";
           item := StructTuple [];
-          discriminant := Some 4016;
         };
         {
           name := "ARITHMETIC_ERROR";
           item := StructTuple [];
-          discriminant := Some 4017;
         };
         {
           name := "VECTOR_OPERATION_ERROR";
           item := StructTuple [];
-          discriminant := Some 4018;
         };
         {
           name := "EXECUTION_STACK_OVERFLOW";
           item := StructTuple [];
-          discriminant := Some 4020;
         };
         {
           name := "CALL_STACK_OVERFLOW";
           item := StructTuple [];
-          discriminant := Some 4021;
         };
         {
           name := "VM_MAX_TYPE_DEPTH_REACHED";
           item := StructTuple [];
-          discriminant := Some 4024;
         };
         {
           name := "VM_MAX_VALUE_DEPTH_REACHED";
           item := StructTuple [];
-          discriminant := Some 4025;
         };
         {
           name := "VM_EXTENSION_ERROR";
           item := StructTuple [];
-          discriminant := Some 4026;
         };
         {
           name := "STORAGE_WRITE_LIMIT_REACHED";
           item := StructTuple [];
-          discriminant := Some 4027;
         };
         {
           name := "MEMORY_LIMIT_EXCEEDED";
           item := StructTuple [];
-          discriminant := Some 4028;
         };
         {
           name := "VM_MAX_TYPE_NODES_REACHED";
           item := StructTuple [];
-          discriminant := Some 4029;
         };
         {
           name := "UNKNOWN_STATUS";
           item := StructTuple [];
-          discriminant := Some 18446744073709551615;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_VALIDATION_STATUS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_VALIDATION_STATUS" 0.
+  Axiom IsDiscriminant_StatusCode_INVALID_SIGNATURE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE" 1.
+  Axiom IsDiscriminant_StatusCode_INVALID_AUTH_KEY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_AUTH_KEY" 2.
+  Axiom IsDiscriminant_StatusCode_SEQUENCE_NUMBER_TOO_OLD :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_OLD" 3.
+  Axiom IsDiscriminant_StatusCode_SEQUENCE_NUMBER_TOO_NEW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_NEW" 4.
+  Axiom IsDiscriminant_StatusCode_INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE"
+      5.
+  Axiom IsDiscriminant_StatusCode_TRANSACTION_EXPIRED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TRANSACTION_EXPIRED" 6.
+  Axiom IsDiscriminant_StatusCode_SENDING_ACCOUNT_DOES_NOT_EXIST :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_DOES_NOT_EXIST" 7.
+  Axiom IsDiscriminant_StatusCode_REJECTED_WRITE_SET :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::REJECTED_WRITE_SET" 8.
+  Axiom IsDiscriminant_StatusCode_INVALID_WRITE_SET :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_WRITE_SET" 9.
+  Axiom IsDiscriminant_StatusCode_EXCEEDED_MAX_TRANSACTION_SIZE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EXCEEDED_MAX_TRANSACTION_SIZE" 10.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_SCRIPT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_SCRIPT" 11.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_MODULE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_MODULE" 12.
+  Axiom IsDiscriminant_StatusCode_MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND"
+      13.
+  Axiom IsDiscriminant_StatusCode_MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS"
+      14.
+  Axiom IsDiscriminant_StatusCode_GAS_UNIT_PRICE_BELOW_MIN_BOUND :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_BELOW_MIN_BOUND" 15.
+  Axiom IsDiscriminant_StatusCode_GAS_UNIT_PRICE_ABOVE_MAX_BOUND :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_ABOVE_MAX_BOUND" 16.
+  Axiom IsDiscriminant_StatusCode_INVALID_GAS_SPECIFIER :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_GAS_SPECIFIER" 17.
+  Axiom IsDiscriminant_StatusCode_SENDING_ACCOUNT_FROZEN :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_FROZEN" 18.
+  Axiom IsDiscriminant_StatusCode_UNABLE_TO_DESERIALIZE_ACCOUNT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNABLE_TO_DESERIALIZE_ACCOUNT" 19.
+  Axiom IsDiscriminant_StatusCode_CURRENCY_INFO_DOES_NOT_EXIST :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CURRENCY_INFO_DOES_NOT_EXIST" 20.
+  Axiom IsDiscriminant_StatusCode_INVALID_MODULE_PUBLISHER :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_MODULE_PUBLISHER" 21.
+  Axiom IsDiscriminant_StatusCode_NO_ACCOUNT_ROLE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::NO_ACCOUNT_ROLE" 22.
+  Axiom IsDiscriminant_StatusCode_BAD_CHAIN_ID :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_CHAIN_ID" 23.
+  Axiom IsDiscriminant_StatusCode_SEQUENCE_NUMBER_TOO_BIG :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_BIG" 24.
+  Axiom IsDiscriminant_StatusCode_BAD_TRANSACTION_FEE_CURRENCY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_TRANSACTION_FEE_CURRENCY" 25.
+  Axiom IsDiscriminant_StatusCode_FEATURE_UNDER_GATING :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::FEATURE_UNDER_GATING" 26.
+  Axiom IsDiscriminant_StatusCode_SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH"
+      27.
+  Axiom IsDiscriminant_StatusCode_SIGNERS_CONTAIN_DUPLICATES :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SIGNERS_CONTAIN_DUPLICATES" 28.
+  Axiom IsDiscriminant_StatusCode_SEQUENCE_NONCE_INVALID :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::SEQUENCE_NONCE_INVALID" 29.
+  Axiom IsDiscriminant_StatusCode_CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST" 30.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_VERIFICATION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_VERIFICATION_ERROR" 1000.
+  Axiom IsDiscriminant_StatusCode_INDEX_OUT_OF_BOUNDS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS" 1001.
+  Axiom IsDiscriminant_StatusCode_INVALID_SIGNATURE_TOKEN :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE_TOKEN" 1003.
+  Axiom IsDiscriminant_StatusCode_RECURSIVE_STRUCT_DEFINITION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RECURSIVE_STRUCT_DEFINITION" 1005.
+  Axiom IsDiscriminant_StatusCode_FIELD_MISSING_TYPE_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::FIELD_MISSING_TYPE_ABILITY" 1006.
+  Axiom IsDiscriminant_StatusCode_INVALID_FALL_THROUGH :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_FALL_THROUGH" 1007.
+  Axiom IsDiscriminant_StatusCode_NEGATIVE_STACK_SIZE_WITHIN_BLOCK :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::NEGATIVE_STACK_SIZE_WITHIN_BLOCK"
+      1009.
+  Axiom IsDiscriminant_StatusCode_INVALID_MAIN_FUNCTION_SIGNATURE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_MAIN_FUNCTION_SIGNATURE" 1011.
+  Axiom IsDiscriminant_StatusCode_DUPLICATE_ELEMENT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT" 1012.
+  Axiom IsDiscriminant_StatusCode_INVALID_MODULE_HANDLE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_MODULE_HANDLE" 1013.
+  Axiom IsDiscriminant_StatusCode_UNIMPLEMENTED_HANDLE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNIMPLEMENTED_HANDLE" 1014.
+  Axiom IsDiscriminant_StatusCode_LOOKUP_FAILED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::LOOKUP_FAILED" 1017.
+  Axiom IsDiscriminant_StatusCode_TYPE_MISMATCH :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TYPE_MISMATCH" 1020.
+  Axiom IsDiscriminant_StatusCode_MISSING_DEPENDENCY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MISSING_DEPENDENCY" 1021.
+  Axiom IsDiscriminant_StatusCode_POP_WITHOUT_DROP_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::POP_WITHOUT_DROP_ABILITY" 1023.
+  Axiom IsDiscriminant_StatusCode_BR_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BR_TYPE_MISMATCH_ERROR" 1025.
+  Axiom IsDiscriminant_StatusCode_ABORT_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::ABORT_TYPE_MISMATCH_ERROR" 1026.
+  Axiom IsDiscriminant_StatusCode_STLOC_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::STLOC_TYPE_MISMATCH_ERROR" 1027.
+  Axiom IsDiscriminant_StatusCode_STLOC_UNSAFE_TO_DESTROY_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR" 1028.
+  Axiom IsDiscriminant_StatusCode_UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
+      1029.
+  Axiom IsDiscriminant_StatusCode_RET_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RET_TYPE_MISMATCH_ERROR" 1030.
+  Axiom IsDiscriminant_StatusCode_RET_BORROWED_MUTABLE_REFERENCE_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::RET_BORROWED_MUTABLE_REFERENCE_ERROR"
+      1031.
+  Axiom IsDiscriminant_StatusCode_FREEZEREF_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR" 1032.
+  Axiom IsDiscriminant_StatusCode_FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR"
+      1033.
+  Axiom IsDiscriminant_StatusCode_BORROWFIELD_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR" 1034.
+  Axiom IsDiscriminant_StatusCode_BORROWFIELD_BAD_FIELD_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BORROWFIELD_BAD_FIELD_ERROR" 1035.
+  Axiom IsDiscriminant_StatusCode_BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR"
+      1036.
+  Axiom IsDiscriminant_StatusCode_COPYLOC_UNAVAILABLE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR" 1037.
+  Axiom IsDiscriminant_StatusCode_COPYLOC_WITHOUT_COPY_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::COPYLOC_WITHOUT_COPY_ABILITY" 1038.
+  Axiom IsDiscriminant_StatusCode_COPYLOC_EXISTS_BORROW_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::COPYLOC_EXISTS_BORROW_ERROR" 1039.
+  Axiom IsDiscriminant_StatusCode_MOVELOC_UNAVAILABLE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR" 1040.
+  Axiom IsDiscriminant_StatusCode_MOVELOC_EXISTS_BORROW_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MOVELOC_EXISTS_BORROW_ERROR" 1041.
+  Axiom IsDiscriminant_StatusCode_BORROWLOC_REFERENCE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BORROWLOC_REFERENCE_ERROR" 1042.
+  Axiom IsDiscriminant_StatusCode_BORROWLOC_UNAVAILABLE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR" 1043.
+  Axiom IsDiscriminant_StatusCode_BORROWLOC_EXISTS_BORROW_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BORROWLOC_EXISTS_BORROW_ERROR" 1044.
+  Axiom IsDiscriminant_StatusCode_CALL_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CALL_TYPE_MISMATCH_ERROR" 1045.
+  Axiom IsDiscriminant_StatusCode_CALL_BORROWED_MUTABLE_REFERENCE_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::CALL_BORROWED_MUTABLE_REFERENCE_ERROR"
+      1046.
+  Axiom IsDiscriminant_StatusCode_PACK_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::PACK_TYPE_MISMATCH_ERROR" 1047.
+  Axiom IsDiscriminant_StatusCode_UNPACK_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNPACK_TYPE_MISMATCH_ERROR" 1048.
+  Axiom IsDiscriminant_StatusCode_READREF_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::READREF_TYPE_MISMATCH_ERROR" 1049.
+  Axiom IsDiscriminant_StatusCode_READREF_WITHOUT_COPY_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::READREF_WITHOUT_COPY_ABILITY" 1050.
+  Axiom IsDiscriminant_StatusCode_READREF_EXISTS_MUTABLE_BORROW_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::READREF_EXISTS_MUTABLE_BORROW_ERROR"
+      1051.
+  Axiom IsDiscriminant_StatusCode_WRITEREF_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::WRITEREF_TYPE_MISMATCH_ERROR" 1052.
+  Axiom IsDiscriminant_StatusCode_WRITEREF_WITHOUT_DROP_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::WRITEREF_WITHOUT_DROP_ABILITY" 1053.
+  Axiom IsDiscriminant_StatusCode_WRITEREF_EXISTS_BORROW_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::WRITEREF_EXISTS_BORROW_ERROR" 1054.
+  Axiom IsDiscriminant_StatusCode_WRITEREF_NO_MUTABLE_REFERENCE_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR"
+      1055.
+  Axiom IsDiscriminant_StatusCode_INTEGER_OP_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR" 1056.
+  Axiom IsDiscriminant_StatusCode_BOOLEAN_OP_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR" 1057.
+  Axiom IsDiscriminant_StatusCode_EQUALITY_OP_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR" 1058.
+  Axiom IsDiscriminant_StatusCode_EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT"
+      1059.
+  Axiom IsDiscriminant_StatusCode_BORROWGLOBAL_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::BORROWGLOBAL_TYPE_MISMATCH_ERROR"
+      1060.
+  Axiom IsDiscriminant_StatusCode_BORROWGLOBAL_WITHOUT_KEY_ABILITY :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::BORROWGLOBAL_WITHOUT_KEY_ABILITY"
+      1061.
+  Axiom IsDiscriminant_StatusCode_MOVEFROM_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MOVEFROM_TYPE_MISMATCH_ERROR" 1062.
+  Axiom IsDiscriminant_StatusCode_MOVEFROM_WITHOUT_KEY_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MOVEFROM_WITHOUT_KEY_ABILITY" 1063.
+  Axiom IsDiscriminant_StatusCode_MOVETO_TYPE_MISMATCH_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR" 1064.
+  Axiom IsDiscriminant_StatusCode_MOVETO_WITHOUT_KEY_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MOVETO_WITHOUT_KEY_ABILITY" 1065.
+  Axiom IsDiscriminant_StatusCode_MODULE_ADDRESS_DOES_NOT_MATCH_SENDER :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::MODULE_ADDRESS_DOES_NOT_MATCH_SENDER"
+      1067.
+  Axiom IsDiscriminant_StatusCode_NO_MODULE_HANDLES :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::NO_MODULE_HANDLES" 1068.
+  Axiom IsDiscriminant_StatusCode_POSITIVE_STACK_SIZE_AT_BLOCK_END :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::POSITIVE_STACK_SIZE_AT_BLOCK_END"
+      1069.
+  Axiom IsDiscriminant_StatusCode_MISSING_ACQUIRES_ANNOTATION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MISSING_ACQUIRES_ANNOTATION" 1070.
+  Axiom IsDiscriminant_StatusCode_EXTRANEOUS_ACQUIRES_ANNOTATION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EXTRANEOUS_ACQUIRES_ANNOTATION" 1071.
+  Axiom IsDiscriminant_StatusCode_DUPLICATE_ACQUIRES_ANNOTATION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::DUPLICATE_ACQUIRES_ANNOTATION" 1072.
+  Axiom IsDiscriminant_StatusCode_INVALID_ACQUIRES_ANNOTATION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_ACQUIRES_ANNOTATION" 1073.
+  Axiom IsDiscriminant_StatusCode_GLOBAL_REFERENCE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR" 1074.
+  Axiom IsDiscriminant_StatusCode_CONSTRAINT_NOT_SATISFIED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED" 1075.
+  Axiom IsDiscriminant_StatusCode_NUMBER_OF_TYPE_ARGUMENTS_MISMATCH :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
+      1076.
+  Axiom IsDiscriminant_StatusCode_LOOP_IN_INSTANTIATION_GRAPH :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::LOOP_IN_INSTANTIATION_GRAPH" 1077.
+  Axiom IsDiscriminant_StatusCode_ZERO_SIZED_STRUCT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::ZERO_SIZED_STRUCT" 1080.
+  Axiom IsDiscriminant_StatusCode_LINKER_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::LINKER_ERROR" 1081.
+  Axiom IsDiscriminant_StatusCode_INVALID_CONSTANT_TYPE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE" 1082.
+  Axiom IsDiscriminant_StatusCode_MALFORMED_CONSTANT_DATA :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA" 1083.
+  Axiom IsDiscriminant_StatusCode_EMPTY_CODE_UNIT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EMPTY_CODE_UNIT" 1084.
+  Axiom IsDiscriminant_StatusCode_INVALID_LOOP_SPLIT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT" 1085.
+  Axiom IsDiscriminant_StatusCode_INVALID_LOOP_BREAK :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK" 1086.
+  Axiom IsDiscriminant_StatusCode_INVALID_LOOP_CONTINUE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE" 1087.
+  Axiom IsDiscriminant_StatusCode_UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
+      1088.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_LOCALS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_LOCALS" 1089.
+  Axiom IsDiscriminant_StatusCode_GENERIC_MEMBER_OPCODE_MISMATCH :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::GENERIC_MEMBER_OPCODE_MISMATCH" 1090.
+  Axiom IsDiscriminant_StatusCode_FUNCTION_RESOLUTION_FAILURE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::FUNCTION_RESOLUTION_FAILURE" 1091.
+  Axiom IsDiscriminant_StatusCode_INVALID_OPERATION_IN_SCRIPT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_OPERATION_IN_SCRIPT" 1094.
+  Axiom IsDiscriminant_StatusCode_DUPLICATE_MODULE_NAME :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::DUPLICATE_MODULE_NAME" 1095.
+  Axiom IsDiscriminant_StatusCode_BACKWARD_INCOMPATIBLE_MODULE_UPDATE :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
+      1096.
+  Axiom IsDiscriminant_StatusCode_CYCLIC_MODULE_DEPENDENCY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_DEPENDENCY" 1097.
+  Axiom IsDiscriminant_StatusCode_NUMBER_OF_ARGUMENTS_MISMATCH :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::NUMBER_OF_ARGUMENTS_MISMATCH" 1098.
+  Axiom IsDiscriminant_StatusCode_INVALID_PARAM_TYPE_FOR_DESERIALIZATION :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::INVALID_PARAM_TYPE_FOR_DESERIALIZATION"
+      1099.
+  Axiom IsDiscriminant_StatusCode_FAILED_TO_DESERIALIZE_ARGUMENT :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_ARGUMENT" 1100.
+  Axiom IsDiscriminant_StatusCode_NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH"
+      1101.
+  Axiom IsDiscriminant_StatusCode_CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
+      1102.
+  Axiom IsDiscriminant_StatusCode_EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
+      1103.
+  Axiom IsDiscriminant_StatusCode_INVALID_FRIEND_DECL_WITH_SELF :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF" 1104.
+  Axiom IsDiscriminant_StatusCode_INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+      1105.
+  Axiom IsDiscriminant_StatusCode_INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
+      1106.
+  Axiom IsDiscriminant_StatusCode_CYCLIC_MODULE_FRIENDSHIP :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_FRIENDSHIP" 1107.
+  Axiom IsDiscriminant_StatusCode_INVALID_PHANTOM_TYPE_PARAM_POSITION :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::INVALID_PHANTOM_TYPE_PARAM_POSITION"
+      1108.
+  Axiom IsDiscriminant_StatusCode_VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR"
+      1109.
+  Axiom IsDiscriminant_StatusCode_VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
+      1110.
+  Axiom IsDiscriminant_StatusCode_LOOP_MAX_DEPTH_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED" 1111.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_TYPE_PARAMETERS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_PARAMETERS" 1112.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_PARAMETERS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_PARAMETERS" 1113.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_BASIC_BLOCKS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_BASIC_BLOCKS" 1114.
+  Axiom IsDiscriminant_StatusCode_VALUE_STACK_OVERFLOW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VALUE_STACK_OVERFLOW" 1115.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_TYPE_NODES :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_NODES" 1116.
+  Axiom IsDiscriminant_StatusCode_VALUE_STACK_PUSH_OVERFLOW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VALUE_STACK_PUSH_OVERFLOW" 1117.
+  Axiom IsDiscriminant_StatusCode_MAX_DEPENDENCY_DEPTH_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MAX_DEPENDENCY_DEPTH_REACHED" 1118.
+  Axiom IsDiscriminant_StatusCode_MAX_FUNCTION_DEFINITIONS_REACHED :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::MAX_FUNCTION_DEFINITIONS_REACHED"
+      1119.
+  Axiom IsDiscriminant_StatusCode_MAX_STRUCT_DEFINITIONS_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MAX_STRUCT_DEFINITIONS_REACHED" 1120.
+  Axiom IsDiscriminant_StatusCode_MAX_FIELD_DEFINITIONS_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MAX_FIELD_DEFINITIONS_REACHED" 1121.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_BACK_EDGES :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_BACK_EDGES" 1122.
+  Axiom IsDiscriminant_StatusCode_RESERVED_VERIFICATION_ERROR_1 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_1" 1123.
+  Axiom IsDiscriminant_StatusCode_RESERVED_VERIFICATION_ERROR_2 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_2" 1124.
+  Axiom IsDiscriminant_StatusCode_RESERVED_VERIFICATION_ERROR_3 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_3" 1125.
+  Axiom IsDiscriminant_StatusCode_RESERVED_VERIFICATION_ERROR_4 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_4" 1126.
+  Axiom IsDiscriminant_StatusCode_RESERVED_VERIFICATION_ERROR_5 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_5" 1127.
+  Axiom IsDiscriminant_StatusCode_TOO_MANY_VECTOR_ELEMENTS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TOO_MANY_VECTOR_ELEMENTS" 1128.
+  Axiom IsDiscriminant_StatusCode_IDENTIFIER_TOO_LONG :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::IDENTIFIER_TOO_LONG" 1129.
+  Axiom IsDiscriminant_StatusCode_PROGRAM_TOO_COMPLEX :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::PROGRAM_TOO_COMPLEX" 1130.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_INVARIANT_VIOLATION_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
+      2000.
+  Axiom IsDiscriminant_StatusCode_EMPTY_VALUE_STACK :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EMPTY_VALUE_STACK" 2003.
+  Axiom IsDiscriminant_StatusCode_PC_OVERFLOW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::PC_OVERFLOW" 2005.
+  Axiom IsDiscriminant_StatusCode_VERIFICATION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR" 2006.
+  Axiom IsDiscriminant_StatusCode_STORAGE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::STORAGE_ERROR" 2008.
+  Axiom IsDiscriminant_StatusCode_INTERNAL_TYPE_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INTERNAL_TYPE_ERROR" 2009.
+  Axiom IsDiscriminant_StatusCode_EVENT_KEY_MISMATCH :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EVENT_KEY_MISMATCH" 2010.
+  Axiom IsDiscriminant_StatusCode_UNREACHABLE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNREACHABLE" 2011.
+  Axiom IsDiscriminant_StatusCode_VM_STARTUP_FAILURE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VM_STARTUP_FAILURE" 2012.
+  Axiom IsDiscriminant_StatusCode_UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION"
+      2015.
+  Axiom IsDiscriminant_StatusCode_VERIFIER_INVARIANT_VIOLATION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VERIFIER_INVARIANT_VIOLATION" 2016.
+  Axiom IsDiscriminant_StatusCode_UNEXPECTED_VERIFIER_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNEXPECTED_VERIFIER_ERROR" 2017.
+  Axiom IsDiscriminant_StatusCode_UNEXPECTED_DESERIALIZATION_ERROR :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::UNEXPECTED_DESERIALIZATION_ERROR"
+      2018.
+  Axiom IsDiscriminant_StatusCode_FAILED_TO_SERIALIZE_WRITE_SET_CHANGES :
+    M.IsDiscriminant
+      "move_core_types::vm_status::StatusCode::FAILED_TO_SERIALIZE_WRITE_SET_CHANGES"
+      2019.
+  Axiom IsDiscriminant_StatusCode_FAILED_TO_DESERIALIZE_RESOURCE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_RESOURCE" 2020.
+  Axiom IsDiscriminant_StatusCode_TYPE_RESOLUTION_FAILURE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TYPE_RESOLUTION_FAILURE" 2021.
+  Axiom IsDiscriminant_StatusCode_DUPLICATE_NATIVE_FUNCTION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::DUPLICATE_NATIVE_FUNCTION" 2022.
+  Axiom IsDiscriminant_StatusCode_ARITHMETIC_OVERFLOW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::ARITHMETIC_OVERFLOW" 2023.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_BINARY_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_BINARY_ERROR" 3000.
+  Axiom IsDiscriminant_StatusCode_MALFORMED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MALFORMED" 3001.
+  Axiom IsDiscriminant_StatusCode_BAD_MAGIC :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_MAGIC" 3002.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_VERSION :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_VERSION" 3003.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_TABLE_TYPE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_TABLE_TYPE" 3004.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_SIGNATURE_TYPE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_SIGNATURE_TYPE" 3005.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_SERIALIZED_TYPE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_SERIALIZED_TYPE" 3006.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_OPCODE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_OPCODE" 3007.
+  Axiom IsDiscriminant_StatusCode_BAD_HEADER_TABLE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE" 3008.
+  Axiom IsDiscriminant_StatusCode_UNEXPECTED_SIGNATURE_TYPE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNEXPECTED_SIGNATURE_TYPE" 3009.
+  Axiom IsDiscriminant_StatusCode_DUPLICATE_TABLE :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::DUPLICATE_TABLE" 3010.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_ABILITY :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY" 3013.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_NATIVE_STRUCT_FLAG :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_NATIVE_STRUCT_FLAG" 3014.
+  Axiom IsDiscriminant_StatusCode_BAD_U16 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_U16" 3017.
+  Axiom IsDiscriminant_StatusCode_BAD_U32 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_U32" 3018.
+  Axiom IsDiscriminant_StatusCode_BAD_U64 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_U64" 3019.
+  Axiom IsDiscriminant_StatusCode_BAD_U128 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_U128" 3020.
+  Axiom IsDiscriminant_StatusCode_BAD_U256 :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::BAD_U256" 3021.
+  Axiom IsDiscriminant_StatusCode_VALUE_SERIALIZATION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VALUE_SERIALIZATION_ERROR" 3022.
+  Axiom IsDiscriminant_StatusCode_VALUE_DESERIALIZATION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VALUE_DESERIALIZATION_ERROR" 3023.
+  Axiom IsDiscriminant_StatusCode_CODE_DESERIALIZATION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CODE_DESERIALIZATION_ERROR" 3024.
+  Axiom IsDiscriminant_StatusCode_INVALID_FLAG_BITS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::INVALID_FLAG_BITS" 3025.
+  Axiom IsDiscriminant_StatusCode_TRAILING_BYTES :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::TRAILING_BYTES" 3026.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_RUNTIME_STATUS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_RUNTIME_STATUS" 4000.
+  Axiom IsDiscriminant_StatusCode_EXECUTED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EXECUTED" 4001.
+  Axiom IsDiscriminant_StatusCode_OUT_OF_GAS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::OUT_OF_GAS" 4002.
+  Axiom IsDiscriminant_StatusCode_RESOURCE_DOES_NOT_EXIST :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESOURCE_DOES_NOT_EXIST" 4003.
+  Axiom IsDiscriminant_StatusCode_RESOURCE_ALREADY_EXISTS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::RESOURCE_ALREADY_EXISTS" 4004.
+  Axiom IsDiscriminant_StatusCode_MISSING_DATA :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MISSING_DATA" 4008.
+  Axiom IsDiscriminant_StatusCode_DATA_FORMAT_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::DATA_FORMAT_ERROR" 4009.
+  Axiom IsDiscriminant_StatusCode_ABORTED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::ABORTED" 4016.
+  Axiom IsDiscriminant_StatusCode_ARITHMETIC_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::ARITHMETIC_ERROR" 4017.
+  Axiom IsDiscriminant_StatusCode_VECTOR_OPERATION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VECTOR_OPERATION_ERROR" 4018.
+  Axiom IsDiscriminant_StatusCode_EXECUTION_STACK_OVERFLOW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::EXECUTION_STACK_OVERFLOW" 4020.
+  Axiom IsDiscriminant_StatusCode_CALL_STACK_OVERFLOW :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::CALL_STACK_OVERFLOW" 4021.
+  Axiom IsDiscriminant_StatusCode_VM_MAX_TYPE_DEPTH_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_DEPTH_REACHED" 4024.
+  Axiom IsDiscriminant_StatusCode_VM_MAX_VALUE_DEPTH_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VM_MAX_VALUE_DEPTH_REACHED" 4025.
+  Axiom IsDiscriminant_StatusCode_VM_EXTENSION_ERROR :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VM_EXTENSION_ERROR" 4026.
+  Axiom IsDiscriminant_StatusCode_STORAGE_WRITE_LIMIT_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::STORAGE_WRITE_LIMIT_REACHED" 4027.
+  Axiom IsDiscriminant_StatusCode_MEMORY_LIMIT_EXCEEDED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::MEMORY_LIMIT_EXCEEDED" 4028.
+  Axiom IsDiscriminant_StatusCode_VM_MAX_TYPE_NODES_REACHED :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_NODES_REACHED" 4029.
+  Axiom IsDiscriminant_StatusCode_UNKNOWN_STATUS :
+    M.IsDiscriminant "move_core_types::vm_status::StatusCode::UNKNOWN_STATUS" 18446744073709551615.
   
   Module Impl_core_clone_Clone_for_move_core_types_vm_status_StatusCode.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
@@ -1551,8 +1840,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_vm_status_StatusCode.
   
@@ -1562,8 +1852,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_vm_status_StatusCode.
   
@@ -4589,8 +4880,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_vm_status_StatusCode.
   
@@ -4614,8 +4906,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusCode.
@@ -4671,8 +4964,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_vm_status_StatusCode.
   
@@ -4682,8 +4976,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_vm_status_StatusCode.
   
@@ -4730,8 +5025,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusCode.
   
@@ -4801,8 +5097,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_vm_status_StatusCode.
   
@@ -4864,8 +5161,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_vm_status_StatusCode.
   
@@ -8182,8 +8480,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u64" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_u64_for_move_core_types_vm_status_StatusCode.
@@ -8534,7 +8833,13 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let serializer := M.alloc (| serializer |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+              ],
             M.get_trait_method (| "serde::ser::Serializer", S, [], [], "serialize_u64", [], [] |),
             [
               M.read (| serializer |);
@@ -8559,8 +8864,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "serde::ser::Serialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
   End Impl_serde_ser_Serialize_for_move_core_types_vm_status_StatusCode.
   
@@ -8600,7 +8906,10 @@ Module vm_status.
             Ty.apply
               (Ty.path "core::result::Result")
               []
-              [ Ty.path "move_core_types::vm_status::StatusCode"; Ty.associated ],
+              [
+                Ty.path "move_core_types::vm_status::StatusCode";
+                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+              ],
             M.get_trait_method (|
               "serde::de::Deserializer",
               D,
@@ -8621,8 +8930,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::Deserialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
   End Impl_serde_de_Deserialize_for_move_core_types_vm_status_StatusCode.
   
@@ -8646,8 +8956,9 @@ Module vm_status.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::vm_status::StatusCode" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::vm_status::StatusCode" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_vm_status_StatusCode_for_u64.
   

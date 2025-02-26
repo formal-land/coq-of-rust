@@ -12,211 +12,287 @@ Module instruction_result.
         {
           name := "Continue";
           item := StructTuple [];
-          discriminant := Some 0;
         };
         {
           name := "Stop";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Return";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SelfDestruct";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ReturnContract";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Revert";
           item := StructTuple [];
-          discriminant := Some 16;
         };
         {
           name := "CallTooDeep";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfFunds";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeStartingEF00";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEOFInitCode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidExtDelegateCallTarget";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallOrCreate";
           item := StructTuple [];
-          discriminant := Some 32;
         };
         {
           name := "OutOfGas";
           item := StructTuple [];
-          discriminant := Some 80;
         };
         {
           name := "MemoryOOG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MemoryLimitOOG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PrecompileOOG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidOperandOOG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ReentrancySentryOOG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OpcodeNotFound";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallNotAllowedInsideStatic";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StateChangeDuringStaticCall";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidFEOpcode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidJump";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NotActivated";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StackUnderflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StackOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfOffset";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateCollision";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowPayment";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PrecompileError";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateContractSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateContractStartingWithEF";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "FatalExternalError";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ReturnContractInNotInitEOF";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EOFOpcodeDisabledInLegacy";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SubRoutineStackOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofAuxDataOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofAuxDataTooSmall";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEXTCALLTarget";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InstructionResult_Continue :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::Continue" 0.
+  Axiom IsDiscriminant_InstructionResult_Stop :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::Stop" 1.
+  Axiom IsDiscriminant_InstructionResult_Return :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::Return" 2.
+  Axiom IsDiscriminant_InstructionResult_SelfDestruct :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::SelfDestruct" 3.
+  Axiom IsDiscriminant_InstructionResult_ReturnContract :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::ReturnContract" 4.
+  Axiom IsDiscriminant_InstructionResult_Revert :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::Revert" 16.
+  Axiom IsDiscriminant_InstructionResult_CallTooDeep :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::CallTooDeep" 17.
+  Axiom IsDiscriminant_InstructionResult_OutOfFunds :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::OutOfFunds" 18.
+  Axiom IsDiscriminant_InstructionResult_CreateInitCodeStartingEF00 :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
+      19.
+  Axiom IsDiscriminant_InstructionResult_InvalidEOFInitCode :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
+      20.
+  Axiom IsDiscriminant_InstructionResult_InvalidExtDelegateCallTarget :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
+      21.
+  Axiom IsDiscriminant_InstructionResult_CallOrCreate :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::CallOrCreate" 32.
+  Axiom IsDiscriminant_InstructionResult_OutOfGas :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::OutOfGas" 80.
+  Axiom IsDiscriminant_InstructionResult_MemoryOOG :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::MemoryOOG" 81.
+  Axiom IsDiscriminant_InstructionResult_MemoryLimitOOG :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG" 82.
+  Axiom IsDiscriminant_InstructionResult_PrecompileOOG :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG" 83.
+  Axiom IsDiscriminant_InstructionResult_InvalidOperandOOG :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+      84.
+  Axiom IsDiscriminant_InstructionResult_ReentrancySentryOOG :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
+      85.
+  Axiom IsDiscriminant_InstructionResult_OpcodeNotFound :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound" 86.
+  Axiom IsDiscriminant_InstructionResult_CallNotAllowedInsideStatic :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
+      87.
+  Axiom IsDiscriminant_InstructionResult_StateChangeDuringStaticCall :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
+      88.
+  Axiom IsDiscriminant_InstructionResult_InvalidFEOpcode :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode" 89.
+  Axiom IsDiscriminant_InstructionResult_InvalidJump :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::InvalidJump" 90.
+  Axiom IsDiscriminant_InstructionResult_NotActivated :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::NotActivated" 91.
+  Axiom IsDiscriminant_InstructionResult_StackUnderflow :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::StackUnderflow" 92.
+  Axiom IsDiscriminant_InstructionResult_StackOverflow :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::StackOverflow" 93.
+  Axiom IsDiscriminant_InstructionResult_OutOfOffset :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::OutOfOffset" 94.
+  Axiom IsDiscriminant_InstructionResult_CreateCollision :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::CreateCollision" 95.
+  Axiom IsDiscriminant_InstructionResult_OverflowPayment :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::OverflowPayment" 96.
+  Axiom IsDiscriminant_InstructionResult_PrecompileError :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::PrecompileError" 97.
+  Axiom IsDiscriminant_InstructionResult_NonceOverflow :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InstructionResult::NonceOverflow" 98.
+  Axiom IsDiscriminant_InstructionResult_CreateContractSizeLimit :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
+      99.
+  Axiom IsDiscriminant_InstructionResult_CreateContractStartingWithEF :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
+      100.
+  Axiom IsDiscriminant_InstructionResult_CreateInitCodeSizeLimit :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
+      101.
+  Axiom IsDiscriminant_InstructionResult_FatalExternalError :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
+      102.
+  Axiom IsDiscriminant_InstructionResult_ReturnContractInNotInitEOF :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
+      103.
+  Axiom IsDiscriminant_InstructionResult_EOFOpcodeDisabledInLegacy :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
+      104.
+  Axiom IsDiscriminant_InstructionResult_SubRoutineStackOverflow :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
+      105.
+  Axiom IsDiscriminant_InstructionResult_EofAuxDataOverflow :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
+      106.
+  Axiom IsDiscriminant_InstructionResult_EofAuxDataTooSmall :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
+      107.
+  Axiom IsDiscriminant_InstructionResult_InvalidEXTCALLTarget :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
+      108.
   
   Module Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InstructionResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
@@ -234,8 +310,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -245,8 +322,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -857,8 +935,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -879,8 +958,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -890,8 +970,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -938,8 +1019,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -963,8 +1045,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InstructionResult.
@@ -1020,8 +1103,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -1091,9 +1175,10 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::journaled_state::TransferError" ]
+        [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_context_interface_journaled_state_TransferError_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -1794,9 +1879,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::SuccessReason" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::SuccessReason" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_context_interface_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -2207,9 +2292,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::HaltReason" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::HaltReason" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -2224,26 +2309,35 @@ Module instruction_result.
         {
           name := "InternalContinue";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InternalCallOrCreate";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeStartingEF00";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidExtDelegateCallTarget";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InternalResult_InternalContinue :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InternalResult::InternalContinue" 0.
+  Axiom IsDiscriminant_InternalResult_InternalCallOrCreate :
+    M.IsDiscriminant "revm_interpreter::instruction_result::InternalResult::InternalCallOrCreate" 1.
+  Axiom IsDiscriminant_InternalResult_CreateInitCodeStartingEF00 :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InternalResult::CreateInitCodeStartingEF00"
+      2.
+  Axiom IsDiscriminant_InternalResult_InvalidExtDelegateCallTarget :
+    M.IsDiscriminant
+      "revm_interpreter::instruction_result::InternalResult::InvalidExtDelegateCallTarget"
+      3.
   
   Module Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InternalResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
@@ -2334,8 +2428,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2345,8 +2440,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2366,8 +2462,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2377,8 +2474,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2425,8 +2523,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2450,8 +2549,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InternalResult.
@@ -2507,8 +2607,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2522,31 +2623,37 @@ Module instruction_result.
         {
           name := "Success";
           item := StructTuple [ Ty.path "revm_context_interface::result::SuccessReason" ];
-          discriminant := None;
         };
         {
           name := "Revert";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Halt";
           item := StructTuple [ HaltReasonT ];
-          discriminant := None;
         };
         {
           name := "FatalExternalError";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Internal";
           item := StructTuple [ Ty.path "revm_interpreter::instruction_result::InternalResult" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SuccessOrHalt_Success :
+    M.IsDiscriminant "revm_interpreter::instruction_result::SuccessOrHalt::Success" 0.
+  Axiom IsDiscriminant_SuccessOrHalt_Revert :
+    M.IsDiscriminant "revm_interpreter::instruction_result::SuccessOrHalt::Revert" 1.
+  Axiom IsDiscriminant_SuccessOrHalt_Halt :
+    M.IsDiscriminant "revm_interpreter::instruction_result::SuccessOrHalt::Halt" 2.
+  Axiom IsDiscriminant_SuccessOrHalt_FatalExternalError :
+    M.IsDiscriminant "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError" 3.
+  Axiom IsDiscriminant_SuccessOrHalt_Internal :
+    M.IsDiscriminant "revm_interpreter::instruction_result::SuccessOrHalt::Internal" 4.
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
@@ -2556,8 +2663,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -2704,8 +2812,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -2898,8 +3007,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -2911,8 +3021,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3119,8 +3230,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3167,8 +3279,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -3331,8 +3444,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("hash", InstanceField.Method (hash HaltReasonT)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3598,9 +3712,9 @@ Module instruction_result.
       forall (HALT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::HaltReason" ]
         (Self HALT)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::HaltReason" ]
         (* Instance *) [ ("from", InstanceField.Method (from HALT)) ].
   End Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HALT_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_SuccessOrHalt_HALT.
   
@@ -4781,9 +4895,10 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
+        [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
+        (Self HaltReasonT)
         (* Instance *) [ ("from", InstanceField.Method (from HaltReasonT)) ].
   End Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
 End instruction_result.

@@ -193,8 +193,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::specialize::SpecFill"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("spec_fill", InstanceField.Method (spec_fill T)) ].
     End Impl_core_slice_specialize_SpecFill_where_core_clone_Clone_T_T_for_slice_T.
     
@@ -314,8 +315,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::specialize::SpecFill"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("spec_fill", InstanceField.Method (spec_fill T)) ].
     End Impl_core_slice_specialize_SpecFill_where_core_marker_Copy_T_T_for_slice_T.
   End specialize.

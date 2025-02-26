@@ -10,6 +10,7 @@ Enum Error
 }
 *)
 
+
 (*
 fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()
@@ -60,8 +61,9 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 
@@ -133,7 +135,7 @@ Module Impl_set_code_hash_Incrementer.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
@@ -328,7 +330,7 @@ Module Impl_set_code_hash_Incrementer.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [

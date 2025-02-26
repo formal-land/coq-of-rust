@@ -108,7 +108,7 @@ Module ptr.
               [
                 M.cast (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]) (M.read (| self |));
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] U "Metadata",
                   M.get_function (| "core::ptr::metadata::metadata", [], [ U ] |),
                   [ M.read (| meta |) ]
                 |)
@@ -379,7 +379,7 @@ Module ptr.
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
                   M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
                   [ M.read (| self |) ]
                 |)
@@ -1855,7 +1855,7 @@ Module ptr.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -2013,7 +2013,7 @@ Module ptr.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -2196,7 +2196,10 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
-              Ty.apply (Ty.path "*const") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "*const")
+                []
+                [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,
@@ -2422,8 +2425,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_const_T.
     
@@ -2434,8 +2438,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_pointer_const_T.
     
@@ -2553,8 +2558,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_pointer_const_T.
     
@@ -2676,8 +2682,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method (partial_cmp T));

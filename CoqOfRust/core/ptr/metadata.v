@@ -19,8 +19,12 @@ Module ptr.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
-            Ty.associated,
-            M.get_function (| "core::intrinsics::ptr_metadata", [], [ T; Ty.associated ] |),
+            Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
+            M.get_function (|
+              "core::intrinsics::ptr_metadata",
+              [],
+              [ T; Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata" ]
+            |),
             [ M.read (| ptr |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -51,7 +55,7 @@ Module ptr.
               [
                 Ty.apply (Ty.path "*const") [] [ T ];
                 Ty.apply (Ty.path "*const") [] [ impl_Thin ];
-                Ty.associated
+                Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata"
               ]
             |),
             [ M.read (| data_pointer |); M.read (| metadata |) ]
@@ -85,7 +89,7 @@ Module ptr.
               [
                 Ty.apply (Ty.path "*mut") [] [ T ];
                 Ty.apply (Ty.path "*mut") [] [ impl_Thin ];
-                Ty.associated
+                Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata"
               ]
             |),
             [ M.read (| data_pointer |); M.read (| metadata |) ]
@@ -297,8 +301,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -310,8 +315,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -415,8 +421,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Dyn)) ].
     End Impl_core_fmt_Debug_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -428,8 +435,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::marker::Unpin"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [].
     End Impl_core_marker_Unpin_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -441,8 +449,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -469,8 +478,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [ ("clone", InstanceField.Method (clone Dyn)) ].
     End Impl_core_clone_Clone_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -482,8 +492,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -536,8 +547,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [ ("eq", InstanceField.Method (eq Dyn)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -618,8 +630,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp Dyn)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -671,8 +684,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp Dyn)) ].
     End Impl_core_cmp_PartialOrd_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
@@ -720,8 +734,9 @@ Module ptr.
         forall (Dyn : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Dyn)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Dyn)
           (* Instance *) [ ("hash", InstanceField.Method (hash Dyn)) ].
     End Impl_core_hash_Hash_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
   End metadata.

@@ -10,8 +10,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_iterator_Iterator_for_slice_T.
     
@@ -49,8 +50,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -98,8 +100,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -216,8 +219,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_Iter_T.
     
@@ -228,8 +232,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_core_slice_iter_Iter_T.
     
@@ -240,8 +245,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Sync_T_for_core_slice_iter_Iter_T.
     
@@ -468,8 +474,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_Iter_T.
     
@@ -509,8 +516,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T)) ].
     End Impl_core_convert_AsRef_slice_T_for_core_slice_iter_Iter_T.
     
@@ -625,8 +633,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_IterMut_T.
     
@@ -637,8 +646,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_core_slice_iter_IterMut_T.
     
@@ -649,8 +659,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_IterMut_T.
     
@@ -1224,8 +1235,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T)) ].
     End Impl_core_convert_AsRef_slice_T_for_core_slice_iter_IterMut_T.
     
@@ -1472,8 +1484,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_Split_T_P.
     
@@ -1539,8 +1552,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("clone", InstanceField.Method (clone T P)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_P_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_Split_T_P.
     
@@ -1947,8 +1961,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -2272,8 +2287,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_Split_T_P.
     
@@ -2353,8 +2369,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::slice::iter::SplitIter"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("finish", InstanceField.Method (finish T P)) ].
     End Impl_core_slice_iter_SplitIter_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_Split_T_P.
     
@@ -2366,8 +2383,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_Split_T_P.
     
@@ -2567,8 +2585,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusive_T_P.
     
@@ -2634,8 +2653,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("clone", InstanceField.Method (clone T P)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_P_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusive_T_P.
     
@@ -3118,8 +3138,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -3587,8 +3608,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusive_T_P.
     
@@ -3600,8 +3622,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusive_T_P.
     
@@ -3780,8 +3803,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitMut_T_P.
     
@@ -3885,8 +3909,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::slice::iter::SplitIter"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("finish", InstanceField.Method (finish T P)) ].
     End Impl_core_slice_iter_SplitIter_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitMut_T_P.
     
@@ -4317,8 +4342,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -4676,8 +4702,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitMut_T_P.
     
@@ -4689,8 +4716,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitMut_T_P.
     
@@ -4892,8 +4920,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusiveMut_T_P.
     
@@ -5358,8 +5387,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -5810,8 +5840,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusiveMut_T_P.
     
@@ -5823,8 +5854,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusiveMut_T_P.
     
@@ -6020,8 +6052,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplit_T_P.
     
@@ -6074,8 +6107,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("clone", InstanceField.Method (clone T P)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_P_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplit_T_P.
     
@@ -6168,8 +6202,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -6225,8 +6260,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplit_T_P.
     
@@ -6277,8 +6313,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::slice::iter::SplitIter"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("finish", InstanceField.Method (finish T P)) ].
     End Impl_core_slice_iter_SplitIter_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplit_T_P.
     
@@ -6290,8 +6327,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplit_T_P.
     
@@ -6487,8 +6525,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitMut_T_P.
     
@@ -6539,8 +6578,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::slice::iter::SplitIter"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("finish", InstanceField.Method (finish T P)) ].
     End Impl_core_slice_iter_SplitIter_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitMut_T_P.
     
@@ -6633,8 +6673,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -6690,8 +6731,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitMut_T_P.
     
@@ -6703,8 +6745,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitMut_T_P.
     
@@ -6787,8 +6830,9 @@ Module slice.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_slice_iter_GenericSplitN_I.
     
@@ -7069,8 +7113,9 @@ Module slice.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T I)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T I));
@@ -7218,8 +7263,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitN_T_P.
     
@@ -7362,8 +7408,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitN_T_P.
     
@@ -7506,8 +7553,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitNMut_T_P.
     
@@ -7650,8 +7698,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitNMut_T_P.
     
@@ -7734,8 +7783,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_Windows_T.
     
@@ -7812,8 +7862,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_Windows_T.
     
@@ -8741,8 +8792,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -9309,8 +9361,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -9325,8 +9378,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_Windows_T.
     
@@ -9337,8 +9391,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_Windows_T.
     
@@ -9349,8 +9404,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_Windows_T.
     
@@ -9361,8 +9417,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_Windows_T.
     
@@ -9379,8 +9436,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_Windows_T.
@@ -9467,8 +9525,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_Chunks_T.
     
@@ -9545,8 +9604,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_Chunks_T.
     
@@ -10566,8 +10626,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -11115,8 +11176,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -11131,8 +11193,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_Chunks_T.
     
@@ -11143,8 +11206,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_Chunks_T.
     
@@ -11155,8 +11219,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_Chunks_T.
     
@@ -11167,8 +11232,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_Chunks_T.
     
@@ -11185,8 +11251,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_Chunks_T.
@@ -11296,8 +11363,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunksMut_T.
     
@@ -12365,8 +12433,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -12907,8 +12976,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -12924,8 +12994,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_ChunksMut_T.
     
@@ -12937,8 +13008,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_ChunksMut_T.
     
@@ -12950,8 +13022,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_ChunksMut_T.
     
@@ -12963,8 +13036,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_ChunksMut_T.
     
@@ -12982,8 +13056,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ChunksMut_T.
@@ -12996,8 +13071,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_ChunksMut_T.
     
@@ -13009,8 +13085,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_core_slice_iter_ChunksMut_T.
     
@@ -13115,8 +13192,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunksExact_T.
     
@@ -13308,8 +13386,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_ChunksExact_T.
     
@@ -13873,8 +13952,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -14264,8 +14344,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -14318,8 +14399,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_ChunksExact_T.
     
@@ -14331,8 +14413,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_ChunksExact_T.
     
@@ -14344,8 +14427,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_ChunksExact_T.
     
@@ -14357,8 +14441,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_ChunksExact_T.
     
@@ -14376,8 +14461,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ChunksExact_T.
@@ -14502,8 +14588,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15228,8 +15315,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -15665,8 +15753,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -15714,8 +15803,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15727,8 +15817,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15740,8 +15831,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15753,8 +15845,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15772,8 +15865,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ChunksExactMut_T.
@@ -15786,8 +15880,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15799,8 +15894,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_core_slice_iter_ChunksExactMut_T.
     
@@ -15915,8 +16011,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt N T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ArrayWindows_N_T.
     
@@ -16038,8 +16135,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("clone", InstanceField.Method (clone N T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_slice_iter_ArrayWindows_N_T.
     
@@ -16051,8 +16149,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_slice_iter_ArrayWindows_N_T.
     
@@ -16678,8 +16777,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item N T));
@@ -16980,8 +17080,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back N T));
@@ -17027,8 +17128,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty N T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_ArrayWindows_N_T.
     
@@ -17125,8 +17227,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt N T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ArrayChunks_N_T.
     
@@ -17168,7 +17271,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ T ],
                       "as_chunks",
-                      [],
+                      [ N ],
                       []
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
@@ -17328,8 +17431,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("clone", InstanceField.Method (clone N T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_ArrayChunks_N_T.
     
@@ -17630,8 +17734,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item N T));
@@ -17750,8 +17855,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back N T));
@@ -17812,8 +17918,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty N T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_ArrayChunks_N_T.
     
@@ -17825,8 +17932,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_ArrayChunks_N_T.
     
@@ -17838,8 +17946,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_ArrayChunks_N_T.
     
@@ -17851,8 +17960,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_ArrayChunks_N_T.
     
@@ -17870,8 +17980,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT N T))
           ].
@@ -17970,8 +18081,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt N T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ArrayChunksMut_N_T.
     
@@ -18013,7 +18125,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ T ],
                       "as_chunks_mut",
-                      [],
+                      [ N ],
                       []
                     |),
                     [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
@@ -18422,8 +18534,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item N T));
@@ -18542,8 +18655,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back N T));
@@ -18604,8 +18718,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty N T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_ArrayChunksMut_N_T.
     
@@ -18617,8 +18732,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_ArrayChunksMut_N_T.
     
@@ -18630,8 +18746,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_ArrayChunksMut_N_T.
     
@@ -18643,8 +18760,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_ArrayChunksMut_N_T.
     
@@ -18662,8 +18780,9 @@ Module slice.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT N T))
           ].
@@ -18751,8 +18870,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_RChunks_T.
     
@@ -18829,8 +18949,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_RChunks_T.
     
@@ -19867,8 +19988,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -20326,8 +20448,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -20342,8 +20465,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_RChunks_T.
     
@@ -20354,8 +20478,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_RChunks_T.
     
@@ -20366,8 +20491,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_RChunks_T.
     
@@ -20378,8 +20504,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_RChunks_T.
     
@@ -20396,8 +20523,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunks_T.
@@ -20507,8 +20635,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_RChunksMut_T.
     
@@ -21603,8 +21732,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -22072,8 +22202,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -22089,8 +22220,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_RChunksMut_T.
     
@@ -22102,8 +22234,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_RChunksMut_T.
     
@@ -22115,8 +22248,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_RChunksMut_T.
     
@@ -22128,8 +22262,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_RChunksMut_T.
     
@@ -22147,8 +22282,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunksMut_T.
@@ -22161,8 +22297,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_RChunksMut_T.
     
@@ -22174,8 +22311,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_core_slice_iter_RChunksMut_T.
     
@@ -22280,8 +22418,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_RChunksExact_T.
     
@@ -22456,8 +22595,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_slice_iter_RChunksExact_T.
     
@@ -23110,8 +23250,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -23502,8 +23643,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -23556,8 +23698,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_RChunksExact_T.
     
@@ -23569,8 +23712,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_RChunksExact_T.
     
@@ -23582,8 +23726,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_RChunksExact_T.
     
@@ -23595,8 +23740,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_RChunksExact_T.
     
@@ -23614,8 +23760,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunksExact_T.
@@ -23721,8 +23868,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_RChunksExactMut_T.
     
@@ -24513,8 +24661,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -24917,8 +25066,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -24966,8 +25116,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_RChunksExactMut_T.
     
@@ -24979,8 +25130,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_RChunksExactMut_T.
     
@@ -24992,8 +25144,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_RChunksExactMut_T.
     
@@ -25005,8 +25158,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_RChunksExactMut_T.
     
@@ -25024,8 +25178,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunksExactMut_T.
@@ -25038,8 +25193,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_RChunksExactMut_T.
     
@@ -25051,8 +25207,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_core_slice_iter_RChunksExactMut_T.
     
@@ -25063,8 +25220,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_Iter_T.
     
@@ -25081,8 +25239,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_Iter_T.
@@ -25094,8 +25253,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_IterMut_T.
     
@@ -25112,8 +25272,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_IterMut_T.
@@ -25581,8 +25742,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -25908,8 +26070,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
     
@@ -25921,8 +26084,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
     
@@ -26017,8 +26181,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunkBy_T_P.
     
@@ -26513,8 +26678,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -26860,8 +27026,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
     
@@ -26873,8 +27040,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
     
@@ -26969,8 +27137,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunkByMut_T_P.
   End iter.

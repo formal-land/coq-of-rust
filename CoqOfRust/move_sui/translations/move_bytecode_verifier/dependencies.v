@@ -316,7 +316,12 @@ Module dependencies.
                           (Ty.path "core::iter::adapters::filter::Filter")
                           []
                           [
-                            Ty.associated;
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              impl_IntoIterator_Item____'b_CompiledModule_
+                              "IntoIter";
                             Ty.function
                               [
                                 Ty.tuple
@@ -384,7 +389,12 @@ Module dependencies.
                             (Ty.path "core::iter::adapters::filter::Filter")
                             []
                             [
-                              Ty.associated;
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                impl_IntoIterator_Item____'b_CompiledModule_
+                                "IntoIter";
                               Ty.function
                                 [
                                   Ty.tuple
@@ -430,7 +440,12 @@ Module dependencies.
                           (Ty.path "core::iter::adapters::filter::Filter")
                           []
                           [
-                            Ty.associated;
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              impl_IntoIterator_Item____'b_CompiledModule_
+                              "IntoIter";
                             Ty.function
                               [
                                 Ty.tuple
@@ -490,7 +505,12 @@ Module dependencies.
                             (Ty.path "core::iter::adapters::filter::Filter")
                             []
                             [
-                              Ty.associated;
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                impl_IntoIterator_Item____'b_CompiledModule_
+                                "IntoIter";
                               Ty.function
                                 [
                                   Ty.tuple
@@ -513,7 +533,12 @@ Module dependencies.
                             ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              impl_IntoIterator_Item____'b_CompiledModule_
+                              "IntoIter",
                             [],
                             [],
                             "filter",
@@ -542,7 +567,12 @@ Module dependencies.
                           |),
                           [
                             M.call_closure (|
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                impl_IntoIterator_Item____'b_CompiledModule_
+                                "IntoIter",
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 impl_IntoIterator_Item____'b_CompiledModule_,
@@ -4777,7 +4807,14 @@ Module dependencies.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
-                                                                              [],
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  1;
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  0
+                                                                              ],
                                                                               []
                                                                             |),
                                                                             [
@@ -4872,7 +4909,14 @@ Module dependencies.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
-                                                                        [],
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ],
                                                                         []
                                                                       |),
                                                                       [
@@ -6043,7 +6087,14 @@ Module dependencies.
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
                                                                               "new_v1",
-                                                                              [],
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  1;
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  0
+                                                                              ],
                                                                               []
                                                                             |),
                                                                             [
@@ -6138,7 +6189,14 @@ Module dependencies.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_v1",
-                                                                        [],
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ],
                                                                         []
                                                                       |),
                                                                       [

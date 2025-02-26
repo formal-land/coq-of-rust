@@ -49,8 +49,9 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
 
@@ -58,7 +59,12 @@ Module Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
   Definition Self : Ty.t := Ty.path "scoping_rules_borrowing_mutablity::Book".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 (*
@@ -87,7 +93,7 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2 ],
                       []
                     |),
                     [
@@ -219,7 +225,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2 ],
                       []
                     |),
                     [

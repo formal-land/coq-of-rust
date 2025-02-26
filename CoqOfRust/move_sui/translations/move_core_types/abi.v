@@ -12,16 +12,19 @@ Module abi.
         {
           name := "TransactionScript";
           item := StructTuple [ Ty.path "move_core_types::abi::TransactionScriptABI" ];
-          discriminant := None;
         };
         {
           name := "ScriptFunction";
           item := StructTuple [ Ty.path "move_core_types::abi::ScriptFunctionABI" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_ScriptABI_TransactionScript :
+    M.IsDiscriminant "move_core_types::abi::ScriptABI::TransactionScript" 0.
+  Axiom IsDiscriminant_ScriptABI_ScriptFunction :
+    M.IsDiscriminant "move_core_types::abi::ScriptABI::ScriptFunction" 1.
   
   Module Impl_core_clone_Clone_for_move_core_types_abi_ScriptABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptABI".
@@ -103,8 +106,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_abi_ScriptABI.
   
@@ -201,8 +205,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_abi_ScriptABI.
   
@@ -319,8 +324,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_ScriptABI.
   
@@ -356,8 +362,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_abi_ScriptABI.
@@ -368,8 +375,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_ScriptABI.
   
@@ -531,8 +539,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_abi_ScriptABI.
   
@@ -565,7 +574,10 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -598,7 +610,10 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -626,8 +641,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_abi_ScriptABI.
     Module Impl_serde_de_Deserialize_for_move_core_types_abi_ScriptABI.
@@ -643,7 +659,10 @@ Module abi.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::abi::ScriptABI"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::abi::ScriptABI";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -671,8 +690,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_abi_ScriptABI.
     Module Impl_serde_ser_Serialize_for_move_core_types_abi_ScriptFunctionABI.
@@ -688,7 +708,8 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -696,7 +717,15 @@ Module abi.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -769,10 +798,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -841,10 +878,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -913,10 +958,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -985,10 +1038,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1065,10 +1126,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1140,10 +1209,16 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -1161,8 +1236,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_abi_ScriptFunctionABI.
     Module Impl_serde_de_Deserialize_for_move_core_types_abi_ScriptFunctionABI.
@@ -1178,7 +1254,10 @@ Module abi.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::abi::ScriptFunctionABI"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::abi::ScriptFunctionABI";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1206,8 +1285,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_abi_ScriptFunctionABI.
     Module Impl_serde_ser_Serialize_for_move_core_types_abi_TransactionScriptABI.
@@ -1223,7 +1303,8 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1231,7 +1312,15 @@ Module abi.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -1304,10 +1393,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1376,10 +1473,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1448,10 +1553,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1540,10 +1653,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1620,10 +1741,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1695,10 +1824,16 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -1716,8 +1851,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_abi_TransactionScriptABI.
     Module Impl_serde_de_Deserialize_for_move_core_types_abi_TransactionScriptABI.
@@ -1733,7 +1869,10 @@ Module abi.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::abi::TransactionScriptABI"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::abi::TransactionScriptABI";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1761,8 +1900,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_abi_TransactionScriptABI.
     Module Impl_serde_ser_Serialize_for_move_core_types_abi_ArgumentABI.
@@ -1778,7 +1918,8 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1786,7 +1927,15 @@ Module abi.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -1850,10 +1999,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1922,10 +2079,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1989,10 +2154,16 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -2010,8 +2181,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_abi_ArgumentABI.
     Module Impl_serde_de_Deserialize_for_move_core_types_abi_ArgumentABI.
@@ -2027,7 +2199,10 @@ Module abi.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::abi::ArgumentABI";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -2055,8 +2230,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_abi_ArgumentABI.
     Module Impl_serde_ser_Serialize_for_move_core_types_abi_TypeArgumentABI.
@@ -2072,7 +2248,8 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -2080,7 +2257,15 @@ Module abi.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -2141,10 +2326,18 @@ Module abi.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -2208,10 +2401,16 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -2229,8 +2428,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_abi_TypeArgumentABI.
     Module Impl_serde_de_Deserialize_for_move_core_types_abi_TypeArgumentABI.
@@ -2246,7 +2446,10 @@ Module abi.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::abi::TypeArgumentABI";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -2274,8 +2477,9 @@ Module abi.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_abi_TypeArgumentABI.
   End underscore.
@@ -2482,8 +2686,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_abi_ScriptFunctionABI.
   
@@ -2600,8 +2805,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_abi_ScriptFunctionABI.
   
@@ -2786,8 +2992,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_ScriptFunctionABI.
   
@@ -2837,8 +3044,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_abi_ScriptFunctionABI.
@@ -2849,8 +3057,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_ScriptFunctionABI.
   
@@ -3055,8 +3264,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_abi_ScriptFunctionABI.
   
@@ -3273,8 +3483,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_abi_TransactionScriptABI.
   
@@ -3388,8 +3599,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_abi_TransactionScriptABI.
   
@@ -3577,8 +3789,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_TransactionScriptABI.
   
@@ -3628,8 +3841,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_abi_TransactionScriptABI.
@@ -3640,8 +3854,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_TransactionScriptABI.
   
@@ -3854,8 +4069,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_abi_TransactionScriptABI.
   
@@ -3948,8 +4164,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_abi_ArgumentABI.
   
@@ -4021,8 +4238,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_abi_ArgumentABI.
   
@@ -4105,8 +4323,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_ArgumentABI.
   
@@ -4142,8 +4361,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_abi_ArgumentABI.
@@ -4154,8 +4374,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_ArgumentABI.
   
@@ -4238,8 +4459,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_abi_ArgumentABI.
   
@@ -4300,8 +4522,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_abi_TypeArgumentABI.
   
@@ -4359,8 +4582,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_abi_TypeArgumentABI.
   
@@ -4408,8 +4632,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_abi_TypeArgumentABI.
   
@@ -4438,8 +4663,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_abi_TypeArgumentABI.
@@ -4450,8 +4676,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_TypeArgumentABI.
   
@@ -4501,8 +4728,9 @@ Module abi.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_abi_TypeArgumentABI.
   

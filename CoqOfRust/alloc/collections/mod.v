@@ -57,8 +57,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_alloc_collections_TryReserveError.
   
@@ -68,8 +69,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_collections_TryReserveError.
   
@@ -119,8 +121,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveError.
   
@@ -149,8 +152,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_alloc_collections_TryReserveError.
@@ -209,8 +213,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_alloc_collections_TryReserveError.
   
@@ -266,7 +271,6 @@ Module collections.
         {
           name := "CapacityOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AllocError";
@@ -274,11 +278,15 @@ Module collections.
             StructRecord
               [ ("layout", Ty.path "core::alloc::layout::Layout"); ("non_exhaustive", Ty.tuple [])
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TryReserveErrorKind_CapacityOverflow :
+    M.IsDiscriminant "alloc::collections::TryReserveErrorKind::CapacityOverflow" 0.
+  Axiom IsDiscriminant_TryReserveErrorKind_AllocError :
+    M.IsDiscriminant "alloc::collections::TryReserveErrorKind::AllocError" 1.
   
   Module Impl_core_clone_Clone_for_alloc_collections_TryReserveErrorKind.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
@@ -368,8 +376,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_alloc_collections_TryReserveErrorKind.
   
@@ -379,8 +388,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_collections_TryReserveErrorKind.
   
@@ -519,8 +529,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveErrorKind.
   
@@ -556,8 +567,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_alloc_collections_TryReserveErrorKind.
@@ -665,8 +677,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_alloc_collections_TryReserveErrorKind.
   
@@ -690,8 +703,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::collections::TryReserveErrorKind" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::collections::TryReserveErrorKind" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_collections_TryReserveErrorKind_for_alloc_collections_TryReserveError.
   
@@ -724,8 +738,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "core::alloc::layout::LayoutError" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "core::alloc::layout::LayoutError" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_core_alloc_layout_LayoutError_for_alloc_collections_TryReserveErrorKind.
   
@@ -928,8 +943,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_alloc_collections_TryReserveError.
   
@@ -942,8 +958,9 @@ Module collections.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_alloc_collections_TryReserveError.
 End collections.

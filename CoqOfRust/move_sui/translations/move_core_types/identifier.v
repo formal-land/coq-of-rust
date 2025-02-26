@@ -129,7 +129,7 @@ Module identifier.
                                                     (M.read (|
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| b |) |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |))
                                                 ]
@@ -409,8 +409,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_identifier_Identifier.
   
@@ -464,8 +465,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_identifier_Identifier.
   
@@ -494,8 +496,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_identifier_Identifier.
@@ -547,8 +550,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_identifier_Identifier.
   
@@ -611,8 +615,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_identifier_Identifier.
   
@@ -622,8 +627,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_identifier_Identifier.
   
@@ -681,8 +687,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_identifier_Identifier.
   
@@ -750,8 +757,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_identifier_Identifier.
   
@@ -767,7 +775,13 @@ Module identifier.
             (let self := M.alloc (| self |) in
             let __serializer := M.alloc (| __serializer |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                ],
               M.get_trait_method (|
                 "serde::ser::Serializer",
                 __S,
@@ -806,8 +820,9 @@ Module identifier.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_identifier_Identifier.
     Module Impl_serde_de_Deserialize_for_move_core_types_identifier_Identifier.
@@ -823,7 +838,10 @@ Module identifier.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::identifier::Identifier"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::identifier::Identifier";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -850,8 +868,9 @@ Module identifier.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_identifier_Identifier.
   End underscore.
@@ -988,7 +1007,10 @@ Module identifier.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
-                                                          [],
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 2;
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          ],
                                                           []
                                                         |),
                                                         [
@@ -1469,8 +1491,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_move_core_types_identifier_Identifier.
@@ -1507,9 +1530,10 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_identifier_IdentStr_for_move_core_types_identifier_Identifier.
   
@@ -1550,8 +1574,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::identifier::IdentStr" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::identifier::IdentStr" ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_move_core_types_identifier_IdentStr_for_move_core_types_identifier_Identifier.
   
@@ -1615,8 +1640,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
   End Impl_core_ops_deref_Deref_for_move_core_types_identifier_Identifier.
@@ -1645,7 +1671,12 @@ Module identifier.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1718,8 +1749,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_identifier_Identifier.
   
@@ -1781,8 +1813,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_identifier_IdentStr.
   
@@ -1811,8 +1844,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_identifier_IdentStr.
@@ -1853,8 +1887,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_identifier_IdentStr.
   
@@ -1906,8 +1941,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_identifier_IdentStr.
   
@@ -1917,8 +1953,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_identifier_IdentStr.
   
@@ -1968,8 +2005,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_identifier_IdentStr.
   
@@ -2029,8 +2067,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_identifier_IdentStr.
   
@@ -2167,8 +2206,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "ref_cast::RefCast"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("From", InstanceField.Ty _From);
@@ -2288,7 +2328,10 @@ Module identifier.
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::Arguments",
                                                           "new_v1",
-                                                          [],
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 2;
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          ],
                                                           []
                                                         |),
                                                         [
@@ -2628,9 +2671,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::identifier::IdentStr" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* Borrowed *) Ty.path "move_core_types::identifier::IdentStr" ]
         (* Instance *) [ ("borrow", InstanceField.Method borrow) ].
   End Impl_core_borrow_Borrow_move_core_types_identifier_IdentStr_for_move_core_types_identifier_Identifier.
   
@@ -2690,8 +2733,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::borrow::ToOwned"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Owned", InstanceField.Ty _Owned); ("to_owned", InstanceField.Method to_owned) ].
   End Impl_alloc_borrow_ToOwned_for_move_core_types_identifier_IdentStr.
@@ -2720,7 +2764,12 @@ Module identifier.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -2783,8 +2832,9 @@ Module identifier.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_identifier_IdentStr.
 End identifier.

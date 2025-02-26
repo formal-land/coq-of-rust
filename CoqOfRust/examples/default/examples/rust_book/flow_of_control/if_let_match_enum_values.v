@@ -11,21 +11,22 @@ Enum Foo
       {
         name := "Bar";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Baz";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Qux";
         item := StructTuple [ Ty.path "u32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Foo_Bar : M.IsDiscriminant "if_let_match_enum_values::Foo::Bar" 0.
+Axiom IsDiscriminant_Foo_Baz : M.IsDiscriminant "if_let_match_enum_values::Foo::Baz" 1.
+Axiom IsDiscriminant_Foo_Qux : M.IsDiscriminant "if_let_match_enum_values::Foo::Qux" 2.
 
 (*
 fn main() {
@@ -92,7 +93,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [
@@ -138,7 +139,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [
@@ -190,7 +191,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 1
+                                ],
                                 []
                               |),
                               [
@@ -280,7 +284,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [

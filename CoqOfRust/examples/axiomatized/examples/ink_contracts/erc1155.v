@@ -22,8 +22,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (Self K V)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self K V)
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc1155_Mapping_K_V.
 
@@ -89,8 +90,9 @@ Module Impl_core_default_Default_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_AccountId.
 
@@ -102,8 +104,9 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc1155_AccountId.
 
@@ -111,7 +114,12 @@ Module Impl_core_marker_Copy_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_erc1155_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
@@ -120,8 +128,9 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
@@ -133,8 +142,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
 
@@ -146,9 +156,10 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_erc1155_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      Self
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_Usize_32_u8_for_erc1155_AccountId.
 
@@ -192,36 +203,40 @@ Enum Error
       {
         name := "UnexistentToken";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ZeroAddressTransfer";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "NotApproved";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "InsufficientBalance";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "SelfApproval";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "BatchTransferMismatch";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_UnexistentToken : M.IsDiscriminant "erc1155::Error::UnexistentToken" 0.
+Axiom IsDiscriminant_Error_ZeroAddressTransfer :
+  M.IsDiscriminant "erc1155::Error::ZeroAddressTransfer" 1.
+Axiom IsDiscriminant_Error_NotApproved : M.IsDiscriminant "erc1155::Error::NotApproved" 2.
+Axiom IsDiscriminant_Error_InsufficientBalance :
+  M.IsDiscriminant "erc1155::Error::InsufficientBalance" 3.
+Axiom IsDiscriminant_Error_SelfApproval : M.IsDiscriminant "erc1155::Error::SelfApproval" 4.
+Axiom IsDiscriminant_Error_BatchTransferMismatch :
+  M.IsDiscriminant "erc1155::Error::BatchTransferMismatch" 5.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
@@ -229,8 +244,9 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
@@ -242,8 +258,9 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc1155_Error.
 
@@ -255,8 +272,9 @@ Module Impl_core_cmp_Eq_for_erc1155_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_erc1155_Error.
@@ -322,21 +340,22 @@ Enum Event
       {
         name := "TransferSingle";
         item := StructTuple [ Ty.path "erc1155::TransferSingle" ];
-        discriminant := None;
       };
       {
         name := "ApprovalForAll";
         item := StructTuple [ Ty.path "erc1155::ApprovalForAll" ];
-        discriminant := None;
       };
       {
         name := "Uri";
         item := StructTuple [ Ty.path "erc1155::Uri" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_TransferSingle : M.IsDiscriminant "erc1155::Event::TransferSingle" 0.
+Axiom IsDiscriminant_Event_ApprovalForAll : M.IsDiscriminant "erc1155::Event::ApprovalForAll" 1.
+Axiom IsDiscriminant_Event_Uri : M.IsDiscriminant "erc1155::Event::Uri" 2.
 
 Module Impl_erc1155_Env.
   Definition Self : Ty.t := Ty.path "erc1155::Env".
@@ -382,8 +401,9 @@ Module Impl_core_default_Default_for_erc1155_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc1155_Contract.
 
@@ -446,8 +466,9 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "erc1155::Erc1155"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("is_approved_for_all", InstanceField.Method is_approved_for_all);
@@ -469,8 +490,9 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
   Axiom Implements :
     M.IsTraitInstance
       "erc1155::Erc1155TokenReceiver"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("on_received", InstanceField.Method on_received);

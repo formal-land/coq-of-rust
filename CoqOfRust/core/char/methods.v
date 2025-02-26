@@ -50,7 +50,17 @@ Module char.
           ltac:(M.monadic
             (let iter := M.alloc (| iter |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::char::decode::DecodeUtf16")
+                []
+                [
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter"
+                ],
               M.get_function (| "core::char::decode::decode_utf16", [], [ I ] |),
               [ M.read (| iter |) ]
             |)))
@@ -253,7 +263,7 @@ Module char.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_const",
-                                                  [],
+                                                  [ Value.Integer IntegerKind.Usize 1 ],
                                                   []
                                                 |),
                                                 [
@@ -2718,7 +2728,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -3200,7 +3210,7 @@ Module char.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

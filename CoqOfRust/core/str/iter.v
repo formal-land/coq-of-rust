@@ -58,8 +58,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_Chars.
     
@@ -266,7 +267,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "array_chunks",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 32 ],
                                 []
                               |),
                               [
@@ -495,7 +496,7 @@ Module str.
                                                                     M.write (|
                                                                       M.SubPointer.get_array_field (|
                                                                         start_bytes,
-                                                                        i
+                                                                        M.read (| i |)
                                                                       |),
                                                                       UnOp.not (|
                                                                         M.call_closure (|
@@ -511,7 +512,7 @@ Module str.
                                                                                 M.deref (|
                                                                                   M.read (| chunk |)
                                                                                 |),
-                                                                                i
+                                                                                M.read (| i |)
                                                                               |)
                                                                             |)
                                                                           ]
@@ -786,7 +787,7 @@ Module str.
                                               ]
                                             |)
                                           |),
-                                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                          Value.Integer IntegerKind.Usize 0
                                         |)
                                       |) in
                                     let~ _ : Ty.tuple [] :=
@@ -989,7 +990,7 @@ Module str.
                                       ]
                                     |)
                                   |),
-                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                  Value.Integer IntegerKind.Usize 0
                                 |)
                               |) in
                             let~ slurp : Ty.path "usize" :=
@@ -1219,8 +1220,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -1297,7 +1299,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -1579,7 +1581,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -1667,8 +1669,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_Chars.
     
@@ -1753,8 +1756,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_str_iter_Chars.
     
@@ -1764,8 +1768,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_Chars.
     
@@ -1911,8 +1916,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_CharIndices.
     
@@ -1987,8 +1993,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_CharIndices.
     
@@ -2254,8 +2261,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -2391,8 +2399,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_str_iter_CharIndices.
     
@@ -2402,8 +2411,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_CharIndices.
     
@@ -2540,8 +2550,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_Bytes.
     
@@ -2595,8 +2606,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_Bytes.
     
@@ -3054,8 +3066,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -3200,8 +3213,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("next_back", InstanceField.Method next_back);
@@ -3292,8 +3306,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_str_iter_Bytes.
@@ -3304,8 +3319,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_Bytes.
     
@@ -3315,8 +3331,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_str_iter_Bytes.
     
@@ -3326,8 +3343,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_str_iter_Bytes.
     
@@ -3342,8 +3360,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_str_iter_Bytes.
@@ -3377,10 +3396,10 @@ Module str.
                   [
                     ("matcher",
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                         M.get_trait_method (|
                           "core::clone::Clone",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "clone",
@@ -3408,8 +3427,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInternal_P.
     
@@ -3422,7 +3442,7 @@ Module str.
           [
             ("start", Ty.path "usize");
             ("end_", Ty.path "usize");
-            ("matcher", Ty.associated);
+            ("matcher", Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher");
             ("allow_trailing_empty", Ty.path "bool");
             ("finished", Ty.path "bool")
           ];
@@ -3680,8 +3700,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInternal_P.
     
@@ -3815,7 +3836,12 @@ Module str.
                                                         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                         M.get_trait_method (|
                                                           "core::str::pattern::Searcher",
-                                                          Ty.associated,
+                                                          Ty.associated_in_trait
+                                                            "core::str::pattern::Pattern"
+                                                            []
+                                                            []
+                                                            P
+                                                            "Searcher",
                                                           [],
                                                           [],
                                                           "haystack",
@@ -3946,7 +3972,7 @@ Module str.
                         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.get_trait_method (|
                           "core::str::pattern::Searcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "haystack",
@@ -3974,7 +4000,7 @@ Module str.
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                         M.get_trait_method (|
                           "core::str::pattern::Searcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "next_match",
@@ -4154,7 +4180,7 @@ Module str.
                         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.get_trait_method (|
                           "core::str::pattern::Searcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "haystack",
@@ -4182,7 +4208,7 @@ Module str.
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                         M.get_trait_method (|
                           "core::str::pattern::Searcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "next_match",
@@ -4515,7 +4541,7 @@ Module str.
                         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.get_trait_method (|
                           "core::str::pattern::Searcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "haystack",
@@ -4543,7 +4569,7 @@ Module str.
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                         M.get_trait_method (|
                           "core::str::pattern::ReverseSearcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "next_match_back",
@@ -4934,7 +4960,7 @@ Module str.
                         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.get_trait_method (|
                           "core::str::pattern::Searcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "haystack",
@@ -4962,7 +4988,7 @@ Module str.
                           [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                         M.get_trait_method (|
                           "core::str::pattern::ReverseSearcher",
-                          Ty.associated,
+                          Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                           [],
                           [],
                           "next_match_back",
@@ -5195,7 +5221,12 @@ Module str.
                                       Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                       M.get_trait_method (|
                                         "core::str::pattern::Searcher",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "core::str::pattern::Pattern"
+                                          []
+                                          []
+                                          P
+                                          "Searcher",
                                         [],
                                         [],
                                         "haystack",
@@ -5348,8 +5379,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
@@ -5399,8 +5431,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
@@ -5452,8 +5485,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
@@ -5553,8 +5587,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
@@ -5604,8 +5639,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
@@ -5657,8 +5693,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
@@ -5669,8 +5706,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
@@ -5681,8 +5719,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
@@ -5729,8 +5768,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Split_P.
     
@@ -5777,8 +5817,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplit_P.
     
@@ -5969,8 +6010,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
     
@@ -6021,8 +6063,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
@@ -6075,8 +6118,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
     
@@ -6177,8 +6221,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
     
@@ -6229,8 +6274,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
@@ -6283,8 +6329,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
     
@@ -6296,8 +6343,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
     
@@ -6309,8 +6357,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
     
@@ -6358,8 +6407,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitTerminator_P.
     
@@ -6407,8 +6457,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitTerminator_P.
     
@@ -6564,8 +6615,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitNInternal_P.
     
@@ -6714,8 +6766,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitNInternal_P.
     
@@ -7122,8 +7175,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
     
@@ -7173,8 +7227,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
@@ -7226,8 +7281,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
     
@@ -7327,8 +7383,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
@@ -7378,8 +7435,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
@@ -7431,8 +7489,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
@@ -7443,8 +7502,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitN_P.
     
@@ -7455,8 +7515,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RSplitN_P.
     
@@ -7578,10 +7639,10 @@ Module str.
                   "core::str::iter::MatchIndicesInternal"
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.associated,
+                        Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                         [],
                         [],
                         "clone",
@@ -7609,8 +7670,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndicesInternal_P.
     
@@ -7619,7 +7681,7 @@ Module str.
         name := "MatchIndicesInternal";
         const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.associated ];
+        fields := [ Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher" ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndicesInternal_P.
@@ -7709,8 +7771,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndicesInternal_P.
     
@@ -7759,7 +7822,7 @@ Module str.
                     [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                   M.get_trait_method (|
                     "core::str::pattern::Searcher",
-                    Ty.associated,
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                     [],
                     [],
                     "next_match",
@@ -7816,7 +7879,12 @@ Module str.
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_trait_method (|
                                                   "core::str::pattern::Searcher",
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "core::str::pattern::Pattern"
+                                                    []
+                                                    []
+                                                    P
+                                                    "Searcher",
                                                   [],
                                                   [],
                                                   "haystack",
@@ -7903,7 +7971,7 @@ Module str.
                     [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                   M.get_trait_method (|
                     "core::str::pattern::ReverseSearcher",
-                    Ty.associated,
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                     [],
                     [],
                     "next_match_back",
@@ -7960,7 +8028,12 @@ Module str.
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_trait_method (|
                                                   "core::str::pattern::Searcher",
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "core::str::pattern::Pattern"
+                                                    []
+                                                    []
+                                                    P
+                                                    "Searcher",
                                                   [],
                                                   [],
                                                   "haystack",
@@ -8101,8 +8174,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
     
@@ -8154,8 +8228,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
@@ -8208,8 +8283,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
     
@@ -8310,8 +8386,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
     
@@ -8363,8 +8440,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
@@ -8417,8 +8495,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
     
@@ -8430,8 +8509,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
     
@@ -8443,8 +8523,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
     
@@ -8492,8 +8573,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchIndices_P.
     
@@ -8541,8 +8623,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatchIndices_P.
     
@@ -8574,10 +8657,10 @@ Module str.
                   "core::str::iter::MatchesInternal"
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.associated,
+                        Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                         [],
                         [],
                         "clone",
@@ -8605,8 +8688,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchesInternal_P.
     
@@ -8615,7 +8699,7 @@ Module str.
         name := "MatchesInternal";
         const_params := [];
         ty_params := [ "P" ];
-        fields := [ Ty.associated ];
+        fields := [ Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher" ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchesInternal_P.
@@ -8705,8 +8789,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_MatchesInternal_P.
     
@@ -8756,7 +8841,7 @@ Module str.
                     [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                   M.get_trait_method (|
                     "core::str::pattern::Searcher",
-                    Ty.associated,
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                     [],
                     [],
                     "next_match",
@@ -8810,7 +8895,12 @@ Module str.
                                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             M.get_trait_method (|
                                               "core::str::pattern::Searcher",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::str::pattern::Pattern"
+                                                []
+                                                []
+                                                P
+                                                "Searcher",
                                               [],
                                               [],
                                               "haystack",
@@ -8894,7 +8984,7 @@ Module str.
                     [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                   M.get_trait_method (|
                     "core::str::pattern::ReverseSearcher",
-                    Ty.associated,
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                     [],
                     [],
                     "next_match_back",
@@ -8948,7 +9038,12 @@ Module str.
                                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             M.get_trait_method (|
                                               "core::str::pattern::Searcher",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::str::pattern::Pattern"
+                                                []
+                                                []
+                                                P
+                                                "Searcher",
                                               [],
                                               [],
                                               "haystack",
@@ -9084,8 +9179,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
@@ -9135,8 +9231,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
@@ -9188,8 +9285,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
@@ -9289,8 +9387,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
@@ -9340,8 +9439,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
@@ -9393,8 +9493,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
@@ -9405,8 +9506,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
@@ -9417,8 +9519,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
@@ -9465,8 +9568,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_Matches_P.
     
@@ -9513,8 +9617,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_RMatches_P.
     
@@ -9593,8 +9698,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_Lines.
     
@@ -9648,8 +9754,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_Lines.
     
@@ -9778,8 +9885,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -9839,8 +9947,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_str_iter_Lines.
     
@@ -9850,8 +9959,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_Lines.
     
@@ -9955,8 +10065,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_LinesAny.
     
@@ -10010,8 +10121,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_LinesAny.
     
@@ -10099,8 +10211,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -10153,8 +10266,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_str_iter_LinesAny.
     
@@ -10164,8 +10278,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_LinesAny.
     
@@ -10255,8 +10370,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_SplitWhitespace.
     
@@ -10314,8 +10430,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_SplitWhitespace.
     
@@ -10423,8 +10540,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_SplitAsciiWhitespace.
     
@@ -10482,8 +10600,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_SplitAsciiWhitespace.
     
@@ -10626,8 +10745,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -10690,8 +10810,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_str_iter_SplitWhitespace.
     
@@ -10701,8 +10822,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_SplitWhitespace.
     
@@ -10898,8 +11020,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -10968,8 +11091,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_str_iter_SplitAsciiWhitespace.
     
@@ -10979,8 +11103,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_SplitAsciiWhitespace.
     
@@ -11148,8 +11273,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [ ("Item", InstanceField.Ty (_Item P)); ("next", InstanceField.Method (next P)) ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
@@ -11245,8 +11371,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt P)) ].
     End Impl_core_fmt_Debug_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
     
@@ -11298,8 +11425,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("clone", InstanceField.Method (clone P)) ].
     End Impl_core_clone_Clone_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
     
@@ -11347,8 +11475,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back P)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
     
@@ -11360,8 +11489,9 @@ Module str.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_str_pattern_Pattern_P_for_core_str_iter_SplitInclusive_P.
     
@@ -11494,8 +11624,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_EncodeUtf16.
     
@@ -11554,8 +11685,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_EncodeUtf16.
     
@@ -11781,9 +11913,7 @@ Module str.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 buf,
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |)
                                                           |)
@@ -11795,7 +11925,7 @@ Module str.
                                               |) in
                                             M.SubPointer.get_array_field (|
                                               buf,
-                                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                              Value.Integer IntegerKind.Usize 0
                                             |)
                                           |)))
                                     ]
@@ -11932,8 +12062,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -11948,8 +12079,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_EncodeUtf16.
     
@@ -12075,8 +12207,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_EscapeDebug.
     
@@ -12134,8 +12267,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_EscapeDebug.
     
@@ -12219,8 +12353,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_EscapeDefault.
     
@@ -12278,8 +12413,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_EscapeDefault.
     
@@ -12363,8 +12499,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_str_iter_EscapeUnicode.
     
@@ -12422,8 +12559,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_str_iter_EscapeUnicode.
     
@@ -12531,8 +12669,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_str_iter_EscapeDebug.
     
@@ -12774,8 +12913,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -12792,8 +12932,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_EscapeDebug.
     
@@ -12901,8 +13042,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_str_iter_EscapeDefault.
     
@@ -13088,8 +13230,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -13106,8 +13249,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_EscapeDefault.
     
@@ -13215,8 +13359,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_str_iter_EscapeUnicode.
     
@@ -13402,8 +13547,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -13420,8 +13566,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_str_iter_EscapeUnicode.
   End iter.

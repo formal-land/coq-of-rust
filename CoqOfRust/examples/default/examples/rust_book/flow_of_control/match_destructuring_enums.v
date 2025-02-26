@@ -11,46 +11,47 @@ Enum Color
       {
         name := "Red";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Blue";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Green";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "RGB";
         item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
-        discriminant := None;
       };
       {
         name := "HSV";
         item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
-        discriminant := None;
       };
       {
         name := "HSL";
         item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
-        discriminant := None;
       };
       {
         name := "CMY";
         item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
-        discriminant := None;
       };
       {
         name := "CMYK";
         item := StructTuple [ Ty.path "u32"; Ty.path "u32"; Ty.path "u32"; Ty.path "u32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Color_Red : M.IsDiscriminant "match_destructuring_enums::Color::Red" 0.
+Axiom IsDiscriminant_Color_Blue : M.IsDiscriminant "match_destructuring_enums::Color::Blue" 1.
+Axiom IsDiscriminant_Color_Green : M.IsDiscriminant "match_destructuring_enums::Color::Green" 2.
+Axiom IsDiscriminant_Color_RGB : M.IsDiscriminant "match_destructuring_enums::Color::RGB" 3.
+Axiom IsDiscriminant_Color_HSV : M.IsDiscriminant "match_destructuring_enums::Color::HSV" 4.
+Axiom IsDiscriminant_Color_HSL : M.IsDiscriminant "match_destructuring_enums::Color::HSL" 5.
+Axiom IsDiscriminant_Color_CMY : M.IsDiscriminant "match_destructuring_enums::Color::CMY" 6.
+Axiom IsDiscriminant_Color_CMYK : M.IsDiscriminant "match_destructuring_enums::Color::CMYK" 7.
 
 (*
 fn main() {
@@ -102,7 +103,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -141,7 +142,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -177,7 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -213,7 +214,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 1 ],
                             []
                           |),
                           [
@@ -269,7 +270,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 3
+                            ],
                             []
                           |),
                           [
@@ -389,7 +391,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 3
+                            ],
                             []
                           |),
                           [
@@ -509,7 +512,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 3
+                            ],
                             []
                           |),
                           [
@@ -629,7 +633,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 3
+                            ],
                             []
                           |),
                           [
@@ -756,7 +761,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 5; Value.Integer IntegerKind.Usize 4
+                            ],
                             []
                           |),
                           [

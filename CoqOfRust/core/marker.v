@@ -12,8 +12,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -24,8 +25,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -36,8 +38,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sync_T_where_core_marker_Sized_T_for_ref__T.
   
@@ -56,8 +59,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_usize.
   
@@ -67,8 +71,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_u8.
   
@@ -78,8 +83,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_u16.
   
@@ -89,8 +95,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_u32.
   
@@ -100,8 +107,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_u64.
   
@@ -111,8 +119,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_u128.
   
@@ -122,8 +131,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_isize.
   
@@ -133,8 +143,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_i8.
   
@@ -144,8 +155,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_i16.
   
@@ -155,8 +167,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_i32.
   
@@ -166,8 +179,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_i64.
   
@@ -177,8 +191,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_i128.
   
@@ -188,8 +203,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_bool.
   
@@ -199,8 +215,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_char.
   
@@ -210,8 +227,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_str.
   
@@ -221,8 +239,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_.
   
@@ -233,8 +252,9 @@ Module marker.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_array_N_T.
   
@@ -245,8 +265,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_slice_T.
   
@@ -257,8 +278,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_ref__T.
   
@@ -271,8 +293,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_usize.
   
@@ -282,8 +305,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_u8.
   
@@ -293,8 +317,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_u16.
   
@@ -304,8 +329,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_u32.
   
@@ -315,8 +341,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_u64.
   
@@ -326,8 +353,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_u128.
   
@@ -337,8 +365,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_isize.
   
@@ -348,8 +377,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_i8.
   
@@ -359,8 +389,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_i16.
   
@@ -370,8 +401,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_i32.
   
@@ -381,8 +413,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_i64.
   
@@ -392,8 +425,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_i128.
   
@@ -403,8 +437,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_f16.
   
@@ -414,8 +449,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_f32.
   
@@ -425,8 +461,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_f64.
   
@@ -436,8 +473,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_f128.
   
@@ -447,8 +485,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_bool.
   
@@ -458,8 +497,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_char.
   
@@ -470,8 +510,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -482,8 +523,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -493,8 +535,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_never.
   
@@ -505,8 +548,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Sized_T_for_ref__T.
   
@@ -520,8 +564,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -532,8 +577,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -564,8 +610,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
   End Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -592,8 +639,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -602,7 +650,12 @@ Module marker.
     
     Axiom Implements :
       forall (T : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self T) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
@@ -630,8 +683,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
   End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -658,8 +712,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -670,8 +725,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -697,8 +753,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -722,8 +779,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -734,8 +792,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -752,8 +811,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Freeze"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
   
@@ -764,8 +824,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Freeze"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
@@ -776,8 +837,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Freeze"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -788,8 +850,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Freeze"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -800,8 +863,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Freeze"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_ref__T.
   
@@ -812,8 +876,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Freeze"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Freeze_where_core_marker_Sized_T_for_ref_mut_T.
   
@@ -858,8 +923,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_marker_PhantomPinned.
   
@@ -876,8 +942,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_core_marker_PhantomPinned.
   
@@ -887,8 +954,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_marker_PhantomPinned.
   
@@ -908,8 +976,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_marker_PhantomPinned.
   
@@ -933,8 +1002,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_marker_PhantomPinned.
@@ -945,8 +1015,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_marker_PhantomPinned.
   
@@ -967,8 +1038,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_marker_PhantomPinned.
   
@@ -989,8 +1061,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_marker_PhantomPinned.
   
@@ -1013,8 +1086,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_core_marker_PhantomPinned.
   
@@ -1035,8 +1109,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_marker_PhantomPinned.
   
@@ -1046,8 +1121,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Unpin"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Unpin_for_core_marker_PhantomPinned.
   
@@ -1058,8 +1134,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Unpin"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_ref__T.
   
@@ -1070,8 +1147,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Unpin"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_ref_mut_T.
   
@@ -1082,8 +1160,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Unpin"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -1094,8 +1173,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Unpin"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_for_pointer_mut_T.
   
@@ -1120,8 +1200,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_usize.
   
@@ -1131,8 +1212,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_u8.
   
@@ -1142,8 +1224,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_u16.
   
@@ -1153,8 +1236,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_u32.
   
@@ -1164,8 +1248,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_u64.
   
@@ -1175,8 +1260,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_u128.
   
@@ -1186,8 +1272,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_isize.
   
@@ -1197,8 +1284,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_i8.
   
@@ -1208,8 +1296,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_i16.
   
@@ -1219,8 +1308,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_i32.
   
@@ -1230,8 +1320,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_i64.
   
@@ -1241,8 +1332,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_i128.
   
@@ -1252,8 +1344,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_bool.
   
@@ -1263,8 +1356,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_char.
   
@@ -1274,8 +1368,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__for_Tuple_.
   
@@ -1286,8 +1381,9 @@ Module marker.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__T_for_array_N_T.
   
@@ -1297,8 +1393,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_usize.
   
@@ -1308,8 +1405,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_u8.
   
@@ -1319,8 +1417,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_u16.
   
@@ -1330,8 +1429,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_u32.
   
@@ -1341,8 +1441,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_u64.
   
@@ -1352,8 +1453,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_u128.
   
@@ -1363,8 +1465,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_isize.
   
@@ -1374,8 +1477,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_i8.
   
@@ -1385,8 +1489,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_i16.
   
@@ -1396,8 +1501,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_i32.
   
@@ -1407,8 +1513,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_i64.
   
@@ -1418,8 +1525,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_i128.
   
@@ -1429,8 +1537,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_bool.
   
@@ -1440,8 +1549,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_char.
   
@@ -1451,8 +1561,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_Tuple_.
   
@@ -1463,8 +1574,9 @@ Module marker.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_array_N_T.
   
@@ -1474,8 +1586,9 @@ Module marker.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_for_str.
   
@@ -1486,8 +1599,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_slice_T.
   
@@ -1498,8 +1612,9 @@ Module marker.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_where_core_marker_Sized_T_for_ref__T.
   
@@ -1540,8 +1655,9 @@ Module marker.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::effects::Compat"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_effects_Compat_for_core_marker_effects_NoRuntime.
     
@@ -1551,8 +1667,9 @@ Module marker.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::effects::Compat"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_effects_Compat_for_core_marker_effects_Runtime.
     
@@ -1563,8 +1680,9 @@ Module marker.
         forall (RUNTIME : Value.t),
         M.IsTraitInstance
           "core::marker::effects::Compat"
-          (Self RUNTIME)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self RUNTIME)
           (* Instance *) [].
     End Impl_core_marker_effects_Compat_for_core_marker_effects_Maybe.
     
@@ -1578,8 +1696,9 @@ Module marker.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::effects::TyCompat"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [].
     End Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_T_for_T.
     
@@ -1590,8 +1709,9 @@ Module marker.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::effects::TyCompat"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::marker::effects::Maybe" ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::marker::effects::Maybe" ]
           (* Instance *) [].
     End Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_core_marker_effects_Maybe_for_T.
     
@@ -1607,8 +1727,9 @@ Module marker.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::effects::Intersection"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("Output", InstanceField.Ty _Output) ].
     End Impl_core_marker_effects_Intersection_for_Tuple_.
   End effects.

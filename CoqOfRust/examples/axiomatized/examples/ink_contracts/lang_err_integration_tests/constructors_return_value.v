@@ -17,8 +17,9 @@ Module Impl_core_default_Default_for_constructors_return_value_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_constructors_return_value_AccountId.
 
@@ -30,8 +31,9 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_constructors_return_value_AccountId.
 
@@ -39,7 +41,12 @@ Module Impl_core_marker_Copy_for_constructors_return_value_AccountId.
   Definition Self : Ty.t := Ty.path "constructors_return_value::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_constructors_return_value_AccountId.
 
 Module Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.
@@ -50,9 +57,10 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_Ac
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      Self
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_AccountId.
 
@@ -76,11 +84,13 @@ Enum LangError
       {
         name := "CouldNotReadInput";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_LangError_CouldNotReadInput :
+  M.IsDiscriminant "constructors_return_value::LangError::CouldNotReadInput" 0.
 
 Axiom ConstructorResult :
   forall (T : Ty.t),
@@ -106,8 +116,9 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
 

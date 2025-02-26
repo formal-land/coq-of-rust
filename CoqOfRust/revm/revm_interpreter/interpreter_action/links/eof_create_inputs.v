@@ -1,44 +1,52 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.M.
+Require Import links.M.
 Require Import revm.links.dependencies.
-Require Import revm.revm_bytecode.links.eof.
+Require revm.revm_bytecode.links.eof.
 
-(*
-  /// Inputs for EOF create call.
-  #[derive(Debug, Default, Clone, PartialEq, Eq)]
-  #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-  pub struct EOFCreateInput {
-      /// Caller of Eof Craate
-      pub caller: Address,
-      /// New contract address.
-      pub created_address: Address,
-      /// Values of ether transfered
-      pub value: U256,
-      /// Init eof code that is going to be executed.
-      pub eof_init_code: Eof,
-      /// Gas limit for the create call.
-      pub gas_limit: u64,
-  }
-*)
+Module EOFCreateKind.
+  Inductive t : Set :=
+  | Tx
+    (initdata : alloy_primitives.links.bytes_.Bytes.t)
+  | Opcode
+    (initcode : revm_bytecode.links.eof.Eof.t)
+    (input : alloy_primitives.links.bytes_.Bytes.t)
+    (created_address : alloy_primitives.bits.links.address.Address.t)
+  .
 
-Module EOFCreateInput.
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "eof_create_inputs::EOFCreateKind";
+    φ x :=
+      match x with
+      | Tx initdata =>
+        Value.StructRecord "eof_create_inputs::EOFCreateKind::Tx" [
+          ("initdata", φ initdata)
+        ]
+      | Opcode initcode input created_address =>
+        Value.StructRecord "eof_create_inputs::EOFCreateKind::Opcode" [
+          ("initcode", φ initcode);
+          ("input", φ input);
+          ("created_address", φ created_address)
+        ]
+      end
+  }.
+End EOFCreateKind.
+
+Module EOFCreateInputs.
   Record t : Set := {
-    caller : Address.t;
-    created_address : Address.t;
-    value : U256.t;
-    eof_init_code : Eof.t;
-    gas_limit : U64.t;
+    caller: alloy_primitives.bits.links.address.Address.t;
+    value: U256.t;
+    gas_limit: U64.t;
+    kind: revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateKind.t;
   }.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter::eof_create_input::EOFCreateInput";
-    φ x :=
-      Value.StructRecord "revm_interpreter::interpreter::eof_create_input::EOFCreateInput" [
-        ("caller", φ x.(caller));
-        ("created_address", φ x.(created_address));
-        ("value", φ x.(value));
-        ("eof_init_code", φ x.(eof_init_code));
-        ("gas_limit", φ x.(gas_limit))
-      ];
+    Φ := Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+    φ '(Build_t caller value gas_limit kind) :=
+      Value.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs" [
+        ("caller", φ caller);
+        ("value", φ value);
+        ("gas_limit", φ gas_limit);
+        ("kind", φ kind)
+      ]
   }.
-End EOFCreateInput.
+End EOFCreateInputs.

@@ -132,8 +132,9 @@ Module vec.
         forall (T F A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T F A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T F A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_F_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_vec_extract_if_ExtractIf_T_F_A.
     
@@ -357,7 +358,7 @@ Module vec.
                                                   Pointer.Kind.MutRef,
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| v |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |)
                                               |)
@@ -431,7 +432,7 @@ Module vec.
                                                               Pointer.Kind.Ref,
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| v |) |),
-                                                                i
+                                                                M.read (| i |)
                                                               |)
                                                             |)
                                                           |)
@@ -486,7 +487,7 @@ Module vec.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| v |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       |)
@@ -501,11 +502,9 @@ Module vec.
                                                           Pointer.Kind.MutRef,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| v |) |),
-                                                            M.alloc (|
-                                                              BinOp.Wrap.sub (|
-                                                                M.read (| i |),
-                                                                M.read (| del |)
-                                                              |)
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| i |),
+                                                              M.read (| del |)
                                                             |)
                                                           |)
                                                         |)
@@ -603,8 +602,9 @@ Module vec.
         forall (T F A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T F A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T F A));
@@ -842,8 +842,9 @@ Module vec.
         forall (T F A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T F A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T F A)) ].
     End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_vec_extract_if_ExtractIf_T_F_A.
   End extract_if.

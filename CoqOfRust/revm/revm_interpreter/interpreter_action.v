@@ -22,7 +22,6 @@ Module interpreter_action.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Create";
@@ -37,7 +36,6 @@ Module interpreter_action.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "EOFCreate";
@@ -53,11 +51,17 @@ Module interpreter_action.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_FrameInput_Call :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::FrameInput::Call" 0.
+  Axiom IsDiscriminant_FrameInput_Create :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::FrameInput::Create" 1.
+  Axiom IsDiscriminant_FrameInput_EOFCreate :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::FrameInput::EOFCreate" 2.
   
   Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_FrameInput.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
@@ -210,8 +214,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_FrameInput.
   
@@ -343,8 +348,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_FrameInput.
   
@@ -354,8 +360,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_FrameInput.
   
@@ -617,8 +624,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_FrameInput.
   
@@ -661,8 +669,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_FrameInput.
@@ -690,9 +699,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
         (* Instance *) [ ("as_mut", InstanceField.Method as_mut) ].
   End Impl_core_convert_AsMut_revm_interpreter_interpreter_action_FrameInput_for_revm_interpreter_interpreter_action_FrameInput.
   
@@ -706,22 +715,26 @@ Module interpreter_action.
         {
           name := "NewFrame";
           item := StructTuple [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ];
-          discriminant := None;
         };
         {
           name := "Return";
           item :=
             StructRecord [ ("result", Ty.path "revm_interpreter::interpreter::InterpreterResult") ];
-          discriminant := None;
         };
         {
           name := "None";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InterpreterAction_NewFrame :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" 0.
+  Axiom IsDiscriminant_InterpreterAction_Return :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::InterpreterAction::Return" 1.
+  Axiom IsDiscriminant_InterpreterAction_None :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::InterpreterAction::None" 2.
   
   Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_InterpreterAction.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
@@ -818,8 +831,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_InterpreterAction.
   
@@ -949,8 +963,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_InterpreterAction.
   
@@ -969,8 +984,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_interpreter_interpreter_action_InterpreterAction.
   
@@ -980,8 +996,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_InterpreterAction.
   
@@ -1133,8 +1150,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_InterpreterAction.
   
@@ -1170,8 +1188,9 @@ Module interpreter_action.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_InterpreterAction.

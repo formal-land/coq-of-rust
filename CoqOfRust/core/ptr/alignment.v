@@ -17,8 +17,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_ptr_alignment_Alignment.
     
@@ -43,8 +44,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ptr_alignment_Alignment.
     
@@ -54,8 +56,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_Alignment.
     
@@ -105,8 +108,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ptr_alignment_Alignment.
     
@@ -135,8 +139,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ptr_alignment_Alignment.
@@ -583,7 +588,12 @@ Module ptr.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -694,8 +704,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ptr_alignment_Alignment.
     
@@ -751,9 +762,10 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_ptr_alignment_Alignment.
@@ -814,8 +826,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_usize_for_core_ptr_alignment_Alignment.
@@ -850,8 +863,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ptr::alignment::Alignment" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ptr::alignment::Alignment" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ptr_alignment_Alignment_for_core_num_nonzero_NonZero_usize.
     
@@ -884,8 +898,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ptr::alignment::Alignment" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ptr::alignment::Alignment" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_ptr_alignment_Alignment_for_usize.
     
@@ -975,8 +990,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_ptr_alignment_Alignment.
     
@@ -1020,8 +1036,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_ptr_alignment_Alignment.
     
@@ -1075,8 +1092,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_ptr_alignment_Alignment.
     
@@ -1097,8 +1115,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_ptr_alignment_Alignment.
     
@@ -1112,326 +1131,391 @@ Module ptr.
           {
             name := "_Align1Shl0";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl1";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl2";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl3";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl4";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl5";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl6";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl7";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl8";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl9";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl10";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl11";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl12";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl13";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl14";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl15";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl16";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl17";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl18";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl19";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl20";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl21";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl22";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl23";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl24";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl25";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl26";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl27";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl28";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl29";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl30";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl31";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl32";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl33";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl34";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl35";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl36";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl37";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl38";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl39";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl40";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl41";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl42";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl43";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl44";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl45";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl46";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl47";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl48";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl49";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl50";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl51";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl52";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl53";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl54";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl55";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl56";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl57";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl58";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl59";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl60";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl61";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl62";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl63";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl0 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl0" 0.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl1 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl1" 1.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl2 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl2" 2.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl3 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl3" 3.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl4 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl4" 4.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl5 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl5" 5.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl6 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl6" 6.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl7 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl7" 7.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl8 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl8" 8.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl9 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl9" 9.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl10 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl10" 10.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl11 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl11" 11.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl12 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl12" 12.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl13 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl13" 13.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl14 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl14" 14.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl15 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl15" 15.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl16 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl16" 16.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl17 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl17" 17.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl18 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl18" 18.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl19 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl19" 19.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl20 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl20" 20.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl21 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl21" 21.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl22 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl22" 22.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl23 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl23" 23.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl24 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl24" 24.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl25 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl25" 25.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl26 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl26" 26.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl27 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl27" 27.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl28 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl28" 28.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl29 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl29" 29.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl30 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl30" 30.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl31 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl31" 31.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl32 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl32" 32.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl33 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl33" 33.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl34 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl34" 34.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl35 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl35" 35.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl36 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl36" 36.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl37 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl37" 37.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl38 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl38" 38.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl39 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl39" 39.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl40 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl40" 40.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl41 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl41" 41.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl42 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl42" 42.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl43 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl43" 43.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl44 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl44" 44.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl45 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl45" 45.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl46 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl46" 46.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl47 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl47" 47.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl48 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl48" 48.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl49 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl49" 49.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl50 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl50" 50.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl51 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl51" 51.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl52 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl52" 52.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl53 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl53" 53.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl54 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl54" 54.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl55 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl55" 55.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl56 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl56" 56.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl57 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl57" 57.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl58 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl58" 58.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl59 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl59" 59.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl60 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl60" 60.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl61 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl61" 61.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl62 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl62" 62.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl63 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl63" 63.
     
     Module Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
@@ -1439,8 +1523,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum.
     
@@ -1460,8 +1545,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ptr_alignment_AlignmentEnum.
     
@@ -1471,8 +1557,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum.
     
@@ -1519,8 +1606,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum.
     
@@ -1544,8 +1632,9 @@ Module ptr.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum.

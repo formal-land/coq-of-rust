@@ -11,16 +11,17 @@ Enum Status
       {
         name := "Rich";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Poor";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Status_Rich : M.IsDiscriminant "enums_use::Status::Rich" 0.
+Axiom IsDiscriminant_Status_Poor : M.IsDiscriminant "enums_use::Status::Poor" 1.
 
 (*
 Enum Work
@@ -32,16 +33,17 @@ Enum Work
       {
         name := "Civilian";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Soldier";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Work_Civilian : M.IsDiscriminant "enums_use::Work::Civilian" 0.
+Axiom IsDiscriminant_Work_Soldier : M.IsDiscriminant "enums_use::Work::Soldier" 1.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

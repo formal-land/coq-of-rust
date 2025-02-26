@@ -10,6 +10,7 @@ Enum Error
 }
 *)
 
+
 Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_code_hash.
@@ -31,8 +32,9 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_set_code_hash_Incrementer.
 

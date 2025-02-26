@@ -19,7 +19,12 @@ Module transaction.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -79,7 +84,12 @@ Module transaction.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -142,7 +152,12 @@ Module transaction.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -205,7 +220,12 @@ Module transaction.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -268,7 +288,12 @@ Module transaction.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -343,7 +368,12 @@ Module transaction.
                             "revm_context_interface::transaction::transaction_type::TransactionType",
                           M.get_trait_method (|
                             "core::convert::Into",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "revm_context_interface::transaction::Transaction"
+                              []
+                              []
+                              Self
+                              "TransactionType",
                             [],
                             [
                               Ty.path
@@ -355,7 +385,12 @@ Module transaction.
                           |),
                           [
                             M.call_closure (|
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "TransactionType",
                               M.get_trait_method (|
                                 "revm_context_interface::transaction::Transaction",
                                 Self,
@@ -383,7 +418,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Legacy"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -415,7 +460,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Eip2930"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -447,7 +502,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Eip1559"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -479,7 +544,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Eip4844"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -511,7 +586,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Eip7702"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -549,7 +634,10 @@ Module transaction.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 1;
+                                          Value.Integer IntegerKind.Usize 0
+                                        ],
                                         []
                                       |),
                                       [
@@ -626,7 +714,12 @@ Module transaction.
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
                   M.get_trait_method (|
                     "core::convert::Into",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_context_interface::transaction::Transaction"
+                      []
+                      []
+                      Self
+                      "TransactionType",
                     [],
                     [
                       Ty.path
@@ -638,7 +731,12 @@ Module transaction.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        Self
+                        "TransactionType",
                       M.get_trait_method (|
                         "revm_context_interface::transaction::Transaction",
                         Self,
@@ -666,7 +764,12 @@ Module transaction.
                         Ty.path "u128",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::legacy::LegacyTx",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Legacy",
                           [],
                           [],
                           "gas_price",
@@ -678,7 +781,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Legacy"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -707,7 +820,12 @@ Module transaction.
                         Ty.path "u128",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::eip2930::Eip2930Tx",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Eip2930",
                           [],
                           [],
                           "gas_price",
@@ -719,7 +837,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip2930"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -748,7 +876,12 @@ Module transaction.
                         Ty.path "u128",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Eip1559",
                           [],
                           [],
                           "max_fee_per_gas",
@@ -760,7 +893,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip1559"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -789,7 +932,12 @@ Module transaction.
                         Ty.path "u128",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Eip4844",
                           [],
                           [],
                           "max_fee_per_gas",
@@ -801,7 +949,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip4844"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -830,7 +988,12 @@ Module transaction.
                         Ty.path "u128",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Eip7702",
                           [],
                           [],
                           "max_fee_per_gas",
@@ -842,7 +1005,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip7702"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -877,7 +1050,10 @@ Module transaction.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.Integer IntegerKind.Usize 0
+                                ],
                                 []
                               |),
                               [
@@ -958,7 +1134,12 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType",
                       M.get_trait_method (|
                         "core::convert::Into",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_context_interface::transaction::Transaction"
+                          []
+                          []
+                          Self
+                          "TransactionType",
                         [],
                         [
                           Ty.path
@@ -970,7 +1151,12 @@ Module transaction.
                       |),
                       [
                         M.call_closure (|
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "TransactionType",
                           M.get_trait_method (|
                             "revm_context_interface::transaction::Transaction",
                             Self,
@@ -1004,7 +1190,12 @@ Module transaction.
                                     Ty.path "u128",
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::legacy::LegacyTx",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_context_interface::transaction::Transaction"
+                                        []
+                                        []
+                                        Self
+                                        "Legacy",
                                       [],
                                       [],
                                       "gas_price",
@@ -1016,7 +1207,17 @@ Module transaction.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
-                                            Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "revm_context_interface::transaction::Transaction"
+                                                  []
+                                                  []
+                                                  Self
+                                                  "Legacy"
+                                              ],
                                             M.get_trait_method (|
                                               "revm_context_interface::transaction::Transaction",
                                               Self,
@@ -1056,7 +1257,12 @@ Module transaction.
                                     Ty.path "u128",
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::eip2930::Eip2930Tx",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_context_interface::transaction::Transaction"
+                                        []
+                                        []
+                                        Self
+                                        "Eip2930",
                                       [],
                                       [],
                                       "gas_price",
@@ -1068,7 +1274,17 @@ Module transaction.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
-                                            Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "revm_context_interface::transaction::Transaction"
+                                                  []
+                                                  []
+                                                  Self
+                                                  "Eip2930"
+                                              ],
                                             M.get_trait_method (|
                                               "revm_context_interface::transaction::Transaction",
                                               Self,
@@ -1107,7 +1323,12 @@ Module transaction.
                                   Ty.path "u128",
                                   M.get_trait_method (|
                                     "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip1559",
                                     [],
                                     [],
                                     "max_fee_per_gas",
@@ -1119,7 +1340,17 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::transaction::Transaction"
+                                                []
+                                                []
+                                                Self
+                                                "Eip1559"
+                                            ],
                                           M.get_trait_method (|
                                             "revm_context_interface::transaction::Transaction",
                                             Self,
@@ -1144,7 +1375,12 @@ Module transaction.
                                   Ty.path "u128",
                                   M.get_trait_method (|
                                     "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip1559",
                                     [],
                                     [],
                                     "max_priority_fee_per_gas",
@@ -1156,7 +1392,17 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::transaction::Transaction"
+                                                []
+                                                []
+                                                Self
+                                                "Eip1559"
+                                            ],
                                           M.get_trait_method (|
                                             "revm_context_interface::transaction::Transaction",
                                             Self,
@@ -1193,7 +1439,12 @@ Module transaction.
                                   Ty.path "u128",
                                   M.get_trait_method (|
                                     "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip4844",
                                     [],
                                     [],
                                     "max_fee_per_gas",
@@ -1205,7 +1456,17 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::transaction::Transaction"
+                                                []
+                                                []
+                                                Self
+                                                "Eip4844"
+                                            ],
                                           M.get_trait_method (|
                                             "revm_context_interface::transaction::Transaction",
                                             Self,
@@ -1230,7 +1491,12 @@ Module transaction.
                                   Ty.path "u128",
                                   M.get_trait_method (|
                                     "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip4844",
                                     [],
                                     [],
                                     "max_priority_fee_per_gas",
@@ -1242,7 +1508,17 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::transaction::Transaction"
+                                                []
+                                                []
+                                                Self
+                                                "Eip4844"
+                                            ],
                                           M.get_trait_method (|
                                             "revm_context_interface::transaction::Transaction",
                                             Self,
@@ -1279,7 +1555,12 @@ Module transaction.
                                   Ty.path "u128",
                                   M.get_trait_method (|
                                     "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip7702",
                                     [],
                                     [],
                                     "max_fee_per_gas",
@@ -1291,7 +1572,17 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::transaction::Transaction"
+                                                []
+                                                []
+                                                Self
+                                                "Eip7702"
+                                            ],
                                           M.get_trait_method (|
                                             "revm_context_interface::transaction::Transaction",
                                             Self,
@@ -1316,7 +1607,12 @@ Module transaction.
                                   Ty.path "u128",
                                   M.get_trait_method (|
                                     "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip7702",
                                     [],
                                     [],
                                     "max_priority_fee_per_gas",
@@ -1328,7 +1624,17 @@ Module transaction.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "revm_context_interface::transaction::Transaction"
+                                                []
+                                                []
+                                                Self
+                                                "Eip7702"
+                                            ],
                                           M.get_trait_method (|
                                             "revm_context_interface::transaction::Transaction",
                                             Self,
@@ -1369,7 +1675,10 @@ Module transaction.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
-                                      [],
+                                      [
+                                        Value.Integer IntegerKind.Usize 1;
+                                        Value.Integer IntegerKind.Usize 0
+                                      ],
                                       []
                                     |),
                                     [
@@ -1472,7 +1781,12 @@ Module transaction.
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
                   M.get_trait_method (|
                     "core::convert::Into",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_context_interface::transaction::Transaction"
+                      []
+                      []
+                      Self
+                      "TransactionType",
                     [],
                     [
                       Ty.path
@@ -1484,7 +1798,12 @@ Module transaction.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        Self
+                        "TransactionType",
                       M.get_trait_method (|
                         "revm_context_interface::transaction::Transaction",
                         Self,
@@ -1514,7 +1833,12 @@ Module transaction.
                         Ty.path "alloy_primitives::common::TxKind",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::legacy::LegacyTx",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Legacy",
                           [],
                           [],
                           "kind",
@@ -1526,7 +1850,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Legacy"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -1555,7 +1889,12 @@ Module transaction.
                         Ty.path "alloy_primitives::common::TxKind",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::eip2930::Eip2930Tx",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Eip2930",
                           [],
                           [],
                           "kind",
@@ -1567,7 +1906,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip2930"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -1596,7 +1945,12 @@ Module transaction.
                         Ty.path "alloy_primitives::common::TxKind",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::eip1559::Eip1559Tx",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::Transaction"
+                            []
+                            []
+                            Self
+                            "Eip1559",
                           [],
                           [],
                           "kind",
@@ -1608,7 +1962,17 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "Eip1559"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Self,
@@ -1640,7 +2004,12 @@ Module transaction.
                             Ty.path "alloy_primitives::bits::address::Address",
                             M.get_trait_method (|
                               "revm_context_interface::transaction::eip4844::Eip4844Tx",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "Eip4844",
                               [],
                               [],
                               "destination",
@@ -1652,7 +2021,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Eip4844"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -1690,7 +2069,12 @@ Module transaction.
                             Ty.path "alloy_primitives::bits::address::Address",
                             M.get_trait_method (|
                               "revm_context_interface::transaction::eip7702::Eip7702Tx",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "Eip7702",
                               [],
                               [],
                               "destination",
@@ -1702,7 +2086,17 @@ Module transaction.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::Transaction"
+                                          []
+                                          []
+                                          Self
+                                          "Eip7702"
+                                      ],
                                     M.get_trait_method (|
                                       "revm_context_interface::transaction::Transaction",
                                       Self,
@@ -1743,7 +2137,10 @@ Module transaction.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.Integer IntegerKind.Usize 0
+                                ],
                                 []
                               |),
                               [
@@ -1819,7 +2216,12 @@ Module transaction.
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
                   M.get_trait_method (|
                     "core::convert::Into",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_context_interface::transaction::Transaction"
+                      []
+                      []
+                      Self
+                      "TransactionType",
                     [],
                     [
                       Ty.path
@@ -1831,7 +2233,12 @@ Module transaction.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        Self
+                        "TransactionType",
                       M.get_trait_method (|
                         "revm_context_interface::transaction::Transaction",
                         Self,
@@ -1872,10 +2279,25 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "AccessList"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::eip2930::Eip2930Tx",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_context_interface::transaction::Transaction"
+                                    []
+                                    []
+                                    Self
+                                    "Eip2930",
                                   [],
                                   [],
                                   "access_list",
@@ -1887,7 +2309,17 @@ Module transaction.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "revm_context_interface::transaction::Transaction"
+                                              []
+                                              []
+                                              Self
+                                              "Eip2930"
+                                          ],
                                         M.get_trait_method (|
                                           "revm_context_interface::transaction::Transaction",
                                           Self,
@@ -1927,10 +2359,25 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "AccessList"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_context_interface::transaction::Transaction"
+                                    []
+                                    []
+                                    Self
+                                    "Eip1559",
                                   [],
                                   [],
                                   "access_list",
@@ -1942,7 +2389,17 @@ Module transaction.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "revm_context_interface::transaction::Transaction"
+                                              []
+                                              []
+                                              Self
+                                              "Eip1559"
+                                          ],
                                         M.get_trait_method (|
                                           "revm_context_interface::transaction::Transaction",
                                           Self,
@@ -1982,10 +2439,25 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "AccessList"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_context_interface::transaction::Transaction"
+                                    []
+                                    []
+                                    Self
+                                    "Eip4844",
                                   [],
                                   [],
                                   "access_list",
@@ -1997,7 +2469,17 @@ Module transaction.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "revm_context_interface::transaction::Transaction"
+                                              []
+                                              []
+                                              Self
+                                              "Eip4844"
+                                          ],
                                         M.get_trait_method (|
                                           "revm_context_interface::transaction::Transaction",
                                           Self,
@@ -2037,10 +2519,25 @@ Module transaction.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "revm_context_interface::transaction::Transaction"
+                                      []
+                                      []
+                                      Self
+                                      "AccessList"
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_context_interface::transaction::Transaction"
+                                    []
+                                    []
+                                    Self
+                                    "Eip7702",
                                   [],
                                   [],
                                   "access_list",
@@ -2052,7 +2549,17 @@ Module transaction.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "revm_context_interface::transaction::Transaction"
+                                              []
+                                              []
+                                              Self
+                                              "Eip7702"
+                                          ],
                                         M.get_trait_method (|
                                           "revm_context_interface::transaction::Transaction",
                                           Self,
@@ -2095,7 +2602,10 @@ Module transaction.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.Integer IntegerKind.Usize 0
+                                ],
                                 []
                               |),
                               [
@@ -2163,28 +2673,51 @@ Module transaction.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionError (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionError (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionError".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionType (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionType (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionType".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _AccessList (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "AccessList".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Legacy (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Legacy (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Legacy".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip2930 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip2930 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip2930".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip1559 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip1559 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip1559".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip4844 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip4844 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip4844".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip7702 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip7702 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip7702".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
       Definition tx_type (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2194,7 +2727,12 @@ Module transaction.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait
+                "revm_context_interface::transaction::Transaction"
+                []
+                []
+                T
+                "TransactionType",
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -2225,7 +2763,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Legacy"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2258,7 +2806,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip2930"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2291,7 +2849,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip1559"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2324,7 +2892,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip4844"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2357,7 +2935,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip7702"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2533,7 +3121,19 @@ Module transaction.
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "AccessList"
+                    ]
+                ],
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -2557,8 +3157,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::Transaction"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("TransactionError", InstanceField.Ty (_TransactionError T));
@@ -2587,28 +3188,51 @@ Module transaction.
         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionError (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionError (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionError".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionType (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionType (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionType".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _AccessList (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "AccessList".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Legacy (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Legacy (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Legacy".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip2930 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip2930 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip2930".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip1559 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip1559 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip1559".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip4844 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip4844 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip4844".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip7702 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip7702 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip7702".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
       Definition tx_type (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2618,7 +3242,12 @@ Module transaction.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait
+                "revm_context_interface::transaction::Transaction"
+                []
+                []
+                T
+                "TransactionType",
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -2649,7 +3278,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Legacy"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2682,7 +3321,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip2930"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2715,7 +3364,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip1559"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2748,7 +3407,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip4844"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2781,7 +3450,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip7702"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -2957,7 +3636,19 @@ Module transaction.
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "AccessList"
+                    ]
+                ],
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -2981,8 +3672,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::Transaction"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("TransactionError", InstanceField.Ty (_TransactionError T));
@@ -3011,28 +3703,51 @@ Module transaction.
         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionError (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionError (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionError".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionType (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionType (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionType".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _AccessList (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "AccessList".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Legacy (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Legacy (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Legacy".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip2930 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip2930 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip2930".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip1559 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip1559 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip1559".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip4844 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip4844 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip4844".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip7702 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip7702 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip7702".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
       Definition tx_type (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3042,7 +3757,12 @@ Module transaction.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait
+                "revm_context_interface::transaction::Transaction"
+                []
+                []
+                T
+                "TransactionType",
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -3090,7 +3810,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Legacy"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3140,7 +3870,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip2930"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3190,7 +3930,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip1559"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3240,7 +3990,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip4844"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3290,7 +4050,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip7702"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3551,7 +4321,19 @@ Module transaction.
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "AccessList"
+                    ]
+                ],
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -3592,8 +4374,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::Transaction"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("TransactionError", InstanceField.Ty (_TransactionError T));
@@ -3622,28 +4405,51 @@ Module transaction.
         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionError (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionError (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionError".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _TransactionType (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _TransactionType (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "TransactionType".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _AccessList (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::Transaction"
+          []
+          []
+          T
+          "AccessList".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Legacy (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Legacy (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Legacy".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip2930 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip2930 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip2930".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip1559 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip1559 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip1559".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip4844 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip4844 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip4844".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
-      Definition _Eip7702 (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Eip7702 (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::transaction::Transaction" [] [] T "Eip7702".
       
       (* #[auto_impl(&, Box, Arc, Rc)] *)
       Definition tx_type (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3653,7 +4459,12 @@ Module transaction.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait
+                "revm_context_interface::transaction::Transaction"
+                []
+                []
+                T
+                "TransactionType",
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -3698,7 +4509,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Legacy"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3748,7 +4569,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip2930"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3798,7 +4629,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip1559"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3848,7 +4689,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip4844"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -3898,7 +4749,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "Eip7702"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::Transaction",
                     T,
@@ -4150,7 +5011,19 @@ Module transaction.
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
-                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::Transaction"
+                        []
+                        []
+                        T
+                        "AccessList"
+                    ]
+                ],
               M.get_trait_method (|
                 "revm_context_interface::transaction::Transaction",
                 T,
@@ -4188,8 +5061,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::Transaction"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("TransactionError", InstanceField.Ty (_TransactionError T));
@@ -4217,7 +5091,13 @@ Module transaction.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Transaction (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Transaction (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::TransactionGetter"
+          []
+          []
+          T
+          "Transaction".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition tx (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4230,7 +5110,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::TransactionGetter"
+                        []
+                        []
+                        T
+                        "Transaction"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::TransactionGetter",
                     T,
@@ -4256,8 +5146,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::TransactionGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Transaction", InstanceField.Ty (_Transaction T)); ("tx", InstanceField.Method (tx T))
           ].
@@ -4266,7 +5157,13 @@ Module transaction.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Transaction (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Transaction (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::TransactionGetter"
+          []
+          []
+          T
+          "Transaction".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition tx (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4279,7 +5176,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::TransactionGetter"
+                        []
+                        []
+                        T
+                        "Transaction"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::TransactionGetter",
                     T,
@@ -4305,8 +5212,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::TransactionGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Transaction", InstanceField.Ty (_Transaction T)); ("tx", InstanceField.Method (tx T))
           ].
@@ -4316,7 +5224,13 @@ Module transaction.
         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Transaction (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Transaction (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::TransactionGetter"
+          []
+          []
+          T
+          "Transaction".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition tx (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4329,7 +5243,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::TransactionGetter"
+                        []
+                        []
+                        T
+                        "Transaction"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::TransactionGetter",
                     T,
@@ -4355,8 +5279,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::TransactionGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Transaction", InstanceField.Ty (_Transaction T)); ("tx", InstanceField.Method (tx T))
           ].
@@ -4366,7 +5291,13 @@ Module transaction.
         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Transaction (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Transaction (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "revm_context_interface::transaction::TransactionGetter"
+          []
+          []
+          T
+          "Transaction".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition tx (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4379,7 +5310,17 @@ Module transaction.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::TransactionGetter"
+                        []
+                        []
+                        T
+                        "Transaction"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::TransactionGetter",
                     T,
@@ -4422,8 +5363,9 @@ Module transaction.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::transaction::TransactionGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Transaction", InstanceField.Ty (_Transaction T)); ("tx", InstanceField.Method (tx T))
           ].
@@ -4484,8 +5426,9 @@ Module transaction.
       forall (T : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::transaction::TransactionSetter"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("set_tx", InstanceField.Method (set_tx T)) ].
   End Impl_revm_context_interface_transaction_TransactionSetter_where_revm_context_interface_transaction_TransactionSetter_T_for_ref_mut_T.
   
@@ -4531,8 +5474,9 @@ Module transaction.
       forall (T : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::transaction::TransactionSetter"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("set_tx", InstanceField.Method (set_tx T)) ].
   End Impl_revm_context_interface_transaction_TransactionSetter_where_revm_context_interface_transaction_TransactionSetter_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
 End transaction.

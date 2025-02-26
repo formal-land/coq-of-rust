@@ -19,16 +19,17 @@ Enum List
                 []
                 [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global" ]
             ];
-        discriminant := None;
       };
       {
         name := "Nil";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_List_Cons : M.IsDiscriminant "enums_testcase_linked_list::List::Cons" 0.
+Axiom IsDiscriminant_List_Nil : M.IsDiscriminant "enums_testcase_linked_list::List::Nil" 1.
 
 Module Impl_enums_testcase_linked_list_List.
   Definition Self : Ty.t := Ty.path "enums_testcase_linked_list::List".
@@ -222,7 +223,10 @@ Module Impl_enums_testcase_linked_list_List.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
-                                      [],
+                                      [
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.Integer IntegerKind.Usize 2
+                                      ],
                                       []
                                     |),
                                     [
@@ -348,7 +352,7 @@ Module Impl_enums_testcase_linked_list_List.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -476,7 +480,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -558,7 +562,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

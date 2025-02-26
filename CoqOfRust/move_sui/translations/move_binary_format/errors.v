@@ -36,16 +36,19 @@ Module errors.
         {
           name := "Undefined";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Module";
           item := StructTuple [ Ty.path "move_core_types::language_storage::ModuleId" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Location_Undefined :
+    M.IsDiscriminant "move_binary_format::errors::Location::Undefined" 0.
+  Axiom IsDiscriminant_Location_Module :
+    M.IsDiscriminant "move_binary_format::errors::Location::Module" 1.
   
   Module Impl_core_clone_Clone_for_move_binary_format_errors_Location.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::Location".
@@ -109,8 +112,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_errors_Location.
   
@@ -201,8 +205,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_errors_Location.
   
@@ -231,8 +236,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_errors_Location.
@@ -358,8 +364,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_errors_Location.
   
@@ -369,8 +376,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_Location.
   
@@ -476,8 +484,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_errors_Location.
   
@@ -598,8 +607,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_Location.
   
@@ -695,8 +705,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_errors_ExecutionState.
   
@@ -757,8 +768,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_errors_ExecutionState.
   
@@ -787,8 +799,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_errors_ExecutionState.
@@ -860,8 +873,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_errors_ExecutionState.
   
@@ -871,8 +885,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_ExecutionState.
   
@@ -946,8 +961,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_errors_ExecutionState.
   
@@ -1031,8 +1047,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_ExecutionState.
   
@@ -1156,8 +1173,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_errors_VMError.
   
@@ -1186,8 +1204,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_errors_VMError.
@@ -1251,8 +1270,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_errors_VMError.
   
@@ -1262,8 +1282,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_VMError.
   
@@ -1321,8 +1342,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_errors_VMError.
   
@@ -1390,8 +1412,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_VMError.
   
@@ -1691,8 +1714,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_errors_VMError_.
   
@@ -1767,8 +1791,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_errors_VMError_.
@@ -2199,8 +2224,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_errors_VMError_.
   
@@ -2210,8 +2236,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_VMError_.
   
@@ -2511,8 +2538,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_errors_VMError_.
   
@@ -3037,8 +3065,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_VMError_.
   
@@ -3701,8 +3730,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_errors_VMError.
   
@@ -4086,8 +4116,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_errors_VMError_.
   
@@ -4097,8 +4128,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_move_binary_format_errors_VMError.
   
@@ -4175,8 +4207,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_errors_PartialVMError.
   
@@ -4447,8 +4480,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_errors_PartialVMError_.
   
@@ -5730,7 +5764,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -5779,7 +5813,8 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -5844,8 +5879,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_binary_format_errors_Location.
   
@@ -6079,7 +6115,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -6225,7 +6264,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -6465,7 +6507,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -6767,7 +6812,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -6922,7 +6970,7 @@ Module errors.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -6975,8 +7023,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_binary_format_errors_PartialVMError.
   
@@ -7208,7 +7257,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -7321,7 +7373,10 @@ Module errors.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
-                                    [],
+                                    [
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.Integer IntegerKind.Usize 2
+                                    ],
                                     []
                                   |),
                                   [
@@ -7471,7 +7526,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -7711,7 +7769,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -8013,7 +8074,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -8168,7 +8232,7 @@ Module errors.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -8221,8 +8285,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_binary_format_errors_VMError.
   
@@ -8277,7 +8342,10 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 5;
+                                  Value.Integer IntegerKind.Usize 5
+                                ],
                                 []
                               |),
                               [
@@ -8505,7 +8573,10 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 3;
+                                  Value.Integer IntegerKind.Usize 3
+                                ],
                                 []
                               |),
                               [
@@ -8739,8 +8810,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_errors_PartialVMError.
   
@@ -9073,8 +9145,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_errors_PartialVMError_.
   
@@ -9098,8 +9171,9 @@ Module errors.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("source", InstanceField.Method source) ].
   End Impl_core_error_Error_for_move_binary_format_errors_PartialVMError.
 End errors.

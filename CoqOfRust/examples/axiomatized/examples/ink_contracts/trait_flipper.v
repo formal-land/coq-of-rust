@@ -31,7 +31,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
   Axiom Implements :
     M.IsTraitInstance
       "trait_flipper::Flip"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("flip", InstanceField.Method flip); ("get", InstanceField.Method get) ].
 End Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

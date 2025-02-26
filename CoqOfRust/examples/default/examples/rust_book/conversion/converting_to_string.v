@@ -30,7 +30,12 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -88,8 +93,9 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_converting_to_string_Circle.
 

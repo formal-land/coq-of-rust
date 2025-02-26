@@ -23,7 +23,6 @@ Module eip7702.
                       Ty.path "alloc::alloc::Global"
                     ]
                 ];
-            discriminant := None;
           };
           {
             name := "Recovered";
@@ -39,11 +38,19 @@ Module eip7702.
                       Ty.path "alloc::alloc::Global"
                     ]
                 ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AuthorizationList_Signed :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::AuthorizationList::Signed"
+        0.
+    Axiom IsDiscriminant_AuthorizationList_Recovered :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+        1.
     
     Module Impl_core_clone_Clone_for_revm_specification_eip7702_authorization_list_AuthorizationList.
       Definition Self : Ty.t :=
@@ -154,8 +161,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -253,8 +261,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -291,8 +300,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_specification_eip7702_authorization_list_AuthorizationList.
@@ -304,8 +314,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -505,8 +516,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -555,8 +567,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -583,10 +596,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *)
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               []
@@ -595,6 +607,7 @@ Module eip7702.
                 Ty.path "alloc::alloc::Global"
               ]
           ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_vec_Vec_alloy_eip7702_auth_list_SignedAuthorization_alloc_alloc_Global_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -621,10 +634,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *)
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               []
@@ -634,6 +646,7 @@ Module eip7702.
                 Ty.path "alloc::alloc::Global"
               ]
           ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_vec_Vec_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization_alloc_alloc_Global_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
@@ -1399,21 +1412,31 @@ Module eip7702.
           {
             name := "InvalidChainId";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InvalidYParity";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip2InvalidSValue";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_InvalidAuthorization_InvalidChainId :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidChainId"
+        0.
+    Axiom IsDiscriminant_InvalidAuthorization_InvalidYParity :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidYParity"
+        1.
+    Axiom IsDiscriminant_InvalidAuthorization_Eip2InvalidSValue :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::InvalidAuthorization::Eip2InvalidSValue"
+        2.
     
     Module Impl_core_fmt_Debug_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
       Definition Self : Ty.t :=
@@ -1491,8 +1514,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
@@ -1558,8 +1582,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
@@ -1570,8 +1595,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
@@ -1625,8 +1651,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
@@ -1651,8 +1678,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
@@ -1712,8 +1740,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
@@ -1810,8 +1839,9 @@ Module eip7702.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
   End authorization_list.

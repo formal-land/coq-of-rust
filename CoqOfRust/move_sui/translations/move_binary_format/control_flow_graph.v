@@ -108,7 +108,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -143,7 +143,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -209,7 +209,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -244,7 +244,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -324,7 +324,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -359,7 +359,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -434,7 +434,7 @@ Module control_flow_graph.
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
@@ -2335,17 +2335,13 @@ Module control_flow_graph.
                                                   M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| window |) |),
-                                                      M.alloc (|
-                                                        Value.Integer IntegerKind.Usize 0
-                                                      |)
+                                                      Value.Integer IntegerKind.Usize 0
                                                     |)
                                                   |);
                                                   M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| window |) |),
-                                                      M.alloc (|
-                                                        Value.Integer IntegerKind.Usize 1
-                                                      |)
+                                                      Value.Integer IntegerKind.Usize 1
                                                     |)
                                                   |)
                                                 ]
@@ -2758,7 +2754,7 @@ Module control_flow_graph.
                   Pointer.Kind.Ref,
                   M.SubPointer.get_array_field (|
                     M.deref (| M.read (| code |) |),
-                    M.alloc (| M.cast (Ty.path "usize") (M.read (| pc |)) |)
+                    M.cast (Ty.path "usize") (M.read (| pc |))
                   |)
                 |)
               |) in
@@ -4281,8 +4277,9 @@ Module control_flow_graph.
     Axiom Implements :
       M.IsTraitInstance
         "move_binary_format::control_flow_graph::ControlFlowGraph"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("block_start", InstanceField.Method block_start);

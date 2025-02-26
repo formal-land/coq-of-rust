@@ -324,8 +324,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
@@ -593,8 +594,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
@@ -605,8 +607,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
@@ -921,8 +924,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
@@ -1000,8 +1004,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
@@ -1334,8 +1339,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
@@ -1649,41 +1655,57 @@ Module interpreter_action.
           {
             name := "Call";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "CallCode";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "DelegateCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "StaticCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ExtCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ExtStaticCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ExtDelegateCall";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CallScheme_Call :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" 0.
+    Axiom IsDiscriminant_CallScheme_CallCode :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" 1.
+    Axiom IsDiscriminant_CallScheme_DelegateCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall"
+        2.
+    Axiom IsDiscriminant_CallScheme_StaticCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
+        3.
+    Axiom IsDiscriminant_CallScheme_ExtCall :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall" 4.
+    Axiom IsDiscriminant_CallScheme_ExtStaticCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall"
+        5.
+    Axiom IsDiscriminant_CallScheme_ExtDelegateCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
+        6.
     
     Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
       Definition Self : Ty.t :=
@@ -1702,8 +1724,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
@@ -1714,8 +1737,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
@@ -1851,8 +1875,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
@@ -1863,8 +1888,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
@@ -1912,8 +1938,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
@@ -1938,8 +1965,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
@@ -1996,8 +2024,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
@@ -2124,7 +2153,6 @@ Module interpreter_action.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     []
                 ];
-            discriminant := None;
           };
           {
             name := "Apparent";
@@ -2136,11 +2164,15 @@ Module interpreter_action.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     []
                 ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CallValue_Transfer :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" 0.
+    Axiom IsDiscriminant_CallValue_Apparent :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent" 1.
     
     Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
       Definition Self : Ty.t :=
@@ -2249,8 +2281,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
@@ -2348,8 +2381,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
@@ -2360,8 +2394,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
@@ -2556,8 +2591,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
@@ -2587,8 +2623,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
@@ -2719,8 +2756,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
@@ -2746,8 +2784,9 @@ Module interpreter_action.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     

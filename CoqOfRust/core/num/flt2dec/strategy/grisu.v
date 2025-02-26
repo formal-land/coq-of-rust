@@ -625,7 +625,7 @@ Module num.
                         M.get_constant "core::num::flt2dec::strategy::grisu::CACHED_POW10"
                       |)
                     |),
-                    M.alloc (| M.cast (Ty.path "usize") (M.read (| idx |)) |)
+                    M.cast (Ty.path "usize") (M.read (| idx |))
                   |),
                   [
                     fun γ =>
@@ -2630,7 +2630,7 @@ Module num.
                                                 M.write (|
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| buf |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |),
                                                   M.call_closure (|
                                                     Ty.apply
@@ -3236,7 +3236,7 @@ Module num.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| buf |) |),
-                                                          i
+                                                          M.read (| i |)
                                                         |),
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4765,11 +4765,9 @@ Module num.
                                                           M.SubPointer.get_array_field (|
                                                             M.get_constant
                                                               "core::num::flt2dec::strategy::grisu::format_exact_opt::POW10_UP_TO_9",
-                                                            M.alloc (|
-                                                              BinOp.Wrap.sub (|
-                                                                M.read (| requested_digits |),
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |)
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| requested_digits |),
+                                                              Value.Integer IntegerKind.Usize 1
                                                             |)
                                                           |)
                                                         |)
@@ -5159,7 +5157,7 @@ Module num.
                                                 M.write (|
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| buf |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |),
                                                   M.call_closure (|
                                                     Ty.apply
@@ -5847,7 +5845,7 @@ Module num.
                                                         M.write (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| buf |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |),
                                                           M.call_closure (|
                                                             Ty.apply
@@ -6661,7 +6659,7 @@ Module num.
                                                             M.write (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| buf |) |),
-                                                                len
+                                                                M.read (| len |)
                                                               |),
                                                               M.call_closure (|
                                                                 Ty.apply

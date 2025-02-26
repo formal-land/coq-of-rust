@@ -11,16 +11,18 @@ Enum Temperature
       {
         name := "Celsius";
         item := StructTuple [ Ty.path "i32" ];
-        discriminant := None;
       };
       {
         name := "Fahrenheit";
         item := StructTuple [ Ty.path "i32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Temperature_Celsius : M.IsDiscriminant "match_guards::Temperature::Celsius" 0.
+Axiom IsDiscriminant_Temperature_Fahrenheit :
+  M.IsDiscriminant "match_guards::Temperature::Fahrenheit" 1.
 
 (*
 fn main() {
@@ -74,7 +76,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -148,7 +151,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -225,7 +229,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -299,7 +304,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [

@@ -117,8 +117,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -1061,8 +1062,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
           (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
     End Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -1074,8 +1076,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -1087,8 +1090,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -1939,7 +1943,7 @@ Module vec.
                                                               [ N ]
                                                               [ T ],
                                                             "new_unchecked",
-                                                            [ N ],
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2027,7 +2031,7 @@ Module vec.
                                                       [ T ]
                                                   ],
                                                 "transpose",
-                                                [ N ],
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| raw_ary |) ]
@@ -2165,7 +2169,7 @@ Module vec.
                                               [ N ]
                                               [ T ],
                                             "new_unchecked",
-                                            [ N ],
+                                            [],
                                             []
                                           |),
                                           [
@@ -2301,7 +2305,7 @@ Module vec.
                                       [ T ]
                                   ],
                                 "transpose",
-                                [ N ],
+                                [],
                                 []
                               |),
                               [ M.read (| raw_ary |) ]
@@ -2857,7 +2861,15 @@ Module vec.
                                                         (Ty.path
                                                           "core::ops::control_flow::ControlFlow")
                                                         []
-                                                        [ Ty.associated; B ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual";
+                                                          B
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::Try",
                                                         R,
@@ -2909,7 +2921,14 @@ Module vec.
                                                                     "core::ops::try_trait::FromResidual",
                                                                     R,
                                                                     [],
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::ops::try_trait::Try"
+                                                                        []
+                                                                        []
+                                                                        R
+                                                                        "Residual"
+                                                                    ],
                                                                     "from_residual",
                                                                     [],
                                                                     []
@@ -3095,7 +3114,15 @@ Module vec.
                                                         (Ty.path
                                                           "core::ops::control_flow::ControlFlow")
                                                         []
-                                                        [ Ty.associated; B ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual";
+                                                          B
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::Try",
                                                         R,
@@ -3147,7 +3174,14 @@ Module vec.
                                                                     "core::ops::try_trait::FromResidual",
                                                                     R,
                                                                     [],
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::ops::try_trait::Try"
+                                                                        []
+                                                                        []
+                                                                        R
+                                                                        "Residual"
+                                                                    ],
                                                                     "from_residual",
                                                                     [],
                                                                     []
@@ -3277,8 +3311,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -3831,8 +3866,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T A));
@@ -3952,8 +3988,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T A)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -3965,8 +4002,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -3978,8 +4016,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedFused"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedFused_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -3991,8 +4030,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -4055,8 +4095,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("default", InstanceField.Method (default T A)) ].
     End Impl_core_default_Default_where_core_alloc_Allocator_A_where_core_default_Default_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -4070,8 +4111,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::into_iter::NonDrop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_alloc_vec_into_iter_NonDrop_where_core_marker_Copy_T_for_T.
     
@@ -4089,8 +4131,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T A))
           ].
@@ -4194,8 +4237,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -4285,8 +4329,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
     End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
     
@@ -4348,8 +4393,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::InPlaceIterable"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY T A));
@@ -4387,8 +4433,9 @@ Module vec.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::SourceIter"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Source", InstanceField.Ty (_Source T A));
@@ -4433,8 +4480,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::in_place_collect::AsVecIntoIter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));

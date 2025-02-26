@@ -143,32 +143,26 @@ Module language_storage.
         {
           name := "Bool";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U8";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Signer";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Vector";
@@ -183,7 +177,6 @@ Module language_storage.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Struct";
@@ -198,26 +191,45 @@ Module language_storage.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TypeTag_Bool :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Bool" 0.
+  Axiom IsDiscriminant_TypeTag_U8 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U8" 1.
+  Axiom IsDiscriminant_TypeTag_U64 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U64" 2.
+  Axiom IsDiscriminant_TypeTag_U128 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U128" 3.
+  Axiom IsDiscriminant_TypeTag_Address :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Address" 4.
+  Axiom IsDiscriminant_TypeTag_Signer :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Signer" 5.
+  Axiom IsDiscriminant_TypeTag_Vector :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Vector" 6.
+  Axiom IsDiscriminant_TypeTag_Struct :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Struct" 7.
+  Axiom IsDiscriminant_TypeTag_U16 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U16" 8.
+  Axiom IsDiscriminant_TypeTag_U32 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U32" 9.
+  Axiom IsDiscriminant_TypeTag_U256 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U256" 10.
   
   Module underscore.
     Module Impl_serde_ser_Serialize_for_move_core_types_language_storage_TypeTag.
@@ -246,7 +258,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -276,7 +291,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -306,7 +324,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -336,7 +357,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -366,7 +390,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -396,7 +423,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -428,7 +458,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -469,7 +502,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -508,7 +544,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -538,7 +577,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -568,7 +610,10 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -595,8 +640,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_language_storage_TypeTag.
     Module Impl_serde_de_Deserialize_for_move_core_types_language_storage_TypeTag.
@@ -612,7 +658,10 @@ Module language_storage.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::language_storage::TypeTag"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::language_storage::TypeTag";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -642,8 +691,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_language_storage_TypeTag.
     Module Impl_serde_ser_Serialize_for_move_core_types_language_storage_StructTag.
@@ -659,7 +709,8 @@ Module language_storage.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -667,7 +718,15 @@ Module language_storage.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -737,10 +796,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -809,10 +876,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -881,10 +956,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -953,10 +1036,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1028,10 +1119,16 @@ Module language_storage.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -1049,8 +1146,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_language_storage_StructTag.
     Module Impl_serde_de_Deserialize_for_move_core_types_language_storage_StructTag.
@@ -1066,7 +1164,10 @@ Module language_storage.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::language_storage::StructTag"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::language_storage::StructTag";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1096,8 +1197,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_language_storage_StructTag.
     Module Impl_serde_ser_Serialize_for_move_core_types_language_storage_ResourceKey.
@@ -1113,7 +1215,8 @@ Module language_storage.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1121,7 +1224,15 @@ Module language_storage.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -1185,10 +1296,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1257,10 +1376,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1324,10 +1451,16 @@ Module language_storage.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -1345,8 +1478,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_language_storage_ResourceKey.
     Module Impl_serde_de_Deserialize_for_move_core_types_language_storage_ResourceKey.
@@ -1362,7 +1496,10 @@ Module language_storage.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::language_storage::ResourceKey"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::language_storage::ResourceKey";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1392,8 +1529,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_language_storage_ResourceKey.
     Module Impl_serde_ser_Serialize_for_move_core_types_language_storage_ModuleId.
@@ -1409,7 +1547,8 @@ Module language_storage.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -1417,7 +1556,15 @@ Module language_storage.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -1481,10 +1628,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1553,10 +1708,18 @@ Module language_storage.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -1620,10 +1783,16 @@ Module language_storage.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -1641,8 +1810,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_language_storage_ModuleId.
     Module Impl_serde_de_Deserialize_for_move_core_types_language_storage_ModuleId.
@@ -1658,7 +1828,10 @@ Module language_storage.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::language_storage::ModuleId"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::language_storage::ModuleId";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1688,8 +1861,9 @@ Module language_storage.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_language_storage_ModuleId.
   End underscore.
@@ -2046,8 +2220,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_language_storage_TypeTag.
   
@@ -2057,8 +2232,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_TypeTag.
   
@@ -2242,8 +2418,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_TypeTag.
   
@@ -2373,8 +2550,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_TypeTag.
   
@@ -2410,8 +2588,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_language_storage_TypeTag.
@@ -2616,8 +2795,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_TypeTag.
   
@@ -2807,8 +2987,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_TypeTag.
   
@@ -2989,8 +3170,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_language_storage_TypeTag.
   
@@ -3012,7 +3194,7 @@ Module language_storage.
             Ty.path "alloc::string::String",
             M.get_trait_method (|
               "alloc::string::ToString",
-              Ty.associated,
+              Ty.associated_unknown,
               [],
               [],
               "to_string",
@@ -3024,7 +3206,7 @@ Module language_storage.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (|
                       Ty.path "move_core_types::language_storage::TypeTag",
                       "to_canonical_display",
@@ -3422,8 +3604,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_move_core_types_language_storage_TypeTag.
@@ -3545,8 +3728,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_language_storage_StructTag.
   
@@ -3556,8 +3740,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_StructTag.
   
@@ -3720,8 +3905,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_StructTag.
   
@@ -3872,8 +4058,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_StructTag.
   
@@ -3916,8 +4103,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_language_storage_StructTag.
@@ -4065,8 +4253,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_StructTag.
   
@@ -4332,8 +4521,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_StructTag.
   
@@ -4563,8 +4753,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_language_storage_StructTag.
   
@@ -5139,7 +5330,7 @@ Module language_storage.
             Ty.path "alloc::string::String",
             M.get_trait_method (|
               "alloc::string::ToString",
-              Ty.associated,
+              Ty.associated_unknown,
               [],
               [],
               "to_string",
@@ -5151,7 +5342,7 @@ Module language_storage.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (|
                       Ty.path "move_core_types::language_storage::StructTag",
                       "to_canonical_display",
@@ -5678,8 +5869,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_move_core_types_language_storage_StructTag.
@@ -5766,8 +5958,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_language_storage_ResourceKey.
   
@@ -5777,8 +5970,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_ResourceKey.
   
@@ -5861,8 +6055,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_ResourceKey.
   
@@ -5945,8 +6140,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_ResourceKey.
   
@@ -5982,8 +6178,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_language_storage_ResourceKey.
@@ -6063,8 +6260,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_ResourceKey.
   
@@ -6190,8 +6388,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_ResourceKey.
   
@@ -6308,8 +6507,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_language_storage_ResourceKey.
   
@@ -6468,8 +6668,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_language_storage_ModuleId.
   
@@ -6479,8 +6680,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_ModuleId.
   
@@ -6563,8 +6765,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_ModuleId.
   
@@ -6647,8 +6850,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_ModuleId.
   
@@ -6684,8 +6888,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_language_storage_ModuleId.
@@ -6765,8 +6970,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_ModuleId.
   
@@ -6892,8 +7098,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_ModuleId.
   
@@ -7010,8 +7217,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_language_storage_ModuleId.
   
@@ -7056,9 +7264,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::ModuleId" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::language_storage::ModuleId" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_language_storage_ModuleId_for_Tuple_move_core_types_account_address_AccountAddress_move_core_types_identifier_Identifier_.
   
@@ -7329,7 +7537,7 @@ Module language_storage.
             Ty.path "alloc::string::String",
             M.get_trait_method (|
               "alloc::string::ToString",
-              Ty.associated,
+              Ty.associated_unknown,
               [],
               [],
               "to_string",
@@ -7341,7 +7549,7 @@ Module language_storage.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (|
                       Ty.path "move_core_types::language_storage::ModuleId",
                       "to_canonical_display",
@@ -7432,7 +7640,8 @@ Module language_storage.
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
+                            ],
                             []
                           |),
                           [
@@ -7570,7 +7779,12 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -7595,7 +7809,7 @@ Module language_storage.
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
                                   [],
-                                  [ Ty.associated ]
+                                  [ Ty.associated_unknown ]
                                 |),
                                 [
                                   M.borrow (|
@@ -7605,7 +7819,7 @@ Module language_storage.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
-                                            Ty.associated,
+                                            Ty.associated_unknown,
                                             M.get_associated_function (|
                                               Ty.path "move_core_types::language_storage::ModuleId",
                                               "to_canonical_display",
@@ -7641,8 +7855,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_language_storage_ModuleId.
   
@@ -7724,7 +7939,10 @@ Module language_storage.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
-                                  [],
+                                  [
+                                    Value.Integer IntegerKind.Usize 3;
+                                    Value.Integer IntegerKind.Usize 3
+                                  ],
                                   []
                                 |),
                                 [
@@ -8047,7 +8265,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -8177,7 +8395,10 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
-                                            [],
+                                            [
+                                              Value.Integer IntegerKind.Usize 1;
+                                              Value.Integer IntegerKind.Usize 1
+                                            ],
                                             []
                                           |),
                                           [
@@ -8558,7 +8779,14 @@ Module language_storage.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_v1",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1;
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -8758,7 +8986,7 @@ Module language_storage.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -8850,8 +9078,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_language_storage_StructTag.
   
@@ -8914,7 +9143,8 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -9003,7 +9233,8 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -9093,7 +9324,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9138,7 +9369,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9183,7 +9414,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9228,7 +9459,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9273,7 +9504,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9318,7 +9549,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9363,7 +9594,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9410,7 +9641,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9455,7 +9686,7 @@ Module language_storage.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -9482,8 +9713,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_language_storage_TypeTag.
   
@@ -9511,7 +9743,12 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -9613,8 +9850,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_language_storage_ResourceKey.
   
@@ -9663,9 +9901,9 @@ Module language_storage.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::StructTag" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::language_storage::StructTag" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_language_storage_StructTag_for_move_core_types_language_storage_TypeTag.
 End language_storage.

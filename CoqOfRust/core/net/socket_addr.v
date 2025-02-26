@@ -13,16 +13,19 @@ Module net.
           {
             name := "V4";
             item := StructTuple [ Ty.path "core::net::socket_addr::SocketAddrV4" ];
-            discriminant := None;
           };
           {
             name := "V6";
             item := StructTuple [ Ty.path "core::net::socket_addr::SocketAddrV6" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_SocketAddr_V4 :
+      M.IsDiscriminant "core::net::socket_addr::SocketAddr::V4" 0.
+    Axiom IsDiscriminant_SocketAddr_V6 :
+      M.IsDiscriminant "core::net::socket_addr::SocketAddr::V6" 1.
     
     Module Impl_core_marker_Copy_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
@@ -30,8 +33,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_socket_addr_SocketAddr.
     
@@ -63,8 +67,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_socket_addr_SocketAddr.
     
@@ -74,8 +79,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_socket_addr_SocketAddr.
     
@@ -237,8 +243,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddr.
     
@@ -274,8 +281,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddr.
@@ -393,8 +401,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_socket_addr_SocketAddr.
     
@@ -556,8 +565,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddr.
     
@@ -742,8 +752,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddr.
     
@@ -761,8 +772,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_socket_addr_SocketAddrV4.
     
@@ -794,8 +806,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_socket_addr_SocketAddrV4.
     
@@ -831,8 +844,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddrV4.
@@ -843,8 +857,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_socket_addr_SocketAddrV4.
     
@@ -913,8 +928,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddrV4.
     
@@ -1031,8 +1047,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddrV4.
     
@@ -1158,8 +1175,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddrV4.
     
@@ -1242,8 +1260,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_socket_addr_SocketAddrV4.
     
@@ -1267,8 +1286,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_socket_addr_SocketAddrV6.
     
@@ -1307,8 +1327,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_socket_addr_SocketAddrV6.
     
@@ -1351,8 +1372,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddrV6.
@@ -1363,8 +1385,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_socket_addr_SocketAddrV6.
     
@@ -1471,8 +1494,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddrV6.
     
@@ -1696,8 +1720,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddrV6.
     
@@ -1951,8 +1976,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddrV6.
     
@@ -2097,8 +2123,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_socket_addr_SocketAddrV6.
     
@@ -3031,8 +3058,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddrV4" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::net::socket_addr::SocketAddrV4" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_net_socket_addr_SocketAddrV4_for_core_net_socket_addr_SocketAddr.
     
@@ -3056,8 +3084,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddrV6" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::net::socket_addr::SocketAddrV6" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_net_socket_addr_SocketAddrV6_for_core_net_socket_addr_SocketAddr.
     
@@ -3107,8 +3136,9 @@ Module net.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.tuple [ I; Ty.path "u16" ] ]
           (Self I)
-          (* Trait polymorphic types *) [ (* T *) Ty.tuple [ I; Ty.path "u16" ] ]
           (* Instance *) [ ("from", InstanceField.Method (from I)) ].
     End Impl_core_convert_From_where_core_convert_Into_I_core_net_ip_addr_IpAddr_Tuple_I_u16__for_core_net_socket_addr_SocketAddr.
     
@@ -3202,8 +3232,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_net_socket_addr_SocketAddr.
     
@@ -3246,8 +3277,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_socket_addr_SocketAddr.
     
@@ -3381,7 +3413,10 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 2
+                                ],
                                 []
                               |),
                               [
@@ -3520,7 +3555,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 21 ]
                                 [],
                               "new",
-                              [ Value.Integer IntegerKind.Usize 21 ],
+                              [],
                               []
                             |),
                             []
@@ -3564,7 +3599,10 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
-                                      [],
+                                      [
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.Integer IntegerKind.Usize 2
+                                      ],
                                       []
                                     |),
                                     [
@@ -3713,7 +3751,7 @@ Module net.
                                       [ Value.Integer IntegerKind.Usize 21 ]
                                       [],
                                     "as_str",
-                                    [ Value.Integer IntegerKind.Usize 21 ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, buf |) ]
@@ -3732,8 +3770,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_net_socket_addr_SocketAddrV4.
     
@@ -3776,8 +3815,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_socket_addr_SocketAddrV4.
     
@@ -3943,7 +3983,10 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          Value.Integer IntegerKind.Usize 2
+                                        ],
                                         []
                                       |),
                                       [
@@ -4095,7 +4138,10 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 3;
+                                          Value.Integer IntegerKind.Usize 3
+                                        ],
                                         []
                                       |),
                                       [
@@ -4264,7 +4310,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 58 ]
                                 [],
                               "new",
-                              [ Value.Integer IntegerKind.Usize 58 ],
+                              [],
                               []
                             |),
                             []
@@ -4336,7 +4382,10 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
-                                                  [],
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 2;
+                                                    Value.Integer IntegerKind.Usize 2
+                                                  ],
                                                   []
                                                 |),
                                                 [
@@ -4493,7 +4542,10 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
-                                                  [],
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 3;
+                                                    Value.Integer IntegerKind.Usize 3
+                                                  ],
                                                   []
                                                 |),
                                                 [
@@ -4674,7 +4726,7 @@ Module net.
                                       [ Value.Integer IntegerKind.Usize 58 ]
                                       [],
                                     "as_str",
-                                    [ Value.Integer IntegerKind.Usize 58 ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, buf |) ]
@@ -4693,8 +4745,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_net_socket_addr_SocketAddrV6.
     
@@ -4737,8 +4790,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_socket_addr_SocketAddrV6.
   End socket_addr.

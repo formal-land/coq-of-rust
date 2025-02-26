@@ -94,8 +94,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_time_Nanoseconds.
   
@@ -105,8 +106,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_time_Nanoseconds.
   
@@ -116,8 +118,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_Nanoseconds.
   
@@ -153,8 +156,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_time_Nanoseconds.
   
@@ -183,8 +187,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_time_Nanoseconds.
@@ -245,8 +250,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_core_time_Nanoseconds.
   
@@ -298,8 +304,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_time_Nanoseconds.
   
@@ -339,8 +346,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_time_Nanoseconds.
   
@@ -377,8 +385,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_core_time_Nanoseconds.
   
@@ -418,8 +427,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_time_Duration.
   
@@ -429,8 +439,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_time_Duration.
   
@@ -440,8 +451,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_Duration.
   
@@ -510,8 +522,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_time_Duration.
   
@@ -547,8 +560,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_time_Duration.
@@ -675,8 +689,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_core_time_Duration.
   
@@ -785,8 +800,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_time_Duration.
   
@@ -869,8 +885,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_time_Duration.
   
@@ -920,8 +937,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_core_time_Duration.
   
@@ -1125,7 +1143,7 @@ Module time.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -1413,7 +1431,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -1520,7 +1538,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -1621,7 +1639,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -1716,7 +1734,7 @@ Module time.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -5296,8 +5314,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Add"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_for_core_time_Duration.
   
@@ -5343,8 +5362,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_for_core_time_Duration.
   
@@ -5396,8 +5416,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Sub"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
   End Impl_core_ops_arith_Sub_for_core_time_Duration.
   
@@ -5443,8 +5464,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::SubAssign"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
   End Impl_core_ops_arith_SubAssign_for_core_time_Duration.
   
@@ -5498,8 +5520,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Mul"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u32" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
   End Impl_core_ops_arith_Mul_u32_for_core_time_Duration.
   
@@ -5539,8 +5562,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Mul"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::time::Duration" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
   End Impl_core_ops_arith_Mul_core_time_Duration_for_u32.
   
@@ -5586,8 +5610,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::MulAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u32" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
         (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
   End Impl_core_ops_arith_MulAssign_u32_for_core_time_Duration.
   
@@ -5641,8 +5666,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Div"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u32" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
   End Impl_core_ops_arith_Div_u32_for_core_time_Duration.
   
@@ -5688,8 +5714,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::DivAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u32" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
         (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
   End Impl_core_ops_arith_DivAssign_u32_for_core_time_Duration.
   
@@ -6031,8 +6058,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::accum::Sum"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("sum", InstanceField.Method sum) ].
   End Impl_core_iter_traits_accum_Sum_for_core_time_Duration.
   
@@ -6375,9 +6403,10 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::accum::Sum"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "core::time::Duration" ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "core::time::Duration" ] ]
+        Self
         (* Instance *) [ ("sum", InstanceField.Method sum) ].
   End Impl_core_iter_traits_accum_Sum_ref__core_time_Duration_for_core_time_Duration.
   
@@ -6915,8 +6944,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_time_Duration.
   
@@ -6982,8 +7012,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_time_TryFromFloatSecsError.
   
@@ -7034,8 +7065,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_time_TryFromFloatSecsError.
   
@@ -7045,8 +7077,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_TryFromFloatSecsError.
   
@@ -7096,8 +7129,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_time_TryFromFloatSecsError.
   
@@ -7126,8 +7160,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_time_TryFromFloatSecsError.
@@ -7232,8 +7267,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_time_TryFromFloatSecsError.
   
@@ -7247,16 +7283,19 @@ Module time.
         {
           name := "Negative";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowOrNan";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TryFromFloatSecsErrorKind_Negative :
+    M.IsDiscriminant "core::time::TryFromFloatSecsErrorKind::Negative" 0.
+  Axiom IsDiscriminant_TryFromFloatSecsErrorKind_OverflowOrNan :
+    M.IsDiscriminant "core::time::TryFromFloatSecsErrorKind::OverflowOrNan" 1.
   
   Module Impl_core_fmt_Debug_for_core_time_TryFromFloatSecsErrorKind.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".
@@ -7319,8 +7358,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_time_TryFromFloatSecsErrorKind.
   
@@ -7368,8 +7408,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_time_TryFromFloatSecsErrorKind.
   
@@ -7379,8 +7420,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_TryFromFloatSecsErrorKind.
   
@@ -7427,8 +7469,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_time_TryFromFloatSecsErrorKind.
   
@@ -7452,8 +7495,9 @@ Module time.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_time_TryFromFloatSecsErrorKind.

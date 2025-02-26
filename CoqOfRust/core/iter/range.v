@@ -9,8 +9,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_core_ascii_ascii_char_AsciiChar.
     
@@ -20,8 +21,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_char.
     
@@ -31,8 +33,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_i8.
     
@@ -42,8 +45,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_i16.
     
@@ -53,8 +57,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_i32.
     
@@ -64,8 +69,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_i64.
     
@@ -75,8 +81,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_i128.
     
@@ -86,8 +93,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_isize.
     
@@ -97,8 +105,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_u8.
     
@@ -108,8 +117,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_u16.
     
@@ -119,8 +129,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_u32.
     
@@ -130,8 +141,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_u64.
     
@@ -141,8 +153,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_u128.
     
@@ -152,8 +165,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_usize.
     
@@ -163,8 +177,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_core_net_ip_addr_Ipv4Addr.
     
@@ -174,8 +189,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedStep"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedStep_for_core_net_ip_addr_Ipv6Addr.
     
@@ -702,8 +718,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -1233,8 +1250,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -1647,8 +1665,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -2178,8 +2197,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -2592,8 +2612,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -3123,8 +3144,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -3537,8 +3559,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -4068,8 +4091,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -4485,8 +4509,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -5012,8 +5037,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -5356,8 +5382,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -5753,8 +5780,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("forward", InstanceField.Method forward);
@@ -6742,8 +6770,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("steps_between", InstanceField.Method steps_between);
@@ -7257,8 +7286,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("steps_between", InstanceField.Method steps_between);
@@ -7589,8 +7619,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("steps_between", InstanceField.Method steps_between);
@@ -7921,8 +7952,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::range::Step"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("steps_between", InstanceField.Method steps_between);
@@ -9259,8 +9291,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::range::RangeIteratorImpl"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -10317,8 +10350,9 @@ Module iter.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::range::RangeIteratorImpl"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("spec_next", InstanceField.Method (spec_next T));
@@ -10843,8 +10877,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -10867,8 +10902,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_usize.
     
@@ -10878,8 +10914,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_u8.
     
@@ -10889,8 +10926,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_u16.
     
@@ -10900,8 +10938,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_isize.
     
@@ -10911,8 +10950,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_i8.
     
@@ -10922,8 +10962,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_i16.
     
@@ -10933,8 +10974,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_u32.
     
@@ -10944,8 +10986,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_Range_i32.
     
@@ -10955,8 +10998,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_usize.
     
@@ -10971,8 +11015,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_usize.
@@ -10983,8 +11028,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u8.
     
@@ -10999,8 +11045,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u8.
@@ -11011,8 +11058,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u16.
     
@@ -11027,8 +11075,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u16.
@@ -11039,8 +11088,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_isize.
     
@@ -11055,8 +11105,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_isize.
@@ -11067,8 +11118,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i8.
     
@@ -11083,8 +11135,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i8.
@@ -11095,8 +11148,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i16.
     
@@ -11111,8 +11165,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i16.
@@ -11123,8 +11178,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u32.
     
@@ -11139,8 +11195,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u32.
@@ -11151,8 +11208,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i32.
     
@@ -11167,8 +11225,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i32.
@@ -11179,8 +11238,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u64.
     
@@ -11195,8 +11255,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u64.
@@ -11207,8 +11268,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i64.
     
@@ -11223,8 +11285,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i64.
@@ -11236,8 +11299,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_RangeInclusive_u8.
     
@@ -11248,8 +11312,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_RangeInclusive_i8.
     
@@ -11260,8 +11325,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_RangeInclusive_u16.
     
@@ -11272,8 +11338,9 @@ Module iter.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_RangeInclusive_i16.
     
@@ -11380,8 +11447,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back A));
@@ -11397,8 +11465,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedStep_A_for_core_ops_range_Range_A.
     
@@ -11409,8 +11478,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_range_Step_A_for_core_ops_range_Range_A.
     
@@ -11601,8 +11671,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -11620,8 +11691,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedStep_A_for_core_ops_range_RangeFrom_A.
     
@@ -11633,8 +11705,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_range_Step_A_for_core_ops_range_RangeFrom_A.
     
@@ -12128,7 +12201,15 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
                                                 []
-                                                [ Ty.associated; B ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual";
+                                                  B
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 R,
@@ -12179,7 +12260,14 @@ Module iter.
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
                                                             [],
-                                                            [ Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "core::ops::try_trait::Try"
+                                                                []
+                                                                []
+                                                                R
+                                                                "Residual"
+                                                            ],
                                                             "from_residual",
                                                             [],
                                                             []
@@ -12286,7 +12374,15 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; B ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              B
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -12361,7 +12457,14 @@ Module iter.
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
                                                         [],
-                                                        [ Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual"
+                                                        ],
                                                         "from_residual",
                                                         [],
                                                         []
@@ -12896,7 +12999,15 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
                                                 []
-                                                [ Ty.associated; B ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual";
+                                                  B
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 R,
@@ -12947,7 +13058,14 @@ Module iter.
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
                                                             [],
-                                                            [ Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "core::ops::try_trait::Try"
+                                                                []
+                                                                []
+                                                                R
+                                                                "Residual"
+                                                            ],
                                                             "from_residual",
                                                             [],
                                                             []
@@ -13054,7 +13172,15 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; B ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              B
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -13129,7 +13255,14 @@ Module iter.
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
                                                         [],
-                                                        [ Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual"
+                                                        ],
                                                         "from_residual",
                                                         [],
                                                         []
@@ -13183,8 +13316,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::range::RangeInclusiveIteratorImpl"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -13594,7 +13728,15 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
                                                 []
-                                                [ Ty.associated; B ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual";
+                                                  B
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 R,
@@ -13645,7 +13787,14 @@ Module iter.
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
                                                             [],
-                                                            [ Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "core::ops::try_trait::Try"
+                                                                []
+                                                                []
+                                                                R
+                                                                "Residual"
+                                                            ],
                                                             "from_residual",
                                                             [],
                                                             []
@@ -13752,7 +13901,15 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; B ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              B
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -13812,7 +13969,14 @@ Module iter.
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
                                                         [],
-                                                        [ Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual"
+                                                        ],
                                                         "from_residual",
                                                         [],
                                                         []
@@ -14262,7 +14426,15 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
                                                 []
-                                                [ Ty.associated; B ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual";
+                                                  B
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::Try",
                                                 R,
@@ -14313,7 +14485,14 @@ Module iter.
                                                             "core::ops::try_trait::FromResidual",
                                                             R,
                                                             [],
-                                                            [ Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "core::ops::try_trait::Try"
+                                                                []
+                                                                []
+                                                                R
+                                                                "Residual"
+                                                            ],
                                                             "from_residual",
                                                             [],
                                                             []
@@ -14420,7 +14599,15 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; B ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              B
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -14480,7 +14667,14 @@ Module iter.
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
                                                         [],
-                                                        [ Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual"
+                                                        ],
                                                         "from_residual",
                                                         [],
                                                         []
@@ -14534,8 +14728,9 @@ Module iter.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::range::RangeInclusiveIteratorImpl"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("spec_next", InstanceField.Method (spec_next T));
@@ -15303,7 +15498,7 @@ Module iter.
                       [],
                       [
                         AAA;
-                        Ty.associated;
+                        Ty.associated_unknown;
                         Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ]
                       ]
                     |),
@@ -15311,7 +15506,7 @@ Module iter.
                       M.borrow (| Pointer.Kind.MutRef, self |);
                       M.read (| init |);
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_unknown,
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                           "wrap_mut_2",
@@ -15436,8 +15631,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -15885,7 +16081,7 @@ Module iter.
                       [],
                       [
                         AAA;
-                        Ty.associated;
+                        Ty.associated_unknown;
                         Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ]
                       ]
                     |),
@@ -15893,7 +16089,7 @@ Module iter.
                       M.borrow (| Pointer.Kind.MutRef, self |);
                       M.read (| init |);
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_unknown,
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ AAA ],
                           "wrap_mut_2",
@@ -15916,8 +16112,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back A));
@@ -15935,8 +16132,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedStep_A_for_core_ops_range_RangeInclusive_A.
     
@@ -15948,8 +16146,9 @@ Module iter.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_range_Step_A_for_core_ops_range_RangeInclusive_A.
   End range.

@@ -12,16 +12,17 @@ Module result.
         {
           name := "Ok";
           item := StructTuple [ T ];
-          discriminant := None;
         };
         {
           name := "Err";
           item := StructTuple [ E ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Result_Ok : M.IsDiscriminant "core::result::Result::Ok" 0.
+  Axiom IsDiscriminant_Result_Err : M.IsDiscriminant "core::result::Result::Err" 1.
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Copy_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
@@ -30,8 +31,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Copy_E_for_core_result_Result_T_E.
   
@@ -42,8 +44,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_result_Result_T_E.
   
@@ -191,8 +194,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [ ("eq", InstanceField.Method (eq T E)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_for_core_result_Result_T_E.
   
@@ -356,8 +360,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T E)) ].
   End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_for_core_result_Result_T_E.
   
@@ -396,8 +401,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T E)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_cmp_Eq_E_for_core_result_Result_T_E.
@@ -561,8 +567,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T E)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_cmp_Ord_E_for_core_result_Result_T_E.
   
@@ -653,8 +660,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T E)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_E_for_core_result_Result_T_E.
   
@@ -749,8 +757,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *) [ ("hash", InstanceField.Method (hash T E)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_E_for_core_result_Result_T_E.
   
@@ -1507,7 +1516,13 @@ Module result.
             Ty.apply
               (Ty.path "core::result::Result")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.associated ]; Ty.apply (Ty.path "&") [] [ E ] ],
+              [
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
+                Ty.apply (Ty.path "&") [] [ E ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1516,10 +1531,16 @@ Module result.
               "map",
               [],
               [
-                Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                  (Ty.apply (Ty.path "&") [] [ Ty.associated ])
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ])
               ]
             |),
             [
@@ -1549,7 +1570,17 @@ Module result.
                               ltac:(M.monadic
                                 (let t := M.copy (| γ |) in
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::deref::Deref"
+                                        []
+                                        []
+                                        T
+                                        "Target"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     T,
@@ -1598,7 +1629,12 @@ Module result.
             Ty.apply
               (Ty.path "core::result::Result")
               []
-              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ]; Ty.apply (Ty.path "&mut") [] [ E ]
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
+                Ty.apply (Ty.path "&mut") [] [ E ]
               ],
             M.get_associated_function (|
               Ty.apply
@@ -1608,10 +1644,16 @@ Module result.
               "map",
               [],
               [
-                Ty.apply (Ty.path "&mut") [] [ Ty.associated ];
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                  (Ty.apply (Ty.path "&mut") [] [ Ty.associated ])
+                  (Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ])
               ]
             |),
             [
@@ -1641,7 +1683,17 @@ Module result.
                               ltac:(M.monadic
                                 (let t := M.copy (| γ |) in
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::deref::Deref"
+                                        []
+                                        []
+                                        T
+                                        "Target"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::deref::DerefMut",
                                     T,
@@ -2978,7 +3030,12 @@ Module result.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -3256,8 +3313,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone T E));
@@ -3308,8 +3366,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T E));
@@ -3356,8 +3415,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T E));
@@ -3404,8 +3464,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T E));
@@ -3479,8 +3540,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_Iter_T.
   
@@ -3589,8 +3651,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T));
@@ -3639,8 +3702,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("next_back", InstanceField.Method (next_back T)) ].
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_Iter_T.
   
@@ -3651,8 +3715,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_Iter_T.
   
@@ -3663,8 +3728,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_result_Iter_T.
   
@@ -3675,8 +3741,9 @@ Module result.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::TrustedLen"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_TrustedLen_for_core_result_Iter_A.
   
@@ -3713,8 +3780,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_for_core_result_Iter_T.
   
@@ -3783,8 +3851,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_IterMut_T.
   
@@ -3893,8 +3962,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T));
@@ -3943,8 +4013,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("next_back", InstanceField.Method (next_back T)) ].
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_IterMut_T.
   
@@ -3955,8 +4026,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_IterMut_T.
   
@@ -3967,8 +4039,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_result_IterMut_T.
   
@@ -3979,8 +4052,9 @@ Module result.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::TrustedLen"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_TrustedLen_for_core_result_IterMut_A.
   
@@ -4041,8 +4115,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_result_IntoIter_T.
   
@@ -4099,8 +4174,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_result_IntoIter_T.
   
@@ -4206,8 +4282,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item T));
@@ -4256,8 +4333,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("next_back", InstanceField.Method (next_back T)) ].
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_result_IntoIter_T.
   
@@ -4268,8 +4346,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_result_IntoIter_T.
   
@@ -4280,8 +4359,9 @@ Module result.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_result_IntoIter_T.
   
@@ -4292,8 +4372,9 @@ Module result.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::TrustedLen"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_TrustedLen_for_core_result_IntoIter_A.
   
@@ -4317,7 +4398,12 @@ Module result.
               "core::iter::adapters::try_process",
               [],
               [
-                Ty.associated;
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter";
                 A;
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -4331,7 +4417,12 @@ Module result.
                           (Ty.path "core::iter::adapters::GenericShunt")
                           []
                           [
-                            Ty.associated;
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter";
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -4345,7 +4436,12 @@ Module result.
             |),
             [
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -4377,7 +4473,12 @@ Module result.
                                       (Ty.path "core::iter::adapters::GenericShunt")
                                       []
                                       [
-                                        Ty.associated;
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::collect::IntoIterator"
+                                          []
+                                          []
+                                          I
+                                          "IntoIter";
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
@@ -4404,9 +4505,9 @@ Module result.
       forall (A E V : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::result::Result") [] [ A; E ] ]
         (Self A E V)
-        (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "core::result::Result") [] [ A; E ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A E V)) ].
   End Impl_core_iter_traits_collect_FromIterator_where_core_iter_traits_collect_FromIterator_V_A_core_result_Result_A_E_for_core_result_Result_V_E.
   
@@ -4483,8 +4584,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::ops::try_trait::Try"
-        (Self T E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T E)
         (* Instance *)
         [
           ("Output", InstanceField.Ty (_Output T E));
@@ -4553,12 +4655,10 @@ Module result.
       forall (T E F : Ty.t),
       M.IsTraitInstance
         "core::ops::try_trait::FromResidual"
-        (Self T E F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* R *)
-          Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
-        ]
+        [ Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ] ]
+        (Self T E F)
         (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
   End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_result_Result_T_F.
   
@@ -4615,9 +4715,9 @@ Module result.
       forall (T E F : Ty.t),
       M.IsTraitInstance
         "core::ops::try_trait::FromResidual"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ E ] ]
         (Self T E F)
-        (* Trait polymorphic types *)
-        [ (* R *) Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ E ] ]
         (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
   End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_ops_try_trait_Yeet_E_for_core_result_Result_T_F.
   
@@ -4633,8 +4733,9 @@ Module result.
       forall (T E : Ty.t),
       M.IsTraitInstance
         "core::ops::try_trait::Residual"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T E)
-        (* Trait polymorphic types *) [ (* O *) T ]
         (* Instance *) [ ("TryType", InstanceField.Ty (_TryType T E)) ].
   End Impl_core_ops_try_trait_Residual_T_for_core_result_Result_core_convert_Infallible_E.
 End result.

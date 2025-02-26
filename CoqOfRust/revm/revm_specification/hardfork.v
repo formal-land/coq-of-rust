@@ -12,111 +12,133 @@ Module hardfork.
         {
           name := "FRONTIER";
           item := StructTuple [];
-          discriminant := Some 0;
         };
         {
           name := "FRONTIER_THAWING";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "HOMESTEAD";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "DAO_FORK";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TANGERINE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SPURIOUS_DRAGON";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BYZANTIUM";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CONSTANTINOPLE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PETERSBURG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ISTANBUL";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MUIR_GLACIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BERLIN";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LONDON";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ARROW_GLACIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "GRAY_GLACIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MERGE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SHANGHAI";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CANCUN";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PRAGUE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OSAKA";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LATEST";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SpecId_FRONTIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::FRONTIER" 0.
+  Axiom IsDiscriminant_SpecId_FRONTIER_THAWING :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::FRONTIER_THAWING" 1.
+  Axiom IsDiscriminant_SpecId_HOMESTEAD :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::HOMESTEAD" 2.
+  Axiom IsDiscriminant_SpecId_DAO_FORK :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::DAO_FORK" 3.
+  Axiom IsDiscriminant_SpecId_TANGERINE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::TANGERINE" 4.
+  Axiom IsDiscriminant_SpecId_SPURIOUS_DRAGON :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON" 5.
+  Axiom IsDiscriminant_SpecId_BYZANTIUM :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::BYZANTIUM" 6.
+  Axiom IsDiscriminant_SpecId_CONSTANTINOPLE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::CONSTANTINOPLE" 7.
+  Axiom IsDiscriminant_SpecId_PETERSBURG :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::PETERSBURG" 8.
+  Axiom IsDiscriminant_SpecId_ISTANBUL :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::ISTANBUL" 9.
+  Axiom IsDiscriminant_SpecId_MUIR_GLACIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::MUIR_GLACIER" 10.
+  Axiom IsDiscriminant_SpecId_BERLIN :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::BERLIN" 11.
+  Axiom IsDiscriminant_SpecId_LONDON :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::LONDON" 12.
+  Axiom IsDiscriminant_SpecId_ARROW_GLACIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::ARROW_GLACIER" 13.
+  Axiom IsDiscriminant_SpecId_GRAY_GLACIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::GRAY_GLACIER" 14.
+  Axiom IsDiscriminant_SpecId_MERGE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::MERGE" 15.
+  Axiom IsDiscriminant_SpecId_SHANGHAI :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::SHANGHAI" 16.
+  Axiom IsDiscriminant_SpecId_CANCUN :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::CANCUN" 17.
+  Axiom IsDiscriminant_SpecId_PRAGUE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::PRAGUE" 18.
+  Axiom IsDiscriminant_SpecId_OSAKA :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::OSAKA" 19.
+  Axiom IsDiscriminant_SpecId_LATEST :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::LATEST" 20.
   
   Module Impl_core_clone_Clone_for_revm_specification_hardfork_SpecId.
     Definition Self : Ty.t := Ty.path "revm_specification::hardfork::SpecId".
@@ -134,8 +156,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_specification_hardfork_SpecId.
   
@@ -145,8 +168,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_specification_hardfork_SpecId.
   
@@ -477,8 +501,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_specification_hardfork_SpecId.
   
@@ -496,8 +521,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_specification_hardfork_SpecId.
   
@@ -507,8 +533,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_specification_hardfork_SpecId.
   
@@ -555,8 +582,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_specification_hardfork_SpecId.
   
@@ -580,8 +608,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_specification_hardfork_SpecId.
@@ -652,8 +681,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_revm_specification_hardfork_SpecId.
   
@@ -715,8 +745,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_revm_specification_hardfork_SpecId.
   
@@ -771,8 +802,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_specification_hardfork_SpecId.
   
@@ -1482,8 +1514,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_revm_specification_hardfork_SpecId.
   
@@ -1670,8 +1703,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_specification::hardfork::SpecId" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "revm_specification::hardfork::SpecId" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_specification_hardfork_SpecId_for_ref__str.
   
@@ -1699,7 +1733,12 @@ Module hardfork.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -1767,8 +1806,9 @@ Module hardfork.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_specification_hardfork_SpecId.
 End hardfork.

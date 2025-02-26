@@ -13,21 +13,25 @@ Module instructions.
           {
             name := "Minus";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Zero";
             item := StructTuple [];
-            discriminant := Some 0;
           };
           {
             name := "Plus";
             item := StructTuple [];
-            discriminant := Some 1;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Sign_Minus :
+      M.IsDiscriminant "revm_interpreter::instructions::i256::Sign::Minus" 0.
+    Axiom IsDiscriminant_Sign_Zero :
+      M.IsDiscriminant "revm_interpreter::instructions::i256::Sign::Zero" 0.
+    Axiom IsDiscriminant_Sign_Plus :
+      M.IsDiscriminant "revm_interpreter::instructions::i256::Sign::Plus" 1.
     
     Module Impl_core_clone_Clone_for_revm_interpreter_instructions_i256_Sign.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
@@ -45,8 +49,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_interpreter_instructions_i256_Sign.
     
@@ -56,8 +61,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_revm_interpreter_instructions_i256_Sign.
     
@@ -136,8 +142,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_instructions_i256_Sign.
     
@@ -147,8 +154,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instructions_i256_Sign.
     
@@ -195,8 +203,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_instructions_i256_Sign.
     
@@ -220,8 +229,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_interpreter_instructions_i256_Sign.
@@ -292,8 +302,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_revm_interpreter_instructions_i256_Sign.
     
@@ -355,8 +366,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_revm_interpreter_instructions_i256_Sign.
     
@@ -411,8 +423,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_instructions_i256_Sign.
     
@@ -431,7 +444,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_limbs",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [],
                 []
               |),
               [
@@ -466,7 +479,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_limbs",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [],
                 []
               |),
               [
@@ -530,10 +543,7 @@ Module instructions.
                                 ]
                                 [],
                               "bit",
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ],
+                              [],
                               []
                             |),
                             [
@@ -572,10 +582,7 @@ Module instructions.
                                   ]
                                   [],
                                 "is_zero",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 []
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
@@ -712,14 +719,13 @@ Module instructions.
                             ]
                             [],
                           "as_limbs_mut",
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                          ],
+                          [],
                           []
                         |),
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                    Value.Integer IntegerKind.Usize 3
                   |) in
                 M.write (|
                   β,
@@ -794,7 +800,7 @@ Module instructions.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "wrapping_neg",
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [ M.read (| op |) ]
@@ -1110,10 +1116,7 @@ Module instructions.
                                                   ]
                                                   [],
                                                 "from",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ],
+                                                [],
                                                 [ Ty.path "i32" ]
                                               |),
                                               [ Value.Integer IntegerKind.I32 1 ]

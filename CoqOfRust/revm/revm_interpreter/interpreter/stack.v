@@ -82,8 +82,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -93,8 +94,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -164,8 +166,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -194,8 +197,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_stack_Stack.
@@ -253,8 +257,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -871,7 +876,10 @@ Module interpreter.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 1;
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -1049,8 +1057,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -1082,8 +1091,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -1219,8 +1229,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_interpreter_interpreter_stack_Stack.
     
@@ -1329,7 +1340,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::stack::Stack",
                             "popn",
-                            [],
+                            [ N ],
                             []
                           |),
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -1439,7 +1450,7 @@ Module interpreter.
                           M.get_associated_function (|
                             Ty.path "revm_interpreter::interpreter::stack::Stack",
                             "popn_top",
-                            [],
+                            [ POPN ],
                             []
                           |),
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -1535,8 +1546,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::StackTrait"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("len", InstanceField.Method len);
@@ -2433,7 +2445,7 @@ Module interpreter.
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::interpreter::stack::Stack",
                       "popn",
-                      [],
+                      [ POPN ],
                       []
                     |),
                     [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -2584,7 +2596,10 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
-                                                        [],
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 1;
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        ],
                                                         []
                                                       |),
                                                       [
@@ -3014,7 +3029,10 @@ Module interpreter.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
-                                                    [],
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 1;
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    ],
                                                     []
                                                   |),
                                                   [
@@ -3461,7 +3479,10 @@ Module interpreter.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
-                                                        [],
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 1;
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        ],
                                                         []
                                                       |),
                                                       [
@@ -5182,7 +5203,11 @@ Module interpreter.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
-                                                                    [],
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ],
                                                                     []
                                                                   |),
                                                                   [

@@ -11,21 +11,22 @@ Enum Food
       {
         name := "Apple";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Carrot";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Potato";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Food_Apple : M.IsDiscriminant "combinators_map::Food::Apple" 0.
+Axiom IsDiscriminant_Food_Carrot : M.IsDiscriminant "combinators_map::Food::Carrot" 1.
+Axiom IsDiscriminant_Food_Potato : M.IsDiscriminant "combinators_map::Food::Potato" 2.
 
 Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Definition Self : Ty.t := Ty.path "combinators_map::Food".
@@ -35,8 +36,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Food.
 
@@ -56,8 +58,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Peeled.
 
@@ -77,8 +80,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Chopped.
 
@@ -98,8 +102,9 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 

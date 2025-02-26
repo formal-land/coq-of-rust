@@ -59,12 +59,12 @@ Module array.
                   [ N ],
                   [
                     Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ];
-                    Ty.associated
+                    Ty.associated_unknown
                   ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ],
                       "wrap_mut_1",
@@ -113,7 +113,11 @@ Module array.
               Ty.apply
                 (Ty.path "array")
                 [ N ]
-                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.associated ]
+                [
+                  Ty.apply
+                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                    []
+                    [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                 ] :=
             M.alloc (|
               repeat (| M.read (| M.get_constant "core::array::try_from_fn_discriminant" |), N |)
@@ -124,8 +128,15 @@ Module array.
                 Ty.apply
                   (Ty.path "core::ops::control_flow::ControlFlow")
                   []
-                  [ Ty.associated; Ty.tuple [] ],
-                M.get_function (| "core::array::try_from_fn_erased", [], [ Ty.associated; R; F ] |),
+                  [
+                    Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual";
+                    Ty.tuple []
+                  ],
+                M.get_function (|
+                  "core::array::try_from_fn_erased",
+                  [],
+                  [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"; R; F ]
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.MutRef,
@@ -147,12 +158,22 @@ Module array.
                   let r := M.copy (| γ0_0 |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::ops::try_trait::Residual"
+                        []
+                        []
+                        (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                        "TryType",
                       M.get_trait_method (|
                         "core::ops::try_trait::FromResidual",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::ops::try_trait::Residual"
+                          []
+                          []
+                          (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                          "TryType",
                         [],
-                        [ Ty.associated ],
+                        [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual" ],
                         "from_residual",
                         [],
                         []
@@ -170,10 +191,20 @@ Module array.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::ops::try_trait::Residual"
+                        []
+                        []
+                        (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                        "TryType",
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::ops::try_trait::Residual"
+                          []
+                          []
+                          (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                          "TryType",
                         [],
                         [],
                         "from_output",
@@ -182,14 +213,18 @@ Module array.
                       |),
                       [
                         M.call_closure (|
-                          Ty.apply (Ty.path "array") [ N ] [ Ty.associated ],
+                          Ty.apply
+                            (Ty.path "array")
+                            [ N ]
+                            [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                               []
-                              [ Ty.associated ],
+                              [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                              ],
                             "array_assume_init",
-                            [],
+                            [ N ],
                             []
                           |),
                           [ M.read (| array |) ]
@@ -376,8 +411,9 @@ Module array.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_array_TryFromSliceError.
   
@@ -387,8 +423,9 @@ Module array.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_array_TryFromSliceError.
   
@@ -413,8 +450,9 @@ Module array.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_array_TryFromSliceError.
   
@@ -467,8 +505,9 @@ Module array.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_array_TryFromSliceError.
   
@@ -495,8 +534,9 @@ Module array.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_array_TryFromSliceError.
   
@@ -520,8 +560,9 @@ Module array.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "core::convert::Infallible" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "core::convert::Infallible" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_core_convert_Infallible_for_core_array_TryFromSliceError.
   
@@ -578,8 +619,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref N T)) ].
   End Impl_core_convert_AsRef_slice_T_for_array_N_T.
   
@@ -641,8 +683,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut N T)) ].
   End Impl_core_convert_AsMut_slice_T_for_array_N_T.
   
@@ -674,8 +717,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow N T)) ].
   End Impl_core_borrow_Borrow_slice_T_for_array_N_T.
   
@@ -710,8 +754,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::BorrowMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* Borrowed *) Ty.apply (Ty.path "slice") [] [ T ] ]
         (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut N T)) ].
   End Impl_core_borrow_BorrowMut_slice_T_for_array_N_T.
   
@@ -784,9 +829,10 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self N T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T));
@@ -840,9 +886,10 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self N T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T));
@@ -952,9 +999,10 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self N T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T));
@@ -1061,9 +1109,10 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self N T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T));
@@ -1140,8 +1189,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [ ("hash", InstanceField.Method (hash N T)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_T_for_array_N_T.
   
@@ -1222,8 +1272,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt N T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_array_N_T.
   
@@ -1267,8 +1318,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item N T));
@@ -1317,8 +1369,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item N T));
@@ -1331,7 +1384,13 @@ Module array.
     Definition Self (N : Value.t) (T I : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*     type Output = <[T] as Index<I>>::Output; *)
-    Definition _Output (N : Value.t) (T I : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (N : Value.t) (T I : Ty.t) : Ty.t :=
+      Ty.associated_in_trait
+        "core::ops::index::Index"
+        []
+        []
+        (Ty.apply (Ty.path "slice") [] [ T ])
+        "Output".
     
     (*
         fn index(&self, index: I) -> &Self::Output {
@@ -1355,7 +1414,17 @@ Module array.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
-                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::ops::index::Index"
+                      []
+                      []
+                      (Ty.apply (Ty.path "slice") [] [ T ])
+                      "Output"
+                  ],
                 M.get_trait_method (|
                   "core::ops::index::Index",
                   Ty.apply (Ty.path "slice") [] [ T ],
@@ -1389,8 +1458,9 @@ Module array.
       forall (N : Value.t) (T I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::Index"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self N T I)
-        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *)
         [
           ("Output", InstanceField.Ty (_Output N T I));
@@ -1426,7 +1496,17 @@ Module array.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::ops::index::Index"
+                          []
+                          []
+                          (Ty.apply (Ty.path "slice") [] [ T ])
+                          "Output"
+                      ],
                     M.get_trait_method (|
                       "core::ops::index::IndexMut",
                       Ty.apply (Ty.path "slice") [] [ T ],
@@ -1462,8 +1542,9 @@ Module array.
       forall (N : Value.t) (T I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::IndexMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self N T I)
-        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *) [ ("index_mut", InstanceField.Method (index_mut N T I)) ].
   End Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_N_T.
   
@@ -1959,8 +2040,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp N T));
@@ -2075,8 +2157,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp N T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_N_T.
   
@@ -2087,8 +2170,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_T_for_array_N_T.
   
@@ -2114,7 +2198,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             Ty.apply (Ty.path "array") [ N ] [ T ],
-            M.get_trait_method (| "core::array::SpecArrayClone", T, [], [], "clone", [], [] |),
+            M.get_trait_method (| "core::array::SpecArrayClone", T, [], [], "clone", [ N ], [] |),
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2164,8 +2248,9 @@ Module array.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone N T));
@@ -2240,8 +2325,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::array::SpecArrayClone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_array_SpecArrayClone_where_core_clone_Clone_T_for_T.
   
@@ -2267,8 +2353,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::array::SpecArrayClone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_array_SpecArrayClone_where_core_marker_Copy_T_for_T.
   
@@ -2456,8 +2543,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_array_Usize_32_T.
   
@@ -2643,8 +2731,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -2816,8 +2905,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -2984,8 +3074,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -3147,8 +3238,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -3305,8 +3397,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -3458,8 +3551,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -3606,8 +3700,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -3749,8 +3844,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -3887,8 +3983,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4020,8 +4117,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4148,8 +4246,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4271,8 +4370,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4389,8 +4489,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4502,8 +4603,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4610,8 +4712,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4713,8 +4816,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4811,8 +4915,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4904,8 +5009,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -4992,8 +5098,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5075,8 +5182,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5153,8 +5261,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5226,8 +5335,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5294,8 +5404,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5357,8 +5468,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5415,8 +5527,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5468,8 +5581,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5516,8 +5630,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5559,8 +5674,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5597,8 +5713,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5630,8 +5747,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     (*
                 fn default() -> [T; $n] {
@@ -5658,8 +5776,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
   
@@ -5712,8 +5831,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_array_expr_T.
   
@@ -5752,16 +5872,16 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "array") [ N ] [ T ],
                     "try_map",
-                    [ N ],
+                    [],
                     [
                       Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ];
-                      Ty.associated
+                      Ty.associated_unknown
                     ]
                   |),
                   [
                     M.read (| self |);
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_unknown,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ],
                         "wrap_mut_1",
@@ -5807,16 +5927,31 @@ Module array.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "core::ops::try_trait::Residual"
+              []
+              []
+              (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+              "TryType",
             M.get_function (|
               "core::array::drain::drain_array_with",
               [ N ],
               [
                 T;
-                Ty.associated;
+                Ty.associated_in_trait
+                  "core::ops::try_trait::Residual"
+                  []
+                  []
+                  (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                  "TryType";
                 Ty.function
                   [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] ]
-                  Ty.associated
+                  (Ty.associated_in_trait
+                    "core::ops::try_trait::Residual"
+                    []
+                    []
+                    (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                    "TryType")
               ]
             |),
             [
@@ -5834,12 +5969,27 @@ Module array.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.call_closure (|
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "core::ops::try_trait::Residual"
+                                    []
+                                    []
+                                    (Ty.associated_in_trait
+                                      "core::ops::try_trait::Try"
+                                      []
+                                      []
+                                      R
+                                      "Residual")
+                                    "TryType",
                                   M.get_function (|
                                     "core::array::try_from_trusted_iterator",
                                     [ N ],
                                     [
-                                      Ty.associated;
+                                      Ty.associated_in_trait
+                                        "core::ops::try_trait::Try"
+                                        []
+                                        []
+                                        R
+                                        "Output";
                                       R;
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::map::Map")
@@ -6085,7 +6235,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_first_chunk",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6180,7 +6330,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_first_chunk_mut",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6275,7 +6425,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_last_chunk",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6370,7 +6520,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_last_chunk_mut",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6577,11 +6727,16 @@ Module array.
             |) in
           M.alloc (|
             M.call_closure (|
-              Ty.associated,
-              M.get_function (| "core::array::try_from_fn", [ N ], [ R; Ty.associated ] |),
+              Ty.associated_in_trait
+                "core::ops::try_trait::Residual"
+                []
+                []
+                (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                "TryType",
+              M.get_function (| "core::array::try_from_fn", [ N ], [ R; Ty.associated_unknown ] |),
               [
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_unknown,
                   M.get_function (| "core::array::try_from_trusted_iterator.next", [], [] |),
                   [ M.read (| iter |) ]
                 |)
@@ -6756,7 +6911,15 @@ Module array.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; Ty.path "core::convert::Infallible" ];
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              Ty.path "core::convert::Infallible"
+                                            ];
                                           T
                                         ],
                                       M.get_trait_method (|
@@ -6764,7 +6927,15 @@ Module array.
                                         Ty.apply
                                           (Ty.path "core::ops::control_flow::ControlFlow")
                                           []
-                                          [ Ty.associated; T ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::ops::try_trait::Try"
+                                              []
+                                              []
+                                              R
+                                              "Residual";
+                                            T
+                                          ],
                                         [],
                                         [],
                                         "branch",
@@ -6776,7 +6947,15 @@ Module array.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; T ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              T
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -6835,14 +7014,30 @@ Module array.
                                                   Ty.apply
                                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                                     []
-                                                    [ Ty.associated; Ty.tuple [] ],
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::ops::try_trait::Try"
+                                                        []
+                                                        []
+                                                        R
+                                                        "Residual";
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path
                                                         "core::ops::control_flow::ControlFlow")
                                                       []
-                                                      [ Ty.associated; Ty.tuple [] ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::ops::try_trait::Try"
+                                                          []
+                                                          []
+                                                          R
+                                                          "Residual";
+                                                        Ty.tuple []
+                                                      ],
                                                     [],
                                                     [
                                                       Ty.apply
@@ -6850,7 +7045,12 @@ Module array.
                                                           "core::ops::control_flow::ControlFlow")
                                                         []
                                                         [
-                                                          Ty.associated;
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual";
                                                           Ty.path "core::convert::Infallible"
                                                         ]
                                                     ],
@@ -7283,8 +7483,9 @@ Module array.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
   End Impl_core_ops_drop_Drop_for_core_array_Guard_T.
   
@@ -7357,7 +7558,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "array_assume_init",
-                            [],
+                            [ N ],
                             []
                           |),
                           [ M.read (| array |) ]
@@ -7378,7 +7579,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                             "new_unchecked",
-                            [ N ],
+                            [],
                             []
                           |),
                           [

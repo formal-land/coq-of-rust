@@ -22,8 +22,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (Self K V)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self K V)
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_trait_erc20_Mapping_K_V.
 
@@ -61,8 +62,9 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_trait_erc20_AccountId.
 
@@ -74,8 +76,9 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_trait_erc20_AccountId.
 
@@ -83,7 +86,12 @@ Module Impl_core_marker_Copy_for_trait_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "trait_erc20::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_trait_erc20_AccountId.
 
 Axiom Balance : (Ty.path "trait_erc20::Balance") = (Ty.path "u128").
@@ -106,16 +114,19 @@ Enum Error
       {
         name := "InsufficientBalance";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "InsufficientAllowance";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_InsufficientBalance :
+  M.IsDiscriminant "trait_erc20::Error::InsufficientBalance" 0.
+Axiom IsDiscriminant_Error_InsufficientAllowance :
+  M.IsDiscriminant "trait_erc20::Error::InsufficientAllowance" 1.
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
@@ -125,8 +136,9 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_trait_erc20_Error.
 
@@ -136,8 +148,9 @@ Module Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_trait_erc20_Error.
 
@@ -149,8 +162,9 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
@@ -162,8 +176,9 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_trait_erc20_Error.
@@ -208,8 +223,9 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_trait_erc20_Erc20.
 
@@ -249,16 +265,17 @@ Enum Event
       {
         name := "Transfer";
         item := StructTuple [ Ty.path "trait_erc20::Transfer" ];
-        discriminant := None;
       };
       {
         name := "Approval";
         item := StructTuple [ Ty.path "trait_erc20::Approval" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Transfer : M.IsDiscriminant "trait_erc20::Event::Transfer" 0.
+Axiom IsDiscriminant_Event_Approval : M.IsDiscriminant "trait_erc20::Event::Approval" 1.
 
 Module Impl_trait_erc20_Env.
   Definition Self : Ty.t := Ty.path "trait_erc20::Env".
@@ -329,8 +346,9 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
   Axiom Implements :
     M.IsTraitInstance
       "trait_erc20::BaseErc20"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("total_supply", InstanceField.Method total_supply);

@@ -65,8 +65,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_i8.
     
@@ -129,8 +130,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_i16.
     
@@ -193,8 +195,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_i32.
     
@@ -257,8 +260,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_i64.
     
@@ -321,8 +325,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_i128.
     
@@ -385,8 +390,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_isize.
     
@@ -449,8 +455,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_u8.
     
@@ -513,8 +520,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_u16.
     
@@ -577,8 +585,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_u32.
     
@@ -641,8 +650,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_u64.
     
@@ -705,8 +715,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_u128.
     
@@ -769,8 +780,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_usize.
     
@@ -830,8 +842,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_bool.
     
@@ -891,8 +904,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_char.
     
@@ -964,8 +978,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_f32.
     
@@ -1037,8 +1052,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_f64.
     
@@ -1073,8 +1089,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_for_pointer_const_T.
     
@@ -1104,8 +1121,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_for_pointer_mut_T.
     
@@ -1188,8 +1206,9 @@ Module vec.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero N T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_array_N_T.
     
@@ -1414,8 +1433,9 @@ Module vec.
         forall (A B C D E F G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self A B C D E F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A B C D E F G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero A B C D E F G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_A_where_alloc_vec_is_zero_IsZero_B_where_alloc_vec_is_zero_IsZero_C_where_alloc_vec_is_zero_IsZero_D_where_alloc_vec_is_zero_IsZero_E_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_A_B_C_D_E_F_G_H_.
     
@@ -1617,8 +1637,9 @@ Module vec.
         forall (B C D E F G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self B C D E F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self B C D E F G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero B C D E F G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_B_where_alloc_vec_is_zero_IsZero_C_where_alloc_vec_is_zero_IsZero_D_where_alloc_vec_is_zero_IsZero_E_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_B_C_D_E_F_G_H_.
     
@@ -1797,8 +1818,9 @@ Module vec.
         forall (C D E F G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self C D E F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self C D E F G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero C D E F G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_C_where_alloc_vec_is_zero_IsZero_D_where_alloc_vec_is_zero_IsZero_E_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_C_D_E_F_G_H_.
     
@@ -1954,8 +1976,9 @@ Module vec.
         forall (D E F G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self D E F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self D E F G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero D E F G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_D_where_alloc_vec_is_zero_IsZero_E_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_D_E_F_G_H_.
     
@@ -2088,8 +2111,9 @@ Module vec.
         forall (E F G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self E F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self E F G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero E F G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_E_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_E_F_G_H_.
     
@@ -2190,8 +2214,9 @@ Module vec.
         forall (F G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero F G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_F_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_F_G_H_.
     
@@ -2268,8 +2293,9 @@ Module vec.
         forall (G H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self G H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero G H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_G_where_alloc_vec_is_zero_IsZero_H_for_Tuple_G_H_.
     
@@ -2327,8 +2353,9 @@ Module vec.
         forall (H : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self H)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero H)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_H_for_Tuple_H_.
     
@@ -2364,8 +2391,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_core_marker_Sized_T_for_core_option_Option_ref__T.
     
@@ -2408,8 +2436,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_core_marker_Sized_T_for_core_option_Option_alloc_boxed_Box_T_alloc_alloc_Global.
     
@@ -2449,8 +2478,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u8.
     
@@ -2490,8 +2520,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u16.
     
@@ -2531,8 +2562,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u32.
     
@@ -2572,8 +2604,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u64.
     
@@ -2613,8 +2646,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u128.
     
@@ -2654,8 +2688,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_usize.
     
@@ -2695,8 +2730,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i8.
     
@@ -2736,8 +2772,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i16.
     
@@ -2777,8 +2814,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i32.
     
@@ -2818,8 +2856,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i64.
     
@@ -2859,8 +2898,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i128.
     
@@ -2900,8 +2940,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_isize.
     
@@ -2943,8 +2984,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u8.
     
@@ -2986,8 +3028,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u16.
     
@@ -3029,8 +3072,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u32.
     
@@ -3072,8 +3116,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u64.
     
@@ -3115,8 +3160,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u128.
     
@@ -3158,8 +3204,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i8.
     
@@ -3201,8 +3248,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i16.
     
@@ -3244,8 +3292,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i32.
     
@@ -3287,8 +3336,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i64.
     
@@ -3330,8 +3380,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_i128.
     
@@ -3373,8 +3424,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_usize.
     
@@ -3416,8 +3468,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_isize.
     
@@ -3457,8 +3510,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_core_num_wrapping_Wrapping_T.
     
@@ -3498,8 +3552,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_alloc_vec_is_zero_IsZero_T_for_core_num_saturating_Saturating_T.
     
@@ -3545,8 +3600,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_bool.
     
@@ -3599,8 +3655,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_option_Option_bool.
     
@@ -3663,8 +3720,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::is_zero::IsZero"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
     End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_option_Option_core_option_Option_bool.
   End is_zero.

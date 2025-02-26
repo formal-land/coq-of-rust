@@ -46,7 +46,13 @@ Module ops.
     
     Axiom ChangeOutputType :
       forall (T V : Ty.t),
-      (Ty.apply (Ty.path "core::ops::try_trait::ChangeOutputType") [] [ T; V ]) = Ty.associated.
+      (Ty.apply (Ty.path "core::ops::try_trait::ChangeOutputType") [] [ T; V ]) =
+        (Ty.associated_in_trait
+          "core::ops::try_trait::Residual"
+          []
+          []
+          (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] T "Residual")
+          "TryType").
     
     (* StructTuple
       {
@@ -188,6 +194,7 @@ Module ops.
     }
     *)
     
+    
     Module Impl_core_ops_try_trait_Try_for_core_ops_try_trait_NeverShortCircuit_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].
@@ -243,8 +250,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::Try"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T));
@@ -282,8 +290,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::FromResidual"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T)) ].
     End Impl_core_ops_try_trait_FromResidual_for_core_ops_try_trait_NeverShortCircuit_T.
     
@@ -299,8 +308,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::Residual"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* O *) T ]
           (* Instance *) [ ("TryType", InstanceField.Ty (_TryType T)) ].
     End Impl_core_ops_try_trait_Residual_T_for_core_ops_try_trait_NeverShortCircuitResidual.
     
@@ -364,8 +374,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_ops_try_trait_Yeet_T.
   End try_trait.

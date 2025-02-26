@@ -57,8 +57,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -115,8 +116,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -126,8 +128,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -177,8 +180,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -207,8 +211,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
@@ -257,8 +262,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -318,8 +324,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -379,8 +386,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -702,8 +710,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloy_primitives::bytes_::Bytes" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloy_primitives::bytes_::Bytes" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloy_primitives_bytes__Bytes_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -746,9 +755,9 @@ Module legacy.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
           (Self N)
-          (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
           (* Instance *) [ ("from", InstanceField.Method (from N)) ].
     End Impl_core_convert_From_array_N_u8_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -787,37 +796,16 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
     End Impl_core_ops_deref_Deref_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
     (*
     pub fn analyze_legacy(bytetecode: &[u8]) -> JumpTable {
-        let mut jumps: BitVec<u8> = bitvec![u8, Lsb0; 0; bytetecode.len()];
-    
-        let range = bytetecode.as_ptr_range();
-        let start = range.start;
-        let mut iterator = start;
-        let end = range.end;
-        while iterator < end {
-            let opcode = unsafe { *iterator };
-            if opcode::JUMPDEST == opcode {
-                // SAFETY: Jumps are max length of the code
-                unsafe { jumps.set_unchecked(iterator.offset_from(start) as usize, true) }
-                iterator = unsafe { iterator.offset(1) };
-            } else {
-                let push_offset = opcode.wrapping_sub(opcode::PUSH1);
-                if push_offset < 32 {
-                    // SAFETY: Iterator access range is checked in the while loop
-                    iterator = unsafe { iterator.offset((push_offset + 2) as isize) };
-                } else {
-                    // SAFETY: Iterator access range is checked in the while loop
-                    iterator = unsafe { iterator.offset(1) };
-                }
-            }
-        }
+        let jumps: BitVec<u8> = bitvec![u8, Lsb0; 0; bytetecode.len()];
     
         JumpTable(Arc::new(jumps))
     }
@@ -862,251 +850,6 @@ Module legacy.
                     |)
                   ]
                 |)
-              |) in
-            let~ range :
-                Ty.apply
-                  (Ty.path "core::ops::range::Range")
-                  []
-                  [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::ops::range::Range")
-                    []
-                    [ Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                    "as_ptr_range",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytetecode |) |) |) ]
-                |)
-              |) in
-            let~ start : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
-              M.copy (|
-                M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "start" |)
-              |) in
-            let~ iterator : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] := M.copy (| start |) in
-            let~ end_ : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
-              M.copy (|
-                M.SubPointer.get_struct_record_field (| range, "core::ops::range::Range", "end" |)
-              |) in
-            let~ _ : Ty.tuple [] :=
-              M.loop (|
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.lt (| M.read (| iterator |), M.read (| end_ |) |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ opcode : Ty.path "u8" :=
-                            M.copy (| M.deref (| M.read (| iterator |) |) |) in
-                          M.match_operator (|
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        BinOp.eq (|
-                                          M.read (|
-                                            M.get_constant "revm_bytecode::opcode::JUMPDEST"
-                                          |),
-                                          M.read (| opcode |)
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "bitvec::slice::BitSlice")
-                                            []
-                                            [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                                          "set_unchecked",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "&mut")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "bitvec::slice::BitSlice")
-                                                      []
-                                                      [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0"
-                                                      ]
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::DerefMut",
-                                                  Ty.apply
-                                                    (Ty.path "bitvec::vec::BitVec")
-                                                    []
-                                                    [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                                                  [],
-                                                  [],
-                                                  "deref_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.MutRef, jumps |) ]
-                                              |)
-                                            |)
-                                          |);
-                                          M.cast
-                                            (Ty.path "usize")
-                                            (M.call_closure (|
-                                              Ty.path "isize",
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                "offset_from",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| iterator |); M.read (| start |) ]
-                                            |));
-                                          Value.Bool true
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    M.alloc (|
-                                      M.write (|
-                                        iterator,
-                                        M.call_closure (|
-                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                            "offset",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| iterator |); Value.Integer IntegerKind.Isize 1
-                                          ]
-                                        |)
-                                      |)
-                                    |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let~ push_offset : Ty.path "u8" :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "u8",
-                                        M.get_associated_function (|
-                                          Ty.path "u8",
-                                          "wrapping_sub",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.read (| opcode |);
-                                          M.read (| M.get_constant "revm_bytecode::opcode::PUSH1" |)
-                                        ]
-                                      |)
-                                    |) in
-                                  M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                BinOp.lt (|
-                                                  M.read (| push_offset |),
-                                                  Value.Integer IntegerKind.U8 32
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            M.is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
-                                              M.write (|
-                                                iterator,
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                    "offset",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| iterator |);
-                                                    M.cast
-                                                      (Ty.path "isize")
-                                                      (BinOp.Wrap.add (|
-                                                        M.read (| push_offset |),
-                                                        Value.Integer IntegerKind.U8 2
-                                                      |))
-                                                  ]
-                                                |)
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
-                                              M.write (|
-                                                iterator,
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                                    "offset",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| iterator |);
-                                                    Value.Integer IntegerKind.Isize 1
-                                                  ]
-                                                |)
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ _ : Ty.tuple [] :=
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                M.alloc (| Value.Tuple [] |)
-                              |)
-                            |)
-                          |)))
-                    ]
-                  |)))
               |) in
             M.alloc (|
               Value.StructTuple

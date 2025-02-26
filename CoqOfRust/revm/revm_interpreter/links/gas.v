@@ -161,14 +161,21 @@ Module Impl_MemoryGas.
     run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try smpl of_value.
+      run_symbolic_are_equal_bool; run_symbolic.
+    }
+    intros [|[]]; run_symbolic.
+    run_symbolic_let. {
+      run_symbolic.
+      run_symbolic_closure. {
+        apply calc.run_memory_gas.
+      }
       intros []; run_symbolic.
     }
     intros [|[]]; run_symbolic.
     run_symbolic_let. {
       run_symbolic.
       run_symbolic_closure. {
-        apply (core.mem.links.mod.run_swap _ (Ref.cast_to _ output1)).
+        apply links.mod.run_swap.
       }
       intros []; run_symbolic.
     }
@@ -409,7 +416,10 @@ Module Impl_Default_for_Gas.
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
-      run_symbolic.
+      run_symbolic_closure. {
+        apply run_default_u64.
+      }
+      intros []; run_symbolic.
     }
   Defined.
 
@@ -439,6 +449,10 @@ Module Impl_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
+    run_symbolic_closure. {
+      apply Impl_MemoryGas.run_new.
+    }
+    intros []; run_symbolic.
   Defined.
   Smpl Add apply run_new : run_closure.
 
@@ -456,6 +470,10 @@ Module Impl_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] 🔽 Self }}.
   Proof.
     run_symbolic.
+    run_symbolic_closure. {
+      apply Impl_MemoryGas.run_new.
+    }
+    intros []; run_symbolic.
   Defined.
   Smpl Add apply run_new_spent : run_closure.
 
@@ -580,10 +598,21 @@ Module Impl_Gas.
     run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     cbn; intros []; run_symbolic.
+    run_symbolic_let. {
+      run_symbolic.
+      run_symbolic_closure. {
+        apply run_refunded.
+      }
+      intros []; run_symbolic.
+      run_symbolic_closure. {
+        apply run_spent.
+      }
+      intros []; run_symbolic.
+    }
+    intros []; run_symbolic.
   Defined.
 
   (*
@@ -612,10 +641,13 @@ Module Impl_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.record_cost [] [] [φ self; φ cost] 🔽 bool }}.
   Proof.
     run_symbolic.
+    run_symbolic_closure. {
+      apply num.links.mod.Impl_u64.run_overflowing_sub.
+    }
+    intros []; run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     intros [|[]]; run_symbolic.
   Defined.
@@ -640,10 +672,17 @@ Module Impl_Gas.
     {{ gas.Impl_revm_interpreter_gas_Gas.record_memory_expansion [] [] [φ self; φ new_len] 🔽 MemoryExtensionResult.t }}.
   Proof.
     run_symbolic.
+    run_symbolic_closure. {
+      apply Impl_MemoryGas.run_record_new_len.
+    }
+    intros []; run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
+      run_symbolic_closure. {
+        apply Impl_Gas.run_record_cost.
+      }
       intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     intros [|[]]; run_symbolic.
   Defined.

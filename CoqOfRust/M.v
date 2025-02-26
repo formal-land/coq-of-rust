@@ -6,6 +6,7 @@ Require Export Coq.ZArith.ZArith.
 Require Export Lia.
 From Hammer Require Export Tactics.
 Require Export smpl.Smpl.
+Require Export coqutil.Datatypes.List.
 
 Import List.ListNotations.
 
@@ -63,6 +64,13 @@ Module List.
       | S index => x :: replace_at l index update
       end
     end.
+
+  Lemma replace_at_map_eq {A B : Set} (l : list A) (f : A -> B) (index : nat) (update : A) :
+    List.map f (replace_at l index update) =
+    replace_at (List.map f l) index (f update).
+  Proof.
+    revert l; induction index; intros; destruct l; cbn; f_equal; auto.
+  Qed.
 End List.
 
 Module IntegerKind.
@@ -237,7 +245,11 @@ Module Value.
       end
     | Pointer.Index.Array index =>
       match value with
-      | Array fields => Some (Array (List.replace_at fields (Z.to_nat index) update))
+      | Array fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some _ => Some (Array (List.replace_at fields (Z.to_nat index) update))
+        | None => None
+        end
       | _ => None
       end
     | Pointer.Index.StructRecord constructor field =>
@@ -376,8 +388,9 @@ End Instance.
 Parameter IsTraitInstance :
   forall
     (trait_name : string)
+    (trait_consts : list Value.t)
+    (trait_tys : list Ty.t)
     (Self : Ty.t)
-    (generic_tys : list Ty.t)
     (instance : Instance.t),
   Prop.
 
@@ -412,31 +425,52 @@ Parameter IsProvidedMethod :
     (method : Ty.t -> PolymorphicFunction.t),
   Prop.
 
+Parameter IsDiscriminant :
+  forall
+    (variant_name : string)
+    (discriminant : Z),
+  Prop.
+
 Module IsTraitMethod.
   Inductive t
       (trait_name : string)
-      (self_ty : Ty.t)
+      (trait_consts : list Value.t)
       (trait_tys : list Ty.t)
+      (self_ty : Ty.t)
       (method_name : string) :
       (PolymorphicFunction.t) -> Prop :=
   | Defined (instance : Instance.t) (method : PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
-      self_ty
+      trait_consts
       trait_tys
+      self_ty
       instance ->
     List.assoc instance method_name = Some (InstanceField.Method method) ->
-    t trait_name self_ty trait_tys method_name method
+    t trait_name trait_consts trait_tys self_ty method_name method
   | Provided (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
-      self_ty
+      trait_consts
       trait_tys
+      self_ty
       instance ->
     List.assoc instance method_name = None ->
     M.IsProvidedMethod trait_name method_name method ->
-    t trait_name self_ty trait_tys method_name (method self_ty).
+    t trait_name trait_consts trait_tys self_ty method_name (method self_ty).
 End IsTraitMethod.
+
+Definition IsTraitAssociatedType
+    (trait_name : string)
+    (trait_consts : list Value.t)
+    (trait_tys : list Ty.t)
+    (self_ty : Ty.t)
+    (associated_type_name : string)
+    (ty : Ty.t) :
+    Prop :=
+  exists instance,
+    M.IsTraitInstance trait_name trait_consts trait_tys self_ty instance /\
+    List.assoc instance associated_type_name = Some (InstanceField.Ty ty).
 
 Module Option.
   Definition map {A B : Set} (x : option A) (f : A -> B) : option B :=
@@ -748,7 +782,8 @@ Module SubPointer.
     get_sub_pointer value (Pointer.Index.StructRecord constructor field).
 
   (** Get an element of a slice by index. *)
-  Parameter get_slice_index : Value.t -> Z -> M.
+  Definition get_slice_index (value : Value.t) (index : Z) : M :=
+    get_sub_pointer value (Pointer.Index.Array index).
 
   (** Get an element of a slice by index counting from the end. *)
   Parameter get_slice_rev_index : Value.t -> Z -> M.
@@ -758,15 +793,35 @@ Module SubPointer.
   Parameter get_slice_rest : Value.t -> Z -> Z -> M.
 End SubPointer.
 
-Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
-  let* are_equal := are_equal value expected_value in
-  match are_equal with
-  | Value.Bool true => pure (Value.Tuple [])
-  | Value.Bool false => break_match
-  | _ => impossible "expected a boolean"
+(** Explicit definition to simplify the links later *)
+Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
+  match condition with
+  | Value.Bool true => then_
+  | Value.Bool false => else_
+  | _ => impossible "if_then_else_bool: expected a boolean"
   end.
 
+Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
+  match value with
+  | Value.Pointer {| Pointer.kind := Pointer.Kind.Raw; Pointer.core := core |} =>
+    pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
+  | _ => impossible "expected a raw pointer"
+  end.
+Global Opaque borrow.
+
+Definition deref (value : Value.t) : M :=
+  match value with
+  | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
+  | _ => impossible "expected a pointer"
+  end.
+Global Opaque deref.
+
+Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
+  let* are_equal := are_equal value expected_value in
+  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
+
 Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
+  let* value := deref value in
   let* value := read value in
   match value with
   | Value.StructTuple current_constructor _ =>
@@ -776,21 +831,12 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
       break_match
   | _ => break_match
   end.
+Arguments is_struct_tuple /.
 
-Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
-  match value with
-  | Value.Pointer {| Pointer.kind := Pointer.Kind.Raw; Pointer.core := core |} =>
-    pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
-  | _ => impossible "expected a raw pointer"
-  end.
-
-Definition deref (value : Value.t) : M :=
-  match value with
-  | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
-  | _ => impossible "expected a pointer"
-  end.
-
-Parameter pointer_coercion : Value.t -> Value.t.
+(** For now, we use the identity as a definition. The use case we have seen is making a coercion
+    between function types. *)
+Definition pointer_coercion (value : Value.t) : Value.t :=
+  value.
 
 (** This function is explicitly called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of

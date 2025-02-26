@@ -91,7 +91,10 @@ Module slice.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
-                                    [],
+                                    [
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.Integer IntegerKind.Usize 2
+                                    ],
                                     []
                                   |),
                                   [
@@ -442,7 +445,7 @@ Module slice.
                                     Pointer.Kind.MutRef,
                                     M.SubPointer.get_array_field (|
                                       M.deref (| M.read (| pivot |) |),
-                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                      Value.Integer IntegerKind.Usize 0
                                     |)
                                   |)
                                 |) in
@@ -1228,7 +1231,7 @@ Module slice.
                                                   Pointer.Kind.Ref,
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| pivot |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                    Value.Integer IntegerKind.Usize 0
                                                   |)
                                                 |)
                                               |) in
@@ -3055,7 +3058,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  h
+                                                  M.read (| h |)
                                                 |)
                                               |)
                                             |)
@@ -3067,7 +3070,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  b
+                                                  M.read (| b |)
                                                 |)
                                               |)
                                             |)
@@ -3139,7 +3142,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  f
+                                                  M.read (| f |)
                                                 |)
                                               |)
                                             |)
@@ -3151,7 +3154,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  d
+                                                  M.read (| d |)
                                                 |)
                                               |)
                                             |)
@@ -3223,7 +3226,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  e
+                                                  M.read (| e |)
                                                 |)
                                               |)
                                             |)
@@ -3235,7 +3238,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  d
+                                                  M.read (| d |)
                                                 |)
                                               |)
                                             |)
@@ -3288,7 +3291,7 @@ Module slice.
                                                         Pointer.Kind.Ref,
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| v |) |),
-                                                          f
+                                                          M.read (| f |)
                                                         |)
                                                       |)
                                                     |)
@@ -3300,7 +3303,7 @@ Module slice.
                                                         Pointer.Kind.Ref,
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| v |) |),
-                                                          e
+                                                          M.read (| e |)
                                                         |)
                                                       |)
                                                     |)
@@ -3364,7 +3367,7 @@ Module slice.
                                                                           M.deref (|
                                                                             M.read (| v |)
                                                                           |),
-                                                                          e
+                                                                          M.read (| e |)
                                                                         |)
                                                                       |)
                                                                     |)
@@ -3378,7 +3381,7 @@ Module slice.
                                                                           M.deref (|
                                                                             M.read (| v |)
                                                                           |),
-                                                                          b
+                                                                          M.read (| b |)
                                                                         |)
                                                                       |)
                                                                     |)
@@ -3464,7 +3467,7 @@ Module slice.
                                                                                   M.deref (|
                                                                                     M.read (| v |)
                                                                                   |),
-                                                                                  h
+                                                                                  M.read (| h |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -3478,7 +3481,7 @@ Module slice.
                                                                                   M.deref (|
                                                                                     M.read (| v |)
                                                                                   |),
-                                                                                  e
+                                                                                  M.read (| e |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -3571,7 +3574,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  d
+                                                  M.read (| d |)
                                                 |)
                                               |)
                                             |)
@@ -3583,7 +3586,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  b
+                                                  M.read (| b |)
                                                 |)
                                               |)
                                             |)
@@ -3637,7 +3640,7 @@ Module slice.
                                                         Pointer.Kind.Ref,
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| v |) |),
-                                                          h
+                                                          M.read (| h |)
                                                         |)
                                                       |)
                                                     |)
@@ -3649,7 +3652,7 @@ Module slice.
                                                         Pointer.Kind.Ref,
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| v |) |),
-                                                          d
+                                                          M.read (| d |)
                                                         |)
                                                       |)
                                                     |)
@@ -3769,7 +3772,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  c
+                                                  M.read (| c |)
                                                 |)
                                               |)
                                             |)
@@ -3781,7 +3784,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  a
+                                                  M.read (| a |)
                                                 |)
                                               |)
                                             |)
@@ -3853,7 +3856,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  c
+                                                  M.read (| c |)
                                                 |)
                                               |)
                                             |)
@@ -3865,7 +3868,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  b
+                                                  M.read (| b |)
                                                 |)
                                               |)
                                             |)
@@ -3922,7 +3925,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  b
+                                                  M.read (| b |)
                                                 |)
                                               |)
                                             |)
@@ -3934,7 +3937,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| v |) |),
-                                                  a
+                                                  M.read (| a |)
                                                 |)
                                               |)
                                             |)

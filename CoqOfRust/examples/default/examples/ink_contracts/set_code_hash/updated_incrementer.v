@@ -40,8 +40,9 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_updated_incrementer_AccountId.
 
@@ -66,8 +67,9 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_updated_incrementer_AccountId.
 
@@ -75,7 +77,12 @@ Module Impl_core_marker_Copy_for_updated_incrementer_AccountId.
   Definition Self : Ty.t := Ty.path "updated_incrementer::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_updated_incrementer_AccountId.
 
 Axiom Hash :
@@ -90,6 +97,7 @@ Enum Error
   variants := [];
 }
 *)
+
 
 (* StructRecord
   {
@@ -234,7 +242,7 @@ Module Impl_updated_incrementer_Incrementer.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
@@ -446,7 +454,7 @@ Module Impl_updated_incrementer_Incrementer.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [

@@ -187,7 +187,7 @@ Module vec.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -275,18 +275,25 @@ Module vec.
       Definition Self (T : Ty.t) : Ty.t := T.
       
       (*     type Src = <<T as SourceIter>::Source as AsVecIntoIter>::Item; *)
-      Definition _Src (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Src (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "alloc::vec::in_place_collect::AsVecIntoIter"
+          []
+          []
+          (Ty.associated_in_trait "core::iter::adapters::SourceIter" [] [] T "Source")
+          "Item".
       
       Axiom Implements :
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::in_place_collect::InPlaceCollect"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("Src", InstanceField.Ty (_Src T)) ].
     End Impl_alloc_vec_in_place_collect_InPlaceCollect_where_core_iter_adapters_SourceIter_T_where_core_iter_traits_marker_InPlaceIterable_T_for_T.
     
-    Module Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_where_alloc_vec_in_place_collect_InPlaceCollect_I_where_alloc_vec_in_place_collect_AsVecIntoIter_associated_type_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
+    Module Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_where_alloc_vec_in_place_collect_InPlaceCollect_I_where_alloc_vec_in_place_collect_AsVecIntoIter_associated_in_trait_core_iter_adapters_SourceIter___I_Source_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
       Definition Self (T I : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ].
       
@@ -339,10 +346,11 @@ Module vec.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_iter::SpecFromIter"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T; I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T I)) ].
-    End Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_where_alloc_vec_in_place_collect_InPlaceCollect_I_where_alloc_vec_in_place_collect_AsVecIntoIter_associated_type_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
+    End Impl_alloc_vec_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_where_alloc_vec_in_place_collect_InPlaceCollect_I_where_alloc_vec_in_place_collect_AsVecIntoIter_associated_in_trait_core_iter_adapters_SourceIter___I_Source_T_I_for_alloc_vec_Vec_T_alloc_alloc_Global.
     
     (*
     fn from_iter_in_place<I, T>(mut iterator: I) -> Vec<T>
@@ -447,7 +455,20 @@ Module vec.
                       Ty.apply
                         (Ty.path "alloc::vec::into_iter::IntoIter")
                         []
-                        [ Ty.associated; Ty.path "alloc::alloc::Global" ]
+                        [
+                          Ty.associated_in_trait
+                            "alloc::vec::in_place_collect::AsVecIntoIter"
+                            []
+                            []
+                            (Ty.associated_in_trait
+                              "core::iter::adapters::SourceIter"
+                              []
+                              []
+                              I
+                              "Source")
+                            "Item";
+                          Ty.path "alloc::alloc::Global"
+                        ]
                     ] :=
                 M.alloc (|
                   M.call_closure (|
@@ -458,11 +479,24 @@ Module vec.
                         Ty.apply
                           (Ty.path "alloc::vec::into_iter::IntoIter")
                           []
-                          [ Ty.associated; Ty.path "alloc::alloc::Global" ]
+                          [
+                            Ty.associated_in_trait
+                              "alloc::vec::in_place_collect::AsVecIntoIter"
+                              []
+                              []
+                              (Ty.associated_in_trait
+                                "core::iter::adapters::SourceIter"
+                                []
+                                []
+                                I
+                                "Source")
+                              "Item";
+                            Ty.path "alloc::alloc::Global"
+                          ]
                       ],
                     M.get_trait_method (|
                       "alloc::vec::in_place_collect::AsVecIntoIter",
-                      Ty.associated,
+                      Ty.associated_in_trait "core::iter::adapters::SourceIter" [] [] I "Source",
                       [],
                       [],
                       "as_into_iter",
@@ -474,7 +508,17 @@ Module vec.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::adapters::SourceIter"
+                                  []
+                                  []
+                                  I
+                                  "Source"
+                              ],
                             M.get_trait_method (|
                               "core::iter::adapters::SourceIter",
                               I,
@@ -518,7 +562,22 @@ Module vec.
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.associated ],
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "alloc::vec::in_place_collect::AsVecIntoIter"
+                              []
+                              []
+                              (Ty.associated_in_trait
+                                "core::iter::adapters::SourceIter"
+                                []
+                                []
+                                I
+                                "Source")
+                              "Item"
+                          ],
                         "cast",
                         [],
                         [ T ]
@@ -556,7 +615,18 @@ Module vec.
                           |);
                           M.call_closure (|
                             Ty.path "usize",
-                            M.get_function (| "core::mem::size_of", [], [ Ty.associated ] |),
+                            M.get_function (|
+                              "core::mem::size_of",
+                              [],
+                              [
+                                Ty.associated_in_trait
+                                  "alloc::vec::in_place_collect::InPlaceCollect"
+                                  []
+                                  []
+                                  I
+                                  "Src"
+                              ]
+                            |),
                             []
                           |)
                         ]
@@ -626,7 +696,20 @@ Module vec.
                             Ty.apply
                               (Ty.path "alloc::vec::into_iter::IntoIter")
                               []
-                              [ Ty.associated; Ty.path "alloc::alloc::Global" ]
+                              [
+                                Ty.associated_in_trait
+                                  "alloc::vec::in_place_collect::AsVecIntoIter"
+                                  []
+                                  []
+                                  (Ty.associated_in_trait
+                                    "core::iter::adapters::SourceIter"
+                                    []
+                                    []
+                                    I
+                                    "Source")
+                                  "Item";
+                                Ty.path "alloc::alloc::Global"
+                              ]
                           ] :=
                       M.alloc (|
                         M.borrow (|
@@ -640,11 +723,29 @@ Module vec.
                                   Ty.apply
                                     (Ty.path "alloc::vec::into_iter::IntoIter")
                                     []
-                                    [ Ty.associated; Ty.path "alloc::alloc::Global" ]
+                                    [
+                                      Ty.associated_in_trait
+                                        "alloc::vec::in_place_collect::AsVecIntoIter"
+                                        []
+                                        []
+                                        (Ty.associated_in_trait
+                                          "core::iter::adapters::SourceIter"
+                                          []
+                                          []
+                                          I
+                                          "Source")
+                                        "Item";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
                                 ],
                               M.get_trait_method (|
                                 "alloc::vec::in_place_collect::AsVecIntoIter",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::adapters::SourceIter"
+                                  []
+                                  []
+                                  I
+                                  "Source",
                                 [],
                                 [],
                                 "as_into_iter",
@@ -656,7 +757,17 @@ Module vec.
                                   Pointer.Kind.MutRef,
                                   M.deref (|
                                     M.call_closure (|
-                                      Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::adapters::SourceIter"
+                                            []
+                                            []
+                                            I
+                                            "Source"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::adapters::SourceIter",
                                         I,
@@ -727,14 +838,38 @@ Module vec.
                                                               (Ty.path
                                                                 "core::ptr::non_null::NonNull")
                                                               []
-                                                              [ Ty.associated ],
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                  []
+                                                                  []
+                                                                  (Ty.associated_in_trait
+                                                                    "core::iter::adapters::SourceIter"
+                                                                    []
+                                                                    []
+                                                                    I
+                                                                    "Source")
+                                                                  "Item"
+                                                              ],
                                                             [],
                                                             [
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "core::ptr::non_null::NonNull")
                                                                 []
-                                                                [ Ty.associated ]
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                    []
+                                                                    []
+                                                                    (Ty.associated_in_trait
+                                                                      "core::iter::adapters::SourceIter"
+                                                                      []
+                                                                      []
+                                                                      I
+                                                                      "Source")
+                                                                    "Item"
+                                                                ]
                                                             ],
                                                             "eq",
                                                             [],
@@ -779,12 +914,36 @@ Module vec.
                                                                 (Ty.path
                                                                   "core::ptr::non_null::NonNull")
                                                                 []
-                                                                [ Ty.associated ];
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                    []
+                                                                    []
+                                                                    (Ty.associated_in_trait
+                                                                      "core::iter::adapters::SourceIter"
+                                                                      []
+                                                                      []
+                                                                      I
+                                                                      "Source")
+                                                                    "Item"
+                                                                ];
                                                               Ty.apply
                                                                 (Ty.path
                                                                   "core::ptr::non_null::NonNull")
                                                                 []
-                                                                [ Ty.associated ]
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                    []
+                                                                    []
+                                                                    (Ty.associated_in_trait
+                                                                      "core::iter::adapters::SourceIter"
+                                                                      []
+                                                                      []
+                                                                      I
+                                                                      "Source")
+                                                                    "Item"
+                                                                ]
                                                             ]
                                                           |),
                                                           [
@@ -845,13 +1004,37 @@ Module vec.
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
                                           []
-                                          [ Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "alloc::vec::in_place_collect::AsVecIntoIter"
+                                              []
+                                              []
+                                              (Ty.associated_in_trait
+                                                "core::iter::adapters::SourceIter"
+                                                []
+                                                []
+                                                I
+                                                "Source")
+                                              "Item"
+                                          ],
                                         [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
                                             []
-                                            [ Ty.associated ]
+                                            [
+                                              Ty.associated_in_trait
+                                                "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                []
+                                                []
+                                                (Ty.associated_in_trait
+                                                  "core::iter::adapters::SourceIter"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Source")
+                                                "Item"
+                                            ]
                                         ],
                                         "ne",
                                         [],
@@ -905,14 +1088,38 @@ Module vec.
                                                                 (Ty.path
                                                                   "core::ptr::non_null::NonNull")
                                                                 []
-                                                                [ Ty.associated ],
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                    []
+                                                                    []
+                                                                    (Ty.associated_in_trait
+                                                                      "core::iter::adapters::SourceIter"
+                                                                      []
+                                                                      []
+                                                                      I
+                                                                      "Source")
+                                                                    "Item"
+                                                                ],
                                                               [],
                                                               [
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ptr::non_null::NonNull")
                                                                   []
-                                                                  [ Ty.associated ]
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                      []
+                                                                      []
+                                                                      (Ty.associated_in_trait
+                                                                        "core::iter::adapters::SourceIter"
+                                                                        []
+                                                                        []
+                                                                        I
+                                                                        "Source")
+                                                                      "Item"
+                                                                  ]
                                                               ],
                                                               "le",
                                                               [],
@@ -927,7 +1134,19 @@ Module vec.
                                                                       (Ty.path
                                                                         "core::ptr::non_null::NonNull")
                                                                       []
-                                                                      [ Ty.associated ],
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                          []
+                                                                          []
+                                                                          (Ty.associated_in_trait
+                                                                            "core::iter::adapters::SourceIter"
+                                                                            []
+                                                                            []
+                                                                            I
+                                                                            "Source")
+                                                                          "Item"
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -936,7 +1155,19 @@ Module vec.
                                                                         [ T ],
                                                                       "cast",
                                                                       [],
-                                                                      [ Ty.associated ]
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "alloc::vec::in_place_collect::AsVecIntoIter"
+                                                                          []
+                                                                          []
+                                                                          (Ty.associated_in_trait
+                                                                            "core::iter::adapters::SourceIter"
+                                                                            []
+                                                                            []
+                                                                            I
+                                                                            "Source")
+                                                                          "Item"
+                                                                      ]
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
@@ -996,7 +1227,7 @@ Module vec.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
-                                                              [],
+                                                              [ Value.Integer IntegerKind.Usize 1 ],
                                                               []
                                                             |),
                                                             [
@@ -1039,7 +1270,15 @@ Module vec.
                         Ty.apply
                           (Ty.path "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop")
                           []
-                          [ Ty.associated; T ] :=
+                          [
+                            Ty.associated_in_trait
+                              "alloc::vec::in_place_collect::InPlaceCollect"
+                              []
+                              []
+                              I
+                              "Src";
+                            T
+                          ] :=
                       M.alloc (|
                         Value.StructRecord
                           "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
@@ -1058,7 +1297,20 @@ Module vec.
                             Ty.apply
                               (Ty.path "alloc::vec::into_iter::IntoIter")
                               []
-                              [ Ty.associated; Ty.path "alloc::alloc::Global" ],
+                              [
+                                Ty.associated_in_trait
+                                  "alloc::vec::in_place_collect::AsVecIntoIter"
+                                  []
+                                  []
+                                  (Ty.associated_in_trait
+                                    "core::iter::adapters::SourceIter"
+                                    []
+                                    []
+                                    I
+                                    "Source")
+                                  "Item";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             "forget_allocation_drop_remaining",
                             [],
                             []
@@ -1080,7 +1332,15 @@ Module vec.
                                       M.get_function (|
                                         "alloc::vec::in_place_collect::needs_realloc",
                                         [],
-                                        [ Ty.associated; T ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "alloc::vec::in_place_collect::InPlaceCollect"
+                                            []
+                                            []
+                                            I
+                                            "Src";
+                                          T
+                                        ]
                                       |),
                                       [ M.read (| src_cap |); M.read (| dst_cap |) ]
                                     |)
@@ -1349,7 +1609,14 @@ Module vec.
                                     M.get_function (|
                                       "core::mem::align_of",
                                       [],
-                                      [ Ty.associated ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "alloc::vec::in_place_collect::InPlaceCollect"
+                                          []
+                                          []
+                                          I
+                                          "Src"
+                                      ]
                                     |),
                                     []
                                   |)
@@ -1370,7 +1637,14 @@ Module vec.
                                         M.get_function (|
                                           "core::mem::size_of",
                                           [],
-                                          [ Ty.associated ]
+                                          [
+                                            Ty.associated_in_trait
+                                              "alloc::vec::in_place_collect::InPlaceCollect"
+                                              []
+                                              []
+                                              I
+                                              "Src"
+                                          ]
                                         |),
                                         []
                                       |);
@@ -1554,7 +1828,14 @@ Module vec.
                                                           M.get_function (|
                                                             "core::mem::size_of",
                                                             [],
-                                                            [ Ty.associated ]
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "alloc::vec::in_place_collect::InPlaceCollect"
+                                                                []
+                                                                []
+                                                                I
+                                                                "Src"
+                                                            ]
                                                           |),
                                                           []
                                                         |)
@@ -1697,7 +1978,15 @@ Module vec.
                               Ty.apply
                                 (Ty.path "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop")
                                 []
-                                [ Ty.associated; T ]
+                                [
+                                  Ty.associated_in_trait
+                                    "alloc::vec::in_place_collect::InPlaceCollect"
+                                    []
+                                    []
+                                    I
+                                    "Src";
+                                  T
+                                ]
                             ]
                           |),
                           [ M.read (| dst_guard |) ]
@@ -1844,7 +2133,11 @@ Module vec.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_const",
-                                                                        [],
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ],
                                                                         []
                                                                       |),
                                                                       [
@@ -2026,7 +2319,7 @@ Module vec.
                           [],
                           [
                             Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
-                            Ty.associated;
+                            Ty.associated_unknown;
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -2043,7 +2336,7 @@ Module vec.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                           M.read (| sink |);
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_unknown,
                             M.get_function (|
                               "alloc::vec::in_place_collect::write_in_place_with_drop",
                               [],
@@ -2143,8 +2436,9 @@ Module vec.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::in_place_collect::SpecInPlaceCollect"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T; I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
           (* Instance *) [ ("collect_in_place", InstanceField.Method (collect_in_place T I)) ].
     End Impl_alloc_vec_in_place_collect_SpecInPlaceCollect_where_core_iter_traits_iterator_Iterator_I_T_I_for_I.
     
@@ -2355,7 +2649,11 @@ Module vec.
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
                                                                         "new_const",
-                                                                        [],
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ],
                                                                         []
                                                                       |),
                                                                       [
@@ -2472,8 +2770,9 @@ Module vec.
         forall (T I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::in_place_collect::SpecInPlaceCollect"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T; I ]
           (Self T I)
-          (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
           (* Instance *) [ ("collect_in_place", InstanceField.Method (collect_in_place T I)) ].
     End Impl_alloc_vec_in_place_collect_SpecInPlaceCollect_where_core_iter_traits_iterator_Iterator_I_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_I_T_I_for_I.
     

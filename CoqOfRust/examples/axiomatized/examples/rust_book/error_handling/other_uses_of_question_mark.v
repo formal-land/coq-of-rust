@@ -31,8 +31,9 @@ Module Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_other_uses_of_question_mark_EmptyVec.
 
@@ -44,8 +45,9 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
 
@@ -53,7 +55,12 @@ Module Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
   Definition Self : Ty.t := Ty.path "other_uses_of_question_mark::EmptyVec".
   
   Axiom Implements :
-    M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::error::Error"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_error_Error_for_other_uses_of_question_mark_EmptyVec.
 
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.

@@ -17,7 +17,12 @@ Module raw_vec.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -49,16 +54,18 @@ Module raw_vec.
         {
           name := "Uninitialized";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Zeroed";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AllocInit_Uninitialized :
+    M.IsDiscriminant "alloc::raw_vec::AllocInit::Uninitialized" 0.
+  Axiom IsDiscriminant_AllocInit_Zeroed : M.IsDiscriminant "alloc::raw_vec::AllocInit::Zeroed" 1.
   
   (* StructTuple
     {
@@ -729,7 +736,7 @@ Module raw_vec.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -1570,8 +1577,9 @@ Module raw_vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_raw_vec_RawVec_T_A.
   
@@ -4841,7 +4849,7 @@ Module raw_vec.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [

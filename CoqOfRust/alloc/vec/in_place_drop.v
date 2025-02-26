@@ -132,8 +132,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
     End Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDrop_T.
     
@@ -276,8 +277,9 @@ Module vec.
         forall (Src Dest : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self Src Dest)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Src Dest)
           (* Instance *) [ ("drop", InstanceField.Method (drop Src Dest)) ].
     End Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDstDataSrcBufDrop_Src_Dest.
   End in_place_drop.

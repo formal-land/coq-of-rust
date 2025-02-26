@@ -23,8 +23,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (Self K V)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self K V)
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_mapping_integration_tests_Mapping_K_V.
 
@@ -98,8 +99,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mapping_integration_tests_AccountId.
 
@@ -111,8 +113,9 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
 
@@ -120,7 +123,12 @@ Module Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
   Definition Self : Ty.t := Ty.path "mapping_integration_tests::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_mapping_integration_tests_AccountId.
 
 Axiom Balance : (Ty.path "mapping_integration_tests::Balance") = (Ty.path "u128").
@@ -165,8 +173,9 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_mapping_integration_tests_Mappings.
 

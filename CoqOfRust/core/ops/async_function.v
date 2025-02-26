@@ -34,7 +34,12 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::ops::async_function::AsyncFnMut"
+                  []
+                  []
+                  F
+                  "CallRefFuture",
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
@@ -59,8 +64,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::async_function::AsyncFn"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *) [ ("async_call", InstanceField.Method (async_call A F)) ].
       End Impl_core_ops_async_function_AsyncFn_where_core_marker_Tuple_A_where_core_marker_Sized_F_where_core_ops_async_function_AsyncFn_F_A_A_for_ref__F.
       
@@ -73,7 +79,8 @@ Module ops.
                 where
                     Self: 'a;
         *)
-        Definition _CallRefFuture (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _CallRefFuture (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_mut(&mut self, args: A) -> Self::CallRefFuture<'_> {
@@ -93,7 +100,12 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::ops::async_function::AsyncFnMut"
+                  []
+                  []
+                  F
+                  "CallRefFuture",
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
@@ -118,8 +130,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::async_function::AsyncFnMut"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *)
             [
               ("CallRefFuture", InstanceField.Ty (_CallRefFuture A F));
@@ -131,10 +144,12 @@ Module ops.
         Definition Self (A F : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ F ].
         
         (*         type Output = F::Output; *)
-        Definition _Output (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Output (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
         
         (*         type CallOnceFuture = F::CallRefFuture<'a>; *)
-        Definition _CallOnceFuture (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _CallOnceFuture (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_once(self, args: A) -> Self::CallOnceFuture {
@@ -154,7 +169,12 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::ops::async_function::AsyncFnMut"
+                  []
+                  []
+                  F
+                  "CallRefFuture",
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFn",
                   F,
@@ -176,8 +196,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::async_function::AsyncFnOnce"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *)
             [
               ("Output", InstanceField.Ty (_Output A F));
@@ -195,7 +216,8 @@ Module ops.
                 where
                     Self: 'a;
         *)
-        Definition _CallRefFuture (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _CallRefFuture (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_mut(&mut self, args: A) -> Self::CallRefFuture<'_> {
@@ -215,7 +237,12 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::ops::async_function::AsyncFnMut"
+                  []
+                  []
+                  F
+                  "CallRefFuture",
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFnMut",
                   F,
@@ -240,8 +267,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::async_function::AsyncFnMut"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *)
             [
               ("CallRefFuture", InstanceField.Ty (_CallRefFuture A F));
@@ -253,10 +281,12 @@ Module ops.
         Definition Self (A F : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ F ].
         
         (*         type Output = F::Output; *)
-        Definition _Output (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Output (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
         
         (*         type CallOnceFuture = F::CallRefFuture<'a>; *)
-        Definition _CallOnceFuture (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _CallOnceFuture (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_once(self, args: A) -> Self::CallOnceFuture {
@@ -276,7 +306,12 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::ops::async_function::AsyncFnMut"
+                  []
+                  []
+                  F
+                  "CallRefFuture",
                 M.get_trait_method (|
                   "core::ops::async_function::AsyncFnMut",
                   F,
@@ -298,8 +333,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::async_function::AsyncFnOnce"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *)
             [
               ("Output", InstanceField.Ty (_Output A F));

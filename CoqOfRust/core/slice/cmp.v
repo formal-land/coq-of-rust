@@ -72,8 +72,9 @@ Module slice.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ U ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq T U)); ("ne", InstanceField.Method (ne T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_slice_U_for_slice_T.
@@ -85,8 +86,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_slice_T.
     
@@ -120,8 +122,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_slice_T.
     
@@ -163,8 +166,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_slice_T.
     
@@ -407,14 +411,14 @@ Module slice.
                                                                 Pointer.Kind.Ref,
                                                                 M.SubPointer.get_array_field (|
                                                                   M.deref (| M.read (| self |) |),
-                                                                  idx
+                                                                  M.read (| idx |)
                                                                 |)
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
                                                                 M.SubPointer.get_array_field (|
                                                                   M.deref (| M.read (| other |) |),
-                                                                  idx
+                                                                  M.read (| idx |)
                                                                 |)
                                                               |)
                                                             ]
@@ -452,8 +456,9 @@ Module slice.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SlicePartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ B ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* B *) B ]
           (* Instance *) [ ("equal", InstanceField.Method (equal A B)) ].
     End Impl_core_slice_cmp_SlicePartialEq_where_core_cmp_PartialEq_A_B_B_for_slice_A.
     
@@ -591,8 +596,9 @@ Module slice.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SlicePartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ B ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* B *) B ]
           (* Instance *) [ ("equal", InstanceField.Method (equal A B)) ].
     End Impl_core_slice_cmp_SlicePartialEq_where_core_cmp_bytewise_BytewiseEq_A_B_B_for_slice_A.
     
@@ -827,7 +833,7 @@ Module slice.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| lhs |) |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |);
                                                     M.borrow (|
@@ -837,7 +843,7 @@ Module slice.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| rhs |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       |)
@@ -946,8 +952,9 @@ Module slice.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SlicePartialOrd"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("partial_compare", InstanceField.Method (partial_compare A)) ].
     End Impl_core_slice_cmp_SlicePartialOrd_where_core_cmp_PartialOrd_A_for_A.
     
@@ -998,8 +1005,9 @@ Module slice.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SlicePartialOrd"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("partial_compare", InstanceField.Method (partial_compare A)) ].
     End Impl_core_slice_cmp_SlicePartialOrd_where_core_slice_cmp_AlwaysApplicableOrd_A_for_A.
     
@@ -1012,8 +1020,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_u8.
     
@@ -1023,8 +1032,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_u16.
     
@@ -1034,8 +1044,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_u32.
     
@@ -1045,8 +1056,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_u64.
     
@@ -1056,8 +1068,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_u128.
     
@@ -1067,8 +1080,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_usize.
     
@@ -1078,8 +1092,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_i8.
     
@@ -1089,8 +1104,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_i16.
     
@@ -1100,8 +1116,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_i32.
     
@@ -1111,8 +1128,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_i64.
     
@@ -1122,8 +1140,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_i128.
     
@@ -1133,8 +1152,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_isize.
     
@@ -1144,8 +1164,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_bool.
     
@@ -1155,8 +1176,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_for_char.
     
@@ -1167,8 +1189,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_marker_Sized_T_for_pointer_const_T.
     
@@ -1179,8 +1202,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_marker_Sized_T_for_pointer_mut_T.
     
@@ -1191,8 +1215,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_ref__T.
     
@@ -1203,8 +1228,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_ref_mut_T.
     
@@ -1215,8 +1241,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::AlwaysApplicableOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_slice_cmp_AlwaysApplicableOrd_where_core_slice_cmp_AlwaysApplicableOrd_T_for_core_option_Option_T.
     
@@ -1443,7 +1470,7 @@ Module slice.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| lhs |) |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |);
                                                     M.borrow (|
@@ -1453,7 +1480,7 @@ Module slice.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| rhs |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       |)
@@ -1553,8 +1580,9 @@ Module slice.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SliceOrd"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("compare", InstanceField.Method (compare A)) ].
     End Impl_core_slice_cmp_SliceOrd_where_core_cmp_Ord_A_for_A.
     
@@ -1567,8 +1595,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::UnsignedBytewiseOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_bool.
     
@@ -1578,8 +1607,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::UnsignedBytewiseOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_u8.
     
@@ -1590,8 +1620,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::UnsignedBytewiseOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_num_nonzero_NonZero_u8.
     
@@ -1605,8 +1636,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::UnsignedBytewiseOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_option_Option_core_num_nonzero_NonZero_u8.
     
@@ -1616,8 +1648,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::UnsignedBytewiseOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_ascii_ascii_char_AsciiChar.
     
@@ -1860,8 +1893,9 @@ Module slice.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SliceOrd"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("compare", InstanceField.Method (compare A)) ].
     End Impl_core_slice_cmp_SliceOrd_where_core_cmp_Ord_A_where_core_slice_cmp_UnsignedBytewiseOrd_A_for_A.
     
@@ -1959,8 +1993,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SliceContains"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("slice_contains", InstanceField.Method (slice_contains T)) ].
     End Impl_core_slice_cmp_SliceContains_where_core_cmp_PartialEq_T_for_T.
     
@@ -2008,8 +2043,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::SliceContains"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("slice_contains", InstanceField.Method slice_contains) ].
     End Impl_core_slice_cmp_SliceContains_for_u8.
     
@@ -2115,8 +2151,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::cmp::SliceContains"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("slice_contains", InstanceField.Method slice_contains) ].
     End Impl_core_slice_cmp_SliceContains_for_i8.
   End cmp.

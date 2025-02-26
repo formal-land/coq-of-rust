@@ -2329,18 +2329,16 @@ Module ptr.
                   (M.read (|
                     M.SubPointer.get_array_field (|
                       M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16",
-                      M.alloc (|
-                        BinOp.Wrap.shr (|
-                          BinOp.bit_and
-                            (M.read (| x |))
-                            (BinOp.Wrap.sub (|
-                              M.read (|
-                                M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
-                              |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)),
-                          Value.Integer IntegerKind.I32 1
-                        |)
+                      BinOp.Wrap.shr (|
+                        BinOp.bit_and
+                          (M.read (| x |))
+                          (BinOp.Wrap.sub (|
+                            M.read (|
+                              M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
+                            |),
+                            Value.Integer IntegerKind.Usize 1
+                          |)),
+                        Value.Integer IntegerKind.I32 1
                       |)
                     |)
                   |))
@@ -2627,8 +2625,9 @@ Module ptr.
       forall (F : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F)
         (* Instance *) [ ("eq", InstanceField.Method (eq F)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
   
@@ -2637,7 +2636,12 @@ Module ptr.
     
     Axiom Implements :
       forall (F : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self F) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self F)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_FnPtr_F_for_F.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_for_F.
@@ -2701,8 +2705,9 @@ Module ptr.
       forall (F : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp F)) ].
   End Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_for_F.
   
@@ -2767,8 +2772,9 @@ Module ptr.
       forall (F : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp F)) ].
   End Impl_core_cmp_Ord_where_core_marker_FnPtr_F_for_F.
   
@@ -2808,8 +2814,9 @@ Module ptr.
       forall (F : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F)
         (* Instance *) [ ("hash", InstanceField.Method (hash F)) ].
   End Impl_core_hash_Hash_where_core_marker_FnPtr_F_for_F.
   
@@ -2852,8 +2859,9 @@ Module ptr.
       forall (F : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
   End Impl_core_fmt_Pointer_where_core_marker_FnPtr_F_for_F.
   
@@ -2896,8 +2904,9 @@ Module ptr.
       forall (F : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self F)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
   End Impl_core_fmt_Debug_where_core_marker_FnPtr_F_for_F.
 End ptr.

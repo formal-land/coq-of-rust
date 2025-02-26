@@ -463,16 +463,19 @@ Module control_flow_v5.
         {
           name := "Loop";
           item := StructRecord [ ("last_continue", Ty.path "u16") ];
-          discriminant := None;
         };
         {
           name := "Code";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Label_Loop :
+    M.IsDiscriminant "move_bytecode_verifier::control_flow_v5::Label::Loop" 0.
+  Axiom IsDiscriminant_Label_Code :
+    M.IsDiscriminant "move_bytecode_verifier::control_flow_v5::Label::Code" 1.
   
   Module Impl_core_clone_Clone_for_move_bytecode_verifier_control_flow_v5_Label.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::control_flow_v5::Label".
@@ -495,8 +498,9 @@ Module control_flow_v5.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_bytecode_verifier_control_flow_v5_Label.
   
@@ -506,8 +510,9 @@ Module control_flow_v5.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_bytecode_verifier_control_flow_v5_Label.
   
@@ -817,7 +822,7 @@ Module control_flow_v5.
                   (Ty.path "core::iter::adapters::zip::Zip")
                   []
                   [
-                    Ty.associated;
+                    Ty.associated_unknown;
                     Ty.apply
                       (Ty.path "core::slice::iter::Iter")
                       []
@@ -863,7 +868,7 @@ Module control_flow_v5.
                 (Ty.path "core::iter::adapters::zip::Zip")
                 []
                 [
-                  Ty.associated;
+                  Ty.associated_unknown;
                   Ty.apply
                     (Ty.path "core::slice::iter::Iter")
                     []
@@ -927,7 +932,7 @@ Module control_flow_v5.
                   (Ty.path "core::iter::adapters::zip::Zip")
                   []
                   [
-                    Ty.associated;
+                    Ty.associated_unknown;
                     Ty.apply
                       (Ty.path "core::slice::iter::Iter")
                       []
@@ -935,7 +940,7 @@ Module control_flow_v5.
                   ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.associated,
+                  Ty.associated_unknown,
                   [],
                   [],
                   "zip",
@@ -954,7 +959,7 @@ Module control_flow_v5.
                 |),
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                       "code",
@@ -1267,10 +1272,10 @@ Module control_flow_v5.
               (M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
-                      Ty.associated,
+                      Ty.associated_unknown,
                       [],
                       [],
                       "into_iter",
@@ -1279,7 +1284,7 @@ Module control_flow_v5.
                     |),
                     [
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_unknown,
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
                           "code",
@@ -1316,7 +1321,7 @@ Module control_flow_v5.
                                     ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
-                                    Ty.associated,
+                                    Ty.associated_unknown,
                                     [],
                                     [],
                                     "next",
@@ -2195,10 +2200,10 @@ Module control_flow_v5.
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_unknown,
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.associated,
+                          Ty.associated_unknown,
                           [],
                           [],
                           "into_iter",
@@ -2207,7 +2212,7 @@ Module control_flow_v5.
                         |),
                         [
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_unknown,
                             M.get_associated_function (|
                               Ty.path
                                 "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
@@ -2258,7 +2263,7 @@ Module control_flow_v5.
                                         ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
-                                        Ty.associated,
+                                        Ty.associated_unknown,
                                         [],
                                         [],
                                         "next",
@@ -2759,7 +2764,14 @@ Module control_flow_v5.
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
                                                                                               "new_v1",
-                                                                                              [],
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  1;
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  0
+                                                                                              ],
                                                                                               []
                                                                                             |),
                                                                                             [
@@ -2856,7 +2868,14 @@ Module control_flow_v5.
                                                                                         Ty.path
                                                                                           "core::fmt::Arguments",
                                                                                         "new_v1",
-                                                                                        [],
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1;
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ],
                                                                                         []
                                                                                       |),
                                                                                       [
@@ -3439,7 +3458,14 @@ Module control_flow_v5.
                                                                                                       Ty.path
                                                                                                         "core::fmt::Arguments",
                                                                                                       "new_v1",
-                                                                                                      [],
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          IntegerKind.Usize
+                                                                                                          1;
+                                                                                                        Value.Integer
+                                                                                                          IntegerKind.Usize
+                                                                                                          0
+                                                                                                      ],
                                                                                                       []
                                                                                                     |),
                                                                                                     [
@@ -3543,7 +3569,14 @@ Module control_flow_v5.
                                                                                                 Ty.path
                                                                                                   "core::fmt::Arguments",
                                                                                                 "new_v1",
-                                                                                                [],
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    IntegerKind.Usize
+                                                                                                    1;
+                                                                                                  Value.Integer
+                                                                                                    IntegerKind.Usize
+                                                                                                    1
+                                                                                                ],
                                                                                                 []
                                                                                               |),
                                                                                               [
@@ -4683,11 +4716,9 @@ Module control_flow_v5.
                                                                                 loop_depth
                                                                               |)
                                                                             |),
-                                                                            M.alloc (|
-                                                                              M.cast
-                                                                                (Ty.path "usize")
-                                                                                (M.read (| i |))
-                                                                            |)
+                                                                            M.cast
+                                                                              (Ty.path "usize")
+                                                                              (M.read (| i |))
                                                                           |)
                                                                         |) in
                                                                       let~ after_depth :
@@ -4703,14 +4734,10 @@ Module control_flow_v5.
                                                                                       labels
                                                                                     |)
                                                                                   |),
-                                                                                  M.alloc (|
-                                                                                    M.cast
-                                                                                      (Ty.path
-                                                                                        "usize")
-                                                                                      (M.read (|
-                                                                                        j
-                                                                                      |))
-                                                                                  |)
+                                                                                  M.cast
+                                                                                    (Ty.path
+                                                                                      "usize")
+                                                                                    (M.read (| j |))
                                                                                 |)
                                                                               |)
                                                                             |),
@@ -4735,14 +4762,12 @@ Module control_flow_v5.
                                                                                               loop_depth
                                                                                             |)
                                                                                           |),
-                                                                                          M.alloc (|
-                                                                                            M.cast
-                                                                                              (Ty.path
-                                                                                                "usize")
-                                                                                              (M.read (|
-                                                                                                j
-                                                                                              |))
-                                                                                          |)
+                                                                                          M.cast
+                                                                                            (Ty.path
+                                                                                              "usize")
+                                                                                            (M.read (|
+                                                                                              j
+                                                                                            |))
                                                                                         |)
                                                                                       |),
                                                                                       Value.Integer
@@ -4767,14 +4792,12 @@ Module control_flow_v5.
                                                                                         loop_depth
                                                                                       |)
                                                                                     |),
-                                                                                    M.alloc (|
-                                                                                      M.cast
-                                                                                        (Ty.path
-                                                                                          "usize")
-                                                                                        (M.read (|
-                                                                                          j
-                                                                                        |))
-                                                                                    |)
+                                                                                    M.cast
+                                                                                      (Ty.path
+                                                                                        "usize")
+                                                                                      (M.read (|
+                                                                                        j
+                                                                                      |))
                                                                                   |)))
                                                                             ]
                                                                           |)
@@ -5029,11 +5052,9 @@ Module control_flow_v5.
                                                                                   loop_depth
                                                                                 |)
                                                                               |),
-                                                                              M.alloc (|
-                                                                                M.cast
-                                                                                  (Ty.path "usize")
-                                                                                  (M.read (| i |))
-                                                                              |)
+                                                                              M.cast
+                                                                                (Ty.path "usize")
+                                                                                (M.read (| i |))
                                                                             |)
                                                                           |),
                                                                           M.read (| max_depth |)

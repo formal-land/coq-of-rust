@@ -17,8 +17,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Send_T_for_core_cell_Cell_T.
   
@@ -29,8 +30,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_cell_Cell_T.
   
@@ -76,8 +78,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_where_core_marker_Copy_T_for_core_cell_Cell_T.
   
@@ -117,8 +120,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_Cell_T.
   
@@ -180,8 +184,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
   
@@ -190,7 +195,12 @@ Module cell.
     
     Axiom Implements :
       forall (T : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self T) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
   
   Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
@@ -460,8 +470,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp T));
@@ -535,8 +546,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
   
@@ -571,8 +583,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_core_cell_Cell_T.
   
@@ -767,7 +780,7 @@ Module cell.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -1258,8 +1271,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::Cell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::cell::Cell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_T_U_core_cell_Cell_U_for_core_cell_Cell_T.
   
@@ -1270,8 +1284,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::Cell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::cell::Cell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_T_U_core_cell_Cell_U_for_core_cell_Cell_T.
   
@@ -1469,8 +1484,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_cell_BorrowError.
   
@@ -1508,8 +1524,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_cell_BorrowError.
   
@@ -1582,8 +1599,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_cell_BorrowMutError.
   
@@ -1621,8 +1639,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_cell_BorrowMutError.
   
@@ -1642,7 +1661,12 @@ Module cell.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1712,7 +1736,12 @@ Module cell.
           [
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_v1",
+                [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -2868,8 +2897,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Send"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Send_T_for_core_cell_RefCell_T.
   
@@ -2880,8 +2910,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_cell_RefCell_T.
   
@@ -3033,8 +3064,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone T));
@@ -3078,8 +3110,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_RefCell_T.
   
@@ -3179,8 +3212,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_for_core_cell_RefCell_T.
   
@@ -3189,7 +3223,12 @@ Module cell.
     
     Axiom Implements :
       forall (T : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self T) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_for_core_cell_RefCell_T.
   
   Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_for_core_cell_RefCell_T.
@@ -3650,8 +3689,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp T));
@@ -3764,8 +3804,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_for_core_cell_RefCell_T.
   
@@ -3800,8 +3841,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_core_cell_RefCell_T.
   
@@ -3812,8 +3854,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::RefCell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::cell::RefCell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_T_U_core_cell_RefCell_U_for_core_cell_RefCell_T.
   
@@ -4069,8 +4112,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("drop", InstanceField.Method drop) ].
   End Impl_core_ops_drop_Drop_for_core_cell_BorrowRef.
   
@@ -4258,8 +4302,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_cell_BorrowRef.
   
@@ -4324,8 +4369,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_core_cell_Ref_T.
@@ -4337,8 +4383,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_core_cell_Ref_T.
   
@@ -4833,8 +4880,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::Ref") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::cell::Ref") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_core_cell_Ref_U_for_core_cell_Ref_T.
   
@@ -4888,8 +4936,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_core_cell_Ref_T.
   
@@ -5515,8 +5564,9 @@ Module cell.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("drop", InstanceField.Method drop) ].
   End Impl_core_ops_drop_Drop_for_core_cell_BorrowRefMut.
   
@@ -5852,8 +5902,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_core_cell_RefMut_T.
@@ -5914,8 +5965,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
   End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_core_cell_RefMut_T.
   
@@ -5926,8 +5978,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_core_cell_RefMut_T.
   
@@ -5938,8 +5991,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::RefMut") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::cell::RefMut") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_core_cell_RefMut_U_for_core_cell_RefMut_T.
   
@@ -5993,8 +6047,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_core_cell_RefMut_T.
   
@@ -6013,8 +6068,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
   
@@ -6244,8 +6300,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_UnsafeCell_T.
   
@@ -6280,8 +6337,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_core_cell_UnsafeCell_T.
   
@@ -6292,9 +6350,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_T_U_core_cell_UnsafeCell_U_for_core_cell_UnsafeCell_T.
   
@@ -6305,9 +6363,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_T_U_core_cell_UnsafeCell_U_for_core_cell_UnsafeCell_T.
   
@@ -6326,8 +6384,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Sync"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_for_core_cell_SyncUnsafeCell_T.
   
@@ -6540,8 +6599,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_SyncUnsafeCell_T.
   
@@ -6576,8 +6636,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_core_cell_SyncUnsafeCell_T.
   
@@ -6588,9 +6649,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::SyncUnsafeCell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::cell::SyncUnsafeCell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_T_U_core_cell_SyncUnsafeCell_U_for_core_cell_SyncUnsafeCell_T.
   
@@ -6601,9 +6662,9 @@ Module cell.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::SyncUnsafeCell") [] [ U ] ]
         (Self T U)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::cell::SyncUnsafeCell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_T_U_core_cell_SyncUnsafeCell_U_for_core_cell_SyncUnsafeCell_T.
   
@@ -6669,8 +6730,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
   
@@ -6681,8 +6743,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_SyncUnsafeCell_T.
   
@@ -6693,8 +6756,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_Cell_T.
   
@@ -6705,8 +6769,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_RefCell_T.
   
@@ -6717,8 +6782,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_Ref_T.
   
@@ -6729,8 +6795,9 @@ Module cell.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_RefMut_T.
 End cell.

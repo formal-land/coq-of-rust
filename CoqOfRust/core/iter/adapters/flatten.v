@@ -15,7 +15,14 @@ Module iter.
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                   []
-                  [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                  [
+                    Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      U
+                      "IntoIter"
                   ])
             ];
         } *)
@@ -46,7 +53,12 @@ Module iter.
                         []
                         [
                           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
-                          Ty.associated
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            U
+                            "IntoIter"
                         ],
                       M.get_associated_function (|
                         Ty.apply
@@ -54,7 +66,12 @@ Module iter.
                           []
                           [
                             Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
-                            Ty.associated
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              U
+                              "IntoIter"
                           ],
                         "new",
                         [],
@@ -217,7 +234,12 @@ Module iter.
                         []
                         [
                           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
-                          Ty.associated
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            U
+                            "IntoIter"
                         ],
                       M.get_trait_method (|
                         "core::clone::Clone",
@@ -226,7 +248,12 @@ Module iter.
                           []
                           [
                             Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
-                            Ty.associated
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              U
+                              "IntoIter"
                           ],
                         [],
                         [],
@@ -253,8 +280,9 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *) [ ("clone", InstanceField.Method (clone I U F)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_clone_Clone_F_where_core_clone_Clone_U_where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
@@ -349,17 +377,19 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I U F)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
-      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_flatten_FlatMap_I_U_F.
         Definition Self (I U F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ I; U; F ].
         
         (*     type Item = U::Item; *)
-        Definition _Item (I U F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (I U F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] U "Item".
         
         (*
             fn next(&mut self) -> Option<U::Item> {
@@ -373,13 +403,30 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      U
+                      "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -428,7 +475,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -480,7 +534,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -527,7 +588,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -580,7 +648,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -621,7 +696,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -654,13 +736,30 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      U
+                      "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -685,8 +784,9 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item I U F));
@@ -698,9 +798,9 @@ Module iter.
               ("count", InstanceField.Method (count I U F));
               ("last", InstanceField.Method (last I U F))
             ].
-      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
-      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
         Definition Self (I U F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ I; U; F ].
         
@@ -721,13 +821,30 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      U
+                      "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -779,7 +896,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -826,7 +950,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -879,7 +1010,14 @@ Module iter.
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                     []
-                    [ Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ]; Ty.associated
+                    [
+                      Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ];
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        U
+                        "IntoIter"
                     ],
                   [],
                   [],
@@ -906,8 +1044,9 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back I U F));
@@ -915,9 +1054,9 @@ Module iter.
               ("rfold", InstanceField.Method (rfold I U F));
               ("advance_back_by", InstanceField.Method (advance_back_by I U F))
             ].
-      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
-      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_flatten_FlatMap_I_U_F.
         Definition Self (I U F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ I; U; F ].
         
@@ -925,12 +1064,13 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_type__where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_core_iter_adapters_map_Map_I_F_associated_type_for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_core_iter_adapters_map_Map_I_F_associated_in_trait_core_iter_traits_collect_IntoIterator___U_IntoIter_for_core_iter_adapters_flatten_FlatMap_I_U_F.
         Definition Self (I U F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ I; U; F ].
         
@@ -938,10 +1078,11 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_type__where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_core_iter_adapters_map_Map_I_F_associated_type_for_core_iter_adapters_flatten_FlatMap_I_U_F.
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_U_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_core_iter_adapters_map_Map_I_F_associated_in_trait_core_iter_traits_collect_IntoIterator___U_IntoIter_for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
       Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_adapters_flatten_BoundedSize_U_where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
         Definition Self (I U F : Ty.t) : Ty.t :=
@@ -980,8 +1121,9 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::InPlaceIterable"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *)
             [
               ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I U F));
@@ -994,7 +1136,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ I; U; F ].
         
         (*     type Source = I::Source; *)
-        Definition _Source (I U F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Source (I U F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::adapters::SourceIter" [] [] I "Source".
         
         (*
             unsafe fn as_inner(&mut self) -> &mut I::Source {
@@ -1023,7 +1166,17 @@ Module iter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::adapters::SourceIter"
+                                  []
+                                  []
+                                  I
+                                  "Source"
+                              ],
                             M.get_trait_method (|
                               "core::iter::adapters::SourceIter",
                               Ty.apply
@@ -1069,8 +1222,9 @@ Module iter.
           forall (I U F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::SourceIter"
-            (Self I U F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U F)
             (* Instance *)
             [
               ("Source", InstanceField.Ty (_Source I U F));
@@ -1088,8 +1242,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_option_Option_T.
       
@@ -1100,8 +1255,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_option_IntoIter_T.
       
@@ -1113,8 +1269,9 @@ Module iter.
           forall (T U : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self T U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T U)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_result_Result_T_U.
       
@@ -1125,8 +1282,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_result_IntoIter_T.
       
@@ -1138,8 +1296,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_iter_sources_once_Once_T.
       
@@ -1151,8 +1310,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_iter_sources_once_with_OnceWith_T.
       
@@ -1188,8 +1348,9 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *)
             [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND N T)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_array_N_T.
@@ -1227,8 +1388,9 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *)
             [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND N T)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_array_iter_IntoIter_N_T.
@@ -1252,8 +1414,9 @@ Module iter.
           forall (I P : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self I P)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I P)
             (* Instance *)
             [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I P)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_filter_Filter_I_P.
@@ -1277,8 +1440,9 @@ Module iter.
           forall (I P : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self I P)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I P)
             (* Instance *)
             [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I P)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_filter_map_FilterMap_I_P.
@@ -1302,8 +1466,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *)
             [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I F)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_map_Map_I_F.
@@ -1327,8 +1492,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_copied_Copied_I.
       
@@ -1351,8 +1517,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::BoundedSize"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_cloned_Cloned_I.
       
@@ -1367,7 +1534,20 @@ Module iter.
                 Ty.apply
                   (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                   []
-                  [ I; Ty.associated ])
+                  [
+                    I;
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      (Ty.associated_in_trait
+                        "core::iter::traits::iterator::Iterator"
+                        []
+                        []
+                        I
+                        "Item")
+                      "IntoIter"
+                  ])
             ];
         } *)
       
@@ -1394,12 +1574,38 @@ Module iter.
                       Ty.apply
                         (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                         []
-                        [ I; Ty.associated ],
+                        [
+                          I;
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            (Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item")
+                            "IntoIter"
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::iter::adapters::flatten::FlattenCompat")
                           []
-                          [ I; Ty.associated ],
+                          [
+                            I;
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              (Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item")
+                              "IntoIter"
+                          ],
                         "new",
                         [],
                         []
@@ -1507,8 +1713,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I U)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_U_where_core_iter_traits_iterator_Iterator_U_for_core_iter_adapters_flatten_Flatten_I.
       
@@ -1564,8 +1771,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *) [ ("clone", InstanceField.Method (clone I U)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_U_where_core_iter_traits_iterator_Iterator_U_for_core_iter_adapters_flatten_Flatten_I.
       
@@ -1574,7 +1782,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [] [ I ].
         
         (*     type Item = U::Item; *)
-        Definition _Item (I U : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (I U : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item".
         
         (*
             fn next(&mut self) -> Option<U::Item> {
@@ -1588,7 +1797,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
@@ -1845,7 +2058,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
@@ -1872,8 +2089,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item I U));
@@ -1908,7 +2126,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
@@ -2077,8 +2299,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back I U));
@@ -2096,12 +2319,13 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_iter_traits_iterator_Iterator_U_for_core_iter_adapters_flatten_Flatten_I.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_I_associated_type_for_core_iter_adapters_flatten_Flatten_I.
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_IntoIter_for_core_iter_adapters_flatten_Flatten_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [] [ I ].
         
@@ -2109,12 +2333,13 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_I_associated_type_for_core_iter_adapters_flatten_Flatten_I.
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_marker_TrustedLen_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_IntoIter_for_core_iter_adapters_flatten_Flatten_I.
       
-      Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_type_where_core_iter_adapters_flatten_BoundedSize_associated_type_for_core_iter_adapters_flatten_Flatten_I.
+      Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_iter_adapters_flatten_BoundedSize_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_flatten_Flatten_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [] [ I ].
         
@@ -2151,21 +2376,23 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::InPlaceIterable"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [
               ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
               ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
             ].
-      End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_type_where_core_iter_adapters_flatten_BoundedSize_associated_type_for_core_iter_adapters_flatten_Flatten_I.
+      End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_iter_adapters_flatten_BoundedSize_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_flatten_Flatten_I.
       
-      Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_type_for_core_iter_adapters_flatten_Flatten_I.
+      Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_flatten_Flatten_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [] [ I ].
         
         (*     type Source = I::Source; *)
-        Definition _Source (I : Ty.t) : Ty.t := Ty.associated.
+        Definition _Source (I : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::adapters::SourceIter" [] [] I "Source".
         
         (*
             unsafe fn as_inner(&mut self) -> &mut I::Source {
@@ -2189,7 +2416,17 @@ Module iter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::adapters::SourceIter"
+                                  []
+                                  []
+                                  I
+                                  "Source"
+                              ],
                             M.get_trait_method (|
                               "core::iter::adapters::SourceIter",
                               Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
@@ -2232,14 +2469,15 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::SourceIter"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [
               ("Source", InstanceField.Ty (_Source I));
               ("as_inner", InstanceField.Method (as_inner I))
             ].
-      End Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_type_for_core_iter_adapters_flatten_Flatten_I.
+      End Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_where_core_iter_traits_marker_TrustedFused_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_flatten_Flatten_I.
       
       Module Impl_core_default_Default_where_core_default_Default_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_flatten_Flatten_I.
         Definition Self (I : Ty.t) : Ty.t :=
@@ -2278,8 +2516,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("default", InstanceField.Method (default I)) ].
       End Impl_core_default_Default_where_core_default_Default_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_flatten_Flatten_I.
       
@@ -2402,8 +2641,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *) [ ("clone", InstanceField.Method (clone I U)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_clone_Clone_U_for_core_iter_adapters_flatten_FlattenCompat_I_U.
       
@@ -2498,8 +2738,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I U)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_fmt_Debug_U_for_core_iter_adapters_flatten_FlattenCompat_I_U.
       
@@ -2642,7 +2883,7 @@ Module iter.
                           [],
                           "fold",
                           [],
-                          [ Acc; Ty.associated ]
+                          [ Acc; Ty.associated_unknown ]
                         |),
                         [
                           M.read (|
@@ -2654,7 +2895,7 @@ Module iter.
                           |);
                           M.read (| acc |);
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_unknown,
                             M.get_associated_function (| Self, "flatten.iter_fold", [], [] |),
                             [
                               M.borrow (|
@@ -2804,7 +3045,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -2864,7 +3113,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -2916,7 +3172,15 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
-                                    [ Ty.associated; Acc ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::try_trait::Try"
+                                        []
+                                        []
+                                        R
+                                        "Residual";
+                                      Acc
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     R,
@@ -2939,7 +3203,7 @@ Module iter.
                                         [],
                                         "try_fold",
                                         [],
-                                        [ Acc; Ty.associated; R ]
+                                        [ Acc; Ty.associated_unknown; R ]
                                       |),
                                       [
                                         M.borrow (|
@@ -2952,7 +3216,7 @@ Module iter.
                                         |);
                                         M.read (| acc |);
                                         M.call_closure (|
-                                          Ty.associated,
+                                          Ty.associated_unknown,
                                           M.get_associated_function (|
                                             Self,
                                             "flatten.iter_try_fold",
@@ -3004,7 +3268,14 @@ Module iter.
                                                 "core::ops::try_trait::FromResidual",
                                                 R,
                                                 [],
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual"
+                                                ],
                                                 "from_residual",
                                                 [],
                                                 []
@@ -3077,7 +3348,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -3137,7 +3416,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -3299,7 +3585,7 @@ Module iter.
                           [],
                           "rfold",
                           [],
-                          [ Acc; Ty.associated ]
+                          [ Acc; Ty.associated_unknown ]
                         |),
                         [
                           M.read (|
@@ -3311,7 +3597,7 @@ Module iter.
                           |);
                           M.read (| acc |);
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_unknown,
                             M.get_associated_function (| Self, "flatten.iter_rfold", [], [] |),
                             [
                               M.borrow (|
@@ -3461,7 +3747,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -3521,7 +3815,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -3573,7 +3874,15 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
-                                    [ Ty.associated; Acc ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::try_trait::Try"
+                                        []
+                                        []
+                                        R
+                                        "Residual";
+                                      Acc
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     R,
@@ -3596,7 +3905,7 @@ Module iter.
                                         [],
                                         "try_rfold",
                                         [],
-                                        [ Acc; Ty.associated; R ]
+                                        [ Acc; Ty.associated_unknown; R ]
                                       |),
                                       [
                                         M.borrow (|
@@ -3609,7 +3918,7 @@ Module iter.
                                         |);
                                         M.read (| acc |);
                                         M.call_closure (|
-                                          Ty.associated,
+                                          Ty.associated_unknown,
                                           M.get_associated_function (|
                                             Self,
                                             "flatten.iter_try_rfold",
@@ -3661,7 +3970,14 @@ Module iter.
                                                 "core::ops::try_trait::FromResidual",
                                                 R,
                                                 [],
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual"
+                                                ],
                                                 "from_residual",
                                                 [],
                                                 []
@@ -3734,7 +4050,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -3794,7 +4118,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -3868,7 +4199,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ].
         
         (*     type Item = U::Item; *)
-        Definition _Item (I U : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (I U : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item".
         
         (*
             default fn next(&mut self) -> Option<U::Item> {
@@ -3907,19 +4239,38 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                U
+                                                "Item"
+                                            ],
                                           M.get_function (|
                                             "core::iter::adapters::flatten::and_then_or_clear",
                                             [],
                                             [
                                               U;
-                                              Ty.associated;
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                U
+                                                "Item";
                                               Ty.function
                                                 [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                 (Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
-                                                  [ Ty.associated ])
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      U
+                                                      "Item"
+                                                  ])
                                             ]
                                           |),
                                           [
@@ -3966,7 +4317,17 @@ Module iter.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item"
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
@@ -4001,19 +4362,38 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
-                                              [ Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  U
+                                                  "Item"
+                                              ],
                                             M.get_function (|
                                               "core::iter::adapters::flatten::and_then_or_clear",
                                               [],
                                               [
                                                 U;
-                                                Ty.associated;
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  U
+                                                  "Item";
                                                 Ty.function
                                                   [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                   (Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
-                                                    [ Ty.associated ])
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        U
+                                                        "Item"
+                                                    ])
                                               ]
                                             |),
                                             [
@@ -4068,7 +4448,12 @@ Module iter.
                                             U,
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::IntoIterator",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item",
                                               [],
                                               [],
                                               "into_iter",
@@ -4320,7 +4705,12 @@ Module iter.
                                                       [ Ty.path "usize" ],
                                                     M.get_trait_method (|
                                                       "core::iter::adapters::flatten::ConstSizeIntoIterator",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        I
+                                                        "Item",
                                                       [],
                                                       [],
                                                       "size",
@@ -5157,13 +5547,13 @@ Module iter.
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
                   "iter_try_fold",
                   [],
-                  [ Acc; Ty.associated; R ]
+                  [ Acc; Ty.associated_unknown; R ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (| Self, "flatten.try_fold", [], [] |),
                     [ M.read (| fold |) ]
                   |)
@@ -5201,13 +5591,13 @@ Module iter.
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
                   "iter_fold",
                   [],
-                  [ Acc; Ty.associated ]
+                  [ Acc; Ty.associated_unknown ]
                 |),
                 [
                   M.read (| self |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (| Self, "flatten.fold", [], [] |),
                     [ M.read (| fold |) ]
                   |)
@@ -5434,16 +5824,53 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item"
+                  ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
                   "iter_fold",
                   [],
                   [
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ];
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          U
+                          "Item"
+                      ];
                     Ty.function
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]; U ]
-                      (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              U
+                              "Item"
+                          ];
+                        U
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            U
+                            "Item"
+                        ])
                   ]
                 |),
                 [
@@ -5459,8 +5886,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item I U));
@@ -5520,19 +5948,38 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                U
+                                                "Item"
+                                            ],
                                           M.get_function (|
                                             "core::iter::adapters::flatten::and_then_or_clear",
                                             [],
                                             [
                                               U;
-                                              Ty.associated;
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                U
+                                                "Item";
                                               Ty.function
                                                 [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ U ] ] ]
                                                 (Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
-                                                  [ Ty.associated ])
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      U
+                                                      "Item"
+                                                  ])
                                             ]
                                           |),
                                           [
@@ -5565,7 +6012,14 @@ Module iter.
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      U
+                                                                      "Item"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   U,
@@ -5607,7 +6061,17 @@ Module iter.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item"
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                   Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ],
@@ -5642,20 +6106,39 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
-                                              [ Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  U
+                                                  "Item"
+                                              ],
                                             M.get_function (|
                                               "core::iter::adapters::flatten::and_then_or_clear",
                                               [],
                                               [
                                                 U;
-                                                Ty.associated;
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  U
+                                                  "Item";
                                                 Ty.function
                                                   [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
-                                                    [ Ty.associated ])
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        U
+                                                        "Item"
+                                                    ])
                                               ]
                                             |),
                                             [
@@ -5688,7 +6171,14 @@ Module iter.
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
                                                                     []
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::iter::traits::iterator::Iterator"
+                                                                        []
+                                                                        []
+                                                                        U
+                                                                        "Item"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                     U,
@@ -5738,7 +6228,12 @@ Module iter.
                                             U,
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::IntoIterator",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item",
                                               [],
                                               [],
                                               "into_iter",
@@ -5795,13 +6290,13 @@ Module iter.
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
                   "iter_try_rfold",
                   [],
-                  [ Acc; Ty.associated; R ]
+                  [ Acc; Ty.associated_unknown; R ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (| Self, "flatten.try_rfold", [], [] |),
                     [ M.read (| fold |) ]
                   |)
@@ -5839,13 +6334,13 @@ Module iter.
                   Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; U ],
                   "iter_rfold",
                   [],
-                  [ Acc; Ty.associated ]
+                  [ Acc; Ty.associated_unknown ]
                 |),
                 [
                   M.read (| self |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_associated_function (| Self, "flatten.rfold", [], [] |),
                     [ M.read (| fold |) ]
                   |)
@@ -6025,8 +6520,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back I U));
@@ -6036,34 +6532,80 @@ Module iter.
             ].
       End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_iter_traits_double_ended_DoubleEndedIterator_U_for_core_iter_adapters_flatten_FlattenCompat_I_U.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_type.
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___array_N_T_IntoIter.
         Definition Self (N : Value.t) (I T : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::adapters::flatten::FlattenCompat") [] [ I; Ty.associated ].
+          Ty.apply
+            (Ty.path "core::iter::adapters::flatten::FlattenCompat")
+            []
+            [
+              I;
+              Ty.associated_in_trait
+                "core::iter::traits::collect::IntoIterator"
+                []
+                []
+                (Ty.apply (Ty.path "array") [ N ] [ T ])
+                "IntoIter"
+            ].
         
         Axiom Implements :
           forall (N : Value.t) (I T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self N I T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I T)
             (* Instance *) [].
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___array_N_T_IntoIter.
+      
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___ref__array_N_T_IntoIter.
+        Definition Self (N : Value.t) (I T : Ty.t) : Ty.t :=
+          Ty.apply
+            (Ty.path "core::iter::adapters::flatten::FlattenCompat")
+            []
+            [
+              I;
+              Ty.associated_in_trait
+                "core::iter::traits::collect::IntoIterator"
+                []
+                []
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                "IntoIter"
+            ].
+        
         Axiom Implements :
           forall (N : Value.t) (I T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self N I T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I T)
             (* Instance *) [].
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___ref__array_N_T_IntoIter.
+      
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___ref_mut_array_N_T_IntoIter.
+        Definition Self (N : Value.t) (I T : Ty.t) : Ty.t :=
+          Ty.apply
+            (Ty.path "core::iter::adapters::flatten::FlattenCompat")
+            []
+            [
+              I;
+              Ty.associated_in_trait
+                "core::iter::traits::collect::IntoIterator"
+                []
+                []
+                (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                "IntoIter"
+            ].
+        
         Axiom Implements :
           forall (N : Value.t) (I T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self N I T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N I T)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_type.
-      
-      
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_for_core_iter_adapters_flatten_FlattenCompat_I_associated_in_trait_core_iter_traits_collect_IntoIterator___ref_mut_array_N_T_IntoIter.
       
       (* Trait *)
       (* Empty module 'ConstSizeIntoIterator' *)
@@ -6087,8 +6629,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::ConstSizeIntoIterator"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("size", InstanceField.Method (size T)) ].
       End Impl_core_iter_adapters_flatten_ConstSizeIntoIterator_where_core_iter_traits_collect_IntoIterator_T_for_T.
       
@@ -6121,8 +6664,9 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::ConstSizeIntoIterator"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *) [ ("size", InstanceField.Method (size N T)) ].
       End Impl_core_iter_adapters_flatten_ConstSizeIntoIterator_for_array_N_T.
       
@@ -6156,8 +6700,9 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::ConstSizeIntoIterator"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *) [ ("size", InstanceField.Method (size N T)) ].
       End Impl_core_iter_adapters_flatten_ConstSizeIntoIterator_for_ref__array_N_T.
       
@@ -6191,8 +6736,9 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::ConstSizeIntoIterator"
-            (Self N T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self N T)
             (* Instance *) [ ("size", InstanceField.Method (size N T)) ].
       End Impl_core_iter_adapters_flatten_ConstSizeIntoIterator_for_ref_mut_array_N_T.
       
@@ -6402,8 +6948,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_iter_sources_once_Once_T.
       
@@ -6415,8 +6962,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_iter_sources_once_with_OnceWith_F.
       
@@ -6431,8 +6979,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_array_iter_IntoIter_Usize_1_T.
       
@@ -6443,8 +6992,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_option_IntoIter_T.
       
@@ -6455,8 +7005,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_option_Iter_T.
       
@@ -6467,8 +7018,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_option_IterMut_T.
       
@@ -6479,8 +7031,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_result_IntoIter_T.
       
@@ -6491,8 +7044,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_result_Iter_T.
       
@@ -6503,8 +7057,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_result_IterMut_T.
       
@@ -6516,8 +7071,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_iter_sources_empty_Empty_T.
       
@@ -6532,8 +7088,9 @@ Module iter.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_for_core_array_iter_IntoIter_Usize_0_T.
       
@@ -6545,8 +7102,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_where_core_iter_adapters_flatten_OneShot_I_for_core_iter_adapters_cloned_Cloned_I.
       
@@ -6558,8 +7116,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_where_core_iter_adapters_flatten_OneShot_I_for_core_iter_adapters_copied_Copied_I.
       
@@ -6571,8 +7130,9 @@ Module iter.
           forall (I P : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self I P)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I P)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_where_core_iter_adapters_flatten_OneShot_I_for_core_iter_adapters_filter_Filter_I_P.
       
@@ -6584,8 +7144,9 @@ Module iter.
           forall (I P : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self I P)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I P)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_where_core_iter_adapters_flatten_OneShot_I_for_core_iter_adapters_filter_map_FilterMap_I_P.
       
@@ -6597,8 +7158,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_where_core_iter_adapters_flatten_OneShot_I_for_core_iter_adapters_map_Map_I_F.
       
@@ -6609,8 +7171,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::flatten::OneShot"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
       End Impl_core_iter_adapters_flatten_OneShot_where_core_iter_adapters_flatten_OneShot_I_for_ref_mut_I.
       
@@ -6628,10 +7191,19 @@ Module iter.
           ltac:(M.monadic
             (let inner := M.alloc (| inner |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "Item"
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 [],
                 [],
                 "next",
@@ -6643,7 +7215,12 @@ Module iter.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         I,
@@ -6705,10 +7282,22 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
                                                 []
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::collect::IntoIterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::collect::IntoIterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "IntoIter",
                                                 [],
                                                 [],
                                                 "next",
@@ -6720,7 +7309,12 @@ Module iter.
                                                   Pointer.Kind.MutRef,
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::collect::IntoIterator"
+                                                        []
+                                                        []
+                                                        I
+                                                        "IntoIter",
                                                       M.get_trait_method (|
                                                         "core::iter::traits::collect::IntoIterator",
                                                         I,
@@ -6754,7 +7348,18 @@ Module iter.
                                                       "core::ops::function::FnMut",
                                                       impl_FnMut_Acc__I_Item__arrow_Acc,
                                                       [],
-                                                      [ Ty.tuple [ Acc; Ty.associated ] ],
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Acc;
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::collect::IntoIterator"
+                                                              []
+                                                              []
+                                                              I
+                                                              "Item"
+                                                          ]
+                                                      ],
                                                       "call_mut",
                                                       [],
                                                       []
@@ -6834,10 +7439,22 @@ Module iter.
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
                                                 []
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::collect::IntoIterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::collect::IntoIterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "IntoIter",
                                                 [],
                                                 [],
                                                 "next",
@@ -6849,7 +7466,12 @@ Module iter.
                                                   Pointer.Kind.MutRef,
                                                   M.alloc (|
                                                     M.call_closure (|
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::collect::IntoIterator"
+                                                        []
+                                                        []
+                                                        I
+                                                        "IntoIter",
                                                       M.get_trait_method (|
                                                         "core::iter::traits::collect::IntoIterator",
                                                         I,
@@ -6883,7 +7505,18 @@ Module iter.
                                                       "core::ops::function::FnMut",
                                                       impl_FnMut_Acc__I_Item__arrow_R,
                                                       [],
-                                                      [ Ty.tuple [ Acc; Ty.associated ] ],
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Acc;
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::collect::IntoIterator"
+                                                              []
+                                                              []
+                                                              I
+                                                              "Item"
+                                                          ]
+                                                      ],
                                                       "call_mut",
                                                       [],
                                                       []
@@ -6958,10 +7591,25 @@ Module iter.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       [],
                       [],
                       "next",
@@ -6973,7 +7621,12 @@ Module iter.
                         Pointer.Kind.MutRef,
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               I,
@@ -7089,7 +7742,14 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
-                                          [ Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -7132,7 +7792,14 @@ Module iter.
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
-                                                  [ Ty.associated ],
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      U
+                                                      "Item"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   U,
@@ -7150,7 +7817,12 @@ Module iter.
                                                         U,
                                                         M.get_trait_method (|
                                                           "core::iter::traits::collect::IntoIterator",
-                                                          Ty.associated,
+                                                          Ty.associated_in_trait
+                                                            "core::iter::traits::iterator::Iterator"
+                                                            []
+                                                            []
+                                                            I
+                                                            "Item",
                                                           [],
                                                           [],
                                                           "into_iter",
@@ -7265,7 +7937,12 @@ Module iter.
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               M.get_trait_method (|
                                 "core::iter::adapters::flatten::ConstSizeIntoIterator",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item",
                                 [],
                                 [],
                                 "size",
@@ -7360,7 +8037,7 @@ Module iter.
                   [],
                   "try_fold",
                   [],
-                  [ Acc; Ty.associated; R ]
+                  [ Acc; Ty.associated_unknown; R ]
                 |),
                 [
                   M.borrow (|
@@ -7373,11 +8050,21 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::flatten::try_flatten_one",
                       [],
-                      [ Ty.associated; Acc; R; Fold ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        Acc;
+                        R;
+                        Fold
+                      ]
                     |),
                     [ M.read (| fold |) ]
                   |)
@@ -7411,7 +8098,7 @@ Module iter.
                   [],
                   "fold",
                   [],
-                  [ Acc; Ty.associated ]
+                  [ Acc; Ty.associated_unknown ]
                 |),
                 [
                   M.read (|
@@ -7423,11 +8110,20 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::flatten::flatten_one",
                       [],
-                      [ Ty.associated; Acc; Fold ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        Acc;
+                        Fold
+                      ]
                     |),
                     [ M.read (| fold |) ]
                   |)
@@ -7578,7 +8274,12 @@ Module iter.
                                           (Ty.path "core::num::nonzero::NonZero")
                                           []
                                           [ Ty.path "usize" ];
-                                        Ty.associated
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
                                       ]
                                       (Ty.apply
                                         (Ty.path "core::option::Option")
@@ -7613,7 +8314,14 @@ Module iter.
                                   M.get_function (|
                                     "core::iter::adapters::flatten::advance_by_one",
                                     [],
-                                    [ Ty.associated ]
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
                                   |)
                                 ]
                               |);
@@ -7685,8 +8393,30 @@ Module iter.
                     [
                       Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ];
                       Ty.function
-                        [ Ty.associated ]
-                        (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              (Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item")
+                              "Item"
+                          ])
                     ],
                   [],
                   [],
@@ -7702,8 +8432,30 @@ Module iter.
                       [
                         Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ];
                         Ty.function
-                          [ Ty.associated ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                (Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item")
+                                "Item"
+                            ])
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -7713,10 +8465,37 @@ Module iter.
                       "filter_map",
                       [],
                       [
-                        Ty.associated;
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          U
+                          "Item";
                         Ty.function
-                          [ Ty.associated ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                (Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item")
+                                "Item"
+                            ])
                       ]
                     |),
                     [
@@ -7730,7 +8509,14 @@ Module iter.
                       M.get_function (|
                         "core::iter::adapters::flatten::into_item",
                         [],
-                        [ Ty.associated ]
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
+                        ]
                       |)
                     ]
                   |)
@@ -7751,7 +8537,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] U "Item"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
@@ -7760,8 +8550,30 @@ Module iter.
                     [
                       Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ];
                       Ty.function
-                        [ Ty.associated ]
-                        (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              (Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item")
+                              "Item"
+                          ])
                     ],
                   [],
                   [],
@@ -7777,8 +8589,30 @@ Module iter.
                       [
                         Ty.apply (Ty.path "core::iter::adapters::fuse::Fuse") [] [ I ];
                         Ty.function
-                          [ Ty.associated ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                (Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item")
+                                "Item"
+                            ])
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -7788,10 +8622,37 @@ Module iter.
                       "filter_map",
                       [],
                       [
-                        Ty.associated;
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          U
+                          "Item";
                         Ty.function
-                          [ Ty.associated ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                (Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item")
+                                "Item"
+                            ])
                       ]
                     |),
                     [
@@ -7805,7 +8666,14 @@ Module iter.
                       M.get_function (|
                         "core::iter::adapters::flatten::into_item",
                         [],
-                        [ Ty.associated ]
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
+                        ]
                       |)
                     ]
                   |)
@@ -7818,8 +8686,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *)
             [
               ("next", InstanceField.Method (next I U));
@@ -7874,7 +8743,14 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
-                                          [ Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                           Ty.apply
@@ -7917,7 +8793,14 @@ Module iter.
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
-                                                  [ Ty.associated ],
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      U
+                                                      "Item"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   U,
@@ -7935,7 +8818,12 @@ Module iter.
                                                         U,
                                                         M.get_trait_method (|
                                                           "core::iter::traits::collect::IntoIterator",
-                                                          Ty.associated,
+                                                          Ty.associated_in_trait
+                                                            "core::iter::traits::iterator::Iterator"
+                                                            []
+                                                            []
+                                                            I
+                                                            "Item",
                                                           [],
                                                           [],
                                                           "into_iter",
@@ -8018,7 +8906,7 @@ Module iter.
                   [],
                   "try_rfold",
                   [],
-                  [ Acc; Ty.associated; R ]
+                  [ Acc; Ty.associated_unknown; R ]
                 |),
                 [
                   M.borrow (|
@@ -8031,11 +8919,21 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::flatten::try_flatten_one",
                       [],
-                      [ Ty.associated; Acc; R; Fold ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        Acc;
+                        R;
+                        Fold
+                      ]
                     |),
                     [ M.read (| fold |) ]
                   |)
@@ -8069,7 +8967,7 @@ Module iter.
                   [],
                   "rfold",
                   [],
-                  [ Acc; Ty.associated ]
+                  [ Acc; Ty.associated_unknown ]
                 |),
                 [
                   M.read (|
@@ -8081,11 +8979,20 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::flatten::flatten_one",
                       [],
-                      [ Ty.associated; Acc; Fold ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        Acc;
+                        Fold
+                      ]
                     |),
                     [ M.read (| fold |) ]
                   |)
@@ -8236,7 +9143,12 @@ Module iter.
                                           (Ty.path "core::num::nonzero::NonZero")
                                           []
                                           [ Ty.path "usize" ];
-                                        Ty.associated
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item"
                                       ]
                                       (Ty.apply
                                         (Ty.path "core::option::Option")
@@ -8271,7 +9183,14 @@ Module iter.
                                   M.get_function (|
                                     "core::iter::adapters::flatten::advance_by_one",
                                     [],
-                                    [ Ty.associated ]
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
                                   |)
                                 ]
                               |);
@@ -8326,8 +9245,9 @@ Module iter.
           forall (I U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self I U)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I U)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back I U));

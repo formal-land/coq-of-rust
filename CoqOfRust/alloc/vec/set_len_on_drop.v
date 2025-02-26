@@ -138,8 +138,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("drop", InstanceField.Method drop) ].
     End Impl_core_ops_drop_Drop_for_alloc_vec_set_len_on_drop_SetLenOnDrop.
   End set_len_on_drop.

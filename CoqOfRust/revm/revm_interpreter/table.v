@@ -86,7 +86,6 @@ Module table.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Custom";
@@ -101,11 +100,15 @@ Module table.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InstructionTables_Plain :
+    M.IsDiscriminant "revm_interpreter::table::InstructionTables::Plain" 0.
+  Axiom IsDiscriminant_InstructionTables_Custom :
+    M.IsDiscriminant "revm_interpreter::table::InstructionTables::Custom" 1.
   
   Module Impl_revm_interpreter_table_InstructionTables_WIRE_H_CI.
     Definition Self (WIRE H CI : Ty.t) : Ty.t :=
@@ -150,7 +153,7 @@ Module table.
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                          M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                          M.cast (Ty.path "usize") (M.read (| opcode |))
                         |),
                         M.read (| instruction |)
                       |)
@@ -169,7 +172,7 @@ Module table.
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                          M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                          M.cast (Ty.path "usize") (M.read (| opcode |))
                         |),
                         M.call_closure (|
                           CI,
@@ -593,7 +596,7 @@ Module table.
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                      M.cast (Ty.path "usize") (M.read (| opcode |))
                     |)
                   |)
                 |)
@@ -824,7 +827,7 @@ Module table.
                                       M.read (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| table |) |),
-                                          i
+                                          M.read (| i |)
                                         |)
                                       |)
                                     ]

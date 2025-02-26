@@ -43,8 +43,9 @@ Module instantiation_loops.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_bytecode_verifier_instantiation_loops_Node.
@@ -55,8 +56,9 @@ Module instantiation_loops.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_instantiation_loops_Node.
   
@@ -125,8 +127,9 @@ Module instantiation_loops.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_instantiation_loops_Node.
   
@@ -209,8 +212,9 @@ Module instantiation_loops.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_bytecode_verifier_instantiation_loops_Node.
   
@@ -220,8 +224,9 @@ Module instantiation_loops.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_bytecode_verifier_instantiation_loops_Node.
   
@@ -253,8 +258,9 @@ Module instantiation_loops.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_bytecode_verifier_instantiation_loops_Node.
   
@@ -268,7 +274,6 @@ Module instantiation_loops.
         {
           name := "Identity";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TyConApp";
@@ -280,11 +285,15 @@ Module instantiation_loops.
                   []
                   [ Ty.path "move_binary_format::file_format::SignatureToken" ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Edge_Identity :
+    M.IsDiscriminant "move_bytecode_verifier::instantiation_loops::Edge::Identity" 0.
+  Axiom IsDiscriminant_Edge_TyConApp :
+    M.IsDiscriminant "move_bytecode_verifier::instantiation_loops::Edge::TyConApp" 1.
   
   (* StructRecord
     {
@@ -1622,7 +1631,10 @@ Module instantiation_loops.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
-                                          [],
+                                          [
+                                            Value.Integer IntegerKind.Usize 3;
+                                            Value.Integer IntegerKind.Usize 2
+                                          ],
                                           []
                                         |),
                                         [
@@ -5278,7 +5290,10 @@ Module instantiation_loops.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          Value.Integer IntegerKind.Usize 2
+                                        ],
                                         []
                                       |),
                                       [
@@ -5608,7 +5623,10 @@ Module instantiation_loops.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 3;
+                                                  Value.Integer IntegerKind.Usize 3
+                                                ],
                                                 []
                                               |),
                                               [
@@ -5753,7 +5771,10 @@ Module instantiation_loops.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 2;
+                                                  Value.Integer IntegerKind.Usize 2
+                                                ],
                                                 []
                                               |),
                                               [

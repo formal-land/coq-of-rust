@@ -17,8 +17,9 @@ Module Impl_core_default_Default_for_conditional_compilation_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_conditional_compilation_AccountId.
 
@@ -30,8 +31,9 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_conditional_compilation_AccountId.
 
@@ -39,7 +41,12 @@ Module Impl_core_marker_Copy_for_conditional_compilation_AccountId.
   Definition Self : Ty.t := Ty.path "conditional_compilation::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_conditional_compilation_AccountId.
 
 Axiom Balance : (Ty.path "conditional_compilation::Balance") = (Ty.path "u128").
@@ -89,16 +96,18 @@ Enum Event
       {
         name := "Changes";
         item := StructTuple [ Ty.path "conditional_compilation::Changes" ];
-        discriminant := None;
       };
       {
         name := "ChangesDated";
         item := StructTuple [ Ty.path "conditional_compilation::ChangesDated" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Changes : M.IsDiscriminant "conditional_compilation::Event::Changes" 0.
+Axiom IsDiscriminant_Event_ChangesDated :
+  M.IsDiscriminant "conditional_compilation::Event::ChangesDated" 1.
 
 Module Impl_conditional_compilation_Env.
   Definition Self : Ty.t := Ty.path "conditional_compilation::Env".
@@ -185,8 +194,9 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
   Axiom Implements :
     M.IsTraitInstance
       "conditional_compilation::Flip"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("flip", InstanceField.Method flip);

@@ -121,8 +121,9 @@ Module error.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_error_private_Internal.
   End private.
@@ -133,8 +134,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_never.
   
@@ -1103,7 +1105,12 @@ Module error.
                                   "core::option::Option::Some"
                                   [
                                     M.call_closure (|
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "core::error::tags::Type"
+                                        []
+                                        []
+                                        I
+                                        "Reified",
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         impl_FnOnce___arrow_I_Reified,
@@ -1337,8 +1344,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_error_Request.
   
@@ -1353,14 +1361,16 @@ Module error.
       Definition Self (T : Ty.t) : Ty.t := T.
       
       (*         type Reified = T::Reified; *)
-      Definition _Reified (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Reified (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::error::tags::Type" [] [] T "Reified".
       
       Axiom Implements :
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::error::tags::MaybeSizedType"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("Reified", InstanceField.Ty (_Reified T)) ].
     End Impl_core_error_tags_MaybeSizedType_where_core_error_tags_Type_T_for_T.
     
@@ -1424,8 +1434,9 @@ Module error.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_error_tags_Value_T.
     
@@ -1439,8 +1450,9 @@ Module error.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::error::tags::Type"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("Reified", InstanceField.Ty (_Reified T)) ].
     End Impl_core_error_tags_Type_for_core_error_tags_Value_T.
     
@@ -1508,8 +1520,9 @@ Module error.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_core_error_tags_MaybeSizedValue_T.
     
@@ -1524,8 +1537,9 @@ Module error.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::error::tags::MaybeSizedType"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("Reified", InstanceField.Ty (_Reified T)) ].
     End Impl_core_error_tags_MaybeSizedType_where_core_marker_Sized_T_for_core_error_tags_MaybeSizedValue_T.
     
@@ -1589,8 +1603,9 @@ Module error.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_error_tags_Ref_I.
     
@@ -1598,14 +1613,19 @@ Module error.
       Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::tags::Ref") [] [ I ].
       
       (*         type Reified = &'a I::Reified; *)
-      Definition _Reified (I : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.associated ].
+      Definition _Reified (I : Ty.t) : Ty.t :=
+        Ty.apply
+          (Ty.path "&")
+          []
+          [ Ty.associated_in_trait "core::error::tags::MaybeSizedType" [] [] I "Reified" ].
       
       Axiom Implements :
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::error::tags::Type"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *) [ ("Reified", InstanceField.Ty (_Reified I)) ].
     End Impl_core_error_tags_Type_where_core_error_tags_MaybeSizedType_I_for_core_error_tags_Ref_I.
   End tags.
@@ -1615,7 +1635,13 @@ Module error.
       name := "TaggedOption";
       const_params := [];
       ty_params := [ "I" ];
-      fields := [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ];
+      fields :=
+        [
+          Ty.apply
+            (Ty.path "core::option::Option")
+            []
+            [ Ty.associated_in_trait "core::error::tags::Type" [] [] I "Reified" ]
+        ];
     } *)
   
   Module Impl_core_error_Tagged_core_error_TaggedOption_I.
@@ -1709,8 +1735,9 @@ Module error.
       forall (I : Ty.t),
       M.IsTraitInstance
         "core::error::Erased"
-        (Self I)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I)
         (* Instance *) [].
   End Impl_core_error_Erased_where_core_error_tags_Type_I_for_core_error_TaggedOption_I.
   
@@ -2105,8 +2132,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_error_Source.
   
@@ -2161,8 +2189,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_error_Source.
   
@@ -2341,8 +2370,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -2357,8 +2387,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_error_Source.
   
@@ -2504,8 +2535,9 @@ Module error.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::error::Error"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("description", InstanceField.Method (description T));
@@ -2538,8 +2570,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_fmt_Error.
   
@@ -2566,8 +2599,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_cell_BorrowError.
   
@@ -2594,8 +2628,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_cell_BorrowMutError.
   
@@ -2622,8 +2657,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_char_convert_CharTryFromError.
   
@@ -2633,8 +2669,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_core_time_TryFromFloatSecsError.
   
@@ -2644,8 +2681,9 @@ Module error.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_core_ffi_c_str_FromBytesUntilNulError.
   
@@ -2657,8 +2695,9 @@ Module error.
       forall (N : Value.t),
       M.IsTraitInstance
         "core::error::Error"
-        (Self N)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N)
         (* Instance *) [].
   End Impl_core_error_Error_for_core_slice_GetManyMutError_N.
 End error.

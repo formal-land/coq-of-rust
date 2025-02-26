@@ -1067,7 +1067,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -2076,8 +2076,9 @@ Module slice.
           Axiom Implements :
             M.IsTraitInstance
               "core::marker::Copy"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [].
         End Impl_core_marker_Copy_for_core_slice_sort_stable_drift_DriftsortRun.
         
@@ -2102,8 +2103,9 @@ Module slice.
           Axiom Implements :
             M.IsTraitInstance
               "core::clone::Clone"
-              Self
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              Self
               (* Instance *) [ ("clone", InstanceField.Method clone) ].
         End Impl_core_clone_Clone_for_core_slice_sort_stable_drift_DriftsortRun.
         

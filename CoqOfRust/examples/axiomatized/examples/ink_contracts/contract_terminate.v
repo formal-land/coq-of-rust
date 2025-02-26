@@ -17,8 +17,9 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_contract_terminate_AccountId.
 
@@ -30,8 +31,9 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_contract_terminate_AccountId.
 
@@ -39,7 +41,12 @@ Module Impl_core_marker_Copy_for_contract_terminate_AccountId.
   Definition Self : Ty.t := Ty.path "contract_terminate::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_contract_terminate_AccountId.
 
 (* StructRecord
