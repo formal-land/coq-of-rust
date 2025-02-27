@@ -3,12 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "diverging_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "diverging_functions::main" main.
+Admitted.
 
 Module main.
   Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_foo : M.IsFunction "diverging_functions::main::foo" foo.
-  Smpl Add apply Function_foo : is_function.
+  Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "diverging_functions::main::foo" foo.
+  Admitted.
 End main.

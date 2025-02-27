@@ -75,8 +75,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_repeat_n : M.IsFunction "core::iter::sources::repeat_n::repeat_n" repeat_n.
-      Smpl Add apply Function_repeat_n : is_function.
+      Global Instance Instance_IsFunction_repeat_n :
+        M.IsFunction.Trait "core::iter::sources::repeat_n::repeat_n" repeat_n.
+      Admitted.
+      Global Typeclasses Opaque repeat_n.
       
       (* StructRecord
         {
@@ -179,10 +181,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_element_ref :
+        Global Instance AssociatedFunction_element_ref :
           forall (A : Ty.t),
-          M.IsAssociatedFunction (Self A) "element_ref" (element_ref A).
-        Smpl Add apply AssociatedFunction_element_ref : is_associated.
+          M.IsAssociatedFunction.Trait (Self A) "element_ref" (element_ref A).
+        Admitted.
+        Global Typeclasses Opaque element_ref.
         
         (*
             fn take_element(&mut self) -> Option<A> {
@@ -313,10 +316,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_take_element :
+        Global Instance AssociatedFunction_take_element :
           forall (A : Ty.t),
-          M.IsAssociatedFunction (Self A) "take_element" (take_element A).
-        Smpl Add apply AssociatedFunction_take_element : is_associated.
+          M.IsAssociatedFunction.Trait (Self A) "take_element" (take_element A).
+        Admitted.
+        Global Typeclasses Opaque take_element.
       End Impl_core_iter_sources_repeat_n_RepeatN_A.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_n_RepeatN_A.

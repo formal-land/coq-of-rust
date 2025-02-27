@@ -277,8 +277,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_mul : M.IsAssociatedFunction Self "mul" mul.
-      Smpl Add apply AssociatedFunction_mul : is_associated.
+      Global Instance AssociatedFunction_mul : M.IsAssociatedFunction.Trait Self "mul" mul.
+      Admitted.
+      Global Typeclasses Opaque mul.
       
       (*
           pub fn normalize(&self) -> Fp {
@@ -648,8 +649,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_normalize : M.IsAssociatedFunction Self "normalize" normalize.
-      Smpl Add apply AssociatedFunction_normalize : is_associated.
+      Global Instance AssociatedFunction_normalize :
+        M.IsAssociatedFunction.Trait Self "normalize" normalize.
+      Admitted.
+      Global Typeclasses Opaque normalize.
       
       (*
           pub fn normalize_to(&self, e: i16) -> Fp {
@@ -838,9 +841,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_normalize_to :
-        M.IsAssociatedFunction Self "normalize_to" normalize_to.
-      Smpl Add apply AssociatedFunction_normalize_to : is_associated.
+      Global Instance AssociatedFunction_normalize_to :
+        M.IsAssociatedFunction.Trait Self "normalize_to" normalize_to.
+      Admitted.
+      Global Typeclasses Opaque normalize_to.
     End Impl_core_num_diy_float_Fp.
   End diy_float.
 End num.

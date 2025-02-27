@@ -55,26 +55,26 @@ Module checked.
   
   Parameter div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_div : M.IsFunction "result::checked::div" div.
-  Smpl Add apply Function_div : is_function.
+  Global Instance Instance_IsFunction_div : M.IsFunction.Trait "result::checked::div" div.
+  Admitted.
   
   Parameter sqrt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sqrt : M.IsFunction "result::checked::sqrt" sqrt.
-  Smpl Add apply Function_sqrt : is_function.
+  Global Instance Instance_IsFunction_sqrt : M.IsFunction.Trait "result::checked::sqrt" sqrt.
+  Admitted.
   
   Parameter ln : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ln : M.IsFunction "result::checked::ln" ln.
-  Smpl Add apply Function_ln : is_function.
+  Global Instance Instance_IsFunction_ln : M.IsFunction.Trait "result::checked::ln" ln.
+  Admitted.
 End checked.
 
 Parameter op : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_op : M.IsFunction "result::op" op.
-Smpl Add apply Function_op : is_function.
+Global Instance Instance_IsFunction_op : M.IsFunction.Trait "result::op" op.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "result::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "result::main" main.
+Admitted.

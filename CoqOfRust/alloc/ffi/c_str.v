@@ -1385,8 +1385,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
-      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
+      Global Instance AssociatedFunction_as_bytes :
+        M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+      Admitted.
+      Global Typeclasses Opaque as_bytes.
       
       (*
           pub fn into_bytes(self) -> Vec<u8> {
@@ -1408,8 +1410,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
-      Smpl Add apply AssociatedFunction_into_bytes : is_associated.
+      Global Instance AssociatedFunction_into_bytes :
+        M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+      Admitted.
+      Global Typeclasses Opaque into_bytes.
     End Impl_alloc_ffi_c_str_FromVecWithNulError.
     
     (* StructRecord
@@ -1801,8 +1805,9 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub unsafe fn from_vec_unchecked(v: Vec<u8>) -> Self {
@@ -1951,9 +1956,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_vec_unchecked :
-        M.IsAssociatedFunction Self "from_vec_unchecked" from_vec_unchecked.
-      Smpl Add apply AssociatedFunction_from_vec_unchecked : is_associated.
+      Global Instance AssociatedFunction_from_vec_unchecked :
+        M.IsAssociatedFunction.Trait Self "from_vec_unchecked" from_vec_unchecked.
+      Admitted.
+      Global Typeclasses Opaque from_vec_unchecked.
       
       (*
           unsafe fn _from_vec_unchecked(mut v: Vec<u8>) -> Self {
@@ -2030,9 +2036,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction__from_vec_unchecked :
-        M.IsAssociatedFunction Self "_from_vec_unchecked" _from_vec_unchecked.
-      Smpl Add apply AssociatedFunction__from_vec_unchecked : is_associated.
+      Global Instance AssociatedFunction__from_vec_unchecked :
+        M.IsAssociatedFunction.Trait Self "_from_vec_unchecked" _from_vec_unchecked.
+      Admitted.
+      Global Typeclasses Opaque _from_vec_unchecked.
       
       (*
           pub unsafe fn from_raw(ptr: *mut c_char) -> CString {
@@ -2130,8 +2137,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
-      Smpl Add apply AssociatedFunction_from_raw : is_associated.
+      Global Instance AssociatedFunction_from_raw :
+        M.IsAssociatedFunction.Trait Self "from_raw" from_raw.
+      Admitted.
+      Global Typeclasses Opaque from_raw.
       
       (*
           pub fn into_raw(self) -> *mut c_char {
@@ -2179,8 +2188,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_raw : M.IsAssociatedFunction Self "into_raw" into_raw.
-      Smpl Add apply AssociatedFunction_into_raw : is_associated.
+      Global Instance AssociatedFunction_into_raw :
+        M.IsAssociatedFunction.Trait Self "into_raw" into_raw.
+      Admitted.
+      Global Typeclasses Opaque into_raw.
       
       (*
           pub fn into_string(self) -> Result<String, IntoStringError> {
@@ -2303,8 +2314,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
-      Smpl Add apply AssociatedFunction_into_string : is_associated.
+      Global Instance AssociatedFunction_into_string :
+        M.IsAssociatedFunction.Trait Self "into_string" into_string.
+      Admitted.
+      Global Typeclasses Opaque into_string.
       
       (*
           pub fn into_bytes(self) -> Vec<u8> {
@@ -2519,8 +2532,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
-      Smpl Add apply AssociatedFunction_into_bytes : is_associated.
+      Global Instance AssociatedFunction_into_bytes :
+        M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+      Admitted.
+      Global Typeclasses Opaque into_bytes.
       
       (*
           pub fn into_bytes_with_nul(self) -> Vec<u8> {
@@ -2562,9 +2577,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_bytes_with_nul :
-        M.IsAssociatedFunction Self "into_bytes_with_nul" into_bytes_with_nul.
-      Smpl Add apply AssociatedFunction_into_bytes_with_nul : is_associated.
+      Global Instance AssociatedFunction_into_bytes_with_nul :
+        M.IsAssociatedFunction.Trait Self "into_bytes_with_nul" into_bytes_with_nul.
+      Admitted.
+      Global Typeclasses Opaque into_bytes_with_nul.
       
       (*
           pub fn as_bytes(&self) -> &[u8] {
@@ -2639,8 +2655,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
-      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
+      Global Instance AssociatedFunction_as_bytes :
+        M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+      Admitted.
+      Global Typeclasses Opaque as_bytes.
       
       (*
           pub fn as_bytes_with_nul(&self) -> &[u8] {
@@ -2672,9 +2690,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_bytes_with_nul :
-        M.IsAssociatedFunction Self "as_bytes_with_nul" as_bytes_with_nul.
-      Smpl Add apply AssociatedFunction_as_bytes_with_nul : is_associated.
+      Global Instance AssociatedFunction_as_bytes_with_nul :
+        M.IsAssociatedFunction.Trait Self "as_bytes_with_nul" as_bytes_with_nul.
+      Admitted.
+      Global Typeclasses Opaque as_bytes_with_nul.
       
       (*
           pub fn as_c_str(&self) -> &CStr {
@@ -2712,8 +2731,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_c_str : M.IsAssociatedFunction Self "as_c_str" as_c_str.
-      Smpl Add apply AssociatedFunction_as_c_str : is_associated.
+      Global Instance AssociatedFunction_as_c_str :
+        M.IsAssociatedFunction.Trait Self "as_c_str" as_c_str.
+      Admitted.
+      Global Typeclasses Opaque as_c_str.
       
       (*
           pub fn into_boxed_c_str(self) -> Box<CStr> {
@@ -2780,9 +2801,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_boxed_c_str :
-        M.IsAssociatedFunction Self "into_boxed_c_str" into_boxed_c_str.
-      Smpl Add apply AssociatedFunction_into_boxed_c_str : is_associated.
+      Global Instance AssociatedFunction_into_boxed_c_str :
+        M.IsAssociatedFunction.Trait Self "into_boxed_c_str" into_boxed_c_str.
+      Admitted.
+      Global Typeclasses Opaque into_boxed_c_str.
       
       (*
           fn into_inner(self) -> Box<[u8]> {
@@ -2881,8 +2903,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
           pub unsafe fn from_vec_with_nul_unchecked(v: Vec<u8>) -> Self {
@@ -3048,9 +3072,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_vec_with_nul_unchecked :
-        M.IsAssociatedFunction Self "from_vec_with_nul_unchecked" from_vec_with_nul_unchecked.
-      Smpl Add apply AssociatedFunction_from_vec_with_nul_unchecked : is_associated.
+      Global Instance AssociatedFunction_from_vec_with_nul_unchecked :
+        M.IsAssociatedFunction.Trait Self "from_vec_with_nul_unchecked" from_vec_with_nul_unchecked.
+      Admitted.
+      Global Typeclasses Opaque from_vec_with_nul_unchecked.
       
       (*
           unsafe fn _from_vec_with_nul_unchecked(v: Vec<u8>) -> Self {
@@ -3093,9 +3118,13 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction__from_vec_with_nul_unchecked :
-        M.IsAssociatedFunction Self "_from_vec_with_nul_unchecked" _from_vec_with_nul_unchecked.
-      Smpl Add apply AssociatedFunction__from_vec_with_nul_unchecked : is_associated.
+      Global Instance AssociatedFunction__from_vec_with_nul_unchecked :
+        M.IsAssociatedFunction.Trait
+          Self
+          "_from_vec_with_nul_unchecked"
+          _from_vec_with_nul_unchecked.
+      Admitted.
+      Global Typeclasses Opaque _from_vec_with_nul_unchecked.
       
       (*
           pub fn from_vec_with_nul(v: Vec<u8>) -> Result<Self, FromVecWithNulError> {
@@ -3261,9 +3290,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_vec_with_nul :
-        M.IsAssociatedFunction Self "from_vec_with_nul" from_vec_with_nul.
-      Smpl Add apply AssociatedFunction_from_vec_with_nul : is_associated.
+      Global Instance AssociatedFunction_from_vec_with_nul :
+        M.IsAssociatedFunction.Trait Self "from_vec_with_nul" from_vec_with_nul.
+      Admitted.
+      Global Typeclasses Opaque from_vec_with_nul.
     End Impl_alloc_ffi_c_str_CString.
     
     Module Impl_core_ops_drop_Drop_for_alloc_ffi_c_str_CString.
@@ -4987,9 +5017,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_nul_position :
-        M.IsAssociatedFunction Self "nul_position" nul_position.
-      Smpl Add apply AssociatedFunction_nul_position : is_associated.
+      Global Instance AssociatedFunction_nul_position :
+        M.IsAssociatedFunction.Trait Self "nul_position" nul_position.
+      Admitted.
+      Global Typeclasses Opaque nul_position.
       
       (*
           pub fn into_vec(self) -> Vec<u8> {
@@ -5007,8 +5038,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_vec : M.IsAssociatedFunction Self "into_vec" into_vec.
-      Smpl Add apply AssociatedFunction_into_vec : is_associated.
+      Global Instance AssociatedFunction_into_vec :
+        M.IsAssociatedFunction.Trait Self "into_vec" into_vec.
+      Admitted.
+      Global Typeclasses Opaque into_vec.
     End Impl_alloc_ffi_c_str_NulError.
     
     Module Impl_core_fmt_Display_for_alloc_ffi_c_str_NulError.
@@ -5314,9 +5347,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_cstring :
-        M.IsAssociatedFunction Self "into_cstring" into_cstring.
-      Smpl Add apply AssociatedFunction_into_cstring : is_associated.
+      Global Instance AssociatedFunction_into_cstring :
+        M.IsAssociatedFunction.Trait Self "into_cstring" into_cstring.
+      Admitted.
+      Global Typeclasses Opaque into_cstring.
       
       (*
           pub fn utf8_error(&self) -> Utf8Error {
@@ -5338,8 +5372,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_utf8_error : M.IsAssociatedFunction Self "utf8_error" utf8_error.
-      Smpl Add apply AssociatedFunction_utf8_error : is_associated.
+      Global Instance AssociatedFunction_utf8_error :
+        M.IsAssociatedFunction.Trait Self "utf8_error" utf8_error.
+      Admitted.
+      Global Typeclasses Opaque utf8_error.
       (*
           fn description(&self) -> &str {
               "C string contained non-utf8 bytes"
@@ -5357,8 +5393,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_description : M.IsAssociatedFunction Self "description" description.
-      Smpl Add apply AssociatedFunction_description : is_associated.
+      Global Instance AssociatedFunction_description :
+        M.IsAssociatedFunction.Trait Self "description" description.
+      Admitted.
+      Global Typeclasses Opaque description.
     End Impl_alloc_ffi_c_str_IntoStringError.
     
     
@@ -5813,9 +5851,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_string_lossy :
-        M.IsAssociatedFunction Self "to_string_lossy" to_string_lossy.
-      Smpl Add apply AssociatedFunction_to_string_lossy : is_associated.
+      Global Instance AssociatedFunction_to_string_lossy :
+        M.IsAssociatedFunction.Trait Self "to_string_lossy" to_string_lossy.
+      Admitted.
+      Global Typeclasses Opaque to_string_lossy.
       
       (*
           pub fn into_c_string(self: Box<Self>) -> CString {
@@ -5848,9 +5887,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_c_string :
-        M.IsAssociatedFunction Self "into_c_string" into_c_string.
-      Smpl Add apply AssociatedFunction_into_c_string : is_associated.
+      Global Instance AssociatedFunction_into_c_string :
+        M.IsAssociatedFunction.Trait Self "into_c_string" into_c_string.
+      Admitted.
+      Global Typeclasses Opaque into_c_string.
     End Impl_core_ffi_c_str_CStr.
     
     Module Impl_core_error_Error_for_alloc_ffi_c_str_NulError.

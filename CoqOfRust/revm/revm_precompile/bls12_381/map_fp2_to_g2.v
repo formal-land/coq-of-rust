@@ -1150,8 +1150,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_map_fp2_to_g2 :
-      M.IsFunction "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2" map_fp2_to_g2.
-    Smpl Add apply Function_map_fp2_to_g2 : is_function.
+    Global Instance Instance_IsFunction_map_fp2_to_g2 :
+      M.IsFunction.Trait "revm_precompile::bls12_381::map_fp2_to_g2::map_fp2_to_g2" map_fp2_to_g2.
+    Admitted.
+    Global Typeclasses Opaque map_fp2_to_g2.
   End map_fp2_to_g2.
 End bls12_381.

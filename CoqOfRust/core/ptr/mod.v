@@ -24,8 +24,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_drop_in_place : M.IsFunction "core::ptr::drop_in_place" drop_in_place.
-  Smpl Add apply Function_drop_in_place : is_function.
+  Global Instance Instance_IsFunction_drop_in_place :
+    M.IsFunction.Trait "core::ptr::drop_in_place" drop_in_place.
+  Admitted.
+  Global Typeclasses Opaque drop_in_place.
   
   (*
   pub const fn null<T: ?Sized + Thin>() -> *const T {
@@ -51,8 +53,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_null : M.IsFunction "core::ptr::null" null.
-  Smpl Add apply Function_null : is_function.
+  Global Instance Instance_IsFunction_null : M.IsFunction.Trait "core::ptr::null" null.
+  Admitted.
+  Global Typeclasses Opaque null.
   
   (*
   pub const fn null_mut<T: ?Sized + Thin>() -> *mut T {
@@ -78,8 +81,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_null_mut : M.IsFunction "core::ptr::null_mut" null_mut.
-  Smpl Add apply Function_null_mut : is_function.
+  Global Instance Instance_IsFunction_null_mut : M.IsFunction.Trait "core::ptr::null_mut" null_mut.
+  Admitted.
+  Global Typeclasses Opaque null_mut.
   
   (*
   pub const fn without_provenance<T>(addr: usize) -> *const T {
@@ -108,9 +112,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_without_provenance :
-    M.IsFunction "core::ptr::without_provenance" without_provenance.
-  Smpl Add apply Function_without_provenance : is_function.
+  Global Instance Instance_IsFunction_without_provenance :
+    M.IsFunction.Trait "core::ptr::without_provenance" without_provenance.
+  Admitted.
+  Global Typeclasses Opaque without_provenance.
   
   (*
   pub const fn dangling<T>() -> *const T {
@@ -135,8 +140,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_dangling : M.IsFunction "core::ptr::dangling" dangling.
-  Smpl Add apply Function_dangling : is_function.
+  Global Instance Instance_IsFunction_dangling : M.IsFunction.Trait "core::ptr::dangling" dangling.
+  Admitted.
+  Global Typeclasses Opaque dangling.
   
   (*
   pub const fn without_provenance_mut<T>(addr: usize) -> *mut T {
@@ -165,9 +171,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_without_provenance_mut :
-    M.IsFunction "core::ptr::without_provenance_mut" without_provenance_mut.
-  Smpl Add apply Function_without_provenance_mut : is_function.
+  Global Instance Instance_IsFunction_without_provenance_mut :
+    M.IsFunction.Trait "core::ptr::without_provenance_mut" without_provenance_mut.
+  Admitted.
+  Global Typeclasses Opaque without_provenance_mut.
   
   (*
   pub const fn dangling_mut<T>() -> *mut T {
@@ -192,8 +199,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_dangling_mut : M.IsFunction "core::ptr::dangling_mut" dangling_mut.
-  Smpl Add apply Function_dangling_mut : is_function.
+  Global Instance Instance_IsFunction_dangling_mut :
+    M.IsFunction.Trait "core::ptr::dangling_mut" dangling_mut.
+  Admitted.
+  Global Typeclasses Opaque dangling_mut.
   
   (*
   pub fn with_exposed_provenance<T>(addr: usize) -> *const T
@@ -213,9 +222,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_with_exposed_provenance :
-    M.IsFunction "core::ptr::with_exposed_provenance" with_exposed_provenance.
-  Smpl Add apply Function_with_exposed_provenance : is_function.
+  Global Instance Instance_IsFunction_with_exposed_provenance :
+    M.IsFunction.Trait "core::ptr::with_exposed_provenance" with_exposed_provenance.
+  Admitted.
+  Global Typeclasses Opaque with_exposed_provenance.
   
   (*
   pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T
@@ -239,9 +249,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_with_exposed_provenance_mut :
-    M.IsFunction "core::ptr::with_exposed_provenance_mut" with_exposed_provenance_mut.
-  Smpl Add apply Function_with_exposed_provenance_mut : is_function.
+  Global Instance Instance_IsFunction_with_exposed_provenance_mut :
+    M.IsFunction.Trait "core::ptr::with_exposed_provenance_mut" with_exposed_provenance_mut.
+  Admitted.
+  Global Typeclasses Opaque with_exposed_provenance_mut.
   
   (*
   pub const fn from_ref<T: ?Sized>(r: &T) -> *const T {
@@ -257,8 +268,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_ref : M.IsFunction "core::ptr::from_ref" from_ref.
-  Smpl Add apply Function_from_ref : is_function.
+  Global Instance Instance_IsFunction_from_ref : M.IsFunction.Trait "core::ptr::from_ref" from_ref.
+  Admitted.
+  Global Typeclasses Opaque from_ref.
   
   (*
   pub const fn from_mut<T: ?Sized>(r: &mut T) -> *mut T {
@@ -274,8 +286,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_mut : M.IsFunction "core::ptr::from_mut" from_mut.
-  Smpl Add apply Function_from_mut : is_function.
+  Global Instance Instance_IsFunction_from_mut : M.IsFunction.Trait "core::ptr::from_mut" from_mut.
+  Admitted.
+  Global Typeclasses Opaque from_mut.
   
   (*
   pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
@@ -300,9 +313,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_slice_from_raw_parts :
-    M.IsFunction "core::ptr::slice_from_raw_parts" slice_from_raw_parts.
-  Smpl Add apply Function_slice_from_raw_parts : is_function.
+  Global Instance Instance_IsFunction_slice_from_raw_parts :
+    M.IsFunction.Trait "core::ptr::slice_from_raw_parts" slice_from_raw_parts.
+  Admitted.
+  Global Typeclasses Opaque slice_from_raw_parts.
   
   (*
   pub const fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
@@ -327,9 +341,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_slice_from_raw_parts_mut :
-    M.IsFunction "core::ptr::slice_from_raw_parts_mut" slice_from_raw_parts_mut.
-  Smpl Add apply Function_slice_from_raw_parts_mut : is_function.
+  Global Instance Instance_IsFunction_slice_from_raw_parts_mut :
+    M.IsFunction.Trait "core::ptr::slice_from_raw_parts_mut" slice_from_raw_parts_mut.
+  Admitted.
+  Global Typeclasses Opaque slice_from_raw_parts_mut.
   
   (*
   pub const unsafe fn swap<T>(x: *mut T, y: *mut T) {
@@ -428,8 +443,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_swap : M.IsFunction "core::ptr::swap" swap.
-  Smpl Add apply Function_swap : is_function.
+  Global Instance Instance_IsFunction_swap : M.IsFunction.Trait "core::ptr::swap" swap.
+  Admitted.
+  Global Typeclasses Opaque swap.
   
   (*
   pub const unsafe fn swap_nonoverlapping<T>(x: *mut T, y: *mut T, count: usize) {
@@ -889,9 +905,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_swap_nonoverlapping :
-    M.IsFunction "core::ptr::swap_nonoverlapping" swap_nonoverlapping.
-  Smpl Add apply Function_swap_nonoverlapping : is_function.
+  Global Instance Instance_IsFunction_swap_nonoverlapping :
+    M.IsFunction.Trait "core::ptr::swap_nonoverlapping" swap_nonoverlapping.
+  Admitted.
+  Global Typeclasses Opaque swap_nonoverlapping.
   
   (*
   const unsafe fn swap_nonoverlapping_simple_untyped<T>(x: *mut T, y: *mut T, count: usize) {
@@ -979,6 +996,7 @@ Module ptr.
             |) in
           let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           M.loop (|
+            Ty.tuple [],
             ltac:(M.monadic
               (M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -1123,9 +1141,12 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_swap_nonoverlapping_simple_untyped :
-    M.IsFunction "core::ptr::swap_nonoverlapping_simple_untyped" swap_nonoverlapping_simple_untyped.
-  Smpl Add apply Function_swap_nonoverlapping_simple_untyped : is_function.
+  Global Instance Instance_IsFunction_swap_nonoverlapping_simple_untyped :
+    M.IsFunction.Trait
+      "core::ptr::swap_nonoverlapping_simple_untyped"
+      swap_nonoverlapping_simple_untyped.
+  Admitted.
+  Global Typeclasses Opaque swap_nonoverlapping_simple_untyped.
   
   (*
   pub const unsafe fn replace<T>(dst: *mut T, src: T) -> T {
@@ -1207,8 +1228,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_replace : M.IsFunction "core::ptr::replace" replace.
-  Smpl Add apply Function_replace : is_function.
+  Global Instance Instance_IsFunction_replace : M.IsFunction.Trait "core::ptr::replace" replace.
+  Admitted.
+  Global Typeclasses Opaque replace.
   
   (*
   pub const unsafe fn read<T>(src: *const T) -> T {
@@ -1307,8 +1329,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read : M.IsFunction "core::ptr::read" read.
-  Smpl Add apply Function_read : is_function.
+  Global Instance Instance_IsFunction_read : M.IsFunction.Trait "core::ptr::read" read.
+  Admitted.
+  Global Typeclasses Opaque read.
   
   (*
   pub const unsafe fn read_unaligned<T>(src: *const T) -> T {
@@ -1387,8 +1410,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_unaligned : M.IsFunction "core::ptr::read_unaligned" read_unaligned.
-  Smpl Add apply Function_read_unaligned : is_function.
+  Global Instance Instance_IsFunction_read_unaligned :
+    M.IsFunction.Trait "core::ptr::read_unaligned" read_unaligned.
+  Admitted.
+  Global Typeclasses Opaque read_unaligned.
   
   (*
   pub const unsafe fn write<T>(dst: *mut T, src: T) {
@@ -1472,8 +1497,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write : M.IsFunction "core::ptr::write" write.
-  Smpl Add apply Function_write : is_function.
+  Global Instance Instance_IsFunction_write : M.IsFunction.Trait "core::ptr::write" write.
+  Admitted.
+  Global Typeclasses Opaque write.
   
   (*
   pub const unsafe fn write_unaligned<T>(dst: *mut T, src: T) {
@@ -1525,8 +1551,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_unaligned : M.IsFunction "core::ptr::write_unaligned" write_unaligned.
-  Smpl Add apply Function_write_unaligned : is_function.
+  Global Instance Instance_IsFunction_write_unaligned :
+    M.IsFunction.Trait "core::ptr::write_unaligned" write_unaligned.
+  Admitted.
+  Global Typeclasses Opaque write_unaligned.
   
   (*
   pub unsafe fn read_volatile<T>(src: *const T) -> T {
@@ -1602,8 +1630,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_volatile : M.IsFunction "core::ptr::read_volatile" read_volatile.
-  Smpl Add apply Function_read_volatile : is_function.
+  Global Instance Instance_IsFunction_read_volatile :
+    M.IsFunction.Trait "core::ptr::read_volatile" read_volatile.
+  Admitted.
+  Global Typeclasses Opaque read_volatile.
   
   (*
   pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
@@ -1682,8 +1712,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_volatile : M.IsFunction "core::ptr::write_volatile" write_volatile.
-  Smpl Add apply Function_write_volatile : is_function.
+  Global Instance Instance_IsFunction_write_volatile :
+    M.IsFunction.Trait "core::ptr::write_volatile" write_volatile.
+  Admitted.
+  Global Typeclasses Opaque write_volatile.
   
   (*
   pub(crate) const unsafe fn align_offset<T: Sized>(p: *const T, a: usize) -> usize {
@@ -2260,8 +2292,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_align_offset : M.IsFunction "core::ptr::align_offset" align_offset.
-  Smpl Add apply Function_align_offset : is_function.
+  Global Instance Instance_IsFunction_align_offset :
+    M.IsFunction.Trait "core::ptr::align_offset" align_offset.
+  Admitted.
+  Global Typeclasses Opaque align_offset.
   
   Module align_offset.
     (*
@@ -2347,6 +2381,7 @@ Module ptr.
               M.copy (| M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD" |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (let~ _ : Ty.tuple [] :=
                     M.match_operator (|
@@ -2448,8 +2483,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mod_inv : M.IsFunction "core::ptr::align_offset::mod_inv" mod_inv.
-    Smpl Add apply Function_mod_inv : is_function.
+    Global Instance Instance_IsFunction_mod_inv :
+      M.IsFunction.Trait "core::ptr::align_offset::mod_inv" mod_inv.
+    Admitted.
+    Global Typeclasses Opaque mod_inv.
     
     Module mod_inv.
       Definition value_INV_TABLE_MOD_16 : Value.t :=
@@ -2498,8 +2535,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_eq : M.IsFunction "core::ptr::eq" eq.
-  Smpl Add apply Function_eq : is_function.
+  Global Instance Instance_IsFunction_eq : M.IsFunction.Trait "core::ptr::eq" eq.
+  Admitted.
+  Global Typeclasses Opaque eq.
   
   (*
   pub fn addr_eq<T: ?Sized, U: ?Sized>(p: *const T, q: *const U) -> bool {
@@ -2519,8 +2557,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_addr_eq : M.IsFunction "core::ptr::addr_eq" addr_eq.
-  Smpl Add apply Function_addr_eq : is_function.
+  Global Instance Instance_IsFunction_addr_eq : M.IsFunction.Trait "core::ptr::addr_eq" addr_eq.
+  Admitted.
+  Global Typeclasses Opaque addr_eq.
   
   (*
   pub fn fn_addr_eq<T: FnPtr, U: FnPtr>(f: T, g: U) -> bool {
@@ -2548,8 +2587,10 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_fn_addr_eq : M.IsFunction "core::ptr::fn_addr_eq" fn_addr_eq.
-  Smpl Add apply Function_fn_addr_eq : is_function.
+  Global Instance Instance_IsFunction_fn_addr_eq :
+    M.IsFunction.Trait "core::ptr::fn_addr_eq" fn_addr_eq.
+  Admitted.
+  Global Typeclasses Opaque fn_addr_eq.
   
   (*
   pub fn hash<T: ?Sized, S: hash::Hasher>(hashee: *const T, into: &mut S) {
@@ -2588,8 +2629,9 @@ Module ptr.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_hash : M.IsFunction "core::ptr::hash" hash.
-  Smpl Add apply Function_hash : is_function.
+  Global Instance Instance_IsFunction_hash : M.IsFunction.Trait "core::ptr::hash" hash.
+  Admitted.
+  Global Typeclasses Opaque hash.
   
   Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.

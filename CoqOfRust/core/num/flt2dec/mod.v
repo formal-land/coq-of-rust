@@ -170,6 +170,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -314,6 +315,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -401,8 +403,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_round_up : M.IsFunction "core::num::flt2dec::round_up" round_up.
-    Smpl Add apply Function_round_up : is_function.
+    Global Instance Instance_IsFunction_round_up :
+      M.IsFunction.Trait "core::num::flt2dec::round_up" round_up.
+    Admitted.
+    Global Typeclasses Opaque round_up.
     
     (*
     fn digits_to_dec_str<'a>(
@@ -1854,9 +1858,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_digits_to_dec_str :
-      M.IsFunction "core::num::flt2dec::digits_to_dec_str" digits_to_dec_str.
-    Smpl Add apply Function_digits_to_dec_str : is_function.
+    Global Instance Instance_IsFunction_digits_to_dec_str :
+      M.IsFunction.Trait "core::num::flt2dec::digits_to_dec_str" digits_to_dec_str.
+    Admitted.
+    Global Typeclasses Opaque digits_to_dec_str.
     
     (*
     fn digits_to_exp_str<'a>(
@@ -2639,9 +2644,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_digits_to_exp_str :
-      M.IsFunction "core::num::flt2dec::digits_to_exp_str" digits_to_exp_str.
-    Smpl Add apply Function_digits_to_exp_str : is_function.
+    Global Instance Instance_IsFunction_digits_to_exp_str :
+      M.IsFunction.Trait "core::num::flt2dec::digits_to_exp_str" digits_to_exp_str.
+    Admitted.
+    Global Typeclasses Opaque digits_to_exp_str.
     
     (*
     Enum Sign
@@ -2931,9 +2937,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_determine_sign :
-      M.IsFunction "core::num::flt2dec::determine_sign" determine_sign.
-    Smpl Add apply Function_determine_sign : is_function.
+    Global Instance Instance_IsFunction_determine_sign :
+      M.IsFunction.Trait "core::num::flt2dec::determine_sign" determine_sign.
+    Admitted.
+    Global Typeclasses Opaque determine_sign.
     
     (*
     pub fn to_shortest_str<'a, T, F>(
@@ -3897,9 +3904,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_to_shortest_str :
-      M.IsFunction "core::num::flt2dec::to_shortest_str" to_shortest_str.
-    Smpl Add apply Function_to_shortest_str : is_function.
+    Global Instance Instance_IsFunction_to_shortest_str :
+      M.IsFunction.Trait "core::num::flt2dec::to_shortest_str" to_shortest_str.
+    Admitted.
+    Global Typeclasses Opaque to_shortest_str.
     
     (*
     pub fn to_shortest_exp_str<'a, T, F>(
@@ -4893,9 +4901,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_to_shortest_exp_str :
-      M.IsFunction "core::num::flt2dec::to_shortest_exp_str" to_shortest_exp_str.
-    Smpl Add apply Function_to_shortest_exp_str : is_function.
+    Global Instance Instance_IsFunction_to_shortest_exp_str :
+      M.IsFunction.Trait "core::num::flt2dec::to_shortest_exp_str" to_shortest_exp_str.
+    Admitted.
+    Global Typeclasses Opaque to_shortest_exp_str.
     
     (*
     fn estimate_max_buf_len(exp: i16) -> usize {
@@ -4939,9 +4948,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_estimate_max_buf_len :
-      M.IsFunction "core::num::flt2dec::estimate_max_buf_len" estimate_max_buf_len.
-    Smpl Add apply Function_estimate_max_buf_len : is_function.
+    Global Instance Instance_IsFunction_estimate_max_buf_len :
+      M.IsFunction.Trait "core::num::flt2dec::estimate_max_buf_len" estimate_max_buf_len.
+    Admitted.
+    Global Typeclasses Opaque estimate_max_buf_len.
     
     (*
     pub fn to_exact_exp_str<'a, T, F>(
@@ -6178,9 +6188,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_to_exact_exp_str :
-      M.IsFunction "core::num::flt2dec::to_exact_exp_str" to_exact_exp_str.
-    Smpl Add apply Function_to_exact_exp_str : is_function.
+    Global Instance Instance_IsFunction_to_exact_exp_str :
+      M.IsFunction.Trait "core::num::flt2dec::to_exact_exp_str" to_exact_exp_str.
+    Admitted.
+    Global Typeclasses Opaque to_exact_exp_str.
     
     (*
     pub fn to_exact_fixed_str<'a, T, F>(
@@ -7872,8 +7883,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_to_exact_fixed_str :
-      M.IsFunction "core::num::flt2dec::to_exact_fixed_str" to_exact_fixed_str.
-    Smpl Add apply Function_to_exact_fixed_str : is_function.
+    Global Instance Instance_IsFunction_to_exact_fixed_str :
+      M.IsFunction.Trait "core::num::flt2dec::to_exact_fixed_str" to_exact_fixed_str.
+    Admitted.
+    Global Typeclasses Opaque to_exact_fixed_str.
   End flt2dec.
 End num.

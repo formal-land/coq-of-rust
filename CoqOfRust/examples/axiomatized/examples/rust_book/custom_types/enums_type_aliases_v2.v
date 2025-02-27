@@ -30,6 +30,6 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
   
   Parameter run : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.
-  Smpl Add apply AssociatedFunction_run : is_associated.
+  Global Instance AssociatedFunction_run : M.IsAssociatedFunction.Trait Self "run" run.
+  Admitted.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

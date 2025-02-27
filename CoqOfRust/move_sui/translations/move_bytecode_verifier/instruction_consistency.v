@@ -122,9 +122,10 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -270,6 +271,7 @@ Module instruction_consistency.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -544,9 +546,10 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
-    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
+    Global Instance AssociatedFunction_verify_module_impl :
+      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_module_impl.
     
     (*
         fn check_instructions(&self, code: &CodeUnit) -> PartialVMResult<()> {
@@ -781,6 +784,7 @@ Module instruction_consistency.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -5067,9 +5071,10 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_instructions :
-      M.IsAssociatedFunction Self "check_instructions" check_instructions.
-    Smpl Add apply AssociatedFunction_check_instructions : is_associated.
+    Global Instance AssociatedFunction_check_instructions :
+      M.IsAssociatedFunction.Trait Self "check_instructions" check_instructions.
+    Admitted.
+    Global Typeclasses Opaque check_instructions.
     
     (*
         fn check_field_op(
@@ -5155,9 +5160,10 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_op :
-      M.IsAssociatedFunction Self "check_field_op" check_field_op.
-    Smpl Add apply AssociatedFunction_check_field_op : is_associated.
+    Global Instance AssociatedFunction_check_field_op :
+      M.IsAssociatedFunction.Trait Self "check_field_op" check_field_op.
+    Admitted.
+    Global Typeclasses Opaque check_field_op.
     
     (*
         fn current_function(&self) -> FunctionDefinitionIndex {
@@ -5196,9 +5202,10 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_current_function :
-      M.IsAssociatedFunction Self "current_function" current_function.
-    Smpl Add apply AssociatedFunction_current_function : is_associated.
+    Global Instance AssociatedFunction_current_function :
+      M.IsAssociatedFunction.Trait Self "current_function" current_function.
+    Admitted.
+    Global Typeclasses Opaque current_function.
     
     (*
         fn check_type_op(
@@ -5408,9 +5415,10 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_type_op :
-      M.IsAssociatedFunction Self "check_type_op" check_type_op.
-    Smpl Add apply AssociatedFunction_check_type_op : is_associated.
+    Global Instance AssociatedFunction_check_type_op :
+      M.IsAssociatedFunction.Trait Self "check_type_op" check_type_op.
+    Admitted.
+    Global Typeclasses Opaque check_type_op.
     
     (*
         fn check_function_op(
@@ -5578,8 +5586,9 @@ Module instruction_consistency.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_op :
-      M.IsAssociatedFunction Self "check_function_op" check_function_op.
-    Smpl Add apply AssociatedFunction_check_function_op : is_associated.
+    Global Instance AssociatedFunction_check_function_op :
+      M.IsAssociatedFunction.Trait Self "check_function_op" check_function_op.
+    Admitted.
+    Global Typeclasses Opaque check_function_op.
   End Impl_move_bytecode_verifier_instruction_consistency_InstructionConsistency.
 End instruction_consistency.

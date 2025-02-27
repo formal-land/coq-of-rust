@@ -30,8 +30,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
-    Smpl Add apply Function_metadata : is_function.
+    Global Instance Instance_IsFunction_metadata :
+      M.IsFunction.Trait "core::ptr::metadata::metadata" metadata.
+    Admitted.
+    Global Typeclasses Opaque metadata.
     
     (*
     pub const fn from_raw_parts<T: ?Sized>(
@@ -63,9 +65,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_raw_parts :
-      M.IsFunction "core::ptr::metadata::from_raw_parts" from_raw_parts.
-    Smpl Add apply Function_from_raw_parts : is_function.
+    Global Instance Instance_IsFunction_from_raw_parts :
+      M.IsFunction.Trait "core::ptr::metadata::from_raw_parts" from_raw_parts.
+    Admitted.
+    Global Typeclasses Opaque from_raw_parts.
     
     (*
     pub const fn from_raw_parts_mut<T: ?Sized>(
@@ -97,9 +100,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_raw_parts_mut :
-      M.IsFunction "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
-    Smpl Add apply Function_from_raw_parts_mut : is_function.
+    Global Instance Instance_IsFunction_from_raw_parts_mut :
+      M.IsFunction.Trait "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
+    Admitted.
+    Global Typeclasses Opaque from_raw_parts_mut.
     
     (* StructRecord
       {
@@ -156,10 +160,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_vtable_ptr :
+      Global Instance AssociatedFunction_vtable_ptr :
         forall (Dyn : Ty.t),
-        M.IsAssociatedFunction (Self Dyn) "vtable_ptr" (vtable_ptr Dyn).
-      Smpl Add apply AssociatedFunction_vtable_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self Dyn) "vtable_ptr" (vtable_ptr Dyn).
+      Admitted.
+      Global Typeclasses Opaque vtable_ptr.
       
       (*
           pub fn size_of(self) -> usize {
@@ -197,10 +202,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_size_of :
+      Global Instance AssociatedFunction_size_of :
         forall (Dyn : Ty.t),
-        M.IsAssociatedFunction (Self Dyn) "size_of" (size_of Dyn).
-      Smpl Add apply AssociatedFunction_size_of : is_associated.
+        M.IsAssociatedFunction.Trait (Self Dyn) "size_of" (size_of Dyn).
+      Admitted.
+      Global Typeclasses Opaque size_of.
       
       (*
           pub fn align_of(self) -> usize {
@@ -235,10 +241,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_align_of :
+      Global Instance AssociatedFunction_align_of :
         forall (Dyn : Ty.t),
-        M.IsAssociatedFunction (Self Dyn) "align_of" (align_of Dyn).
-      Smpl Add apply AssociatedFunction_align_of : is_associated.
+        M.IsAssociatedFunction.Trait (Self Dyn) "align_of" (align_of Dyn).
+      Admitted.
+      Global Typeclasses Opaque align_of.
       
       (*
           pub fn layout(self) -> crate::alloc::Layout {
@@ -287,10 +294,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_layout :
+      Global Instance AssociatedFunction_layout :
         forall (Dyn : Ty.t),
-        M.IsAssociatedFunction (Self Dyn) "layout" (layout Dyn).
-      Smpl Add apply AssociatedFunction_layout : is_associated.
+        M.IsAssociatedFunction.Trait (Self Dyn) "layout" (layout Dyn).
+      Admitted.
+      Global Typeclasses Opaque layout.
     End Impl_core_ptr_metadata_DynMetadata_Dyn.
     
     Module Impl_core_marker_Send_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.

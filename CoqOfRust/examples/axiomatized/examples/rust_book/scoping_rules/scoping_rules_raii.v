@@ -3,10 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter create_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
-Smpl Add apply Function_create_box : is_function.
+Global Instance Instance_IsFunction_create_box :
+  M.IsFunction.Trait "scoping_rules_raii::create_box" create_box.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "scoping_rules_raii::main" main.
+Admitted.

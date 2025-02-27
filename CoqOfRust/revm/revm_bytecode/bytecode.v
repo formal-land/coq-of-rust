@@ -1242,8 +1242,9 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn legacy_jump_table(&self) -> Option<&JumpTable> {
@@ -1310,9 +1311,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_legacy_jump_table :
-      M.IsAssociatedFunction Self "legacy_jump_table" legacy_jump_table.
-    Smpl Add apply AssociatedFunction_legacy_jump_table : is_associated.
+    Global Instance AssociatedFunction_legacy_jump_table :
+      M.IsAssociatedFunction.Trait Self "legacy_jump_table" legacy_jump_table.
+    Admitted.
+    Global Typeclasses Opaque legacy_jump_table.
     
     (*
         pub fn hash_slow(&self) -> B256 {
@@ -1391,8 +1393,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_hash_slow : M.IsAssociatedFunction Self "hash_slow" hash_slow.
-    Smpl Add apply AssociatedFunction_hash_slow : is_associated.
+    Global Instance AssociatedFunction_hash_slow :
+      M.IsAssociatedFunction.Trait Self "hash_slow" hash_slow.
+    Admitted.
+    Global Typeclasses Opaque hash_slow.
     
     (*
         pub const fn eof(&self) -> Option<&Arc<Eof>> {
@@ -1434,8 +1438,9 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_eof : M.IsAssociatedFunction Self "eof" eof.
-    Smpl Add apply AssociatedFunction_eof : is_associated.
+    Global Instance AssociatedFunction_eof : M.IsAssociatedFunction.Trait Self "eof" eof.
+    Admitted.
+    Global Typeclasses Opaque eof.
     
     (*
         pub const fn is_eof(&self) -> bool {
@@ -1468,8 +1473,9 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_eof : M.IsAssociatedFunction Self "is_eof" is_eof.
-    Smpl Add apply AssociatedFunction_is_eof : is_associated.
+    Global Instance AssociatedFunction_is_eof : M.IsAssociatedFunction.Trait Self "is_eof" is_eof.
+    Admitted.
+    Global Typeclasses Opaque is_eof.
     
     (*
         pub const fn is_eip7702(&self) -> bool {
@@ -1502,8 +1508,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_eip7702 : M.IsAssociatedFunction Self "is_eip7702" is_eip7702.
-    Smpl Add apply AssociatedFunction_is_eip7702 : is_associated.
+    Global Instance AssociatedFunction_is_eip7702 :
+      M.IsAssociatedFunction.Trait Self "is_eip7702" is_eip7702.
+    Admitted.
+    Global Typeclasses Opaque is_eip7702.
     
     (*
         pub fn new_legacy(raw: Bytes) -> Self {
@@ -1536,8 +1544,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_legacy : M.IsAssociatedFunction Self "new_legacy" new_legacy.
-    Smpl Add apply AssociatedFunction_new_legacy : is_associated.
+    Global Instance AssociatedFunction_new_legacy :
+      M.IsAssociatedFunction.Trait Self "new_legacy" new_legacy.
+    Admitted.
+    Global Typeclasses Opaque new_legacy.
     
     (*
         pub fn new_raw(bytecode: Bytes) -> Self {
@@ -1589,8 +1599,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_raw : M.IsAssociatedFunction Self "new_raw" new_raw.
-    Smpl Add apply AssociatedFunction_new_raw : is_associated.
+    Global Instance AssociatedFunction_new_raw :
+      M.IsAssociatedFunction.Trait Self "new_raw" new_raw.
+    Admitted.
+    Global Typeclasses Opaque new_raw.
     
     (*
         pub fn new_eip7702(address: Address) -> Self {
@@ -1619,8 +1631,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_eip7702 : M.IsAssociatedFunction Self "new_eip7702" new_eip7702.
-    Smpl Add apply AssociatedFunction_new_eip7702 : is_associated.
+    Global Instance AssociatedFunction_new_eip7702 :
+      M.IsAssociatedFunction.Trait Self "new_eip7702" new_eip7702.
+    Admitted.
+    Global Typeclasses Opaque new_eip7702.
     
     (*
         pub fn new_raw_checked(bytes: Bytes) -> Result<Self, BytecodeDecodeError> {
@@ -2125,9 +2139,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_raw_checked :
-      M.IsAssociatedFunction Self "new_raw_checked" new_raw_checked.
-    Smpl Add apply AssociatedFunction_new_raw_checked : is_associated.
+    Global Instance AssociatedFunction_new_raw_checked :
+      M.IsAssociatedFunction.Trait Self "new_raw_checked" new_raw_checked.
+    Admitted.
+    Global Typeclasses Opaque new_raw_checked.
     
     (*
         pub unsafe fn new_analyzed(
@@ -2166,8 +2181,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_analyzed : M.IsAssociatedFunction Self "new_analyzed" new_analyzed.
-    Smpl Add apply AssociatedFunction_new_analyzed : is_associated.
+    Global Instance AssociatedFunction_new_analyzed :
+      M.IsAssociatedFunction.Trait Self "new_analyzed" new_analyzed.
+    Admitted.
+    Global Typeclasses Opaque new_analyzed.
     
     (*
         pub fn bytecode(&self) -> &Bytes {
@@ -2320,8 +2337,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
-    Smpl Add apply AssociatedFunction_bytecode : is_associated.
+    Global Instance AssociatedFunction_bytecode :
+      M.IsAssociatedFunction.Trait Self "bytecode" bytecode.
+    Admitted.
+    Global Typeclasses Opaque bytecode.
     
     (*
         pub fn bytes(&self) -> Bytes {
@@ -2409,8 +2428,9 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_bytes : M.IsAssociatedFunction Self "bytes" bytes.
-    Smpl Add apply AssociatedFunction_bytes : is_associated.
+    Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.Trait Self "bytes" bytes.
+    Admitted.
+    Global Typeclasses Opaque bytes.
     
     (*
         pub fn bytes_slice(&self) -> &[u8] {
@@ -2539,8 +2559,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_bytes_slice : M.IsAssociatedFunction Self "bytes_slice" bytes_slice.
-    Smpl Add apply AssociatedFunction_bytes_slice : is_associated.
+    Global Instance AssociatedFunction_bytes_slice :
+      M.IsAssociatedFunction.Trait Self "bytes_slice" bytes_slice.
+    Admitted.
+    Global Typeclasses Opaque bytes_slice.
     
     (*
         pub fn original_bytes(&self) -> Bytes {
@@ -2714,9 +2736,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_original_bytes :
-      M.IsAssociatedFunction Self "original_bytes" original_bytes.
-    Smpl Add apply AssociatedFunction_original_bytes : is_associated.
+    Global Instance AssociatedFunction_original_bytes :
+      M.IsAssociatedFunction.Trait Self "original_bytes" original_bytes.
+    Admitted.
+    Global Typeclasses Opaque original_bytes.
     
     (*
         pub fn original_byte_slice(&self) -> &[u8] {
@@ -2962,9 +2985,10 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_original_byte_slice :
-      M.IsAssociatedFunction Self "original_byte_slice" original_byte_slice.
-    Smpl Add apply AssociatedFunction_original_byte_slice : is_associated.
+    Global Instance AssociatedFunction_original_byte_slice :
+      M.IsAssociatedFunction.Trait Self "original_byte_slice" original_byte_slice.
+    Admitted.
+    Global Typeclasses Opaque original_byte_slice.
     
     (*
         pub fn len(&self) -> usize {
@@ -3005,8 +3029,9 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-    Smpl Add apply AssociatedFunction_len : is_associated.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Admitted.
+    Global Typeclasses Opaque len.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -3034,7 +3059,9 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-    Smpl Add apply AssociatedFunction_is_empty : is_associated.
+    Global Instance AssociatedFunction_is_empty :
+      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Admitted.
+    Global Typeclasses Opaque is_empty.
   End Impl_revm_bytecode_bytecode_Bytecode.
 End bytecode.

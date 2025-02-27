@@ -423,11 +423,7 @@ Module Impl_SpecId.
       option Self
     }}.
   Proof.
-    run_symbolic.
-    repeat (
-      run_symbolic_are_equal_integer;
-      run_symbolic
-    ).
+    run.
   Defined.
   Smpl Add simple apply run_n : run_closure.
 
@@ -437,11 +433,7 @@ Module Impl_SpecId.
       option Self
     }}.
   Proof.
-    run_symbolic.
-    run_symbolic_closure. {
-      apply run_n.
-    }
-    intros []; run_symbolic.
+    run.
   Defined.
   Smpl Add simple apply run_try_from_u8 : run_closure.
 
@@ -451,7 +443,7 @@ Module Impl_SpecId.
       bool
     }}.
   Proof.
-    run_symbolic.
+    run.
     change_cast_integer.
     eapply Run.Rewrite. {
       do 2 rewrite SpecId.cast_integer_eq.

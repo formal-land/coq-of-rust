@@ -78,8 +78,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_into_vec : M.IsFunction "alloc::slice::hack::into_vec" into_vec.
-    Smpl Add apply Function_into_vec : is_function.
+    Global Instance Instance_IsFunction_into_vec :
+      M.IsFunction.Trait "alloc::slice::hack::into_vec" into_vec.
+    Admitted.
+    Global Typeclasses Opaque into_vec.
     
     (*
         pub fn to_vec<T: ConvertVec, A: Allocator>(s: &[T], alloc: A) -> Vec<T, A> {
@@ -108,8 +110,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_to_vec : M.IsFunction "alloc::slice::hack::to_vec" to_vec.
-    Smpl Add apply Function_to_vec : is_function.
+    Global Instance Instance_IsFunction_to_vec :
+      M.IsFunction.Trait "alloc::slice::hack::to_vec" to_vec.
+    Admitted.
+    Global Typeclasses Opaque to_vec.
     
     (* Trait *)
     (* Empty module 'ConvertVec' *)
@@ -352,6 +356,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -707,10 +712,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sort :
+    Global Instance AssociatedFunction_sort :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "sort" (sort T).
-    Smpl Add apply AssociatedFunction_sort : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "sort" (sort T).
+    Admitted.
+    Global Typeclasses Opaque sort.
     
     (*
         pub fn sort_by<F>(&mut self, mut compare: F)
@@ -841,10 +847,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sort_by :
+    Global Instance AssociatedFunction_sort_by :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "sort_by" (sort_by T).
-    Smpl Add apply AssociatedFunction_sort_by : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "sort_by" (sort_by T).
+    Admitted.
+    Global Typeclasses Opaque sort_by.
     
     (*
         pub fn sort_by_key<K, F>(&mut self, mut f: F)
@@ -994,10 +1001,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sort_by_key :
+    Global Instance AssociatedFunction_sort_by_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "sort_by_key" (sort_by_key T).
-    Smpl Add apply AssociatedFunction_sort_by_key : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "sort_by_key" (sort_by_key T).
+    Admitted.
+    Global Typeclasses Opaque sort_by_key.
     
     (*
         pub fn sort_by_cached_key<K, F>(&mut self, f: F)
@@ -1457,6 +1465,7 @@ Module slice.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -1557,6 +1566,7 @@ Module slice.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.loop (|
+                                                                Ty.tuple [],
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
                                                                     M.alloc (| Value.Tuple [] |),
@@ -2006,6 +2016,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2087,6 +2098,7 @@ Module slice.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
@@ -2239,10 +2251,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sort_by_cached_key :
+    Global Instance AssociatedFunction_sort_by_cached_key :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "sort_by_cached_key" (sort_by_cached_key T).
-    Smpl Add apply AssociatedFunction_sort_by_cached_key : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "sort_by_cached_key" (sort_by_cached_key T).
+    Admitted.
+    Global Typeclasses Opaque sort_by_cached_key.
     
     (*
         pub fn to_vec(&self) -> Vec<T>
@@ -2274,10 +2287,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_vec :
+    Global Instance AssociatedFunction_to_vec :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "to_vec" (to_vec T).
-    Smpl Add apply AssociatedFunction_to_vec : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "to_vec" (to_vec T).
+    Admitted.
+    Global Typeclasses Opaque to_vec.
     
     (*
         pub fn to_vec_in<A: Allocator>(&self, alloc: A) -> Vec<T, A>
@@ -2303,10 +2317,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_vec_in :
+    Global Instance AssociatedFunction_to_vec_in :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "to_vec_in" (to_vec_in T).
-    Smpl Add apply AssociatedFunction_to_vec_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "to_vec_in" (to_vec_in T).
+    Admitted.
+    Global Typeclasses Opaque to_vec_in.
     
     (*
         pub fn into_vec<A: Allocator>(self: Box<Self, A>) -> Vec<T, A> {
@@ -2328,10 +2343,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_vec :
+    Global Instance AssociatedFunction_into_vec :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_vec" (into_vec T).
-    Smpl Add apply AssociatedFunction_into_vec : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_vec" (into_vec T).
+    Admitted.
+    Global Typeclasses Opaque into_vec.
     
     (*
         pub fn repeat(&self, n: usize) -> Vec<T>
@@ -2519,6 +2535,7 @@ Module slice.
                       BinOp.Wrap.shr (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
                     |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2804,10 +2821,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_repeat :
+    Global Instance AssociatedFunction_repeat :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "repeat" (repeat T).
-    Smpl Add apply AssociatedFunction_repeat : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "repeat" (repeat T).
+    Admitted.
+    Global Typeclasses Opaque repeat.
     
     (*
         pub fn concat<Item: ?Sized>(&self) -> <Self as Concat<Item>>::Output
@@ -2827,7 +2845,7 @@ Module slice.
             Ty.associated_in_trait
               "alloc::slice::Concat"
               []
-              []
+              [ Item ]
               (Ty.apply (Ty.path "slice") [] [ T ])
               "Output",
             M.get_trait_method (|
@@ -2844,10 +2862,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_concat :
+    Global Instance AssociatedFunction_concat :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "concat" (concat T).
-    Smpl Add apply AssociatedFunction_concat : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "concat" (concat T).
+    Admitted.
+    Global Typeclasses Opaque concat.
     
     (*
         pub fn join<Separator>(&self, sep: Separator) -> <Self as Join<Separator>>::Output
@@ -2868,7 +2887,7 @@ Module slice.
             Ty.associated_in_trait
               "alloc::slice::Join"
               []
-              []
+              [ Separator ]
               (Ty.apply (Ty.path "slice") [] [ T ])
               "Output",
             M.get_trait_method (|
@@ -2885,10 +2904,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_join :
+    Global Instance AssociatedFunction_join :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "join" (join T).
-    Smpl Add apply AssociatedFunction_join : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "join" (join T).
+    Admitted.
+    Global Typeclasses Opaque join.
     
     (*
         pub fn connect<Separator>(&self, sep: Separator) -> <Self as Join<Separator>>::Output
@@ -2909,7 +2929,7 @@ Module slice.
             Ty.associated_in_trait
               "alloc::slice::Join"
               []
-              []
+              [ Separator ]
               (Ty.apply (Ty.path "slice") [] [ T ])
               "Output",
             M.get_trait_method (|
@@ -2926,10 +2946,11 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_connect :
+    Global Instance AssociatedFunction_connect :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "connect" (connect T).
-    Smpl Add apply AssociatedFunction_connect : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "connect" (connect T).
+    Admitted.
+    Global Typeclasses Opaque connect.
   End Impl_slice_T.
   
   Module Impl_slice_u8.
@@ -3011,9 +3032,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ascii_uppercase :
-      M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
-    Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
+    Global Instance AssociatedFunction_to_ascii_uppercase :
+      M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+    Admitted.
+    Global Typeclasses Opaque to_ascii_uppercase.
     
     (*
         pub fn to_ascii_lowercase(&self) -> Vec<u8> {
@@ -3091,9 +3113,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ascii_lowercase :
-      M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
-    Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
+    Global Instance AssociatedFunction_to_ascii_lowercase :
+      M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+    Admitted.
+    Global Typeclasses Opaque to_ascii_lowercase.
   End Impl_slice_u8.
   
   (* Trait *)
@@ -3278,6 +3301,7 @@ Module slice.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -3710,6 +3734,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4188,6 +4213,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4778,8 +4804,10 @@ Module slice.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_stable_sort : M.IsFunction "alloc::slice::stable_sort" stable_sort.
-  Smpl Add apply Function_stable_sort : is_function.
+  Global Instance Instance_IsFunction_stable_sort :
+    M.IsFunction.Trait "alloc::slice::stable_sort" stable_sort.
+  Admitted.
+  Global Typeclasses Opaque stable_sort.
   
   Module Impl_core_slice_sort_stable_BufGuard_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=

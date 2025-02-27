@@ -391,8 +391,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
     
     (* StructRecord
@@ -848,8 +849,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn len(&self) -> usize {
@@ -890,8 +892,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-      Smpl Add apply AssociatedFunction_len : is_associated.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -932,8 +935,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+      Global Instance AssociatedFunction_is_empty :
+        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+      Admitted.
+      Global Typeclasses Opaque is_empty.
       
       (*
           pub fn return_stack_len(&self) -> usize {
@@ -974,9 +979,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_return_stack_len :
-        M.IsAssociatedFunction Self "return_stack_len" return_stack_len.
-      Smpl Add apply AssociatedFunction_return_stack_len : is_associated.
+      Global Instance AssociatedFunction_return_stack_len :
+        M.IsAssociatedFunction.Trait Self "return_stack_len" return_stack_len.
+      Admitted.
+      Global Typeclasses Opaque return_stack_len.
       
       (*
           pub fn set_current_code_idx(&mut self, idx: usize) {
@@ -1006,9 +1012,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_current_code_idx :
-        M.IsAssociatedFunction Self "set_current_code_idx" set_current_code_idx.
-      Smpl Add apply AssociatedFunction_set_current_code_idx : is_associated.
+      Global Instance AssociatedFunction_set_current_code_idx :
+        M.IsAssociatedFunction.Trait Self "set_current_code_idx" set_current_code_idx.
+      Admitted.
+      Global Typeclasses Opaque set_current_code_idx.
     End Impl_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
     
     Module Impl_revm_interpreter_interpreter_types_SubRoutineStack_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.

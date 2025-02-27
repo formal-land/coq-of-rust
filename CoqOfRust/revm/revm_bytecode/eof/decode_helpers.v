@@ -123,9 +123,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_consume_u8 :
-      M.IsFunction "revm_bytecode::eof::decode_helpers::consume_u8" consume_u8.
-    Smpl Add apply Function_consume_u8 : is_function.
+    Global Instance Instance_IsFunction_consume_u8 :
+      M.IsFunction.Trait "revm_bytecode::eof::decode_helpers::consume_u8" consume_u8.
+    Admitted.
+    Global Typeclasses Opaque consume_u8.
     
     (*
     pub(crate) fn consume_u16(input: &[u8]) -> Result<(&[u8], u16), EofDecodeError> {
@@ -268,8 +269,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_consume_u16 :
-      M.IsFunction "revm_bytecode::eof::decode_helpers::consume_u16" consume_u16.
-    Smpl Add apply Function_consume_u16 : is_function.
+    Global Instance Instance_IsFunction_consume_u16 :
+      M.IsFunction.Trait "revm_bytecode::eof::decode_helpers::consume_u16" consume_u16.
+    Admitted.
+    Global Typeclasses Opaque consume_u16.
   End decode_helpers.
 End eof.

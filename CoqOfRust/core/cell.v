@@ -621,8 +621,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn set(&self, val: T) {
@@ -658,8 +661,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_set : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "set" (set T).
-    Smpl Add apply AssociatedFunction_set : is_associated.
+    Global Instance AssociatedFunction_set :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "set" (set T).
+    Admitted.
+    Global Typeclasses Opaque set.
     
     (*
         pub fn swap(&self, other: &Self) {
@@ -883,10 +889,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap :
+    Global Instance AssociatedFunction_swap :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "swap" (swap T).
-    Smpl Add apply AssociatedFunction_swap : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+    Admitted.
+    Global Typeclasses Opaque swap.
     
     (*
         pub fn replace(&self, val: T) -> T {
@@ -946,10 +953,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_replace :
+    Global Instance AssociatedFunction_replace :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "replace" (replace T).
-    Smpl Add apply AssociatedFunction_replace : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "replace" (replace T).
+    Admitted.
+    Global Typeclasses Opaque replace.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -979,10 +987,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     (*
         pub fn get(&self) -> T {
             // SAFETY: This can cause data races if called from a separate thread,
@@ -1022,8 +1031,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
-    Smpl Add apply AssociatedFunction_get : is_associated.
+    Global Instance AssociatedFunction_get :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+    Admitted.
+    Global Typeclasses Opaque get.
     
     (*
         pub fn update<F>(&self, f: F) -> T
@@ -1094,10 +1106,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_update :
+    Global Instance AssociatedFunction_update :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "update" (update T).
-    Smpl Add apply AssociatedFunction_update : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "update" (update T).
+    Admitted.
+    Global Typeclasses Opaque update.
     (*
         pub const fn as_ptr(&self) -> *mut T {
             self.value.get()
@@ -1131,10 +1144,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ptr :
+    Global Instance AssociatedFunction_as_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
-    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+    Admitted.
+    Global Typeclasses Opaque as_ptr.
     
     (*
         pub fn get_mut(&mut self) -> &mut T {
@@ -1179,10 +1193,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut :
+    Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-    Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+    Admitted.
+    Global Typeclasses Opaque get_mut.
     
     (*
         pub fn from_mut(t: &mut T) -> &Cell<T> {
@@ -1220,10 +1235,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_mut :
+    Global Instance AssociatedFunction_from_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
-    Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+    Admitted.
+    Global Typeclasses Opaque from_mut.
     (*
         pub fn take(&self) -> T {
             self.replace(Default::default())
@@ -1255,10 +1271,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_take :
+    Global Instance AssociatedFunction_take :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "take" (take T).
-    Smpl Add apply AssociatedFunction_take : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "take" (take T).
+    Admitted.
+    Global Typeclasses Opaque take.
   End Impl_core_cell_Cell_T.
   
   
@@ -1340,10 +1357,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_slice_of_cells :
+    Global Instance AssociatedFunction_as_slice_of_cells :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "as_slice_of_cells" (as_slice_of_cells T).
-    Smpl Add apply AssociatedFunction_as_slice_of_cells : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "as_slice_of_cells" (as_slice_of_cells T).
+    Admitted.
+    Global Typeclasses Opaque as_slice_of_cells.
   End Impl_core_cell_Cell_slice_T.
   
   Module Impl_core_cell_Cell_array_N_T.
@@ -1397,10 +1415,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_array_of_cells :
+    Global Instance AssociatedFunction_as_array_of_cells :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction (Self N T) "as_array_of_cells" (as_array_of_cells N T).
-    Smpl Add apply AssociatedFunction_as_array_of_cells : is_associated.
+      M.IsAssociatedFunction.Trait (Self N T) "as_array_of_cells" (as_array_of_cells N T).
+    Admitted.
+    Global Typeclasses Opaque as_array_of_cells.
   End Impl_core_cell_Cell_array_N_T.
   
   (* StructRecord
@@ -1712,9 +1731,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_already_borrowed :
-    M.IsFunction "core::cell::panic_already_borrowed" panic_already_borrowed.
-  Smpl Add apply Function_panic_already_borrowed : is_function.
+  Global Instance Instance_IsFunction_panic_already_borrowed :
+    M.IsFunction.Trait "core::cell::panic_already_borrowed" panic_already_borrowed.
+  Admitted.
+  Global Typeclasses Opaque panic_already_borrowed.
   
   (*
   fn panic_already_mutably_borrowed(err: BorrowError) -> ! {
@@ -1789,9 +1809,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_already_mutably_borrowed :
-    M.IsFunction "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
-  Smpl Add apply Function_panic_already_mutably_borrowed : is_function.
+  Global Instance Instance_IsFunction_panic_already_mutably_borrowed :
+    M.IsFunction.Trait "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
+  Admitted.
+  Global Typeclasses Opaque panic_already_mutably_borrowed.
   
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
@@ -1815,8 +1836,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_writing : M.IsFunction "core::cell::is_writing" is_writing.
-  Smpl Add apply Function_is_writing : is_function.
+  Global Instance Instance_IsFunction_is_writing :
+    M.IsFunction.Trait "core::cell::is_writing" is_writing.
+  Admitted.
+  Global Typeclasses Opaque is_writing.
   
   (*
   fn is_reading(x: BorrowFlag) -> bool {
@@ -1832,8 +1855,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_reading : M.IsFunction "core::cell::is_reading" is_reading.
-  Smpl Add apply Function_is_reading : is_function.
+  Global Instance Instance_IsFunction_is_reading :
+    M.IsFunction.Trait "core::cell::is_reading" is_reading.
+  Admitted.
+  Global Typeclasses Opaque is_reading.
   
   Module Impl_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [] [ T ].
@@ -1883,8 +1908,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -1916,10 +1944,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     
     (*
         pub fn replace(&self, t: T) -> T {
@@ -1982,10 +2011,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_replace :
+    Global Instance AssociatedFunction_replace :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "replace" (replace T).
-    Smpl Add apply AssociatedFunction_replace : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "replace" (replace T).
+    Admitted.
+    Global Typeclasses Opaque replace.
     
     (*
         pub fn replace_with<F: FnOnce(&mut T) -> T>(&self, f: F) -> T {
@@ -2073,10 +2103,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_replace_with :
+    Global Instance AssociatedFunction_replace_with :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "replace_with" (replace_with T).
-    Smpl Add apply AssociatedFunction_replace_with : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "replace_with" (replace_with T).
+    Admitted.
+    Global Typeclasses Opaque replace_with.
     
     (*
         pub fn swap(&self, other: &Self) {
@@ -2178,10 +2209,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap :
+    Global Instance AssociatedFunction_swap :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "swap" (swap T).
-    Smpl Add apply AssociatedFunction_swap : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+    Admitted.
+    Global Typeclasses Opaque swap.
     (*
         pub fn borrow(&self) -> Ref<'_, T> {
             match self.try_borrow() {
@@ -2243,10 +2275,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrow :
+    Global Instance AssociatedFunction_borrow :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "borrow" (borrow T).
-    Smpl Add apply AssociatedFunction_borrow : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "borrow" (borrow T).
+    Admitted.
+    Global Typeclasses Opaque borrow.
     
     (*
         pub fn try_borrow(&self) -> Result<Ref<'_, T>, BorrowError> {
@@ -2369,10 +2402,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_borrow :
+    Global Instance AssociatedFunction_try_borrow :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_borrow" (try_borrow T).
-    Smpl Add apply AssociatedFunction_try_borrow : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_borrow" (try_borrow T).
+    Admitted.
+    Global Typeclasses Opaque try_borrow.
     
     (*
         pub fn borrow_mut(&self) -> RefMut<'_, T> {
@@ -2435,10 +2469,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrow_mut :
+    Global Instance AssociatedFunction_borrow_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "borrow_mut" (borrow_mut T).
-    Smpl Add apply AssociatedFunction_borrow_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "borrow_mut" (borrow_mut T).
+    Admitted.
+    Global Typeclasses Opaque borrow_mut.
     
     (*
         pub fn try_borrow_mut(&self) -> Result<RefMut<'_, T>, BorrowMutError> {
@@ -2569,10 +2604,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_borrow_mut :
+    Global Instance AssociatedFunction_try_borrow_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_borrow_mut" (try_borrow_mut T).
-    Smpl Add apply AssociatedFunction_try_borrow_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_borrow_mut" (try_borrow_mut T).
+    Admitted.
+    Global Typeclasses Opaque try_borrow_mut.
     
     (*
         pub fn as_ptr(&self) -> *mut T {
@@ -2607,10 +2643,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ptr :
+    Global Instance AssociatedFunction_as_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
-    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+    Admitted.
+    Global Typeclasses Opaque as_ptr.
     
     (*
         pub fn get_mut(&mut self) -> &mut T {
@@ -2655,10 +2692,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut :
+    Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-    Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+    Admitted.
+    Global Typeclasses Opaque get_mut.
     
     (*
         pub fn undo_leak(&mut self) -> &mut T {
@@ -2726,10 +2764,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_undo_leak :
+    Global Instance AssociatedFunction_undo_leak :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "undo_leak" (undo_leak T).
-    Smpl Add apply AssociatedFunction_undo_leak : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "undo_leak" (undo_leak T).
+    Admitted.
+    Global Typeclasses Opaque undo_leak.
     
     (*
         pub unsafe fn try_borrow_unguarded(&self) -> Result<&T, BorrowError> {
@@ -2847,10 +2886,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_borrow_unguarded :
+    Global Instance AssociatedFunction_try_borrow_unguarded :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_borrow_unguarded" (try_borrow_unguarded T).
-    Smpl Add apply AssociatedFunction_try_borrow_unguarded : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_borrow_unguarded" (try_borrow_unguarded T).
+    Admitted.
+    Global Typeclasses Opaque try_borrow_unguarded.
     (*
         pub fn take(&self) -> T {
             self.replace(Default::default())
@@ -2882,10 +2922,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_take :
+    Global Instance AssociatedFunction_take :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "take" (take T).
-    Smpl Add apply AssociatedFunction_take : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "take" (take T).
+    Admitted.
+    Global Typeclasses Opaque take.
   End Impl_core_cell_RefCell_T.
   
   
@@ -3981,8 +4022,9 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_core_cell_BorrowRef.
   
   Module Impl_core_ops_drop_Drop_for_core_cell_BorrowRef.
@@ -4441,10 +4483,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_clone :
+    Global Instance AssociatedFunction_clone :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "clone" (clone T).
-    Smpl Add apply AssociatedFunction_clone : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "clone" (clone T).
+    Admitted.
+    Global Typeclasses Opaque clone.
     
     (*
         pub fn map<U: ?Sized, F>(orig: Ref<'b, T>, f: F) -> Ref<'b, U>
@@ -4528,8 +4571,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
-    Smpl Add apply AssociatedFunction_map : is_associated.
+    Global Instance AssociatedFunction_map :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+    Admitted.
+    Global Typeclasses Opaque map.
     
     (*
         pub fn filter_map<U: ?Sized, F>(orig: Ref<'b, T>, f: F) -> Result<Ref<'b, U>, Self>
@@ -4648,10 +4694,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_filter_map :
+    Global Instance AssociatedFunction_filter_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "filter_map" (filter_map T).
-    Smpl Add apply AssociatedFunction_filter_map : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "filter_map" (filter_map T).
+    Admitted.
+    Global Typeclasses Opaque filter_map.
     
     (*
         pub fn map_split<U: ?Sized, V: ?Sized, F>(orig: Ref<'b, T>, f: F) -> (Ref<'b, U>, Ref<'b, V>)
@@ -4806,10 +4853,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_split :
+    Global Instance AssociatedFunction_map_split :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "map_split" (map_split T).
-    Smpl Add apply AssociatedFunction_map_split : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "map_split" (map_split T).
+    Admitted.
+    Global Typeclasses Opaque map_split.
     
     (*
         pub fn leak(orig: Ref<'b, T>) -> &'b T {
@@ -4867,10 +4915,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leak :
+    Global Instance AssociatedFunction_leak :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "leak" (leak T).
-    Smpl Add apply AssociatedFunction_leak : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "leak" (leak T).
+    Admitted.
+    Global Typeclasses Opaque leak.
   End Impl_core_cell_Ref_T.
   
   Module Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_core_cell_Ref_U_for_core_cell_Ref_T.
@@ -5040,8 +5089,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
-    Smpl Add apply AssociatedFunction_map : is_associated.
+    Global Instance AssociatedFunction_map :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+    Admitted.
+    Global Typeclasses Opaque map.
     
     (*
         pub fn filter_map<U: ?Sized, F>(mut orig: RefMut<'b, T>, f: F) -> Result<RefMut<'b, U>, Self>
@@ -5170,10 +5222,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_filter_map :
+    Global Instance AssociatedFunction_filter_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "filter_map" (filter_map T).
-    Smpl Add apply AssociatedFunction_filter_map : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "filter_map" (filter_map T).
+    Admitted.
+    Global Typeclasses Opaque filter_map.
     
     (*
         pub fn map_split<U: ?Sized, V: ?Sized, F>(
@@ -5332,10 +5385,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_split :
+    Global Instance AssociatedFunction_map_split :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "map_split" (map_split T).
-    Smpl Add apply AssociatedFunction_map_split : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "map_split" (map_split T).
+    Admitted.
+    Global Typeclasses Opaque map_split.
     
     (*
         pub fn leak(mut orig: RefMut<'b, T>) -> &'b mut T {
@@ -5416,10 +5470,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leak :
+    Global Instance AssociatedFunction_leak :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "leak" (leak T).
-    Smpl Add apply AssociatedFunction_leak : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "leak" (leak T).
+    Admitted.
+    Global Typeclasses Opaque leak.
   End Impl_core_cell_RefMut_T.
   
   (* StructRecord
@@ -5654,8 +5709,9 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn clone(&self) -> BorrowRefMut<'b> {
@@ -5832,8 +5888,9 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_clone : M.IsAssociatedFunction Self "clone" clone.
-    Smpl Add apply AssociatedFunction_clone : is_associated.
+    Global Instance AssociatedFunction_clone : M.IsAssociatedFunction.Trait Self "clone" clone.
+    Admitted.
+    Global Typeclasses Opaque clone.
   End Impl_core_cell_BorrowRefMut.
   
   (* StructRecord
@@ -6092,8 +6149,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -6112,10 +6172,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     (*
         pub const fn from_mut(value: &mut T) -> &mut UnsafeCell<T> {
             // SAFETY: `UnsafeCell<T>` has the same memory layout as `T` due to #[repr(transparent)].
@@ -6165,10 +6226,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_mut :
+    Global Instance AssociatedFunction_from_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
-    Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+    Admitted.
+    Global Typeclasses Opaque from_mut.
     
     (*
         pub const fn get(&self) -> *mut T {
@@ -6197,8 +6259,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
-    Smpl Add apply AssociatedFunction_get : is_associated.
+    Global Instance AssociatedFunction_get :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+    Admitted.
+    Global Typeclasses Opaque get.
     
     (*
         pub const fn get_mut(&mut self) -> &mut T {
@@ -6232,10 +6297,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut :
+    Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-    Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+    Admitted.
+    Global Typeclasses Opaque get_mut.
     
     (*
         pub const fn raw_get(this: *const Self) -> *mut T {
@@ -6257,10 +6323,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_raw_get :
+    Global Instance AssociatedFunction_raw_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "raw_get" (raw_get T).
-    Smpl Add apply AssociatedFunction_raw_get : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "raw_get" (raw_get T).
+    Admitted.
+    Global Typeclasses Opaque raw_get.
   End Impl_core_cell_UnsafeCell_T.
   
   
@@ -6413,8 +6480,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn into_inner(self) -> T {
@@ -6448,10 +6518,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     (*
         pub const fn get(&self) -> *mut T {
             self.value.get()
@@ -6485,8 +6556,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "get" (get T).
-    Smpl Add apply AssociatedFunction_get : is_associated.
+    Global Instance AssociatedFunction_get :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+    Admitted.
+    Global Typeclasses Opaque get.
     
     (*
         pub const fn get_mut(&mut self) -> &mut T {
@@ -6531,10 +6605,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut :
+    Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-    Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+    Admitted.
+    Global Typeclasses Opaque get_mut.
     
     (*
         pub const fn raw_get(this: *const Self) -> *mut T {
@@ -6556,10 +6631,11 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_raw_get :
+    Global Instance AssociatedFunction_raw_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "raw_get" (raw_get T).
-    Smpl Add apply AssociatedFunction_raw_get : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "raw_get" (raw_get T).
+    Admitted.
+    Global Typeclasses Opaque raw_get.
   End Impl_core_cell_SyncUnsafeCell_T.
   
   
@@ -6719,9 +6795,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assert_coerce_unsized :
-    M.IsFunction "core::cell::assert_coerce_unsized" assert_coerce_unsized.
-  Smpl Add apply Function_assert_coerce_unsized : is_function.
+  Global Instance Instance_IsFunction_assert_coerce_unsized :
+    M.IsFunction.Trait "core::cell::assert_coerce_unsized" assert_coerce_unsized.
+  Admitted.
+  Global Typeclasses Opaque assert_coerce_unsized.
   
   Module Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ T ].

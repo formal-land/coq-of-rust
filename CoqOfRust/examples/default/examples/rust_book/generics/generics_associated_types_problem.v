@@ -187,8 +187,10 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_difference : M.IsFunction "generics_associated_types_problem::difference" difference.
-Smpl Add apply Function_difference : is_function.
+Global Instance Instance_IsFunction_difference :
+  M.IsFunction.Trait "generics_associated_types_problem::difference" difference.
+Admitted.
+Global Typeclasses Opaque difference.
 
 (*
 fn main() {
@@ -634,5 +636,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_associated_types_problem::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "generics_associated_types_problem::main" main.
+Admitted.
+Global Typeclasses Opaque main.

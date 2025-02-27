@@ -122,9 +122,10 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_create_fn :
-  M.IsFunction "functions_closures_as_output_parameters::create_fn" create_fn.
-Smpl Add apply Function_create_fn : is_function.
+Global Instance Instance_IsFunction_create_fn :
+  M.IsFunction.Trait "functions_closures_as_output_parameters::create_fn" create_fn.
+Admitted.
+Global Typeclasses Opaque create_fn.
 
 Module create_fn.
   (* Error OpaqueTy *)
@@ -251,9 +252,10 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_create_fnmut :
-  M.IsFunction "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
-Smpl Add apply Function_create_fnmut : is_function.
+Global Instance Instance_IsFunction_create_fnmut :
+  M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
+Admitted.
+Global Typeclasses Opaque create_fnmut.
 
 Module create_fnmut.
   (* Error OpaqueTy *)
@@ -380,9 +382,10 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_create_fnonce :
-  M.IsFunction "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
-Smpl Add apply Function_create_fnonce : is_function.
+Global Instance Instance_IsFunction_create_fnonce :
+  M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
+Admitted.
+Global Typeclasses Opaque create_fnonce.
 
 Module create_fnonce.
   (* Error OpaqueTy *)
@@ -481,5 +484,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "functions_closures_as_output_parameters::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "functions_closures_as_output_parameters::main" main.
+Admitted.
+Global Typeclasses Opaque main.

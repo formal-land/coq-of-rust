@@ -69,8 +69,10 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
-Smpl Add apply Function_red : is_function.
+Global Instance Instance_IsFunction_red :
+  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::red" red.
+Admitted.
+Global Typeclasses Opaque red.
 
 (*
 fn blue<T: Blue>(_: &T) -> &'static str {
@@ -86,8 +88,10 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
-Smpl Add apply Function_blue : is_function.
+Global Instance Instance_IsFunction_blue :
+  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::blue" blue.
+Admitted.
+Global Typeclasses Opaque blue.
 
 (*
 fn main() {
@@ -301,5 +305,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::main" main.
+Admitted.
+Global Typeclasses Opaque main.

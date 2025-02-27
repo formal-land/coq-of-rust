@@ -1055,8 +1055,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_decode : M.IsFunction "core::num::flt2dec::decoder::decode" decode.
-      Smpl Add apply Function_decode : is_function.
+      Global Instance Instance_IsFunction_decode :
+        M.IsFunction.Trait "core::num::flt2dec::decoder::decode" decode.
+      Admitted.
+      Global Typeclasses Opaque decode.
     End decoder.
   End flt2dec.
 End num.

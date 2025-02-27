@@ -2187,8 +2187,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
-      Smpl Add apply AssociatedFunction_code : is_associated.
+      Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+      Admitted.
+      Global Typeclasses Opaque code.
       
       (*
           pub fn into_eof(self) -> Eof {
@@ -2998,8 +2999,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_eof : M.IsAssociatedFunction Self "into_eof" into_eof.
-      Smpl Add apply AssociatedFunction_into_eof : is_associated.
+      Global Instance AssociatedFunction_into_eof :
+        M.IsAssociatedFunction.Trait Self "into_eof" into_eof.
+      Admitted.
+      Global Typeclasses Opaque into_eof.
       
       (*
           pub fn eof_code_section_start(&self, idx: usize) -> Option<usize> {
@@ -3115,9 +3118,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_eof_code_section_start :
-        M.IsAssociatedFunction Self "eof_code_section_start" eof_code_section_start.
-      Smpl Add apply AssociatedFunction_eof_code_section_start : is_associated.
+      Global Instance AssociatedFunction_eof_code_section_start :
+        M.IsAssociatedFunction.Trait Self "eof_code_section_start" eof_code_section_start.
+      Admitted.
+      Global Typeclasses Opaque eof_code_section_start.
       
       (*
           pub fn encode(&self, buffer: &mut Vec<u8>) {
@@ -3187,6 +3191,7 @@ Module eof.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3392,6 +3397,7 @@ Module eof.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3604,8 +3610,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
-      Smpl Add apply AssociatedFunction_encode : is_associated.
+      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.Trait Self "encode" encode.
+      Admitted.
+      Global Typeclasses Opaque encode.
       
       (*
           pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError> {
@@ -4013,6 +4020,7 @@ Module eof.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -4443,6 +4451,7 @@ Module eof.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -4738,6 +4747,7 @@ Module eof.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -4970,8 +4980,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
-      Smpl Add apply AssociatedFunction_decode : is_associated.
+      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+      Admitted.
+      Global Typeclasses Opaque decode.
     End Impl_revm_bytecode_eof_body_EofBody.
   End body.
 End eof.

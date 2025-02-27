@@ -62,9 +62,10 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unreachable_unchecked :
-    M.IsFunction "core::hint::unreachable_unchecked" unreachable_unchecked.
-  Smpl Add apply Function_unreachable_unchecked : is_function.
+  Global Instance Instance_IsFunction_unreachable_unchecked :
+    M.IsFunction.Trait "core::hint::unreachable_unchecked" unreachable_unchecked.
+  Admitted.
+  Global Typeclasses Opaque unreachable_unchecked.
   
   (*
   pub const unsafe fn assert_unchecked(cond: bool) {
@@ -130,8 +131,10 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assert_unchecked : M.IsFunction "core::hint::assert_unchecked" assert_unchecked.
-  Smpl Add apply Function_assert_unchecked : is_function.
+  Global Instance Instance_IsFunction_assert_unchecked :
+    M.IsFunction.Trait "core::hint::assert_unchecked" assert_unchecked.
+  Admitted.
+  Global Typeclasses Opaque assert_unchecked.
   
   (*
   pub fn spin_loop() {
@@ -189,8 +192,10 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_spin_loop : M.IsFunction "core::hint::spin_loop" spin_loop.
-  Smpl Add apply Function_spin_loop : is_function.
+  Global Instance Instance_IsFunction_spin_loop :
+    M.IsFunction.Trait "core::hint::spin_loop" spin_loop.
+  Admitted.
+  Global Typeclasses Opaque spin_loop.
   
   (*
   pub const fn black_box<T>(dummy: T) -> T {
@@ -210,8 +215,10 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_black_box : M.IsFunction "core::hint::black_box" black_box.
-  Smpl Add apply Function_black_box : is_function.
+  Global Instance Instance_IsFunction_black_box :
+    M.IsFunction.Trait "core::hint::black_box" black_box.
+  Admitted.
+  Global Typeclasses Opaque black_box.
   
   (*
   pub const fn must_use<T>(value: T) -> T {
@@ -227,6 +234,7 @@ Module hint.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_must_use : M.IsFunction "core::hint::must_use" must_use.
-  Smpl Add apply Function_must_use : is_function.
+  Global Instance Instance_IsFunction_must_use : M.IsFunction.Trait "core::hint::must_use" must_use.
+  Admitted.
+  Global Typeclasses Opaque must_use.
 End hint.

@@ -200,6 +200,7 @@ Module annotated_visitor.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -440,6 +441,7 @@ Module annotated_visitor.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1777,8 +1779,9 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn element_layout(&self) -> &'l MoveTypeLayout {
@@ -1800,9 +1803,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_element_layout :
-      M.IsAssociatedFunction Self "element_layout" element_layout.
-    Smpl Add apply AssociatedFunction_element_layout : is_associated.
+    Global Instance AssociatedFunction_element_layout :
+      M.IsAssociatedFunction.Trait Self "element_layout" element_layout.
+    Admitted.
+    Global Typeclasses Opaque element_layout.
     
     (*
         pub fn len(&self) -> u64 {
@@ -1824,8 +1828,9 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-    Smpl Add apply AssociatedFunction_len : is_associated.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Admitted.
+    Global Typeclasses Opaque len.
     
     (*
         pub fn has_element(&self) -> bool {
@@ -1856,8 +1861,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_has_element : M.IsAssociatedFunction Self "has_element" has_element.
-    Smpl Add apply AssociatedFunction_has_element : is_associated.
+    Global Instance AssociatedFunction_has_element :
+      M.IsAssociatedFunction.Trait Self "has_element" has_element.
+    Admitted.
+    Global Typeclasses Opaque has_element.
     
     (*
         pub fn next_element<V: Visitor + ?Sized>(
@@ -2158,8 +2165,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_element : M.IsAssociatedFunction Self "next_element" next_element.
-    Smpl Add apply AssociatedFunction_next_element : is_associated.
+    Global Instance AssociatedFunction_next_element :
+      M.IsAssociatedFunction.Trait Self "next_element" next_element.
+    Admitted.
+    Global Typeclasses Opaque next_element.
     
     (*
         pub fn skip_element(&mut self) -> Result<bool, Error> {
@@ -2254,8 +2263,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_skip_element : M.IsAssociatedFunction Self "skip_element" skip_element.
-    Smpl Add apply AssociatedFunction_skip_element : is_associated.
+    Global Instance AssociatedFunction_skip_element :
+      M.IsAssociatedFunction.Trait Self "skip_element" skip_element.
+    Admitted.
+    Global Typeclasses Opaque skip_element.
   End Impl_move_core_types_annotated_visitor_VecDriver.
   
   Module Impl_move_core_types_annotated_visitor_StructDriver.
@@ -2286,8 +2297,9 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn struct_layout(&self) -> &'l MoveStructLayout {
@@ -2309,9 +2321,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_layout :
-      M.IsAssociatedFunction Self "struct_layout" struct_layout.
-    Smpl Add apply AssociatedFunction_struct_layout : is_associated.
+    Global Instance AssociatedFunction_struct_layout :
+      M.IsAssociatedFunction.Trait Self "struct_layout" struct_layout.
+    Admitted.
+    Global Typeclasses Opaque struct_layout.
     
     (*
         pub fn peek_field(&self) -> Option<&'l MoveFieldLayout> {
@@ -2404,8 +2417,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_peek_field : M.IsAssociatedFunction Self "peek_field" peek_field.
-    Smpl Add apply AssociatedFunction_peek_field : is_associated.
+    Global Instance AssociatedFunction_peek_field :
+      M.IsAssociatedFunction.Trait Self "peek_field" peek_field.
+    Admitted.
+    Global Typeclasses Opaque peek_field.
     
     (*
         pub fn next_field<V: Visitor + ?Sized>(
@@ -2736,8 +2751,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_field : M.IsAssociatedFunction Self "next_field" next_field.
-    Smpl Add apply AssociatedFunction_next_field : is_associated.
+    Global Instance AssociatedFunction_next_field :
+      M.IsAssociatedFunction.Trait Self "next_field" next_field.
+    Admitted.
+    Global Typeclasses Opaque next_field.
     
     (*
         pub fn skip_field(&mut self) -> Result<Option<&'l MoveFieldLayout>, Error> {
@@ -2982,8 +2999,10 @@ Module annotated_visitor.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_skip_field : M.IsAssociatedFunction Self "skip_field" skip_field.
-    Smpl Add apply AssociatedFunction_skip_field : is_associated.
+    Global Instance AssociatedFunction_skip_field :
+      M.IsAssociatedFunction.Trait Self "skip_field" skip_field.
+    Admitted.
+    Global Typeclasses Opaque skip_field.
   End Impl_move_core_types_annotated_visitor_StructDriver.
   
   (*
@@ -5380,6 +5399,7 @@ Module annotated_visitor.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -5601,9 +5621,10 @@ Module annotated_visitor.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_visit_value :
-    M.IsFunction "move_core_types::annotated_visitor::visit_value" visit_value.
-  Smpl Add apply Function_visit_value : is_function.
+  Global Instance Instance_IsFunction_visit_value :
+    M.IsFunction.Trait "move_core_types::annotated_visitor::visit_value" visit_value.
+  Admitted.
+  Global Typeclasses Opaque visit_value.
   
   (*
   pub(crate) fn visit_struct<V: Visitor + ?Sized>(
@@ -5835,6 +5856,7 @@ Module annotated_visitor.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -6066,9 +6088,10 @@ Module annotated_visitor.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_visit_struct :
-    M.IsFunction "move_core_types::annotated_visitor::visit_struct" visit_struct.
-  Smpl Add apply Function_visit_struct : is_function.
+  Global Instance Instance_IsFunction_visit_struct :
+    M.IsFunction.Trait "move_core_types::annotated_visitor::visit_struct" visit_struct.
+  Admitted.
+  Global Typeclasses Opaque visit_struct.
   
   (*
   fn read_exact<const N: usize>(bytes: &mut &[u8]) -> Result<[u8; N], Error> {
@@ -6259,7 +6282,8 @@ Module annotated_visitor.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_exact :
-    M.IsFunction "move_core_types::annotated_visitor::read_exact" read_exact.
-  Smpl Add apply Function_read_exact : is_function.
+  Global Instance Instance_IsFunction_read_exact :
+    M.IsFunction.Trait "move_core_types::annotated_visitor::read_exact" read_exact.
+  Admitted.
+  Global Typeclasses Opaque read_exact.
 End annotated_visitor.

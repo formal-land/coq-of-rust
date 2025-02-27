@@ -77,10 +77,10 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_contains :
+  Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
-  Smpl Add apply AssociatedFunction_contains : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+  Admitted.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -89,10 +89,10 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -101,10 +101,10 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
   
   (*
       fn remove(&self, _key: K) {
@@ -113,10 +113,10 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_remove :
+  Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
-  Smpl Add apply AssociatedFunction_remove : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+  Admitted.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -125,10 +125,10 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_size :
+  Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" (size K V).
-  Smpl Add apply AssociatedFunction_size : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+  Admitted.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -137,10 +137,10 @@ Module Impl_multisig_Mapping_K_V.
   *)
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_take :
+  Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" (take K V).
-  Smpl Add apply AssociatedFunction_take : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+  Admitted.
 End Impl_multisig_Mapping_K_V.
 
 (* StructTuple
@@ -1059,8 +1059,9 @@ Module Impl_multisig_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -1069,8 +1070,9 @@ Module Impl_multisig_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
   
   (*
       fn transferred_value(&self) -> Balance {
@@ -1079,9 +1081,9 @@ Module Impl_multisig_Env.
   *)
   Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transferred_value :
-    M.IsAssociatedFunction Self "transferred_value" transferred_value.
-  Smpl Add apply AssociatedFunction_transferred_value : is_associated.
+  Global Instance AssociatedFunction_transferred_value :
+    M.IsAssociatedFunction.Trait Self "transferred_value" transferred_value.
+  Admitted.
   
   (*
       fn account_id(&self) -> AccountId {
@@ -1090,8 +1092,9 @@ Module Impl_multisig_Env.
   *)
   Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
-  Smpl Add apply AssociatedFunction_account_id : is_associated.
+  Global Instance AssociatedFunction_account_id :
+    M.IsAssociatedFunction.Trait Self "account_id" account_id.
+  Admitted.
 End Impl_multisig_Env.
 
 (* StructRecord
@@ -1333,9 +1336,10 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_ensure_requirement_is_valid :
-  M.IsFunction "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
-Smpl Add apply Function_ensure_requirement_is_valid : is_function.
+Global Instance Instance_IsFunction_ensure_requirement_is_valid :
+  M.IsFunction.Trait "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
+Admitted.
+Global Typeclasses Opaque ensure_requirement_is_valid.
 
 Module Impl_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
@@ -1347,8 +1351,9 @@ Module Impl_multisig_Multisig.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -1368,8 +1373,9 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new(requirement: u32, mut owners: Vec<AccountId>) -> Self {
@@ -1524,6 +1530,7 @@ Module Impl_multisig_Multisig.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -1655,8 +1662,9 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       fn ensure_confirmed(&self, trans_id: TransactionId) {
@@ -1763,9 +1771,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_ensure_confirmed :
-    M.IsAssociatedFunction Self "ensure_confirmed" ensure_confirmed.
-  Smpl Add apply AssociatedFunction_ensure_confirmed : is_associated.
+  Global Instance AssociatedFunction_ensure_confirmed :
+    M.IsAssociatedFunction.Trait Self "ensure_confirmed" ensure_confirmed.
+  Admitted.
+  Global Typeclasses Opaque ensure_confirmed.
   
   (*
       fn ensure_transaction_exists(&self, trans_id: TransactionId) {
@@ -1833,9 +1842,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_ensure_transaction_exists :
-    M.IsAssociatedFunction Self "ensure_transaction_exists" ensure_transaction_exists.
-  Smpl Add apply AssociatedFunction_ensure_transaction_exists : is_associated.
+  Global Instance AssociatedFunction_ensure_transaction_exists :
+    M.IsAssociatedFunction.Trait Self "ensure_transaction_exists" ensure_transaction_exists.
+  Admitted.
+  Global Typeclasses Opaque ensure_transaction_exists.
   
   (*
       fn ensure_owner(&self, owner: &AccountId) {
@@ -1906,8 +1916,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_ensure_owner : M.IsAssociatedFunction Self "ensure_owner" ensure_owner.
-  Smpl Add apply AssociatedFunction_ensure_owner : is_associated.
+  Global Instance AssociatedFunction_ensure_owner :
+    M.IsAssociatedFunction.Trait Self "ensure_owner" ensure_owner.
+  Admitted.
+  Global Typeclasses Opaque ensure_owner.
   
   (*
       fn ensure_caller_is_owner(&self) {
@@ -1981,9 +1993,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_ensure_caller_is_owner :
-    M.IsAssociatedFunction Self "ensure_caller_is_owner" ensure_caller_is_owner.
-  Smpl Add apply AssociatedFunction_ensure_caller_is_owner : is_associated.
+  Global Instance AssociatedFunction_ensure_caller_is_owner :
+    M.IsAssociatedFunction.Trait Self "ensure_caller_is_owner" ensure_caller_is_owner.
+  Admitted.
+  Global Typeclasses Opaque ensure_caller_is_owner.
   
   (*
       fn ensure_from_wallet(&self) {
@@ -2159,9 +2172,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_ensure_from_wallet :
-    M.IsAssociatedFunction Self "ensure_from_wallet" ensure_from_wallet.
-  Smpl Add apply AssociatedFunction_ensure_from_wallet : is_associated.
+  Global Instance AssociatedFunction_ensure_from_wallet :
+    M.IsAssociatedFunction.Trait Self "ensure_from_wallet" ensure_from_wallet.
+  Admitted.
+  Global Typeclasses Opaque ensure_from_wallet.
   
   (*
       fn ensure_no_owner(&self, owner: &AccountId) {
@@ -2234,9 +2248,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_ensure_no_owner :
-    M.IsAssociatedFunction Self "ensure_no_owner" ensure_no_owner.
-  Smpl Add apply AssociatedFunction_ensure_no_owner : is_associated.
+  Global Instance AssociatedFunction_ensure_no_owner :
+    M.IsAssociatedFunction.Trait Self "ensure_no_owner" ensure_no_owner.
+  Admitted.
+  Global Typeclasses Opaque ensure_no_owner.
   
   (*
       pub fn add_owner(&mut self, new_owner: AccountId) {
@@ -2415,8 +2430,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_add_owner : M.IsAssociatedFunction Self "add_owner" add_owner.
-  Smpl Add apply AssociatedFunction_add_owner : is_associated.
+  Global Instance AssociatedFunction_add_owner :
+    M.IsAssociatedFunction.Trait Self "add_owner" add_owner.
+  Admitted.
+  Global Typeclasses Opaque add_owner.
   
   (*
       fn owner_index(&self, owner: &AccountId) -> u32 {
@@ -2568,8 +2585,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_owner_index : M.IsAssociatedFunction Self "owner_index" owner_index.
-  Smpl Add apply AssociatedFunction_owner_index : is_associated.
+  Global Instance AssociatedFunction_owner_index :
+    M.IsAssociatedFunction.Trait Self "owner_index" owner_index.
+  Admitted.
+  Global Typeclasses Opaque owner_index.
   
   (*
       fn clean_owner_confirmations(&mut self, owner: &AccountId) {
@@ -2634,6 +2653,7 @@ Module Impl_multisig_Multisig.
                   ltac:(M.monadic
                     (let iter := M.copy (| γ |) in
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
@@ -2877,9 +2897,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_clean_owner_confirmations :
-    M.IsAssociatedFunction Self "clean_owner_confirmations" clean_owner_confirmations.
-  Smpl Add apply AssociatedFunction_clean_owner_confirmations : is_associated.
+  Global Instance AssociatedFunction_clean_owner_confirmations :
+    M.IsAssociatedFunction.Trait Self "clean_owner_confirmations" clean_owner_confirmations.
+  Admitted.
+  Global Typeclasses Opaque clean_owner_confirmations.
   
   (*
       pub fn remove_owner(&mut self, owner: AccountId) {
@@ -3122,8 +3143,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_remove_owner : M.IsAssociatedFunction Self "remove_owner" remove_owner.
-  Smpl Add apply AssociatedFunction_remove_owner : is_associated.
+  Global Instance AssociatedFunction_remove_owner :
+    M.IsAssociatedFunction.Trait Self "remove_owner" remove_owner.
+  Admitted.
+  Global Typeclasses Opaque remove_owner.
   
   (*
       pub fn replace_owner(&mut self, old_owner: AccountId, new_owner: AccountId) {
@@ -3377,9 +3400,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_replace_owner :
-    M.IsAssociatedFunction Self "replace_owner" replace_owner.
-  Smpl Add apply AssociatedFunction_replace_owner : is_associated.
+  Global Instance AssociatedFunction_replace_owner :
+    M.IsAssociatedFunction.Trait Self "replace_owner" replace_owner.
+  Admitted.
+  Global Typeclasses Opaque replace_owner.
   
   (*
       pub fn change_requirement(&mut self, new_requirement: u32) {
@@ -3488,9 +3512,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_change_requirement :
-    M.IsAssociatedFunction Self "change_requirement" change_requirement.
-  Smpl Add apply AssociatedFunction_change_requirement : is_associated.
+  Global Instance AssociatedFunction_change_requirement :
+    M.IsAssociatedFunction.Trait Self "change_requirement" change_requirement.
+  Admitted.
+  Global Typeclasses Opaque change_requirement.
   
   (*
       fn confirm_by_caller(
@@ -3786,9 +3811,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_confirm_by_caller :
-    M.IsAssociatedFunction Self "confirm_by_caller" confirm_by_caller.
-  Smpl Add apply AssociatedFunction_confirm_by_caller : is_associated.
+  Global Instance AssociatedFunction_confirm_by_caller :
+    M.IsAssociatedFunction.Trait Self "confirm_by_caller" confirm_by_caller.
+  Admitted.
+  Global Typeclasses Opaque confirm_by_caller.
   
   (*
       pub fn submit_transaction(
@@ -4007,9 +4033,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_submit_transaction :
-    M.IsAssociatedFunction Self "submit_transaction" submit_transaction.
-  Smpl Add apply AssociatedFunction_submit_transaction : is_associated.
+  Global Instance AssociatedFunction_submit_transaction :
+    M.IsAssociatedFunction.Trait Self "submit_transaction" submit_transaction.
+  Admitted.
+  Global Typeclasses Opaque submit_transaction.
   
   (*
       fn take_transaction(&mut self, trans_id: TransactionId) -> Option<Transaction> {
@@ -4368,6 +4395,7 @@ Module Impl_multisig_Multisig.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -4505,9 +4533,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_take_transaction :
-    M.IsAssociatedFunction Self "take_transaction" take_transaction.
-  Smpl Add apply AssociatedFunction_take_transaction : is_associated.
+  Global Instance AssociatedFunction_take_transaction :
+    M.IsAssociatedFunction.Trait Self "take_transaction" take_transaction.
+  Admitted.
+  Global Typeclasses Opaque take_transaction.
   
   (*
       pub fn cancel_transaction(&mut self, trans_id: TransactionId) {
@@ -4631,9 +4660,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_cancel_transaction :
-    M.IsAssociatedFunction Self "cancel_transaction" cancel_transaction.
-  Smpl Add apply AssociatedFunction_cancel_transaction : is_associated.
+  Global Instance AssociatedFunction_cancel_transaction :
+    M.IsAssociatedFunction.Trait Self "cancel_transaction" cancel_transaction.
+  Admitted.
+  Global Typeclasses Opaque cancel_transaction.
   
   (*
       pub fn confirm_transaction(&mut self, trans_id: TransactionId) -> ConfirmationStatus {
@@ -4718,9 +4748,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_confirm_transaction :
-    M.IsAssociatedFunction Self "confirm_transaction" confirm_transaction.
-  Smpl Add apply AssociatedFunction_confirm_transaction : is_associated.
+  Global Instance AssociatedFunction_confirm_transaction :
+    M.IsAssociatedFunction.Trait Self "confirm_transaction" confirm_transaction.
+  Admitted.
+  Global Typeclasses Opaque confirm_transaction.
   
   (*
       pub fn revoke_confirmation(&mut self, trans_id: TransactionId) {
@@ -4985,9 +5016,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_revoke_confirmation :
-    M.IsAssociatedFunction Self "revoke_confirmation" revoke_confirmation.
-  Smpl Add apply AssociatedFunction_revoke_confirmation : is_associated.
+  Global Instance AssociatedFunction_revoke_confirmation :
+    M.IsAssociatedFunction.Trait Self "revoke_confirmation" revoke_confirmation.
+  Admitted.
+  Global Typeclasses Opaque revoke_confirmation.
   
   (*
       pub fn invoke_transaction(&mut self, trans_id: TransactionId) -> Result<(), Error> {
@@ -5307,9 +5339,10 @@ Module Impl_multisig_Multisig.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_invoke_transaction :
-    M.IsAssociatedFunction Self "invoke_transaction" invoke_transaction.
-  Smpl Add apply AssociatedFunction_invoke_transaction : is_associated.
+  Global Instance AssociatedFunction_invoke_transaction :
+    M.IsAssociatedFunction.Trait Self "invoke_transaction" invoke_transaction.
+  Admitted.
+  Global Typeclasses Opaque invoke_transaction.
   
   (*
       pub fn eval_transaction(&mut self, trans_id: TransactionId) -> Result<Vec<u8>, Error> {
@@ -5339,7 +5372,7 @@ Module Impl_multisig_Multisig.
   *)
   Parameter eval_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_eval_transaction :
-    M.IsAssociatedFunction Self "eval_transaction" eval_transaction.
-  Smpl Add apply AssociatedFunction_eval_transaction : is_associated.
+  Global Instance AssociatedFunction_eval_transaction :
+    M.IsAssociatedFunction.Trait Self "eval_transaction" eval_transaction.
+  Admitted.
 End Impl_multisig_Multisig.

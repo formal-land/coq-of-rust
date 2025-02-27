@@ -24,18 +24,15 @@ Definition run_stop
     unit
   }}.
 Proof.
-  run_symbolic.
+  run.
   eapply Run.Rewrite. {
     erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
     reflexivity.
   }
-  run_symbolic_let. {
-    destruct run_InterpreterTypes_for_WIRE.
-    destruct run_LoopControl_for_Control.
-    destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-    run_symbolic.
-  }
-  intros []; run_symbolic.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_next.
 Defined.
 
 (*
@@ -55,16 +52,13 @@ Definition run_unknown
     unit
   }}.
 Proof.
-  run_symbolic.
+  run.
   eapply Run.Rewrite. {
     erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
     reflexivity.
   }
-  run_symbolic_let. {
-    destruct run_InterpreterTypes_for_WIRE.
-    destruct run_LoopControl_for_Control.
-    destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-    run_symbolic.
-  }
-  intros []; run_symbolic.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_next.
 Defined.

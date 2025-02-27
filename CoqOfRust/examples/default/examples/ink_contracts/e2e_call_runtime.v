@@ -105,8 +105,8 @@ Module Impl_e2e_call_runtime_Env.
   *)
   Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
-  Smpl Add apply AssociatedFunction_balance : is_associated.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Admitted.
 End Impl_e2e_call_runtime_Env.
 
 (* StructTuple
@@ -146,8 +146,9 @@ Module Impl_e2e_call_runtime_Contract.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -167,8 +168,9 @@ Module Impl_e2e_call_runtime_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -181,8 +183,9 @@ Module Impl_e2e_call_runtime_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn get_contract_balance(&self) -> Balance {
@@ -218,7 +221,8 @@ Module Impl_e2e_call_runtime_Contract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_contract_balance :
-    M.IsAssociatedFunction Self "get_contract_balance" get_contract_balance.
-  Smpl Add apply AssociatedFunction_get_contract_balance : is_associated.
+  Global Instance AssociatedFunction_get_contract_balance :
+    M.IsAssociatedFunction.Trait Self "get_contract_balance" get_contract_balance.
+  Admitted.
+  Global Typeclasses Opaque get_contract_balance.
 End Impl_e2e_call_runtime_Contract.

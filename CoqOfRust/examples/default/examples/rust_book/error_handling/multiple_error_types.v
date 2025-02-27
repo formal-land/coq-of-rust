@@ -112,8 +112,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_double_first : M.IsFunction "multiple_error_types::double_first" double_first.
-Smpl Add apply Function_double_first : is_function.
+Global Instance Instance_IsFunction_double_first :
+  M.IsFunction.Trait "multiple_error_types::double_first" double_first.
+Admitted.
+Global Typeclasses Opaque double_first.
 
 (*
 fn main() {
@@ -538,5 +540,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "multiple_error_types::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "multiple_error_types::main" main.
+Admitted.
+Global Typeclasses Opaque main.

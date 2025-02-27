@@ -26,8 +26,10 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_sum : M.IsFunction "pattern_in_function_parameters::sum" sum.
-Smpl Add apply Function_sum : is_function.
+Global Instance Instance_IsFunction_sum :
+  M.IsFunction.Trait "pattern_in_function_parameters::sum" sum.
+Admitted.
+Global Typeclasses Opaque sum.
 
 (*
 fn steps_between(&start: &char, &end: &char) -> Option<usize> {
@@ -218,6 +220,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_steps_between :
-  M.IsFunction "pattern_in_function_parameters::steps_between" steps_between.
-Smpl Add apply Function_steps_between : is_function.
+Global Instance Instance_IsFunction_steps_between :
+  M.IsFunction.Trait "pattern_in_function_parameters::steps_between" steps_between.
+Admitted.
+Global Typeclasses Opaque steps_between.

@@ -14,9 +14,12 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function__assert_is_object_safe :
-        M.IsFunction "core::iter::traits::iterator::_assert_is_object_safe" _assert_is_object_safe.
-      Smpl Add apply Function__assert_is_object_safe : is_function.
+      Global Instance Instance_IsFunction__assert_is_object_safe :
+        M.IsFunction.Trait
+          "core::iter::traits::iterator::_assert_is_object_safe"
+          _assert_is_object_safe.
+      Admitted.
+      Global Typeclasses Opaque _assert_is_object_safe.
       
       (* Trait *)
       Module Iterator.
@@ -291,6 +294,7 @@ Module iter.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -1358,7 +1362,7 @@ Module iter.
                 Ty.associated_in_trait
                   "core::ops::try_trait::Residual"
                   []
-                  []
+                  [ B ]
                   (Ty.associated_in_trait
                     "core::ops::try_trait::Try"
                     []
@@ -1650,6 +1654,7 @@ Module iter.
                           M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -1892,6 +1897,7 @@ Module iter.
                     let~ accum : B := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -2137,6 +2143,7 @@ Module iter.
                 let~ accum : B := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2493,7 +2500,19 @@ Module iter.
                                           Ty.associated_in_trait
                                             "core::ops::try_trait::Residual"
                                             []
-                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    Self
+                                                    "Item"
+                                                ]
+                                            ]
                                             (Ty.associated_in_trait
                                               "core::ops::try_trait::Try"
                                               []
@@ -2506,7 +2525,19 @@ Module iter.
                                             Ty.associated_in_trait
                                               "core::ops::try_trait::Residual"
                                               []
-                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      Self
+                                                      "Item"
+                                                  ]
+                                              ]
                                               (Ty.associated_in_trait
                                                 "core::ops::try_trait::Try"
                                                 []
@@ -2598,7 +2629,19 @@ Module iter.
                                 Ty.associated_in_trait
                                   "core::ops::try_trait::Residual"
                                   []
-                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          Self
+                                          "Item"
+                                      ]
+                                  ]
                                   (Ty.associated_in_trait
                                     "core::ops::try_trait::Try"
                                     []
@@ -2611,7 +2654,19 @@ Module iter.
                                   Ty.associated_in_trait
                                     "core::ops::try_trait::Residual"
                                     []
-                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            Self
+                                            "Item"
+                                        ]
+                                    ]
                                     (Ty.associated_in_trait
                                       "core::ops::try_trait::Try"
                                       []
@@ -2649,7 +2704,19 @@ Module iter.
                                 Ty.associated_in_trait
                                   "core::ops::try_trait::Residual"
                                   []
-                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          Self
+                                          "Item"
+                                      ]
+                                  ]
                                   (Ty.associated_in_trait
                                     "core::ops::try_trait::Try"
                                     []
@@ -2662,7 +2729,19 @@ Module iter.
                                   Ty.associated_in_trait
                                     "core::ops::try_trait::Residual"
                                     []
-                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            Self
+                                            "Item"
+                                        ]
+                                    ]
                                     (Ty.associated_in_trait
                                       "core::ops::try_trait::Try"
                                       []
@@ -3010,7 +3089,19 @@ Module iter.
                           Ty.associated_in_trait
                             "core::ops::try_trait::Residual"
                             []
-                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    Self
+                                    "Item"
+                                ]
+                            ]
                             (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                             "TryType";
                           Ty.tuple []
@@ -3032,7 +3123,19 @@ Module iter.
                               Ty.associated_in_trait
                                 "core::ops::try_trait::Residual"
                                 []
-                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        Self
+                                        "Item"
+                                    ]
+                                ]
                                 (Ty.associated_in_trait
                                   "core::ops::try_trait::Try"
                                   []
@@ -3079,7 +3182,19 @@ Module iter.
                             Ty.associated_in_trait
                               "core::ops::try_trait::Residual"
                               []
-                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      Self
+                                      "Item"
+                                  ]
+                              ]
                               (Ty.associated_in_trait
                                 "core::ops::try_trait::Try"
                                 []
@@ -3092,7 +3207,19 @@ Module iter.
                               Ty.associated_in_trait
                                 "core::ops::try_trait::Residual"
                                 []
-                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        Self
+                                        "Item"
+                                    ]
+                                ]
                                 (Ty.associated_in_trait
                                   "core::ops::try_trait::Try"
                                   []
@@ -5639,9 +5766,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_iter_compare :
-        M.IsFunction "core::iter::traits::iterator::iter_compare" iter_compare.
-      Smpl Add apply Function_iter_compare : is_function.
+      Global Instance Instance_IsFunction_iter_compare :
+        M.IsFunction.Trait "core::iter::traits::iterator::iter_compare" iter_compare.
+      Admitted.
+      Global Typeclasses Opaque iter_compare.
       
       Module iter_compare.
         (*
@@ -5817,9 +5945,10 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_compare :
-          M.IsFunction "core::iter::traits::iterator::iter_compare::compare" compare.
-        Smpl Add apply Function_compare : is_function.
+        Global Instance Instance_IsFunction_compare :
+          M.IsFunction.Trait "core::iter::traits::iterator::iter_compare::compare" compare.
+        Admitted.
+        Global Typeclasses Opaque compare.
         
         Module compare.
           (* Error OpaqueTy *)
@@ -6110,6 +6239,7 @@ Module iter.
                 let~ accum : B := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -6241,6 +6371,7 @@ Module iter.
                     let~ accum : B := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),

@@ -14,9 +14,10 @@ Definition some_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_some_number :
-  M.IsFunction "match_binding_destructure_enum_variants::some_number" some_number.
-Smpl Add apply Function_some_number : is_function.
+Global Instance Instance_IsFunction_some_number :
+  M.IsFunction.Trait "match_binding_destructure_enum_variants::some_number" some_number.
+Admitted.
+Global Typeclasses Opaque some_number.
 
 (*
 fn main() {
@@ -199,5 +200,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "match_binding_destructure_enum_variants::main" main.
+Admitted.
+Global Typeclasses Opaque main.

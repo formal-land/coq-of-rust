@@ -46,16 +46,44 @@ End Impl_generics_associated_types_solution_Contains_for_generics_associated_typ
 
 Parameter difference : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_difference :
-  M.IsFunction "generics_associated_types_solution::difference" difference.
-Smpl Add apply Function_difference : is_function.
+Global Instance Instance_IsFunction_difference :
+  M.IsFunction.Trait "generics_associated_types_solution::difference" difference.
+Admitted.
 
 Parameter get_a : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
-Smpl Add apply Function_get_a : is_function.
+Global Instance Instance_IsFunction_get_a :
+  M.IsFunction.Trait "generics_associated_types_solution::get_a" get_a.
+Admitted.
+
+(* Trait *)
+(* Empty module 'TraitWithParams' *)
+
+Module Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
+  Definition Self : Ty.t := Ty.path "generics_associated_types_solution::Container".
+  
+  Definition _Output : Ty.t := Ty.tuple [ Ty.path "i32"; Ty.path "i32" ].
+  
+  Parameter get_output : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  
+  Axiom Implements :
+    M.IsTraitInstance
+      "generics_associated_types_solution::TraitWithParams"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "i32"; Ty.path "i32" ]
+      Self
+      (* Instance *)
+      [ ("Output", InstanceField.Ty _Output); ("get_output", InstanceField.Method get_output) ].
+End Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
+
+Parameter get_output : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+
+Global Instance Instance_IsFunction_get_output :
+  M.IsFunction.Trait "generics_associated_types_solution::get_output" get_output.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "generics_associated_types_solution::main" main.
+Admitted.

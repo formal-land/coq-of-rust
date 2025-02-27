@@ -20,8 +20,10 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
-Smpl Add apply Function_gen_range : is_function.
+Global Instance Instance_IsFunction_gen_range :
+  M.IsFunction.Trait "guessing_game::gen_range" gen_range.
+Admitted.
+Global Typeclasses Opaque gen_range.
 
 (*
 fn main() {
@@ -105,6 +107,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.loop (|
+          Ty.tuple [],
           ltac:(M.monadic
             (let~ _ : Ty.tuple [] :=
               let~ _ : Ty.tuple [] :=
@@ -469,5 +472,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "guessing_game::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "guessing_game::main" main.
+Admitted.
+Global Typeclasses Opaque main.

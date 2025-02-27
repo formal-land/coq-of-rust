@@ -254,9 +254,10 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fp_to_bytes :
-      M.IsFunction "revm_precompile::bls12_381::utils::fp_to_bytes" fp_to_bytes.
-    Smpl Add apply Function_fp_to_bytes : is_function.
+    Global Instance Instance_IsFunction_fp_to_bytes :
+      M.IsFunction.Trait "revm_precompile::bls12_381::utils::fp_to_bytes" fp_to_bytes.
+    Admitted.
+    Global Typeclasses Opaque fp_to_bytes.
     
     (*
     pub(super) fn remove_padding(input: &[u8]) -> Result<&[u8; FP_LENGTH], PrecompileError> {
@@ -847,9 +848,10 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_remove_padding :
-      M.IsFunction "revm_precompile::bls12_381::utils::remove_padding" remove_padding.
-    Smpl Add apply Function_remove_padding : is_function.
+    Global Instance Instance_IsFunction_remove_padding :
+      M.IsFunction.Trait "revm_precompile::bls12_381::utils::remove_padding" remove_padding.
+    Admitted.
+    Global Typeclasses Opaque remove_padding.
     
     (*
     pub(super) fn extract_scalar_input(input: &[u8]) -> Result<blst_scalar, PrecompileError> {
@@ -1153,9 +1155,12 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_extract_scalar_input :
-      M.IsFunction "revm_precompile::bls12_381::utils::extract_scalar_input" extract_scalar_input.
-    Smpl Add apply Function_extract_scalar_input : is_function.
+    Global Instance Instance_IsFunction_extract_scalar_input :
+      M.IsFunction.Trait
+        "revm_precompile::bls12_381::utils::extract_scalar_input"
+        extract_scalar_input.
+    Admitted.
+    Global Typeclasses Opaque extract_scalar_input.
     
     (*
     fn is_valid_be(input: &[u8; 48]) -> bool {
@@ -1265,6 +1270,7 @@ Module bls12_381.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1408,9 +1414,10 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_valid_be :
-      M.IsFunction "revm_precompile::bls12_381::utils::is_valid_be" is_valid_be.
-    Smpl Add apply Function_is_valid_be : is_function.
+    Global Instance Instance_IsFunction_is_valid_be :
+      M.IsFunction.Trait "revm_precompile::bls12_381::utils::is_valid_be" is_valid_be.
+    Admitted.
+    Global Typeclasses Opaque is_valid_be.
     
     (*
     pub(super) fn fp_from_bendian(input: &[u8; 48]) -> Result<blst_fp, PrecompileError> {
@@ -1549,8 +1556,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fp_from_bendian :
-      M.IsFunction "revm_precompile::bls12_381::utils::fp_from_bendian" fp_from_bendian.
-    Smpl Add apply Function_fp_from_bendian : is_function.
+    Global Instance Instance_IsFunction_fp_from_bendian :
+      M.IsFunction.Trait "revm_precompile::bls12_381::utils::fp_from_bendian" fp_from_bendian.
+    Admitted.
+    Global Typeclasses Opaque fp_from_bendian.
   End utils.
 End bls12_381.

@@ -22,8 +22,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_utf8_chunks : M.IsAssociatedFunction Self "utf8_chunks" utf8_chunks.
-      Smpl Add apply AssociatedFunction_utf8_chunks : is_associated.
+      Global Instance AssociatedFunction_utf8_chunks :
+        M.IsAssociatedFunction.Trait Self "utf8_chunks" utf8_chunks.
+      Admitted.
+      Global Typeclasses Opaque utf8_chunks.
     End Impl_slice_u8.
     
     (* StructRecord
@@ -370,8 +372,9 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_valid : M.IsAssociatedFunction Self "valid" valid.
-      Smpl Add apply AssociatedFunction_valid : is_associated.
+      Global Instance AssociatedFunction_valid : M.IsAssociatedFunction.Trait Self "valid" valid.
+      Admitted.
+      Global Typeclasses Opaque valid.
       
       (*
           pub fn invalid(&self) -> &'a [u8] {
@@ -393,8 +396,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_invalid : M.IsAssociatedFunction Self "invalid" invalid.
-      Smpl Add apply AssociatedFunction_invalid : is_associated.
+      Global Instance AssociatedFunction_invalid :
+        M.IsAssociatedFunction.Trait Self "invalid" invalid.
+      Admitted.
+      Global Typeclasses Opaque invalid.
     End Impl_core_str_lossy_Utf8Chunk.
     
     (* StructTuple
@@ -603,6 +608,7 @@ Module str.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -705,6 +711,7 @@ Module str.
                                                         ltac:(M.monadic
                                                           (let iter := M.copy (| γ |) in
                                                           M.loop (|
+                                                            Ty.tuple [],
                                                             ltac:(M.monadic
                                                               (let~ _ : Ty.tuple [] :=
                                                                 M.match_operator (|
@@ -1092,6 +1099,8 @@ Module str.
                                                                                                 γ
                                                                                               |) in
                                                                                             M.loop (|
+                                                                                              Ty.tuple
+                                                                                                [],
                                                                                               ltac:(M.monadic
                                                                                                 (let~
                                                                                                       _ :
@@ -1610,6 +1619,7 @@ Module str.
                                                     ltac:(M.monadic
                                                       (let iter := M.copy (| γ |) in
                                                       M.loop (|
+                                                        Ty.tuple [],
                                                         ltac:(M.monadic
                                                           (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
@@ -2100,8 +2110,9 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_debug : M.IsAssociatedFunction Self "debug" debug.
-      Smpl Add apply AssociatedFunction_debug : is_associated.
+      Global Instance AssociatedFunction_debug : M.IsAssociatedFunction.Trait Self "debug" debug.
+      Admitted.
+      Global Typeclasses Opaque debug.
     End Impl_core_str_lossy_Utf8Chunks.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_str_lossy_Utf8Chunks.
@@ -2263,6 +2274,7 @@ Module str.
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),

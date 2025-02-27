@@ -118,9 +118,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_module_impl(
@@ -734,9 +735,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
-    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
+    Global Instance AssociatedFunction_verify_module_impl :
+      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_module_impl.
     
     (*
         fn verify_struct_handles(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -911,6 +913,7 @@ Module limits.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -1103,9 +1106,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_struct_handles :
-      M.IsAssociatedFunction Self "verify_struct_handles" verify_struct_handles.
-    Smpl Add apply AssociatedFunction_verify_struct_handles : is_associated.
+    Global Instance AssociatedFunction_verify_struct_handles :
+      M.IsAssociatedFunction.Trait Self "verify_struct_handles" verify_struct_handles.
+    Admitted.
+    Global Typeclasses Opaque verify_struct_handles.
     
     (*
         fn verify_function_handles(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -1257,6 +1261,7 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1632,9 +1637,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_function_handles :
-      M.IsAssociatedFunction Self "verify_function_handles" verify_function_handles.
-    Smpl Add apply AssociatedFunction_verify_function_handles : is_associated.
+    Global Instance AssociatedFunction_verify_function_handles :
+      M.IsAssociatedFunction.Trait Self "verify_function_handles" verify_function_handles.
+    Admitted.
+    Global Typeclasses Opaque verify_function_handles.
     
     (*
         fn verify_type_nodes(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -1734,6 +1740,7 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1839,6 +1846,7 @@ Module limits.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
@@ -2143,6 +2151,7 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2425,6 +2434,7 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2549,6 +2559,7 @@ Module limits.
                                                           ltac:(M.monadic
                                                             (let iter := M.copy (| γ |) in
                                                             M.loop (|
+                                                              Ty.tuple [],
                                                               ltac:(M.monadic
                                                                 (let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
@@ -2823,9 +2834,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_type_nodes :
-      M.IsAssociatedFunction Self "verify_type_nodes" verify_type_nodes.
-    Smpl Add apply AssociatedFunction_verify_type_nodes : is_associated.
+    Global Instance AssociatedFunction_verify_type_nodes :
+      M.IsAssociatedFunction.Trait Self "verify_type_nodes" verify_type_nodes.
+    Admitted.
+    Global Typeclasses Opaque verify_type_nodes.
     
     (*
         fn verify_type_node(
@@ -2936,6 +2948,7 @@ Module limits.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -3142,9 +3155,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_type_node :
-      M.IsAssociatedFunction Self "verify_type_node" verify_type_node.
-    Smpl Add apply AssociatedFunction_verify_type_node : is_associated.
+    Global Instance AssociatedFunction_verify_type_node :
+      M.IsAssociatedFunction.Trait Self "verify_type_node" verify_type_node.
+    Admitted.
+    Global Typeclasses Opaque verify_type_node.
     
     (*
         fn verify_definitions(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -3514,6 +3528,7 @@ Module limits.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -3704,9 +3719,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_definitions :
-      M.IsAssociatedFunction Self "verify_definitions" verify_definitions.
-    Smpl Add apply AssociatedFunction_verify_definitions : is_associated.
+    Global Instance AssociatedFunction_verify_definitions :
+      M.IsAssociatedFunction.Trait Self "verify_definitions" verify_definitions.
+    Admitted.
+    Global Typeclasses Opaque verify_definitions.
     
     (*
         fn verify_constants(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -3870,6 +3886,7 @@ Module limits.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4473,9 +4490,10 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_constants :
-      M.IsAssociatedFunction Self "verify_constants" verify_constants.
-    Smpl Add apply AssociatedFunction_verify_constants : is_associated.
+    Global Instance AssociatedFunction_verify_constants :
+      M.IsAssociatedFunction.Trait Self "verify_constants" verify_constants.
+    Admitted.
+    Global Typeclasses Opaque verify_constants.
     
     (*
         fn verify_identifiers(&self, config: &VerifierConfig) -> PartialVMResult<()> {
@@ -4642,6 +4660,7 @@ Module limits.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -4838,8 +4857,9 @@ Module limits.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_identifiers :
-      M.IsAssociatedFunction Self "verify_identifiers" verify_identifiers.
-    Smpl Add apply AssociatedFunction_verify_identifiers : is_associated.
+    Global Instance AssociatedFunction_verify_identifiers :
+      M.IsAssociatedFunction.Trait Self "verify_identifiers" verify_identifiers.
+    Admitted.
+    Global Typeclasses Opaque verify_identifiers.
   End Impl_move_bytecode_verifier_limits_LimitsVerifier.
 End limits.

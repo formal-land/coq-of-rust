@@ -446,10 +446,11 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn into_inner(slot: ManuallyDrop<T>) -> T {
@@ -472,10 +473,11 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner :
+      Global Instance AssociatedFunction_into_inner :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
           pub unsafe fn take(slot: &mut ManuallyDrop<T>) -> T {
@@ -512,10 +514,11 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_take :
+      Global Instance AssociatedFunction_take :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "take" (take T).
-      Smpl Add apply AssociatedFunction_take : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "take" (take T).
+      Admitted.
+      Global Typeclasses Opaque take.
       (*
           pub unsafe fn drop(slot: &mut ManuallyDrop<T>) {
               // SAFETY: we are dropping the value pointed to by a mutable reference
@@ -552,10 +555,11 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_drop :
+      Global Instance AssociatedFunction_drop :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "drop" (drop T).
-      Smpl Add apply AssociatedFunction_drop : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "drop" (drop T).
+      Admitted.
+      Global Typeclasses Opaque drop.
     End Impl_core_mem_manually_drop_ManuallyDrop_T.
     
     

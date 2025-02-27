@@ -186,9 +186,10 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_borrow_book :
-  M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
-Smpl Add apply Function_borrow_book : is_function.
+Global Instance Instance_IsFunction_borrow_book :
+  M.IsFunction.Trait "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
+Admitted.
+Global Typeclasses Opaque borrow_book.
 
 (*
 fn new_edition(book: &mut Book) {
@@ -318,9 +319,10 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_new_edition :
-  M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
-Smpl Add apply Function_new_edition : is_function.
+Global Instance Instance_IsFunction_new_edition :
+  M.IsFunction.Trait "scoping_rules_borrowing_mutablity::new_edition" new_edition.
+Admitted.
+Global Typeclasses Opaque new_edition.
 
 (*
 fn main() {
@@ -411,5 +413,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_borrowing_mutablity::main" main.
+Admitted.
+Global Typeclasses Opaque main.

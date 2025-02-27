@@ -428,10 +428,11 @@ Module borrow.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_borrowed :
+    Global Instance AssociatedFunction_is_borrowed :
       forall (B : Ty.t),
-      M.IsAssociatedFunction (Self B) "is_borrowed" (is_borrowed B).
-    Smpl Add apply AssociatedFunction_is_borrowed : is_associated.
+      M.IsAssociatedFunction.Trait (Self B) "is_borrowed" (is_borrowed B).
+    Admitted.
+    Global Typeclasses Opaque is_borrowed.
     
     (*
         pub const fn is_owned(&self) -> bool {
@@ -459,10 +460,11 @@ Module borrow.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_owned :
+    Global Instance AssociatedFunction_is_owned :
       forall (B : Ty.t),
-      M.IsAssociatedFunction (Self B) "is_owned" (is_owned B).
-    Smpl Add apply AssociatedFunction_is_owned : is_associated.
+      M.IsAssociatedFunction.Trait (Self B) "is_owned" (is_owned B).
+    Admitted.
+    Global Typeclasses Opaque is_owned.
     
     (*
         pub fn to_mut(&mut self) -> &mut <B as ToOwned>::Owned {
@@ -621,10 +623,11 @@ Module borrow.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_mut :
+    Global Instance AssociatedFunction_to_mut :
       forall (B : Ty.t),
-      M.IsAssociatedFunction (Self B) "to_mut" (to_mut B).
-    Smpl Add apply AssociatedFunction_to_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self B) "to_mut" (to_mut B).
+    Admitted.
+    Global Typeclasses Opaque to_mut.
     
     (*
         pub fn into_owned(self) -> <B as ToOwned>::Owned {
@@ -680,10 +683,11 @@ Module borrow.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_owned :
+    Global Instance AssociatedFunction_into_owned :
       forall (B : Ty.t),
-      M.IsAssociatedFunction (Self B) "into_owned" (into_owned B).
-    Smpl Add apply AssociatedFunction_into_owned : is_associated.
+      M.IsAssociatedFunction.Trait (Self B) "into_owned" (into_owned B).
+    Admitted.
+    Global Typeclasses Opaque into_owned.
   End Impl_alloc_borrow_Cow_B.
   
   Module Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_in_trait_alloc_borrow_ToOwned___B_Owned_B_for_alloc_borrow_Cow_B.

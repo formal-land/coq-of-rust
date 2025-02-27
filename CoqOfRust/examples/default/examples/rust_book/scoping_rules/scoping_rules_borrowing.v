@@ -88,8 +88,10 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_eat_box_i32 : M.IsFunction "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
-Smpl Add apply Function_eat_box_i32 : is_function.
+Global Instance Instance_IsFunction_eat_box_i32 :
+  M.IsFunction.Trait "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
+Admitted.
+Global Typeclasses Opaque eat_box_i32.
 
 (*
 fn borrow_i32(borrowed_i32: &i32) {
@@ -173,8 +175,10 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_borrow_i32 : M.IsFunction "scoping_rules_borrowing::borrow_i32" borrow_i32.
-Smpl Add apply Function_borrow_i32 : is_function.
+Global Instance Instance_IsFunction_borrow_i32 :
+  M.IsFunction.Trait "scoping_rules_borrowing::borrow_i32" borrow_i32.
+Admitted.
+Global Typeclasses Opaque borrow_i32.
 
 (*
 fn main() {
@@ -292,5 +296,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "scoping_rules_borrowing::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "scoping_rules_borrowing::main" main.
+Admitted.
+Global Typeclasses Opaque main.

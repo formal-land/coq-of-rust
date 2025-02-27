@@ -105,9 +105,10 @@ Module array.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_drain_array_with :
-      M.IsFunction "core::array::drain::drain_array_with" drain_array_with.
-    Smpl Add apply Function_drain_array_with : is_function.
+    Global Instance Instance_IsFunction_drain_array_with :
+      M.IsFunction.Trait "core::array::drain::drain_array_with" drain_array_with.
+    Admitted.
+    Global Typeclasses Opaque drain_array_with.
     
     (* StructTuple
       {

@@ -119,8 +119,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "diverging_functions_example_sum_odd_numbers::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "diverging_functions_example_sum_odd_numbers::main" main.
+Admitted.
+Global Typeclasses Opaque main.
 
 Module main.
   (*
@@ -176,6 +178,7 @@ Module main.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -271,9 +274,10 @@ Module main.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_sum_odd_numbers :
-    M.IsFunction
+  Global Instance Instance_IsFunction_sum_odd_numbers :
+    M.IsFunction.Trait
       "diverging_functions_example_sum_odd_numbers::main::sum_odd_numbers"
       sum_odd_numbers.
-  Smpl Add apply Function_sum_odd_numbers : is_function.
+  Admitted.
+  Global Typeclasses Opaque sum_odd_numbers.
 End main.

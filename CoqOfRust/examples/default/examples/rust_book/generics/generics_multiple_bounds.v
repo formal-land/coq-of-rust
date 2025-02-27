@@ -150,9 +150,10 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_compare_prints :
-  M.IsFunction "generics_multiple_bounds::compare_prints" compare_prints.
-Smpl Add apply Function_compare_prints : is_function.
+Global Instance Instance_IsFunction_compare_prints :
+  M.IsFunction.Trait "generics_multiple_bounds::compare_prints" compare_prints.
+Admitted.
+Global Typeclasses Opaque compare_prints.
 
 (*
 fn compare_types<T: Debug, U: Debug>(t: &T, u: &U) {
@@ -298,8 +299,10 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
-Smpl Add apply Function_compare_types : is_function.
+Global Instance Instance_IsFunction_compare_types :
+  M.IsFunction.Trait "generics_multiple_bounds::compare_types" compare_types.
+Admitted.
+Global Typeclasses Opaque compare_types.
 
 (*
 fn main() {
@@ -440,5 +443,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_multiple_bounds::main" main.
+Admitted.
+Global Typeclasses Opaque main.

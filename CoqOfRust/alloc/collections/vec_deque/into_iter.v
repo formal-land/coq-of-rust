@@ -90,10 +90,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "new" (new T A).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "new" (new T A).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             pub(super) fn into_vecdeque(self) -> VecDeque<T, A> {
@@ -121,10 +122,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_into_vecdeque :
+        Global Instance AssociatedFunction_into_vecdeque :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "into_vecdeque" (into_vecdeque T A).
-        Smpl Add apply AssociatedFunction_into_vecdeque : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "into_vecdeque" (into_vecdeque T A).
+        Admitted.
+        Global Typeclasses Opaque into_vecdeque.
       End Impl_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.

@@ -4777,8 +4777,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn name(&self) -> &str {
@@ -4825,8 +4826,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub fn doc(&self) -> &str {
@@ -4873,8 +4875,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
-    Smpl Add apply AssociatedFunction_doc : is_associated.
+    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.Trait Self "doc" doc.
+    Admitted.
+    Global Typeclasses Opaque doc.
     
     (*
         pub fn code(&self) -> &[u8] {
@@ -4924,8 +4927,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
-    Smpl Add apply AssociatedFunction_code : is_associated.
+    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+    Admitted.
+    Global Typeclasses Opaque code.
     
     (*
         pub fn ty_args(&self) -> &[TypeArgumentABI] {
@@ -4986,8 +4990,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
-    Smpl Add apply AssociatedFunction_ty_args : is_associated.
+    Global Instance AssociatedFunction_ty_args :
+      M.IsAssociatedFunction.Trait Self "ty_args" ty_args.
+    Admitted.
+    Global Typeclasses Opaque ty_args.
     
     (*
         pub fn args(&self) -> &[ArgumentABI] {
@@ -5040,8 +5046,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
-    Smpl Add apply AssociatedFunction_args : is_associated.
+    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.Trait Self "args" args.
+    Admitted.
+    Global Typeclasses Opaque args.
   End Impl_move_core_types_abi_TransactionScriptABI.
   
   Module Impl_move_core_types_abi_ScriptFunctionABI.
@@ -5085,8 +5092,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn name(&self) -> &str {
@@ -5133,8 +5141,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub fn module_name(&self) -> &ModuleId {
@@ -5162,8 +5171,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_module_name : M.IsAssociatedFunction Self "module_name" module_name.
-    Smpl Add apply AssociatedFunction_module_name : is_associated.
+    Global Instance AssociatedFunction_module_name :
+      M.IsAssociatedFunction.Trait Self "module_name" module_name.
+    Admitted.
+    Global Typeclasses Opaque module_name.
     
     (*
         pub fn doc(&self) -> &str {
@@ -5210,8 +5221,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
-    Smpl Add apply AssociatedFunction_doc : is_associated.
+    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.Trait Self "doc" doc.
+    Admitted.
+    Global Typeclasses Opaque doc.
     
     (*
         pub fn ty_args(&self) -> &[TypeArgumentABI] {
@@ -5272,8 +5284,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
-    Smpl Add apply AssociatedFunction_ty_args : is_associated.
+    Global Instance AssociatedFunction_ty_args :
+      M.IsAssociatedFunction.Trait Self "ty_args" ty_args.
+    Admitted.
+    Global Typeclasses Opaque ty_args.
     
     (*
         pub fn args(&self) -> &[ArgumentABI] {
@@ -5326,8 +5340,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
-    Smpl Add apply AssociatedFunction_args : is_associated.
+    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.Trait Self "args" args.
+    Admitted.
+    Global Typeclasses Opaque args.
   End Impl_move_core_types_abi_ScriptFunctionABI.
   
   Module Impl_move_core_types_abi_ScriptABI.
@@ -5364,9 +5379,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_script_fun_abi :
-      M.IsAssociatedFunction Self "is_script_fun_abi" is_script_fun_abi.
-    Smpl Add apply AssociatedFunction_is_script_fun_abi : is_associated.
+    Global Instance AssociatedFunction_is_script_fun_abi :
+      M.IsAssociatedFunction.Trait Self "is_script_fun_abi" is_script_fun_abi.
+    Admitted.
+    Global Typeclasses Opaque is_script_fun_abi.
     
     (*
         pub fn is_transaction_script_abi(&self) -> bool {
@@ -5403,9 +5419,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_transaction_script_abi :
-      M.IsAssociatedFunction Self "is_transaction_script_abi" is_transaction_script_abi.
-    Smpl Add apply AssociatedFunction_is_transaction_script_abi : is_associated.
+    Global Instance AssociatedFunction_is_transaction_script_abi :
+      M.IsAssociatedFunction.Trait Self "is_transaction_script_abi" is_transaction_script_abi.
+    Admitted.
+    Global Typeclasses Opaque is_transaction_script_abi.
     
     (*
         pub fn name(&self) -> &str {
@@ -5489,8 +5506,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub fn doc(&self) -> &str {
@@ -5574,8 +5592,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_doc : M.IsAssociatedFunction Self "doc" doc.
-    Smpl Add apply AssociatedFunction_doc : is_associated.
+    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.Trait Self "doc" doc.
+    Admitted.
+    Global Typeclasses Opaque doc.
     
     (*
         pub fn ty_args(&self) -> &[TypeArgumentABI] {
@@ -5675,8 +5694,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ty_args : M.IsAssociatedFunction Self "ty_args" ty_args.
-    Smpl Add apply AssociatedFunction_ty_args : is_associated.
+    Global Instance AssociatedFunction_ty_args :
+      M.IsAssociatedFunction.Trait Self "ty_args" ty_args.
+    Admitted.
+    Global Typeclasses Opaque ty_args.
     
     (*
         pub fn args(&self) -> &[ArgumentABI] {
@@ -5776,8 +5797,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_args : M.IsAssociatedFunction Self "args" args.
-    Smpl Add apply AssociatedFunction_args : is_associated.
+    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.Trait Self "args" args.
+    Admitted.
+    Global Typeclasses Opaque args.
   End Impl_move_core_types_abi_ScriptABI.
   
   Module Impl_move_core_types_abi_ArgumentABI.
@@ -5800,8 +5822,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn name(&self) -> &str {
@@ -5848,8 +5871,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub fn type_tag(&self) -> &TypeTag {
@@ -5877,8 +5901,10 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_type_tag : M.IsAssociatedFunction Self "type_tag" type_tag.
-    Smpl Add apply AssociatedFunction_type_tag : is_associated.
+    Global Instance AssociatedFunction_type_tag :
+      M.IsAssociatedFunction.Trait Self "type_tag" type_tag.
+    Admitted.
+    Global Typeclasses Opaque type_tag.
   End Impl_move_core_types_abi_ArgumentABI.
   
   Module Impl_move_core_types_abi_TypeArgumentABI.
@@ -5900,8 +5926,9 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn name(&self) -> &str {
@@ -5948,7 +5975,8 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
   End Impl_move_core_types_abi_TypeArgumentABI.
 End abi.

@@ -73,9 +73,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_contains_zero_byte :
-      M.IsFunction "core::slice::memchr::contains_zero_byte" contains_zero_byte.
-    Smpl Add apply Function_contains_zero_byte : is_function.
+    Global Instance Instance_IsFunction_contains_zero_byte :
+      M.IsFunction.Trait "core::slice::memchr::contains_zero_byte" contains_zero_byte.
+    Admitted.
+    Global Typeclasses Opaque contains_zero_byte.
     
     (*
     pub const fn memchr(x: u8, text: &[u8]) -> Option<usize> {
@@ -173,8 +174,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_memchr : M.IsFunction "core::slice::memchr::memchr" memchr.
-    Smpl Add apply Function_memchr : is_function.
+    Global Instance Instance_IsFunction_memchr :
+      M.IsFunction.Trait "core::slice::memchr::memchr" memchr.
+    Admitted.
+    Global Typeclasses Opaque memchr.
     
     (*
     const fn memchr_naive(x: u8, text: &[u8]) -> Option<usize> {
@@ -204,6 +207,7 @@ Module slice.
                 let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -309,8 +313,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_memchr_naive : M.IsFunction "core::slice::memchr::memchr_naive" memchr_naive.
-    Smpl Add apply Function_memchr_naive : is_function.
+    Global Instance Instance_IsFunction_memchr_naive :
+      M.IsFunction.Trait "core::slice::memchr::memchr_naive" memchr_naive.
+    Admitted.
+    Global Typeclasses Opaque memchr_naive.
     
     (*
     const fn memchr_aligned(x: u8, text: &[u8]) -> Option<usize> {
@@ -554,6 +560,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -788,9 +795,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_memchr_aligned :
-      M.IsFunction "core::slice::memchr::memchr_aligned" memchr_aligned.
-    Smpl Add apply Function_memchr_aligned : is_function.
+    Global Instance Instance_IsFunction_memchr_aligned :
+      M.IsFunction.Trait "core::slice::memchr::memchr_aligned" memchr_aligned.
+    Admitted.
+    Global Typeclasses Opaque memchr_aligned.
     
     (*
     pub fn memrchr(x: u8, text: &[u8]) -> Option<usize> {
@@ -1133,6 +1141,7 @@ Module slice.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -1389,8 +1398,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_memrchr : M.IsFunction "core::slice::memchr::memrchr" memrchr.
-    Smpl Add apply Function_memrchr : is_function.
+    Global Instance Instance_IsFunction_memrchr :
+      M.IsFunction.Trait "core::slice::memchr::memrchr" memrchr.
+    Admitted.
+    Global Typeclasses Opaque memrchr.
     
     Module memrchr.
       Axiom Chunk : (Ty.path "core::slice::memchr::memrchr::Chunk") = (Ty.path "usize").

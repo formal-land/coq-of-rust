@@ -222,9 +222,10 @@ Module Impl_derive_Inches.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_to_centimeters :
-    M.IsAssociatedFunction Self "to_centimeters" to_centimeters.
-  Smpl Add apply AssociatedFunction_to_centimeters : is_associated.
+  Global Instance AssociatedFunction_to_centimeters :
+    M.IsAssociatedFunction.Trait Self "to_centimeters" to_centimeters.
+  Admitted.
+  Global Typeclasses Opaque to_centimeters.
 End Impl_derive_Inches.
 
 (* StructTuple
@@ -466,5 +467,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "derive::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "derive::main" main.
+Admitted.
+Global Typeclasses Opaque main.

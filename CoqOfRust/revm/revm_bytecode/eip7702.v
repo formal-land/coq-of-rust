@@ -1380,8 +1380,10 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_raw : M.IsAssociatedFunction Self "new_raw" new_raw.
-    Smpl Add apply AssociatedFunction_new_raw : is_associated.
+    Global Instance AssociatedFunction_new_raw :
+      M.IsAssociatedFunction.Trait Self "new_raw" new_raw.
+    Admitted.
+    Global Typeclasses Opaque new_raw.
     
     (*
         pub fn new(address: Address) -> Self {
@@ -1548,8 +1550,9 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn raw(&self) -> &Bytes {
@@ -1577,8 +1580,9 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_raw : M.IsAssociatedFunction Self "raw" raw.
-    Smpl Add apply AssociatedFunction_raw : is_associated.
+    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.Trait Self "raw" raw.
+    Admitted.
+    Global Typeclasses Opaque raw.
     
     (*
         pub fn address(&self) -> Address {
@@ -1600,8 +1604,10 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
-    Smpl Add apply AssociatedFunction_address : is_associated.
+    Global Instance AssociatedFunction_address :
+      M.IsAssociatedFunction.Trait Self "address" address.
+    Admitted.
+    Global Typeclasses Opaque address.
   End Impl_revm_bytecode_eip7702_Eip7702Bytecode.
   
   (*

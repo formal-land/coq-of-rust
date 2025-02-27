@@ -859,10 +859,11 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new :
+    Global Instance AssociatedFunction_new :
       forall (EXT MG : Ty.t),
-      M.IsAssociatedFunction (Self EXT MG) "new" (new EXT MG).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+      M.IsAssociatedFunction.Trait (Self EXT MG) "new" (new EXT MG).
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_revm_interpreter_interpreter_Interpreter_revm_interpreter_interpreter_EthInterpreter_EXT_MG.
   
   (* StructRecord
@@ -1532,10 +1533,11 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_step :
+    Global Instance AssociatedFunction_step :
       forall (IW : Ty.t),
-      M.IsAssociatedFunction (Self IW) "step" (step IW).
-    Smpl Add apply AssociatedFunction_step : is_associated.
+      M.IsAssociatedFunction.Trait (Self IW) "step" (step IW).
+    Admitted.
+    Global Typeclasses Opaque step.
     
     (*
         pub fn run<FN, H: Host>(
@@ -1619,6 +1621,7 @@ Module interpreter.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1869,10 +1872,11 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_run :
+    Global Instance AssociatedFunction_run :
       forall (IW : Ty.t),
-      M.IsAssociatedFunction (Self IW) "run" (run IW).
-    Smpl Add apply AssociatedFunction_run : is_associated.
+      M.IsAssociatedFunction.Trait (Self IW) "run" (run IW).
+    Admitted.
+    Global Typeclasses Opaque run.
   End Impl_revm_interpreter_interpreter_Interpreter_IW.
   
   (* StructRecord
@@ -2290,8 +2294,9 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn is_ok(&self) -> bool {
@@ -2324,8 +2329,9 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
-    Smpl Add apply AssociatedFunction_is_ok : is_associated.
+    Global Instance AssociatedFunction_is_ok : M.IsAssociatedFunction.Trait Self "is_ok" is_ok.
+    Admitted.
+    Global Typeclasses Opaque is_ok.
     
     (*
         pub const fn is_revert(&self) -> bool {
@@ -2358,8 +2364,10 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
-    Smpl Add apply AssociatedFunction_is_revert : is_associated.
+    Global Instance AssociatedFunction_is_revert :
+      M.IsAssociatedFunction.Trait Self "is_revert" is_revert.
+    Admitted.
+    Global Typeclasses Opaque is_revert.
     
     (*
         pub const fn is_error(&self) -> bool {
@@ -2392,7 +2400,9 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
-    Smpl Add apply AssociatedFunction_is_error : is_associated.
+    Global Instance AssociatedFunction_is_error :
+      M.IsAssociatedFunction.Trait Self "is_error" is_error.
+    Admitted.
+    Global Typeclasses Opaque is_error.
   End Impl_revm_interpreter_interpreter_InterpreterResult.
 End interpreter.

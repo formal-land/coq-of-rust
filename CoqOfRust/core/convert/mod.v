@@ -16,8 +16,10 @@ Module convert.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_identity : M.IsFunction "core::convert::identity" identity.
-  Smpl Add apply Function_identity : is_function.
+  Global Instance Instance_IsFunction_identity :
+    M.IsFunction.Trait "core::convert::identity" identity.
+  Admitted.
+  Global Typeclasses Opaque identity.
   
   (* Trait *)
   (* Empty module 'AsRef' *)
@@ -261,7 +263,7 @@ Module convert.
     
     (*     type Error = U::Error; *)
     Definition _Error (T U : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::convert::TryFrom" [] [] U "Error".
+      Ty.associated_in_trait "core::convert::TryFrom" [] [ T ] U "Error".
     
     (*
         fn try_into(self) -> Result<U, U::Error> {
@@ -278,7 +280,7 @@ Module convert.
             Ty.apply
               (Ty.path "core::result::Result")
               []
-              [ U; Ty.associated_in_trait "core::convert::TryFrom" [] [] U "Error" ],
+              [ U; Ty.associated_in_trait "core::convert::TryFrom" [] [ T ] U "Error" ],
             M.get_trait_method (| "core::convert::TryFrom", U, [], [ T ], "try_from", [], [] |),
             [ M.read (| self |) ]
           |)))

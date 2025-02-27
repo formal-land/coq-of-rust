@@ -3,10 +3,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter read_lines : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_read_lines : M.IsFunction "file_io_read_lines::read_lines" read_lines.
-Smpl Add apply Function_read_lines : is_function.
+Global Instance Instance_IsFunction_read_lines :
+  M.IsFunction.Trait "file_io_read_lines::read_lines" read_lines.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "file_io_read_lines::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "file_io_read_lines::main" main.
+Admitted.

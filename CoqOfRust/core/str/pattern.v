@@ -1308,6 +1308,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1399,6 +1400,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1494,6 +1496,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1585,6 +1588,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -2128,8 +2132,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_utf8_size : M.IsAssociatedFunction Self "utf8_size" utf8_size.
-      Smpl Add apply AssociatedFunction_utf8_size : is_associated.
+      Global Instance AssociatedFunction_utf8_size :
+        M.IsAssociatedFunction.Trait Self "utf8_size" utf8_size.
+      Admitted.
+      Global Typeclasses Opaque utf8_size.
     End Impl_core_str_pattern_CharSearcher.
     
     Module Impl_core_str_pattern_Searcher_for_core_str_pattern_CharSearcher.
@@ -2458,6 +2464,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (let~ bytes :
                             Ty.apply
@@ -3446,6 +3453,7 @@ Module str.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ bytes :
                                 Ty.apply
@@ -11267,8 +11275,9 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_str_pattern_StrSearcher.
     
     Module Impl_core_str_pattern_Searcher_for_core_str_pattern_StrSearcher.
@@ -11774,6 +11783,7 @@ Module str.
                                   let b := M.copy (| γ0_1 |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -11948,6 +11958,7 @@ Module str.
                             M.never_to_any (|
                               M.read (|
                                 M.loop (|
+                                  Ty.path "never",
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       M.alloc (|
@@ -12712,6 +12723,7 @@ Module str.
                                   let b := M.copy (| γ0_1 |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -12885,6 +12897,7 @@ Module str.
                             M.never_to_any (|
                               M.read (|
                                 M.loop (|
+                                  Ty.path "never",
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       M.alloc (|
@@ -14238,8 +14251,9 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           fn byteset_create(bytes: &[u8]) -> u64 {
@@ -14317,9 +14331,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_byteset_create :
-        M.IsAssociatedFunction Self "byteset_create" byteset_create.
-      Smpl Add apply AssociatedFunction_byteset_create : is_associated.
+      Global Instance AssociatedFunction_byteset_create :
+        M.IsAssociatedFunction.Trait Self "byteset_create" byteset_create.
+      Admitted.
+      Global Typeclasses Opaque byteset_create.
       
       (*
           fn byteset_contains(&self, byte: u8) -> bool {
@@ -14352,9 +14367,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_byteset_contains :
-        M.IsAssociatedFunction Self "byteset_contains" byteset_contains.
-      Smpl Add apply AssociatedFunction_byteset_contains : is_associated.
+      Global Instance AssociatedFunction_byteset_contains :
+        M.IsAssociatedFunction.Trait Self "byteset_contains" byteset_contains.
+      Admitted.
+      Global Typeclasses Opaque byteset_contains.
       
       (*
           fn next<S>(&mut self, haystack: &[u8], needle: &[u8], long_period: bool) -> S::Output
@@ -14466,6 +14482,7 @@ Module str.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ tail_byte : Ty.path "u8" :=
                               M.copy (|
@@ -14869,6 +14886,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -15171,6 +15189,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -15519,8 +15538,9 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_next : M.IsAssociatedFunction Self "next" next.
-      Smpl Add apply AssociatedFunction_next : is_associated.
+      Global Instance AssociatedFunction_next : M.IsAssociatedFunction.Trait Self "next" next.
+      Admitted.
+      Global Typeclasses Opaque next.
       
       (*
           fn next_back<S>(&mut self, haystack: &[u8], needle: &[u8], long_period: bool) -> S::Output
@@ -15619,6 +15639,7 @@ Module str.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ front_byte : Ty.path "u8" :=
                               M.copy (|
@@ -16059,6 +16080,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -16394,6 +16416,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -16769,8 +16792,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_next_back : M.IsAssociatedFunction Self "next_back" next_back.
-      Smpl Add apply AssociatedFunction_next_back : is_associated.
+      Global Instance AssociatedFunction_next_back :
+        M.IsAssociatedFunction.Trait Self "next_back" next_back.
+      Admitted.
+      Global Typeclasses Opaque next_back.
       
       (*
           fn maximal_suffix(arr: &[u8], order_greater: bool) -> (usize, usize) {
@@ -16820,6 +16845,7 @@ Module str.
               let~ period : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -17043,9 +17069,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_maximal_suffix :
-        M.IsAssociatedFunction Self "maximal_suffix" maximal_suffix.
-      Smpl Add apply AssociatedFunction_maximal_suffix : is_associated.
+      Global Instance AssociatedFunction_maximal_suffix :
+        M.IsAssociatedFunction.Trait Self "maximal_suffix" maximal_suffix.
+      Admitted.
+      Global Typeclasses Opaque maximal_suffix.
       
       (*
           fn reverse_maximal_suffix(arr: &[u8], known_period: usize, order_greater: bool) -> usize {
@@ -17114,6 +17141,7 @@ Module str.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -17421,9 +17449,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_reverse_maximal_suffix :
-        M.IsAssociatedFunction Self "reverse_maximal_suffix" reverse_maximal_suffix.
-      Smpl Add apply AssociatedFunction_reverse_maximal_suffix : is_associated.
+      Global Instance AssociatedFunction_reverse_maximal_suffix :
+        M.IsAssociatedFunction.Trait Self "reverse_maximal_suffix" reverse_maximal_suffix.
+      Admitted.
+      Global Typeclasses Opaque reverse_maximal_suffix.
     End Impl_core_str_pattern_TwoWaySearcher.
     
     (* Trait *)
@@ -18301,6 +18330,7 @@ Module str.
                                                           M.copy (| mask |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.loop (|
+                                                            Ty.tuple [],
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
                                                                 M.alloc (| Value.Tuple [] |),
@@ -18937,6 +18967,7 @@ Module str.
                 let~ result : Ty.path "bool" := M.alloc (| Value.Bool false |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -19038,6 +19069,7 @@ Module str.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -19180,6 +19212,7 @@ Module str.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -19365,6 +19398,7 @@ Module str.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -19614,8 +19648,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
-    Smpl Add apply Function_simd_contains : is_function.
+    Global Instance Instance_IsFunction_simd_contains :
+      M.IsFunction.Trait "core::str::pattern::simd_contains" simd_contains.
+    Admitted.
+    Global Typeclasses Opaque simd_contains.
     
     Module simd_contains.
       Definition value_UNROLL : Value.t :=
@@ -19969,6 +20005,7 @@ Module str.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -20213,6 +20250,7 @@ Module str.
                                 let pyend := M.copy (| γ0_1 |) in
                                 let~ _ : Ty.tuple [] :=
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
@@ -20422,8 +20460,9 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_small_slice_eq :
-      M.IsFunction "core::str::pattern::small_slice_eq" small_slice_eq.
-    Smpl Add apply Function_small_slice_eq : is_function.
+    Global Instance Instance_IsFunction_small_slice_eq :
+      M.IsFunction.Trait "core::str::pattern::small_slice_eq" small_slice_eq.
+    Admitted.
+    Global Typeclasses Opaque small_slice_eq.
   End pattern.
 End str.

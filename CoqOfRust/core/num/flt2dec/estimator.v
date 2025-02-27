@@ -55,11 +55,12 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_estimate_scaling_factor :
-        M.IsFunction
+      Global Instance Instance_IsFunction_estimate_scaling_factor :
+        M.IsFunction.Trait
           "core::num::flt2dec::estimator::estimate_scaling_factor"
           estimate_scaling_factor.
-      Smpl Add apply Function_estimate_scaling_factor : is_function.
+      Admitted.
+      Global Typeclasses Opaque estimate_scaling_factor.
     End estimator.
   End flt2dec.
 End num.

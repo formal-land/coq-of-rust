@@ -90,10 +90,20 @@ Module iter.
                     let r := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated_in_trait "core::ops::try_trait::Residual" [] [] R "TryType",
+                        Ty.associated_in_trait
+                          "core::ops::try_trait::Residual"
+                          []
+                          [ U ]
+                          R
+                          "TryType",
                         M.get_trait_method (|
                           "core::ops::try_trait::FromResidual",
-                          Ty.associated_in_trait "core::ops::try_trait::Residual" [] [] R "TryType",
+                          Ty.associated_in_trait
+                            "core::ops::try_trait::Residual"
+                            []
+                            [ U ]
+                            R
+                            "TryType",
                           [],
                           [ R ],
                           "from_residual",
@@ -108,10 +118,20 @@ Module iter.
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated_in_trait "core::ops::try_trait::Residual" [] [] R "TryType",
+                        Ty.associated_in_trait
+                          "core::ops::try_trait::Residual"
+                          []
+                          [ U ]
+                          R
+                          "TryType",
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
-                          Ty.associated_in_trait "core::ops::try_trait::Residual" [] [] R "TryType",
+                          Ty.associated_in_trait
+                            "core::ops::try_trait::Residual"
+                            []
+                            [ U ]
+                            R
+                            "TryType",
                           [],
                           [],
                           "from_output",
@@ -127,8 +147,10 @@ Module iter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_try_process : M.IsFunction "core::iter::adapters::try_process" try_process.
-    Smpl Add apply Function_try_process : is_function.
+    Global Instance Instance_IsFunction_try_process :
+      M.IsFunction.Trait "core::iter::adapters::try_process" try_process.
+    Admitted.
+    Global Typeclasses Opaque try_process.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_GenericShunt_I_R.
       Definition Self (I R : Ty.t) : Ty.t :=

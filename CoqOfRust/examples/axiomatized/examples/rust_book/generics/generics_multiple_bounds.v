@@ -3,16 +3,17 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter compare_prints : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_compare_prints :
-  M.IsFunction "generics_multiple_bounds::compare_prints" compare_prints.
-Smpl Add apply Function_compare_prints : is_function.
+Global Instance Instance_IsFunction_compare_prints :
+  M.IsFunction.Trait "generics_multiple_bounds::compare_prints" compare_prints.
+Admitted.
 
 Parameter compare_types : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_compare_types : M.IsFunction "generics_multiple_bounds::compare_types" compare_types.
-Smpl Add apply Function_compare_types : is_function.
+Global Instance Instance_IsFunction_compare_types :
+  M.IsFunction.Trait "generics_multiple_bounds::compare_types" compare_types.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_multiple_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_multiple_bounds::main" main.
+Admitted.

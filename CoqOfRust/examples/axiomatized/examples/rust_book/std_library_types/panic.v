@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_division : M.IsFunction "panic::division" division.
-Smpl Add apply Function_division : is_function.
+Global Instance Instance_IsFunction_division : M.IsFunction.Trait "panic::division" division.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "panic::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "panic::main" main.
+Admitted.

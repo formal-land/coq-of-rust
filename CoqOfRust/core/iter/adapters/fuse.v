@@ -149,10 +149,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             pub(crate) fn into_inner(self) -> Option<I> {
@@ -180,10 +181,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_into_inner :
+        Global Instance AssociatedFunction_into_inner :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "into_inner" (into_inner I).
-        Smpl Add apply AssociatedFunction_into_inner : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "into_inner" (into_inner I).
+        Admitted.
+        Global Typeclasses Opaque into_inner.
       End Impl_core_iter_adapters_fuse_Fuse_I.
       
       Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_fuse_Fuse_I.
@@ -3878,9 +3880,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_and_then_or_clear :
-        M.IsFunction "core::iter::adapters::fuse::and_then_or_clear" and_then_or_clear.
-      Smpl Add apply Function_and_then_or_clear : is_function.
+      Global Instance Instance_IsFunction_and_then_or_clear :
+        M.IsFunction.Trait "core::iter::adapters::fuse::and_then_or_clear" and_then_or_clear.
+      Admitted.
+      Global Typeclasses Opaque and_then_or_clear.
     End fuse.
   End adapters.
 End iter.

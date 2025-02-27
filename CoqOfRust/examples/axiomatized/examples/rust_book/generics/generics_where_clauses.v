@@ -23,5 +23,5 @@ End Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_option_O
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_where_clauses::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_where_clauses::main" main.
+Admitted.

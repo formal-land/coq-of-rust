@@ -195,10 +195,11 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_insert :
+    Global Instance AssociatedFunction_insert :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "insert" (insert WIRE H CI).
-    Smpl Add apply AssociatedFunction_insert : is_associated.
+      M.IsAssociatedFunction.Trait (Self WIRE H CI) "insert" (insert WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque insert.
     
     (*
         pub fn to_custom(&mut self) -> &mut CustomInstructionTable<CI> {
@@ -298,10 +299,11 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_custom :
+    Global Instance AssociatedFunction_to_custom :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "to_custom" (to_custom WIRE H CI).
-    Smpl Add apply AssociatedFunction_to_custom : is_associated.
+      M.IsAssociatedFunction.Trait (Self WIRE H CI) "to_custom" (to_custom WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque to_custom.
     
     (*
         pub fn to_custom_with<F>(&mut self, f: F) -> &mut CustomInstructionTable<CI>
@@ -405,10 +407,11 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_custom_with :
+    Global Instance AssociatedFunction_to_custom_with :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "to_custom_with" (to_custom_with WIRE H CI).
-    Smpl Add apply AssociatedFunction_to_custom_with : is_associated.
+      M.IsAssociatedFunction.Trait (Self WIRE H CI) "to_custom_with" (to_custom_with WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque to_custom_with.
     
     (*
         fn to_custom_with_slow<F>(&mut self, f: F) -> &mut CustomInstructionTable<CI>
@@ -542,10 +545,14 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_custom_with_slow :
+    Global Instance AssociatedFunction_to_custom_with_slow :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "to_custom_with_slow" (to_custom_with_slow WIRE H CI).
-    Smpl Add apply AssociatedFunction_to_custom_with_slow : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self WIRE H CI)
+        "to_custom_with_slow"
+        (to_custom_with_slow WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque to_custom_with_slow.
     
     (*
         pub fn get_custom(&mut self, opcode: u8) -> &mut CI {
@@ -606,10 +613,11 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_custom :
+    Global Instance AssociatedFunction_get_custom :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "get_custom" (get_custom WIRE H CI).
-    Smpl Add apply AssociatedFunction_get_custom : is_associated.
+      M.IsAssociatedFunction.Trait (Self WIRE H CI) "get_custom" (get_custom WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque get_custom.
     
     (*
         pub fn insert_custom(&mut self, opcode: u8, instruction: CI) {
@@ -659,10 +667,11 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_insert_custom :
+    Global Instance AssociatedFunction_insert_custom :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "insert_custom" (insert_custom WIRE H CI).
-    Smpl Add apply AssociatedFunction_insert_custom : is_associated.
+      M.IsAssociatedFunction.Trait (Self WIRE H CI) "insert_custom" (insert_custom WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque insert_custom.
     
     (*
         pub fn replace_boxed(&mut self, opcode: u8, instruction: CI) -> CI {
@@ -713,10 +722,11 @@ Module table.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_replace_boxed :
+    Global Instance AssociatedFunction_replace_boxed :
       forall (WIRE H CI : Ty.t),
-      M.IsAssociatedFunction (Self WIRE H CI) "replace_boxed" (replace_boxed WIRE H CI).
-    Smpl Add apply AssociatedFunction_replace_boxed : is_associated.
+      M.IsAssociatedFunction.Trait (Self WIRE H CI) "replace_boxed" (replace_boxed WIRE H CI).
+    Admitted.
+    Global Typeclasses Opaque replace_boxed.
   End Impl_revm_interpreter_table_InstructionTables_WIRE_H_CI.
   
   (*
@@ -743,9 +753,10 @@ Module table.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_make_instruction_table :
-    M.IsFunction "revm_interpreter::table::make_instruction_table" make_instruction_table.
-  Smpl Add apply Function_make_instruction_table : is_function.
+  Global Instance Instance_IsFunction_make_instruction_table :
+    M.IsFunction.Trait "revm_interpreter::table::make_instruction_table" make_instruction_table.
+  Admitted.
+  Global Typeclasses Opaque make_instruction_table.
   
   (*
   pub fn make_custom_instruction_table<W, H, FN, CI: CustomInstruction<Wire = W, Host = H>>(
@@ -842,9 +853,10 @@ Module table.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_make_custom_instruction_table :
-    M.IsFunction
+  Global Instance Instance_IsFunction_make_custom_instruction_table :
+    M.IsFunction.Trait
       "revm_interpreter::table::make_custom_instruction_table"
       make_custom_instruction_table.
-  Smpl Add apply Function_make_custom_instruction_table : is_function.
+  Admitted.
+  Global Typeclasses Opaque make_custom_instruction_table.
 End table.

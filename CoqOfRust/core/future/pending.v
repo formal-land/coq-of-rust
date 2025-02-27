@@ -27,8 +27,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_pending : M.IsFunction "core::future::pending::pending" pending.
-    Smpl Add apply Function_pending : is_function.
+    Global Instance Instance_IsFunction_pending :
+      M.IsFunction.Trait "core::future::pending::pending" pending.
+    Admitted.
+    Global Typeclasses Opaque pending.
     
     Module Impl_core_future_future_Future_for_core_future_pending_Pending_T.
       Definition Self (T : Ty.t) : Ty.t :=

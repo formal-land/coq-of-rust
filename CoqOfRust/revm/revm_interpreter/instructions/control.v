@@ -284,8 +284,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_rjump : M.IsFunction "revm_interpreter::instructions::control::rjump" rjump.
-    Smpl Add apply Function_rjump : is_function.
+    Global Instance Instance_IsFunction_rjump :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::rjump" rjump.
+    Admitted.
+    Global Typeclasses Opaque rjump.
     
     (*
     pub fn rjumpi<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -679,8 +681,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_rjumpi : M.IsFunction "revm_interpreter::instructions::control::rjumpi" rjumpi.
-    Smpl Add apply Function_rjumpi : is_function.
+    Global Instance Instance_IsFunction_rjumpi :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::rjumpi" rjumpi.
+    Admitted.
+    Global Typeclasses Opaque rjumpi.
     
     (*
     pub fn rjumpv<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1239,8 +1243,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_rjumpv : M.IsFunction "revm_interpreter::instructions::control::rjumpv" rjumpv.
-    Smpl Add apply Function_rjumpv : is_function.
+    Global Instance Instance_IsFunction_rjumpv :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::rjumpv" rjumpv.
+    Admitted.
+    Global Typeclasses Opaque rjumpv.
     
     (*
     pub fn jump<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1450,8 +1456,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_jump : M.IsFunction "revm_interpreter::instructions::control::jump" jump.
-    Smpl Add apply Function_jump : is_function.
+    Global Instance Instance_IsFunction_jump :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::jump" jump.
+    Admitted.
+    Global Typeclasses Opaque jump.
     
     (*
     pub fn jumpi<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1701,8 +1709,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_jumpi : M.IsFunction "revm_interpreter::instructions::control::jumpi" jumpi.
-    Smpl Add apply Function_jumpi : is_function.
+    Global Instance Instance_IsFunction_jumpi :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::jumpi" jumpi.
+    Admitted.
+    Global Typeclasses Opaque jumpi.
     
     (*
     fn jump_inner<WIRE: InterpreterTypes>(interpreter: &mut Interpreter<WIRE>, target: U256) {
@@ -1993,9 +2003,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_jump_inner :
-      M.IsFunction "revm_interpreter::instructions::control::jump_inner" jump_inner.
-    Smpl Add apply Function_jump_inner : is_function.
+    Global Instance Instance_IsFunction_jump_inner :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::jump_inner" jump_inner.
+    Admitted.
+    Global Typeclasses Opaque jump_inner.
     
     (*
     pub fn jumpdest_or_nop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2126,9 +2137,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_jumpdest_or_nop :
-      M.IsFunction "revm_interpreter::instructions::control::jumpdest_or_nop" jumpdest_or_nop.
-    Smpl Add apply Function_jumpdest_or_nop : is_function.
+    Global Instance Instance_IsFunction_jumpdest_or_nop :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::jumpdest_or_nop" jumpdest_or_nop.
+    Admitted.
+    Global Typeclasses Opaque jumpdest_or_nop.
     
     (*
     pub fn callf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2767,8 +2779,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_callf : M.IsFunction "revm_interpreter::instructions::control::callf" callf.
-    Smpl Add apply Function_callf : is_function.
+    Global Instance Instance_IsFunction_callf :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::callf" callf.
+    Admitted.
+    Global Typeclasses Opaque callf.
     
     (*
     pub fn retf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3063,8 +3077,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_retf : M.IsFunction "revm_interpreter::instructions::control::retf" retf.
-    Smpl Add apply Function_retf : is_function.
+    Global Instance Instance_IsFunction_retf :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::retf" retf.
+    Admitted.
+    Global Typeclasses Opaque retf.
     
     (*
     pub fn jumpf<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3619,8 +3635,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_jumpf : M.IsFunction "revm_interpreter::instructions::control::jumpf" jumpf.
-    Smpl Add apply Function_jumpf : is_function.
+    Global Instance Instance_IsFunction_jumpf :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::jumpf" jumpf.
+    Admitted.
+    Global Typeclasses Opaque jumpf.
     
     (*
     pub fn pc<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3890,8 +3908,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_pc : M.IsFunction "revm_interpreter::instructions::control::pc" pc.
-    Smpl Add apply Function_pc : is_function.
+    Global Instance Instance_IsFunction_pc :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::pc" pc.
+    Admitted.
+    Global Typeclasses Opaque pc.
     
     (*
     fn return_inner(
@@ -4727,9 +4747,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_return_inner :
-      M.IsFunction "revm_interpreter::instructions::control::return_inner" return_inner.
-    Smpl Add apply Function_return_inner : is_function.
+    Global Instance Instance_IsFunction_return_inner :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::return_inner" return_inner.
+    Admitted.
+    Global Typeclasses Opaque return_inner.
     
     (*
     pub fn ret<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4768,8 +4789,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_ret : M.IsFunction "revm_interpreter::instructions::control::ret" ret.
-    Smpl Add apply Function_ret : is_function.
+    Global Instance Instance_IsFunction_ret :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::ret" ret.
+    Admitted.
+    Global Typeclasses Opaque ret.
     
     (*
     pub fn revert<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4910,8 +4933,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_revert : M.IsFunction "revm_interpreter::instructions::control::revert" revert.
-    Smpl Add apply Function_revert : is_function.
+    Global Instance Instance_IsFunction_revert :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::revert" revert.
+    Admitted.
+    Global Typeclasses Opaque revert.
     
     (*
     pub fn stop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4968,8 +4993,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_stop : M.IsFunction "revm_interpreter::instructions::control::stop" stop.
-    Smpl Add apply Function_stop : is_function.
+    Global Instance Instance_IsFunction_stop :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::stop" stop.
+    Admitted.
+    Global Typeclasses Opaque stop.
     
     (*
     pub fn invalid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5026,9 +5053,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_invalid :
-      M.IsFunction "revm_interpreter::instructions::control::invalid" invalid.
-    Smpl Add apply Function_invalid : is_function.
+    Global Instance Instance_IsFunction_invalid :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::invalid" invalid.
+    Admitted.
+    Global Typeclasses Opaque invalid.
     
     (*
     pub fn unknown<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5085,8 +5113,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_unknown :
-      M.IsFunction "revm_interpreter::instructions::control::unknown" unknown.
-    Smpl Add apply Function_unknown : is_function.
+    Global Instance Instance_IsFunction_unknown :
+      M.IsFunction.Trait "revm_interpreter::instructions::control::unknown" unknown.
+    Admitted.
+    Global Typeclasses Opaque unknown.
   End control.
 End instructions.

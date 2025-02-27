@@ -1234,8 +1234,10 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
-    Smpl Add apply AssociatedFunction_is_call : is_associated.
+    Global Instance AssociatedFunction_is_call :
+      M.IsAssociatedFunction.Trait Self "is_call" is_call.
+    Admitted.
+    Global Typeclasses Opaque is_call.
     
     (*
         pub fn is_create(&self) -> bool {
@@ -1273,8 +1275,10 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
-    Smpl Add apply AssociatedFunction_is_create : is_associated.
+    Global Instance AssociatedFunction_is_create :
+      M.IsAssociatedFunction.Trait Self "is_create" is_create.
+    Admitted.
+    Global Typeclasses Opaque is_create.
     
     (*
         pub fn is_return(&self) -> bool {
@@ -1306,8 +1310,10 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_return : M.IsAssociatedFunction Self "is_return" is_return.
-    Smpl Add apply AssociatedFunction_is_return : is_associated.
+    Global Instance AssociatedFunction_is_return :
+      M.IsAssociatedFunction.Trait Self "is_return" is_return.
+    Admitted.
+    Global Typeclasses Opaque is_return.
     
     (*
         pub fn is_none(&self) -> bool {
@@ -1339,8 +1345,10 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_none : M.IsAssociatedFunction Self "is_none" is_none.
-    Smpl Add apply AssociatedFunction_is_none : is_associated.
+    Global Instance AssociatedFunction_is_none :
+      M.IsAssociatedFunction.Trait Self "is_none" is_none.
+    Admitted.
+    Global Typeclasses Opaque is_none.
     
     (*
         pub fn is_some(&self) -> bool {
@@ -1367,8 +1375,10 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_some : M.IsAssociatedFunction Self "is_some" is_some.
-    Smpl Add apply AssociatedFunction_is_some : is_associated.
+    Global Instance AssociatedFunction_is_some :
+      M.IsAssociatedFunction.Trait Self "is_some" is_some.
+    Admitted.
+    Global Typeclasses Opaque is_some.
     
     (*
         pub fn into_result_return(self) -> Option<InterpreterResult> {
@@ -1407,8 +1417,9 @@ Module interpreter_action.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_result_return :
-      M.IsAssociatedFunction Self "into_result_return" into_result_return.
-    Smpl Add apply AssociatedFunction_into_result_return : is_associated.
+    Global Instance AssociatedFunction_into_result_return :
+      M.IsAssociatedFunction.Trait Self "into_result_return" into_result_return.
+    Admitted.
+    Global Typeclasses Opaque into_result_return.
   End Impl_revm_interpreter_interpreter_action_InterpreterAction.
 End interpreter_action.

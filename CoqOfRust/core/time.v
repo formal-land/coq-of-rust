@@ -364,8 +364,10 @@ Module time.
             Value.StructTuple "core::time::Nanoseconds" [ Value.Integer IntegerKind.U32 0 ]
           |))).
     
-    Axiom AssociatedConstant_value_ZERO : M.IsAssociatedConstant Self "value_ZERO" value_ZERO.
-    Smpl Add apply AssociatedConstant_value_ZERO : is_associated.
+    Global Instance AssociatedConstant_value_ZERO :
+      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Admitted.
+    Global Typeclasses Opaque value_ZERO.
   End Impl_core_time_Nanoseconds.
   
   Module Impl_core_default_Default_for_core_time_Nanoseconds.
@@ -959,8 +961,10 @@ Module time.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_SECOND : M.IsAssociatedConstant Self "value_SECOND" value_SECOND.
-    Smpl Add apply AssociatedConstant_value_SECOND : is_associated.
+    Global Instance AssociatedConstant_value_SECOND :
+      M.IsAssociatedConstant.Trait Self "value_SECOND" value_SECOND.
+    Admitted.
+    Global Typeclasses Opaque value_SECOND.
     
     (*     pub const MILLISECOND: Duration = Duration::from_millis(1); *)
     (* Ty.path "core::time::Duration" *)
@@ -975,9 +979,10 @@ Module time.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_MILLISECOND :
-      M.IsAssociatedConstant Self "value_MILLISECOND" value_MILLISECOND.
-    Smpl Add apply AssociatedConstant_value_MILLISECOND : is_associated.
+    Global Instance AssociatedConstant_value_MILLISECOND :
+      M.IsAssociatedConstant.Trait Self "value_MILLISECOND" value_MILLISECOND.
+    Admitted.
+    Global Typeclasses Opaque value_MILLISECOND.
     
     (*     pub const MICROSECOND: Duration = Duration::from_micros(1); *)
     (* Ty.path "core::time::Duration" *)
@@ -992,9 +997,10 @@ Module time.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_MICROSECOND :
-      M.IsAssociatedConstant Self "value_MICROSECOND" value_MICROSECOND.
-    Smpl Add apply AssociatedConstant_value_MICROSECOND : is_associated.
+    Global Instance AssociatedConstant_value_MICROSECOND :
+      M.IsAssociatedConstant.Trait Self "value_MICROSECOND" value_MICROSECOND.
+    Admitted.
+    Global Typeclasses Opaque value_MICROSECOND.
     
     (*     pub const NANOSECOND: Duration = Duration::from_nanos(1); *)
     (* Ty.path "core::time::Duration" *)
@@ -1009,9 +1015,10 @@ Module time.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_NANOSECOND :
-      M.IsAssociatedConstant Self "value_NANOSECOND" value_NANOSECOND.
-    Smpl Add apply AssociatedConstant_value_NANOSECOND : is_associated.
+    Global Instance AssociatedConstant_value_NANOSECOND :
+      M.IsAssociatedConstant.Trait Self "value_NANOSECOND" value_NANOSECOND.
+    Admitted.
+    Global Typeclasses Opaque value_NANOSECOND.
     
     (*     pub const ZERO: Duration = Duration::from_nanos(0); *)
     (* Ty.path "core::time::Duration" *)
@@ -1026,8 +1033,10 @@ Module time.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_ZERO : M.IsAssociatedConstant Self "value_ZERO" value_ZERO.
-    Smpl Add apply AssociatedConstant_value_ZERO : is_associated.
+    Global Instance AssociatedConstant_value_ZERO :
+      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Admitted.
+    Global Typeclasses Opaque value_ZERO.
     
     (*     pub const MAX: Duration = Duration::new(u64::MAX, NANOS_PER_SEC - 1); *)
     (* Ty.path "core::time::Duration" *)
@@ -1048,8 +1057,10 @@ Module time.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*
         pub const fn new(secs: u64, nanos: u32) -> Duration {
@@ -1194,8 +1205,9 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn from_secs(secs: u64) -> Duration {
@@ -1214,8 +1226,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_secs : M.IsAssociatedFunction Self "from_secs" from_secs.
-    Smpl Add apply AssociatedFunction_from_secs : is_associated.
+    Global Instance AssociatedFunction_from_secs :
+      M.IsAssociatedFunction.Trait Self "from_secs" from_secs.
+    Admitted.
+    Global Typeclasses Opaque from_secs.
     
     (*
         pub const fn from_millis(millis: u64) -> Duration {
@@ -1270,8 +1284,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_millis : M.IsAssociatedFunction Self "from_millis" from_millis.
-    Smpl Add apply AssociatedFunction_from_millis : is_associated.
+    Global Instance AssociatedFunction_from_millis :
+      M.IsAssociatedFunction.Trait Self "from_millis" from_millis.
+    Admitted.
+    Global Typeclasses Opaque from_millis.
     
     (*
         pub const fn from_micros(micros: u64) -> Duration {
@@ -1326,8 +1342,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_micros : M.IsAssociatedFunction Self "from_micros" from_micros.
-    Smpl Add apply AssociatedFunction_from_micros : is_associated.
+    Global Instance AssociatedFunction_from_micros :
+      M.IsAssociatedFunction.Trait Self "from_micros" from_micros.
+    Admitted.
+    Global Typeclasses Opaque from_micros.
     
     (*
         pub const fn from_nanos(nanos: u64) -> Duration {
@@ -1375,8 +1393,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_nanos : M.IsAssociatedFunction Self "from_nanos" from_nanos.
-    Smpl Add apply AssociatedFunction_from_nanos : is_associated.
+    Global Instance AssociatedFunction_from_nanos :
+      M.IsAssociatedFunction.Trait Self "from_nanos" from_nanos.
+    Admitted.
+    Global Typeclasses Opaque from_nanos.
     
     (*
         pub const fn from_weeks(weeks: u64) -> Duration {
@@ -1485,8 +1505,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_weeks : M.IsAssociatedFunction Self "from_weeks" from_weeks.
-    Smpl Add apply AssociatedFunction_from_weeks : is_associated.
+    Global Instance AssociatedFunction_from_weeks :
+      M.IsAssociatedFunction.Trait Self "from_weeks" from_weeks.
+    Admitted.
+    Global Typeclasses Opaque from_weeks.
     
     (*
         pub const fn from_days(days: u64) -> Duration {
@@ -1589,8 +1611,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_days : M.IsAssociatedFunction Self "from_days" from_days.
-    Smpl Add apply AssociatedFunction_from_days : is_associated.
+    Global Instance AssociatedFunction_from_days :
+      M.IsAssociatedFunction.Trait Self "from_days" from_days.
+    Admitted.
+    Global Typeclasses Opaque from_days.
     
     (*
         pub const fn from_hours(hours: u64) -> Duration {
@@ -1687,8 +1711,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_hours : M.IsAssociatedFunction Self "from_hours" from_hours.
-    Smpl Add apply AssociatedFunction_from_hours : is_associated.
+    Global Instance AssociatedFunction_from_hours :
+      M.IsAssociatedFunction.Trait Self "from_hours" from_hours.
+    Admitted.
+    Global Typeclasses Opaque from_hours.
     
     (*
         pub const fn from_mins(mins: u64) -> Duration {
@@ -1779,8 +1805,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_mins : M.IsAssociatedFunction Self "from_mins" from_mins.
-    Smpl Add apply AssociatedFunction_from_mins : is_associated.
+    Global Instance AssociatedFunction_from_mins :
+      M.IsAssociatedFunction.Trait Self "from_mins" from_mins.
+    Admitted.
+    Global Typeclasses Opaque from_mins.
     
     (*
         pub const fn is_zero(&self) -> bool {
@@ -1822,8 +1850,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
-    Smpl Add apply AssociatedFunction_is_zero : is_associated.
+    Global Instance AssociatedFunction_is_zero :
+      M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+    Admitted.
+    Global Typeclasses Opaque is_zero.
     
     (*
         pub const fn as_secs(&self) -> u64 {
@@ -1845,8 +1875,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_secs : M.IsAssociatedFunction Self "as_secs" as_secs.
-    Smpl Add apply AssociatedFunction_as_secs : is_associated.
+    Global Instance AssociatedFunction_as_secs :
+      M.IsAssociatedFunction.Trait Self "as_secs" as_secs.
+    Admitted.
+    Global Typeclasses Opaque as_secs.
     
     (*
         pub const fn subsec_millis(&self) -> u32 {
@@ -1875,9 +1907,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_subsec_millis :
-      M.IsAssociatedFunction Self "subsec_millis" subsec_millis.
-    Smpl Add apply AssociatedFunction_subsec_millis : is_associated.
+    Global Instance AssociatedFunction_subsec_millis :
+      M.IsAssociatedFunction.Trait Self "subsec_millis" subsec_millis.
+    Admitted.
+    Global Typeclasses Opaque subsec_millis.
     
     (*
         pub const fn subsec_micros(&self) -> u32 {
@@ -1906,9 +1939,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_subsec_micros :
-      M.IsAssociatedFunction Self "subsec_micros" subsec_micros.
-    Smpl Add apply AssociatedFunction_subsec_micros : is_associated.
+    Global Instance AssociatedFunction_subsec_micros :
+      M.IsAssociatedFunction.Trait Self "subsec_micros" subsec_micros.
+    Admitted.
+    Global Typeclasses Opaque subsec_micros.
     
     (*
         pub const fn subsec_nanos(&self) -> u32 {
@@ -1934,8 +1968,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_subsec_nanos : M.IsAssociatedFunction Self "subsec_nanos" subsec_nanos.
-    Smpl Add apply AssociatedFunction_subsec_nanos : is_associated.
+    Global Instance AssociatedFunction_subsec_nanos :
+      M.IsAssociatedFunction.Trait Self "subsec_nanos" subsec_nanos.
+    Admitted.
+    Global Typeclasses Opaque subsec_nanos.
     
     (*
         pub const fn as_millis(&self) -> u128 {
@@ -1980,8 +2016,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_millis : M.IsAssociatedFunction Self "as_millis" as_millis.
-    Smpl Add apply AssociatedFunction_as_millis : is_associated.
+    Global Instance AssociatedFunction_as_millis :
+      M.IsAssociatedFunction.Trait Self "as_millis" as_millis.
+    Admitted.
+    Global Typeclasses Opaque as_millis.
     
     (*
         pub const fn as_micros(&self) -> u128 {
@@ -2026,8 +2064,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_micros : M.IsAssociatedFunction Self "as_micros" as_micros.
-    Smpl Add apply AssociatedFunction_as_micros : is_associated.
+    Global Instance AssociatedFunction_as_micros :
+      M.IsAssociatedFunction.Trait Self "as_micros" as_micros.
+    Admitted.
+    Global Typeclasses Opaque as_micros.
     
     (*
         pub const fn as_nanos(&self) -> u128 {
@@ -2069,8 +2109,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_nanos : M.IsAssociatedFunction Self "as_nanos" as_nanos.
-    Smpl Add apply AssociatedFunction_as_nanos : is_associated.
+    Global Instance AssociatedFunction_as_nanos :
+      M.IsAssociatedFunction.Trait Self "as_nanos" as_nanos.
+    Admitted.
+    Global Typeclasses Opaque as_nanos.
     
     (*
         pub const fn abs_diff(self, other: Duration) -> Duration {
@@ -2150,8 +2192,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
         pub const fn checked_add(self, rhs: Duration) -> Option<Duration> {
@@ -2409,8 +2453,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
         pub const fn saturating_add(self, rhs: Duration) -> Duration {
@@ -2461,9 +2507,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
         pub const fn checked_sub(self, rhs: Duration) -> Option<Duration> {
@@ -2765,8 +2812,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
         pub const fn saturating_sub(self, rhs: Duration) -> Duration {
@@ -2817,9 +2866,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
         pub const fn checked_mul(self, rhs: u32) -> Option<Duration> {
@@ -3046,8 +3096,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
         pub const fn saturating_mul(self, rhs: u32) -> Duration {
@@ -3098,9 +3150,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
         pub const fn checked_div(self, rhs: u32) -> Option<Duration> {
@@ -3325,8 +3378,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
         pub const fn as_secs_f64(&self) -> f64 {
@@ -3368,8 +3423,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_secs_f64 : M.IsAssociatedFunction Self "as_secs_f64" as_secs_f64.
-    Smpl Add apply AssociatedFunction_as_secs_f64 : is_associated.
+    Global Instance AssociatedFunction_as_secs_f64 :
+      M.IsAssociatedFunction.Trait Self "as_secs_f64" as_secs_f64.
+    Admitted.
+    Global Typeclasses Opaque as_secs_f64.
     
     (*
         pub const fn as_secs_f32(&self) -> f32 {
@@ -3411,8 +3468,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_secs_f32 : M.IsAssociatedFunction Self "as_secs_f32" as_secs_f32.
-    Smpl Add apply AssociatedFunction_as_secs_f32 : is_associated.
+    Global Instance AssociatedFunction_as_secs_f32 :
+      M.IsAssociatedFunction.Trait Self "as_secs_f32" as_secs_f32.
+    Admitted.
+    Global Typeclasses Opaque as_secs_f32.
     
     (*
         pub const fn as_millis_f64(&self) -> f64 {
@@ -3458,9 +3517,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_millis_f64 :
-      M.IsAssociatedFunction Self "as_millis_f64" as_millis_f64.
-    Smpl Add apply AssociatedFunction_as_millis_f64 : is_associated.
+    Global Instance AssociatedFunction_as_millis_f64 :
+      M.IsAssociatedFunction.Trait Self "as_millis_f64" as_millis_f64.
+    Admitted.
+    Global Typeclasses Opaque as_millis_f64.
     
     (*
         pub const fn as_millis_f32(&self) -> f32 {
@@ -3506,9 +3566,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_millis_f32 :
-      M.IsAssociatedFunction Self "as_millis_f32" as_millis_f32.
-    Smpl Add apply AssociatedFunction_as_millis_f32 : is_associated.
+    Global Instance AssociatedFunction_as_millis_f32 :
+      M.IsAssociatedFunction.Trait Self "as_millis_f32" as_millis_f32.
+    Admitted.
+    Global Typeclasses Opaque as_millis_f32.
     
     (*
         pub fn from_secs_f64(secs: f64) -> Duration {
@@ -3593,9 +3654,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_secs_f64 :
-      M.IsAssociatedFunction Self "from_secs_f64" from_secs_f64.
-    Smpl Add apply AssociatedFunction_from_secs_f64 : is_associated.
+    Global Instance AssociatedFunction_from_secs_f64 :
+      M.IsAssociatedFunction.Trait Self "from_secs_f64" from_secs_f64.
+    Admitted.
+    Global Typeclasses Opaque from_secs_f64.
     
     (*
         pub fn from_secs_f32(secs: f32) -> Duration {
@@ -3680,9 +3742,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_secs_f32 :
-      M.IsAssociatedFunction Self "from_secs_f32" from_secs_f32.
-    Smpl Add apply AssociatedFunction_from_secs_f32 : is_associated.
+    Global Instance AssociatedFunction_from_secs_f32 :
+      M.IsAssociatedFunction.Trait Self "from_secs_f32" from_secs_f32.
+    Admitted.
+    Global Typeclasses Opaque from_secs_f32.
     
     (*
         pub fn mul_f64(self, rhs: f64) -> Duration {
@@ -3717,8 +3780,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_mul_f64 : M.IsAssociatedFunction Self "mul_f64" mul_f64.
-    Smpl Add apply AssociatedFunction_mul_f64 : is_associated.
+    Global Instance AssociatedFunction_mul_f64 :
+      M.IsAssociatedFunction.Trait Self "mul_f64" mul_f64.
+    Admitted.
+    Global Typeclasses Opaque mul_f64.
     
     (*
         pub fn mul_f32(self, rhs: f32) -> Duration {
@@ -3753,8 +3818,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_mul_f32 : M.IsAssociatedFunction Self "mul_f32" mul_f32.
-    Smpl Add apply AssociatedFunction_mul_f32 : is_associated.
+    Global Instance AssociatedFunction_mul_f32 :
+      M.IsAssociatedFunction.Trait Self "mul_f32" mul_f32.
+    Admitted.
+    Global Typeclasses Opaque mul_f32.
     
     (*
         pub fn div_f64(self, rhs: f64) -> Duration {
@@ -3789,8 +3856,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_f64 : M.IsAssociatedFunction Self "div_f64" div_f64.
-    Smpl Add apply AssociatedFunction_div_f64 : is_associated.
+    Global Instance AssociatedFunction_div_f64 :
+      M.IsAssociatedFunction.Trait Self "div_f64" div_f64.
+    Admitted.
+    Global Typeclasses Opaque div_f64.
     
     (*
         pub fn div_f32(self, rhs: f32) -> Duration {
@@ -3825,8 +3894,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_f32 : M.IsAssociatedFunction Self "div_f32" div_f32.
-    Smpl Add apply AssociatedFunction_div_f32 : is_associated.
+    Global Instance AssociatedFunction_div_f32 :
+      M.IsAssociatedFunction.Trait Self "div_f32" div_f32.
+    Admitted.
+    Global Typeclasses Opaque div_f32.
     
     (*
         pub const fn div_duration_f64(self, rhs: Duration) -> f64 {
@@ -3907,9 +3978,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_duration_f64 :
-      M.IsAssociatedFunction Self "div_duration_f64" div_duration_f64.
-    Smpl Add apply AssociatedFunction_div_duration_f64 : is_associated.
+    Global Instance AssociatedFunction_div_duration_f64 :
+      M.IsAssociatedFunction.Trait Self "div_duration_f64" div_duration_f64.
+    Admitted.
+    Global Typeclasses Opaque div_duration_f64.
     
     (*
         pub const fn div_duration_f32(self, rhs: Duration) -> f32 {
@@ -3990,9 +4062,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_duration_f32 :
-      M.IsAssociatedFunction Self "div_duration_f32" div_duration_f32.
-    Smpl Add apply AssociatedFunction_div_duration_f32 : is_associated.
+    Global Instance AssociatedFunction_div_duration_f32 :
+      M.IsAssociatedFunction.Trait Self "div_duration_f32" div_duration_f32.
+    Admitted.
+    Global Typeclasses Opaque div_duration_f32.
     (*
         pub fn try_from_secs_f32(secs: f32) -> Result<Duration, TryFromFloatSecsError> {
             try_from_secs!(
@@ -4625,9 +4698,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_from_secs_f32 :
-      M.IsAssociatedFunction Self "try_from_secs_f32" try_from_secs_f32.
-    Smpl Add apply AssociatedFunction_try_from_secs_f32 : is_associated.
+    Global Instance AssociatedFunction_try_from_secs_f32 :
+      M.IsAssociatedFunction.Trait Self "try_from_secs_f32" try_from_secs_f32.
+    Admitted.
+    Global Typeclasses Opaque try_from_secs_f32.
     
     (*
         pub fn try_from_secs_f64(secs: f64) -> Result<Duration, TryFromFloatSecsError> {
@@ -5261,9 +5335,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_from_secs_f64 :
-      M.IsAssociatedFunction Self "try_from_secs_f64" try_from_secs_f64.
-    Smpl Add apply AssociatedFunction_try_from_secs_f64 : is_associated.
+    Global Instance AssociatedFunction_try_from_secs_f64 :
+      M.IsAssociatedFunction.Trait Self "try_from_secs_f64" try_from_secs_f64.
+    Admitted.
+    Global Typeclasses Opaque try_from_secs_f64.
   End Impl_core_time_Duration.
   
   Module Impl_core_ops_arith_Add_for_core_time_Duration.
@@ -5759,6 +5834,7 @@ Module time.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -6103,6 +6179,7 @@ Module time.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -7218,8 +7295,10 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_description : M.IsAssociatedFunction Self "description" description.
-    Smpl Add apply AssociatedFunction_description : is_associated.
+    Global Instance AssociatedFunction_description :
+      M.IsAssociatedFunction.Trait Self "description" description.
+    Admitted.
+    Global Typeclasses Opaque description.
   End Impl_core_time_TryFromFloatSecsError.
   
   Module Impl_core_fmt_Display_for_core_time_TryFromFloatSecsError.

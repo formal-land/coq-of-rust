@@ -806,7 +806,7 @@ Module Run.
       (function : PolymorphicFunction.t)
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (function generic_consts generic_tys)) in
-    M.IsFunction name function ->
+    M.IsFunction.Trait name function ->
     {{ k closure 🔽 R, Output }} ->
     {{
       LowM.CallPrimitive (Primitive.GetFunction name generic_consts generic_tys) k 🔽
@@ -817,7 +817,7 @@ Module Run.
       (associated_function : PolymorphicFunction.t)
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (associated_function generic_consts generic_tys)) in
-    M.IsAssociatedFunction ty name associated_function ->
+    M.IsAssociatedFunction.Trait ty name associated_function ->
     {{ k closure 🔽 R, Output }} ->
     {{ LowM.CallPrimitive
         (Primitive.GetAssociatedFunction ty name generic_consts generic_tys) k 🔽
@@ -863,6 +863,15 @@ Module Run.
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.Let ty e k 🔽 R, Output }}
+  | Loop
+      (ty : Ty.t) (body : M) (k : Value.t + Exception.t -> M)
+      (of_ty : OfTy.t ty) :
+    let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
+    {{ body 🔽 R, Output' }} ->
+    (forall (value_inter : Output.t R Output'),
+      {{ k (Output.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.Loop ty body k 🔽 R, Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
   | Rewrite
@@ -907,7 +916,7 @@ Module LowM.
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t R Output)
   | Let {A : Set} (e : t R A) (k : Output.t R A -> t R Output)
   | Call {A : Set} (e : t A A) (k : SuccessOrPanic.t A -> t R Output)
-  | Loop {A : Set} (body : t R A) (k : A -> t R Output).
+  | Loop {A : Set} (body : t R A) (k : Output.t R A -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
   Arguments Let {_ _ _}.
@@ -1025,6 +1034,15 @@ Proof.
     | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
     end.
   }
+  { (* Loop *)
+    eapply LowM.Loop. {
+      exact (evaluate _ _ _ _ _ run).
+    }
+    intros output'; eapply evaluate.
+    match goal with
+    | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
+    end.
+  }
   { (* Rewrite *)
     exact (evaluate _ _ _ _ _ run).
   }
@@ -1060,10 +1078,10 @@ Ltac run_symbolic_state_write :=
   ].
 
 Ltac run_symbolic_get_function :=
-  eapply Run.CallPrimitiveGetFunction; [smpl is_function |].
+  eapply Run.CallPrimitiveGetFunction; [try typeclasses eauto 1 |].
 
 Ltac run_symbolic_get_associated_function :=
-  eapply Run.CallPrimitiveGetAssociatedFunction; [smpl is_associated |].
+  eapply Run.CallPrimitiveGetAssociatedFunction; [try typeclasses eauto 1 |].
 
 Ltac run_symbolic_get_trait_method :=
   eapply Run.CallPrimitiveGetTraitMethod; [
@@ -1181,6 +1199,39 @@ Ltac change_cast_integer :=
     change (Ty.path x) with (Φ Isize.t)
   end.
 
+(* TODO: define this function *)
+Parameter cast_integer : forall {kind_source} kind_target,
+  Integer.t kind_source -> Integer.t kind_target.
+
+Lemma cast_integer_eq (kind_source kind_target : IntegerKind.t) (source : Integer.t kind_source) :
+  M.cast (Φ (Integer.t kind_target)) (φ source) =
+  φ (cast_integer kind_target source).
+Proof.
+Admitted.
+
+Ltac rewrite_cast_integer :=
+  change_cast_integer;
+  match goal with
+  | |- context[M.cast _ (φ _)] =>
+    eapply Run.Rewrite; [
+      (
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U8) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U16) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U32) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U64) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U128) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.Usize) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I8) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I16) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I32) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I64) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I128) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.Isize)
+      );
+      reflexivity
+    |]
+  end.
+
 Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
@@ -1226,6 +1277,113 @@ Ltac run_symbolic :=
       intros [|[]]; run_symbolic
     )
   )).
+
+(** A set of tactics to apply the evaluation rules that:
+
+    - does no backtracking
+    - use `match goal` to find the next evaluation rule, rather than `apply` that can be much more
+      expensive
+*)
+Module RunTactic.
+  (* TODO: extend it to the case where the function is applied to a few polymorphic parameters *)
+  Ltac initial_unfold :=
+    match goal with
+    | |- {{ ?f _ _ _ 🔽 _ }} =>
+      with_strategy transparent [f] unfold f
+    end.
+
+  Ltac unfold_link_in_match :=
+    match goal with
+    | |- context [ match ?IsLink.(φ) ?e with _ => _ end ] =>
+      let x := fresh "x" in
+      set (x := IsLink.(φ) e);
+      with_strategy transparent [φ] hnf in x;
+      unfold x;
+      clear x
+    end.
+
+  Ltac run_step :=
+    (* We always do the rewrites of pure values first to avoid allocating values where things that
+       needed to be rewritten are still there. It is also good to do some [cbn] before. *)
+    cbn ||
+    rewrite_cast_integer ||
+    match goal with
+    | |- context[M.get_constant _] =>
+      eapply Run.Rewrite; [
+        autorewrite with run_constant;
+        reflexivity
+      |]
+    | |- {{ CoqOfRust.M.LowM.Pure (inl _) 🔽 _, _ }} =>
+      run_symbolic_pure
+    | |- {{ CoqOfRust.M.LowM.Pure (inr _) 🔽 _, _ }} =>
+      run_symbolic_pure
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.StateAlloc _) _ 🔽 _, _ }} =>
+      unshelve eapply Run.CallPrimitiveStateAllocImmediate; [repeat smpl of_value |]
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.StateRead _) _ 🔽 _, _ }} =>
+      cbn;
+      (
+        apply Run.CallPrimitiveStateReadImmediate ||
+        (
+          eapply Run.CallPrimitiveStateRead;
+          intros
+        )
+      )
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetSubPointer _ _) _ 🔽 _, _ }} =>
+      run_sub_pointer
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.AreEqual _ _) _ 🔽 _, _ }} =>
+      (
+        run_symbolic_are_equal_bool ||
+        run_symbolic_are_equal_integer
+      )
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetFunction _ _ _) _ 🔽 _, _ }} =>
+      eapply Run.CallPrimitiveGetFunction; [typeclasses eauto 1 |]
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetAssociatedFunction _ _ _ _) _ 🔽 _, _ }} =>
+      run_symbolic_get_associated_function
+    | |- {{ CoqOfRust.M.LowM.CallPrimitive (CoqOfRust.M.Primitive.GetTraitMethod _ _ _ _ _ _ _) _ 🔽 _, _ }} =>
+      run_symbolic_get_trait_method
+    | |- {{ CoqOfRust.M.LowM.CallClosure ?ty ?closure ?args ?k 🔽 _, _ }} =>
+      run_symbolic_closure; [
+        (* We expect it to succeed to make sure it is the case *)
+        (
+          smpl run_closure ||
+          match goal with
+          | H : _ |- _ => simple apply H
+          end
+        ) |
+        cbn; intros []
+      ]
+    | |- {{ CoqOfRust.M.LowM.Let ?ty ?e ?k 🔽 _, _ }} =>
+      unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros [] ]
+    end ||
+    (* fold @LowM.let_ || *)
+    match goal with
+    | |- context[M.if_then_else_bool (Bool.IsLink.(φ) ?condition) ?then_ ?else_] =>
+      eapply Run.Rewrite; [
+        rewrite if_then_else_bool_eq;
+        reflexivity
+      |]
+    | |- context[M.deref _] =>
+      eapply Run.Rewrite; [
+        rewrite Ref.deref_eq;
+        reflexivity
+      |]
+    | |- context[M.borrow _ _] =>
+      eapply Run.Rewrite; [
+        rewrite Ref.borrow_eq;
+        reflexivity
+      |]
+    end ||
+    (* fold @LowM.let_ || *)
+    (* unfold_link_in_match || *)
+    idtac.
+End RunTactic.
+
+Ltac run_next :=
+  repeat RunTactic.run_step.
+
+Ltac run :=
+  RunTactic.initial_unfold;
+  run_next.
 
 Axiom is_discriminant_tuple_eq :
   forall

@@ -824,10 +824,11 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ref :
+    Global Instance AssociatedFunction_as_ref :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
-    Smpl Add apply AssociatedFunction_as_ref : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+    Admitted.
+    Global Typeclasses Opaque as_ref.
     
     (*
         pub fn map<F, U>(self, f: F) -> Op<U>
@@ -920,8 +921,11 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
-    Smpl Add apply AssociatedFunction_map : is_associated.
+    Global Instance AssociatedFunction_map :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+    Admitted.
+    Global Typeclasses Opaque map.
     
     (*
         pub fn ok(self) -> Option<T> {
@@ -990,8 +994,11 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ok : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "ok" (ok T).
-    Smpl Add apply AssociatedFunction_ok : is_associated.
+    Global Instance AssociatedFunction_ok :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "ok" (ok T).
+    Admitted.
+    Global Typeclasses Opaque ok.
   End Impl_move_core_types_effects_Op_T.
   
   (* StructRecord
@@ -1902,6 +1909,7 @@ Module effects.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2496,8 +2504,10 @@ Module effects.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_squash : M.IsFunction "move_core_types::effects::squash" squash.
-  Smpl Add apply Function_squash : is_function.
+  Global Instance Instance_IsFunction_squash :
+    M.IsFunction.Trait "move_core_types::effects::squash" squash.
+  Admitted.
+  Global Typeclasses Opaque squash.
   
   Module Impl_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
@@ -2522,9 +2532,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_modules_resources :
-      M.IsAssociatedFunction Self "from_modules_resources" from_modules_resources.
-    Smpl Add apply AssociatedFunction_from_modules_resources : is_associated.
+    Global Instance AssociatedFunction_from_modules_resources :
+      M.IsAssociatedFunction.Trait Self "from_modules_resources" from_modules_resources.
+    Admitted.
+    Global Typeclasses Opaque from_modules_resources.
     
     (*
         pub fn new() -> Self {
@@ -2627,8 +2638,9 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn add_module_op(&mut self, name: Identifier, op: Op<Vec<u8>>) -> Result<()> {
@@ -2965,9 +2977,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_module_op :
-      M.IsAssociatedFunction Self "add_module_op" add_module_op.
-    Smpl Add apply AssociatedFunction_add_module_op : is_associated.
+    Global Instance AssociatedFunction_add_module_op :
+      M.IsAssociatedFunction.Trait Self "add_module_op" add_module_op.
+    Admitted.
+    Global Typeclasses Opaque add_module_op.
     
     (*
         pub fn add_resource_op(&mut self, struct_tag: StructTag, op: Op<Vec<u8>>) -> Result<()> {
@@ -3304,9 +3317,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_resource_op :
-      M.IsAssociatedFunction Self "add_resource_op" add_resource_op.
-    Smpl Add apply AssociatedFunction_add_resource_op : is_associated.
+    Global Instance AssociatedFunction_add_resource_op :
+      M.IsAssociatedFunction.Trait Self "add_resource_op" add_resource_op.
+    Admitted.
+    Global Typeclasses Opaque add_resource_op.
     
     (*
         pub fn into_inner(
@@ -3343,8 +3357,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+    Global Instance AssociatedFunction_into_inner :
+      M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     
     (*
         pub fn into_resources(self) -> BTreeMap<StructTag, Op<Vec<u8>>> {
@@ -3366,9 +3382,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_resources :
-      M.IsAssociatedFunction Self "into_resources" into_resources.
-    Smpl Add apply AssociatedFunction_into_resources : is_associated.
+    Global Instance AssociatedFunction_into_resources :
+      M.IsAssociatedFunction.Trait Self "into_resources" into_resources.
+    Admitted.
+    Global Typeclasses Opaque into_resources.
     
     (*
         pub fn into_modules(self) -> BTreeMap<Identifier, Op<Vec<u8>>> {
@@ -3390,8 +3407,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_modules : M.IsAssociatedFunction Self "into_modules" into_modules.
-    Smpl Add apply AssociatedFunction_into_modules : is_associated.
+    Global Instance AssociatedFunction_into_modules :
+      M.IsAssociatedFunction.Trait Self "into_modules" into_modules.
+    Admitted.
+    Global Typeclasses Opaque into_modules.
     
     (*
         pub fn modules(&self) -> &BTreeMap<Identifier, Op<Vec<u8>>> {
@@ -3419,8 +3438,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_modules : M.IsAssociatedFunction Self "modules" modules.
-    Smpl Add apply AssociatedFunction_modules : is_associated.
+    Global Instance AssociatedFunction_modules :
+      M.IsAssociatedFunction.Trait Self "modules" modules.
+    Admitted.
+    Global Typeclasses Opaque modules.
     
     (*
         pub fn resources(&self) -> &BTreeMap<StructTag, Op<Vec<u8>>> {
@@ -3448,8 +3469,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_resources : M.IsAssociatedFunction Self "resources" resources.
-    Smpl Add apply AssociatedFunction_resources : is_associated.
+    Global Instance AssociatedFunction_resources :
+      M.IsAssociatedFunction.Trait Self "resources" resources.
+    Admitted.
+    Global Typeclasses Opaque resources.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -3535,8 +3558,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-    Smpl Add apply AssociatedFunction_is_empty : is_associated.
+    Global Instance AssociatedFunction_is_empty :
+      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Admitted.
+    Global Typeclasses Opaque is_empty.
     
     (*
         pub fn squash(&mut self, other: Self) -> Result<()> {
@@ -3725,8 +3750,9 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_squash : M.IsAssociatedFunction Self "squash" squash.
-    Smpl Add apply AssociatedFunction_squash : is_associated.
+    Global Instance AssociatedFunction_squash : M.IsAssociatedFunction.Trait Self "squash" squash.
+    Admitted.
+    Global Typeclasses Opaque squash.
   End Impl_move_core_types_effects_AccountChangeSet.
   
   (* StructRecord
@@ -4211,8 +4237,9 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn add_account_changeset(
@@ -4457,9 +4484,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_account_changeset :
-      M.IsAssociatedFunction Self "add_account_changeset" add_account_changeset.
-    Smpl Add apply AssociatedFunction_add_account_changeset : is_associated.
+    Global Instance AssociatedFunction_add_account_changeset :
+      M.IsAssociatedFunction.Trait Self "add_account_changeset" add_account_changeset.
+    Admitted.
+    Global Typeclasses Opaque add_account_changeset.
     
     (*
         pub fn accounts(&self) -> &BTreeMap<AccountAddress, AccountChangeSet> {
@@ -4487,8 +4515,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_accounts : M.IsAssociatedFunction Self "accounts" accounts.
-    Smpl Add apply AssociatedFunction_accounts : is_associated.
+    Global Instance AssociatedFunction_accounts :
+      M.IsAssociatedFunction.Trait Self "accounts" accounts.
+    Admitted.
+    Global Typeclasses Opaque accounts.
     
     (*
         pub fn into_inner(self) -> BTreeMap<AccountAddress, AccountChangeSet> {
@@ -4510,8 +4540,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+    Global Instance AssociatedFunction_into_inner :
+      M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     
     (*
         fn get_or_insert_account_changeset(&mut self, addr: AccountAddress) -> &mut AccountChangeSet {
@@ -4674,9 +4706,13 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_or_insert_account_changeset :
-      M.IsAssociatedFunction Self "get_or_insert_account_changeset" get_or_insert_account_changeset.
-    Smpl Add apply AssociatedFunction_get_or_insert_account_changeset : is_associated.
+    Global Instance AssociatedFunction_get_or_insert_account_changeset :
+      M.IsAssociatedFunction.Trait
+        Self
+        "get_or_insert_account_changeset"
+        get_or_insert_account_changeset.
+    Admitted.
+    Global Typeclasses Opaque get_or_insert_account_changeset.
     
     (*
         pub fn add_module_op(&mut self, module_id: ModuleId, op: Op<Vec<u8>>) -> Result<()> {
@@ -4785,9 +4821,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_module_op :
-      M.IsAssociatedFunction Self "add_module_op" add_module_op.
-    Smpl Add apply AssociatedFunction_add_module_op : is_associated.
+    Global Instance AssociatedFunction_add_module_op :
+      M.IsAssociatedFunction.Trait Self "add_module_op" add_module_op.
+    Admitted.
+    Global Typeclasses Opaque add_module_op.
     
     (*
         pub fn add_resource_op(
@@ -4855,9 +4892,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_resource_op :
-      M.IsAssociatedFunction Self "add_resource_op" add_resource_op.
-    Smpl Add apply AssociatedFunction_add_resource_op : is_associated.
+    Global Instance AssociatedFunction_add_resource_op :
+      M.IsAssociatedFunction.Trait Self "add_resource_op" add_resource_op.
+    Admitted.
+    Global Typeclasses Opaque add_resource_op.
     
     (*
         pub fn squash(&mut self, other: Self) -> Result<()> {
@@ -4928,6 +4966,7 @@ Module effects.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -5269,8 +5308,9 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_squash : M.IsAssociatedFunction Self "squash" squash.
-    Smpl Add apply AssociatedFunction_squash : is_associated.
+    Global Instance AssociatedFunction_squash : M.IsAssociatedFunction.Trait Self "squash" squash.
+    Admitted.
+    Global Typeclasses Opaque squash.
     
     (*
         pub fn into_modules(self) -> impl Iterator<Item = (ModuleId, Op<Vec<u8>>)> {
@@ -5836,8 +5876,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_modules : M.IsAssociatedFunction Self "into_modules" into_modules.
-    Smpl Add apply AssociatedFunction_into_modules : is_associated.
+    Global Instance AssociatedFunction_into_modules :
+      M.IsAssociatedFunction.Trait Self "into_modules" into_modules.
+    Admitted.
+    Global Typeclasses Opaque into_modules.
     
     (*
         pub fn modules(&self) -> impl Iterator<Item = (AccountAddress, &Identifier, Op<&[u8]>)> {
@@ -6712,8 +6754,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_modules : M.IsAssociatedFunction Self "modules" modules.
-    Smpl Add apply AssociatedFunction_modules : is_associated.
+    Global Instance AssociatedFunction_modules :
+      M.IsAssociatedFunction.Trait Self "modules" modules.
+    Admitted.
+    Global Typeclasses Opaque modules.
     
     (*
         pub fn resources(&self) -> impl Iterator<Item = (AccountAddress, &StructTag, Op<&[u8]>)> {
@@ -7593,8 +7637,10 @@ Module effects.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_resources : M.IsAssociatedFunction Self "resources" resources.
-    Smpl Add apply AssociatedFunction_resources : is_associated.
+    Global Instance AssociatedFunction_resources :
+      M.IsAssociatedFunction.Trait Self "resources" resources.
+    Admitted.
+    Global Typeclasses Opaque resources.
   End Impl_move_core_types_effects_ChangeSet.
   
   Axiom Event :

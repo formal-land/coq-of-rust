@@ -47,6 +47,24 @@ fn get_a<C: Contains>(container: &C) -> C::A {
     container.a()
 }
 
+trait TraitWithParams<A, B> {
+    type Output;
+
+    fn get_output(&self) -> Self::Output;
+}
+
+impl TraitWithParams<i32, i32> for Container {
+    type Output = (i32, i32);
+
+    fn get_output(&self) -> (i32, i32) {
+        (self.0, self.1)
+    }
+}
+
+fn get_output<C: TraitWithParams<i32, i32>>(container: &C) -> C::Output {
+    container.get_output()
+}
+
 fn main() {
     let number_1 = 3;
     let number_2 = 10;
@@ -63,4 +81,6 @@ fn main() {
     println!("Last number: {}", container.last());
 
     println!("The difference is: {}", difference(&container));
+
+    println!("Get output.0: {}", get_output(&container).0);
 }

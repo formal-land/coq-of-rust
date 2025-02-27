@@ -802,10 +802,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new :
+    Global Instance AssociatedFunction_new :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "new" (new Ptr).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "new" (new Ptr).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn into_inner(pin: Pin<Ptr>) -> Ptr {
@@ -824,10 +825,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "into_inner" (into_inner Ptr).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "into_inner" (into_inner Ptr).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     (*
         pub const unsafe fn new_unchecked(pointer: Ptr) -> Pin<Ptr> {
             Pin { __pointer: pointer }
@@ -848,10 +850,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_unchecked :
+    Global Instance AssociatedFunction_new_unchecked :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "new_unchecked" (new_unchecked Ptr).
-    Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "new_unchecked" (new_unchecked Ptr).
+    Admitted.
+    Global Typeclasses Opaque new_unchecked.
     
     (*
         pub fn as_ref(&self) -> Pin<&Ptr::Target> {
@@ -930,10 +933,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ref :
+    Global Instance AssociatedFunction_as_ref :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "as_ref" (as_ref Ptr).
-    Smpl Add apply AssociatedFunction_as_ref : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "as_ref" (as_ref Ptr).
+    Admitted.
+    Global Typeclasses Opaque as_ref.
     (*
         pub fn as_mut(&mut self) -> Pin<&mut Ptr::Target> {
             // SAFETY: see documentation on this function
@@ -1011,10 +1015,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_mut :
+    Global Instance AssociatedFunction_as_mut :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "as_mut" (as_mut Ptr).
-    Smpl Add apply AssociatedFunction_as_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "as_mut" (as_mut Ptr).
+    Admitted.
+    Global Typeclasses Opaque as_mut.
     
     (*
         pub fn as_deref_mut(self: Pin<&mut Pin<Ptr>>) -> Pin<&mut Ptr::Target> {
@@ -1101,10 +1106,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_deref_mut :
+    Global Instance AssociatedFunction_as_deref_mut :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "as_deref_mut" (as_deref_mut Ptr).
-    Smpl Add apply AssociatedFunction_as_deref_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "as_deref_mut" (as_deref_mut Ptr).
+    Admitted.
+    Global Typeclasses Opaque as_deref_mut.
     
     (*
         pub fn set(&mut self, value: Ptr::Target)
@@ -1160,10 +1166,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_set :
+    Global Instance AssociatedFunction_set :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "set" (set Ptr).
-    Smpl Add apply AssociatedFunction_set : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "set" (set Ptr).
+    Admitted.
+    Global Typeclasses Opaque set.
     (*
         pub const unsafe fn into_inner_unchecked(pin: Pin<Ptr>) -> Ptr {
             pin.__pointer
@@ -1186,10 +1193,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner_unchecked :
+    Global Instance AssociatedFunction_into_inner_unchecked :
       forall (Ptr : Ty.t),
-      M.IsAssociatedFunction (Self Ptr) "into_inner_unchecked" (into_inner_unchecked Ptr).
-    Smpl Add apply AssociatedFunction_into_inner_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self Ptr) "into_inner_unchecked" (into_inner_unchecked Ptr).
+    Admitted.
+    Global Typeclasses Opaque into_inner_unchecked.
   End Impl_core_pin_Pin_Ptr.
   
   
@@ -1268,10 +1276,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_unchecked :
+    Global Instance AssociatedFunction_map_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "map_unchecked" (map_unchecked T).
-    Smpl Add apply AssociatedFunction_map_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "map_unchecked" (map_unchecked T).
+    Admitted.
+    Global Typeclasses Opaque map_unchecked.
     
     (*
         pub const fn get_ref(self) -> &'a T {
@@ -1290,10 +1299,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_ref :
+    Global Instance AssociatedFunction_get_ref :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_ref" (get_ref T).
-    Smpl Add apply AssociatedFunction_get_ref : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_ref" (get_ref T).
+    Admitted.
+    Global Typeclasses Opaque get_ref.
     (*
         pub const fn static_ref(r: &'static T) -> Pin<&'static T> {
             // SAFETY: The 'static borrow guarantees the data will not be
@@ -1320,10 +1330,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_static_ref :
+    Global Instance AssociatedFunction_static_ref :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "static_ref" (static_ref T).
-    Smpl Add apply AssociatedFunction_static_ref : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "static_ref" (static_ref T).
+    Admitted.
+    Global Typeclasses Opaque static_ref.
   End Impl_core_pin_Pin_ref__T.
   
   Module Impl_core_pin_Pin_ref_mut_T.
@@ -1357,10 +1368,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_ref :
+    Global Instance AssociatedFunction_into_ref :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_ref" (into_ref T).
-    Smpl Add apply AssociatedFunction_into_ref : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_ref" (into_ref T).
+    Admitted.
+    Global Typeclasses Opaque into_ref.
     
     (*
         pub const fn get_mut(self) -> &'a mut T
@@ -1392,10 +1404,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut :
+    Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-    Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+    Admitted.
+    Global Typeclasses Opaque get_mut.
     
     (*
         pub const unsafe fn get_unchecked_mut(self) -> &'a mut T {
@@ -1429,10 +1442,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_unchecked_mut :
+    Global Instance AssociatedFunction_get_unchecked_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "get_unchecked_mut" (get_unchecked_mut T).
-    Smpl Add apply AssociatedFunction_get_unchecked_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "get_unchecked_mut" (get_unchecked_mut T).
+    Admitted.
+    Global Typeclasses Opaque get_unchecked_mut.
     
     (*
         pub unsafe fn map_unchecked_mut<U, F>(self, func: F) -> Pin<&'a mut U>
@@ -1519,10 +1533,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_unchecked_mut :
+    Global Instance AssociatedFunction_map_unchecked_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "map_unchecked_mut" (map_unchecked_mut T).
-    Smpl Add apply AssociatedFunction_map_unchecked_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "map_unchecked_mut" (map_unchecked_mut T).
+    Admitted.
+    Global Typeclasses Opaque map_unchecked_mut.
     (*
         pub const fn static_mut(r: &'static mut T) -> Pin<&'static mut T> {
             // SAFETY: The 'static borrow guarantees the data will not be
@@ -1549,10 +1564,11 @@ Module pin.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_static_mut :
+    Global Instance AssociatedFunction_static_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "static_mut" (static_mut T).
-    Smpl Add apply AssociatedFunction_static_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "static_mut" (static_mut T).
+    Admitted.
+    Global Typeclasses Opaque static_mut.
   End Impl_core_pin_Pin_ref_mut_T.
   
   

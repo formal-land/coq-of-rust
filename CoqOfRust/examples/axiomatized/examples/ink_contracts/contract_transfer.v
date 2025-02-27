@@ -64,24 +64,25 @@ Module Impl_contract_transfer_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
   
   Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
-  Smpl Add apply AssociatedFunction_balance : is_associated.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Admitted.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
-  Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Instance AssociatedFunction_transfer :
+    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Admitted.
   
   Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transferred_value :
-    M.IsAssociatedFunction Self "transferred_value" transferred_value.
-  Smpl Add apply AssociatedFunction_transferred_value : is_associated.
+  Global Instance AssociatedFunction_transferred_value :
+    M.IsAssociatedFunction.Trait Self "transferred_value" transferred_value.
+  Admitted.
 End Impl_contract_transfer_Env.
 
 (* StructTuple
@@ -97,26 +98,28 @@ Module Impl_contract_transfer_GiveMe.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter give_me : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_give_me : M.IsAssociatedFunction Self "give_me" give_me.
-  Smpl Add apply AssociatedFunction_give_me : is_associated.
+  Global Instance AssociatedFunction_give_me : M.IsAssociatedFunction.Trait Self "give_me" give_me.
+  Admitted.
   
   Parameter was_it_ten : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_was_it_ten : M.IsAssociatedFunction Self "was_it_ten" was_it_ten.
-  Smpl Add apply AssociatedFunction_was_it_ten : is_associated.
+  Global Instance AssociatedFunction_was_it_ten :
+    M.IsAssociatedFunction.Trait Self "was_it_ten" was_it_ten.
+  Admitted.
 End Impl_contract_transfer_GiveMe.

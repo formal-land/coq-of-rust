@@ -24,8 +24,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
-      Smpl Add apply AssociatedFunction_is_ascii : is_associated.
+      Global Instance AssociatedFunction_is_ascii :
+        M.IsAssociatedFunction.Trait Self "is_ascii" is_ascii.
+      Admitted.
+      Global Typeclasses Opaque is_ascii.
       
       (*
           pub const fn as_ascii(&self) -> Option<&[ascii::Char]> {
@@ -102,8 +104,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
-      Smpl Add apply AssociatedFunction_as_ascii : is_associated.
+      Global Instance AssociatedFunction_as_ascii :
+        M.IsAssociatedFunction.Trait Self "as_ascii" as_ascii.
+      Admitted.
+      Global Typeclasses Opaque as_ascii.
       
       (*
           pub const unsafe fn as_ascii_unchecked(&self) -> &[ascii::Char] {
@@ -158,9 +162,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ascii_unchecked :
-        M.IsAssociatedFunction Self "as_ascii_unchecked" as_ascii_unchecked.
-      Smpl Add apply AssociatedFunction_as_ascii_unchecked : is_associated.
+      Global Instance AssociatedFunction_as_ascii_unchecked :
+        M.IsAssociatedFunction.Trait Self "as_ascii_unchecked" as_ascii_unchecked.
+      Admitted.
+      Global Typeclasses Opaque as_ascii_unchecked.
       
       (*
           pub fn eq_ignore_ascii_case(&self, other: &[u8]) -> bool {
@@ -301,9 +306,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_eq_ignore_ascii_case :
-        M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
-      Smpl Add apply AssociatedFunction_eq_ignore_ascii_case : is_associated.
+      Global Instance AssociatedFunction_eq_ignore_ascii_case :
+        M.IsAssociatedFunction.Trait Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+      Admitted.
+      Global Typeclasses Opaque eq_ignore_ascii_case.
       
       (*
           pub const fn make_ascii_uppercase(&mut self) {
@@ -324,6 +330,7 @@ Module slice.
             M.read (|
               let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -412,9 +419,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_make_ascii_uppercase :
-        M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
-      Smpl Add apply AssociatedFunction_make_ascii_uppercase : is_associated.
+      Global Instance AssociatedFunction_make_ascii_uppercase :
+        M.IsAssociatedFunction.Trait Self "make_ascii_uppercase" make_ascii_uppercase.
+      Admitted.
+      Global Typeclasses Opaque make_ascii_uppercase.
       
       (*
           pub const fn make_ascii_lowercase(&mut self) {
@@ -435,6 +443,7 @@ Module slice.
             M.read (|
               let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -523,9 +532,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_make_ascii_lowercase :
-        M.IsAssociatedFunction Self "make_ascii_lowercase" make_ascii_lowercase.
-      Smpl Add apply AssociatedFunction_make_ascii_lowercase : is_associated.
+      Global Instance AssociatedFunction_make_ascii_lowercase :
+        M.IsAssociatedFunction.Trait Self "make_ascii_lowercase" make_ascii_lowercase.
+      Admitted.
+      Global Typeclasses Opaque make_ascii_lowercase.
       
       (*
           pub fn escape_ascii(&self) -> EscapeAscii<'_> {
@@ -580,9 +590,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_escape_ascii :
-        M.IsAssociatedFunction Self "escape_ascii" escape_ascii.
-      Smpl Add apply AssociatedFunction_escape_ascii : is_associated.
+      Global Instance AssociatedFunction_escape_ascii :
+        M.IsAssociatedFunction.Trait Self "escape_ascii" escape_ascii.
+      Admitted.
+      Global Typeclasses Opaque escape_ascii.
       
       (*
           pub const fn trim_ascii_start(&self) -> &[u8] {
@@ -610,6 +621,7 @@ Module slice.
                 M.copy (| self |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -686,9 +698,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_trim_ascii_start :
-        M.IsAssociatedFunction Self "trim_ascii_start" trim_ascii_start.
-      Smpl Add apply AssociatedFunction_trim_ascii_start : is_associated.
+      Global Instance AssociatedFunction_trim_ascii_start :
+        M.IsAssociatedFunction.Trait Self "trim_ascii_start" trim_ascii_start.
+      Admitted.
+      Global Typeclasses Opaque trim_ascii_start.
       
       (*
           pub const fn trim_ascii_end(&self) -> &[u8] {
@@ -716,6 +729,7 @@ Module slice.
                 M.copy (| self |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -792,9 +806,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_trim_ascii_end :
-        M.IsAssociatedFunction Self "trim_ascii_end" trim_ascii_end.
-      Smpl Add apply AssociatedFunction_trim_ascii_end : is_associated.
+      Global Instance AssociatedFunction_trim_ascii_end :
+        M.IsAssociatedFunction.Trait Self "trim_ascii_end" trim_ascii_end.
+      Admitted.
+      Global Typeclasses Opaque trim_ascii_end.
       
       (*
           pub const fn trim_ascii(&self) -> &[u8] {
@@ -843,8 +858,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
-      Smpl Add apply AssociatedFunction_trim_ascii : is_associated.
+      Global Instance AssociatedFunction_trim_ascii :
+        M.IsAssociatedFunction.Trait Self "trim_ascii" trim_ascii.
+      Admitted.
+      Global Typeclasses Opaque trim_ascii.
     End Impl_slice_u8.
     
     Module Impl_core_clone_Clone_for_core_slice_ascii_EscapeByte.
@@ -1502,6 +1519,7 @@ Module slice.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -1694,6 +1712,7 @@ Module slice.
                               |)) in
                           let~ _ : Ty.tuple [] :=
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -2398,6 +2417,7 @@ Module slice.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -2688,9 +2708,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_contains_nonascii :
-      M.IsFunction "core::slice::ascii::contains_nonascii" contains_nonascii.
-    Smpl Add apply Function_contains_nonascii : is_function.
+    Global Instance Instance_IsFunction_contains_nonascii :
+      M.IsFunction.Trait "core::slice::ascii::contains_nonascii" contains_nonascii.
+    Admitted.
+    Global Typeclasses Opaque contains_nonascii.
     
     Module contains_nonascii.
       Definition value_NONASCII_MASK : Value.t :=
@@ -2729,6 +2750,7 @@ Module slice.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -2815,9 +2837,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_ascii_simple :
-      M.IsFunction "core::slice::ascii::is_ascii_simple" is_ascii_simple.
-    Smpl Add apply Function_is_ascii_simple : is_function.
+    Global Instance Instance_IsFunction_is_ascii_simple :
+      M.IsFunction.Trait "core::slice::ascii::is_ascii_simple" is_ascii_simple.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_simple.
     
     (*
     const fn is_ascii(s: &[u8]) -> bool {
@@ -3227,6 +3250,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -3681,8 +3705,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.
-    Smpl Add apply Function_is_ascii : is_function.
+    Global Instance Instance_IsFunction_is_ascii :
+      M.IsFunction.Trait "core::slice::ascii::is_ascii" is_ascii.
+    Admitted.
+    Global Typeclasses Opaque is_ascii.
     
     Module is_ascii.
       Definition value_USIZE_SIZE : Value.t :=

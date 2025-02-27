@@ -180,8 +180,9 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
-Smpl Add apply Function_cat : is_function.
+Global Instance Instance_IsFunction_cat : M.IsFunction.Trait "filesystem_operations::cat" cat.
+Admitted.
+Global Typeclasses Opaque cat.
 
 (*
 fn echo(s: &str, path: &Path) -> io::Result<()> {
@@ -340,8 +341,9 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
-Smpl Add apply Function_echo : is_function.
+Global Instance Instance_IsFunction_echo : M.IsFunction.Trait "filesystem_operations::echo" echo.
+Admitted.
+Global Typeclasses Opaque echo.
 
 (*
 fn touch(path: &Path) -> io::Result<()> {
@@ -442,8 +444,9 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
-Smpl Add apply Function_touch : is_function.
+Global Instance Instance_IsFunction_touch : M.IsFunction.Trait "filesystem_operations::touch" touch.
+Admitted.
+Global Typeclasses Opaque touch.
 
 (*
 fn main() {
@@ -1854,6 +1857,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2400,5 +2404,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "filesystem_operations::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "filesystem_operations::main" main.
+Admitted.
+Global Typeclasses Opaque main.

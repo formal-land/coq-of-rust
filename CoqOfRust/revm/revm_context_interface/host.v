@@ -1492,9 +1492,10 @@ Module host.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_new_eq_present :
-      M.IsAssociatedFunction Self "is_new_eq_present" is_new_eq_present.
-    Smpl Add apply AssociatedFunction_is_new_eq_present : is_associated.
+    Global Instance AssociatedFunction_is_new_eq_present :
+      M.IsAssociatedFunction.Trait Self "is_new_eq_present" is_new_eq_present.
+    Admitted.
+    Global Typeclasses Opaque is_new_eq_present.
     
     (*
         pub fn is_original_eq_present(&self) -> bool {
@@ -1547,9 +1548,10 @@ Module host.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_original_eq_present :
-      M.IsAssociatedFunction Self "is_original_eq_present" is_original_eq_present.
-    Smpl Add apply AssociatedFunction_is_original_eq_present : is_associated.
+    Global Instance AssociatedFunction_is_original_eq_present :
+      M.IsAssociatedFunction.Trait Self "is_original_eq_present" is_original_eq_present.
+    Admitted.
+    Global Typeclasses Opaque is_original_eq_present.
     
     (*
         pub fn is_original_eq_new(&self) -> bool {
@@ -1602,9 +1604,10 @@ Module host.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_original_eq_new :
-      M.IsAssociatedFunction Self "is_original_eq_new" is_original_eq_new.
-    Smpl Add apply AssociatedFunction_is_original_eq_new : is_associated.
+    Global Instance AssociatedFunction_is_original_eq_new :
+      M.IsAssociatedFunction.Trait Self "is_original_eq_new" is_original_eq_new.
+    Admitted.
+    Global Typeclasses Opaque is_original_eq_new.
     
     (*
         pub fn is_original_zero(&self) -> bool {
@@ -1641,9 +1644,10 @@ Module host.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_original_zero :
-      M.IsAssociatedFunction Self "is_original_zero" is_original_zero.
-    Smpl Add apply AssociatedFunction_is_original_zero : is_associated.
+    Global Instance AssociatedFunction_is_original_zero :
+      M.IsAssociatedFunction.Trait Self "is_original_zero" is_original_zero.
+    Admitted.
+    Global Typeclasses Opaque is_original_zero.
     
     (*
         pub fn is_present_zero(&self) -> bool {
@@ -1680,9 +1684,10 @@ Module host.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_present_zero :
-      M.IsAssociatedFunction Self "is_present_zero" is_present_zero.
-    Smpl Add apply AssociatedFunction_is_present_zero : is_associated.
+    Global Instance AssociatedFunction_is_present_zero :
+      M.IsAssociatedFunction.Trait Self "is_present_zero" is_present_zero.
+    Admitted.
+    Global Typeclasses Opaque is_present_zero.
     
     (*
         pub fn is_new_zero(&self) -> bool {
@@ -1719,8 +1724,10 @@ Module host.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_new_zero : M.IsAssociatedFunction Self "is_new_zero" is_new_zero.
-    Smpl Add apply AssociatedFunction_is_new_zero : is_associated.
+    Global Instance AssociatedFunction_is_new_zero :
+      M.IsAssociatedFunction.Trait Self "is_new_zero" is_new_zero.
+    Admitted.
+    Global Typeclasses Opaque is_new_zero.
   End Impl_revm_context_interface_host_SStoreResult.
   
   (* StructRecord

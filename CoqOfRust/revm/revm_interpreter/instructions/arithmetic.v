@@ -239,8 +239,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_add : M.IsFunction "revm_interpreter::instructions::arithmetic::add" add.
-    Smpl Add apply Function_add : is_function.
+    Global Instance Instance_IsFunction_add :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::add" add.
+    Admitted.
+    Global Typeclasses Opaque add.
     
     (*
     pub fn mul<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -478,8 +480,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mul : M.IsFunction "revm_interpreter::instructions::arithmetic::mul" mul.
-    Smpl Add apply Function_mul : is_function.
+    Global Instance Instance_IsFunction_mul :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::mul" mul.
+    Admitted.
+    Global Typeclasses Opaque mul.
     
     (*
     pub fn sub<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -717,8 +721,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sub : M.IsFunction "revm_interpreter::instructions::arithmetic::sub" sub.
-    Smpl Add apply Function_sub : is_function.
+    Global Instance Instance_IsFunction_sub :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::sub" sub.
+    Admitted.
+    Global Typeclasses Opaque sub.
     
     (*
     pub fn div<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1001,8 +1007,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_div : M.IsFunction "revm_interpreter::instructions::arithmetic::div" div.
-    Smpl Add apply Function_div : is_function.
+    Global Instance Instance_IsFunction_div :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::div" div.
+    Admitted.
+    Global Typeclasses Opaque div.
     
     (*
     pub fn sdiv<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1233,8 +1241,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sdiv : M.IsFunction "revm_interpreter::instructions::arithmetic::sdiv" sdiv.
-    Smpl Add apply Function_sdiv : is_function.
+    Global Instance Instance_IsFunction_sdiv :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::sdiv" sdiv.
+    Admitted.
+    Global Typeclasses Opaque sdiv.
     
     (*
     pub fn rem<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1517,8 +1527,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_rem : M.IsFunction "revm_interpreter::instructions::arithmetic::rem" rem.
-    Smpl Add apply Function_rem : is_function.
+    Global Instance Instance_IsFunction_rem :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::rem" rem.
+    Admitted.
+    Global Typeclasses Opaque rem.
     
     (*
     pub fn smod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1747,8 +1759,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_smod : M.IsFunction "revm_interpreter::instructions::arithmetic::smod" smod.
-    Smpl Add apply Function_smod : is_function.
+    Global Instance Instance_IsFunction_smod :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::smod" smod.
+    Admitted.
+    Global Typeclasses Opaque smod.
     
     (*
     pub fn addmod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1990,9 +2004,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_addmod :
-      M.IsFunction "revm_interpreter::instructions::arithmetic::addmod" addmod.
-    Smpl Add apply Function_addmod : is_function.
+    Global Instance Instance_IsFunction_addmod :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::addmod" addmod.
+    Admitted.
+    Global Typeclasses Opaque addmod.
     
     (*
     pub fn mulmod<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2234,9 +2249,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mulmod :
-      M.IsFunction "revm_interpreter::instructions::arithmetic::mulmod" mulmod.
-    Smpl Add apply Function_mulmod : is_function.
+    Global Instance Instance_IsFunction_mulmod :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::mulmod" mulmod.
+    Admitted.
+    Global Typeclasses Opaque mulmod.
     
     (*
     pub fn exp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2578,8 +2594,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_exp : M.IsFunction "revm_interpreter::instructions::arithmetic::exp" exp.
-    Smpl Add apply Function_exp : is_function.
+    Global Instance Instance_IsFunction_exp :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::exp" exp.
+    Admitted.
+    Global Typeclasses Opaque exp.
     
     (*
     pub fn signextend<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3176,8 +3194,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_signextend :
-      M.IsFunction "revm_interpreter::instructions::arithmetic::signextend" signextend.
-    Smpl Add apply Function_signextend : is_function.
+    Global Instance Instance_IsFunction_signextend :
+      M.IsFunction.Trait "revm_interpreter::instructions::arithmetic::signextend" signextend.
+    Admitted.
+    Global Typeclasses Opaque signextend.
   End arithmetic.
 End instructions.

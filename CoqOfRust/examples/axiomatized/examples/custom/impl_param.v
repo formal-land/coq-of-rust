@@ -3,5 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter with_impls : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_with_impls : M.IsFunction "impl_param::with_impls" with_impls.
-Smpl Add apply Function_with_impls : is_function.
+Global Instance Instance_IsFunction_with_impls :
+  M.IsFunction.Trait "impl_param::with_impls" with_impls.
+Admitted.

@@ -1006,7 +1006,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_g2_add : M.IsFunction "revm_precompile::bls12_381::g2_add::g2_add" g2_add.
-    Smpl Add apply Function_g2_add : is_function.
+    Global Instance Instance_IsFunction_g2_add :
+      M.IsFunction.Trait "revm_precompile::bls12_381::g2_add::g2_add" g2_add.
+    Admitted.
+    Global Typeclasses Opaque g2_add.
   End g2_add.
 End bls12_381.

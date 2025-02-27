@@ -74,10 +74,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_dangling :
+      Global Instance AssociatedFunction_dangling :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "dangling" (dangling T).
-      Smpl Add apply AssociatedFunction_dangling : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "dangling" (dangling T).
+      Admitted.
+      Global Typeclasses Opaque dangling.
       (*
           pub const unsafe fn new_unchecked(ptr: *mut T) -> Self {
               // SAFETY: the caller must guarantee that `ptr` is non-null.
@@ -114,10 +115,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unchecked :
+      Global Instance AssociatedFunction_new_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new_unchecked" (new_unchecked T).
-      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new_unchecked" (new_unchecked T).
+      Admitted.
+      Global Typeclasses Opaque new_unchecked.
       
       (*
           pub const fn new(ptr: *mut T) -> Option<Self> {
@@ -184,10 +186,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn as_ptr(self) -> *mut T {
@@ -221,10 +224,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr :
+      Global Instance AssociatedFunction_as_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
       
       (*
           pub const fn as_non_null_ptr(self) -> NonNull<T> {
@@ -252,10 +256,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_non_null_ptr :
+      Global Instance AssociatedFunction_as_non_null_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_non_null_ptr" (as_non_null_ptr T).
-      Smpl Add apply AssociatedFunction_as_non_null_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_non_null_ptr" (as_non_null_ptr T).
+      Admitted.
+      Global Typeclasses Opaque as_non_null_ptr.
       
       (*
           pub const unsafe fn as_ref(&self) -> &T {
@@ -297,10 +302,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ref :
+      Global Instance AssociatedFunction_as_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
-      Smpl Add apply AssociatedFunction_as_ref : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+      Admitted.
+      Global Typeclasses Opaque as_ref.
       
       (*
           pub const unsafe fn as_mut(&mut self) -> &mut T {
@@ -352,10 +358,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_mut :
+      Global Instance AssociatedFunction_as_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
-      Smpl Add apply AssociatedFunction_as_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_mut" (as_mut T).
+      Admitted.
+      Global Typeclasses Opaque as_mut.
       
       (*
           pub const fn cast<U>(self) -> Unique<U> {
@@ -397,10 +404,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_cast :
+      Global Instance AssociatedFunction_cast :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "cast" (cast T).
-      Smpl Add apply AssociatedFunction_cast : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "cast" (cast T).
+      Admitted.
+      Global Typeclasses Opaque cast.
     End Impl_core_ptr_unique_Unique_T.
     
     

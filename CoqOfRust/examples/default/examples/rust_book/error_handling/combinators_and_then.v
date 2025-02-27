@@ -220,9 +220,10 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_have_ingredients :
-  M.IsFunction "combinators_and_then::have_ingredients" have_ingredients.
-Smpl Add apply Function_have_ingredients : is_function.
+Global Instance Instance_IsFunction_have_ingredients :
+  M.IsFunction.Trait "combinators_and_then::have_ingredients" have_ingredients.
+Admitted.
+Global Typeclasses Opaque have_ingredients.
 
 (*
 fn have_recipe(food: Food) -> Option<Food> {
@@ -256,8 +257,10 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_have_recipe : M.IsFunction "combinators_and_then::have_recipe" have_recipe.
-Smpl Add apply Function_have_recipe : is_function.
+Global Instance Instance_IsFunction_have_recipe :
+  M.IsFunction.Trait "combinators_and_then::have_recipe" have_recipe.
+Admitted.
+Global Typeclasses Opaque have_recipe.
 
 (*
 fn cookable_v1(food: Food) -> Option<Food> {
@@ -330,8 +333,10 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_cookable_v1 : M.IsFunction "combinators_and_then::cookable_v1" cookable_v1.
-Smpl Add apply Function_cookable_v1 : is_function.
+Global Instance Instance_IsFunction_cookable_v1 :
+  M.IsFunction.Trait "combinators_and_then::cookable_v1" cookable_v1.
+Admitted.
+Global Typeclasses Opaque cookable_v1.
 
 (*
 fn cookable_v2(food: Food) -> Option<Food> {
@@ -371,8 +376,10 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_cookable_v2 : M.IsFunction "combinators_and_then::cookable_v2" cookable_v2.
-Smpl Add apply Function_cookable_v2 : is_function.
+Global Instance Instance_IsFunction_cookable_v2 :
+  M.IsFunction.Trait "combinators_and_then::cookable_v2" cookable_v2.
+Admitted.
+Global Typeclasses Opaque cookable_v2.
 
 (*
 fn eat(food: Food, day: Day) {
@@ -560,8 +567,9 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_eat : M.IsFunction "combinators_and_then::eat" eat.
-Smpl Add apply Function_eat : is_function.
+Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_and_then::eat" eat.
+Admitted.
+Global Typeclasses Opaque eat.
 
 (*
 fn main() {
@@ -635,5 +643,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "combinators_and_then::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_and_then::main" main.
+Admitted.
+Global Typeclasses Opaque main.

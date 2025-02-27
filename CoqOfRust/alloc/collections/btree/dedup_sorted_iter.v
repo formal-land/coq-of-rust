@@ -52,10 +52,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (K V I : Ty.t),
-          M.IsAssociatedFunction (Self K V I) "new" (new K V I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V I) "new" (new K V I).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_alloc_collections_btree_dedup_sorted_iter_DedupSortedIter_K_V_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_cmp_Eq_K_where_core_iter_traits_iterator_Iterator_I_for_alloc_collections_btree_dedup_sorted_iter_DedupSortedIter_K_V_I.
@@ -98,6 +99,7 @@ Module collections.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ next : Ty.tuple [ K; V ] :=
                             M.copy (|

@@ -32,8 +32,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_forget : M.IsFunction "core::mem::forget" forget.
-  Smpl Add apply Function_forget : is_function.
+  Global Instance Instance_IsFunction_forget : M.IsFunction.Trait "core::mem::forget" forget.
+  Admitted.
+  Global Typeclasses Opaque forget.
   
   (*
   pub fn forget_unsized<T: ?Sized>(t: T) {
@@ -53,8 +54,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_forget_unsized : M.IsFunction "core::mem::forget_unsized" forget_unsized.
-  Smpl Add apply Function_forget_unsized : is_function.
+  Global Instance Instance_IsFunction_forget_unsized :
+    M.IsFunction.Trait "core::mem::forget_unsized" forget_unsized.
+  Admitted.
+  Global Typeclasses Opaque forget_unsized.
   
   (*
   pub const fn size_of<T>() -> usize {
@@ -73,8 +76,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_size_of : M.IsFunction "core::mem::size_of" size_of.
-  Smpl Add apply Function_size_of : is_function.
+  Global Instance Instance_IsFunction_size_of : M.IsFunction.Trait "core::mem::size_of" size_of.
+  Admitted.
+  Global Typeclasses Opaque size_of.
   
   (*
   pub const fn size_of_val<T: ?Sized>(val: &T) -> usize {
@@ -95,8 +99,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_size_of_val : M.IsFunction "core::mem::size_of_val" size_of_val.
-  Smpl Add apply Function_size_of_val : is_function.
+  Global Instance Instance_IsFunction_size_of_val :
+    M.IsFunction.Trait "core::mem::size_of_val" size_of_val.
+  Admitted.
+  Global Typeclasses Opaque size_of_val.
   
   (*
   pub const unsafe fn size_of_val_raw<T: ?Sized>(val: *const T) -> usize {
@@ -117,8 +123,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_size_of_val_raw : M.IsFunction "core::mem::size_of_val_raw" size_of_val_raw.
-  Smpl Add apply Function_size_of_val_raw : is_function.
+  Global Instance Instance_IsFunction_size_of_val_raw :
+    M.IsFunction.Trait "core::mem::size_of_val_raw" size_of_val_raw.
+  Admitted.
+  Global Typeclasses Opaque size_of_val_raw.
   
   (*
   pub fn min_align_of<T>() -> usize {
@@ -137,8 +145,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_align_of : M.IsFunction "core::mem::min_align_of" min_align_of.
-  Smpl Add apply Function_min_align_of : is_function.
+  Global Instance Instance_IsFunction_min_align_of :
+    M.IsFunction.Trait "core::mem::min_align_of" min_align_of.
+  Admitted.
+  Global Typeclasses Opaque min_align_of.
   
   (*
   pub fn min_align_of_val<T: ?Sized>(val: &T) -> usize {
@@ -159,8 +169,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_align_of_val : M.IsFunction "core::mem::min_align_of_val" min_align_of_val.
-  Smpl Add apply Function_min_align_of_val : is_function.
+  Global Instance Instance_IsFunction_min_align_of_val :
+    M.IsFunction.Trait "core::mem::min_align_of_val" min_align_of_val.
+  Admitted.
+  Global Typeclasses Opaque min_align_of_val.
   
   (*
   pub const fn align_of<T>() -> usize {
@@ -179,8 +191,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_align_of : M.IsFunction "core::mem::align_of" align_of.
-  Smpl Add apply Function_align_of : is_function.
+  Global Instance Instance_IsFunction_align_of : M.IsFunction.Trait "core::mem::align_of" align_of.
+  Admitted.
+  Global Typeclasses Opaque align_of.
   
   (*
   pub const fn align_of_val<T: ?Sized>(val: &T) -> usize {
@@ -201,8 +214,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_align_of_val : M.IsFunction "core::mem::align_of_val" align_of_val.
-  Smpl Add apply Function_align_of_val : is_function.
+  Global Instance Instance_IsFunction_align_of_val :
+    M.IsFunction.Trait "core::mem::align_of_val" align_of_val.
+  Admitted.
+  Global Typeclasses Opaque align_of_val.
   
   (*
   pub const unsafe fn align_of_val_raw<T: ?Sized>(val: *const T) -> usize {
@@ -223,8 +238,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_align_of_val_raw : M.IsFunction "core::mem::align_of_val_raw" align_of_val_raw.
-  Smpl Add apply Function_align_of_val_raw : is_function.
+  Global Instance Instance_IsFunction_align_of_val_raw :
+    M.IsFunction.Trait "core::mem::align_of_val_raw" align_of_val_raw.
+  Admitted.
+  Global Typeclasses Opaque align_of_val_raw.
   
   (*
   pub const fn needs_drop<T: ?Sized>() -> bool {
@@ -243,8 +260,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_needs_drop : M.IsFunction "core::mem::needs_drop" needs_drop.
-  Smpl Add apply Function_needs_drop : is_function.
+  Global Instance Instance_IsFunction_needs_drop :
+    M.IsFunction.Trait "core::mem::needs_drop" needs_drop.
+  Admitted.
+  Global Typeclasses Opaque needs_drop.
   
   (*
   pub const unsafe fn zeroed<T>() -> T {
@@ -295,8 +314,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_zeroed : M.IsFunction "core::mem::zeroed" zeroed.
-  Smpl Add apply Function_zeroed : is_function.
+  Global Instance Instance_IsFunction_zeroed : M.IsFunction.Trait "core::mem::zeroed" zeroed.
+  Admitted.
+  Global Typeclasses Opaque zeroed.
   
   (*
   pub unsafe fn uninitialized<T>() -> T {
@@ -395,8 +415,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_uninitialized : M.IsFunction "core::mem::uninitialized" uninitialized.
-  Smpl Add apply Function_uninitialized : is_function.
+  Global Instance Instance_IsFunction_uninitialized :
+    M.IsFunction.Trait "core::mem::uninitialized" uninitialized.
+  Admitted.
+  Global Typeclasses Opaque uninitialized.
   
   (*
   pub const fn swap<T>(x: &mut T, y: &mut T) {
@@ -422,8 +444,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_swap : M.IsFunction "core::mem::swap" swap.
-  Smpl Add apply Function_swap : is_function.
+  Global Instance Instance_IsFunction_swap : M.IsFunction.Trait "core::mem::swap" swap.
+  Admitted.
+  Global Typeclasses Opaque swap.
   
   (*
   pub fn take<T: Default>(dest: &mut T) -> T {
@@ -450,8 +473,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_take : M.IsFunction "core::mem::take" take.
-  Smpl Add apply Function_take : is_function.
+  Global Instance Instance_IsFunction_take : M.IsFunction.Trait "core::mem::take" take.
+  Admitted.
+  Global Typeclasses Opaque take.
   
   (*
   pub const fn replace<T>(dest: &mut T, src: T) -> T {
@@ -500,8 +524,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_replace : M.IsFunction "core::mem::replace" replace.
-  Smpl Add apply Function_replace : is_function.
+  Global Instance Instance_IsFunction_replace : M.IsFunction.Trait "core::mem::replace" replace.
+  Admitted.
+  Global Typeclasses Opaque replace.
   
   (* pub fn drop<T>(_x: T) {} *)
   Definition drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -513,8 +538,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_drop : M.IsFunction "core::mem::drop" drop.
-  Smpl Add apply Function_drop : is_function.
+  Global Instance Instance_IsFunction_drop : M.IsFunction.Trait "core::mem::drop" drop.
+  Admitted.
+  Global Typeclasses Opaque drop.
   
   (*
   pub const fn copy<T: Copy>(x: &T) -> T {
@@ -530,8 +556,9 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_copy : M.IsFunction "core::mem::copy" copy.
-  Smpl Add apply Function_copy : is_function.
+  Global Instance Instance_IsFunction_copy : M.IsFunction.Trait "core::mem::copy" copy.
+  Admitted.
+  Global Typeclasses Opaque copy.
   
   (*
   pub const unsafe fn transmute_copy<Src, Dst>(src: &Src) -> Dst {
@@ -693,8 +720,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_transmute_copy : M.IsFunction "core::mem::transmute_copy" transmute_copy.
-  Smpl Add apply Function_transmute_copy : is_function.
+  Global Instance Instance_IsFunction_transmute_copy :
+    M.IsFunction.Trait "core::mem::transmute_copy" transmute_copy.
+  Admitted.
+  Global Typeclasses Opaque transmute_copy.
   
   (* StructTuple
     {
@@ -987,8 +1016,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_discriminant : M.IsFunction "core::mem::discriminant" discriminant.
-  Smpl Add apply Function_discriminant : is_function.
+  Global Instance Instance_IsFunction_discriminant :
+    M.IsFunction.Trait "core::mem::discriminant" discriminant.
+  Admitted.
+  Global Typeclasses Opaque discriminant.
   
   (*
   pub const fn variant_count<T>() -> usize {
@@ -1007,8 +1038,10 @@ Module mem.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_variant_count : M.IsFunction "core::mem::variant_count" variant_count.
-  Smpl Add apply Function_variant_count : is_function.
+  Global Instance Instance_IsFunction_variant_count :
+    M.IsFunction.Trait "core::mem::variant_count" variant_count.
+  Admitted.
+  Global Typeclasses Opaque variant_count.
   
   (* Trait *)
   (* Empty module 'SizedTypeProperties' *)

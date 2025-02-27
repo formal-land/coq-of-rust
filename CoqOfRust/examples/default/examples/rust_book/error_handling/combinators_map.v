@@ -314,8 +314,9 @@ Definition peel (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
-Smpl Add apply Function_peel : is_function.
+Global Instance Instance_IsFunction_peel : M.IsFunction.Trait "combinators_map::peel" peel.
+Admitted.
+Global Typeclasses Opaque peel.
 
 (*
 fn chop(peeled: Option<Peeled>) -> Option<Chopped> {
@@ -356,8 +357,9 @@ Definition chop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
-Smpl Add apply Function_chop : is_function.
+Global Instance Instance_IsFunction_chop : M.IsFunction.Trait "combinators_map::chop" chop.
+Admitted.
+Global Typeclasses Opaque chop.
 
 (*
 fn cook(chopped: Option<Chopped>) -> Option<Cooked> {
@@ -412,8 +414,9 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
-Smpl Add apply Function_cook : is_function.
+Global Instance Instance_IsFunction_cook : M.IsFunction.Trait "combinators_map::cook" cook.
+Admitted.
+Global Typeclasses Opaque cook.
 
 (*
 fn process(food: Option<Food>) -> Option<Cooked> {
@@ -542,8 +545,9 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_process : M.IsFunction "combinators_map::process" process.
-Smpl Add apply Function_process : is_function.
+Global Instance Instance_IsFunction_process : M.IsFunction.Trait "combinators_map::process" process.
+Admitted.
+Global Typeclasses Opaque process.
 
 (*
 fn eat(food: Option<Cooked>) {
@@ -676,8 +680,9 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
-Smpl Add apply Function_eat : is_function.
+Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_map::eat" eat.
+Admitted.
+Global Typeclasses Opaque eat.
 
 (*
 fn main() {
@@ -809,5 +814,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "combinators_map::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_map::main" main.
+Admitted.
+Global Typeclasses Opaque main.

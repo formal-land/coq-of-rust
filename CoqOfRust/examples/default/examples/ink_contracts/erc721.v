@@ -77,10 +77,10 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_contains :
+  Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
-  Smpl Add apply AssociatedFunction_contains : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+  Admitted.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -89,10 +89,10 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -101,10 +101,10 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
   
   (*
       fn remove(&self, _key: K) {
@@ -113,10 +113,10 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_remove :
+  Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
-  Smpl Add apply AssociatedFunction_remove : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+  Admitted.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -125,10 +125,10 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_size :
+  Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" (size K V).
-  Smpl Add apply AssociatedFunction_size : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+  Admitted.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -137,10 +137,10 @@ Module Impl_erc721_Mapping_K_V.
   *)
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_take :
+  Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" (take K V).
-  Smpl Add apply AssociatedFunction_take : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+  Admitted.
 End Impl_erc721_Mapping_K_V.
 
 (* StructTuple
@@ -698,8 +698,9 @@ Module Impl_erc721_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -708,8 +709,9 @@ Module Impl_erc721_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -722,8 +724,9 @@ Module Impl_erc721_Erc721.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -743,8 +746,9 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -771,8 +775,9 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       fn balance_of_or_zero(&self, of: &AccountId) -> u32 {
@@ -823,9 +828,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_balance_of_or_zero :
-    M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero.
-  Smpl Add apply AssociatedFunction_balance_of_or_zero : is_associated.
+  Global Instance AssociatedFunction_balance_of_or_zero :
+    M.IsAssociatedFunction.Trait Self "balance_of_or_zero" balance_of_or_zero.
+  Admitted.
+  Global Typeclasses Opaque balance_of_or_zero.
   
   (*
       fn clear_approval(&mut self, id: TokenId) {
@@ -870,9 +876,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_clear_approval :
-    M.IsAssociatedFunction Self "clear_approval" clear_approval.
-  Smpl Add apply AssociatedFunction_clear_approval : is_associated.
+  Global Instance AssociatedFunction_clear_approval :
+    M.IsAssociatedFunction.Trait Self "clear_approval" clear_approval.
+  Admitted.
+  Global Typeclasses Opaque clear_approval.
   
   (*
       fn approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -921,9 +928,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_approved_for_all :
-    M.IsAssociatedFunction Self "approved_for_all" approved_for_all.
-  Smpl Add apply AssociatedFunction_approved_for_all : is_associated.
+  Global Instance AssociatedFunction_approved_for_all :
+    M.IsAssociatedFunction.Trait Self "approved_for_all" approved_for_all.
+  Admitted.
+  Global Typeclasses Opaque approved_for_all.
   
   (*
       pub fn owner_of(&self, id: TokenId) -> Option<AccountId> {
@@ -959,8 +967,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_owner_of : M.IsAssociatedFunction Self "owner_of" owner_of.
-  Smpl Add apply AssociatedFunction_owner_of : is_associated.
+  Global Instance AssociatedFunction_owner_of :
+    M.IsAssociatedFunction.Trait Self "owner_of" owner_of.
+  Admitted.
+  Global Typeclasses Opaque owner_of.
   
   (*
       fn approved_or_owner(&self, from: Option<AccountId>, id: TokenId) -> bool {
@@ -1185,9 +1195,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_approved_or_owner :
-    M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner.
-  Smpl Add apply AssociatedFunction_approved_or_owner : is_associated.
+  Global Instance AssociatedFunction_approved_or_owner :
+    M.IsAssociatedFunction.Trait Self "approved_or_owner" approved_or_owner.
+  Admitted.
+  Global Typeclasses Opaque approved_or_owner.
   
   (*
       fn exists(&self, id: TokenId) -> bool {
@@ -1223,8 +1234,9 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
-  Smpl Add apply AssociatedFunction_exists_ : is_associated.
+  Global Instance AssociatedFunction_exists_ : M.IsAssociatedFunction.Trait Self "exists_" exists_.
+  Admitted.
+  Global Typeclasses Opaque exists_.
   
   (*
       pub fn balance_of(&self, owner: AccountId) -> u32 {
@@ -1248,8 +1260,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
-  Smpl Add apply AssociatedFunction_balance_of : is_associated.
+  Global Instance AssociatedFunction_balance_of :
+    M.IsAssociatedFunction.Trait Self "balance_of" balance_of.
+  Admitted.
+  Global Typeclasses Opaque balance_of.
   
   (*
       pub fn get_approved(&self, id: TokenId) -> Option<AccountId> {
@@ -1285,8 +1299,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_approved : M.IsAssociatedFunction Self "get_approved" get_approved.
-  Smpl Add apply AssociatedFunction_get_approved : is_associated.
+  Global Instance AssociatedFunction_get_approved :
+    M.IsAssociatedFunction.Trait Self "get_approved" get_approved.
+  Admitted.
+  Global Typeclasses Opaque get_approved.
   
   (*
       pub fn is_approved_for_all(&self, owner: AccountId, operator: AccountId) -> bool {
@@ -1312,9 +1328,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_is_approved_for_all :
-    M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all.
-  Smpl Add apply AssociatedFunction_is_approved_for_all : is_associated.
+  Global Instance AssociatedFunction_is_approved_for_all :
+    M.IsAssociatedFunction.Trait Self "is_approved_for_all" is_approved_for_all.
+  Admitted.
+  Global Typeclasses Opaque is_approved_for_all.
   
   (*
       fn approve_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -1520,9 +1537,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_approve_for_all :
-    M.IsAssociatedFunction Self "approve_for_all" approve_for_all.
-  Smpl Add apply AssociatedFunction_approve_for_all : is_associated.
+  Global Instance AssociatedFunction_approve_for_all :
+    M.IsAssociatedFunction.Trait Self "approve_for_all" approve_for_all.
+  Admitted.
+  Global Typeclasses Opaque approve_for_all.
   
   (*
       pub fn set_approval_for_all(&mut self, to: AccountId, approved: bool) -> Result<(), Error> {
@@ -1650,9 +1668,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_set_approval_for_all :
-    M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all.
-  Smpl Add apply AssociatedFunction_set_approval_for_all : is_associated.
+  Global Instance AssociatedFunction_set_approval_for_all :
+    M.IsAssociatedFunction.Trait Self "set_approval_for_all" set_approval_for_all.
+  Admitted.
+  Global Typeclasses Opaque set_approval_for_all.
   
   (*
       fn approve_for(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -2009,8 +2028,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_approve_for : M.IsAssociatedFunction Self "approve_for" approve_for.
-  Smpl Add apply AssociatedFunction_approve_for : is_associated.
+  Global Instance AssociatedFunction_approve_for :
+    M.IsAssociatedFunction.Trait Self "approve_for" approve_for.
+  Admitted.
+  Global Typeclasses Opaque approve_for.
   
   (*
       pub fn approve(&mut self, to: AccountId, id: TokenId) -> Result<(), Error> {
@@ -2141,8 +2162,9 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
-  Smpl Add apply AssociatedFunction_approve : is_associated.
+  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.Trait Self "approve" approve.
+  Admitted.
+  Global Typeclasses Opaque approve.
   
   (*
       fn remove_token_from(&mut self, from: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -2484,9 +2506,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_remove_token_from :
-    M.IsAssociatedFunction Self "remove_token_from" remove_token_from.
-  Smpl Add apply AssociatedFunction_remove_token_from : is_associated.
+  Global Instance AssociatedFunction_remove_token_from :
+    M.IsAssociatedFunction.Trait Self "remove_token_from" remove_token_from.
+  Admitted.
+  Global Typeclasses Opaque remove_token_from.
   
   (*
       fn add_token_to(&mut self, to: &AccountId, id: TokenId) -> Result<(), Error> {
@@ -2517,8 +2540,9 @@ Module Impl_erc721_Erc721.
   *)
   Parameter add_token_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_add_token_to : M.IsAssociatedFunction Self "add_token_to" add_token_to.
-  Smpl Add apply AssociatedFunction_add_token_to : is_associated.
+  Global Instance AssociatedFunction_add_token_to :
+    M.IsAssociatedFunction.Trait Self "add_token_to" add_token_to.
+  Admitted.
   
   (*
       fn transfer_token_from(
@@ -2547,9 +2571,9 @@ Module Impl_erc721_Erc721.
   *)
   Parameter transfer_token_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer_token_from :
-    M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from.
-  Smpl Add apply AssociatedFunction_transfer_token_from : is_associated.
+  Global Instance AssociatedFunction_transfer_token_from :
+    M.IsAssociatedFunction.Trait Self "transfer_token_from" transfer_token_from.
+  Admitted.
   
   (*
       pub fn transfer(&mut self, destination: AccountId, id: TokenId) -> Result<(), Error> {
@@ -2704,8 +2728,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
-  Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Instance AssociatedFunction_transfer :
+    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Admitted.
+  Global Typeclasses Opaque transfer.
   
   (*
       pub fn transfer_from(
@@ -2846,9 +2872,10 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_transfer_from :
-    M.IsAssociatedFunction Self "transfer_from" transfer_from.
-  Smpl Add apply AssociatedFunction_transfer_from : is_associated.
+  Global Instance AssociatedFunction_transfer_from :
+    M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+  Admitted.
+  Global Typeclasses Opaque transfer_from.
   
   (*
       pub fn mint(&mut self, id: TokenId) -> Result<(), Error> {
@@ -3063,8 +3090,9 @@ Module Impl_erc721_Erc721.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
-  Smpl Add apply AssociatedFunction_mint : is_associated.
+  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.Trait Self "mint" mint.
+  Admitted.
+  Global Typeclasses Opaque mint.
   
   (*
       pub fn burn(&mut self, id: TokenId) -> Result<(), Error> {
@@ -3098,6 +3126,6 @@ Module Impl_erc721_Erc721.
   *)
   Parameter burn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn.
-  Smpl Add apply AssociatedFunction_burn : is_associated.
+  Global Instance AssociatedFunction_burn : M.IsAssociatedFunction.Trait Self "burn" burn.
+  Admitted.
 End Impl_erc721_Erc721.

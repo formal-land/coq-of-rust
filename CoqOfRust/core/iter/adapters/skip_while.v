@@ -134,10 +134,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I P : Ty.t),
-          M.IsAssociatedFunction (Self I P) "new" (new I P).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I P) "new" (new I P).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_skip_while_SkipWhile_I_P.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_skip_while_SkipWhile_I_P.

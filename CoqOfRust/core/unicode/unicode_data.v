@@ -354,9 +354,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_bitset_search :
-      M.IsFunction "core::unicode::unicode_data::bitset_search" bitset_search.
-    Smpl Add apply Function_bitset_search : is_function.
+    Global Instance Instance_IsFunction_bitset_search :
+      M.IsFunction.Trait "core::unicode::unicode_data::bitset_search" bitset_search.
+    Admitted.
+    Global Typeclasses Opaque bitset_search.
     
     (*
     fn decode_prefix_sum(short_offset_run_header: u32) -> u32 {
@@ -380,9 +381,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_decode_prefix_sum :
-      M.IsFunction "core::unicode::unicode_data::decode_prefix_sum" decode_prefix_sum.
-    Smpl Add apply Function_decode_prefix_sum : is_function.
+    Global Instance Instance_IsFunction_decode_prefix_sum :
+      M.IsFunction.Trait "core::unicode::unicode_data::decode_prefix_sum" decode_prefix_sum.
+    Admitted.
+    Global Typeclasses Opaque decode_prefix_sum.
     
     (*
     fn decode_length(short_offset_run_header: u32) -> usize {
@@ -403,9 +405,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_decode_length :
-      M.IsFunction "core::unicode::unicode_data::decode_length" decode_length.
-    Smpl Add apply Function_decode_length : is_function.
+    Global Instance Instance_IsFunction_decode_length :
+      M.IsFunction.Trait "core::unicode::unicode_data::decode_length" decode_length.
+    Admitted.
+    Global Typeclasses Opaque decode_length.
     
     (*
     fn skip_search<const SOR: usize, const OFFSETS: usize>(
@@ -746,6 +749,7 @@ Module unicode.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -862,9 +866,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_skip_search :
-      M.IsFunction "core::unicode::unicode_data::skip_search" skip_search.
-    Smpl Add apply Function_skip_search : is_function.
+    Global Instance Instance_IsFunction_skip_search :
+      M.IsFunction.Trait "core::unicode::unicode_data::skip_search" skip_search.
+    Admitted.
+    Global Typeclasses Opaque skip_search.
     
     Definition value_UNICODE_VERSION : Value.t :=
       M.run_constant
@@ -2537,8 +2542,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::alphabetic::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::alphabetic::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End alphabetic.
     
     Module case_ignorable.
@@ -3570,9 +3577,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup :
-        M.IsFunction "core::unicode::unicode_data::case_ignorable::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::case_ignorable::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End case_ignorable.
     
     Module cased.
@@ -4000,8 +4008,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cased::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::cased::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End cased.
     
     Module cc.
@@ -4087,8 +4097,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::cc::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::cc::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End cc.
     
     Module grapheme_extend.
@@ -4937,9 +4949,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup :
-        M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::grapheme_extend::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
       
       (*
           fn lookup_slow(c: char) -> bool {
@@ -4996,9 +5009,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup_slow :
-        M.IsFunction "core::unicode::unicode_data::grapheme_extend::lookup_slow" lookup_slow.
-      Smpl Add apply Function_lookup_slow : is_function.
+      Global Instance Instance_IsFunction_lookup_slow :
+        M.IsFunction.Trait "core::unicode::unicode_data::grapheme_extend::lookup_slow" lookup_slow.
+      Admitted.
+      Global Typeclasses Opaque lookup_slow.
     End grapheme_extend.
     
     Module lowercase.
@@ -5790,8 +5804,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::lowercase::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::lowercase::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End lowercase.
     
     Module n.
@@ -6209,8 +6225,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::n::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::n::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End n.
     
     Module uppercase.
@@ -6941,8 +6959,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup : M.IsFunction "core::unicode::unicode_data::uppercase::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::uppercase::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End uppercase.
     
     Module white_space.
@@ -7330,9 +7350,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_lookup :
-        M.IsFunction "core::unicode::unicode_data::white_space::lookup" lookup.
-      Smpl Add apply Function_lookup : is_function.
+      Global Instance Instance_IsFunction_lookup :
+        M.IsFunction.Trait "core::unicode::unicode_data::white_space::lookup" lookup.
+      Admitted.
+      Global Typeclasses Opaque lookup.
     End white_space.
     
     Module conversions.
@@ -7810,9 +7831,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_to_lower :
-        M.IsFunction "core::unicode::unicode_data::conversions::to_lower" to_lower.
-      Smpl Add apply Function_to_lower : is_function.
+      Global Instance Instance_IsFunction_to_lower :
+        M.IsFunction.Trait "core::unicode::unicode_data::conversions::to_lower" to_lower.
+      Admitted.
+      Global Typeclasses Opaque to_lower.
       
       (*
           pub fn to_upper(c: char) -> [char; 3] {
@@ -8281,9 +8303,10 @@ Module unicode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_to_upper :
-        M.IsFunction "core::unicode::unicode_data::conversions::to_upper" to_upper.
-      Smpl Add apply Function_to_upper : is_function.
+      Global Instance Instance_IsFunction_to_upper :
+        M.IsFunction.Trait "core::unicode::unicode_data::conversions::to_upper" to_upper.
+      Admitted.
+      Global Typeclasses Opaque to_upper.
       
       Definition value_LOWERCASE_TABLE : Value.t :=
         M.run_constant

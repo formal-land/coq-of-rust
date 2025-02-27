@@ -99,10 +99,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn try_new(value: T) -> Result<Self, core::alloc::AllocError> {
@@ -203,10 +204,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_try_new :
+      Global Instance AssociatedFunction_try_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "try_new" (try_new T).
-      Smpl Add apply AssociatedFunction_try_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "try_new" (try_new T).
+      Admitted.
+      Global Typeclasses Opaque try_new.
       (*
           fn meta(&self) -> <T as Pointee>::Metadata {
               //  Safety:
@@ -274,10 +276,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_meta :
+      Global Instance AssociatedFunction_meta :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "meta" (meta T).
-      Smpl Add apply AssociatedFunction_meta : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "meta" (meta T).
+      Admitted.
+      Global Typeclasses Opaque meta.
       
       (*
           fn data(&self) -> *mut u8 {
@@ -337,10 +340,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_data :
+      Global Instance AssociatedFunction_data :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "data" (data T).
-      Smpl Add apply AssociatedFunction_data : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "data" (data T).
+      Admitted.
+      Global Typeclasses Opaque data.
       
       (*
           fn with_header(&self) -> &WithHeader<<T as Pointee>::Metadata> {
@@ -392,10 +396,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_with_header :
+      Global Instance AssociatedFunction_with_header :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "with_header" (with_header T).
-      Smpl Add apply AssociatedFunction_with_header : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "with_header" (with_header T).
+      Admitted.
+      Global Typeclasses Opaque with_header.
     End Impl_alloc_boxed_thin_ThinBox_T.
     
     Module Impl_alloc_boxed_thin_ThinBox_Dyn.
@@ -539,10 +544,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unsize :
+      Global Instance AssociatedFunction_new_unsize :
         forall (Dyn : Ty.t),
-        M.IsAssociatedFunction (Self Dyn) "new_unsize" (new_unsize Dyn).
-      Smpl Add apply AssociatedFunction_new_unsize : is_associated.
+        M.IsAssociatedFunction.Trait (Self Dyn) "new_unsize" (new_unsize Dyn).
+      Admitted.
+      Global Typeclasses Opaque new_unsize.
     End Impl_alloc_boxed_thin_ThinBox_Dyn.
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_alloc_boxed_thin_ThinBox_T.
@@ -1013,8 +1019,9 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           fn new_unsize_zst<Dyn, T>(value: T) -> Self
@@ -1075,9 +1082,10 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unsize_zst :
-        M.IsAssociatedFunction Self "new_unsize_zst" new_unsize_zst.
-      Smpl Add apply AssociatedFunction_new_unsize_zst : is_associated.
+      Global Instance AssociatedFunction_new_unsize_zst :
+        M.IsAssociatedFunction.Trait Self "new_unsize_zst" new_unsize_zst.
+      Admitted.
+      Global Typeclasses Opaque new_unsize_zst.
       
       (*
           fn try_new<H, T>(header: H, value: T) -> Result<Self, core::alloc::AllocError> {
@@ -1162,8 +1170,10 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
-      Smpl Add apply AssociatedFunction_try_new : is_associated.
+      Global Instance AssociatedFunction_try_new :
+        M.IsAssociatedFunction.Trait Self "try_new" try_new.
+      Admitted.
+      Global Typeclasses Opaque try_new.
     End Impl_alloc_boxed_thin_WithOpaqueHeader.
     
     Module Impl_alloc_boxed_thin_WithHeader_H.
@@ -1536,10 +1546,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "new" (new H).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "new" (new H).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           fn try_new<T>(header: H, value: T) -> Result<WithHeader<H>, core::alloc::AllocError> {
@@ -1943,10 +1954,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_try_new :
+      Global Instance AssociatedFunction_try_new :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "try_new" (try_new H).
-      Smpl Add apply AssociatedFunction_try_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "try_new" (try_new H).
+      Admitted.
+      Global Typeclasses Opaque try_new.
       
       (*
           fn new_unsize_zst<Dyn, T>(value: T) -> WithHeader<H>
@@ -2211,10 +2223,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unsize_zst :
+      Global Instance AssociatedFunction_new_unsize_zst :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "new_unsize_zst" (new_unsize_zst H).
-      Smpl Add apply AssociatedFunction_new_unsize_zst : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "new_unsize_zst" (new_unsize_zst H).
+      Admitted.
+      Global Typeclasses Opaque new_unsize_zst.
       
       (*
           unsafe fn drop<T: ?Sized>(&self, value: *mut T) {
@@ -2305,10 +2318,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_drop :
+      Global Instance AssociatedFunction_drop :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "drop" (drop H).
-      Smpl Add apply AssociatedFunction_drop : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "drop" (drop H).
+      Admitted.
+      Global Typeclasses Opaque drop.
       
       (*
           fn header(&self) -> *mut H {
@@ -2436,10 +2450,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_header :
+      Global Instance AssociatedFunction_header :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "header" (header H).
-      Smpl Add apply AssociatedFunction_header : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "header" (header H).
+      Admitted.
+      Global Typeclasses Opaque header.
       
       (*
           fn value(&self) -> *mut u8 {
@@ -2473,10 +2488,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_value :
+      Global Instance AssociatedFunction_value :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "value" (value H).
-      Smpl Add apply AssociatedFunction_value : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "value" (value H).
+      Admitted.
+      Global Typeclasses Opaque value.
       
       (*
           const fn header_size() -> usize {
@@ -2496,10 +2512,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_header_size :
+      Global Instance AssociatedFunction_header_size :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "header_size" (header_size H).
-      Smpl Add apply AssociatedFunction_header_size : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "header_size" (header_size H).
+      Admitted.
+      Global Typeclasses Opaque header_size.
       
       (*
           fn alloc_layout(value_layout: Layout) -> Result<(Layout, usize), LayoutError> {
@@ -2553,10 +2570,11 @@ Module boxed.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_alloc_layout :
+      Global Instance AssociatedFunction_alloc_layout :
         forall (H : Ty.t),
-        M.IsAssociatedFunction (Self H) "alloc_layout" (alloc_layout H).
-      Smpl Add apply AssociatedFunction_alloc_layout : is_associated.
+        M.IsAssociatedFunction.Trait (Self H) "alloc_layout" (alloc_layout H).
+      Admitted.
+      Global Typeclasses Opaque alloc_layout.
     End Impl_alloc_boxed_thin_WithHeader_H.
     
     Module Impl_core_error_Error_where_core_marker_Sized_T_where_core_error_Error_T_for_alloc_boxed_thin_ThinBox_T.

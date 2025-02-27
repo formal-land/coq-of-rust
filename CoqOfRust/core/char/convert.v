@@ -49,8 +49,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_u32 : M.IsFunction "core::char::convert::from_u32" from_u32.
-    Smpl Add apply Function_from_u32 : is_function.
+    Global Instance Instance_IsFunction_from_u32 :
+      M.IsFunction.Trait "core::char::convert::from_u32" from_u32.
+    Admitted.
+    Global Typeclasses Opaque from_u32.
     
     (*
     pub(super) const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -118,9 +120,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_u32_unchecked :
-      M.IsFunction "core::char::convert::from_u32_unchecked" from_u32_unchecked.
-    Smpl Add apply Function_from_u32_unchecked : is_function.
+    Global Instance Instance_IsFunction_from_u32_unchecked :
+      M.IsFunction.Trait "core::char::convert::from_u32_unchecked" from_u32_unchecked.
+    Admitted.
+    Global Typeclasses Opaque from_u32_unchecked.
     
     Module Impl_core_convert_From_char_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
@@ -1196,9 +1199,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_char_try_from_u32 :
-      M.IsFunction "core::char::convert::char_try_from_u32" char_try_from_u32.
-    Smpl Add apply Function_char_try_from_u32 : is_function.
+    Global Instance Instance_IsFunction_char_try_from_u32 :
+      M.IsFunction.Trait "core::char::convert::char_try_from_u32" char_try_from_u32.
+    Admitted.
+    Global Typeclasses Opaque char_try_from_u32.
     
     Module Impl_core_convert_TryFrom_u32_for_char.
       Definition Self : Ty.t := Ty.path "char".
@@ -1615,7 +1619,9 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_digit : M.IsFunction "core::char::convert::from_digit" from_digit.
-    Smpl Add apply Function_from_digit : is_function.
+    Global Instance Instance_IsFunction_from_digit :
+      M.IsFunction.Trait "core::char::convert::from_digit" from_digit.
+    Admitted.
+    Global Typeclasses Opaque from_digit.
   End convert.
 End char.

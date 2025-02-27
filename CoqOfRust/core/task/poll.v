@@ -763,10 +763,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map :
+      Global Instance AssociatedFunction_map :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "map" (map T).
-      Smpl Add apply AssociatedFunction_map : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+      Admitted.
+      Global Typeclasses Opaque map.
       
       (*
           pub const fn is_ready(&self) -> bool {
@@ -799,10 +800,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ready :
+      Global Instance AssociatedFunction_is_ready :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "is_ready" (is_ready T).
-      Smpl Add apply AssociatedFunction_is_ready : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "is_ready" (is_ready T).
+      Admitted.
+      Global Typeclasses Opaque is_ready.
       
       (*
           pub const fn is_pending(&self) -> bool {
@@ -830,10 +832,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_pending :
+      Global Instance AssociatedFunction_is_pending :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "is_pending" (is_pending T).
-      Smpl Add apply AssociatedFunction_is_pending : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "is_pending" (is_pending T).
+      Admitted.
+      Global Typeclasses Opaque is_pending.
     End Impl_core_task_poll_Poll_T.
     
     Module Impl_core_task_poll_Poll_core_result_Result_T_E.
@@ -934,10 +937,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_ok :
+      Global Instance AssociatedFunction_map_ok :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction (Self T E) "map_ok" (map_ok T E).
-      Smpl Add apply AssociatedFunction_map_ok : is_associated.
+        M.IsAssociatedFunction.Trait (Self T E) "map_ok" (map_ok T E).
+      Admitted.
+      Global Typeclasses Opaque map_ok.
       
       (*
           pub fn map_err<U, F>(self, f: F) -> Poll<Result<T, U>>
@@ -1030,10 +1034,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_err :
+      Global Instance AssociatedFunction_map_err :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction (Self T E) "map_err" (map_err T E).
-      Smpl Add apply AssociatedFunction_map_err : is_associated.
+        M.IsAssociatedFunction.Trait (Self T E) "map_err" (map_err T E).
+      Admitted.
+      Global Typeclasses Opaque map_err.
     End Impl_core_task_poll_Poll_core_result_Result_T_E.
     
     Module Impl_core_task_poll_Poll_core_option_Option_core_result_Result_T_E.
@@ -1174,10 +1179,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_ok :
+      Global Instance AssociatedFunction_map_ok :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction (Self T E) "map_ok" (map_ok T E).
-      Smpl Add apply AssociatedFunction_map_ok : is_associated.
+        M.IsAssociatedFunction.Trait (Self T E) "map_ok" (map_ok T E).
+      Admitted.
+      Global Typeclasses Opaque map_ok.
       
       (*
           pub fn map_err<U, F>(self, f: F) -> Poll<Option<Result<T, U>>>
@@ -1305,10 +1311,11 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_err :
+      Global Instance AssociatedFunction_map_err :
         forall (T E : Ty.t),
-        M.IsAssociatedFunction (Self T E) "map_err" (map_err T E).
-      Smpl Add apply AssociatedFunction_map_err : is_associated.
+        M.IsAssociatedFunction.Trait (Self T E) "map_err" (map_err T E).
+      Admitted.
+      Global Typeclasses Opaque map_err.
     End Impl_core_task_poll_Poll_core_option_Option_core_result_Result_T_E.
     
     Module Impl_core_convert_From_T_for_core_task_poll_Poll_T.

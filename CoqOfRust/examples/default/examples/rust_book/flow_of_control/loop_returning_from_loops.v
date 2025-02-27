@@ -25,6 +25,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ result : Ty.path "i32" :=
           M.copy (|
             M.loop (|
+              Ty.path "i32",
               ltac:(M.monadic
                 (let~ _ : Ty.tuple [] :=
                   M.alloc (|
@@ -137,5 +138,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "loop_returning_from_loops::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "loop_returning_from_loops::main" main.
+Admitted.
+Global Typeclasses Opaque main.

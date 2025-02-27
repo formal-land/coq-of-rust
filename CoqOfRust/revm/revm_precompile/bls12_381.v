@@ -57,8 +57,10 @@ Module bls12_381.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_precompiles : M.IsFunction "revm_precompile::bls12_381::precompiles" precompiles.
-  Smpl Add apply Function_precompiles : is_function.
+  Global Instance Instance_IsFunction_precompiles :
+    M.IsFunction.Trait "revm_precompile::bls12_381::precompiles" precompiles.
+  Admitted.
+  Global Typeclasses Opaque precompiles.
   
   Module precompiles.
     (* Error OpaqueTy *)

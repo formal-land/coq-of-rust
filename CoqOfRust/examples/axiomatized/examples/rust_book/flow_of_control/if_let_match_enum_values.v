@@ -30,5 +30,5 @@ Axiom IsDiscriminant_Foo_Qux : M.IsDiscriminant "if_let_match_enum_values::Foo::
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "if_let_match_enum_values::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "if_let_match_enum_values::main" main.
+Admitted.

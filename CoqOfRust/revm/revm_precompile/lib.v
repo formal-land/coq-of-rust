@@ -27,9 +27,10 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_calc_linear_cost_u32 :
-  M.IsFunction "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
-Smpl Add apply Function_calc_linear_cost_u32 : is_function.
+Global Instance Instance_IsFunction_calc_linear_cost_u32 :
+  M.IsFunction.Trait "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
+Admitted.
+Global Typeclasses Opaque calc_linear_cost_u32.
 
 (* StructRecord
   {
@@ -509,8 +510,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn homestead() -> &'static Self {
@@ -657,8 +659,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_homestead : M.IsAssociatedFunction Self "homestead" homestead.
-  Smpl Add apply AssociatedFunction_homestead : is_associated.
+  Global Instance AssociatedFunction_homestead :
+    M.IsAssociatedFunction.Trait Self "homestead" homestead.
+  Admitted.
+  Global Typeclasses Opaque homestead.
   
   (*
       pub fn inner(&self) -> &HashMap<Address, PrecompileFn> {
@@ -686,8 +690,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_inner : M.IsAssociatedFunction Self "inner" inner.
-  Smpl Add apply AssociatedFunction_inner : is_associated.
+  Global Instance AssociatedFunction_inner : M.IsAssociatedFunction.Trait Self "inner" inner.
+  Admitted.
+  Global Typeclasses Opaque inner.
   
   (*
       pub fn byzantium() -> &'static Self {
@@ -859,8 +864,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_byzantium : M.IsAssociatedFunction Self "byzantium" byzantium.
-  Smpl Add apply AssociatedFunction_byzantium : is_associated.
+  Global Instance AssociatedFunction_byzantium :
+    M.IsAssociatedFunction.Trait Self "byzantium" byzantium.
+  Admitted.
+  Global Typeclasses Opaque byzantium.
   
   (*
       pub fn istanbul() -> &'static Self {
@@ -1030,8 +1037,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_istanbul : M.IsAssociatedFunction Self "istanbul" istanbul.
-  Smpl Add apply AssociatedFunction_istanbul : is_associated.
+  Global Instance AssociatedFunction_istanbul :
+    M.IsAssociatedFunction.Trait Self "istanbul" istanbul.
+  Admitted.
+  Global Typeclasses Opaque istanbul.
   
   (*
       pub fn berlin() -> &'static Self {
@@ -1185,8 +1194,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_berlin : M.IsAssociatedFunction Self "berlin" berlin.
-  Smpl Add apply AssociatedFunction_berlin : is_associated.
+  Global Instance AssociatedFunction_berlin : M.IsAssociatedFunction.Trait Self "berlin" berlin.
+  Admitted.
+  Global Typeclasses Opaque berlin.
   
   (*
       pub fn cancun() -> &'static Self {
@@ -1369,8 +1379,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_cancun : M.IsAssociatedFunction Self "cancun" cancun.
-  Smpl Add apply AssociatedFunction_cancun : is_associated.
+  Global Instance AssociatedFunction_cancun : M.IsAssociatedFunction.Trait Self "cancun" cancun.
+  Admitted.
+  Global Typeclasses Opaque cancun.
   
   (*
       pub fn prague() -> &'static Self {
@@ -1533,8 +1544,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_prague : M.IsAssociatedFunction Self "prague" prague.
-  Smpl Add apply AssociatedFunction_prague : is_associated.
+  Global Instance AssociatedFunction_prague : M.IsAssociatedFunction.Trait Self "prague" prague.
+  Admitted.
+  Global Typeclasses Opaque prague.
   
   (*
       pub fn latest() -> &'static Self {
@@ -1553,8 +1565,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_latest : M.IsAssociatedFunction Self "latest" latest.
-  Smpl Add apply AssociatedFunction_latest : is_associated.
+  Global Instance AssociatedFunction_latest : M.IsAssociatedFunction.Trait Self "latest" latest.
+  Admitted.
+  Global Typeclasses Opaque latest.
   
   (*
       pub fn addresses(&self) -> impl ExactSizeIterator<Item = &Address> {
@@ -1623,8 +1636,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_addresses : M.IsAssociatedFunction Self "addresses" addresses.
-  Smpl Add apply AssociatedFunction_addresses : is_associated.
+  Global Instance AssociatedFunction_addresses :
+    M.IsAssociatedFunction.Trait Self "addresses" addresses.
+  Admitted.
+  Global Typeclasses Opaque addresses.
   
   (*
       pub fn into_addresses(self) -> impl ExactSizeIterator<Item = Address> {
@@ -1692,9 +1707,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_into_addresses :
-    M.IsAssociatedFunction Self "into_addresses" into_addresses.
-  Smpl Add apply AssociatedFunction_into_addresses : is_associated.
+  Global Instance AssociatedFunction_into_addresses :
+    M.IsAssociatedFunction.Trait Self "into_addresses" into_addresses.
+  Admitted.
+  Global Typeclasses Opaque into_addresses.
   
   (*
       pub fn contains(&self, address: &Address) -> bool {
@@ -1748,8 +1764,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_contains : M.IsAssociatedFunction Self "contains" contains.
-  Smpl Add apply AssociatedFunction_contains : is_associated.
+  Global Instance AssociatedFunction_contains :
+    M.IsAssociatedFunction.Trait Self "contains" contains.
+  Admitted.
+  Global Typeclasses Opaque contains.
   
   (*
       pub fn get(&self, address: &Address) -> Option<&PrecompileFn> {
@@ -1824,8 +1842,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
+  Global Typeclasses Opaque get.
   
   (*
       pub fn get_mut(&mut self, address: &Address) -> Option<&mut PrecompileFn> {
@@ -1900,8 +1919,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-  Smpl Add apply AssociatedFunction_get_mut : is_associated.
+  Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+  Admitted.
+  Global Typeclasses Opaque get_mut.
   
   (*
       pub fn is_empty(&self) -> bool {
@@ -1956,8 +1976,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-  Smpl Add apply AssociatedFunction_is_empty : is_associated.
+  Global Instance AssociatedFunction_is_empty :
+    M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+  Admitted.
+  Global Typeclasses Opaque is_empty.
   
   (*
       pub fn len(&self) -> usize {
@@ -2009,8 +2031,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-  Smpl Add apply AssociatedFunction_len : is_associated.
+  Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+  Admitted.
+  Global Typeclasses Opaque len.
   
   (*
       pub fn addresses_set(&self) -> &HashSet<Address> {
@@ -2038,9 +2061,10 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_addresses_set :
-    M.IsAssociatedFunction Self "addresses_set" addresses_set.
-  Smpl Add apply AssociatedFunction_addresses_set : is_associated.
+  Global Instance AssociatedFunction_addresses_set :
+    M.IsAssociatedFunction.Trait Self "addresses_set" addresses_set.
+  Admitted.
+  Global Typeclasses Opaque addresses_set.
   
   (*
       pub fn extend(&mut self, other: impl IntoIterator<Item = PrecompileWithAddress>) {
@@ -2552,8 +2576,9 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
-  Smpl Add apply AssociatedFunction_extend : is_associated.
+  Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.Trait Self "extend" extend.
+  Admitted.
+  Global Typeclasses Opaque extend.
 End Impl_revm_precompile_Precompiles.
 
 (* StructTuple
@@ -2879,8 +2904,9 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
-  Smpl Add apply AssociatedFunction_address : is_associated.
+  Global Instance AssociatedFunction_address : M.IsAssociatedFunction.Trait Self "address" address.
+  Admitted.
+  Global Typeclasses Opaque address.
   
   (*
       pub fn precompile(&self) -> &PrecompileFn {
@@ -2908,8 +2934,10 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_precompile : M.IsAssociatedFunction Self "precompile" precompile.
-  Smpl Add apply AssociatedFunction_precompile : is_associated.
+  Global Instance AssociatedFunction_precompile :
+    M.IsAssociatedFunction.Trait Self "precompile" precompile.
+  Admitted.
+  Global Typeclasses Opaque precompile.
 End Impl_revm_precompile_PrecompileWithAddress.
 
 (*
@@ -3710,8 +3738,10 @@ Module Impl_revm_precompile_PrecompileSpecId.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_from_spec_id : M.IsAssociatedFunction Self "from_spec_id" from_spec_id.
-  Smpl Add apply AssociatedFunction_from_spec_id : is_associated.
+  Global Instance AssociatedFunction_from_spec_id :
+    M.IsAssociatedFunction.Trait Self "from_spec_id" from_spec_id.
+  Admitted.
+  Global Typeclasses Opaque from_spec_id.
 End Impl_revm_precompile_PrecompileSpecId.
 
 (*
@@ -3793,5 +3823,7 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_u64_to_address : M.IsFunction "revm_precompile::u64_to_address" u64_to_address.
-Smpl Add apply Function_u64_to_address : is_function.
+Global Instance Instance_IsFunction_u64_to_address :
+  M.IsFunction.Trait "revm_precompile::u64_to_address" u64_to_address.
+Admitted.
+Global Typeclasses Opaque u64_to_address.

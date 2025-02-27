@@ -1986,10 +1986,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "new" (new T).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_A.
@@ -2031,10 +2032,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new_in :
+        Global Instance AssociatedFunction_new_in :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
-        Smpl Add apply AssociatedFunction_new_in : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+        Admitted.
+        Global Typeclasses Opaque new_in.
         
         (*
             pub fn range<K: ?Sized, R>(&self, range: R) -> Range<'_, T>
@@ -2087,10 +2089,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_range :
+        Global Instance AssociatedFunction_range :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "range" (range T A).
-        Smpl Add apply AssociatedFunction_range : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "range" (range T A).
+        Admitted.
+        Global Typeclasses Opaque range.
         
         (*
             pub fn difference<'a>(&'a self, other: &'a BTreeSet<T, A>) -> Difference<'a, T, A>
@@ -2887,10 +2890,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_difference :
+        Global Instance AssociatedFunction_difference :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "difference" (difference T A).
-        Smpl Add apply AssociatedFunction_difference : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "difference" (difference T A).
+        Admitted.
+        Global Typeclasses Opaque difference.
         
         (*
             pub fn symmetric_difference<'a>(
@@ -2959,10 +2963,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_symmetric_difference :
+        Global Instance AssociatedFunction_symmetric_difference :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "symmetric_difference" (symmetric_difference T A).
-        Smpl Add apply AssociatedFunction_symmetric_difference : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "symmetric_difference" (symmetric_difference T A).
+        Admitted.
+        Global Typeclasses Opaque symmetric_difference.
         
         (*
             pub fn intersection<'a>(&'a self, other: &'a BTreeSet<T, A>) -> Intersection<'a, T, A>
@@ -3643,10 +3648,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_intersection :
+        Global Instance AssociatedFunction_intersection :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "intersection" (intersection T A).
-        Smpl Add apply AssociatedFunction_intersection : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "intersection" (intersection T A).
+        Admitted.
+        Global Typeclasses Opaque intersection.
         
         (*
             pub fn union<'a>(&'a self, other: &'a BTreeSet<T, A>) -> Union<'a, T>
@@ -3707,10 +3713,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_union :
+        Global Instance AssociatedFunction_union :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "union" (union T A).
-        Smpl Add apply AssociatedFunction_union : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "union" (union T A).
+        Admitted.
+        Global Typeclasses Opaque union.
         
         (*
             pub fn clear(&mut self)
@@ -3751,10 +3758,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_clear :
+        Global Instance AssociatedFunction_clear :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "clear" (clear T A).
-        Smpl Add apply AssociatedFunction_clear : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "clear" (clear T A).
+        Admitted.
+        Global Typeclasses Opaque clear.
         
         (*
             pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
@@ -3803,10 +3811,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_contains :
+        Global Instance AssociatedFunction_contains :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "contains" (contains T A).
-        Smpl Add apply AssociatedFunction_contains : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "contains" (contains T A).
+        Admitted.
+        Global Typeclasses Opaque contains.
         
         (*
             pub fn get<Q: ?Sized>(&self, value: &Q) -> Option<&T>
@@ -3858,10 +3867,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_get :
+        Global Instance AssociatedFunction_get :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "get" (get T A).
-        Smpl Add apply AssociatedFunction_get : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "get" (get T A).
+        Admitted.
+        Global Typeclasses Opaque get.
         
         (*
             pub fn is_disjoint(&self, other: &BTreeSet<T, A>) -> bool
@@ -3946,10 +3956,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_disjoint :
+        Global Instance AssociatedFunction_is_disjoint :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "is_disjoint" (is_disjoint T A).
-        Smpl Add apply AssociatedFunction_is_disjoint : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "is_disjoint" (is_disjoint T A).
+        Admitted.
+        Global Typeclasses Opaque is_disjoint.
         
         (*
             pub fn is_subset(&self, other: &BTreeSet<T, A>) -> bool
@@ -4551,6 +4562,7 @@ Module collections.
                                                       ltac:(M.monadic
                                                         (let iter := M.copy (| γ |) in
                                                         M.loop (|
+                                                          Ty.tuple [],
                                                           ltac:(M.monadic
                                                             (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
@@ -4806,6 +4818,7 @@ Module collections.
                                                   |)
                                                 |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
@@ -5042,10 +5055,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_subset :
+        Global Instance AssociatedFunction_is_subset :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "is_subset" (is_subset T A).
-        Smpl Add apply AssociatedFunction_is_subset : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "is_subset" (is_subset T A).
+        Admitted.
+        Global Typeclasses Opaque is_subset.
         
         (*
             pub fn is_superset(&self, other: &BTreeSet<T, A>) -> bool
@@ -5083,10 +5097,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_superset :
+        Global Instance AssociatedFunction_is_superset :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "is_superset" (is_superset T A).
-        Smpl Add apply AssociatedFunction_is_superset : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "is_superset" (is_superset T A).
+        Admitted.
+        Global Typeclasses Opaque is_superset.
         
         (*
             pub fn first(&self) -> Option<&T>
@@ -5198,10 +5213,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_first :
+        Global Instance AssociatedFunction_first :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "first" (first T A).
-        Smpl Add apply AssociatedFunction_first : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "first" (first T A).
+        Admitted.
+        Global Typeclasses Opaque first.
         
         (*
             pub fn last(&self) -> Option<&T>
@@ -5313,10 +5329,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_last :
+        Global Instance AssociatedFunction_last :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "last" (last T A).
-        Smpl Add apply AssociatedFunction_last : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "last" (last T A).
+        Admitted.
+        Global Typeclasses Opaque last.
         
         (*
             pub fn pop_first(&mut self) -> Option<T>
@@ -5405,10 +5422,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_pop_first :
+        Global Instance AssociatedFunction_pop_first :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "pop_first" (pop_first T A).
-        Smpl Add apply AssociatedFunction_pop_first : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "pop_first" (pop_first T A).
+        Admitted.
+        Global Typeclasses Opaque pop_first.
         
         (*
             pub fn pop_last(&mut self) -> Option<T>
@@ -5497,10 +5515,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_pop_last :
+        Global Instance AssociatedFunction_pop_last :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "pop_last" (pop_last T A).
-        Smpl Add apply AssociatedFunction_pop_last : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "pop_last" (pop_last T A).
+        Admitted.
+        Global Typeclasses Opaque pop_last.
         
         (*
             pub fn insert(&mut self, value: T) -> bool
@@ -5578,10 +5597,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert :
+        Global Instance AssociatedFunction_insert :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert" (insert T A).
-        Smpl Add apply AssociatedFunction_insert : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "insert" (insert T A).
+        Admitted.
+        Global Typeclasses Opaque insert.
         
         (*
             pub fn replace(&mut self, value: T) -> Option<T>
@@ -5632,10 +5652,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_replace :
+        Global Instance AssociatedFunction_replace :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "replace" (replace T A).
-        Smpl Add apply AssociatedFunction_replace : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "replace" (replace T A).
+        Admitted.
+        Global Typeclasses Opaque replace.
         
         (*
             pub fn remove<Q: ?Sized>(&mut self, value: &Q) -> bool
@@ -5701,10 +5722,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_remove :
+        Global Instance AssociatedFunction_remove :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "remove" (remove T A).
-        Smpl Add apply AssociatedFunction_remove : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "remove" (remove T A).
+        Admitted.
+        Global Typeclasses Opaque remove.
         
         (*
             pub fn take<Q: ?Sized>(&mut self, value: &Q) -> Option<T>
@@ -5756,10 +5778,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_take :
+        Global Instance AssociatedFunction_take :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "take" (take T A).
-        Smpl Add apply AssociatedFunction_take : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "take" (take T A).
+        Admitted.
+        Global Typeclasses Opaque take.
         
         (*
             pub fn retain<F>(&mut self, mut f: F)
@@ -5879,10 +5902,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_retain :
+        Global Instance AssociatedFunction_retain :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "retain" (retain T A).
-        Smpl Add apply AssociatedFunction_retain : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "retain" (retain T A).
+        Admitted.
+        Global Typeclasses Opaque retain.
         
         (*
             pub fn append(&mut self, other: &mut Self)
@@ -5944,10 +5968,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_append :
+        Global Instance AssociatedFunction_append :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "append" (append T A).
-        Smpl Add apply AssociatedFunction_append : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "append" (append T A).
+        Admitted.
+        Global Typeclasses Opaque append.
         
         (*
             pub fn split_off<Q: ?Sized + Ord>(&mut self, value: &Q) -> Self
@@ -6004,10 +6029,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_split_off :
+        Global Instance AssociatedFunction_split_off :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "split_off" (split_off T A).
-        Smpl Add apply AssociatedFunction_split_off : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "split_off" (split_off T A).
+        Admitted.
+        Global Typeclasses Opaque split_off.
         
         (*
             pub fn extract_if<'a, F>(&'a mut self, pred: F) -> ExtractIf<'a, T, F, A>
@@ -6086,10 +6112,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_extract_if :
+        Global Instance AssociatedFunction_extract_if :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "extract_if" (extract_if T A).
-        Smpl Add apply AssociatedFunction_extract_if : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "extract_if" (extract_if T A).
+        Admitted.
+        Global Typeclasses Opaque extract_if.
         
         (*
             pub fn iter(&self) -> Iter<'_, T> {
@@ -6135,10 +6162,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_iter :
+        Global Instance AssociatedFunction_iter :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "iter" (iter T A).
-        Smpl Add apply AssociatedFunction_iter : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "iter" (iter T A).
+        Admitted.
+        Global Typeclasses Opaque iter.
         
         (*
             pub const fn len(&self) -> usize {
@@ -6176,10 +6204,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_len :
+        Global Instance AssociatedFunction_len :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "len" (len T A).
-        Smpl Add apply AssociatedFunction_len : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "len" (len T A).
+        Admitted.
+        Global Typeclasses Opaque len.
         
         (*
             pub const fn is_empty(&self) -> bool {
@@ -6213,10 +6242,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_empty :
+        Global Instance AssociatedFunction_is_empty :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "is_empty" (is_empty T A).
-        Smpl Add apply AssociatedFunction_is_empty : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "is_empty" (is_empty T A).
+        Admitted.
+        Global Typeclasses Opaque is_empty.
         
         (*
             pub fn lower_bound<Q: ?Sized>(&self, bound: Bound<&Q>) -> Cursor<'_, T>
@@ -6273,10 +6303,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_lower_bound :
+        Global Instance AssociatedFunction_lower_bound :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "lower_bound" (lower_bound T A).
-        Smpl Add apply AssociatedFunction_lower_bound : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "lower_bound" (lower_bound T A).
+        Admitted.
+        Global Typeclasses Opaque lower_bound.
         
         (*
             pub fn lower_bound_mut<Q: ?Sized>(&mut self, bound: Bound<&Q>) -> CursorMut<'_, T, A>
@@ -6333,10 +6364,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_lower_bound_mut :
+        Global Instance AssociatedFunction_lower_bound_mut :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "lower_bound_mut" (lower_bound_mut T A).
-        Smpl Add apply AssociatedFunction_lower_bound_mut : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "lower_bound_mut" (lower_bound_mut T A).
+        Admitted.
+        Global Typeclasses Opaque lower_bound_mut.
         
         (*
             pub fn upper_bound<Q: ?Sized>(&self, bound: Bound<&Q>) -> Cursor<'_, T>
@@ -6393,10 +6425,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_upper_bound :
+        Global Instance AssociatedFunction_upper_bound :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "upper_bound" (upper_bound T A).
-        Smpl Add apply AssociatedFunction_upper_bound : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "upper_bound" (upper_bound T A).
+        Admitted.
+        Global Typeclasses Opaque upper_bound.
         
         (*
             pub unsafe fn upper_bound_mut<Q: ?Sized>(&mut self, bound: Bound<&Q>) -> CursorMut<'_, T, A>
@@ -6453,10 +6486,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_upper_bound_mut :
+        Global Instance AssociatedFunction_upper_bound_mut :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "upper_bound_mut" (upper_bound_mut T A).
-        Smpl Add apply AssociatedFunction_upper_bound_mut : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "upper_bound_mut" (upper_bound_mut T A).
+        Admitted.
+        Global Typeclasses Opaque upper_bound_mut.
         (*
             fn from_sorted_iter<I: Iterator<Item = T>>(iter: I, alloc: A) -> BTreeSet<T, A> {
                 let iter = iter.map(|k| (k, SetValZST::default()));
@@ -6597,10 +6631,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_from_sorted_iter :
+        Global Instance AssociatedFunction_from_sorted_iter :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "from_sorted_iter" (from_sorted_iter T A).
-        Smpl Add apply AssociatedFunction_from_sorted_iter : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "from_sorted_iter" (from_sorted_iter T A).
+        Admitted.
+        Global Typeclasses Opaque from_sorted_iter.
       End Impl_alloc_collections_btree_set_BTreeSet_T_A.
       
       Module Impl_core_iter_traits_collect_FromIterator_where_core_cmp_Ord_T_T_for_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
@@ -10443,6 +10478,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (|
@@ -10864,6 +10900,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (let~ self_next : Ty.apply (Ty.path "&") [] [ T ] :=
                                         M.copy (|
@@ -11477,6 +11514,7 @@ Module collections.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (|
@@ -12249,6 +12287,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (|
@@ -12642,6 +12681,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (let~ small_next : Ty.apply (Ty.path "&") [] [ T ] :=
                                         M.copy (|
@@ -13754,10 +13794,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next :
+        Global Instance AssociatedFunction_next :
           forall (K : Ty.t),
-          M.IsAssociatedFunction (Self K) "next" (next K).
-        Smpl Add apply AssociatedFunction_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self K) "next" (next K).
+        Admitted.
+        Global Typeclasses Opaque next.
         
         (*
             pub fn prev(&mut self) -> Option<&'a K> {
@@ -13866,10 +13907,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_prev :
+        Global Instance AssociatedFunction_prev :
           forall (K : Ty.t),
-          M.IsAssociatedFunction (Self K) "prev" (prev K).
-        Smpl Add apply AssociatedFunction_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self K) "prev" (prev K).
+        Admitted.
+        Global Typeclasses Opaque prev.
         
         (*
             pub fn peek_next(&self) -> Option<&'a K> {
@@ -13978,10 +14020,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_next :
+        Global Instance AssociatedFunction_peek_next :
           forall (K : Ty.t),
-          M.IsAssociatedFunction (Self K) "peek_next" (peek_next K).
-        Smpl Add apply AssociatedFunction_peek_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self K) "peek_next" (peek_next K).
+        Admitted.
+        Global Typeclasses Opaque peek_next.
         
         (*
             pub fn peek_prev(&self) -> Option<&'a K> {
@@ -14090,10 +14133,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_prev :
+        Global Instance AssociatedFunction_peek_prev :
           forall (K : Ty.t),
-          M.IsAssociatedFunction (Self K) "peek_prev" (peek_prev K).
-        Smpl Add apply AssociatedFunction_peek_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self K) "peek_prev" (peek_prev K).
+        Admitted.
+        Global Typeclasses Opaque peek_prev.
       End Impl_alloc_collections_btree_set_Cursor_K.
       
       Module Impl_alloc_collections_btree_set_CursorMut_T_A.
@@ -14207,10 +14251,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next :
+        Global Instance AssociatedFunction_next :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "next" (next T A).
-        Smpl Add apply AssociatedFunction_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "next" (next T A).
+        Admitted.
+        Global Typeclasses Opaque next.
         
         (*
             pub fn prev(&mut self) -> Option<&T> {
@@ -14319,10 +14364,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_prev :
+        Global Instance AssociatedFunction_prev :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "prev" (prev T A).
-        Smpl Add apply AssociatedFunction_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "prev" (prev T A).
+        Admitted.
+        Global Typeclasses Opaque prev.
         
         (*
             pub fn peek_next(&mut self) -> Option<&T> {
@@ -14436,10 +14482,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_next :
+        Global Instance AssociatedFunction_peek_next :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
-        Smpl Add apply AssociatedFunction_peek_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "peek_next" (peek_next T A).
+        Admitted.
+        Global Typeclasses Opaque peek_next.
         
         (*
             pub fn peek_prev(&mut self) -> Option<&T> {
@@ -14553,10 +14600,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_prev :
+        Global Instance AssociatedFunction_peek_prev :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
-        Smpl Add apply AssociatedFunction_peek_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "peek_prev" (peek_prev T A).
+        Admitted.
+        Global Typeclasses Opaque peek_prev.
         
         (*
             pub fn as_cursor(&self) -> Cursor<'_, T> {
@@ -14607,10 +14655,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_as_cursor :
+        Global Instance AssociatedFunction_as_cursor :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
-        Smpl Add apply AssociatedFunction_as_cursor : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "as_cursor" (as_cursor T A).
+        Admitted.
+        Global Typeclasses Opaque as_cursor.
         
         (*
             pub unsafe fn with_mutable_key(self) -> CursorMutKey<'a, T, A> {
@@ -14660,10 +14709,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_with_mutable_key :
+        Global Instance AssociatedFunction_with_mutable_key :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "with_mutable_key" (with_mutable_key T A).
-        Smpl Add apply AssociatedFunction_with_mutable_key : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "with_mutable_key" (with_mutable_key T A).
+        Admitted.
+        Global Typeclasses Opaque with_mutable_key.
         (*
             pub unsafe fn insert_after_unchecked(&mut self, value: T) {
                 unsafe { self.inner.insert_after_unchecked(value, SetValZST) }
@@ -14708,10 +14758,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_after_unchecked :
+        Global Instance AssociatedFunction_insert_after_unchecked :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_after_unchecked" (insert_after_unchecked T A).
-        Smpl Add apply AssociatedFunction_insert_after_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self T A)
+            "insert_after_unchecked"
+            (insert_after_unchecked T A).
+        Admitted.
+        Global Typeclasses Opaque insert_after_unchecked.
         
         (*
             pub unsafe fn insert_before_unchecked(&mut self, value: T) {
@@ -14757,10 +14811,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_before_unchecked :
+        Global Instance AssociatedFunction_insert_before_unchecked :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_before_unchecked" (insert_before_unchecked T A).
-        Smpl Add apply AssociatedFunction_insert_before_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self T A)
+            "insert_before_unchecked"
+            (insert_before_unchecked T A).
+        Admitted.
+        Global Typeclasses Opaque insert_before_unchecked.
         
         (*
             pub fn insert_after(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -14809,10 +14867,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_after :
+        Global Instance AssociatedFunction_insert_after :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
-        Smpl Add apply AssociatedFunction_insert_after : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "insert_after" (insert_after T A).
+        Admitted.
+        Global Typeclasses Opaque insert_after.
         
         (*
             pub fn insert_before(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -14861,10 +14920,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_before :
+        Global Instance AssociatedFunction_insert_before :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
-        Smpl Add apply AssociatedFunction_insert_before : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "insert_before" (insert_before T A).
+        Admitted.
+        Global Typeclasses Opaque insert_before.
         
         (*
             pub fn remove_next(&mut self) -> Option<T> {
@@ -14952,10 +15012,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_remove_next :
+        Global Instance AssociatedFunction_remove_next :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "remove_next" (remove_next T A).
-        Smpl Add apply AssociatedFunction_remove_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "remove_next" (remove_next T A).
+        Admitted.
+        Global Typeclasses Opaque remove_next.
         
         (*
             pub fn remove_prev(&mut self) -> Option<T> {
@@ -15043,10 +15104,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_remove_prev :
+        Global Instance AssociatedFunction_remove_prev :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "remove_prev" (remove_prev T A).
-        Smpl Add apply AssociatedFunction_remove_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "remove_prev" (remove_prev T A).
+        Admitted.
+        Global Typeclasses Opaque remove_prev.
       End Impl_alloc_collections_btree_set_CursorMut_T_A.
       
       Module Impl_alloc_collections_btree_set_CursorMutKey_T_A.
@@ -15160,10 +15222,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next :
+        Global Instance AssociatedFunction_next :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "next" (next T A).
-        Smpl Add apply AssociatedFunction_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "next" (next T A).
+        Admitted.
+        Global Typeclasses Opaque next.
         
         (*
             pub fn prev(&mut self) -> Option<&mut T> {
@@ -15272,10 +15335,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_prev :
+        Global Instance AssociatedFunction_prev :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "prev" (prev T A).
-        Smpl Add apply AssociatedFunction_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "prev" (prev T A).
+        Admitted.
+        Global Typeclasses Opaque prev.
         
         (*
             pub fn peek_next(&mut self) -> Option<&mut T> {
@@ -15389,10 +15453,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_next :
+        Global Instance AssociatedFunction_peek_next :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
-        Smpl Add apply AssociatedFunction_peek_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "peek_next" (peek_next T A).
+        Admitted.
+        Global Typeclasses Opaque peek_next.
         
         (*
             pub fn peek_prev(&mut self) -> Option<&mut T> {
@@ -15506,10 +15571,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_prev :
+        Global Instance AssociatedFunction_peek_prev :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
-        Smpl Add apply AssociatedFunction_peek_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "peek_prev" (peek_prev T A).
+        Admitted.
+        Global Typeclasses Opaque peek_prev.
         
         (*
             pub fn as_cursor(&self) -> Cursor<'_, T> {
@@ -15560,10 +15626,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_as_cursor :
+        Global Instance AssociatedFunction_as_cursor :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
-        Smpl Add apply AssociatedFunction_as_cursor : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "as_cursor" (as_cursor T A).
+        Admitted.
+        Global Typeclasses Opaque as_cursor.
         (*
             pub unsafe fn insert_after_unchecked(&mut self, value: T) {
                 unsafe { self.inner.insert_after_unchecked(value, SetValZST) }
@@ -15608,10 +15675,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_after_unchecked :
+        Global Instance AssociatedFunction_insert_after_unchecked :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_after_unchecked" (insert_after_unchecked T A).
-        Smpl Add apply AssociatedFunction_insert_after_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self T A)
+            "insert_after_unchecked"
+            (insert_after_unchecked T A).
+        Admitted.
+        Global Typeclasses Opaque insert_after_unchecked.
         
         (*
             pub unsafe fn insert_before_unchecked(&mut self, value: T) {
@@ -15657,10 +15728,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_before_unchecked :
+        Global Instance AssociatedFunction_insert_before_unchecked :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_before_unchecked" (insert_before_unchecked T A).
-        Smpl Add apply AssociatedFunction_insert_before_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self T A)
+            "insert_before_unchecked"
+            (insert_before_unchecked T A).
+        Admitted.
+        Global Typeclasses Opaque insert_before_unchecked.
         
         (*
             pub fn insert_after(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -15709,10 +15784,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_after :
+        Global Instance AssociatedFunction_insert_after :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
-        Smpl Add apply AssociatedFunction_insert_after : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "insert_after" (insert_after T A).
+        Admitted.
+        Global Typeclasses Opaque insert_after.
         
         (*
             pub fn insert_before(&mut self, value: T) -> Result<(), UnorderedKeyError> {
@@ -15761,10 +15837,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_insert_before :
+        Global Instance AssociatedFunction_insert_before :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
-        Smpl Add apply AssociatedFunction_insert_before : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "insert_before" (insert_before T A).
+        Admitted.
+        Global Typeclasses Opaque insert_before.
         
         (*
             pub fn remove_next(&mut self) -> Option<T> {
@@ -15852,10 +15929,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_remove_next :
+        Global Instance AssociatedFunction_remove_next :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "remove_next" (remove_next T A).
-        Smpl Add apply AssociatedFunction_remove_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "remove_next" (remove_next T A).
+        Admitted.
+        Global Typeclasses Opaque remove_next.
         
         (*
             pub fn remove_prev(&mut self) -> Option<T> {
@@ -15943,10 +16021,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_remove_prev :
+        Global Instance AssociatedFunction_remove_prev :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "remove_prev" (remove_prev T A).
-        Smpl Add apply AssociatedFunction_remove_prev : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "remove_prev" (remove_prev T A).
+        Admitted.
+        Global Typeclasses Opaque remove_prev.
       End Impl_alloc_collections_btree_set_CursorMutKey_T_A.
       
       

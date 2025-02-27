@@ -102,10 +102,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction (Self I F) "new" (new I F).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I F) "new" (new I F).
+        Admitted.
+        Global Typeclasses Opaque new.
         (*
             fn do_inspect(&mut self, elt: Option<I::Item>) -> Option<I::Item> {
                 if let Some(ref a) = elt {
@@ -194,10 +195,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_do_inspect :
+        Global Instance AssociatedFunction_do_inspect :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction (Self I F) "do_inspect" (do_inspect I F).
-        Smpl Add apply AssociatedFunction_do_inspect : is_associated.
+          M.IsAssociatedFunction.Trait (Self I F) "do_inspect" (do_inspect I F).
+        Admitted.
+        Global Typeclasses Opaque do_inspect.
       End Impl_core_iter_adapters_inspect_Inspect_I_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_inspect_Inspect_I_F.
@@ -389,9 +391,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_inspect_fold :
-        M.IsFunction "core::iter::adapters::inspect::inspect_fold" inspect_fold.
-      Smpl Add apply Function_inspect_fold : is_function.
+      Global Instance Instance_IsFunction_inspect_fold :
+        M.IsFunction.Trait "core::iter::adapters::inspect::inspect_fold" inspect_fold.
+      Admitted.
+      Global Typeclasses Opaque inspect_fold.
       
       Module inspect_fold.
         (* Error OpaqueTy *)
@@ -491,9 +494,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_inspect_try_fold :
-        M.IsFunction "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
-      Smpl Add apply Function_inspect_try_fold : is_function.
+      Global Instance Instance_IsFunction_inspect_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
+      Admitted.
+      Global Typeclasses Opaque inspect_try_fold.
       
       Module inspect_try_fold.
         (* Error OpaqueTy *)

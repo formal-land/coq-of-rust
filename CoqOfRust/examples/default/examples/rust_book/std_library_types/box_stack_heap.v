@@ -143,8 +143,9 @@ Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_origin : M.IsFunction "box_stack_heap::origin" origin.
-Smpl Add apply Function_origin : is_function.
+Global Instance Instance_IsFunction_origin : M.IsFunction.Trait "box_stack_heap::origin" origin.
+Admitted.
+Global Typeclasses Opaque origin.
 
 (*
 fn boxed_origin() -> Box<Point> {
@@ -179,8 +180,10 @@ Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_boxed_origin : M.IsFunction "box_stack_heap::boxed_origin" boxed_origin.
-Smpl Add apply Function_boxed_origin : is_function.
+Global Instance Instance_IsFunction_boxed_origin :
+  M.IsFunction.Trait "box_stack_heap::boxed_origin" boxed_origin.
+Admitted.
+Global Typeclasses Opaque boxed_origin.
 
 (*
 fn main() {
@@ -954,5 +957,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "box_stack_heap::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "box_stack_heap::main" main.
+Admitted.
+Global Typeclasses Opaque main.

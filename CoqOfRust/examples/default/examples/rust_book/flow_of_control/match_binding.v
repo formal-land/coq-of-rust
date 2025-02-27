@@ -12,8 +12,9 @@ Definition age (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_age : M.IsFunction "match_binding::age" age.
-Smpl Add apply Function_age : is_function.
+Global Instance Instance_IsFunction_age : M.IsFunction.Trait "match_binding::age" age.
+Admitted.
+Global Typeclasses Opaque age.
 
 (*
 fn main() {
@@ -338,5 +339,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "match_binding::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "match_binding::main" main.
+Admitted.
+Global Typeclasses Opaque main.

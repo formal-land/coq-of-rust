@@ -44,8 +44,10 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_matching : M.IsFunction "constructor_as_function::matching" matching.
-Smpl Add apply Function_matching : is_function.
+Global Instance Instance_IsFunction_matching :
+  M.IsFunction.Trait "constructor_as_function::matching" matching.
+Admitted.
+Global Typeclasses Opaque matching.
 
 (* StructTuple
   {
@@ -338,5 +340,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "constructor_as_function::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "constructor_as_function::main" main.
+Admitted.
+Global Typeclasses Opaque main.

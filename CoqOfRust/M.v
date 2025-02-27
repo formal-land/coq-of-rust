@@ -302,7 +302,7 @@ Module LowM.
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | Let (ty : Ty.t) (e : t A) (k : A -> t A)
-  | Loop (body : t A) (k : A -> t A)
+  | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
@@ -320,8 +320,8 @@ Module LowM.
       CallClosure ty f args (fun v => let_ (k v) e2)
     | Let ty e k =>
       Let ty e (fun v => let_ (k v) e2)
-    | Loop body k =>
-      Loop body (fun v => let_ (k v) e2)
+    | Loop ty body k =>
+      Loop ty body (fun v => let_ (k v) e2)
     | Impossible message => Impossible message
     end.
 End LowM.
@@ -394,29 +394,51 @@ Parameter IsTraitInstance :
     (instance : Instance.t),
   Prop.
 
-Parameter IsFunction :
-  forall
-    (name : string)
+Module IsFunction.
+  Parameter t : forall
+    (trait_name : string)
     (function : PolymorphicFunction.t),
-  Prop.
+    Prop.
 
-Smpl Create is_function.
+  Class Trait
+    (trait_name : string)
+    (function : PolymorphicFunction.t) :
+    Prop := {
+    is_function : t trait_name function;
+  }.
+End IsFunction.
 
-Parameter IsAssociatedFunction :
-  forall
+Module IsAssociatedFunction.
+  Parameter t : forall
     (Self : Ty.t)
     (function_name : string)
     (function : PolymorphicFunction.t),
-  Prop.
+    Prop.
 
-Parameter IsAssociatedConstant :
-  forall
+  Class Trait
+    (Self : Ty.t)
+    (function_name : string)
+    (function : PolymorphicFunction.t) :
+    Prop := {
+    is_associated_function : t Self function_name function;
+  }.
+End IsAssociatedFunction.
+
+Module IsAssociatedConstant.
+  Parameter t : forall
     (Self : Ty.t)
     (constant_name : string)
     (constant : Value.t),
-  Prop.
+    Prop.
 
-Smpl Create is_associated.
+  Class Trait
+    (Self : Ty.t)
+    (constant_name : string)
+    (constant : Value.t) :
+    Prop := {
+    is_associated_constant : t Self constant_name constant;
+  }.
+End IsAssociatedConstant.
 
 Parameter IsProvidedMethod :
   forall
@@ -607,6 +629,7 @@ Definition panic (panic : Panic.t) : M :=
 
 Definition call_closure (ty : Ty.t) (f : Value.t) (args : list Value.t) : M :=
   LowM.CallClosure ty f args LowM.Pure.
+Arguments call_closure /.
 
 Definition impossible (message : string) : M :=
   LowM.Impossible message.
@@ -623,6 +646,7 @@ Arguments alloc /.
 
 Definition read (pointer : Value.t) : M :=
   call_primitive (Primitive.StateRead pointer).
+Arguments read /.
 
 Definition write (pointer : Value.t) (update : Value.t) : M :=
   call_primitive (Primitive.StateWrite pointer update).
@@ -704,8 +728,9 @@ Definition catch_break (body : M) : M :=
       end
     ).
 
-Definition loop (body : M) : M :=
+Definition loop (ty : Ty.t) (body : M) : M :=
   LowM.Loop
+    ty
     (catch_continue body)
     (fun result =>
       catch_break (LowM.Pure result)).
@@ -887,6 +912,6 @@ Fixpoint run_constant (constant : M) : Value.t :=
     run_constant (k value)
   | LowM.CallClosure _ _ _ _ => Value.Error "unexpected closure call"
   | LowM.Let _ _ _ => Value.Error "unexpected let"
-  | LowM.Loop _ _ => Value.Error "unexpected loop"
+  | LowM.Loop _ _ _ => Value.Error "unexpected loop"
   | LowM.Impossible _ => Value.Error "impossible"
   end.

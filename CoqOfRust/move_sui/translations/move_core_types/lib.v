@@ -438,6 +438,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -842,5 +843,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_fmt_list : M.IsFunction "move_core_types::fmt_list" fmt_list.
-Smpl Add apply Function_fmt_list : is_function.
+Global Instance Instance_IsFunction_fmt_list :
+  M.IsFunction.Trait "move_core_types::fmt_list" fmt_list.
+Admitted.
+Global Typeclasses Opaque fmt_list.

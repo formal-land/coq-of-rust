@@ -35,13 +35,13 @@ Module ruint.
     (* pub fn wrapping_add(self, rhs: Self) -> Self *)
     Parameter wrapping_add : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
 
-    Axiom wrapping_add_IsAssociated :
+    Global Instance wrapping_add_IsAssociated :
       forall (BITS LIMBS : Value.t),
-      IsAssociatedFunction
+      M.IsAssociatedFunction.Trait
         (Self_ty BITS LIMBS)
         "wrapping_add"
         (wrapping_add BITS LIMBS).
-    Smpl Add apply wrapping_add_IsAssociated : is_associated.
+    Admitted.
 
     Parameter run_wrapping_add :
       forall (BITS LIMBS : Usize.t),
@@ -51,13 +51,13 @@ Module ruint.
     (* pub const fn to_be_bytes<const BYTES: usize>(&self) -> [u8; BYTES] *)
     Parameter to_be_bytes : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
 
-    Axiom to_be_bytes_IsAssociated :
+    Global Instance to_be_bytes_IsAssociated :
       forall (BITS LIMBS : Value.t),
-      IsAssociatedFunction
+      M.IsAssociatedFunction.Trait
         (Self_ty BITS LIMBS)
         "to_be_bytes"
         (to_be_bytes BITS LIMBS).
-    Smpl Add apply to_be_bytes_IsAssociated : is_associated.
+    Admitted.
 
     Parameter run_to_be_bytes :
       forall (BITS LIMBS BYTES : Usize.t),
@@ -137,9 +137,9 @@ Module alloy_primitives.
           (* pub fn from_word(word: FixedBytes<32>) -> Self *)
           Parameter from_word : PolymorphicFunction.t.
 
-          Axiom AssociatedFunction_from_word :
-            M.IsAssociatedFunction (Φ Self) "from_word" from_word.
-          Smpl Add apply AssociatedFunction_from_word : is_associated.
+          Global Instance AssociatedFunction_from_word :
+            M.IsAssociatedFunction.Trait (Φ Self) "from_word" from_word.
+          Admitted.
 
           Parameter run_from_word : forall (word : fixed.FixedBytes.t {| Integer.value := 32 |}),
             {{ from_word [] [] [ φ word ] 🔽 Address.t }}.

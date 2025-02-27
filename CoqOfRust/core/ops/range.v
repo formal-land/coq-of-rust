@@ -958,10 +958,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_contains :
+      Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
-      Smpl Add apply AssociatedFunction_contains : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      Admitted.
+      Global Typeclasses Opaque contains.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -1001,10 +1002,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty :
+      Global Instance AssociatedFunction_is_empty :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "is_empty" (is_empty Idx).
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "is_empty" (is_empty Idx).
+      Admitted.
+      Global Typeclasses Opaque is_empty.
     End Impl_core_ops_range_Range_Idx.
     
     (* StructRecord
@@ -1519,10 +1521,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_contains :
+      Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
-      Smpl Add apply AssociatedFunction_contains : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      Admitted.
+      Global Typeclasses Opaque contains.
     End Impl_core_ops_range_RangeFrom_Idx.
     
     (* StructRecord
@@ -2051,10 +2054,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_contains :
+      Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
-      Smpl Add apply AssociatedFunction_contains : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      Admitted.
+      Global Typeclasses Opaque contains.
     End Impl_core_ops_range_RangeTo_Idx.
     
     (* StructRecord
@@ -2439,10 +2443,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "new" (new Idx).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "new" (new Idx).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn start(&self) -> &Idx {
@@ -2471,10 +2476,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_start :
+      Global Instance AssociatedFunction_start :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "start" (start Idx).
-      Smpl Add apply AssociatedFunction_start : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "start" (start Idx).
+      Admitted.
+      Global Typeclasses Opaque start.
       
       (*
           pub const fn end(&self) -> &Idx {
@@ -2503,10 +2509,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_end_ :
+      Global Instance AssociatedFunction_end_ :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "end_" (end_ Idx).
-      Smpl Add apply AssociatedFunction_end_ : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "end_" (end_ Idx).
+      Admitted.
+      Global Typeclasses Opaque end_.
       
       (*
           pub const fn into_inner(self) -> (Idx, Idx) {
@@ -2544,10 +2551,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner :
+      Global Instance AssociatedFunction_into_inner :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "into_inner" (into_inner Idx).
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "into_inner" (into_inner Idx).
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       (*
           pub fn contains<U>(&self, item: &U) -> bool
           where
@@ -2583,10 +2591,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_contains :
+      Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
-      Smpl Add apply AssociatedFunction_contains : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      Admitted.
+      Global Typeclasses Opaque contains.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -2644,10 +2653,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty :
+      Global Instance AssociatedFunction_is_empty :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "is_empty" (is_empty Idx).
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "is_empty" (is_empty Idx).
+      Admitted.
+      Global Typeclasses Opaque is_empty.
     End Impl_core_ops_range_RangeInclusive_Idx.
     
     Module Impl_core_ops_range_RangeInclusive_usize.
@@ -2719,9 +2729,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_slice_range :
-        M.IsAssociatedFunction Self "into_slice_range" into_slice_range.
-      Smpl Add apply AssociatedFunction_into_slice_range : is_associated.
+      Global Instance AssociatedFunction_into_slice_range :
+        M.IsAssociatedFunction.Trait Self "into_slice_range" into_slice_range.
+      Admitted.
+      Global Typeclasses Opaque into_slice_range.
     End Impl_core_ops_range_RangeInclusive_usize.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeInclusive_Idx.
@@ -3792,10 +3803,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_contains :
+      Global Instance AssociatedFunction_contains :
         forall (Idx : Ty.t),
-        M.IsAssociatedFunction (Self Idx) "contains" (contains Idx).
-      Smpl Add apply AssociatedFunction_contains : is_associated.
+        M.IsAssociatedFunction.Trait (Self Idx) "contains" (contains Idx).
+      Admitted.
+      Global Typeclasses Opaque contains.
     End Impl_core_ops_range_RangeToInclusive_Idx.
     
     (*
@@ -4429,10 +4441,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ref :
+      Global Instance AssociatedFunction_as_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
-      Smpl Add apply AssociatedFunction_as_ref : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+      Admitted.
+      Global Typeclasses Opaque as_ref.
       
       (*
           pub fn as_mut(&mut self) -> Bound<&mut T> {
@@ -4491,10 +4504,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_mut :
+      Global Instance AssociatedFunction_as_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
-      Smpl Add apply AssociatedFunction_as_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_mut" (as_mut T).
+      Admitted.
+      Global Typeclasses Opaque as_mut.
       
       (*
           pub fn map<U, F: FnOnce(T) -> U>(self, f: F) -> Bound<U> {
@@ -4582,10 +4596,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map :
+      Global Instance AssociatedFunction_map :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "map" (map T).
-      Smpl Add apply AssociatedFunction_map : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+      Admitted.
+      Global Typeclasses Opaque map.
     End Impl_core_ops_range_Bound_T.
     
     Module Impl_core_ops_range_Bound_ref__T.
@@ -4677,10 +4692,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_cloned :
+      Global Instance AssociatedFunction_cloned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "cloned" (cloned T).
-      Smpl Add apply AssociatedFunction_cloned : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "cloned" (cloned T).
+      Admitted.
+      Global Typeclasses Opaque cloned.
     End Impl_core_ops_range_Bound_ref__T.
     
     (* Trait *)

@@ -518,9 +518,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_fast_path :
-          M.IsAssociatedFunction Self "is_fast_path" is_fast_path.
-        Smpl Add apply AssociatedFunction_is_fast_path : is_associated.
+        Global Instance AssociatedFunction_is_fast_path :
+          M.IsAssociatedFunction.Trait Self "is_fast_path" is_fast_path.
+        Admitted.
+        Global Typeclasses Opaque is_fast_path.
         
         (*
             pub fn try_fast_path<F: RawFloat>(&self) -> Option<F> {
@@ -1048,9 +1049,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_try_fast_path :
-          M.IsAssociatedFunction Self "try_fast_path" try_fast_path.
-        Smpl Add apply AssociatedFunction_try_fast_path : is_associated.
+        Global Instance AssociatedFunction_try_fast_path :
+          M.IsAssociatedFunction.Trait Self "try_fast_path" try_fast_path.
+        Admitted.
+        Global Typeclasses Opaque try_fast_path.
       End Impl_core_num_dec2flt_number_Number.
     End number.
   End dec2flt.

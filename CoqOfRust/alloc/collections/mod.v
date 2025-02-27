@@ -257,8 +257,9 @@ Module collections.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_kind : M.IsAssociatedFunction Self "kind" kind.
-    Smpl Add apply AssociatedFunction_kind : is_associated.
+    Global Instance AssociatedFunction_kind : M.IsAssociatedFunction.Trait Self "kind" kind.
+    Admitted.
+    Global Typeclasses Opaque kind.
   End Impl_alloc_collections_TryReserveError.
   
   (*

@@ -1512,8 +1512,10 @@ Module hash.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u8to64_le : M.IsFunction "core::hash::sip::u8to64_le" u8to64_le.
-    Smpl Add apply Function_u8to64_le : is_function.
+    Global Instance Instance_IsFunction_u8to64_le :
+      M.IsFunction.Trait "core::hash::sip::u8to64_le" u8to64_le.
+    Admitted.
+    Global Typeclasses Opaque u8to64_le.
     
     Module Impl_core_hash_sip_SipHasher.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
@@ -1540,8 +1542,9 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn new_with_keys(key0: u64, key1: u64) -> SipHasher {
@@ -1582,9 +1585,10 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_with_keys :
-        M.IsAssociatedFunction Self "new_with_keys" new_with_keys.
-      Smpl Add apply AssociatedFunction_new_with_keys : is_associated.
+      Global Instance AssociatedFunction_new_with_keys :
+        M.IsAssociatedFunction.Trait Self "new_with_keys" new_with_keys.
+      Admitted.
+      Global Typeclasses Opaque new_with_keys.
     End Impl_core_hash_sip_SipHasher.
     
     Module Impl_core_hash_sip_SipHasher13.
@@ -1612,8 +1616,9 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn new_with_keys(key0: u64, key1: u64) -> SipHasher13 {
@@ -1650,9 +1655,10 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_with_keys :
-        M.IsAssociatedFunction Self "new_with_keys" new_with_keys.
-      Smpl Add apply AssociatedFunction_new_with_keys : is_associated.
+      Global Instance AssociatedFunction_new_with_keys :
+        M.IsAssociatedFunction.Trait Self "new_with_keys" new_with_keys.
+      Admitted.
+      Global Typeclasses Opaque new_with_keys.
     End Impl_core_hash_sip_SipHasher13.
     
     Module Impl_core_hash_sip_Hasher_S.
@@ -1726,10 +1732,11 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_with_keys :
+      Global Instance AssociatedFunction_new_with_keys :
         forall (S : Ty.t),
-        M.IsAssociatedFunction (Self S) "new_with_keys" (new_with_keys S).
-      Smpl Add apply AssociatedFunction_new_with_keys : is_associated.
+        M.IsAssociatedFunction.Trait (Self S) "new_with_keys" (new_with_keys S).
+      Admitted.
+      Global Typeclasses Opaque new_with_keys.
       
       (*
           const fn reset(&mut self) {
@@ -1867,10 +1874,11 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_reset :
+      Global Instance AssociatedFunction_reset :
         forall (S : Ty.t),
-        M.IsAssociatedFunction (Self S) "reset" (reset S).
-      Smpl Add apply AssociatedFunction_reset : is_associated.
+        M.IsAssociatedFunction.Trait (Self S) "reset" (reset S).
+      Admitted.
+      Global Typeclasses Opaque reset.
     End Impl_core_hash_sip_Hasher_S.
     
     Module Impl_core_hash_Hasher_for_core_hash_sip_SipHasher.
@@ -2482,6 +2490,7 @@ Module hash.
                   let~ i : Ty.path "usize" := M.copy (| needed |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),

@@ -347,8 +347,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_ModuleHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_ModuleHandleIndex.
@@ -931,8 +932,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_StructHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_StructHandleIndex.
@@ -1515,8 +1517,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FunctionHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FunctionHandleIndex.
@@ -2099,8 +2102,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FieldHandleIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FieldHandleIndex.
@@ -2693,8 +2697,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_StructDefInstantiationIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_StructDefInstantiationIndex.
@@ -3282,8 +3287,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FunctionInstantiationIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FunctionInstantiationIndex.
@@ -3868,8 +3874,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FieldInstantiationIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FieldInstantiationIndex.
@@ -4452,8 +4459,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_IdentifierIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_IdentifierIndex.
@@ -5036,8 +5044,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_AddressIdentifierIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_AddressIdentifierIndex.
@@ -5620,8 +5629,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_ConstantPoolIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_ConstantPoolIndex.
@@ -6202,8 +6212,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_SignatureIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_SignatureIndex.
@@ -6786,8 +6797,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_StructDefinitionIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_StructDefinitionIndex.
@@ -7370,8 +7382,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_file_format_FunctionDefinitionIndex.
   
   Module Impl_core_fmt_Display_for_move_binary_format_file_format_FunctionDefinitionIndex.
@@ -7684,9 +7697,10 @@ Module file_format.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_self_module_name :
-    M.IsFunction "move_binary_format::file_format::self_module_name" self_module_name.
-  Smpl Add apply Function_self_module_name : is_function.
+  Global Instance Instance_IsFunction_self_module_name :
+    M.IsFunction.Trait "move_binary_format::file_format::self_module_name" self_module_name.
+  Admitted.
+  Global Typeclasses Opaque self_module_name.
   
   Definition value_NO_TYPE_ARGUMENTS : Value.t :=
     M.run_constant
@@ -9642,9 +9656,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_type_param_constraints :
-      M.IsAssociatedFunction Self "type_param_constraints" type_param_constraints.
-    Smpl Add apply AssociatedFunction_type_param_constraints : is_associated.
+    Global Instance AssociatedFunction_type_param_constraints :
+      M.IsAssociatedFunction.Trait Self "type_param_constraints" type_param_constraints.
+    Admitted.
+    Global Typeclasses Opaque type_param_constraints.
   End Impl_move_binary_format_file_format_StructHandle.
   
   (* StructRecord
@@ -13986,9 +14001,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_declared_field_count :
-      M.IsAssociatedFunction Self "declared_field_count" declared_field_count.
-    Smpl Add apply AssociatedFunction_declared_field_count : is_associated.
+    Global Instance AssociatedFunction_declared_field_count :
+      M.IsAssociatedFunction.Trait Self "declared_field_count" declared_field_count.
+    Admitted.
+    Global Typeclasses Opaque declared_field_count.
     
     (*
         pub fn field(&self, offset: usize) -> Option<&FieldDefinition> {
@@ -14100,8 +14116,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
-    Smpl Add apply AssociatedFunction_field : is_associated.
+    Global Instance AssociatedFunction_field : M.IsAssociatedFunction.Trait Self "field" field.
+    Admitted.
+    Global Typeclasses Opaque field.
     
     (*
         pub fn fields(&self) -> Option<&[FieldDefinition]> {
@@ -14193,8 +14210,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_fields : M.IsAssociatedFunction Self "fields" fields.
-    Smpl Add apply AssociatedFunction_fields : is_associated.
+    Global Instance AssociatedFunction_fields : M.IsAssociatedFunction.Trait Self "fields" fields.
+    Admitted.
+    Global Typeclasses Opaque fields.
   End Impl_move_binary_format_file_format_StructDefinition.
   
   (* StructRecord
@@ -14900,9 +14918,10 @@ Module file_format.
     Definition value_DEPRECATED_SCRIPT : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
     
-    Axiom AssociatedConstant_value_DEPRECATED_SCRIPT :
-      M.IsAssociatedConstant Self "value_DEPRECATED_SCRIPT" value_DEPRECATED_SCRIPT.
-    Smpl Add apply AssociatedConstant_value_DEPRECATED_SCRIPT : is_associated.
+    Global Instance AssociatedConstant_value_DEPRECATED_SCRIPT :
+      M.IsAssociatedConstant.Trait Self "value_DEPRECATED_SCRIPT" value_DEPRECATED_SCRIPT.
+    Admitted.
+    Global Typeclasses Opaque value_DEPRECATED_SCRIPT.
   End Impl_move_binary_format_file_format_Visibility.
   
   Module Impl_core_convert_TryFrom_u8_for_move_binary_format_file_format_Visibility.
@@ -15768,33 +15787,40 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_native : M.IsAssociatedFunction Self "is_native" is_native.
-    Smpl Add apply AssociatedFunction_is_native : is_associated.
+    Global Instance AssociatedFunction_is_native :
+      M.IsAssociatedFunction.Trait Self "is_native" is_native.
+    Admitted.
+    Global Typeclasses Opaque is_native.
     
     (*     pub const DEPRECATED_PUBLIC_BIT: u8 = 0b01; *)
     (* Ty.path "u8" *)
     Definition value_DEPRECATED_PUBLIC_BIT : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
     
-    Axiom AssociatedConstant_value_DEPRECATED_PUBLIC_BIT :
-      M.IsAssociatedConstant Self "value_DEPRECATED_PUBLIC_BIT" value_DEPRECATED_PUBLIC_BIT.
-    Smpl Add apply AssociatedConstant_value_DEPRECATED_PUBLIC_BIT : is_associated.
+    Global Instance AssociatedConstant_value_DEPRECATED_PUBLIC_BIT :
+      M.IsAssociatedConstant.Trait Self "value_DEPRECATED_PUBLIC_BIT" value_DEPRECATED_PUBLIC_BIT.
+    Admitted.
+    Global Typeclasses Opaque value_DEPRECATED_PUBLIC_BIT.
     
     (*     pub const NATIVE: u8 = 0b10; *)
     (* Ty.path "u8" *)
     Definition value_NATIVE : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
     
-    Axiom AssociatedConstant_value_NATIVE : M.IsAssociatedConstant Self "value_NATIVE" value_NATIVE.
-    Smpl Add apply AssociatedConstant_value_NATIVE : is_associated.
+    Global Instance AssociatedConstant_value_NATIVE :
+      M.IsAssociatedConstant.Trait Self "value_NATIVE" value_NATIVE.
+    Admitted.
+    Global Typeclasses Opaque value_NATIVE.
     
     (*     pub const ENTRY: u8 = 0b100; *)
     (* Ty.path "u8" *)
     Definition value_ENTRY : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
     
-    Axiom AssociatedConstant_value_ENTRY : M.IsAssociatedConstant Self "value_ENTRY" value_ENTRY.
-    Smpl Add apply AssociatedConstant_value_ENTRY : is_associated.
+    Global Instance AssociatedConstant_value_ENTRY :
+      M.IsAssociatedConstant.Trait Self "value_ENTRY" value_ENTRY.
+    Admitted.
+    Global Typeclasses Opaque value_ENTRY.
   End Impl_move_binary_format_file_format_FunctionDefinition.
   
   (* StructTuple
@@ -17221,8 +17247,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-    Smpl Add apply AssociatedFunction_len : is_associated.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Admitted.
+    Global Typeclasses Opaque len.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -17262,8 +17289,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-    Smpl Add apply AssociatedFunction_is_empty : is_associated.
+    Global Instance AssociatedFunction_is_empty :
+      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Admitted.
+    Global Typeclasses Opaque is_empty.
   End Impl_move_binary_format_file_format_Signature.
   
   Axiom TypeParameterIndex :
@@ -17794,8 +17823,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
-    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
+    Global Instance AssociatedFunction_from_u8 :
+      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Admitted.
+    Global Typeclasses Opaque from_u8.
     
     (*
         pub fn requires(self) -> Self {
@@ -17853,8 +17884,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_requires : M.IsAssociatedFunction Self "requires" requires.
-    Smpl Add apply AssociatedFunction_requires : is_associated.
+    Global Instance AssociatedFunction_requires :
+      M.IsAssociatedFunction.Trait Self "requires" requires.
+    Admitted.
+    Global Typeclasses Opaque requires.
     
     (*
         pub fn required_by(self) -> AbilitySet {
@@ -17970,8 +18003,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_required_by : M.IsAssociatedFunction Self "required_by" required_by.
-    Smpl Add apply AssociatedFunction_required_by : is_associated.
+    Global Instance AssociatedFunction_required_by :
+      M.IsAssociatedFunction.Trait Self "required_by" required_by.
+    Admitted.
+    Global Typeclasses Opaque required_by.
   End Impl_move_binary_format_file_format_Ability.
   
   (* StructTuple
@@ -18277,8 +18312,10 @@ Module file_format.
               [ Value.Integer IntegerKind.U8 0 ]
           |))).
     
-    Axiom AssociatedConstant_value_EMPTY : M.IsAssociatedConstant Self "value_EMPTY" value_EMPTY.
-    Smpl Add apply AssociatedConstant_value_EMPTY : is_associated.
+    Global Instance AssociatedConstant_value_EMPTY :
+      M.IsAssociatedConstant.Trait Self "value_EMPTY" value_EMPTY.
+    Admitted.
+    Global Typeclasses Opaque value_EMPTY.
     
     (*
         pub const PRIMITIVES: AbilitySet =
@@ -18317,9 +18354,10 @@ Module file_format.
               ]
           |))).
     
-    Axiom AssociatedConstant_value_PRIMITIVES :
-      M.IsAssociatedConstant Self "value_PRIMITIVES" value_PRIMITIVES.
-    Smpl Add apply AssociatedConstant_value_PRIMITIVES : is_associated.
+    Global Instance AssociatedConstant_value_PRIMITIVES :
+      M.IsAssociatedConstant.Trait Self "value_PRIMITIVES" value_PRIMITIVES.
+    Admitted.
+    Global Typeclasses Opaque value_PRIMITIVES.
     
     (*     pub const REFERENCES: AbilitySet = Self((Ability::Copy as u8) | (Ability::Drop as u8)); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
@@ -18346,9 +18384,10 @@ Module file_format.
               ]
           |))).
     
-    Axiom AssociatedConstant_value_REFERENCES :
-      M.IsAssociatedConstant Self "value_REFERENCES" value_REFERENCES.
-    Smpl Add apply AssociatedConstant_value_REFERENCES : is_associated.
+    Global Instance AssociatedConstant_value_REFERENCES :
+      M.IsAssociatedConstant.Trait Self "value_REFERENCES" value_REFERENCES.
+    Admitted.
+    Global Typeclasses Opaque value_REFERENCES.
     
     (*     pub const SIGNER: AbilitySet = Self(Ability::Drop as u8); *)
     (* Ty.path "move_binary_format::file_format::AbilitySet" *)
@@ -18368,8 +18407,10 @@ Module file_format.
               ]
           |))).
     
-    Axiom AssociatedConstant_value_SIGNER : M.IsAssociatedConstant Self "value_SIGNER" value_SIGNER.
-    Smpl Add apply AssociatedConstant_value_SIGNER : is_associated.
+    Global Instance AssociatedConstant_value_SIGNER :
+      M.IsAssociatedConstant.Trait Self "value_SIGNER" value_SIGNER.
+    Admitted.
+    Global Typeclasses Opaque value_SIGNER.
     
     (*
         pub const VECTOR: AbilitySet =
@@ -18408,8 +18449,10 @@ Module file_format.
               ]
           |))).
     
-    Axiom AssociatedConstant_value_VECTOR : M.IsAssociatedConstant Self "value_VECTOR" value_VECTOR.
-    Smpl Add apply AssociatedConstant_value_VECTOR : is_associated.
+    Global Instance AssociatedConstant_value_VECTOR :
+      M.IsAssociatedConstant.Trait Self "value_VECTOR" value_VECTOR.
+    Admitted.
+    Global Typeclasses Opaque value_VECTOR.
     
     (*
         pub const ALL: Self = Self(
@@ -18461,8 +18504,10 @@ Module file_format.
               ]
           |))).
     
-    Axiom AssociatedConstant_value_ALL : M.IsAssociatedConstant Self "value_ALL" value_ALL.
-    Smpl Add apply AssociatedConstant_value_ALL : is_associated.
+    Global Instance AssociatedConstant_value_ALL :
+      M.IsAssociatedConstant.Trait Self "value_ALL" value_ALL.
+    Admitted.
+    Global Typeclasses Opaque value_ALL.
     
     (*
         pub fn singleton(ability: Ability) -> Self {
@@ -18480,8 +18525,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_singleton : M.IsAssociatedFunction Self "singleton" singleton.
-    Smpl Add apply AssociatedFunction_singleton : is_associated.
+    Global Instance AssociatedFunction_singleton :
+      M.IsAssociatedFunction.Trait Self "singleton" singleton.
+    Admitted.
+    Global Typeclasses Opaque singleton.
     
     (*
         pub fn has_ability(self, ability: Ability) -> bool {
@@ -18515,8 +18562,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_has_ability : M.IsAssociatedFunction Self "has_ability" has_ability.
-    Smpl Add apply AssociatedFunction_has_ability : is_associated.
+    Global Instance AssociatedFunction_has_ability :
+      M.IsAssociatedFunction.Trait Self "has_ability" has_ability.
+    Admitted.
+    Global Typeclasses Opaque has_ability.
     
     (*
         pub fn has_copy(self) -> bool {
@@ -18544,8 +18593,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_has_copy : M.IsAssociatedFunction Self "has_copy" has_copy.
-    Smpl Add apply AssociatedFunction_has_copy : is_associated.
+    Global Instance AssociatedFunction_has_copy :
+      M.IsAssociatedFunction.Trait Self "has_copy" has_copy.
+    Admitted.
+    Global Typeclasses Opaque has_copy.
     
     (*
         pub fn has_drop(self) -> bool {
@@ -18573,8 +18624,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_has_drop : M.IsAssociatedFunction Self "has_drop" has_drop.
-    Smpl Add apply AssociatedFunction_has_drop : is_associated.
+    Global Instance AssociatedFunction_has_drop :
+      M.IsAssociatedFunction.Trait Self "has_drop" has_drop.
+    Admitted.
+    Global Typeclasses Opaque has_drop.
     
     (*
         pub fn has_store(self) -> bool {
@@ -18602,8 +18655,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_has_store : M.IsAssociatedFunction Self "has_store" has_store.
-    Smpl Add apply AssociatedFunction_has_store : is_associated.
+    Global Instance AssociatedFunction_has_store :
+      M.IsAssociatedFunction.Trait Self "has_store" has_store.
+    Admitted.
+    Global Typeclasses Opaque has_store.
     
     (*
         pub fn has_key(self) -> bool {
@@ -18631,8 +18686,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_has_key : M.IsAssociatedFunction Self "has_key" has_key.
-    Smpl Add apply AssociatedFunction_has_key : is_associated.
+    Global Instance AssociatedFunction_has_key :
+      M.IsAssociatedFunction.Trait Self "has_key" has_key.
+    Admitted.
+    Global Typeclasses Opaque has_key.
     
     (*
         pub fn remove(self, ability: Ability) -> Self {
@@ -18661,8 +18718,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_remove : M.IsAssociatedFunction Self "remove" remove.
-    Smpl Add apply AssociatedFunction_remove : is_associated.
+    Global Instance AssociatedFunction_remove : M.IsAssociatedFunction.Trait Self "remove" remove.
+    Admitted.
+    Global Typeclasses Opaque remove.
     
     (*
         pub fn intersect(self, other: Self) -> Self {
@@ -18697,8 +18755,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_intersect : M.IsAssociatedFunction Self "intersect" intersect.
-    Smpl Add apply AssociatedFunction_intersect : is_associated.
+    Global Instance AssociatedFunction_intersect :
+      M.IsAssociatedFunction.Trait Self "intersect" intersect.
+    Admitted.
+    Global Typeclasses Opaque intersect.
     
     (*
         pub fn union(self, other: Self) -> Self {
@@ -18733,8 +18793,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_union : M.IsAssociatedFunction Self "union" union.
-    Smpl Add apply AssociatedFunction_union : is_associated.
+    Global Instance AssociatedFunction_union : M.IsAssociatedFunction.Trait Self "union" union.
+    Admitted.
+    Global Typeclasses Opaque union.
     
     (*
         fn is_subset_bits(sub: u8, sup: u8) -> bool {
@@ -18751,9 +18812,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_subset_bits :
-      M.IsAssociatedFunction Self "is_subset_bits" is_subset_bits.
-    Smpl Add apply AssociatedFunction_is_subset_bits : is_associated.
+    Global Instance AssociatedFunction_is_subset_bits :
+      M.IsAssociatedFunction.Trait Self "is_subset_bits" is_subset_bits.
+    Admitted.
+    Global Typeclasses Opaque is_subset_bits.
     
     (*
         pub fn is_subset(self, other: Self) -> bool {
@@ -18794,8 +18856,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_subset : M.IsAssociatedFunction Self "is_subset" is_subset.
-    Smpl Add apply AssociatedFunction_is_subset : is_associated.
+    Global Instance AssociatedFunction_is_subset :
+      M.IsAssociatedFunction.Trait Self "is_subset" is_subset.
+    Admitted.
+    Global Typeclasses Opaque is_subset.
     
     (*
         pub fn polymorphic_abilities<I1, I2>(
@@ -19601,9 +19665,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_polymorphic_abilities :
-      M.IsAssociatedFunction Self "polymorphic_abilities" polymorphic_abilities.
-    Smpl Add apply AssociatedFunction_polymorphic_abilities : is_associated.
+    Global Instance AssociatedFunction_polymorphic_abilities :
+      M.IsAssociatedFunction.Trait Self "polymorphic_abilities" polymorphic_abilities.
+    Admitted.
+    Global Typeclasses Opaque polymorphic_abilities.
     
     (*
         pub fn from_u8(byte: u8) -> Option<Self> {
@@ -19670,8 +19735,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
-    Smpl Add apply AssociatedFunction_from_u8 : is_associated.
+    Global Instance AssociatedFunction_from_u8 :
+      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Admitted.
+    Global Typeclasses Opaque from_u8.
     
     (*
         pub fn into_u8(self) -> u8 {
@@ -19693,8 +19760,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_u8 : M.IsAssociatedFunction Self "into_u8" into_u8.
-    Smpl Add apply AssociatedFunction_into_u8 : is_associated.
+    Global Instance AssociatedFunction_into_u8 :
+      M.IsAssociatedFunction.Trait Self "into_u8" into_u8.
+    Admitted.
+    Global Typeclasses Opaque into_u8.
   End Impl_move_binary_format_file_format_AbilitySet.
   
   Module Impl_core_ops_bit_BitOr_move_binary_format_file_format_Ability_for_move_binary_format_file_format_AbilitySet.
@@ -19826,6 +19895,7 @@ Module file_format.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -20184,6 +20254,7 @@ Module file_format.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -25122,9 +25193,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signature_token_kind :
-      M.IsAssociatedFunction Self "signature_token_kind" signature_token_kind.
-    Smpl Add apply AssociatedFunction_signature_token_kind : is_associated.
+    Global Instance AssociatedFunction_signature_token_kind :
+      M.IsAssociatedFunction.Trait Self "signature_token_kind" signature_token_kind.
+    Admitted.
+    Global Typeclasses Opaque signature_token_kind.
     
     (*
         pub fn is_integer(&self) -> bool {
@@ -25325,8 +25397,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_integer : M.IsAssociatedFunction Self "is_integer" is_integer.
-    Smpl Add apply AssociatedFunction_is_integer : is_associated.
+    Global Instance AssociatedFunction_is_integer :
+      M.IsAssociatedFunction.Trait Self "is_integer" is_integer.
+    Admitted.
+    Global Typeclasses Opaque is_integer.
     
     (*
         pub fn is_reference(&self) -> bool {
@@ -25384,8 +25458,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_reference : M.IsAssociatedFunction Self "is_reference" is_reference.
-    Smpl Add apply AssociatedFunction_is_reference : is_associated.
+    Global Instance AssociatedFunction_is_reference :
+      M.IsAssociatedFunction.Trait Self "is_reference" is_reference.
+    Admitted.
+    Global Typeclasses Opaque is_reference.
     
     (*
         pub fn is_mutable_reference(&self) -> bool {
@@ -25420,9 +25496,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_mutable_reference :
-      M.IsAssociatedFunction Self "is_mutable_reference" is_mutable_reference.
-    Smpl Add apply AssociatedFunction_is_mutable_reference : is_associated.
+    Global Instance AssociatedFunction_is_mutable_reference :
+      M.IsAssociatedFunction.Trait Self "is_mutable_reference" is_mutable_reference.
+    Admitted.
+    Global Typeclasses Opaque is_mutable_reference.
     
     (*
         pub fn is_signer(&self) -> bool {
@@ -25456,8 +25533,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_signer : M.IsAssociatedFunction Self "is_signer" is_signer.
-    Smpl Add apply AssociatedFunction_is_signer : is_associated.
+    Global Instance AssociatedFunction_is_signer :
+      M.IsAssociatedFunction.Trait Self "is_signer" is_signer.
+    Admitted.
+    Global Typeclasses Opaque is_signer.
     
     (*
         pub fn is_valid_for_constant(&self) -> bool {
@@ -25674,9 +25753,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_valid_for_constant :
-      M.IsAssociatedFunction Self "is_valid_for_constant" is_valid_for_constant.
-    Smpl Add apply AssociatedFunction_is_valid_for_constant : is_associated.
+    Global Instance AssociatedFunction_is_valid_for_constant :
+      M.IsAssociatedFunction.Trait Self "is_valid_for_constant" is_valid_for_constant.
+    Admitted.
+    Global Typeclasses Opaque is_valid_for_constant.
     
     (*
         pub fn debug_set_sh_idx(&mut self, sh_idx: StructHandleIndex) {
@@ -25962,9 +26042,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_set_sh_idx :
-      M.IsAssociatedFunction Self "debug_set_sh_idx" debug_set_sh_idx.
-    Smpl Add apply AssociatedFunction_debug_set_sh_idx : is_associated.
+    Global Instance AssociatedFunction_debug_set_sh_idx :
+      M.IsAssociatedFunction.Trait Self "debug_set_sh_idx" debug_set_sh_idx.
+    Admitted.
+    Global Typeclasses Opaque debug_set_sh_idx.
     
     (*
         pub fn preorder_traversal(&self) -> SignatureTokenPreorderTraversalIter<'_> {
@@ -26057,9 +26138,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_preorder_traversal :
-      M.IsAssociatedFunction Self "preorder_traversal" preorder_traversal.
-    Smpl Add apply AssociatedFunction_preorder_traversal : is_associated.
+    Global Instance AssociatedFunction_preorder_traversal :
+      M.IsAssociatedFunction.Trait Self "preorder_traversal" preorder_traversal.
+    Admitted.
+    Global Typeclasses Opaque preorder_traversal.
     
     (*
         pub fn preorder_traversal_with_depth(
@@ -26186,9 +26268,13 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_preorder_traversal_with_depth :
-      M.IsAssociatedFunction Self "preorder_traversal_with_depth" preorder_traversal_with_depth.
-    Smpl Add apply AssociatedFunction_preorder_traversal_with_depth : is_associated.
+    Global Instance AssociatedFunction_preorder_traversal_with_depth :
+      M.IsAssociatedFunction.Trait
+        Self
+        "preorder_traversal_with_depth"
+        preorder_traversal_with_depth.
+    Admitted.
+    Global Typeclasses Opaque preorder_traversal_with_depth.
   End Impl_move_binary_format_file_format_SignatureToken.
   
   (* StructRecord
@@ -30637,9 +30723,10 @@ Module file_format.
     Definition value_VARIANT_COUNT : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 77 |))).
     
-    Axiom AssociatedConstant_value_VARIANT_COUNT :
-      M.IsAssociatedConstant Self "value_VARIANT_COUNT" value_VARIANT_COUNT.
-    Smpl Add apply AssociatedConstant_value_VARIANT_COUNT : is_associated.
+    Global Instance AssociatedConstant_value_VARIANT_COUNT :
+      M.IsAssociatedConstant.Trait Self "value_VARIANT_COUNT" value_VARIANT_COUNT.
+    Admitted.
+    Global Typeclasses Opaque value_VARIANT_COUNT.
     (*
         pub fn is_unconditional_branch(&self) -> bool {
             matches!(self, Bytecode::Ret | Bytecode::Abort | Bytecode::Branch(_))
@@ -30702,9 +30789,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_unconditional_branch :
-      M.IsAssociatedFunction Self "is_unconditional_branch" is_unconditional_branch.
-    Smpl Add apply AssociatedFunction_is_unconditional_branch : is_associated.
+    Global Instance AssociatedFunction_is_unconditional_branch :
+      M.IsAssociatedFunction.Trait Self "is_unconditional_branch" is_unconditional_branch.
+    Admitted.
+    Global Typeclasses Opaque is_unconditional_branch.
     
     (*
         pub fn is_conditional_branch(&self) -> bool {
@@ -30760,9 +30848,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_conditional_branch :
-      M.IsAssociatedFunction Self "is_conditional_branch" is_conditional_branch.
-    Smpl Add apply AssociatedFunction_is_conditional_branch : is_associated.
+    Global Instance AssociatedFunction_is_conditional_branch :
+      M.IsAssociatedFunction.Trait Self "is_conditional_branch" is_conditional_branch.
+    Admitted.
+    Global Typeclasses Opaque is_conditional_branch.
     
     (*
         pub fn is_branch(&self) -> bool {
@@ -30800,8 +30889,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_branch : M.IsAssociatedFunction Self "is_branch" is_branch.
-    Smpl Add apply AssociatedFunction_is_branch : is_associated.
+    Global Instance AssociatedFunction_is_branch :
+      M.IsAssociatedFunction.Trait Self "is_branch" is_branch.
+    Admitted.
+    Global Typeclasses Opaque is_branch.
     
     (*
         pub fn offset(&self) -> Option<&CodeOffset> {
@@ -30887,8 +30978,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_offset : M.IsAssociatedFunction Self "offset" offset.
-    Smpl Add apply AssociatedFunction_offset : is_associated.
+    Global Instance AssociatedFunction_offset : M.IsAssociatedFunction.Trait Self "offset" offset.
+    Admitted.
+    Global Typeclasses Opaque offset.
     
     (*
         pub fn get_successors(pc: CodeOffset, code: &[Bytecode]) -> Vec<CodeOffset> {
@@ -31384,9 +31476,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_successors :
-      M.IsAssociatedFunction Self "get_successors" get_successors.
-    Smpl Add apply AssociatedFunction_get_successors : is_associated.
+    Global Instance AssociatedFunction_get_successors :
+      M.IsAssociatedFunction.Trait Self "get_successors" get_successors.
+    Admitted.
+    Global Typeclasses Opaque get_successors.
   End Impl_move_binary_format_file_format_Bytecode.
   
   Module Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Bytecode.
@@ -42328,8 +42421,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_kind_count : M.IsAssociatedFunction Self "kind_count" kind_count.
-    Smpl Add apply AssociatedFunction_kind_count : is_associated.
+    Global Instance AssociatedFunction_kind_count :
+      M.IsAssociatedFunction.Trait Self "kind_count" kind_count.
+    Admitted.
+    Global Typeclasses Opaque kind_count.
     
     (*
         pub fn self_handle_idx(&self) -> ModuleHandleIndex {
@@ -42351,9 +42446,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_self_handle_idx :
-      M.IsAssociatedFunction Self "self_handle_idx" self_handle_idx.
-    Smpl Add apply AssociatedFunction_self_handle_idx : is_associated.
+    Global Instance AssociatedFunction_self_handle_idx :
+      M.IsAssociatedFunction.Trait Self "self_handle_idx" self_handle_idx.
+    Admitted.
+    Global Typeclasses Opaque self_handle_idx.
     
     (*
         pub fn self_handle(&self) -> &ModuleHandle {
@@ -42597,8 +42693,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_self_handle : M.IsAssociatedFunction Self "self_handle" self_handle.
-    Smpl Add apply AssociatedFunction_self_handle : is_associated.
+    Global Instance AssociatedFunction_self_handle :
+      M.IsAssociatedFunction.Trait Self "self_handle" self_handle.
+    Admitted.
+    Global Typeclasses Opaque self_handle.
     
     (*
         pub fn name(&self) -> &IdentStr {
@@ -42651,8 +42749,9 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub fn address(&self) -> &AccountAddress {
@@ -42708,8 +42807,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
-    Smpl Add apply AssociatedFunction_address : is_associated.
+    Global Instance AssociatedFunction_address :
+      M.IsAssociatedFunction.Trait Self "address" address.
+    Admitted.
+    Global Typeclasses Opaque address.
     
     (*
         pub fn struct_name(&self, idx: StructDefinitionIndex) -> &IdentStr {
@@ -42807,8 +42908,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_name : M.IsAssociatedFunction Self "struct_name" struct_name.
-    Smpl Add apply AssociatedFunction_struct_name : is_associated.
+    Global Instance AssociatedFunction_struct_name :
+      M.IsAssociatedFunction.Trait Self "struct_name" struct_name.
+    Admitted.
+    Global Typeclasses Opaque struct_name.
     
     (*
         pub fn module_handle_at(&self, idx: ModuleHandleIndex) -> &ModuleHandle {
@@ -43077,9 +43180,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_module_handle_at :
-      M.IsAssociatedFunction Self "module_handle_at" module_handle_at.
-    Smpl Add apply AssociatedFunction_module_handle_at : is_associated.
+    Global Instance AssociatedFunction_module_handle_at :
+      M.IsAssociatedFunction.Trait Self "module_handle_at" module_handle_at.
+    Admitted.
+    Global Typeclasses Opaque module_handle_at.
     
     (*
         pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
@@ -43252,9 +43356,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_handle_at :
-      M.IsAssociatedFunction Self "struct_handle_at" struct_handle_at.
-    Smpl Add apply AssociatedFunction_struct_handle_at : is_associated.
+    Global Instance AssociatedFunction_struct_handle_at :
+      M.IsAssociatedFunction.Trait Self "struct_handle_at" struct_handle_at.
+    Admitted.
+    Global Typeclasses Opaque struct_handle_at.
     
     (*
         pub fn function_handle_at(&self, idx: FunctionHandleIndex) -> &FunctionHandle {
@@ -43524,9 +43629,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_handle_at :
-      M.IsAssociatedFunction Self "function_handle_at" function_handle_at.
-    Smpl Add apply AssociatedFunction_function_handle_at : is_associated.
+    Global Instance AssociatedFunction_function_handle_at :
+      M.IsAssociatedFunction.Trait Self "function_handle_at" function_handle_at.
+    Admitted.
+    Global Typeclasses Opaque function_handle_at.
     
     (*
         pub fn field_handle_at(&self, idx: FieldHandleIndex) -> &FieldHandle {
@@ -43699,9 +43805,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_field_handle_at :
-      M.IsAssociatedFunction Self "field_handle_at" field_handle_at.
-    Smpl Add apply AssociatedFunction_field_handle_at : is_associated.
+    Global Instance AssociatedFunction_field_handle_at :
+      M.IsAssociatedFunction.Trait Self "field_handle_at" field_handle_at.
+    Admitted.
+    Global Typeclasses Opaque field_handle_at.
     
     (*
         pub fn struct_instantiation_at(
@@ -43774,9 +43881,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_instantiation_at :
-      M.IsAssociatedFunction Self "struct_instantiation_at" struct_instantiation_at.
-    Smpl Add apply AssociatedFunction_struct_instantiation_at : is_associated.
+    Global Instance AssociatedFunction_struct_instantiation_at :
+      M.IsAssociatedFunction.Trait Self "struct_instantiation_at" struct_instantiation_at.
+    Admitted.
+    Global Typeclasses Opaque struct_instantiation_at.
     
     (*
         pub fn function_instantiation_at(
@@ -43853,9 +43961,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_instantiation_at :
-      M.IsAssociatedFunction Self "function_instantiation_at" function_instantiation_at.
-    Smpl Add apply AssociatedFunction_function_instantiation_at : is_associated.
+    Global Instance AssociatedFunction_function_instantiation_at :
+      M.IsAssociatedFunction.Trait Self "function_instantiation_at" function_instantiation_at.
+    Admitted.
+    Global Typeclasses Opaque function_instantiation_at.
     
     (*
         pub fn field_instantiation_at(&self, idx: FieldInstantiationIndex) -> &FieldInstantiation {
@@ -43925,9 +44034,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_field_instantiation_at :
-      M.IsAssociatedFunction Self "field_instantiation_at" field_instantiation_at.
-    Smpl Add apply AssociatedFunction_field_instantiation_at : is_associated.
+    Global Instance AssociatedFunction_field_instantiation_at :
+      M.IsAssociatedFunction.Trait Self "field_instantiation_at" field_instantiation_at.
+    Admitted.
+    Global Typeclasses Opaque field_instantiation_at.
     
     (*
         pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
@@ -43997,8 +44107,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signature_at : M.IsAssociatedFunction Self "signature_at" signature_at.
-    Smpl Add apply AssociatedFunction_signature_at : is_associated.
+    Global Instance AssociatedFunction_signature_at :
+      M.IsAssociatedFunction.Trait Self "signature_at" signature_at.
+    Admitted.
+    Global Typeclasses Opaque signature_at.
     
     (*
         pub fn identifier_at(&self, idx: IdentifierIndex) -> &IdentStr {
@@ -44087,9 +44199,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_identifier_at :
-      M.IsAssociatedFunction Self "identifier_at" identifier_at.
-    Smpl Add apply AssociatedFunction_identifier_at : is_associated.
+    Global Instance AssociatedFunction_identifier_at :
+      M.IsAssociatedFunction.Trait Self "identifier_at" identifier_at.
+    Admitted.
+    Global Typeclasses Opaque identifier_at.
     
     (*
         pub fn address_identifier_at(&self, idx: AddressIdentifierIndex) -> &AccountAddress {
@@ -44159,9 +44272,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address_identifier_at :
-      M.IsAssociatedFunction Self "address_identifier_at" address_identifier_at.
-    Smpl Add apply AssociatedFunction_address_identifier_at : is_associated.
+    Global Instance AssociatedFunction_address_identifier_at :
+      M.IsAssociatedFunction.Trait Self "address_identifier_at" address_identifier_at.
+    Admitted.
+    Global Typeclasses Opaque address_identifier_at.
     
     (*
         pub fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
@@ -44231,8 +44345,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_constant_at : M.IsAssociatedFunction Self "constant_at" constant_at.
-    Smpl Add apply AssociatedFunction_constant_at : is_associated.
+    Global Instance AssociatedFunction_constant_at :
+      M.IsAssociatedFunction.Trait Self "constant_at" constant_at.
+    Admitted.
+    Global Typeclasses Opaque constant_at.
     
     (*
         pub fn struct_def_at(&self, idx: StructDefinitionIndex) -> &StructDefinition {
@@ -44302,9 +44418,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_def_at :
-      M.IsAssociatedFunction Self "struct_def_at" struct_def_at.
-    Smpl Add apply AssociatedFunction_struct_def_at : is_associated.
+    Global Instance AssociatedFunction_struct_def_at :
+      M.IsAssociatedFunction.Trait Self "struct_def_at" struct_def_at.
+    Admitted.
+    Global Typeclasses Opaque struct_def_at.
     
     (*
         pub fn function_def_at(&self, idx: FunctionDefinitionIndex) -> &FunctionDefinition {
@@ -44663,9 +44780,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_def_at :
-      M.IsAssociatedFunction Self "function_def_at" function_def_at.
-    Smpl Add apply AssociatedFunction_function_def_at : is_associated.
+    Global Instance AssociatedFunction_function_def_at :
+      M.IsAssociatedFunction.Trait Self "function_def_at" function_def_at.
+    Admitted.
+    Global Typeclasses Opaque function_def_at.
     
     (*
         pub fn module_handles(&self) -> &[ModuleHandle] {
@@ -44726,9 +44844,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_module_handles :
-      M.IsAssociatedFunction Self "module_handles" module_handles.
-    Smpl Add apply AssociatedFunction_module_handles : is_associated.
+    Global Instance AssociatedFunction_module_handles :
+      M.IsAssociatedFunction.Trait Self "module_handles" module_handles.
+    Admitted.
+    Global Typeclasses Opaque module_handles.
     
     (*
         pub fn struct_handles(&self) -> &[StructHandle] {
@@ -44789,9 +44908,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_handles :
-      M.IsAssociatedFunction Self "struct_handles" struct_handles.
-    Smpl Add apply AssociatedFunction_struct_handles : is_associated.
+    Global Instance AssociatedFunction_struct_handles :
+      M.IsAssociatedFunction.Trait Self "struct_handles" struct_handles.
+    Admitted.
+    Global Typeclasses Opaque struct_handles.
     
     (*
         pub fn function_handles(&self) -> &[FunctionHandle] {
@@ -44852,9 +44972,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_handles :
-      M.IsAssociatedFunction Self "function_handles" function_handles.
-    Smpl Add apply AssociatedFunction_function_handles : is_associated.
+    Global Instance AssociatedFunction_function_handles :
+      M.IsAssociatedFunction.Trait Self "function_handles" function_handles.
+    Admitted.
+    Global Typeclasses Opaque function_handles.
     
     (*
         pub fn field_handles(&self) -> &[FieldHandle] {
@@ -44915,9 +45036,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_field_handles :
-      M.IsAssociatedFunction Self "field_handles" field_handles.
-    Smpl Add apply AssociatedFunction_field_handles : is_associated.
+    Global Instance AssociatedFunction_field_handles :
+      M.IsAssociatedFunction.Trait Self "field_handles" field_handles.
+    Admitted.
+    Global Typeclasses Opaque field_handles.
     
     (*
         pub fn struct_instantiations(&self) -> &[StructDefInstantiation] {
@@ -44978,9 +45100,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_instantiations :
-      M.IsAssociatedFunction Self "struct_instantiations" struct_instantiations.
-    Smpl Add apply AssociatedFunction_struct_instantiations : is_associated.
+    Global Instance AssociatedFunction_struct_instantiations :
+      M.IsAssociatedFunction.Trait Self "struct_instantiations" struct_instantiations.
+    Admitted.
+    Global Typeclasses Opaque struct_instantiations.
     
     (*
         pub fn function_instantiations(&self) -> &[FunctionInstantiation] {
@@ -45041,9 +45164,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_instantiations :
-      M.IsAssociatedFunction Self "function_instantiations" function_instantiations.
-    Smpl Add apply AssociatedFunction_function_instantiations : is_associated.
+    Global Instance AssociatedFunction_function_instantiations :
+      M.IsAssociatedFunction.Trait Self "function_instantiations" function_instantiations.
+    Admitted.
+    Global Typeclasses Opaque function_instantiations.
     
     (*
         pub fn field_instantiations(&self) -> &[FieldInstantiation] {
@@ -45104,9 +45228,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_field_instantiations :
-      M.IsAssociatedFunction Self "field_instantiations" field_instantiations.
-    Smpl Add apply AssociatedFunction_field_instantiations : is_associated.
+    Global Instance AssociatedFunction_field_instantiations :
+      M.IsAssociatedFunction.Trait Self "field_instantiations" field_instantiations.
+    Admitted.
+    Global Typeclasses Opaque field_instantiations.
     
     (*
         pub fn signatures(&self) -> &[Signature] {
@@ -45167,8 +45292,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signatures : M.IsAssociatedFunction Self "signatures" signatures.
-    Smpl Add apply AssociatedFunction_signatures : is_associated.
+    Global Instance AssociatedFunction_signatures :
+      M.IsAssociatedFunction.Trait Self "signatures" signatures.
+    Admitted.
+    Global Typeclasses Opaque signatures.
     
     (*
         pub fn constant_pool(&self) -> &[Constant] {
@@ -45229,9 +45356,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_constant_pool :
-      M.IsAssociatedFunction Self "constant_pool" constant_pool.
-    Smpl Add apply AssociatedFunction_constant_pool : is_associated.
+    Global Instance AssociatedFunction_constant_pool :
+      M.IsAssociatedFunction.Trait Self "constant_pool" constant_pool.
+    Admitted.
+    Global Typeclasses Opaque constant_pool.
     
     (*
         pub fn identifiers(&self) -> &[Identifier] {
@@ -45292,8 +45420,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_identifiers : M.IsAssociatedFunction Self "identifiers" identifiers.
-    Smpl Add apply AssociatedFunction_identifiers : is_associated.
+    Global Instance AssociatedFunction_identifiers :
+      M.IsAssociatedFunction.Trait Self "identifiers" identifiers.
+    Admitted.
+    Global Typeclasses Opaque identifiers.
     
     (*
         pub fn address_identifiers(&self) -> &[AccountAddress] {
@@ -45354,9 +45484,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address_identifiers :
-      M.IsAssociatedFunction Self "address_identifiers" address_identifiers.
-    Smpl Add apply AssociatedFunction_address_identifiers : is_associated.
+    Global Instance AssociatedFunction_address_identifiers :
+      M.IsAssociatedFunction.Trait Self "address_identifiers" address_identifiers.
+    Admitted.
+    Global Typeclasses Opaque address_identifiers.
     
     (*
         pub fn struct_defs(&self) -> &[StructDefinition] {
@@ -45417,8 +45548,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_defs : M.IsAssociatedFunction Self "struct_defs" struct_defs.
-    Smpl Add apply AssociatedFunction_struct_defs : is_associated.
+    Global Instance AssociatedFunction_struct_defs :
+      M.IsAssociatedFunction.Trait Self "struct_defs" struct_defs.
+    Admitted.
+    Global Typeclasses Opaque struct_defs.
     
     (*
         pub fn function_defs(&self) -> &[FunctionDefinition] {
@@ -45479,9 +45612,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_defs :
-      M.IsAssociatedFunction Self "function_defs" function_defs.
-    Smpl Add apply AssociatedFunction_function_defs : is_associated.
+    Global Instance AssociatedFunction_function_defs :
+      M.IsAssociatedFunction.Trait Self "function_defs" function_defs.
+    Admitted.
+    Global Typeclasses Opaque function_defs.
     
     (*
         pub fn friend_decls(&self) -> &[ModuleHandle] {
@@ -45542,8 +45676,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_friend_decls : M.IsAssociatedFunction Self "friend_decls" friend_decls.
-    Smpl Add apply AssociatedFunction_friend_decls : is_associated.
+    Global Instance AssociatedFunction_friend_decls :
+      M.IsAssociatedFunction.Trait Self "friend_decls" friend_decls.
+    Admitted.
+    Global Typeclasses Opaque friend_decls.
     
     (*
         pub fn version(&self) -> u32 {
@@ -45565,8 +45701,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_version : M.IsAssociatedFunction Self "version" version.
-    Smpl Add apply AssociatedFunction_version : is_associated.
+    Global Instance AssociatedFunction_version :
+      M.IsAssociatedFunction.Trait Self "version" version.
+    Admitted.
+    Global Typeclasses Opaque version.
     
     (*
         pub fn immediate_dependencies(&self) -> Vec<ModuleId> {
@@ -45959,9 +46097,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_immediate_dependencies :
-      M.IsAssociatedFunction Self "immediate_dependencies" immediate_dependencies.
-    Smpl Add apply AssociatedFunction_immediate_dependencies : is_associated.
+    Global Instance AssociatedFunction_immediate_dependencies :
+      M.IsAssociatedFunction.Trait Self "immediate_dependencies" immediate_dependencies.
+    Admitted.
+    Global Typeclasses Opaque immediate_dependencies.
     
     (*
         pub fn immediate_friends(&self) -> Vec<ModuleId> {
@@ -46150,9 +46289,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_immediate_friends :
-      M.IsAssociatedFunction Self "immediate_friends" immediate_friends.
-    Smpl Add apply AssociatedFunction_immediate_friends : is_associated.
+    Global Instance AssociatedFunction_immediate_friends :
+      M.IsAssociatedFunction.Trait Self "immediate_friends" immediate_friends.
+    Admitted.
+    Global Typeclasses Opaque immediate_friends.
     
     (*
         pub fn find_struct_def(&self, idx: StructHandleIndex) -> Option<&StructDefinition> {
@@ -46295,9 +46435,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_find_struct_def :
-      M.IsAssociatedFunction Self "find_struct_def" find_struct_def.
-    Smpl Add apply AssociatedFunction_find_struct_def : is_associated.
+    Global Instance AssociatedFunction_find_struct_def :
+      M.IsAssociatedFunction.Trait Self "find_struct_def" find_struct_def.
+    Admitted.
+    Global Typeclasses Opaque find_struct_def.
     
     (*
         pub fn find_struct_def_by_name(&self, name: &IdentStr) -> Option<&StructDefinition> {
@@ -46513,9 +46654,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_find_struct_def_by_name :
-      M.IsAssociatedFunction Self "find_struct_def_by_name" find_struct_def_by_name.
-    Smpl Add apply AssociatedFunction_find_struct_def_by_name : is_associated.
+    Global Instance AssociatedFunction_find_struct_def_by_name :
+      M.IsAssociatedFunction.Trait Self "find_struct_def_by_name" find_struct_def_by_name.
+    Admitted.
+    Global Typeclasses Opaque find_struct_def_by_name.
     
     (*
         pub fn abilities(
@@ -47779,8 +47921,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abilities : M.IsAssociatedFunction Self "abilities" abilities.
-    Smpl Add apply AssociatedFunction_abilities : is_associated.
+    Global Instance AssociatedFunction_abilities :
+      M.IsAssociatedFunction.Trait Self "abilities" abilities.
+    Admitted.
+    Global Typeclasses Opaque abilities.
     
     (*
         pub fn module_id_for_handle(&self, module_handle: &ModuleHandle) -> ModuleId {
@@ -47877,9 +48021,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_module_id_for_handle :
-      M.IsAssociatedFunction Self "module_id_for_handle" module_id_for_handle.
-    Smpl Add apply AssociatedFunction_module_id_for_handle : is_associated.
+    Global Instance AssociatedFunction_module_id_for_handle :
+      M.IsAssociatedFunction.Trait Self "module_id_for_handle" module_id_for_handle.
+    Admitted.
+    Global Typeclasses Opaque module_id_for_handle.
     
     (*
         pub fn self_id(&self) -> ModuleId {
@@ -47924,8 +48069,10 @@ Module file_format.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_self_id : M.IsAssociatedFunction Self "self_id" self_id.
-    Smpl Add apply AssociatedFunction_self_id : is_associated.
+    Global Instance AssociatedFunction_self_id :
+      M.IsAssociatedFunction.Trait Self "self_id" self_id.
+    Admitted.
+    Global Typeclasses Opaque self_id.
   End Impl_move_binary_format_file_format_CompiledModule.
   
   (*
@@ -48515,9 +48662,10 @@ Module file_format.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_empty_module :
-    M.IsFunction "move_binary_format::file_format::empty_module" empty_module.
-  Smpl Add apply Function_empty_module : is_function.
+  Global Instance Instance_IsFunction_empty_module :
+    M.IsFunction.Trait "move_binary_format::file_format::empty_module" empty_module.
+  Admitted.
+  Global Typeclasses Opaque empty_module.
   
   (*
   pub fn basic_test_module() -> CompiledModule {
@@ -49301,7 +49449,8 @@ Module file_format.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_basic_test_module :
-    M.IsFunction "move_binary_format::file_format::basic_test_module" basic_test_module.
-  Smpl Add apply Function_basic_test_module : is_function.
+  Global Instance Instance_IsFunction_basic_test_module :
+    M.IsFunction.Trait "move_binary_format::file_format::basic_test_module" basic_test_module.
+  Admitted.
+  Global Typeclasses Opaque basic_test_module.
 End file_format.

@@ -36,8 +36,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
+Admitted.
+Global Typeclasses Opaque main.
 
 Module main.
   (*
@@ -123,9 +125,10 @@ Module main.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_foo :
-    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
-  Smpl Add apply Function_foo : is_function.
+  Global Instance Instance_IsFunction_foo :
+    M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
+  Admitted.
+  Global Typeclasses Opaque foo.
   
   (*
       fn call_foo(arg: i32) -> i32 {
@@ -160,7 +163,8 @@ Module main.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_call_foo :
-    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
-  Smpl Add apply Function_call_foo : is_function.
+  Global Instance Instance_IsFunction_call_foo :
+    M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
+  Admitted.
+  Global Typeclasses Opaque call_foo.
 End main.

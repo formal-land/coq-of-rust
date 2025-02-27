@@ -1258,6 +1258,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -1905,6 +1906,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -2552,6 +2554,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -3199,6 +3202,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -3846,6 +3850,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -4488,6 +4493,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -5105,8 +5111,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
-  Smpl Add apply Function_join_generic_copy : is_function.
+  Global Instance Instance_IsFunction_join_generic_copy :
+    M.IsFunction.Trait "alloc::str::join_generic_copy" join_generic_copy.
+  Admitted.
+  Global Typeclasses Opaque join_generic_copy.
   
   Module Impl_core_borrow_Borrow_str_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -5371,9 +5379,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_boxed_bytes :
-      M.IsAssociatedFunction Self "into_boxed_bytes" into_boxed_bytes.
-    Smpl Add apply AssociatedFunction_into_boxed_bytes : is_associated.
+    Global Instance AssociatedFunction_into_boxed_bytes :
+      M.IsAssociatedFunction.Trait Self "into_boxed_bytes" into_boxed_bytes.
+    Admitted.
+    Global Typeclasses Opaque into_boxed_bytes.
     
     (*
         pub fn replace<P: Pattern>(&self, from: P, to: &str) -> String {
@@ -5437,6 +5446,7 @@ Module str.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -5638,8 +5648,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_replace : M.IsAssociatedFunction Self "replace" replace.
-    Smpl Add apply AssociatedFunction_replace : is_associated.
+    Global Instance AssociatedFunction_replace :
+      M.IsAssociatedFunction.Trait Self "replace" replace.
+    Admitted.
+    Global Typeclasses Opaque replace.
     
     (*
         pub fn replacen<P: Pattern>(&self, pat: P, to: &str, count: usize) -> String {
@@ -5739,6 +5751,7 @@ Module str.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -5948,8 +5961,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_replacen : M.IsAssociatedFunction Self "replacen" replacen.
-    Smpl Add apply AssociatedFunction_replacen : is_associated.
+    Global Instance AssociatedFunction_replacen :
+      M.IsAssociatedFunction.Trait Self "replacen" replacen.
+    Admitted.
+    Global Typeclasses Opaque replacen.
     
     (*
         pub fn to_lowercase(&self) -> String {
@@ -6091,6 +6106,7 @@ Module str.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -6436,8 +6452,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_lowercase : M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
-    Smpl Add apply AssociatedFunction_to_lowercase : is_associated.
+    Global Instance AssociatedFunction_to_lowercase :
+      M.IsAssociatedFunction.Trait Self "to_lowercase" to_lowercase.
+    Admitted.
+    Global Typeclasses Opaque to_lowercase.
     
     (*
         pub fn to_uppercase(&self) -> String {
@@ -6518,6 +6536,7 @@ Module str.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -6734,8 +6753,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_uppercase : M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
-    Smpl Add apply AssociatedFunction_to_uppercase : is_associated.
+    Global Instance AssociatedFunction_to_uppercase :
+      M.IsAssociatedFunction.Trait Self "to_uppercase" to_uppercase.
+    Admitted.
+    Global Typeclasses Opaque to_uppercase.
     
     (*
         pub fn into_string(self: Box<str>) -> String {
@@ -6815,8 +6836,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
-    Smpl Add apply AssociatedFunction_into_string : is_associated.
+    Global Instance AssociatedFunction_into_string :
+      M.IsAssociatedFunction.Trait Self "into_string" into_string.
+    Admitted.
+    Global Typeclasses Opaque into_string.
     
     (*
         pub fn repeat(&self, n: usize) -> String {
@@ -6871,8 +6894,9 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
-    Smpl Add apply AssociatedFunction_repeat : is_associated.
+    Global Instance AssociatedFunction_repeat : M.IsAssociatedFunction.Trait Self "repeat" repeat.
+    Admitted.
+    Global Typeclasses Opaque repeat.
     
     (*
         pub fn to_ascii_uppercase(&self) -> String {
@@ -6935,9 +6959,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ascii_uppercase :
-      M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
-    Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
+    Global Instance AssociatedFunction_to_ascii_uppercase :
+      M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+    Admitted.
+    Global Typeclasses Opaque to_ascii_uppercase.
     
     (*
         pub fn to_ascii_lowercase(&self) -> String {
@@ -7000,9 +7025,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ascii_lowercase :
-      M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
-    Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
+    Global Instance AssociatedFunction_to_ascii_lowercase :
+      M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+    Admitted.
+    Global Typeclasses Opaque to_ascii_lowercase.
   End Impl_str.
   
   (*
@@ -7051,9 +7077,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_boxed_utf8_unchecked :
-    M.IsFunction "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
-  Smpl Add apply Function_from_boxed_utf8_unchecked : is_function.
+  Global Instance Instance_IsFunction_from_boxed_utf8_unchecked :
+    M.IsFunction.Trait "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
+  Admitted.
+  Global Typeclasses Opaque from_boxed_utf8_unchecked.
   
   (*
   pub fn convert_while_ascii(s: &str, convert: fn(&u8) -> u8) -> (String, &str) {
@@ -7226,6 +7253,7 @@ Module str.
             M.alloc (| repeat (| Value.Bool false, Value.Integer IntegerKind.Usize 16 |) |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7401,6 +7429,7 @@ Module str.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -7664,6 +7693,7 @@ Module str.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -7906,6 +7936,7 @@ Module str.
             |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8202,9 +8233,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_convert_while_ascii :
-    M.IsFunction "alloc::str::convert_while_ascii" convert_while_ascii.
-  Smpl Add apply Function_convert_while_ascii : is_function.
+  Global Instance Instance_IsFunction_convert_while_ascii :
+    M.IsFunction.Trait "alloc::str::convert_while_ascii" convert_while_ascii.
+  Admitted.
+  Global Typeclasses Opaque convert_while_ascii.
   
   Module convert_while_ascii.
     Definition value_N : Value.t :=

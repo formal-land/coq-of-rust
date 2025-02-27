@@ -653,8 +653,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-      Smpl Add apply AssociatedFunction_len : is_associated.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           pub fn write(&self, out: &mut [u8]) -> Option<usize> {
@@ -797,6 +798,7 @@ Module num.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -998,6 +1000,7 @@ Module num.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1190,8 +1193,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
-      Smpl Add apply AssociatedFunction_write : is_associated.
+      Global Instance AssociatedFunction_write : M.IsAssociatedFunction.Trait Self "write" write.
+      Admitted.
+      Global Typeclasses Opaque write.
     End Impl_core_num_fmt_Part.
     
     (* StructRecord
@@ -1383,6 +1387,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -1471,8 +1476,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-      Smpl Add apply AssociatedFunction_len : is_associated.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           pub fn write(&self, out: &mut [u8]) -> Option<usize> {
@@ -1713,6 +1719,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -1956,8 +1963,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
-      Smpl Add apply AssociatedFunction_write : is_associated.
+      Global Instance AssociatedFunction_write : M.IsAssociatedFunction.Trait Self "write" write.
+      Admitted.
+      Global Typeclasses Opaque write.
     End Impl_core_num_fmt_Formatted.
   End fmt.
 End num.

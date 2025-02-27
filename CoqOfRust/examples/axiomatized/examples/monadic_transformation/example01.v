@@ -3,15 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_id : M.IsFunction "example01::id" id.
-Smpl Add apply Function_id : is_function.
+Global Instance Instance_IsFunction_id : M.IsFunction.Trait "example01::id" id.
+Admitted.
 
 Parameter tri : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_tri : M.IsFunction "example01::tri" tri.
-Smpl Add apply Function_tri : is_function.
+Global Instance Instance_IsFunction_tri : M.IsFunction.Trait "example01::tri" tri.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "example01::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "example01::main" main.
+Admitted.

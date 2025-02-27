@@ -45,5 +45,6 @@ End Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overlapp
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "disambiguating_overlapping_traits::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "disambiguating_overlapping_traits::main" main.
+Admitted.

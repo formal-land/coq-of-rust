@@ -15,5 +15,6 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_add_one : M.IsFunction "add_one::add_one" add_one.
-Smpl Add apply Function_add_one : is_function.
+Global Instance Instance_IsFunction_add_one : M.IsFunction.Trait "add_one::add_one" add_one.
+Admitted.
+Global Typeclasses Opaque add_one.

@@ -357,8 +357,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge : M.IsFunction "core::slice::sort::stable::merge::merge" merge.
-        Smpl Add apply Function_merge : is_function.
+        Global Instance Instance_IsFunction_merge :
+          M.IsFunction.Trait "core::slice::sort::stable::merge::merge" merge.
+        Admitted.
+        Global Typeclasses Opaque merge.
         
         (* StructRecord
           {
@@ -441,6 +443,7 @@ Module slice.
                       |)
                     |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -645,10 +648,11 @@ Module slice.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Axiom AssociatedFunction_merge_up :
+          Global Instance AssociatedFunction_merge_up :
             forall (T : Ty.t),
-            M.IsAssociatedFunction (Self T) "merge_up" (merge_up T).
-          Smpl Add apply AssociatedFunction_merge_up : is_associated.
+            M.IsAssociatedFunction.Trait (Self T) "merge_up" (merge_up T).
+          Admitted.
+          Global Typeclasses Opaque merge_up.
           
           (*
               unsafe fn merge_down<F: FnMut(&T, &T) -> bool>(
@@ -697,6 +701,7 @@ Module slice.
                 let is_less := M.alloc (| is_less |) in
                 M.read (|
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ left : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.alloc (|
@@ -934,10 +939,11 @@ Module slice.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Axiom AssociatedFunction_merge_down :
+          Global Instance AssociatedFunction_merge_down :
             forall (T : Ty.t),
-            M.IsAssociatedFunction (Self T) "merge_down" (merge_down T).
-          Smpl Add apply AssociatedFunction_merge_down : is_associated.
+            M.IsAssociatedFunction.Trait (Self T) "merge_down" (merge_down T).
+          Admitted.
+          Global Typeclasses Opaque merge_down.
         End Impl_core_slice_sort_stable_merge_MergeState_T.
         
         Module Impl_core_ops_drop_Drop_for_core_slice_sort_stable_merge_MergeState_T.

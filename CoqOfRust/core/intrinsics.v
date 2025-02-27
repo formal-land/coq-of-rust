@@ -21,687 +21,707 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_drop_in_place : M.IsFunction "core::intrinsics::drop_in_place" drop_in_place.
-  Smpl Add apply Function_drop_in_place : is_function.
+  Global Instance Instance_IsFunction_drop_in_place :
+    M.IsFunction.Trait "core::intrinsics::drop_in_place" drop_in_place.
+  Admitted.
+  Global Typeclasses Opaque drop_in_place.
   
   Parameter atomic_cxchg_relaxed_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_relaxed_relaxed :
-    M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_relaxed" atomic_cxchg_relaxed_relaxed.
-  Smpl Add apply Function_atomic_cxchg_relaxed_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_relaxed_relaxed :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchg_relaxed_relaxed"
+      atomic_cxchg_relaxed_relaxed.
+  Admitted.
   
   Parameter atomic_cxchg_relaxed_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_relaxed_acquire :
-    M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_acquire" atomic_cxchg_relaxed_acquire.
-  Smpl Add apply Function_atomic_cxchg_relaxed_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_relaxed_acquire :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchg_relaxed_acquire"
+      atomic_cxchg_relaxed_acquire.
+  Admitted.
   
   Parameter atomic_cxchg_relaxed_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_relaxed_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchg_relaxed_seqcst" atomic_cxchg_relaxed_seqcst.
-  Smpl Add apply Function_atomic_cxchg_relaxed_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_relaxed_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_relaxed_seqcst" atomic_cxchg_relaxed_seqcst.
+  Admitted.
   
   Parameter atomic_cxchg_acquire_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_acquire_relaxed :
-    M.IsFunction "core::intrinsics::atomic_cxchg_acquire_relaxed" atomic_cxchg_acquire_relaxed.
-  Smpl Add apply Function_atomic_cxchg_acquire_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_acquire_relaxed :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchg_acquire_relaxed"
+      atomic_cxchg_acquire_relaxed.
+  Admitted.
   
   Parameter atomic_cxchg_acquire_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_acquire_acquire :
-    M.IsFunction "core::intrinsics::atomic_cxchg_acquire_acquire" atomic_cxchg_acquire_acquire.
-  Smpl Add apply Function_atomic_cxchg_acquire_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_acquire_acquire :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchg_acquire_acquire"
+      atomic_cxchg_acquire_acquire.
+  Admitted.
   
   Parameter atomic_cxchg_acquire_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_acquire_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchg_acquire_seqcst" atomic_cxchg_acquire_seqcst.
-  Smpl Add apply Function_atomic_cxchg_acquire_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_acquire_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acquire_seqcst" atomic_cxchg_acquire_seqcst.
+  Admitted.
   
   Parameter atomic_cxchg_release_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_release_relaxed :
-    M.IsFunction "core::intrinsics::atomic_cxchg_release_relaxed" atomic_cxchg_release_relaxed.
-  Smpl Add apply Function_atomic_cxchg_release_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_release_relaxed :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchg_release_relaxed"
+      atomic_cxchg_release_relaxed.
+  Admitted.
   
   Parameter atomic_cxchg_release_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_release_acquire :
-    M.IsFunction "core::intrinsics::atomic_cxchg_release_acquire" atomic_cxchg_release_acquire.
-  Smpl Add apply Function_atomic_cxchg_release_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_release_acquire :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchg_release_acquire"
+      atomic_cxchg_release_acquire.
+  Admitted.
   
   Parameter atomic_cxchg_release_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_release_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchg_release_seqcst" atomic_cxchg_release_seqcst.
-  Smpl Add apply Function_atomic_cxchg_release_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_release_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_release_seqcst" atomic_cxchg_release_seqcst.
+  Admitted.
   
   Parameter atomic_cxchg_acqrel_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_acqrel_relaxed :
-    M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_relaxed" atomic_cxchg_acqrel_relaxed.
-  Smpl Add apply Function_atomic_cxchg_acqrel_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_acqrel_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acqrel_relaxed" atomic_cxchg_acqrel_relaxed.
+  Admitted.
   
   Parameter atomic_cxchg_acqrel_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_acqrel_acquire :
-    M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_acquire" atomic_cxchg_acqrel_acquire.
-  Smpl Add apply Function_atomic_cxchg_acqrel_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_acqrel_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acqrel_acquire" atomic_cxchg_acqrel_acquire.
+  Admitted.
   
   Parameter atomic_cxchg_acqrel_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_acqrel_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchg_acqrel_seqcst" atomic_cxchg_acqrel_seqcst.
-  Smpl Add apply Function_atomic_cxchg_acqrel_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_acqrel_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_acqrel_seqcst" atomic_cxchg_acqrel_seqcst.
+  Admitted.
   
   Parameter atomic_cxchg_seqcst_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_seqcst_relaxed :
-    M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_relaxed" atomic_cxchg_seqcst_relaxed.
-  Smpl Add apply Function_atomic_cxchg_seqcst_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_seqcst_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_seqcst_relaxed" atomic_cxchg_seqcst_relaxed.
+  Admitted.
   
   Parameter atomic_cxchg_seqcst_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_seqcst_acquire :
-    M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_acquire" atomic_cxchg_seqcst_acquire.
-  Smpl Add apply Function_atomic_cxchg_seqcst_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_seqcst_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_seqcst_acquire" atomic_cxchg_seqcst_acquire.
+  Admitted.
   
   Parameter atomic_cxchg_seqcst_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchg_seqcst_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchg_seqcst_seqcst" atomic_cxchg_seqcst_seqcst.
-  Smpl Add apply Function_atomic_cxchg_seqcst_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchg_seqcst_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_cxchg_seqcst_seqcst" atomic_cxchg_seqcst_seqcst.
+  Admitted.
   
   Parameter atomic_cxchgweak_relaxed_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_relaxed_relaxed :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_relaxed_relaxed :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_relaxed_relaxed"
       atomic_cxchgweak_relaxed_relaxed.
-  Smpl Add apply Function_atomic_cxchgweak_relaxed_relaxed : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_relaxed_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_relaxed_acquire :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_relaxed_acquire :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_relaxed_acquire"
       atomic_cxchgweak_relaxed_acquire.
-  Smpl Add apply Function_atomic_cxchgweak_relaxed_acquire : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_relaxed_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_relaxed_seqcst :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_relaxed_seqcst :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_relaxed_seqcst"
       atomic_cxchgweak_relaxed_seqcst.
-  Smpl Add apply Function_atomic_cxchgweak_relaxed_seqcst : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_acquire_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_acquire_relaxed :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_acquire_relaxed :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_acquire_relaxed"
       atomic_cxchgweak_acquire_relaxed.
-  Smpl Add apply Function_atomic_cxchgweak_acquire_relaxed : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_acquire_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_acquire_acquire :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_acquire_acquire :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_acquire_acquire"
       atomic_cxchgweak_acquire_acquire.
-  Smpl Add apply Function_atomic_cxchgweak_acquire_acquire : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_acquire_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_acquire_seqcst :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_acquire_seqcst :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_acquire_seqcst"
       atomic_cxchgweak_acquire_seqcst.
-  Smpl Add apply Function_atomic_cxchgweak_acquire_seqcst : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_release_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_release_relaxed :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_release_relaxed :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_release_relaxed"
       atomic_cxchgweak_release_relaxed.
-  Smpl Add apply Function_atomic_cxchgweak_release_relaxed : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_release_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_release_acquire :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_release_acquire :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_release_acquire"
       atomic_cxchgweak_release_acquire.
-  Smpl Add apply Function_atomic_cxchgweak_release_acquire : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_release_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_release_seqcst :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_release_seqcst :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_release_seqcst"
       atomic_cxchgweak_release_seqcst.
-  Smpl Add apply Function_atomic_cxchgweak_release_seqcst : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_acqrel_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_acqrel_relaxed :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_acqrel_relaxed :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_acqrel_relaxed"
       atomic_cxchgweak_acqrel_relaxed.
-  Smpl Add apply Function_atomic_cxchgweak_acqrel_relaxed : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_acqrel_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_acqrel_acquire :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_acqrel_acquire :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_acqrel_acquire"
       atomic_cxchgweak_acqrel_acquire.
-  Smpl Add apply Function_atomic_cxchgweak_acqrel_acquire : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_acqrel_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_acqrel_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchgweak_acqrel_seqcst" atomic_cxchgweak_acqrel_seqcst.
-  Smpl Add apply Function_atomic_cxchgweak_acqrel_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchgweak_acqrel_seqcst :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchgweak_acqrel_seqcst"
+      atomic_cxchgweak_acqrel_seqcst.
+  Admitted.
   
   Parameter atomic_cxchgweak_seqcst_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_seqcst_relaxed :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_seqcst_relaxed :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_seqcst_relaxed"
       atomic_cxchgweak_seqcst_relaxed.
-  Smpl Add apply Function_atomic_cxchgweak_seqcst_relaxed : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_seqcst_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_seqcst_acquire :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_cxchgweak_seqcst_acquire :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_cxchgweak_seqcst_acquire"
       atomic_cxchgweak_seqcst_acquire.
-  Smpl Add apply Function_atomic_cxchgweak_seqcst_acquire : is_function.
+  Admitted.
   
   Parameter atomic_cxchgweak_seqcst_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_cxchgweak_seqcst_seqcst :
-    M.IsFunction "core::intrinsics::atomic_cxchgweak_seqcst_seqcst" atomic_cxchgweak_seqcst_seqcst.
-  Smpl Add apply Function_atomic_cxchgweak_seqcst_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_cxchgweak_seqcst_seqcst :
+    M.IsFunction.Trait
+      "core::intrinsics::atomic_cxchgweak_seqcst_seqcst"
+      atomic_cxchgweak_seqcst_seqcst.
+  Admitted.
   
   Parameter atomic_load_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_load_seqcst :
-    M.IsFunction "core::intrinsics::atomic_load_seqcst" atomic_load_seqcst.
-  Smpl Add apply Function_atomic_load_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_load_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_load_seqcst" atomic_load_seqcst.
+  Admitted.
   
   Parameter atomic_load_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_load_acquire :
-    M.IsFunction "core::intrinsics::atomic_load_acquire" atomic_load_acquire.
-  Smpl Add apply Function_atomic_load_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_load_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_load_acquire" atomic_load_acquire.
+  Admitted.
   
   Parameter atomic_load_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_load_relaxed :
-    M.IsFunction "core::intrinsics::atomic_load_relaxed" atomic_load_relaxed.
-  Smpl Add apply Function_atomic_load_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_load_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_load_relaxed" atomic_load_relaxed.
+  Admitted.
   
   Parameter atomic_load_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_load_unordered :
-    M.IsFunction "core::intrinsics::atomic_load_unordered" atomic_load_unordered.
-  Smpl Add apply Function_atomic_load_unordered : is_function.
+  Global Instance Instance_IsFunction_atomic_load_unordered :
+    M.IsFunction.Trait "core::intrinsics::atomic_load_unordered" atomic_load_unordered.
+  Admitted.
   
   Parameter atomic_store_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_store_seqcst :
-    M.IsFunction "core::intrinsics::atomic_store_seqcst" atomic_store_seqcst.
-  Smpl Add apply Function_atomic_store_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_store_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_store_seqcst" atomic_store_seqcst.
+  Admitted.
   
   Parameter atomic_store_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_store_release :
-    M.IsFunction "core::intrinsics::atomic_store_release" atomic_store_release.
-  Smpl Add apply Function_atomic_store_release : is_function.
+  Global Instance Instance_IsFunction_atomic_store_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_store_release" atomic_store_release.
+  Admitted.
   
   Parameter atomic_store_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_store_relaxed :
-    M.IsFunction "core::intrinsics::atomic_store_relaxed" atomic_store_relaxed.
-  Smpl Add apply Function_atomic_store_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_store_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_store_relaxed" atomic_store_relaxed.
+  Admitted.
   
   Parameter atomic_store_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_store_unordered :
-    M.IsFunction "core::intrinsics::atomic_store_unordered" atomic_store_unordered.
-  Smpl Add apply Function_atomic_store_unordered : is_function.
+  Global Instance Instance_IsFunction_atomic_store_unordered :
+    M.IsFunction.Trait "core::intrinsics::atomic_store_unordered" atomic_store_unordered.
+  Admitted.
   
   Parameter atomic_xchg_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xchg_seqcst :
-    M.IsFunction "core::intrinsics::atomic_xchg_seqcst" atomic_xchg_seqcst.
-  Smpl Add apply Function_atomic_xchg_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_xchg_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_xchg_seqcst" atomic_xchg_seqcst.
+  Admitted.
   
   Parameter atomic_xchg_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xchg_acquire :
-    M.IsFunction "core::intrinsics::atomic_xchg_acquire" atomic_xchg_acquire.
-  Smpl Add apply Function_atomic_xchg_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_xchg_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_xchg_acquire" atomic_xchg_acquire.
+  Admitted.
   
   Parameter atomic_xchg_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xchg_release :
-    M.IsFunction "core::intrinsics::atomic_xchg_release" atomic_xchg_release.
-  Smpl Add apply Function_atomic_xchg_release : is_function.
+  Global Instance Instance_IsFunction_atomic_xchg_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_xchg_release" atomic_xchg_release.
+  Admitted.
   
   Parameter atomic_xchg_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xchg_acqrel :
-    M.IsFunction "core::intrinsics::atomic_xchg_acqrel" atomic_xchg_acqrel.
-  Smpl Add apply Function_atomic_xchg_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_xchg_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_xchg_acqrel" atomic_xchg_acqrel.
+  Admitted.
   
   Parameter atomic_xchg_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xchg_relaxed :
-    M.IsFunction "core::intrinsics::atomic_xchg_relaxed" atomic_xchg_relaxed.
-  Smpl Add apply Function_atomic_xchg_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_xchg_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_xchg_relaxed" atomic_xchg_relaxed.
+  Admitted.
   
   Parameter atomic_xadd_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xadd_seqcst :
-    M.IsFunction "core::intrinsics::atomic_xadd_seqcst" atomic_xadd_seqcst.
-  Smpl Add apply Function_atomic_xadd_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_xadd_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_xadd_seqcst" atomic_xadd_seqcst.
+  Admitted.
   
   Parameter atomic_xadd_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xadd_acquire :
-    M.IsFunction "core::intrinsics::atomic_xadd_acquire" atomic_xadd_acquire.
-  Smpl Add apply Function_atomic_xadd_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_xadd_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_xadd_acquire" atomic_xadd_acquire.
+  Admitted.
   
   Parameter atomic_xadd_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xadd_release :
-    M.IsFunction "core::intrinsics::atomic_xadd_release" atomic_xadd_release.
-  Smpl Add apply Function_atomic_xadd_release : is_function.
+  Global Instance Instance_IsFunction_atomic_xadd_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_xadd_release" atomic_xadd_release.
+  Admitted.
   
   Parameter atomic_xadd_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xadd_acqrel :
-    M.IsFunction "core::intrinsics::atomic_xadd_acqrel" atomic_xadd_acqrel.
-  Smpl Add apply Function_atomic_xadd_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_xadd_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_xadd_acqrel" atomic_xadd_acqrel.
+  Admitted.
   
   Parameter atomic_xadd_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xadd_relaxed :
-    M.IsFunction "core::intrinsics::atomic_xadd_relaxed" atomic_xadd_relaxed.
-  Smpl Add apply Function_atomic_xadd_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_xadd_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_xadd_relaxed" atomic_xadd_relaxed.
+  Admitted.
   
   Parameter atomic_xsub_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xsub_seqcst :
-    M.IsFunction "core::intrinsics::atomic_xsub_seqcst" atomic_xsub_seqcst.
-  Smpl Add apply Function_atomic_xsub_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_xsub_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_xsub_seqcst" atomic_xsub_seqcst.
+  Admitted.
   
   Parameter atomic_xsub_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xsub_acquire :
-    M.IsFunction "core::intrinsics::atomic_xsub_acquire" atomic_xsub_acquire.
-  Smpl Add apply Function_atomic_xsub_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_xsub_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_xsub_acquire" atomic_xsub_acquire.
+  Admitted.
   
   Parameter atomic_xsub_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xsub_release :
-    M.IsFunction "core::intrinsics::atomic_xsub_release" atomic_xsub_release.
-  Smpl Add apply Function_atomic_xsub_release : is_function.
+  Global Instance Instance_IsFunction_atomic_xsub_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_xsub_release" atomic_xsub_release.
+  Admitted.
   
   Parameter atomic_xsub_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xsub_acqrel :
-    M.IsFunction "core::intrinsics::atomic_xsub_acqrel" atomic_xsub_acqrel.
-  Smpl Add apply Function_atomic_xsub_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_xsub_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_xsub_acqrel" atomic_xsub_acqrel.
+  Admitted.
   
   Parameter atomic_xsub_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xsub_relaxed :
-    M.IsFunction "core::intrinsics::atomic_xsub_relaxed" atomic_xsub_relaxed.
-  Smpl Add apply Function_atomic_xsub_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_xsub_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_xsub_relaxed" atomic_xsub_relaxed.
+  Admitted.
   
   Parameter atomic_and_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_and_seqcst :
-    M.IsFunction "core::intrinsics::atomic_and_seqcst" atomic_and_seqcst.
-  Smpl Add apply Function_atomic_and_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_and_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_and_seqcst" atomic_and_seqcst.
+  Admitted.
   
   Parameter atomic_and_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_and_acquire :
-    M.IsFunction "core::intrinsics::atomic_and_acquire" atomic_and_acquire.
-  Smpl Add apply Function_atomic_and_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_and_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_and_acquire" atomic_and_acquire.
+  Admitted.
   
   Parameter atomic_and_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_and_release :
-    M.IsFunction "core::intrinsics::atomic_and_release" atomic_and_release.
-  Smpl Add apply Function_atomic_and_release : is_function.
+  Global Instance Instance_IsFunction_atomic_and_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_and_release" atomic_and_release.
+  Admitted.
   
   Parameter atomic_and_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_and_acqrel :
-    M.IsFunction "core::intrinsics::atomic_and_acqrel" atomic_and_acqrel.
-  Smpl Add apply Function_atomic_and_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_and_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_and_acqrel" atomic_and_acqrel.
+  Admitted.
   
   Parameter atomic_and_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_and_relaxed :
-    M.IsFunction "core::intrinsics::atomic_and_relaxed" atomic_and_relaxed.
-  Smpl Add apply Function_atomic_and_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_and_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_and_relaxed" atomic_and_relaxed.
+  Admitted.
   
   Parameter atomic_nand_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_nand_seqcst :
-    M.IsFunction "core::intrinsics::atomic_nand_seqcst" atomic_nand_seqcst.
-  Smpl Add apply Function_atomic_nand_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_nand_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_nand_seqcst" atomic_nand_seqcst.
+  Admitted.
   
   Parameter atomic_nand_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_nand_acquire :
-    M.IsFunction "core::intrinsics::atomic_nand_acquire" atomic_nand_acquire.
-  Smpl Add apply Function_atomic_nand_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_nand_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_nand_acquire" atomic_nand_acquire.
+  Admitted.
   
   Parameter atomic_nand_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_nand_release :
-    M.IsFunction "core::intrinsics::atomic_nand_release" atomic_nand_release.
-  Smpl Add apply Function_atomic_nand_release : is_function.
+  Global Instance Instance_IsFunction_atomic_nand_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_nand_release" atomic_nand_release.
+  Admitted.
   
   Parameter atomic_nand_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_nand_acqrel :
-    M.IsFunction "core::intrinsics::atomic_nand_acqrel" atomic_nand_acqrel.
-  Smpl Add apply Function_atomic_nand_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_nand_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_nand_acqrel" atomic_nand_acqrel.
+  Admitted.
   
   Parameter atomic_nand_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_nand_relaxed :
-    M.IsFunction "core::intrinsics::atomic_nand_relaxed" atomic_nand_relaxed.
-  Smpl Add apply Function_atomic_nand_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_nand_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_nand_relaxed" atomic_nand_relaxed.
+  Admitted.
   
   Parameter atomic_or_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_or_seqcst :
-    M.IsFunction "core::intrinsics::atomic_or_seqcst" atomic_or_seqcst.
-  Smpl Add apply Function_atomic_or_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_or_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_or_seqcst" atomic_or_seqcst.
+  Admitted.
   
   Parameter atomic_or_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_or_acquire :
-    M.IsFunction "core::intrinsics::atomic_or_acquire" atomic_or_acquire.
-  Smpl Add apply Function_atomic_or_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_or_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_or_acquire" atomic_or_acquire.
+  Admitted.
   
   Parameter atomic_or_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_or_release :
-    M.IsFunction "core::intrinsics::atomic_or_release" atomic_or_release.
-  Smpl Add apply Function_atomic_or_release : is_function.
+  Global Instance Instance_IsFunction_atomic_or_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_or_release" atomic_or_release.
+  Admitted.
   
   Parameter atomic_or_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_or_acqrel :
-    M.IsFunction "core::intrinsics::atomic_or_acqrel" atomic_or_acqrel.
-  Smpl Add apply Function_atomic_or_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_or_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_or_acqrel" atomic_or_acqrel.
+  Admitted.
   
   Parameter atomic_or_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_or_relaxed :
-    M.IsFunction "core::intrinsics::atomic_or_relaxed" atomic_or_relaxed.
-  Smpl Add apply Function_atomic_or_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_or_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_or_relaxed" atomic_or_relaxed.
+  Admitted.
   
   Parameter atomic_xor_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xor_seqcst :
-    M.IsFunction "core::intrinsics::atomic_xor_seqcst" atomic_xor_seqcst.
-  Smpl Add apply Function_atomic_xor_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_xor_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_xor_seqcst" atomic_xor_seqcst.
+  Admitted.
   
   Parameter atomic_xor_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xor_acquire :
-    M.IsFunction "core::intrinsics::atomic_xor_acquire" atomic_xor_acquire.
-  Smpl Add apply Function_atomic_xor_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_xor_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_xor_acquire" atomic_xor_acquire.
+  Admitted.
   
   Parameter atomic_xor_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xor_release :
-    M.IsFunction "core::intrinsics::atomic_xor_release" atomic_xor_release.
-  Smpl Add apply Function_atomic_xor_release : is_function.
+  Global Instance Instance_IsFunction_atomic_xor_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_xor_release" atomic_xor_release.
+  Admitted.
   
   Parameter atomic_xor_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xor_acqrel :
-    M.IsFunction "core::intrinsics::atomic_xor_acqrel" atomic_xor_acqrel.
-  Smpl Add apply Function_atomic_xor_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_xor_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_xor_acqrel" atomic_xor_acqrel.
+  Admitted.
   
   Parameter atomic_xor_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_xor_relaxed :
-    M.IsFunction "core::intrinsics::atomic_xor_relaxed" atomic_xor_relaxed.
-  Smpl Add apply Function_atomic_xor_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_xor_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_xor_relaxed" atomic_xor_relaxed.
+  Admitted.
   
   Parameter atomic_max_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_max_seqcst :
-    M.IsFunction "core::intrinsics::atomic_max_seqcst" atomic_max_seqcst.
-  Smpl Add apply Function_atomic_max_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_max_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_max_seqcst" atomic_max_seqcst.
+  Admitted.
   
   Parameter atomic_max_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_max_acquire :
-    M.IsFunction "core::intrinsics::atomic_max_acquire" atomic_max_acquire.
-  Smpl Add apply Function_atomic_max_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_max_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_max_acquire" atomic_max_acquire.
+  Admitted.
   
   Parameter atomic_max_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_max_release :
-    M.IsFunction "core::intrinsics::atomic_max_release" atomic_max_release.
-  Smpl Add apply Function_atomic_max_release : is_function.
+  Global Instance Instance_IsFunction_atomic_max_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_max_release" atomic_max_release.
+  Admitted.
   
   Parameter atomic_max_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_max_acqrel :
-    M.IsFunction "core::intrinsics::atomic_max_acqrel" atomic_max_acqrel.
-  Smpl Add apply Function_atomic_max_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_max_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_max_acqrel" atomic_max_acqrel.
+  Admitted.
   
   Parameter atomic_max_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_max_relaxed :
-    M.IsFunction "core::intrinsics::atomic_max_relaxed" atomic_max_relaxed.
-  Smpl Add apply Function_atomic_max_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_max_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_max_relaxed" atomic_max_relaxed.
+  Admitted.
   
   Parameter atomic_min_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_min_seqcst :
-    M.IsFunction "core::intrinsics::atomic_min_seqcst" atomic_min_seqcst.
-  Smpl Add apply Function_atomic_min_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_min_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_min_seqcst" atomic_min_seqcst.
+  Admitted.
   
   Parameter atomic_min_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_min_acquire :
-    M.IsFunction "core::intrinsics::atomic_min_acquire" atomic_min_acquire.
-  Smpl Add apply Function_atomic_min_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_min_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_min_acquire" atomic_min_acquire.
+  Admitted.
   
   Parameter atomic_min_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_min_release :
-    M.IsFunction "core::intrinsics::atomic_min_release" atomic_min_release.
-  Smpl Add apply Function_atomic_min_release : is_function.
+  Global Instance Instance_IsFunction_atomic_min_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_min_release" atomic_min_release.
+  Admitted.
   
   Parameter atomic_min_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_min_acqrel :
-    M.IsFunction "core::intrinsics::atomic_min_acqrel" atomic_min_acqrel.
-  Smpl Add apply Function_atomic_min_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_min_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_min_acqrel" atomic_min_acqrel.
+  Admitted.
   
   Parameter atomic_min_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_min_relaxed :
-    M.IsFunction "core::intrinsics::atomic_min_relaxed" atomic_min_relaxed.
-  Smpl Add apply Function_atomic_min_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_min_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_min_relaxed" atomic_min_relaxed.
+  Admitted.
   
   Parameter atomic_umin_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umin_seqcst :
-    M.IsFunction "core::intrinsics::atomic_umin_seqcst" atomic_umin_seqcst.
-  Smpl Add apply Function_atomic_umin_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_umin_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_umin_seqcst" atomic_umin_seqcst.
+  Admitted.
   
   Parameter atomic_umin_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umin_acquire :
-    M.IsFunction "core::intrinsics::atomic_umin_acquire" atomic_umin_acquire.
-  Smpl Add apply Function_atomic_umin_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_umin_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_umin_acquire" atomic_umin_acquire.
+  Admitted.
   
   Parameter atomic_umin_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umin_release :
-    M.IsFunction "core::intrinsics::atomic_umin_release" atomic_umin_release.
-  Smpl Add apply Function_atomic_umin_release : is_function.
+  Global Instance Instance_IsFunction_atomic_umin_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_umin_release" atomic_umin_release.
+  Admitted.
   
   Parameter atomic_umin_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umin_acqrel :
-    M.IsFunction "core::intrinsics::atomic_umin_acqrel" atomic_umin_acqrel.
-  Smpl Add apply Function_atomic_umin_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_umin_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_umin_acqrel" atomic_umin_acqrel.
+  Admitted.
   
   Parameter atomic_umin_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umin_relaxed :
-    M.IsFunction "core::intrinsics::atomic_umin_relaxed" atomic_umin_relaxed.
-  Smpl Add apply Function_atomic_umin_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_umin_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_umin_relaxed" atomic_umin_relaxed.
+  Admitted.
   
   Parameter atomic_umax_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umax_seqcst :
-    M.IsFunction "core::intrinsics::atomic_umax_seqcst" atomic_umax_seqcst.
-  Smpl Add apply Function_atomic_umax_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_umax_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_umax_seqcst" atomic_umax_seqcst.
+  Admitted.
   
   Parameter atomic_umax_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umax_acquire :
-    M.IsFunction "core::intrinsics::atomic_umax_acquire" atomic_umax_acquire.
-  Smpl Add apply Function_atomic_umax_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_umax_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_umax_acquire" atomic_umax_acquire.
+  Admitted.
   
   Parameter atomic_umax_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umax_release :
-    M.IsFunction "core::intrinsics::atomic_umax_release" atomic_umax_release.
-  Smpl Add apply Function_atomic_umax_release : is_function.
+  Global Instance Instance_IsFunction_atomic_umax_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_umax_release" atomic_umax_release.
+  Admitted.
   
   Parameter atomic_umax_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umax_acqrel :
-    M.IsFunction "core::intrinsics::atomic_umax_acqrel" atomic_umax_acqrel.
-  Smpl Add apply Function_atomic_umax_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_umax_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_umax_acqrel" atomic_umax_acqrel.
+  Admitted.
   
   Parameter atomic_umax_relaxed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_umax_relaxed :
-    M.IsFunction "core::intrinsics::atomic_umax_relaxed" atomic_umax_relaxed.
-  Smpl Add apply Function_atomic_umax_relaxed : is_function.
+  Global Instance Instance_IsFunction_atomic_umax_relaxed :
+    M.IsFunction.Trait "core::intrinsics::atomic_umax_relaxed" atomic_umax_relaxed.
+  Admitted.
   
   Parameter atomic_fence_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_fence_seqcst :
-    M.IsFunction "core::intrinsics::atomic_fence_seqcst" atomic_fence_seqcst.
-  Smpl Add apply Function_atomic_fence_seqcst : is_function.
+  Global Instance Instance_IsFunction_atomic_fence_seqcst :
+    M.IsFunction.Trait "core::intrinsics::atomic_fence_seqcst" atomic_fence_seqcst.
+  Admitted.
   
   Parameter atomic_fence_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_fence_acquire :
-    M.IsFunction "core::intrinsics::atomic_fence_acquire" atomic_fence_acquire.
-  Smpl Add apply Function_atomic_fence_acquire : is_function.
+  Global Instance Instance_IsFunction_atomic_fence_acquire :
+    M.IsFunction.Trait "core::intrinsics::atomic_fence_acquire" atomic_fence_acquire.
+  Admitted.
   
   Parameter atomic_fence_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_fence_release :
-    M.IsFunction "core::intrinsics::atomic_fence_release" atomic_fence_release.
-  Smpl Add apply Function_atomic_fence_release : is_function.
+  Global Instance Instance_IsFunction_atomic_fence_release :
+    M.IsFunction.Trait "core::intrinsics::atomic_fence_release" atomic_fence_release.
+  Admitted.
   
   Parameter atomic_fence_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_fence_acqrel :
-    M.IsFunction "core::intrinsics::atomic_fence_acqrel" atomic_fence_acqrel.
-  Smpl Add apply Function_atomic_fence_acqrel : is_function.
+  Global Instance Instance_IsFunction_atomic_fence_acqrel :
+    M.IsFunction.Trait "core::intrinsics::atomic_fence_acqrel" atomic_fence_acqrel.
+  Admitted.
   
   Parameter atomic_singlethreadfence_seqcst : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_singlethreadfence_seqcst :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_singlethreadfence_seqcst :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_singlethreadfence_seqcst"
       atomic_singlethreadfence_seqcst.
-  Smpl Add apply Function_atomic_singlethreadfence_seqcst : is_function.
+  Admitted.
   
   Parameter atomic_singlethreadfence_acquire : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_singlethreadfence_acquire :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_singlethreadfence_acquire :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_singlethreadfence_acquire"
       atomic_singlethreadfence_acquire.
-  Smpl Add apply Function_atomic_singlethreadfence_acquire : is_function.
+  Admitted.
   
   Parameter atomic_singlethreadfence_release : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_singlethreadfence_release :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_singlethreadfence_release :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_singlethreadfence_release"
       atomic_singlethreadfence_release.
-  Smpl Add apply Function_atomic_singlethreadfence_release : is_function.
+  Admitted.
   
   Parameter atomic_singlethreadfence_acqrel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_atomic_singlethreadfence_acqrel :
-    M.IsFunction
+  Global Instance Instance_IsFunction_atomic_singlethreadfence_acqrel :
+    M.IsFunction.Trait
       "core::intrinsics::atomic_singlethreadfence_acqrel"
       atomic_singlethreadfence_acqrel.
-  Smpl Add apply Function_atomic_singlethreadfence_acqrel : is_function.
+  Admitted.
   
   Parameter prefetch_read_data : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_prefetch_read_data :
-    M.IsFunction "core::intrinsics::prefetch_read_data" prefetch_read_data.
-  Smpl Add apply Function_prefetch_read_data : is_function.
+  Global Instance Instance_IsFunction_prefetch_read_data :
+    M.IsFunction.Trait "core::intrinsics::prefetch_read_data" prefetch_read_data.
+  Admitted.
   
   Parameter prefetch_write_data : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_prefetch_write_data :
-    M.IsFunction "core::intrinsics::prefetch_write_data" prefetch_write_data.
-  Smpl Add apply Function_prefetch_write_data : is_function.
+  Global Instance Instance_IsFunction_prefetch_write_data :
+    M.IsFunction.Trait "core::intrinsics::prefetch_write_data" prefetch_write_data.
+  Admitted.
   
   Parameter prefetch_read_instruction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_prefetch_read_instruction :
-    M.IsFunction "core::intrinsics::prefetch_read_instruction" prefetch_read_instruction.
-  Smpl Add apply Function_prefetch_read_instruction : is_function.
+  Global Instance Instance_IsFunction_prefetch_read_instruction :
+    M.IsFunction.Trait "core::intrinsics::prefetch_read_instruction" prefetch_read_instruction.
+  Admitted.
   
   Parameter prefetch_write_instruction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_prefetch_write_instruction :
-    M.IsFunction "core::intrinsics::prefetch_write_instruction" prefetch_write_instruction.
-  Smpl Add apply Function_prefetch_write_instruction : is_function.
+  Global Instance Instance_IsFunction_prefetch_write_instruction :
+    M.IsFunction.Trait "core::intrinsics::prefetch_write_instruction" prefetch_write_instruction.
+  Admitted.
   
   Parameter rustc_peek : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rustc_peek : M.IsFunction "core::intrinsics::rustc_peek" rustc_peek.
-  Smpl Add apply Function_rustc_peek : is_function.
+  Global Instance Instance_IsFunction_rustc_peek :
+    M.IsFunction.Trait "core::intrinsics::rustc_peek" rustc_peek.
+  Admitted.
   
   Parameter abort : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_abort : M.IsFunction "core::intrinsics::abort" abort.
-  Smpl Add apply Function_abort : is_function.
+  Global Instance Instance_IsFunction_abort : M.IsFunction.Trait "core::intrinsics::abort" abort.
+  Admitted.
   
   Parameter unreachable : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unreachable : M.IsFunction "core::intrinsics::unreachable" unreachable.
-  Smpl Add apply Function_unreachable : is_function.
+  Global Instance Instance_IsFunction_unreachable :
+    M.IsFunction.Trait "core::intrinsics::unreachable" unreachable.
+  Admitted.
   
   (*
   pub const unsafe fn assume(b: bool) {
@@ -740,8 +760,9 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assume : M.IsFunction "core::intrinsics::assume" assume.
-  Smpl Add apply Function_assume : is_function.
+  Global Instance Instance_IsFunction_assume : M.IsFunction.Trait "core::intrinsics::assume" assume.
+  Admitted.
+  Global Typeclasses Opaque assume.
   
   (*
   pub const fn likely(b: bool) -> bool {
@@ -757,8 +778,9 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_likely : M.IsFunction "core::intrinsics::likely" likely.
-  Smpl Add apply Function_likely : is_function.
+  Global Instance Instance_IsFunction_likely : M.IsFunction.Trait "core::intrinsics::likely" likely.
+  Admitted.
+  Global Typeclasses Opaque likely.
   
   (*
   pub const fn unlikely(b: bool) -> bool {
@@ -774,8 +796,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unlikely : M.IsFunction "core::intrinsics::unlikely" unlikely.
-  Smpl Add apply Function_unlikely : is_function.
+  Global Instance Instance_IsFunction_unlikely :
+    M.IsFunction.Trait "core::intrinsics::unlikely" unlikely.
+  Admitted.
+  Global Typeclasses Opaque unlikely.
   
   (*
   pub fn select_unpredictable<T>(b: bool, true_val: T, false_val: T) -> T {
@@ -805,784 +829,897 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_select_unpredictable :
-    M.IsFunction "core::intrinsics::select_unpredictable" select_unpredictable.
-  Smpl Add apply Function_select_unpredictable : is_function.
+  Global Instance Instance_IsFunction_select_unpredictable :
+    M.IsFunction.Trait "core::intrinsics::select_unpredictable" select_unpredictable.
+  Admitted.
+  Global Typeclasses Opaque select_unpredictable.
   
   Parameter breakpoint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_breakpoint : M.IsFunction "core::intrinsics::breakpoint" breakpoint.
-  Smpl Add apply Function_breakpoint : is_function.
+  Global Instance Instance_IsFunction_breakpoint :
+    M.IsFunction.Trait "core::intrinsics::breakpoint" breakpoint.
+  Admitted.
   
   Parameter assert_inhabited : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_assert_inhabited :
-    M.IsFunction "core::intrinsics::assert_inhabited" assert_inhabited.
-  Smpl Add apply Function_assert_inhabited : is_function.
+  Global Instance Instance_IsFunction_assert_inhabited :
+    M.IsFunction.Trait "core::intrinsics::assert_inhabited" assert_inhabited.
+  Admitted.
   
   Parameter assert_zero_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_assert_zero_valid :
-    M.IsFunction "core::intrinsics::assert_zero_valid" assert_zero_valid.
-  Smpl Add apply Function_assert_zero_valid : is_function.
+  Global Instance Instance_IsFunction_assert_zero_valid :
+    M.IsFunction.Trait "core::intrinsics::assert_zero_valid" assert_zero_valid.
+  Admitted.
   
   Parameter assert_mem_uninitialized_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_assert_mem_uninitialized_valid :
-    M.IsFunction "core::intrinsics::assert_mem_uninitialized_valid" assert_mem_uninitialized_valid.
-  Smpl Add apply Function_assert_mem_uninitialized_valid : is_function.
+  Global Instance Instance_IsFunction_assert_mem_uninitialized_valid :
+    M.IsFunction.Trait
+      "core::intrinsics::assert_mem_uninitialized_valid"
+      assert_mem_uninitialized_valid.
+  Admitted.
   
   Parameter caller_location : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_caller_location : M.IsFunction "core::intrinsics::caller_location" caller_location.
-  Smpl Add apply Function_caller_location : is_function.
+  Global Instance Instance_IsFunction_caller_location :
+    M.IsFunction.Trait "core::intrinsics::caller_location" caller_location.
+  Admitted.
   
   Parameter forget : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_forget : M.IsFunction "core::intrinsics::forget" forget.
-  Smpl Add apply Function_forget : is_function.
+  Global Instance Instance_IsFunction_forget : M.IsFunction.Trait "core::intrinsics::forget" forget.
+  Admitted.
   
   Parameter transmute : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_transmute : M.IsFunction "core::intrinsics::transmute" transmute.
-  Smpl Add apply Function_transmute : is_function.
+  Global Instance Instance_IsFunction_transmute :
+    M.IsFunction.Trait "core::intrinsics::transmute" transmute.
+  Admitted.
   
   Parameter transmute_unchecked : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_transmute_unchecked :
-    M.IsFunction "core::intrinsics::transmute_unchecked" transmute_unchecked.
-  Smpl Add apply Function_transmute_unchecked : is_function.
+  Global Instance Instance_IsFunction_transmute_unchecked :
+    M.IsFunction.Trait "core::intrinsics::transmute_unchecked" transmute_unchecked.
+  Admitted.
   
   Parameter needs_drop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_needs_drop : M.IsFunction "core::intrinsics::needs_drop" needs_drop.
-  Smpl Add apply Function_needs_drop : is_function.
+  Global Instance Instance_IsFunction_needs_drop :
+    M.IsFunction.Trait "core::intrinsics::needs_drop" needs_drop.
+  Admitted.
   
   Parameter offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_offset : M.IsFunction "core::intrinsics::offset" offset.
-  Smpl Add apply Function_offset : is_function.
+  Global Instance Instance_IsFunction_offset : M.IsFunction.Trait "core::intrinsics::offset" offset.
+  Admitted.
   
   Parameter arith_offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_arith_offset : M.IsFunction "core::intrinsics::arith_offset" arith_offset.
-  Smpl Add apply Function_arith_offset : is_function.
+  Global Instance Instance_IsFunction_arith_offset :
+    M.IsFunction.Trait "core::intrinsics::arith_offset" arith_offset.
+  Admitted.
   
   Parameter ptr_mask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ptr_mask : M.IsFunction "core::intrinsics::ptr_mask" ptr_mask.
-  Smpl Add apply Function_ptr_mask : is_function.
+  Global Instance Instance_IsFunction_ptr_mask :
+    M.IsFunction.Trait "core::intrinsics::ptr_mask" ptr_mask.
+  Admitted.
   
   Parameter volatile_copy_nonoverlapping_memory :
       (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_volatile_copy_nonoverlapping_memory :
-    M.IsFunction
+  Global Instance Instance_IsFunction_volatile_copy_nonoverlapping_memory :
+    M.IsFunction.Trait
       "core::intrinsics::volatile_copy_nonoverlapping_memory"
       volatile_copy_nonoverlapping_memory.
-  Smpl Add apply Function_volatile_copy_nonoverlapping_memory : is_function.
+  Admitted.
   
   Parameter volatile_copy_memory : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_volatile_copy_memory :
-    M.IsFunction "core::intrinsics::volatile_copy_memory" volatile_copy_memory.
-  Smpl Add apply Function_volatile_copy_memory : is_function.
+  Global Instance Instance_IsFunction_volatile_copy_memory :
+    M.IsFunction.Trait "core::intrinsics::volatile_copy_memory" volatile_copy_memory.
+  Admitted.
   
   Parameter volatile_set_memory : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_volatile_set_memory :
-    M.IsFunction "core::intrinsics::volatile_set_memory" volatile_set_memory.
-  Smpl Add apply Function_volatile_set_memory : is_function.
+  Global Instance Instance_IsFunction_volatile_set_memory :
+    M.IsFunction.Trait "core::intrinsics::volatile_set_memory" volatile_set_memory.
+  Admitted.
   
   Parameter volatile_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_volatile_load : M.IsFunction "core::intrinsics::volatile_load" volatile_load.
-  Smpl Add apply Function_volatile_load : is_function.
+  Global Instance Instance_IsFunction_volatile_load :
+    M.IsFunction.Trait "core::intrinsics::volatile_load" volatile_load.
+  Admitted.
   
   Parameter volatile_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_volatile_store : M.IsFunction "core::intrinsics::volatile_store" volatile_store.
-  Smpl Add apply Function_volatile_store : is_function.
+  Global Instance Instance_IsFunction_volatile_store :
+    M.IsFunction.Trait "core::intrinsics::volatile_store" volatile_store.
+  Admitted.
   
   Parameter unaligned_volatile_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unaligned_volatile_load :
-    M.IsFunction "core::intrinsics::unaligned_volatile_load" unaligned_volatile_load.
-  Smpl Add apply Function_unaligned_volatile_load : is_function.
+  Global Instance Instance_IsFunction_unaligned_volatile_load :
+    M.IsFunction.Trait "core::intrinsics::unaligned_volatile_load" unaligned_volatile_load.
+  Admitted.
   
   Parameter unaligned_volatile_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unaligned_volatile_store :
-    M.IsFunction "core::intrinsics::unaligned_volatile_store" unaligned_volatile_store.
-  Smpl Add apply Function_unaligned_volatile_store : is_function.
+  Global Instance Instance_IsFunction_unaligned_volatile_store :
+    M.IsFunction.Trait "core::intrinsics::unaligned_volatile_store" unaligned_volatile_store.
+  Admitted.
   
   Parameter sqrtf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sqrtf16 : M.IsFunction "core::intrinsics::sqrtf16" sqrtf16.
-  Smpl Add apply Function_sqrtf16 : is_function.
+  Global Instance Instance_IsFunction_sqrtf16 :
+    M.IsFunction.Trait "core::intrinsics::sqrtf16" sqrtf16.
+  Admitted.
   
   Parameter sqrtf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sqrtf32 : M.IsFunction "core::intrinsics::sqrtf32" sqrtf32.
-  Smpl Add apply Function_sqrtf32 : is_function.
+  Global Instance Instance_IsFunction_sqrtf32 :
+    M.IsFunction.Trait "core::intrinsics::sqrtf32" sqrtf32.
+  Admitted.
   
   Parameter sqrtf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sqrtf64 : M.IsFunction "core::intrinsics::sqrtf64" sqrtf64.
-  Smpl Add apply Function_sqrtf64 : is_function.
+  Global Instance Instance_IsFunction_sqrtf64 :
+    M.IsFunction.Trait "core::intrinsics::sqrtf64" sqrtf64.
+  Admitted.
   
   Parameter sqrtf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sqrtf128 : M.IsFunction "core::intrinsics::sqrtf128" sqrtf128.
-  Smpl Add apply Function_sqrtf128 : is_function.
+  Global Instance Instance_IsFunction_sqrtf128 :
+    M.IsFunction.Trait "core::intrinsics::sqrtf128" sqrtf128.
+  Admitted.
   
   Parameter powif16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powif16 : M.IsFunction "core::intrinsics::powif16" powif16.
-  Smpl Add apply Function_powif16 : is_function.
+  Global Instance Instance_IsFunction_powif16 :
+    M.IsFunction.Trait "core::intrinsics::powif16" powif16.
+  Admitted.
   
   Parameter powif32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powif32 : M.IsFunction "core::intrinsics::powif32" powif32.
-  Smpl Add apply Function_powif32 : is_function.
+  Global Instance Instance_IsFunction_powif32 :
+    M.IsFunction.Trait "core::intrinsics::powif32" powif32.
+  Admitted.
   
   Parameter powif64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powif64 : M.IsFunction "core::intrinsics::powif64" powif64.
-  Smpl Add apply Function_powif64 : is_function.
+  Global Instance Instance_IsFunction_powif64 :
+    M.IsFunction.Trait "core::intrinsics::powif64" powif64.
+  Admitted.
   
   Parameter powif128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powif128 : M.IsFunction "core::intrinsics::powif128" powif128.
-  Smpl Add apply Function_powif128 : is_function.
+  Global Instance Instance_IsFunction_powif128 :
+    M.IsFunction.Trait "core::intrinsics::powif128" powif128.
+  Admitted.
   
   Parameter sinf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sinf16 : M.IsFunction "core::intrinsics::sinf16" sinf16.
-  Smpl Add apply Function_sinf16 : is_function.
+  Global Instance Instance_IsFunction_sinf16 : M.IsFunction.Trait "core::intrinsics::sinf16" sinf16.
+  Admitted.
   
   Parameter sinf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sinf32 : M.IsFunction "core::intrinsics::sinf32" sinf32.
-  Smpl Add apply Function_sinf32 : is_function.
+  Global Instance Instance_IsFunction_sinf32 : M.IsFunction.Trait "core::intrinsics::sinf32" sinf32.
+  Admitted.
   
   Parameter sinf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sinf64 : M.IsFunction "core::intrinsics::sinf64" sinf64.
-  Smpl Add apply Function_sinf64 : is_function.
+  Global Instance Instance_IsFunction_sinf64 : M.IsFunction.Trait "core::intrinsics::sinf64" sinf64.
+  Admitted.
   
   Parameter sinf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sinf128 : M.IsFunction "core::intrinsics::sinf128" sinf128.
-  Smpl Add apply Function_sinf128 : is_function.
+  Global Instance Instance_IsFunction_sinf128 :
+    M.IsFunction.Trait "core::intrinsics::sinf128" sinf128.
+  Admitted.
   
   Parameter cosf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_cosf16 : M.IsFunction "core::intrinsics::cosf16" cosf16.
-  Smpl Add apply Function_cosf16 : is_function.
+  Global Instance Instance_IsFunction_cosf16 : M.IsFunction.Trait "core::intrinsics::cosf16" cosf16.
+  Admitted.
   
   Parameter cosf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_cosf32 : M.IsFunction "core::intrinsics::cosf32" cosf32.
-  Smpl Add apply Function_cosf32 : is_function.
+  Global Instance Instance_IsFunction_cosf32 : M.IsFunction.Trait "core::intrinsics::cosf32" cosf32.
+  Admitted.
   
   Parameter cosf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_cosf64 : M.IsFunction "core::intrinsics::cosf64" cosf64.
-  Smpl Add apply Function_cosf64 : is_function.
+  Global Instance Instance_IsFunction_cosf64 : M.IsFunction.Trait "core::intrinsics::cosf64" cosf64.
+  Admitted.
   
   Parameter cosf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_cosf128 : M.IsFunction "core::intrinsics::cosf128" cosf128.
-  Smpl Add apply Function_cosf128 : is_function.
+  Global Instance Instance_IsFunction_cosf128 :
+    M.IsFunction.Trait "core::intrinsics::cosf128" cosf128.
+  Admitted.
   
   Parameter powf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powf16 : M.IsFunction "core::intrinsics::powf16" powf16.
-  Smpl Add apply Function_powf16 : is_function.
+  Global Instance Instance_IsFunction_powf16 : M.IsFunction.Trait "core::intrinsics::powf16" powf16.
+  Admitted.
   
   Parameter powf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powf32 : M.IsFunction "core::intrinsics::powf32" powf32.
-  Smpl Add apply Function_powf32 : is_function.
+  Global Instance Instance_IsFunction_powf32 : M.IsFunction.Trait "core::intrinsics::powf32" powf32.
+  Admitted.
   
   Parameter powf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powf64 : M.IsFunction "core::intrinsics::powf64" powf64.
-  Smpl Add apply Function_powf64 : is_function.
+  Global Instance Instance_IsFunction_powf64 : M.IsFunction.Trait "core::intrinsics::powf64" powf64.
+  Admitted.
   
   Parameter powf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_powf128 : M.IsFunction "core::intrinsics::powf128" powf128.
-  Smpl Add apply Function_powf128 : is_function.
+  Global Instance Instance_IsFunction_powf128 :
+    M.IsFunction.Trait "core::intrinsics::powf128" powf128.
+  Admitted.
   
   Parameter expf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_expf16 : M.IsFunction "core::intrinsics::expf16" expf16.
-  Smpl Add apply Function_expf16 : is_function.
+  Global Instance Instance_IsFunction_expf16 : M.IsFunction.Trait "core::intrinsics::expf16" expf16.
+  Admitted.
   
   Parameter expf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_expf32 : M.IsFunction "core::intrinsics::expf32" expf32.
-  Smpl Add apply Function_expf32 : is_function.
+  Global Instance Instance_IsFunction_expf32 : M.IsFunction.Trait "core::intrinsics::expf32" expf32.
+  Admitted.
   
   Parameter expf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_expf64 : M.IsFunction "core::intrinsics::expf64" expf64.
-  Smpl Add apply Function_expf64 : is_function.
+  Global Instance Instance_IsFunction_expf64 : M.IsFunction.Trait "core::intrinsics::expf64" expf64.
+  Admitted.
   
   Parameter expf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_expf128 : M.IsFunction "core::intrinsics::expf128" expf128.
-  Smpl Add apply Function_expf128 : is_function.
+  Global Instance Instance_IsFunction_expf128 :
+    M.IsFunction.Trait "core::intrinsics::expf128" expf128.
+  Admitted.
   
   Parameter exp2f16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_exp2f16 : M.IsFunction "core::intrinsics::exp2f16" exp2f16.
-  Smpl Add apply Function_exp2f16 : is_function.
+  Global Instance Instance_IsFunction_exp2f16 :
+    M.IsFunction.Trait "core::intrinsics::exp2f16" exp2f16.
+  Admitted.
   
   Parameter exp2f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_exp2f32 : M.IsFunction "core::intrinsics::exp2f32" exp2f32.
-  Smpl Add apply Function_exp2f32 : is_function.
+  Global Instance Instance_IsFunction_exp2f32 :
+    M.IsFunction.Trait "core::intrinsics::exp2f32" exp2f32.
+  Admitted.
   
   Parameter exp2f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_exp2f64 : M.IsFunction "core::intrinsics::exp2f64" exp2f64.
-  Smpl Add apply Function_exp2f64 : is_function.
+  Global Instance Instance_IsFunction_exp2f64 :
+    M.IsFunction.Trait "core::intrinsics::exp2f64" exp2f64.
+  Admitted.
   
   Parameter exp2f128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_exp2f128 : M.IsFunction "core::intrinsics::exp2f128" exp2f128.
-  Smpl Add apply Function_exp2f128 : is_function.
+  Global Instance Instance_IsFunction_exp2f128 :
+    M.IsFunction.Trait "core::intrinsics::exp2f128" exp2f128.
+  Admitted.
   
   Parameter logf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_logf16 : M.IsFunction "core::intrinsics::logf16" logf16.
-  Smpl Add apply Function_logf16 : is_function.
+  Global Instance Instance_IsFunction_logf16 : M.IsFunction.Trait "core::intrinsics::logf16" logf16.
+  Admitted.
   
   Parameter logf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_logf32 : M.IsFunction "core::intrinsics::logf32" logf32.
-  Smpl Add apply Function_logf32 : is_function.
+  Global Instance Instance_IsFunction_logf32 : M.IsFunction.Trait "core::intrinsics::logf32" logf32.
+  Admitted.
   
   Parameter logf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_logf64 : M.IsFunction "core::intrinsics::logf64" logf64.
-  Smpl Add apply Function_logf64 : is_function.
+  Global Instance Instance_IsFunction_logf64 : M.IsFunction.Trait "core::intrinsics::logf64" logf64.
+  Admitted.
   
   Parameter logf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_logf128 : M.IsFunction "core::intrinsics::logf128" logf128.
-  Smpl Add apply Function_logf128 : is_function.
+  Global Instance Instance_IsFunction_logf128 :
+    M.IsFunction.Trait "core::intrinsics::logf128" logf128.
+  Admitted.
   
   Parameter log10f16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log10f16 : M.IsFunction "core::intrinsics::log10f16" log10f16.
-  Smpl Add apply Function_log10f16 : is_function.
+  Global Instance Instance_IsFunction_log10f16 :
+    M.IsFunction.Trait "core::intrinsics::log10f16" log10f16.
+  Admitted.
   
   Parameter log10f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log10f32 : M.IsFunction "core::intrinsics::log10f32" log10f32.
-  Smpl Add apply Function_log10f32 : is_function.
+  Global Instance Instance_IsFunction_log10f32 :
+    M.IsFunction.Trait "core::intrinsics::log10f32" log10f32.
+  Admitted.
   
   Parameter log10f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log10f64 : M.IsFunction "core::intrinsics::log10f64" log10f64.
-  Smpl Add apply Function_log10f64 : is_function.
+  Global Instance Instance_IsFunction_log10f64 :
+    M.IsFunction.Trait "core::intrinsics::log10f64" log10f64.
+  Admitted.
   
   Parameter log10f128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log10f128 : M.IsFunction "core::intrinsics::log10f128" log10f128.
-  Smpl Add apply Function_log10f128 : is_function.
+  Global Instance Instance_IsFunction_log10f128 :
+    M.IsFunction.Trait "core::intrinsics::log10f128" log10f128.
+  Admitted.
   
   Parameter log2f16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log2f16 : M.IsFunction "core::intrinsics::log2f16" log2f16.
-  Smpl Add apply Function_log2f16 : is_function.
+  Global Instance Instance_IsFunction_log2f16 :
+    M.IsFunction.Trait "core::intrinsics::log2f16" log2f16.
+  Admitted.
   
   Parameter log2f32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log2f32 : M.IsFunction "core::intrinsics::log2f32" log2f32.
-  Smpl Add apply Function_log2f32 : is_function.
+  Global Instance Instance_IsFunction_log2f32 :
+    M.IsFunction.Trait "core::intrinsics::log2f32" log2f32.
+  Admitted.
   
   Parameter log2f64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log2f64 : M.IsFunction "core::intrinsics::log2f64" log2f64.
-  Smpl Add apply Function_log2f64 : is_function.
+  Global Instance Instance_IsFunction_log2f64 :
+    M.IsFunction.Trait "core::intrinsics::log2f64" log2f64.
+  Admitted.
   
   Parameter log2f128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_log2f128 : M.IsFunction "core::intrinsics::log2f128" log2f128.
-  Smpl Add apply Function_log2f128 : is_function.
+  Global Instance Instance_IsFunction_log2f128 :
+    M.IsFunction.Trait "core::intrinsics::log2f128" log2f128.
+  Admitted.
   
   Parameter fmaf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fmaf16 : M.IsFunction "core::intrinsics::fmaf16" fmaf16.
-  Smpl Add apply Function_fmaf16 : is_function.
+  Global Instance Instance_IsFunction_fmaf16 : M.IsFunction.Trait "core::intrinsics::fmaf16" fmaf16.
+  Admitted.
   
   Parameter fmaf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fmaf32 : M.IsFunction "core::intrinsics::fmaf32" fmaf32.
-  Smpl Add apply Function_fmaf32 : is_function.
+  Global Instance Instance_IsFunction_fmaf32 : M.IsFunction.Trait "core::intrinsics::fmaf32" fmaf32.
+  Admitted.
   
   Parameter fmaf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fmaf64 : M.IsFunction "core::intrinsics::fmaf64" fmaf64.
-  Smpl Add apply Function_fmaf64 : is_function.
+  Global Instance Instance_IsFunction_fmaf64 : M.IsFunction.Trait "core::intrinsics::fmaf64" fmaf64.
+  Admitted.
   
   Parameter fmaf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fmaf128 : M.IsFunction "core::intrinsics::fmaf128" fmaf128.
-  Smpl Add apply Function_fmaf128 : is_function.
+  Global Instance Instance_IsFunction_fmaf128 :
+    M.IsFunction.Trait "core::intrinsics::fmaf128" fmaf128.
+  Admitted.
   
   Parameter fabsf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fabsf16 : M.IsFunction "core::intrinsics::fabsf16" fabsf16.
-  Smpl Add apply Function_fabsf16 : is_function.
+  Global Instance Instance_IsFunction_fabsf16 :
+    M.IsFunction.Trait "core::intrinsics::fabsf16" fabsf16.
+  Admitted.
   
   Parameter fabsf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fabsf32 : M.IsFunction "core::intrinsics::fabsf32" fabsf32.
-  Smpl Add apply Function_fabsf32 : is_function.
+  Global Instance Instance_IsFunction_fabsf32 :
+    M.IsFunction.Trait "core::intrinsics::fabsf32" fabsf32.
+  Admitted.
   
   Parameter fabsf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fabsf64 : M.IsFunction "core::intrinsics::fabsf64" fabsf64.
-  Smpl Add apply Function_fabsf64 : is_function.
+  Global Instance Instance_IsFunction_fabsf64 :
+    M.IsFunction.Trait "core::intrinsics::fabsf64" fabsf64.
+  Admitted.
   
   Parameter fabsf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fabsf128 : M.IsFunction "core::intrinsics::fabsf128" fabsf128.
-  Smpl Add apply Function_fabsf128 : is_function.
+  Global Instance Instance_IsFunction_fabsf128 :
+    M.IsFunction.Trait "core::intrinsics::fabsf128" fabsf128.
+  Admitted.
   
   Parameter minnumf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_minnumf16 : M.IsFunction "core::intrinsics::minnumf16" minnumf16.
-  Smpl Add apply Function_minnumf16 : is_function.
+  Global Instance Instance_IsFunction_minnumf16 :
+    M.IsFunction.Trait "core::intrinsics::minnumf16" minnumf16.
+  Admitted.
   
   Parameter minnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_minnumf32 : M.IsFunction "core::intrinsics::minnumf32" minnumf32.
-  Smpl Add apply Function_minnumf32 : is_function.
+  Global Instance Instance_IsFunction_minnumf32 :
+    M.IsFunction.Trait "core::intrinsics::minnumf32" minnumf32.
+  Admitted.
   
   Parameter minnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_minnumf64 : M.IsFunction "core::intrinsics::minnumf64" minnumf64.
-  Smpl Add apply Function_minnumf64 : is_function.
+  Global Instance Instance_IsFunction_minnumf64 :
+    M.IsFunction.Trait "core::intrinsics::minnumf64" minnumf64.
+  Admitted.
   
   Parameter minnumf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_minnumf128 : M.IsFunction "core::intrinsics::minnumf128" minnumf128.
-  Smpl Add apply Function_minnumf128 : is_function.
+  Global Instance Instance_IsFunction_minnumf128 :
+    M.IsFunction.Trait "core::intrinsics::minnumf128" minnumf128.
+  Admitted.
   
   Parameter maxnumf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_maxnumf16 : M.IsFunction "core::intrinsics::maxnumf16" maxnumf16.
-  Smpl Add apply Function_maxnumf16 : is_function.
+  Global Instance Instance_IsFunction_maxnumf16 :
+    M.IsFunction.Trait "core::intrinsics::maxnumf16" maxnumf16.
+  Admitted.
   
   Parameter maxnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_maxnumf32 : M.IsFunction "core::intrinsics::maxnumf32" maxnumf32.
-  Smpl Add apply Function_maxnumf32 : is_function.
+  Global Instance Instance_IsFunction_maxnumf32 :
+    M.IsFunction.Trait "core::intrinsics::maxnumf32" maxnumf32.
+  Admitted.
   
   Parameter maxnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_maxnumf64 : M.IsFunction "core::intrinsics::maxnumf64" maxnumf64.
-  Smpl Add apply Function_maxnumf64 : is_function.
+  Global Instance Instance_IsFunction_maxnumf64 :
+    M.IsFunction.Trait "core::intrinsics::maxnumf64" maxnumf64.
+  Admitted.
   
   Parameter maxnumf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_maxnumf128 : M.IsFunction "core::intrinsics::maxnumf128" maxnumf128.
-  Smpl Add apply Function_maxnumf128 : is_function.
+  Global Instance Instance_IsFunction_maxnumf128 :
+    M.IsFunction.Trait "core::intrinsics::maxnumf128" maxnumf128.
+  Admitted.
   
   Parameter copysignf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_copysignf16 : M.IsFunction "core::intrinsics::copysignf16" copysignf16.
-  Smpl Add apply Function_copysignf16 : is_function.
+  Global Instance Instance_IsFunction_copysignf16 :
+    M.IsFunction.Trait "core::intrinsics::copysignf16" copysignf16.
+  Admitted.
   
   Parameter copysignf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_copysignf32 : M.IsFunction "core::intrinsics::copysignf32" copysignf32.
-  Smpl Add apply Function_copysignf32 : is_function.
+  Global Instance Instance_IsFunction_copysignf32 :
+    M.IsFunction.Trait "core::intrinsics::copysignf32" copysignf32.
+  Admitted.
   
   Parameter copysignf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_copysignf64 : M.IsFunction "core::intrinsics::copysignf64" copysignf64.
-  Smpl Add apply Function_copysignf64 : is_function.
+  Global Instance Instance_IsFunction_copysignf64 :
+    M.IsFunction.Trait "core::intrinsics::copysignf64" copysignf64.
+  Admitted.
   
   Parameter copysignf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_copysignf128 : M.IsFunction "core::intrinsics::copysignf128" copysignf128.
-  Smpl Add apply Function_copysignf128 : is_function.
+  Global Instance Instance_IsFunction_copysignf128 :
+    M.IsFunction.Trait "core::intrinsics::copysignf128" copysignf128.
+  Admitted.
   
   Parameter floorf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_floorf16 : M.IsFunction "core::intrinsics::floorf16" floorf16.
-  Smpl Add apply Function_floorf16 : is_function.
+  Global Instance Instance_IsFunction_floorf16 :
+    M.IsFunction.Trait "core::intrinsics::floorf16" floorf16.
+  Admitted.
   
   Parameter floorf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_floorf32 : M.IsFunction "core::intrinsics::floorf32" floorf32.
-  Smpl Add apply Function_floorf32 : is_function.
+  Global Instance Instance_IsFunction_floorf32 :
+    M.IsFunction.Trait "core::intrinsics::floorf32" floorf32.
+  Admitted.
   
   Parameter floorf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_floorf64 : M.IsFunction "core::intrinsics::floorf64" floorf64.
-  Smpl Add apply Function_floorf64 : is_function.
+  Global Instance Instance_IsFunction_floorf64 :
+    M.IsFunction.Trait "core::intrinsics::floorf64" floorf64.
+  Admitted.
   
   Parameter floorf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_floorf128 : M.IsFunction "core::intrinsics::floorf128" floorf128.
-  Smpl Add apply Function_floorf128 : is_function.
+  Global Instance Instance_IsFunction_floorf128 :
+    M.IsFunction.Trait "core::intrinsics::floorf128" floorf128.
+  Admitted.
   
   Parameter ceilf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ceilf16 : M.IsFunction "core::intrinsics::ceilf16" ceilf16.
-  Smpl Add apply Function_ceilf16 : is_function.
+  Global Instance Instance_IsFunction_ceilf16 :
+    M.IsFunction.Trait "core::intrinsics::ceilf16" ceilf16.
+  Admitted.
   
   Parameter ceilf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ceilf32 : M.IsFunction "core::intrinsics::ceilf32" ceilf32.
-  Smpl Add apply Function_ceilf32 : is_function.
+  Global Instance Instance_IsFunction_ceilf32 :
+    M.IsFunction.Trait "core::intrinsics::ceilf32" ceilf32.
+  Admitted.
   
   Parameter ceilf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ceilf64 : M.IsFunction "core::intrinsics::ceilf64" ceilf64.
-  Smpl Add apply Function_ceilf64 : is_function.
+  Global Instance Instance_IsFunction_ceilf64 :
+    M.IsFunction.Trait "core::intrinsics::ceilf64" ceilf64.
+  Admitted.
   
   Parameter ceilf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ceilf128 : M.IsFunction "core::intrinsics::ceilf128" ceilf128.
-  Smpl Add apply Function_ceilf128 : is_function.
+  Global Instance Instance_IsFunction_ceilf128 :
+    M.IsFunction.Trait "core::intrinsics::ceilf128" ceilf128.
+  Admitted.
   
   Parameter truncf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_truncf16 : M.IsFunction "core::intrinsics::truncf16" truncf16.
-  Smpl Add apply Function_truncf16 : is_function.
+  Global Instance Instance_IsFunction_truncf16 :
+    M.IsFunction.Trait "core::intrinsics::truncf16" truncf16.
+  Admitted.
   
   Parameter truncf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_truncf32 : M.IsFunction "core::intrinsics::truncf32" truncf32.
-  Smpl Add apply Function_truncf32 : is_function.
+  Global Instance Instance_IsFunction_truncf32 :
+    M.IsFunction.Trait "core::intrinsics::truncf32" truncf32.
+  Admitted.
   
   Parameter truncf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_truncf64 : M.IsFunction "core::intrinsics::truncf64" truncf64.
-  Smpl Add apply Function_truncf64 : is_function.
+  Global Instance Instance_IsFunction_truncf64 :
+    M.IsFunction.Trait "core::intrinsics::truncf64" truncf64.
+  Admitted.
   
   Parameter truncf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_truncf128 : M.IsFunction "core::intrinsics::truncf128" truncf128.
-  Smpl Add apply Function_truncf128 : is_function.
+  Global Instance Instance_IsFunction_truncf128 :
+    M.IsFunction.Trait "core::intrinsics::truncf128" truncf128.
+  Admitted.
   
   Parameter rintf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rintf16 : M.IsFunction "core::intrinsics::rintf16" rintf16.
-  Smpl Add apply Function_rintf16 : is_function.
+  Global Instance Instance_IsFunction_rintf16 :
+    M.IsFunction.Trait "core::intrinsics::rintf16" rintf16.
+  Admitted.
   
   Parameter rintf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rintf32 : M.IsFunction "core::intrinsics::rintf32" rintf32.
-  Smpl Add apply Function_rintf32 : is_function.
+  Global Instance Instance_IsFunction_rintf32 :
+    M.IsFunction.Trait "core::intrinsics::rintf32" rintf32.
+  Admitted.
   
   Parameter rintf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rintf64 : M.IsFunction "core::intrinsics::rintf64" rintf64.
-  Smpl Add apply Function_rintf64 : is_function.
+  Global Instance Instance_IsFunction_rintf64 :
+    M.IsFunction.Trait "core::intrinsics::rintf64" rintf64.
+  Admitted.
   
   Parameter rintf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rintf128 : M.IsFunction "core::intrinsics::rintf128" rintf128.
-  Smpl Add apply Function_rintf128 : is_function.
+  Global Instance Instance_IsFunction_rintf128 :
+    M.IsFunction.Trait "core::intrinsics::rintf128" rintf128.
+  Admitted.
   
   Parameter nearbyintf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_nearbyintf16 : M.IsFunction "core::intrinsics::nearbyintf16" nearbyintf16.
-  Smpl Add apply Function_nearbyintf16 : is_function.
+  Global Instance Instance_IsFunction_nearbyintf16 :
+    M.IsFunction.Trait "core::intrinsics::nearbyintf16" nearbyintf16.
+  Admitted.
   
   Parameter nearbyintf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_nearbyintf32 : M.IsFunction "core::intrinsics::nearbyintf32" nearbyintf32.
-  Smpl Add apply Function_nearbyintf32 : is_function.
+  Global Instance Instance_IsFunction_nearbyintf32 :
+    M.IsFunction.Trait "core::intrinsics::nearbyintf32" nearbyintf32.
+  Admitted.
   
   Parameter nearbyintf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_nearbyintf64 : M.IsFunction "core::intrinsics::nearbyintf64" nearbyintf64.
-  Smpl Add apply Function_nearbyintf64 : is_function.
+  Global Instance Instance_IsFunction_nearbyintf64 :
+    M.IsFunction.Trait "core::intrinsics::nearbyintf64" nearbyintf64.
+  Admitted.
   
   Parameter nearbyintf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_nearbyintf128 : M.IsFunction "core::intrinsics::nearbyintf128" nearbyintf128.
-  Smpl Add apply Function_nearbyintf128 : is_function.
+  Global Instance Instance_IsFunction_nearbyintf128 :
+    M.IsFunction.Trait "core::intrinsics::nearbyintf128" nearbyintf128.
+  Admitted.
   
   Parameter roundf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundf16 : M.IsFunction "core::intrinsics::roundf16" roundf16.
-  Smpl Add apply Function_roundf16 : is_function.
+  Global Instance Instance_IsFunction_roundf16 :
+    M.IsFunction.Trait "core::intrinsics::roundf16" roundf16.
+  Admitted.
   
   Parameter roundf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundf32 : M.IsFunction "core::intrinsics::roundf32" roundf32.
-  Smpl Add apply Function_roundf32 : is_function.
+  Global Instance Instance_IsFunction_roundf32 :
+    M.IsFunction.Trait "core::intrinsics::roundf32" roundf32.
+  Admitted.
   
   Parameter roundf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundf64 : M.IsFunction "core::intrinsics::roundf64" roundf64.
-  Smpl Add apply Function_roundf64 : is_function.
+  Global Instance Instance_IsFunction_roundf64 :
+    M.IsFunction.Trait "core::intrinsics::roundf64" roundf64.
+  Admitted.
   
   Parameter roundf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundf128 : M.IsFunction "core::intrinsics::roundf128" roundf128.
-  Smpl Add apply Function_roundf128 : is_function.
+  Global Instance Instance_IsFunction_roundf128 :
+    M.IsFunction.Trait "core::intrinsics::roundf128" roundf128.
+  Admitted.
   
   Parameter roundevenf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundevenf16 : M.IsFunction "core::intrinsics::roundevenf16" roundevenf16.
-  Smpl Add apply Function_roundevenf16 : is_function.
+  Global Instance Instance_IsFunction_roundevenf16 :
+    M.IsFunction.Trait "core::intrinsics::roundevenf16" roundevenf16.
+  Admitted.
   
   Parameter roundevenf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundevenf32 : M.IsFunction "core::intrinsics::roundevenf32" roundevenf32.
-  Smpl Add apply Function_roundevenf32 : is_function.
+  Global Instance Instance_IsFunction_roundevenf32 :
+    M.IsFunction.Trait "core::intrinsics::roundevenf32" roundevenf32.
+  Admitted.
   
   Parameter roundevenf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundevenf64 : M.IsFunction "core::intrinsics::roundevenf64" roundevenf64.
-  Smpl Add apply Function_roundevenf64 : is_function.
+  Global Instance Instance_IsFunction_roundevenf64 :
+    M.IsFunction.Trait "core::intrinsics::roundevenf64" roundevenf64.
+  Admitted.
   
   Parameter roundevenf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_roundevenf128 : M.IsFunction "core::intrinsics::roundevenf128" roundevenf128.
-  Smpl Add apply Function_roundevenf128 : is_function.
+  Global Instance Instance_IsFunction_roundevenf128 :
+    M.IsFunction.Trait "core::intrinsics::roundevenf128" roundevenf128.
+  Admitted.
   
   Parameter fadd_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fadd_fast : M.IsFunction "core::intrinsics::fadd_fast" fadd_fast.
-  Smpl Add apply Function_fadd_fast : is_function.
+  Global Instance Instance_IsFunction_fadd_fast :
+    M.IsFunction.Trait "core::intrinsics::fadd_fast" fadd_fast.
+  Admitted.
   
   Parameter fsub_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fsub_fast : M.IsFunction "core::intrinsics::fsub_fast" fsub_fast.
-  Smpl Add apply Function_fsub_fast : is_function.
+  Global Instance Instance_IsFunction_fsub_fast :
+    M.IsFunction.Trait "core::intrinsics::fsub_fast" fsub_fast.
+  Admitted.
   
   Parameter fmul_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fmul_fast : M.IsFunction "core::intrinsics::fmul_fast" fmul_fast.
-  Smpl Add apply Function_fmul_fast : is_function.
+  Global Instance Instance_IsFunction_fmul_fast :
+    M.IsFunction.Trait "core::intrinsics::fmul_fast" fmul_fast.
+  Admitted.
   
   Parameter fdiv_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fdiv_fast : M.IsFunction "core::intrinsics::fdiv_fast" fdiv_fast.
-  Smpl Add apply Function_fdiv_fast : is_function.
+  Global Instance Instance_IsFunction_fdiv_fast :
+    M.IsFunction.Trait "core::intrinsics::fdiv_fast" fdiv_fast.
+  Admitted.
   
   Parameter frem_fast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_frem_fast : M.IsFunction "core::intrinsics::frem_fast" frem_fast.
-  Smpl Add apply Function_frem_fast : is_function.
+  Global Instance Instance_IsFunction_frem_fast :
+    M.IsFunction.Trait "core::intrinsics::frem_fast" frem_fast.
+  Admitted.
   
   Parameter fadd_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fadd_algebraic : M.IsFunction "core::intrinsics::fadd_algebraic" fadd_algebraic.
-  Smpl Add apply Function_fadd_algebraic : is_function.
+  Global Instance Instance_IsFunction_fadd_algebraic :
+    M.IsFunction.Trait "core::intrinsics::fadd_algebraic" fadd_algebraic.
+  Admitted.
   
   Parameter fsub_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fsub_algebraic : M.IsFunction "core::intrinsics::fsub_algebraic" fsub_algebraic.
-  Smpl Add apply Function_fsub_algebraic : is_function.
+  Global Instance Instance_IsFunction_fsub_algebraic :
+    M.IsFunction.Trait "core::intrinsics::fsub_algebraic" fsub_algebraic.
+  Admitted.
   
   Parameter fmul_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fmul_algebraic : M.IsFunction "core::intrinsics::fmul_algebraic" fmul_algebraic.
-  Smpl Add apply Function_fmul_algebraic : is_function.
+  Global Instance Instance_IsFunction_fmul_algebraic :
+    M.IsFunction.Trait "core::intrinsics::fmul_algebraic" fmul_algebraic.
+  Admitted.
   
   Parameter fdiv_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_fdiv_algebraic : M.IsFunction "core::intrinsics::fdiv_algebraic" fdiv_algebraic.
-  Smpl Add apply Function_fdiv_algebraic : is_function.
+  Global Instance Instance_IsFunction_fdiv_algebraic :
+    M.IsFunction.Trait "core::intrinsics::fdiv_algebraic" fdiv_algebraic.
+  Admitted.
   
   Parameter frem_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_frem_algebraic : M.IsFunction "core::intrinsics::frem_algebraic" frem_algebraic.
-  Smpl Add apply Function_frem_algebraic : is_function.
+  Global Instance Instance_IsFunction_frem_algebraic :
+    M.IsFunction.Trait "core::intrinsics::frem_algebraic" frem_algebraic.
+  Admitted.
   
   Parameter float_to_int_unchecked : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_float_to_int_unchecked :
-    M.IsFunction "core::intrinsics::float_to_int_unchecked" float_to_int_unchecked.
-  Smpl Add apply Function_float_to_int_unchecked : is_function.
+  Global Instance Instance_IsFunction_float_to_int_unchecked :
+    M.IsFunction.Trait "core::intrinsics::float_to_int_unchecked" float_to_int_unchecked.
+  Admitted.
   
   Parameter ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ctpop : M.IsFunction "core::intrinsics::ctpop" ctpop.
-  Smpl Add apply Function_ctpop : is_function.
+  Global Instance Instance_IsFunction_ctpop : M.IsFunction.Trait "core::intrinsics::ctpop" ctpop.
+  Admitted.
   
   Parameter ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ctlz : M.IsFunction "core::intrinsics::ctlz" ctlz.
-  Smpl Add apply Function_ctlz : is_function.
+  Global Instance Instance_IsFunction_ctlz : M.IsFunction.Trait "core::intrinsics::ctlz" ctlz.
+  Admitted.
   
   Parameter ctlz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ctlz_nonzero : M.IsFunction "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
-  Smpl Add apply Function_ctlz_nonzero : is_function.
+  Global Instance Instance_IsFunction_ctlz_nonzero :
+    M.IsFunction.Trait "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
+  Admitted.
   
   Parameter cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_cttz : M.IsFunction "core::intrinsics::cttz" cttz.
-  Smpl Add apply Function_cttz : is_function.
+  Global Instance Instance_IsFunction_cttz : M.IsFunction.Trait "core::intrinsics::cttz" cttz.
+  Admitted.
   
   Parameter cttz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_cttz_nonzero : M.IsFunction "core::intrinsics::cttz_nonzero" cttz_nonzero.
-  Smpl Add apply Function_cttz_nonzero : is_function.
+  Global Instance Instance_IsFunction_cttz_nonzero :
+    M.IsFunction.Trait "core::intrinsics::cttz_nonzero" cttz_nonzero.
+  Admitted.
   
   Parameter bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_bswap : M.IsFunction "core::intrinsics::bswap" bswap.
-  Smpl Add apply Function_bswap : is_function.
+  Global Instance Instance_IsFunction_bswap : M.IsFunction.Trait "core::intrinsics::bswap" bswap.
+  Admitted.
   
   Parameter bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_bitreverse : M.IsFunction "core::intrinsics::bitreverse" bitreverse.
-  Smpl Add apply Function_bitreverse : is_function.
+  Global Instance Instance_IsFunction_bitreverse :
+    M.IsFunction.Trait "core::intrinsics::bitreverse" bitreverse.
+  Admitted.
   
   Parameter three_way_compare : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_three_way_compare :
-    M.IsFunction "core::intrinsics::three_way_compare" three_way_compare.
-  Smpl Add apply Function_three_way_compare : is_function.
+  Global Instance Instance_IsFunction_three_way_compare :
+    M.IsFunction.Trait "core::intrinsics::three_way_compare" three_way_compare.
+  Admitted.
   
   Parameter add_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_add_with_overflow :
-    M.IsFunction "core::intrinsics::add_with_overflow" add_with_overflow.
-  Smpl Add apply Function_add_with_overflow : is_function.
+  Global Instance Instance_IsFunction_add_with_overflow :
+    M.IsFunction.Trait "core::intrinsics::add_with_overflow" add_with_overflow.
+  Admitted.
   
   Parameter sub_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_sub_with_overflow :
-    M.IsFunction "core::intrinsics::sub_with_overflow" sub_with_overflow.
-  Smpl Add apply Function_sub_with_overflow : is_function.
+  Global Instance Instance_IsFunction_sub_with_overflow :
+    M.IsFunction.Trait "core::intrinsics::sub_with_overflow" sub_with_overflow.
+  Admitted.
   
   Parameter mul_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_mul_with_overflow :
-    M.IsFunction "core::intrinsics::mul_with_overflow" mul_with_overflow.
-  Smpl Add apply Function_mul_with_overflow : is_function.
+  Global Instance Instance_IsFunction_mul_with_overflow :
+    M.IsFunction.Trait "core::intrinsics::mul_with_overflow" mul_with_overflow.
+  Admitted.
   
   Parameter exact_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_exact_div : M.IsFunction "core::intrinsics::exact_div" exact_div.
-  Smpl Add apply Function_exact_div : is_function.
+  Global Instance Instance_IsFunction_exact_div :
+    M.IsFunction.Trait "core::intrinsics::exact_div" exact_div.
+  Admitted.
   
   Parameter unchecked_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_div : M.IsFunction "core::intrinsics::unchecked_div" unchecked_div.
-  Smpl Add apply Function_unchecked_div : is_function.
+  Global Instance Instance_IsFunction_unchecked_div :
+    M.IsFunction.Trait "core::intrinsics::unchecked_div" unchecked_div.
+  Admitted.
   
   Parameter unchecked_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_rem : M.IsFunction "core::intrinsics::unchecked_rem" unchecked_rem.
-  Smpl Add apply Function_unchecked_rem : is_function.
+  Global Instance Instance_IsFunction_unchecked_rem :
+    M.IsFunction.Trait "core::intrinsics::unchecked_rem" unchecked_rem.
+  Admitted.
   
   Parameter unchecked_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_shl : M.IsFunction "core::intrinsics::unchecked_shl" unchecked_shl.
-  Smpl Add apply Function_unchecked_shl : is_function.
+  Global Instance Instance_IsFunction_unchecked_shl :
+    M.IsFunction.Trait "core::intrinsics::unchecked_shl" unchecked_shl.
+  Admitted.
   
   Parameter unchecked_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_shr : M.IsFunction "core::intrinsics::unchecked_shr" unchecked_shr.
-  Smpl Add apply Function_unchecked_shr : is_function.
+  Global Instance Instance_IsFunction_unchecked_shr :
+    M.IsFunction.Trait "core::intrinsics::unchecked_shr" unchecked_shr.
+  Admitted.
   
   Parameter unchecked_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_add : M.IsFunction "core::intrinsics::unchecked_add" unchecked_add.
-  Smpl Add apply Function_unchecked_add : is_function.
+  Global Instance Instance_IsFunction_unchecked_add :
+    M.IsFunction.Trait "core::intrinsics::unchecked_add" unchecked_add.
+  Admitted.
   
   Parameter unchecked_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_sub : M.IsFunction "core::intrinsics::unchecked_sub" unchecked_sub.
-  Smpl Add apply Function_unchecked_sub : is_function.
+  Global Instance Instance_IsFunction_unchecked_sub :
+    M.IsFunction.Trait "core::intrinsics::unchecked_sub" unchecked_sub.
+  Admitted.
   
   Parameter unchecked_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_unchecked_mul : M.IsFunction "core::intrinsics::unchecked_mul" unchecked_mul.
-  Smpl Add apply Function_unchecked_mul : is_function.
+  Global Instance Instance_IsFunction_unchecked_mul :
+    M.IsFunction.Trait "core::intrinsics::unchecked_mul" unchecked_mul.
+  Admitted.
   
   Parameter rotate_left : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rotate_left : M.IsFunction "core::intrinsics::rotate_left" rotate_left.
-  Smpl Add apply Function_rotate_left : is_function.
+  Global Instance Instance_IsFunction_rotate_left :
+    M.IsFunction.Trait "core::intrinsics::rotate_left" rotate_left.
+  Admitted.
   
   Parameter rotate_right : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_rotate_right : M.IsFunction "core::intrinsics::rotate_right" rotate_right.
-  Smpl Add apply Function_rotate_right : is_function.
+  Global Instance Instance_IsFunction_rotate_right :
+    M.IsFunction.Trait "core::intrinsics::rotate_right" rotate_right.
+  Admitted.
   
   Parameter wrapping_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_wrapping_add : M.IsFunction "core::intrinsics::wrapping_add" wrapping_add.
-  Smpl Add apply Function_wrapping_add : is_function.
+  Global Instance Instance_IsFunction_wrapping_add :
+    M.IsFunction.Trait "core::intrinsics::wrapping_add" wrapping_add.
+  Admitted.
   
   Parameter wrapping_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_wrapping_sub : M.IsFunction "core::intrinsics::wrapping_sub" wrapping_sub.
-  Smpl Add apply Function_wrapping_sub : is_function.
+  Global Instance Instance_IsFunction_wrapping_sub :
+    M.IsFunction.Trait "core::intrinsics::wrapping_sub" wrapping_sub.
+  Admitted.
   
   Parameter wrapping_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_wrapping_mul : M.IsFunction "core::intrinsics::wrapping_mul" wrapping_mul.
-  Smpl Add apply Function_wrapping_mul : is_function.
+  Global Instance Instance_IsFunction_wrapping_mul :
+    M.IsFunction.Trait "core::intrinsics::wrapping_mul" wrapping_mul.
+  Admitted.
   
   Parameter saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_saturating_add : M.IsFunction "core::intrinsics::saturating_add" saturating_add.
-  Smpl Add apply Function_saturating_add : is_function.
+  Global Instance Instance_IsFunction_saturating_add :
+    M.IsFunction.Trait "core::intrinsics::saturating_add" saturating_add.
+  Admitted.
   
   Parameter saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_saturating_sub : M.IsFunction "core::intrinsics::saturating_sub" saturating_sub.
-  Smpl Add apply Function_saturating_sub : is_function.
+  Global Instance Instance_IsFunction_saturating_sub :
+    M.IsFunction.Trait "core::intrinsics::saturating_sub" saturating_sub.
+  Admitted.
   
   Parameter read_via_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_read_via_copy : M.IsFunction "core::intrinsics::read_via_copy" read_via_copy.
-  Smpl Add apply Function_read_via_copy : is_function.
+  Global Instance Instance_IsFunction_read_via_copy :
+    M.IsFunction.Trait "core::intrinsics::read_via_copy" read_via_copy.
+  Admitted.
   
   Parameter write_via_move : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_write_via_move : M.IsFunction "core::intrinsics::write_via_move" write_via_move.
-  Smpl Add apply Function_write_via_move : is_function.
+  Global Instance Instance_IsFunction_write_via_move :
+    M.IsFunction.Trait "core::intrinsics::write_via_move" write_via_move.
+  Admitted.
   
   Parameter discriminant_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_discriminant_value :
-    M.IsFunction "core::intrinsics::discriminant_value" discriminant_value.
-  Smpl Add apply Function_discriminant_value : is_function.
+  Global Instance Instance_IsFunction_discriminant_value :
+    M.IsFunction.Trait "core::intrinsics::discriminant_value" discriminant_value.
+  Admitted.
   
   Parameter catch_unwind : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_catch_unwind : M.IsFunction "core::intrinsics::catch_unwind" catch_unwind.
-  Smpl Add apply Function_catch_unwind : is_function.
+  Global Instance Instance_IsFunction_catch_unwind :
+    M.IsFunction.Trait "core::intrinsics::catch_unwind" catch_unwind.
+  Admitted.
   
   Parameter nontemporal_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_nontemporal_store :
-    M.IsFunction "core::intrinsics::nontemporal_store" nontemporal_store.
-  Smpl Add apply Function_nontemporal_store : is_function.
+  Global Instance Instance_IsFunction_nontemporal_store :
+    M.IsFunction.Trait "core::intrinsics::nontemporal_store" nontemporal_store.
+  Admitted.
   
   Parameter ptr_offset_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ptr_offset_from : M.IsFunction "core::intrinsics::ptr_offset_from" ptr_offset_from.
-  Smpl Add apply Function_ptr_offset_from : is_function.
+  Global Instance Instance_IsFunction_ptr_offset_from :
+    M.IsFunction.Trait "core::intrinsics::ptr_offset_from" ptr_offset_from.
+  Admitted.
   
   Parameter ptr_offset_from_unsigned : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_ptr_offset_from_unsigned :
-    M.IsFunction "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
-  Smpl Add apply Function_ptr_offset_from_unsigned : is_function.
+  Global Instance Instance_IsFunction_ptr_offset_from_unsigned :
+    M.IsFunction.Trait "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
+  Admitted.
   
   (*
   pub const fn ptr_guaranteed_cmp<T>(ptr: *const T, other: *const T) -> u8 {
@@ -1599,24 +1736,27 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ptr_guaranteed_cmp :
-    M.IsFunction "core::intrinsics::ptr_guaranteed_cmp" ptr_guaranteed_cmp.
-  Smpl Add apply Function_ptr_guaranteed_cmp : is_function.
+  Global Instance Instance_IsFunction_ptr_guaranteed_cmp :
+    M.IsFunction.Trait "core::intrinsics::ptr_guaranteed_cmp" ptr_guaranteed_cmp.
+  Admitted.
+  Global Typeclasses Opaque ptr_guaranteed_cmp.
   
   Parameter raw_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_raw_eq : M.IsFunction "core::intrinsics::raw_eq" raw_eq.
-  Smpl Add apply Function_raw_eq : is_function.
+  Global Instance Instance_IsFunction_raw_eq : M.IsFunction.Trait "core::intrinsics::raw_eq" raw_eq.
+  Admitted.
   
   Parameter compare_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_compare_bytes : M.IsFunction "core::intrinsics::compare_bytes" compare_bytes.
-  Smpl Add apply Function_compare_bytes : is_function.
+  Global Instance Instance_IsFunction_compare_bytes :
+    M.IsFunction.Trait "core::intrinsics::compare_bytes" compare_bytes.
+  Admitted.
   
   Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_black_box : M.IsFunction "core::intrinsics::black_box" black_box.
-  Smpl Add apply Function_black_box : is_function.
+  Global Instance Instance_IsFunction_black_box :
+    M.IsFunction.Trait "core::intrinsics::black_box" black_box.
+  Admitted.
   
   (*
   pub const fn const_eval_select<ARG: Tuple, F, G, RET>(
@@ -1648,9 +1788,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_const_eval_select :
-    M.IsFunction "core::intrinsics::const_eval_select" const_eval_select.
-  Smpl Add apply Function_const_eval_select : is_function.
+  Global Instance Instance_IsFunction_const_eval_select :
+    M.IsFunction.Trait "core::intrinsics::const_eval_select" const_eval_select.
+  Admitted.
+  Global Typeclasses Opaque const_eval_select.
   
   (*
   pub const fn is_val_statically_known<T: Copy>(_arg: T) -> bool {
@@ -1666,9 +1807,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_val_statically_known :
-    M.IsFunction "core::intrinsics::is_val_statically_known" is_val_statically_known.
-  Smpl Add apply Function_is_val_statically_known : is_function.
+  Global Instance Instance_IsFunction_is_val_statically_known :
+    M.IsFunction.Trait "core::intrinsics::is_val_statically_known" is_val_statically_known.
+  Admitted.
+  Global Typeclasses Opaque is_val_statically_known.
   
   (*
   pub const unsafe fn typed_swap<T>(x: *mut T, y: *mut T) {
@@ -1697,8 +1839,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_typed_swap : M.IsFunction "core::intrinsics::typed_swap" typed_swap.
-  Smpl Add apply Function_typed_swap : is_function.
+  Global Instance Instance_IsFunction_typed_swap :
+    M.IsFunction.Trait "core::intrinsics::typed_swap" typed_swap.
+  Admitted.
+  Global Typeclasses Opaque typed_swap.
   
   (*
   pub const fn ub_checks() -> bool {
@@ -1711,8 +1855,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ub_checks : M.IsFunction "core::intrinsics::ub_checks" ub_checks.
-  Smpl Add apply Function_ub_checks : is_function.
+  Global Instance Instance_IsFunction_ub_checks :
+    M.IsFunction.Trait "core::intrinsics::ub_checks" ub_checks.
+  Admitted.
+  Global Typeclasses Opaque ub_checks.
   
   (*
   pub const unsafe fn const_allocate(_size: usize, _align: usize) -> *mut u8 {
@@ -1735,8 +1881,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_const_allocate : M.IsFunction "core::intrinsics::const_allocate" const_allocate.
-  Smpl Add apply Function_const_allocate : is_function.
+  Global Instance Instance_IsFunction_const_allocate :
+    M.IsFunction.Trait "core::intrinsics::const_allocate" const_allocate.
+  Admitted.
+  Global Typeclasses Opaque const_allocate.
   
   (*
   pub const unsafe fn const_deallocate(_ptr: *mut u8, _size: usize, _align: usize) {
@@ -1754,9 +1902,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_const_deallocate :
-    M.IsFunction "core::intrinsics::const_deallocate" const_deallocate.
-  Smpl Add apply Function_const_deallocate : is_function.
+  Global Instance Instance_IsFunction_const_deallocate :
+    M.IsFunction.Trait "core::intrinsics::const_deallocate" const_deallocate.
+  Admitted.
+  Global Typeclasses Opaque const_deallocate.
   
   (*
   pub unsafe fn vtable_size(_ptr: *const ()) -> usize {
@@ -1778,8 +1927,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_vtable_size : M.IsFunction "core::intrinsics::vtable_size" vtable_size.
-  Smpl Add apply Function_vtable_size : is_function.
+  Global Instance Instance_IsFunction_vtable_size :
+    M.IsFunction.Trait "core::intrinsics::vtable_size" vtable_size.
+  Admitted.
+  Global Typeclasses Opaque vtable_size.
   
   (*
   pub unsafe fn vtable_align(_ptr: *const ()) -> usize {
@@ -1801,8 +1952,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_vtable_align : M.IsFunction "core::intrinsics::vtable_align" vtable_align.
-  Smpl Add apply Function_vtable_align : is_function.
+  Global Instance Instance_IsFunction_vtable_align :
+    M.IsFunction.Trait "core::intrinsics::vtable_align" vtable_align.
+  Admitted.
+  Global Typeclasses Opaque vtable_align.
   
   (*
   pub const fn size_of<T>() -> usize {
@@ -1823,8 +1976,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_size_of : M.IsFunction "core::intrinsics::size_of" size_of.
-  Smpl Add apply Function_size_of : is_function.
+  Global Instance Instance_IsFunction_size_of :
+    M.IsFunction.Trait "core::intrinsics::size_of" size_of.
+  Admitted.
+  Global Typeclasses Opaque size_of.
   
   (*
   pub const fn min_align_of<T>() -> usize {
@@ -1845,8 +2000,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_align_of : M.IsFunction "core::intrinsics::min_align_of" min_align_of.
-  Smpl Add apply Function_min_align_of : is_function.
+  Global Instance Instance_IsFunction_min_align_of :
+    M.IsFunction.Trait "core::intrinsics::min_align_of" min_align_of.
+  Admitted.
+  Global Typeclasses Opaque min_align_of.
   
   (*
   pub const unsafe fn pref_align_of<T>() -> usize {
@@ -1867,8 +2024,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_pref_align_of : M.IsFunction "core::intrinsics::pref_align_of" pref_align_of.
-  Smpl Add apply Function_pref_align_of : is_function.
+  Global Instance Instance_IsFunction_pref_align_of :
+    M.IsFunction.Trait "core::intrinsics::pref_align_of" pref_align_of.
+  Admitted.
+  Global Typeclasses Opaque pref_align_of.
   
   (*
   pub const fn variant_count<T>() -> usize {
@@ -1889,8 +2048,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_variant_count : M.IsFunction "core::intrinsics::variant_count" variant_count.
-  Smpl Add apply Function_variant_count : is_function.
+  Global Instance Instance_IsFunction_variant_count :
+    M.IsFunction.Trait "core::intrinsics::variant_count" variant_count.
+  Admitted.
+  Global Typeclasses Opaque variant_count.
   
   (*
   pub const unsafe fn size_of_val<T: ?Sized>(_ptr: *const T) -> usize {
@@ -1912,8 +2073,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_size_of_val : M.IsFunction "core::intrinsics::size_of_val" size_of_val.
-  Smpl Add apply Function_size_of_val : is_function.
+  Global Instance Instance_IsFunction_size_of_val :
+    M.IsFunction.Trait "core::intrinsics::size_of_val" size_of_val.
+  Admitted.
+  Global Typeclasses Opaque size_of_val.
   
   (*
   pub const unsafe fn min_align_of_val<T: ?Sized>(_ptr: *const T) -> usize {
@@ -1935,9 +2098,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_align_of_val :
-    M.IsFunction "core::intrinsics::min_align_of_val" min_align_of_val.
-  Smpl Add apply Function_min_align_of_val : is_function.
+  Global Instance Instance_IsFunction_min_align_of_val :
+    M.IsFunction.Trait "core::intrinsics::min_align_of_val" min_align_of_val.
+  Admitted.
+  Global Typeclasses Opaque min_align_of_val.
   
   (*
   pub const fn type_name<T: ?Sized>() -> &'static str {
@@ -1958,8 +2122,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_name : M.IsFunction "core::intrinsics::type_name" type_name.
-  Smpl Add apply Function_type_name : is_function.
+  Global Instance Instance_IsFunction_type_name :
+    M.IsFunction.Trait "core::intrinsics::type_name" type_name.
+  Admitted.
+  Global Typeclasses Opaque type_name.
   
   (*
   pub const fn type_id<T: ?Sized + 'static>() -> u128 {
@@ -1980,8 +2146,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_id : M.IsFunction "core::intrinsics::type_id" type_id.
-  Smpl Add apply Function_type_id : is_function.
+  Global Instance Instance_IsFunction_type_id :
+    M.IsFunction.Trait "core::intrinsics::type_id" type_id.
+  Admitted.
+  Global Typeclasses Opaque type_id.
   
   (*
   pub const fn aggregate_raw_ptr<P: AggregateRawPtr<D, Metadata = M>, D, M>(_data: D, _meta: M) -> P {
@@ -2006,9 +2174,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_aggregate_raw_ptr :
-    M.IsFunction "core::intrinsics::aggregate_raw_ptr" aggregate_raw_ptr.
-  Smpl Add apply Function_aggregate_raw_ptr : is_function.
+  Global Instance Instance_IsFunction_aggregate_raw_ptr :
+    M.IsFunction.Trait "core::intrinsics::aggregate_raw_ptr" aggregate_raw_ptr.
+  Admitted.
+  Global Typeclasses Opaque aggregate_raw_ptr.
   
   (* Trait *)
   (* Empty module 'AggregateRawPtr' *)
@@ -2069,8 +2238,10 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ptr_metadata : M.IsFunction "core::intrinsics::ptr_metadata" ptr_metadata.
-  Smpl Add apply Function_ptr_metadata : is_function.
+  Global Instance Instance_IsFunction_ptr_metadata :
+    M.IsFunction.Trait "core::intrinsics::ptr_metadata" ptr_metadata.
+  Admitted.
+  Global Typeclasses Opaque ptr_metadata.
   
   (*
   pub const unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
@@ -2174,16 +2345,19 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_copy_nonoverlapping :
-    M.IsFunction "core::intrinsics::copy_nonoverlapping" copy_nonoverlapping.
-  Smpl Add apply Function_copy_nonoverlapping : is_function.
+  Global Instance Instance_IsFunction_copy_nonoverlapping :
+    M.IsFunction.Trait "core::intrinsics::copy_nonoverlapping" copy_nonoverlapping.
+  Admitted.
+  Global Typeclasses Opaque copy_nonoverlapping.
   
   Module copy_nonoverlapping.
     Parameter copy_nonoverlapping : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_copy_nonoverlapping :
-      M.IsFunction "core::intrinsics::copy_nonoverlapping::copy_nonoverlapping" copy_nonoverlapping.
-    Smpl Add apply Function_copy_nonoverlapping : is_function.
+    Global Instance Instance_IsFunction_copy_nonoverlapping :
+      M.IsFunction.Trait
+        "core::intrinsics::copy_nonoverlapping::copy_nonoverlapping"
+        copy_nonoverlapping.
+    Admitted.
   End copy_nonoverlapping.
   
   (*
@@ -2270,14 +2444,16 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_copy : M.IsFunction "core::intrinsics::copy" copy.
-  Smpl Add apply Function_copy : is_function.
+  Global Instance Instance_IsFunction_copy : M.IsFunction.Trait "core::intrinsics::copy" copy.
+  Admitted.
+  Global Typeclasses Opaque copy.
   
   Module copy.
     Parameter copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_copy : M.IsFunction "core::intrinsics::copy::copy" copy.
-    Smpl Add apply Function_copy : is_function.
+    Global Instance Instance_IsFunction_copy :
+      M.IsFunction.Trait "core::intrinsics::copy::copy" copy.
+    Admitted.
   End copy.
   
   (*
@@ -2362,14 +2538,16 @@ Module intrinsics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_bytes : M.IsFunction "core::intrinsics::write_bytes" write_bytes.
-  Smpl Add apply Function_write_bytes : is_function.
+  Global Instance Instance_IsFunction_write_bytes :
+    M.IsFunction.Trait "core::intrinsics::write_bytes" write_bytes.
+  Admitted.
+  Global Typeclasses Opaque write_bytes.
   
   Module write_bytes.
     Parameter write_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_write_bytes :
-      M.IsFunction "core::intrinsics::write_bytes::write_bytes" write_bytes.
-    Smpl Add apply Function_write_bytes : is_function.
+    Global Instance Instance_IsFunction_write_bytes :
+      M.IsFunction.Trait "core::intrinsics::write_bytes::write_bytes" write_bytes.
+    Admitted.
   End write_bytes.
 End intrinsics.

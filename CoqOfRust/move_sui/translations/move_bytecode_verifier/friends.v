@@ -92,9 +92,10 @@ Module friends.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module :
-    M.IsFunction "move_bytecode_verifier::friends::verify_module" verify_module.
-  Smpl Add apply Function_verify_module : is_function.
+  Global Instance Instance_IsFunction_verify_module :
+    M.IsFunction.Trait "move_bytecode_verifier::friends::verify_module" verify_module.
+  Admitted.
+  Global Typeclasses Opaque verify_module.
   
   (*
   fn verify_module_impl(module: &CompiledModule) -> PartialVMResult<()> {
@@ -514,7 +515,8 @@ Module friends.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_impl :
-    M.IsFunction "move_bytecode_verifier::friends::verify_module_impl" verify_module_impl.
-  Smpl Add apply Function_verify_module_impl : is_function.
+  Global Instance Instance_IsFunction_verify_module_impl :
+    M.IsFunction.Trait "move_bytecode_verifier::friends::verify_module_impl" verify_module_impl.
+  Admitted.
+  Global Typeclasses Opaque verify_module_impl.
 End friends.

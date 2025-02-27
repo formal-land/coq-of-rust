@@ -1549,9 +1549,10 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_error_category :
-      M.IsAssociatedFunction Self "add_error_category" add_error_category.
-    Smpl Add apply AssociatedFunction_add_error_category : is_associated.
+    Global Instance AssociatedFunction_add_error_category :
+      M.IsAssociatedFunction.Trait Self "add_error_category" add_error_category.
+    Admitted.
+    Global Typeclasses Opaque add_error_category.
     
     (*
         pub fn add_module_error(
@@ -2075,9 +2076,10 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_module_error :
-      M.IsAssociatedFunction Self "add_module_error" add_module_error.
-    Smpl Add apply AssociatedFunction_add_module_error : is_associated.
+    Global Instance AssociatedFunction_add_module_error :
+      M.IsAssociatedFunction.Trait Self "add_module_error" add_module_error.
+    Admitted.
+    Global Typeclasses Opaque add_module_error.
     
     (*
         pub fn from_file<P: AsRef<Path>>(path: P) -> Self {
@@ -2249,8 +2251,10 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_file : M.IsAssociatedFunction Self "from_file" from_file.
-    Smpl Add apply AssociatedFunction_from_file : is_associated.
+    Global Instance AssociatedFunction_from_file :
+      M.IsAssociatedFunction.Trait Self "from_file" from_file.
+    Admitted.
+    Global Typeclasses Opaque from_file.
     
     (*
         pub fn to_file<P: AsRef<Path>>(&self, path: P) {
@@ -2408,8 +2412,10 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_file : M.IsAssociatedFunction Self "to_file" to_file.
-    Smpl Add apply AssociatedFunction_to_file : is_associated.
+    Global Instance AssociatedFunction_to_file :
+      M.IsAssociatedFunction.Trait Self "to_file" to_file.
+    Admitted.
+    Global Typeclasses Opaque to_file.
     
     (*
         pub fn get_explanation(&self, module: &ModuleId, output_code: u64) -> Option<ErrorDescription> {
@@ -2607,8 +2613,9 @@ Module errmap.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_explanation :
-      M.IsAssociatedFunction Self "get_explanation" get_explanation.
-    Smpl Add apply AssociatedFunction_get_explanation : is_associated.
+    Global Instance AssociatedFunction_get_explanation :
+      M.IsAssociatedFunction.Trait Self "get_explanation" get_explanation.
+    Admitted.
+    Global Typeclasses Opaque get_explanation.
   End Impl_move_core_types_errmap_ErrorMapping.
 End errmap.

@@ -141,10 +141,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "new" (new T A).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "new" (new T A).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             unsafe fn as_slices(&self) -> ( *mut [T], *mut [T]) {
@@ -340,10 +341,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_as_slices :
+        Global Instance AssociatedFunction_as_slices :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction (Self T A) "as_slices" (as_slices T A).
-        Smpl Add apply AssociatedFunction_as_slices : is_associated.
+          M.IsAssociatedFunction.Trait (Self T A) "as_slices" (as_slices T A).
+        Admitted.
+        Global Typeclasses Opaque as_slices.
       End Impl_alloc_collections_vec_deque_drain_Drain_T_A.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_drain_Drain_T_A.

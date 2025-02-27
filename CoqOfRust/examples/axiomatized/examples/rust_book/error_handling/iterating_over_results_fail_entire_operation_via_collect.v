@@ -3,6 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main :
-  M.IsFunction "iterating_over_results_fail_entire_operation_via_collect::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "iterating_over_results_fail_entire_operation_via_collect::main" main.
+Admitted.

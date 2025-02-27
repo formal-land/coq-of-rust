@@ -28,8 +28,10 @@ Module alloc.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_size_align : M.IsFunction "core::alloc::layout::size_align" size_align.
-    Smpl Add apply Function_size_align : is_function.
+    Global Instance Instance_IsFunction_size_align :
+      M.IsFunction.Trait "core::alloc::layout::size_align" size_align.
+    Admitted.
+    Global Typeclasses Opaque size_align.
     
     (* StructRecord
       {
@@ -438,9 +440,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_size_align :
-        M.IsAssociatedFunction Self "from_size_align" from_size_align.
-      Smpl Add apply AssociatedFunction_from_size_align : is_associated.
+      Global Instance AssociatedFunction_from_size_align :
+        M.IsAssociatedFunction.Trait Self "from_size_align" from_size_align.
+      Admitted.
+      Global Typeclasses Opaque from_size_align.
       
       (*
           const fn is_size_align_valid(size: usize, align: usize) -> bool {
@@ -530,9 +533,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_size_align_valid :
-        M.IsAssociatedFunction Self "is_size_align_valid" is_size_align_valid.
-      Smpl Add apply AssociatedFunction_is_size_align_valid : is_associated.
+      Global Instance AssociatedFunction_is_size_align_valid :
+        M.IsAssociatedFunction.Trait Self "is_size_align_valid" is_size_align_valid.
+      Admitted.
+      Global Typeclasses Opaque is_size_align_valid.
       
       (*
           const fn max_size_for_align(align: Alignment) -> usize {
@@ -584,9 +588,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_max_size_for_align :
-        M.IsAssociatedFunction Self "max_size_for_align" max_size_for_align.
-      Smpl Add apply AssociatedFunction_max_size_for_align : is_associated.
+      Global Instance AssociatedFunction_max_size_for_align :
+        M.IsAssociatedFunction.Trait Self "max_size_for_align" max_size_for_align.
+      Admitted.
+      Global Typeclasses Opaque max_size_for_align.
       
       (*
           const fn from_size_alignment(size: usize, align: Alignment) -> Result<Self, LayoutError> {
@@ -660,9 +665,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_size_alignment :
-        M.IsAssociatedFunction Self "from_size_alignment" from_size_alignment.
-      Smpl Add apply AssociatedFunction_from_size_alignment : is_associated.
+      Global Instance AssociatedFunction_from_size_alignment :
+        M.IsAssociatedFunction.Trait Self "from_size_alignment" from_size_alignment.
+      Admitted.
+      Global Typeclasses Opaque from_size_alignment.
       
       (*
           pub const unsafe fn from_size_align_unchecked(size: usize, align: usize) -> Self {
@@ -745,9 +751,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_size_align_unchecked :
-        M.IsAssociatedFunction Self "from_size_align_unchecked" from_size_align_unchecked.
-      Smpl Add apply AssociatedFunction_from_size_align_unchecked : is_associated.
+      Global Instance AssociatedFunction_from_size_align_unchecked :
+        M.IsAssociatedFunction.Trait Self "from_size_align_unchecked" from_size_align_unchecked.
+      Admitted.
+      Global Typeclasses Opaque from_size_align_unchecked.
       
       (*
           pub const fn size(&self) -> usize {
@@ -769,8 +776,9 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
-      Smpl Add apply AssociatedFunction_size : is_associated.
+      Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+      Admitted.
+      Global Typeclasses Opaque size.
       
       (*
           pub const fn align(&self) -> usize {
@@ -803,8 +811,9 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
-      Smpl Add apply AssociatedFunction_align : is_associated.
+      Global Instance AssociatedFunction_align : M.IsAssociatedFunction.Trait Self "align" align.
+      Admitted.
+      Global Typeclasses Opaque align.
       
       (*
           pub const fn new<T>() -> Self {
@@ -853,8 +862,9 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn for_value<T: ?Sized>(t: &T) -> Self {
@@ -910,8 +920,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_for_value : M.IsAssociatedFunction Self "for_value" for_value.
-      Smpl Add apply AssociatedFunction_for_value : is_associated.
+      Global Instance AssociatedFunction_for_value :
+        M.IsAssociatedFunction.Trait Self "for_value" for_value.
+      Admitted.
+      Global Typeclasses Opaque for_value.
       
       (*
           pub const unsafe fn for_value_raw<T: ?Sized>(t: *const T) -> Self {
@@ -968,9 +980,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_for_value_raw :
-        M.IsAssociatedFunction Self "for_value_raw" for_value_raw.
-      Smpl Add apply AssociatedFunction_for_value_raw : is_associated.
+      Global Instance AssociatedFunction_for_value_raw :
+        M.IsAssociatedFunction.Trait Self "for_value_raw" for_value_raw.
+      Admitted.
+      Global Typeclasses Opaque for_value_raw.
       
       (*
           pub const fn dangling(&self) -> NonNull<u8> {
@@ -1013,8 +1026,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_dangling : M.IsAssociatedFunction Self "dangling" dangling.
-      Smpl Add apply AssociatedFunction_dangling : is_associated.
+      Global Instance AssociatedFunction_dangling :
+        M.IsAssociatedFunction.Trait Self "dangling" dangling.
+      Admitted.
+      Global Typeclasses Opaque dangling.
       
       (*
           pub const fn align_to(&self, align: usize) -> Result<Self, LayoutError> {
@@ -1118,8 +1133,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_align_to : M.IsAssociatedFunction Self "align_to" align_to.
-      Smpl Add apply AssociatedFunction_align_to : is_associated.
+      Global Instance AssociatedFunction_align_to :
+        M.IsAssociatedFunction.Trait Self "align_to" align_to.
+      Admitted.
+      Global Typeclasses Opaque align_to.
       
       (*
           pub const fn padding_needed_for(&self, align: usize) -> usize {
@@ -1205,9 +1222,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_padding_needed_for :
-        M.IsAssociatedFunction Self "padding_needed_for" padding_needed_for.
-      Smpl Add apply AssociatedFunction_padding_needed_for : is_associated.
+      Global Instance AssociatedFunction_padding_needed_for :
+        M.IsAssociatedFunction.Trait Self "padding_needed_for" padding_needed_for.
+      Admitted.
+      Global Typeclasses Opaque padding_needed_for.
       
       (*
           const fn size_rounded_up_to_custom_align(&self, align: Alignment) -> usize {
@@ -1295,12 +1313,13 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_size_rounded_up_to_custom_align :
-        M.IsAssociatedFunction
+      Global Instance AssociatedFunction_size_rounded_up_to_custom_align :
+        M.IsAssociatedFunction.Trait
           Self
           "size_rounded_up_to_custom_align"
           size_rounded_up_to_custom_align.
-      Smpl Add apply AssociatedFunction_size_rounded_up_to_custom_align : is_associated.
+      Admitted.
+      Global Typeclasses Opaque size_rounded_up_to_custom_align.
       
       (*
           pub const fn pad_to_align(&self) -> Layout {
@@ -1370,9 +1389,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_pad_to_align :
-        M.IsAssociatedFunction Self "pad_to_align" pad_to_align.
-      Smpl Add apply AssociatedFunction_pad_to_align : is_associated.
+      Global Instance AssociatedFunction_pad_to_align :
+        M.IsAssociatedFunction.Trait Self "pad_to_align" pad_to_align.
+      Admitted.
+      Global Typeclasses Opaque pad_to_align.
       
       (*
           pub const fn repeat(&self, n: usize) -> Result<(Self, usize), LayoutError> {
@@ -1468,8 +1488,9 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
-      Smpl Add apply AssociatedFunction_repeat : is_associated.
+      Global Instance AssociatedFunction_repeat : M.IsAssociatedFunction.Trait Self "repeat" repeat.
+      Admitted.
+      Global Typeclasses Opaque repeat.
       
       (*
           pub const fn extend(&self, next: Self) -> Result<(Self, usize), LayoutError> {
@@ -1612,8 +1633,9 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
-      Smpl Add apply AssociatedFunction_extend : is_associated.
+      Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.Trait Self "extend" extend.
+      Admitted.
+      Global Typeclasses Opaque extend.
       
       (*
           pub const fn repeat_packed(&self, n: usize) -> Result<Self, LayoutError> {
@@ -1701,9 +1723,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_repeat_packed :
-        M.IsAssociatedFunction Self "repeat_packed" repeat_packed.
-      Smpl Add apply AssociatedFunction_repeat_packed : is_associated.
+      Global Instance AssociatedFunction_repeat_packed :
+        M.IsAssociatedFunction.Trait Self "repeat_packed" repeat_packed.
+      Admitted.
+      Global Typeclasses Opaque repeat_packed.
       
       (*
           pub const fn extend_packed(&self, next: Self) -> Result<Self, LayoutError> {
@@ -1775,9 +1798,10 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_extend_packed :
-        M.IsAssociatedFunction Self "extend_packed" extend_packed.
-      Smpl Add apply AssociatedFunction_extend_packed : is_associated.
+      Global Instance AssociatedFunction_extend_packed :
+        M.IsAssociatedFunction.Trait Self "extend_packed" extend_packed.
+      Admitted.
+      Global Typeclasses Opaque extend_packed.
       
       (*
           pub const fn array<T>(n: usize) -> Result<Self, LayoutError> {
@@ -1842,8 +1866,9 @@ Module alloc.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_array : M.IsAssociatedFunction Self "array" array.
-      Smpl Add apply AssociatedFunction_array : is_associated.
+      Global Instance AssociatedFunction_array : M.IsAssociatedFunction.Trait Self "array" array.
+      Admitted.
+      Global Typeclasses Opaque array.
     End Impl_core_alloc_layout_Layout.
     
     Axiom LayoutErr :

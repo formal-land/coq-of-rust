@@ -3,20 +3,24 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter increase : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
-Smpl Add apply Function_increase : is_function.
+Global Instance Instance_IsFunction_increase :
+  M.IsFunction.Trait "program_arguments_parsing::increase" increase.
+Admitted.
 
 Parameter decrease : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
-Smpl Add apply Function_decrease : is_function.
+Global Instance Instance_IsFunction_decrease :
+  M.IsFunction.Trait "program_arguments_parsing::decrease" decrease.
+Admitted.
 
 Parameter help : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
-Smpl Add apply Function_help : is_function.
+Global Instance Instance_IsFunction_help :
+  M.IsFunction.Trait "program_arguments_parsing::help" help.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "program_arguments_parsing::main" main.
+Admitted.

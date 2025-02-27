@@ -350,8 +350,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn instruction_result(&self) -> &InstructionResult {
@@ -383,9 +384,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_instruction_result :
-        M.IsAssociatedFunction Self "instruction_result" instruction_result.
-      Smpl Add apply AssociatedFunction_instruction_result : is_associated.
+      Global Instance AssociatedFunction_instruction_result :
+        M.IsAssociatedFunction.Trait Self "instruction_result" instruction_result.
+      Admitted.
+      Global Typeclasses Opaque instruction_result.
       
       (*
           pub fn output(&self) -> &Bytes {
@@ -417,8 +419,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
-      Smpl Add apply AssociatedFunction_output : is_associated.
+      Global Instance AssociatedFunction_output : M.IsAssociatedFunction.Trait Self "output" output.
+      Admitted.
+      Global Typeclasses Opaque output.
       
       (*
           pub fn gas(&self) -> &Gas {
@@ -450,8 +453,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
-      Smpl Add apply AssociatedFunction_gas : is_associated.
+      Global Instance AssociatedFunction_gas : M.IsAssociatedFunction.Trait Self "gas" gas.
+      Admitted.
+      Global Typeclasses Opaque gas.
     End Impl_revm_interpreter_interpreter_action_create_outcome_CreateOutcome.
   End create_outcome.
 End interpreter_action.

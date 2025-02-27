@@ -282,10 +282,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_none :
+        Global Instance AssociatedFunction_none :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "none" (none BorrowType K V).
-        Smpl Add apply AssociatedFunction_none : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "none" (none BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque none.
         
         (*
             fn is_empty(&self) -> bool {
@@ -376,10 +377,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_empty :
+        Global Instance AssociatedFunction_is_empty :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "is_empty" (is_empty BorrowType K V).
-        Smpl Add apply AssociatedFunction_is_empty : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "is_empty" (is_empty BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque is_empty.
         
         (*
             pub fn reborrow(&self) -> LeafRange<marker::Immut<'_>, K, V> {
@@ -889,10 +891,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_reborrow :
+        Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
-        Smpl Add apply AssociatedFunction_reborrow : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque reborrow.
         (*
             fn perform_next_checked<F, R>(&mut self, f: F) -> Option<R>
             where
@@ -1492,13 +1495,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_perform_next_checked :
+        Global Instance AssociatedFunction_perform_next_checked :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "perform_next_checked"
             (perform_next_checked BorrowType K V).
-        Smpl Add apply AssociatedFunction_perform_next_checked : is_associated.
+        Admitted.
+        Global Typeclasses Opaque perform_next_checked.
         
         (*
             fn perform_next_back_checked<F, R>(&mut self, f: F) -> Option<R>
@@ -2099,13 +2103,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_perform_next_back_checked :
+        Global Instance AssociatedFunction_perform_next_back_checked :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "perform_next_back_checked"
             (perform_next_back_checked BorrowType K V).
-        Smpl Add apply AssociatedFunction_perform_next_back_checked : is_associated.
+        Admitted.
+        Global Typeclasses Opaque perform_next_back_checked.
       End Impl_alloc_collections_btree_navigate_LeafRange_BorrowType_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
@@ -2229,10 +2234,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_checked :
+        Global Instance AssociatedFunction_next_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_checked" (next_checked K V).
-        Smpl Add apply AssociatedFunction_next_checked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_checked" (next_checked K V).
+        Admitted.
+        Global Typeclasses Opaque next_checked.
         
         (*
             pub fn next_back_checked(&mut self) -> Option<(&'a K, &'a V)> {
@@ -2348,10 +2354,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_checked :
+        Global Instance AssociatedFunction_next_back_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_back_checked" (next_back_checked K V).
-        Smpl Add apply AssociatedFunction_next_back_checked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_back_checked" (next_back_checked K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_checked.
       End Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
@@ -2527,10 +2534,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_checked :
+        Global Instance AssociatedFunction_next_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_checked" (next_checked K V).
-        Smpl Add apply AssociatedFunction_next_checked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_checked" (next_checked K V).
+        Admitted.
+        Global Typeclasses Opaque next_checked.
         
         (*
             pub fn next_back_checked(&mut self) -> Option<(&'a K, &'a mut V)> {
@@ -2698,10 +2706,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_checked :
+        Global Instance AssociatedFunction_next_back_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_back_checked" (next_back_checked K V).
-        Smpl Add apply AssociatedFunction_next_back_checked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_back_checked" (next_back_checked K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_checked.
       End Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
       
       
@@ -2964,10 +2973,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_reborrow :
+        Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
-        Smpl Add apply AssociatedFunction_reborrow : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque reborrow.
       End Impl_alloc_collections_btree_navigate_LazyLeafHandle_BorrowType_K_V.
       
       (* StructRecord
@@ -3182,10 +3192,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_none :
+        Global Instance AssociatedFunction_none :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "none" (none BorrowType K V).
-        Smpl Add apply AssociatedFunction_none : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "none" (none BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque none.
         
         (*
             pub fn reborrow(&self) -> LazyLeafRange<marker::Immut<'_>, K, V> {
@@ -3497,10 +3508,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_reborrow :
+        Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
-        Smpl Add apply AssociatedFunction_reborrow : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque reborrow.
         (*
             fn init_front(
                 &mut self,
@@ -3720,10 +3732,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_init_front :
+        Global Instance AssociatedFunction_init_front :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "init_front" (init_front BorrowType K V).
-        Smpl Add apply AssociatedFunction_init_front : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self BorrowType K V)
+            "init_front"
+            (init_front BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque init_front.
         
         (*
             fn init_back(
@@ -3944,10 +3960,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_init_back :
+        Global Instance AssociatedFunction_init_back :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "init_back" (init_back BorrowType K V).
-        Smpl Add apply AssociatedFunction_init_back : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "init_back" (init_back BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque init_back.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_BorrowType_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
@@ -4098,10 +4115,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_unchecked :
+        Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_unchecked.
         
         (*
             pub unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a V) {
@@ -4244,10 +4262,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_unchecked :
+        Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
@@ -4398,10 +4417,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_unchecked :
+        Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_unchecked.
         
         (*
             pub unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a mut V) {
@@ -4544,10 +4564,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_unchecked :
+        Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
       
       Module Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Dying_K_V.
@@ -4828,10 +4849,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_take_front :
+        Global Instance AssociatedFunction_take_front :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "take_front" (take_front K V).
-        Smpl Add apply AssociatedFunction_take_front : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "take_front" (take_front K V).
+        Admitted.
+        Global Typeclasses Opaque take_front.
         
         (*
             pub unsafe fn deallocating_next_unchecked<A: Allocator + Clone>(
@@ -5096,13 +5118,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_next_unchecked :
+        Global Instance AssociatedFunction_deallocating_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "deallocating_next_unchecked"
             (deallocating_next_unchecked K V).
-        Smpl Add apply AssociatedFunction_deallocating_next_unchecked : is_associated.
+        Admitted.
+        Global Typeclasses Opaque deallocating_next_unchecked.
         
         (*
             pub unsafe fn deallocating_next_back_unchecked<A: Allocator + Clone>(
@@ -5367,13 +5390,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_next_back_unchecked :
+        Global Instance AssociatedFunction_deallocating_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "deallocating_next_back_unchecked"
             (deallocating_next_back_unchecked K V).
-        Smpl Add apply AssociatedFunction_deallocating_next_back_unchecked : is_associated.
+        Admitted.
+        Global Typeclasses Opaque deallocating_next_back_unchecked.
         
         (*
             pub fn deallocating_end<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -5477,10 +5501,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_end :
+        Global Instance AssociatedFunction_deallocating_end :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "deallocating_end" (deallocating_end K V).
-        Smpl Add apply AssociatedFunction_deallocating_end : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "deallocating_end" (deallocating_end K V).
+        Admitted.
+        Global Typeclasses Opaque deallocating_end.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Dying_K_V.
       
       
@@ -5815,6 +5840,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (|
@@ -6347,13 +6373,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_find_leaf_edges_spanning_range :
+        Global Instance AssociatedFunction_find_leaf_edges_spanning_range :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "find_leaf_edges_spanning_range"
             (find_leaf_edges_spanning_range BorrowType K V).
-        Smpl Add apply AssociatedFunction_find_leaf_edges_spanning_range : is_associated.
+        Admitted.
+        Global Typeclasses Opaque find_leaf_edges_spanning_range.
         (*
             pub fn first_leaf_edge(self) -> Handle<NodeRef<BorrowType, K, V, marker::Leaf>, marker::Edge> {
                 let mut node = self;
@@ -6394,6 +6421,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -6596,13 +6624,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_first_leaf_edge :
+        Global Instance AssociatedFunction_first_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "first_leaf_edge"
             (first_leaf_edge BorrowType K V).
-        Smpl Add apply AssociatedFunction_first_leaf_edge : is_associated.
+        Admitted.
+        Global Typeclasses Opaque first_leaf_edge.
         
         (*
             pub fn last_leaf_edge(self) -> Handle<NodeRef<BorrowType, K, V, marker::Leaf>, marker::Edge> {
@@ -6644,6 +6673,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -6846,13 +6876,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_last_leaf_edge :
+        Global Instance AssociatedFunction_last_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "last_leaf_edge"
             (last_leaf_edge BorrowType K V).
-        Smpl Add apply AssociatedFunction_last_leaf_edge : is_associated.
+        Admitted.
+        Global Typeclasses Opaque last_leaf_edge.
         (*
             pub fn lower_bound<Q: ?Sized>(
                 self,
@@ -6905,6 +6936,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -7116,10 +7148,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_lower_bound :
+        Global Instance AssociatedFunction_lower_bound :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "lower_bound" (lower_bound BorrowType K V).
-        Smpl Add apply AssociatedFunction_lower_bound : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self BorrowType K V)
+            "lower_bound"
+            (lower_bound BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque lower_bound.
         
         (*
             pub fn upper_bound<Q: ?Sized>(
@@ -7173,6 +7209,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -7384,10 +7421,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_upper_bound :
+        Global Instance AssociatedFunction_upper_bound :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "upper_bound" (upper_bound BorrowType K V).
-        Smpl Add apply AssociatedFunction_upper_bound : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self BorrowType K V)
+            "upper_bound"
+            (upper_bound BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque upper_bound.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       (*
@@ -7430,9 +7471,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_full_range :
-        M.IsFunction "alloc::collections::btree::navigate::full_range" full_range.
-      Smpl Add apply Function_full_range : is_function.
+      Global Instance Instance_IsFunction_full_range :
+        M.IsFunction.Trait "alloc::collections::btree::navigate::full_range" full_range.
+      Admitted.
+      Global Typeclasses Opaque full_range.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
         Definition Self (K V : Ty.t) : Ty.t :=
@@ -7493,10 +7535,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_range_search :
+        Global Instance AssociatedFunction_range_search :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "range_search" (range_search K V).
-        Smpl Add apply AssociatedFunction_range_search : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "range_search" (range_search K V).
+        Admitted.
+        Global Typeclasses Opaque range_search.
         
         (*
             pub fn full_range(self) -> LazyLeafRange<marker::Immut<'a>, K, V> {
@@ -7529,10 +7572,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_full_range :
+        Global Instance AssociatedFunction_full_range :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "full_range" (full_range K V).
-        Smpl Add apply AssociatedFunction_full_range : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "full_range" (full_range K V).
+        Admitted.
+        Global Typeclasses Opaque full_range.
         (*
             pub fn visit_nodes_in_order<F>(self, mut visit: F)
             where
@@ -7771,6 +7815,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.alloc (|
                                         M.write (|
@@ -8215,10 +8260,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_visit_nodes_in_order :
+        Global Instance AssociatedFunction_visit_nodes_in_order :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "visit_nodes_in_order" (visit_nodes_in_order K V).
-        Smpl Add apply AssociatedFunction_visit_nodes_in_order : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "visit_nodes_in_order" (visit_nodes_in_order K V).
+        Admitted.
+        Global Typeclasses Opaque visit_nodes_in_order.
         
         (*
             pub fn calc_length(self) -> usize {
@@ -8396,10 +8442,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_calc_length :
+        Global Instance AssociatedFunction_calc_length :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "calc_length" (calc_length K V).
-        Smpl Add apply AssociatedFunction_calc_length : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "calc_length" (calc_length K V).
+        Admitted.
+        Global Typeclasses Opaque calc_length.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -8460,10 +8507,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_range_search :
+        Global Instance AssociatedFunction_range_search :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "range_search" (range_search K V).
-        Smpl Add apply AssociatedFunction_range_search : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "range_search" (range_search K V).
+        Admitted.
+        Global Typeclasses Opaque range_search.
         
         (*
             pub fn full_range(self) -> LazyLeafRange<marker::ValMut<'a>, K, V> {
@@ -8547,10 +8595,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_full_range :
+        Global Instance AssociatedFunction_full_range :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "full_range" (full_range K V).
-        Smpl Add apply AssociatedFunction_full_range : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "full_range" (full_range K V).
+        Admitted.
+        Global Typeclasses Opaque full_range.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -8647,10 +8696,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_full_range :
+        Global Instance AssociatedFunction_full_range :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "full_range" (full_range K V).
-        Smpl Add apply AssociatedFunction_full_range : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "full_range" (full_range K V).
+        Admitted.
+        Global Typeclasses Opaque full_range.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -8759,6 +8809,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -9054,10 +9105,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_kv :
+        Global Instance AssociatedFunction_next_kv :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
-        Smpl Add apply AssociatedFunction_next_kv : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque next_kv.
         
         (*
             pub fn next_back_kv(
@@ -9152,6 +9204,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -9447,10 +9500,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_kv :
+        Global Instance AssociatedFunction_next_back_kv :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "next_back_kv" (next_back_kv BorrowType K V).
-        Smpl Add apply AssociatedFunction_next_back_kv : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self BorrowType K V)
+            "next_back_kv"
+            (next_back_kv BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_kv.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
@@ -9520,6 +9577,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -9768,10 +9826,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_kv :
+        Global Instance AssociatedFunction_next_kv :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
-        Smpl Add apply AssociatedFunction_next_kv : is_associated.
+          M.IsAssociatedFunction.Trait (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
+        Admitted.
+        Global Typeclasses Opaque next_kv.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -9887,6 +9946,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -10304,10 +10364,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_next :
+        Global Instance AssociatedFunction_deallocating_next :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "deallocating_next" (deallocating_next K V).
-        Smpl Add apply AssociatedFunction_deallocating_next : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "deallocating_next" (deallocating_next K V).
+        Admitted.
+        Global Typeclasses Opaque deallocating_next.
         
         (*
             unsafe fn deallocating_next_back<A: Allocator + Clone>(
@@ -10404,6 +10465,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -10821,10 +10883,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_next_back :
+        Global Instance AssociatedFunction_deallocating_next_back :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "deallocating_next_back" (deallocating_next_back K V).
-        Smpl Add apply AssociatedFunction_deallocating_next_back : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self K V)
+            "deallocating_next_back"
+            (deallocating_next_back K V).
+        Admitted.
+        Global Typeclasses Opaque deallocating_next_back.
         
         (*
             fn deallocating_end<A: Allocator + Clone>(self, alloc: A) {
@@ -10906,6 +10972,7 @@ Module collections.
                     |)
                   |) in
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -11078,10 +11145,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_end :
+        Global Instance AssociatedFunction_deallocating_end :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "deallocating_end" (deallocating_end K V).
-        Smpl Add apply AssociatedFunction_deallocating_end : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "deallocating_end" (deallocating_end K V).
+        Admitted.
+        Global Typeclasses Opaque deallocating_end.
         (*
             unsafe fn deallocating_next_unchecked<A: Allocator + Clone>(
                 &mut self,
@@ -11403,13 +11471,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_next_unchecked :
+        Global Instance AssociatedFunction_deallocating_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "deallocating_next_unchecked"
             (deallocating_next_unchecked K V).
-        Smpl Add apply AssociatedFunction_deallocating_next_unchecked : is_associated.
+        Admitted.
+        Global Typeclasses Opaque deallocating_next_unchecked.
         
         (*
             unsafe fn deallocating_next_back_unchecked<A: Allocator + Clone>(
@@ -11732,13 +11801,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_deallocating_next_back_unchecked :
+        Global Instance AssociatedFunction_deallocating_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "deallocating_next_back_unchecked"
             (deallocating_next_back_unchecked K V).
-        Smpl Add apply AssociatedFunction_deallocating_next_back_unchecked : is_associated.
+        Admitted.
+        Global Typeclasses Opaque deallocating_next_back_unchecked.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -12162,10 +12232,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_unchecked :
+        Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_unchecked.
         
         (*
             unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a V) {
@@ -12570,10 +12641,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_unchecked :
+        Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -13118,10 +13190,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_unchecked :
+        Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_unchecked" (next_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_unchecked.
         
         (*
             unsafe fn next_back_unchecked(&mut self) -> (&'a K, &'a mut V) {
@@ -13647,10 +13720,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_unchecked :
+        Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "next_back_unchecked" (next_back_unchecked K V).
-        Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+        Admitted.
+        Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
       
       
@@ -13997,13 +14071,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_leaf_edge :
+        Global Instance AssociatedFunction_next_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "next_leaf_edge"
             (next_leaf_edge BorrowType K V).
-        Smpl Add apply AssociatedFunction_next_leaf_edge : is_associated.
+        Admitted.
+        Global Typeclasses Opaque next_leaf_edge.
         
         (*
             pub fn next_back_leaf_edge(
@@ -14281,13 +14356,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_leaf_edge :
+        Global Instance AssociatedFunction_next_back_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self BorrowType K V)
             "next_back_leaf_edge"
             (next_back_leaf_edge BorrowType K V).
-        Smpl Add apply AssociatedFunction_next_back_leaf_edge : is_associated.
+        Admitted.
+        Global Typeclasses Opaque next_back_leaf_edge.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
       
     End navigate.

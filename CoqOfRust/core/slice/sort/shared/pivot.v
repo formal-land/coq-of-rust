@@ -248,9 +248,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_choose_pivot :
-          M.IsFunction "core::slice::sort::shared::pivot::choose_pivot" choose_pivot.
-        Smpl Add apply Function_choose_pivot : is_function.
+        Global Instance Instance_IsFunction_choose_pivot :
+          M.IsFunction.Trait "core::slice::sort::shared::pivot::choose_pivot" choose_pivot.
+        Admitted.
+        Global Typeclasses Opaque choose_pivot.
         
         (*
         unsafe fn median3_rec<T, F: FnMut(&T, &T) -> bool>(
@@ -500,9 +501,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_median3_rec :
-          M.IsFunction "core::slice::sort::shared::pivot::median3_rec" median3_rec.
-        Smpl Add apply Function_median3_rec : is_function.
+        Global Instance Instance_IsFunction_median3_rec :
+          M.IsFunction.Trait "core::slice::sort::shared::pivot::median3_rec" median3_rec.
+        Admitted.
+        Global Typeclasses Opaque median3_rec.
         
         (*
         fn median3<T, F: FnMut(&T, &T) -> bool>(a: &T, b: &T, c: &T, is_less: &mut F) -> *const T {
@@ -666,8 +668,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_median3 : M.IsFunction "core::slice::sort::shared::pivot::median3" median3.
-        Smpl Add apply Function_median3 : is_function.
+        Global Instance Instance_IsFunction_median3 :
+          M.IsFunction.Trait "core::slice::sort::shared::pivot::median3" median3.
+        Admitted.
+        Global Typeclasses Opaque median3.
       End pivot.
     End shared.
   End sort.

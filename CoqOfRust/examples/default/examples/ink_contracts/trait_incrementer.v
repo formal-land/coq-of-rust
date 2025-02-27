@@ -32,8 +32,9 @@ Module Impl_trait_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn inc_by(&mut self, delta: u64) {
@@ -62,8 +63,9 @@ Module Impl_trait_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_inc_by : M.IsAssociatedFunction Self "inc_by" inc_by.
-  Smpl Add apply AssociatedFunction_inc_by : is_associated.
+  Global Instance AssociatedFunction_inc_by : M.IsAssociatedFunction.Trait Self "inc_by" inc_by.
+  Admitted.
+  Global Typeclasses Opaque inc_by.
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.

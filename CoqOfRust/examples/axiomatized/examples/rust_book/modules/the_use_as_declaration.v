@@ -3,20 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_function : M.IsFunction "the_use_as_declaration::function" function.
-Smpl Add apply Function_function : is_function.
+Global Instance Instance_IsFunction_function :
+  M.IsFunction.Trait "the_use_as_declaration::function" function.
+Admitted.
 
 Module deeply.
   Module nested.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_function :
-      M.IsFunction "the_use_as_declaration::deeply::nested::function" function.
-    Smpl Add apply Function_function : is_function.
+    Global Instance Instance_IsFunction_function :
+      M.IsFunction.Trait "the_use_as_declaration::deeply::nested::function" function.
+    Admitted.
   End nested.
 End deeply.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "the_use_as_declaration::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "the_use_as_declaration::main" main.
+Admitted.

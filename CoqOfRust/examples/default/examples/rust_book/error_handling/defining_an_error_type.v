@@ -359,8 +359,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_double_first : M.IsFunction "defining_an_error_type::double_first" double_first.
-Smpl Add apply Function_double_first : is_function.
+Global Instance Instance_IsFunction_double_first :
+  M.IsFunction.Trait "defining_an_error_type::double_first" double_first.
+Admitted.
+Global Typeclasses Opaque double_first.
 
 (*
 fn print(result: Result<i32>) {
@@ -527,8 +529,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_print : M.IsFunction "defining_an_error_type::print" print.
-Smpl Add apply Function_print : is_function.
+Global Instance Instance_IsFunction_print :
+  M.IsFunction.Trait "defining_an_error_type::print" print.
+Admitted.
+Global Typeclasses Opaque print.
 
 (*
 fn main() {
@@ -757,5 +761,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "defining_an_error_type::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "defining_an_error_type::main" main.
+Admitted.
+Global Typeclasses Opaque main.

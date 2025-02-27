@@ -128,8 +128,9 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_fmt_rt_Placeholder.
     
     (*
@@ -685,8 +686,9 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn new_display<'b, T: Display>(x: &'b T) -> Argument<'b> {
@@ -711,8 +713,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_display : M.IsAssociatedFunction Self "new_display" new_display.
-      Smpl Add apply AssociatedFunction_new_display : is_associated.
+      Global Instance AssociatedFunction_new_display :
+        M.IsAssociatedFunction.Trait Self "new_display" new_display.
+      Admitted.
+      Global Typeclasses Opaque new_display.
       
       (*
           pub fn new_debug<'b, T: Debug>(x: &'b T) -> Argument<'b> {
@@ -737,8 +741,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_debug : M.IsAssociatedFunction Self "new_debug" new_debug.
-      Smpl Add apply AssociatedFunction_new_debug : is_associated.
+      Global Instance AssociatedFunction_new_debug :
+        M.IsAssociatedFunction.Trait Self "new_debug" new_debug.
+      Admitted.
+      Global Typeclasses Opaque new_debug.
       
       (*
           pub fn new_debug_noop<'b, T: Debug>(x: &'b T) -> Argument<'b> {
@@ -787,9 +793,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_debug_noop :
-        M.IsAssociatedFunction Self "new_debug_noop" new_debug_noop.
-      Smpl Add apply AssociatedFunction_new_debug_noop : is_associated.
+      Global Instance AssociatedFunction_new_debug_noop :
+        M.IsAssociatedFunction.Trait Self "new_debug_noop" new_debug_noop.
+      Admitted.
+      Global Typeclasses Opaque new_debug_noop.
       
       (*
           pub fn new_octal<'b, T: Octal>(x: &'b T) -> Argument<'b> {
@@ -814,8 +821,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_octal : M.IsAssociatedFunction Self "new_octal" new_octal.
-      Smpl Add apply AssociatedFunction_new_octal : is_associated.
+      Global Instance AssociatedFunction_new_octal :
+        M.IsAssociatedFunction.Trait Self "new_octal" new_octal.
+      Admitted.
+      Global Typeclasses Opaque new_octal.
       
       (*
           pub fn new_lower_hex<'b, T: LowerHex>(x: &'b T) -> Argument<'b> {
@@ -840,9 +849,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_lower_hex :
-        M.IsAssociatedFunction Self "new_lower_hex" new_lower_hex.
-      Smpl Add apply AssociatedFunction_new_lower_hex : is_associated.
+      Global Instance AssociatedFunction_new_lower_hex :
+        M.IsAssociatedFunction.Trait Self "new_lower_hex" new_lower_hex.
+      Admitted.
+      Global Typeclasses Opaque new_lower_hex.
       
       (*
           pub fn new_upper_hex<'b, T: UpperHex>(x: &'b T) -> Argument<'b> {
@@ -867,9 +877,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_upper_hex :
-        M.IsAssociatedFunction Self "new_upper_hex" new_upper_hex.
-      Smpl Add apply AssociatedFunction_new_upper_hex : is_associated.
+      Global Instance AssociatedFunction_new_upper_hex :
+        M.IsAssociatedFunction.Trait Self "new_upper_hex" new_upper_hex.
+      Admitted.
+      Global Typeclasses Opaque new_upper_hex.
       
       (*
           pub fn new_pointer<'b, T: Pointer>(x: &'b T) -> Argument<'b> {
@@ -894,8 +905,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_pointer : M.IsAssociatedFunction Self "new_pointer" new_pointer.
-      Smpl Add apply AssociatedFunction_new_pointer : is_associated.
+      Global Instance AssociatedFunction_new_pointer :
+        M.IsAssociatedFunction.Trait Self "new_pointer" new_pointer.
+      Admitted.
+      Global Typeclasses Opaque new_pointer.
       
       (*
           pub fn new_binary<'b, T: Binary>(x: &'b T) -> Argument<'b> {
@@ -920,8 +933,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_binary : M.IsAssociatedFunction Self "new_binary" new_binary.
-      Smpl Add apply AssociatedFunction_new_binary : is_associated.
+      Global Instance AssociatedFunction_new_binary :
+        M.IsAssociatedFunction.Trait Self "new_binary" new_binary.
+      Admitted.
+      Global Typeclasses Opaque new_binary.
       
       (*
           pub fn new_lower_exp<'b, T: LowerExp>(x: &'b T) -> Argument<'b> {
@@ -946,9 +961,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_lower_exp :
-        M.IsAssociatedFunction Self "new_lower_exp" new_lower_exp.
-      Smpl Add apply AssociatedFunction_new_lower_exp : is_associated.
+      Global Instance AssociatedFunction_new_lower_exp :
+        M.IsAssociatedFunction.Trait Self "new_lower_exp" new_lower_exp.
+      Admitted.
+      Global Typeclasses Opaque new_lower_exp.
       
       (*
           pub fn new_upper_exp<'b, T: UpperExp>(x: &'b T) -> Argument<'b> {
@@ -973,9 +989,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_upper_exp :
-        M.IsAssociatedFunction Self "new_upper_exp" new_upper_exp.
-      Smpl Add apply AssociatedFunction_new_upper_exp : is_associated.
+      Global Instance AssociatedFunction_new_upper_exp :
+        M.IsAssociatedFunction.Trait Self "new_upper_exp" new_upper_exp.
+      Admitted.
+      Global Typeclasses Opaque new_upper_exp.
       
       (*
           pub fn from_usize(x: &usize) -> Argument<'_> {
@@ -998,8 +1015,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_usize : M.IsAssociatedFunction Self "from_usize" from_usize.
-      Smpl Add apply AssociatedFunction_from_usize : is_associated.
+      Global Instance AssociatedFunction_from_usize :
+        M.IsAssociatedFunction.Trait Self "from_usize" from_usize.
+      Admitted.
+      Global Typeclasses Opaque from_usize.
       
       (*
           pub(super) unsafe fn fmt(&self, f: &mut Formatter<'_>) -> Result {
@@ -1083,8 +1102,9 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fmt : M.IsAssociatedFunction Self "fmt" fmt.
-      Smpl Add apply AssociatedFunction_fmt : is_associated.
+      Global Instance AssociatedFunction_fmt : M.IsAssociatedFunction.Trait Self "fmt" fmt.
+      Admitted.
+      Global Typeclasses Opaque fmt.
       
       (*
           pub(super) fn as_usize(&self) -> Option<usize> {
@@ -1130,8 +1150,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
-      Smpl Add apply AssociatedFunction_as_usize : is_associated.
+      Global Instance AssociatedFunction_as_usize :
+        M.IsAssociatedFunction.Trait Self "as_usize" as_usize.
+      Admitted.
+      Global Typeclasses Opaque as_usize.
       
       (*
           pub fn none() -> [Self; 0] {
@@ -1144,8 +1166,9 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_none : M.IsAssociatedFunction Self "none" none.
-      Smpl Add apply AssociatedFunction_none : is_associated.
+      Global Instance AssociatedFunction_none : M.IsAssociatedFunction.Trait Self "none" none.
+      Admitted.
+      Global Typeclasses Opaque none.
     End Impl_core_fmt_rt_Argument.
     
     (* StructRecord
@@ -1172,8 +1195,9 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_fmt_rt_UnsafeArg.
   End rt.
 End fmt.

@@ -12,9 +12,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_set_precision :
-          M.IsFunction "core::num::dec2flt::fpu::fpu_precision::set_precision" set_precision.
-        Smpl Add apply Function_set_precision : is_function.
+        Global Instance Instance_IsFunction_set_precision :
+          M.IsFunction.Trait "core::num::dec2flt::fpu::fpu_precision::set_precision" set_precision.
+        Admitted.
+        Global Typeclasses Opaque set_precision.
       End fpu_precision.
     End fpu.
   End dec2flt.

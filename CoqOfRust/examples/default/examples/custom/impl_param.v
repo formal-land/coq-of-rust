@@ -91,5 +91,7 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_with_impls : M.IsFunction "impl_param::with_impls" with_impls.
-Smpl Add apply Function_with_impls : is_function.
+Global Instance Instance_IsFunction_with_impls :
+  M.IsFunction.Trait "impl_param::with_impls" with_impls.
+Admitted.
+Global Typeclasses Opaque with_impls.

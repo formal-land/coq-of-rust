@@ -150,8 +150,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_print : M.IsFunction "scoping_rules_lifetimes_bounds::print" print.
-Smpl Add apply Function_print : is_function.
+Global Instance Instance_IsFunction_print :
+  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::print" print.
+Admitted.
+Global Typeclasses Opaque print.
 
 (*
 fn print_ref<'a, T>(t: &'a T)
@@ -238,8 +240,10 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_print_ref : M.IsFunction "scoping_rules_lifetimes_bounds::print_ref" print_ref.
-Smpl Add apply Function_print_ref : is_function.
+Global Instance Instance_IsFunction_print_ref :
+  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::print_ref" print_ref.
+Admitted.
+Global Typeclasses Opaque print_ref.
 
 (*
 fn main() {
@@ -297,5 +301,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::main" main.
+Admitted.
+Global Typeclasses Opaque main.

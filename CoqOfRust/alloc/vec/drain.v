@@ -172,10 +172,11 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_slice :
+      Global Instance AssociatedFunction_as_slice :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction (Self T A) "as_slice" (as_slice T A).
-      Smpl Add apply AssociatedFunction_as_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T A) "as_slice" (as_slice T A).
+      Admitted.
+      Global Typeclasses Opaque as_slice.
       
       (*
           pub fn allocator(&self) -> &A {
@@ -237,10 +238,11 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_allocator :
+      Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
-      Smpl Add apply AssociatedFunction_allocator : is_associated.
+        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+      Admitted.
+      Global Typeclasses Opaque allocator.
       
       (*
           pub fn keep_rest(self) {
@@ -779,10 +781,11 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_keep_rest :
+      Global Instance AssociatedFunction_keep_rest :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction (Self T A) "keep_rest" (keep_rest T A).
-      Smpl Add apply AssociatedFunction_keep_rest : is_associated.
+        M.IsAssociatedFunction.Trait (Self T A) "keep_rest" (keep_rest T A).
+      Admitted.
+      Global Typeclasses Opaque keep_rest.
     End Impl_alloc_vec_drain_Drain_T_A.
     
     Module Impl_core_convert_AsRef_where_core_alloc_Allocator_A_slice_T_for_alloc_vec_drain_Drain_T_A.

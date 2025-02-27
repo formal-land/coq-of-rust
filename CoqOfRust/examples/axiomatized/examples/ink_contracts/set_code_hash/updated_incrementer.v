@@ -76,9 +76,9 @@ Module Impl_updated_incrementer_Env.
   
   Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_set_code_hash :
-    M.IsAssociatedFunction Self "set_code_hash" set_code_hash.
-  Smpl Add apply AssociatedFunction_set_code_hash : is_associated.
+  Global Instance AssociatedFunction_set_code_hash :
+    M.IsAssociatedFunction.Trait Self "set_code_hash" set_code_hash.
+  Admitted.
 End Impl_updated_incrementer_Env.
 
 (* StructRecord
@@ -94,31 +94,33 @@ Module Impl_updated_incrementer_Incrementer.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter inc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
-  Smpl Add apply AssociatedFunction_inc : is_associated.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Admitted.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
   
   Parameter set_code : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
-  Smpl Add apply AssociatedFunction_set_code : is_associated.
+  Global Instance AssociatedFunction_set_code :
+    M.IsAssociatedFunction.Trait Self "set_code" set_code.
+  Admitted.
 End Impl_updated_incrementer_Incrementer.

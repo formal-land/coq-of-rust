@@ -27055,8 +27055,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_normalized_Constant.
   
   (* StructRecord
@@ -28863,8 +28864,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn module_id(&self) -> ModuleId {
@@ -28919,8 +28921,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
-    Smpl Add apply AssociatedFunction_module_id : is_associated.
+    Global Instance AssociatedFunction_module_id :
+      M.IsAssociatedFunction.Trait Self "module_id" module_id.
+    Admitted.
+    Global Typeclasses Opaque module_id.
   End Impl_move_binary_format_normalized_Module.
   
   Module Impl_move_binary_format_normalized_Type.
@@ -29980,8 +29984,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn is_closed(&self) -> bool {
@@ -30276,8 +30281,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_closed : M.IsAssociatedFunction Self "is_closed" is_closed.
-    Smpl Add apply AssociatedFunction_is_closed : is_associated.
+    Global Instance AssociatedFunction_is_closed :
+      M.IsAssociatedFunction.Trait Self "is_closed" is_closed.
+    Admitted.
+    Global Typeclasses Opaque is_closed.
     
     (*
         pub fn into_type_tag(self) -> Option<TypeTag> {
@@ -30909,9 +30916,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_type_tag :
-      M.IsAssociatedFunction Self "into_type_tag" into_type_tag.
-    Smpl Add apply AssociatedFunction_into_type_tag : is_associated.
+    Global Instance AssociatedFunction_into_type_tag :
+      M.IsAssociatedFunction.Trait Self "into_type_tag" into_type_tag.
+    Admitted.
+    Global Typeclasses Opaque into_type_tag.
     
     (*
         pub fn into_struct_tag(self) -> Option<StructTag> {
@@ -31051,9 +31059,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_struct_tag :
-      M.IsAssociatedFunction Self "into_struct_tag" into_struct_tag.
-    Smpl Add apply AssociatedFunction_into_struct_tag : is_associated.
+    Global Instance AssociatedFunction_into_struct_tag :
+      M.IsAssociatedFunction.Trait Self "into_struct_tag" into_struct_tag.
+    Admitted.
+    Global Typeclasses Opaque into_struct_tag.
     
     (*
         pub fn subst(&self, type_args: &[Type]) -> Self {
@@ -31728,8 +31737,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_subst : M.IsAssociatedFunction Self "subst" subst.
-    Smpl Add apply AssociatedFunction_subst : is_associated.
+    Global Instance AssociatedFunction_subst : M.IsAssociatedFunction.Trait Self "subst" subst.
+    Admitted.
+    Global Typeclasses Opaque subst.
   End Impl_move_binary_format_normalized_Type.
   
   Module Impl_move_binary_format_normalized_Field.
@@ -31828,8 +31838,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_normalized_Field.
   
   Module Impl_move_binary_format_normalized_Struct.
@@ -32261,8 +32272,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn from_idx(m: &CompiledModule, idx: &StructDefinitionIndex) -> (Identifier, Self) {
@@ -32315,8 +32327,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
-    Smpl Add apply AssociatedFunction_from_idx : is_associated.
+    Global Instance AssociatedFunction_from_idx :
+      M.IsAssociatedFunction.Trait Self "from_idx" from_idx.
+    Admitted.
+    Global Typeclasses Opaque from_idx.
     
     (*
         pub fn type_param_constraints(&self) -> impl ExactSizeIterator<Item = &AbilitySet> {
@@ -32468,9 +32482,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_type_param_constraints :
-      M.IsAssociatedFunction Self "type_param_constraints" type_param_constraints.
-    Smpl Add apply AssociatedFunction_type_param_constraints : is_associated.
+    Global Instance AssociatedFunction_type_param_constraints :
+      M.IsAssociatedFunction.Trait Self "type_param_constraints" type_param_constraints.
+    Admitted.
+    Global Typeclasses Opaque type_param_constraints.
   End Impl_move_binary_format_normalized_Struct.
   
   Module Impl_move_binary_format_normalized_Function.
@@ -33487,8 +33502,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn new_from_name(m: &CompiledModule, func_name: &IdentStr) -> Option<Self> {
@@ -33555,6 +33571,7 @@ Module normalized.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -33796,9 +33813,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_from_name :
-      M.IsAssociatedFunction Self "new_from_name" new_from_name.
-    Smpl Add apply AssociatedFunction_new_from_name : is_associated.
+    Global Instance AssociatedFunction_new_from_name :
+      M.IsAssociatedFunction.Trait Self "new_from_name" new_from_name.
+    Admitted.
+    Global Typeclasses Opaque new_from_name.
   End Impl_move_binary_format_normalized_Function.
   
   Module Impl_core_convert_From_move_core_types_language_storage_TypeTag_for_move_binary_format_normalized_Type.
@@ -34258,8 +34276,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn from_idx(m: &CompiledModule, field_handle_idx: &FieldHandleIndex) -> Self {
@@ -34308,8 +34327,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
-    Smpl Add apply AssociatedFunction_from_idx : is_associated.
+    Global Instance AssociatedFunction_from_idx :
+      M.IsAssociatedFunction.Trait Self "from_idx" from_idx.
+    Admitted.
+    Global Typeclasses Opaque from_idx.
   End Impl_move_binary_format_normalized_FieldRef.
   
   Module Impl_move_binary_format_normalized_FunctionRef.
@@ -34418,8 +34439,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn from_idx(m: &CompiledModule, function_handle_idx: &FunctionHandleIndex) -> Self {
@@ -34468,8 +34490,10 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
-    Smpl Add apply AssociatedFunction_from_idx : is_associated.
+    Global Instance AssociatedFunction_from_idx :
+      M.IsAssociatedFunction.Trait Self "from_idx" from_idx.
+    Admitted.
+    Global Typeclasses Opaque from_idx.
   End Impl_move_binary_format_normalized_FunctionRef.
   
   Module Impl_move_binary_format_normalized_Bytecode.
@@ -36526,8 +36550,9 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_binary_format_normalized_Bytecode.
   
   Module Impl_core_fmt_Display_for_move_binary_format_normalized_Type.
@@ -37386,6 +37411,7 @@ Module normalized.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -38981,9 +39007,10 @@ Module normalized.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_struct_instantiation :
-    M.IsFunction "move_binary_format::normalized::struct_instantiation" struct_instantiation.
-  Smpl Add apply Function_struct_instantiation : is_function.
+  Global Instance Instance_IsFunction_struct_instantiation :
+    M.IsFunction.Trait "move_binary_format::normalized::struct_instantiation" struct_instantiation.
+  Admitted.
+  Global Typeclasses Opaque struct_instantiation.
   
   (*
   fn field_instantiation(m: &CompiledModule, idx: &FieldInstantiationIndex) -> (FieldRef, Vec<Type>) {
@@ -39324,9 +39351,10 @@ Module normalized.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_field_instantiation :
-    M.IsFunction "move_binary_format::normalized::field_instantiation" field_instantiation.
-  Smpl Add apply Function_field_instantiation : is_function.
+  Global Instance Instance_IsFunction_field_instantiation :
+    M.IsFunction.Trait "move_binary_format::normalized::field_instantiation" field_instantiation.
+  Admitted.
+  Global Typeclasses Opaque field_instantiation.
   
   (*
   fn signature_to_single_type(m: &CompiledModule, sig_idx: &SignatureIndex) -> Type {
@@ -39413,9 +39441,10 @@ Module normalized.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_signature_to_single_type :
-    M.IsFunction
+  Global Instance Instance_IsFunction_signature_to_single_type :
+    M.IsFunction.Trait
       "move_binary_format::normalized::signature_to_single_type"
       signature_to_single_type.
-  Smpl Add apply Function_signature_to_single_type : is_function.
+  Admitted.
+  Global Typeclasses Opaque signature_to_single_type.
 End normalized.

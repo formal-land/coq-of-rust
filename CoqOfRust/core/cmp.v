@@ -495,8 +495,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_eq : M.IsAssociatedFunction Self "is_eq" is_eq.
-    Smpl Add apply AssociatedFunction_is_eq : is_associated.
+    Global Instance AssociatedFunction_is_eq : M.IsAssociatedFunction.Trait Self "is_eq" is_eq.
+    Admitted.
+    Global Typeclasses Opaque is_eq.
     
     (*
         pub const fn is_ne(self) -> bool {
@@ -525,8 +526,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ne : M.IsAssociatedFunction Self "is_ne" is_ne.
-    Smpl Add apply AssociatedFunction_is_ne : is_associated.
+    Global Instance AssociatedFunction_is_ne : M.IsAssociatedFunction.Trait Self "is_ne" is_ne.
+    Admitted.
+    Global Typeclasses Opaque is_ne.
     
     (*
         pub const fn is_lt(self) -> bool {
@@ -553,8 +555,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_lt : M.IsAssociatedFunction Self "is_lt" is_lt.
-    Smpl Add apply AssociatedFunction_is_lt : is_associated.
+    Global Instance AssociatedFunction_is_lt : M.IsAssociatedFunction.Trait Self "is_lt" is_lt.
+    Admitted.
+    Global Typeclasses Opaque is_lt.
     
     (*
         pub const fn is_gt(self) -> bool {
@@ -581,8 +584,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_gt : M.IsAssociatedFunction Self "is_gt" is_gt.
-    Smpl Add apply AssociatedFunction_is_gt : is_associated.
+    Global Instance AssociatedFunction_is_gt : M.IsAssociatedFunction.Trait Self "is_gt" is_gt.
+    Admitted.
+    Global Typeclasses Opaque is_gt.
     
     (*
         pub const fn is_le(self) -> bool {
@@ -611,8 +615,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_le : M.IsAssociatedFunction Self "is_le" is_le.
-    Smpl Add apply AssociatedFunction_is_le : is_associated.
+    Global Instance AssociatedFunction_is_le : M.IsAssociatedFunction.Trait Self "is_le" is_le.
+    Admitted.
+    Global Typeclasses Opaque is_le.
     
     (*
         pub const fn is_ge(self) -> bool {
@@ -641,8 +646,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ge : M.IsAssociatedFunction Self "is_ge" is_ge.
-    Smpl Add apply AssociatedFunction_is_ge : is_associated.
+    Global Instance AssociatedFunction_is_ge : M.IsAssociatedFunction.Trait Self "is_ge" is_ge.
+    Admitted.
+    Global Typeclasses Opaque is_ge.
     
     (*
         pub const fn reverse(self) -> Ordering {
@@ -680,8 +686,10 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse : M.IsAssociatedFunction Self "reverse" reverse.
-    Smpl Add apply AssociatedFunction_reverse : is_associated.
+    Global Instance AssociatedFunction_reverse :
+      M.IsAssociatedFunction.Trait Self "reverse" reverse.
+    Admitted.
+    Global Typeclasses Opaque reverse.
     
     (*
         pub const fn then(self, other: Ordering) -> Ordering {
@@ -712,8 +720,9 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
-    Smpl Add apply AssociatedFunction_then_ : is_associated.
+    Global Instance AssociatedFunction_then_ : M.IsAssociatedFunction.Trait Self "then_" then_.
+    Admitted.
+    Global Typeclasses Opaque then_.
     
     (*
         pub fn then_with<F: FnOnce() -> Ordering>(self, f: F) -> Ordering {
@@ -758,8 +767,10 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_then_with : M.IsAssociatedFunction Self "then_with" then_with.
-    Smpl Add apply AssociatedFunction_then_with : is_associated.
+    Global Instance AssociatedFunction_then_with :
+      M.IsAssociatedFunction.Trait Self "then_with" then_with.
+    Admitted.
+    Global Typeclasses Opaque then_with.
   End Impl_core_cmp_Ordering.
   
   (* StructTuple
@@ -1787,8 +1798,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min : M.IsFunction "core::cmp::min" min.
-  Smpl Add apply Function_min : is_function.
+  Global Instance Instance_IsFunction_min : M.IsFunction.Trait "core::cmp::min" min.
+  Admitted.
+  Global Typeclasses Opaque min.
   
   (*
   pub fn min_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -1867,8 +1879,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_by : M.IsFunction "core::cmp::min_by" min_by.
-  Smpl Add apply Function_min_by : is_function.
+  Global Instance Instance_IsFunction_min_by : M.IsFunction.Trait "core::cmp::min_by" min_by.
+  Admitted.
+  Global Typeclasses Opaque min_by.
   
   (*
   pub fn min_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -2000,8 +2013,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_by_key : M.IsFunction "core::cmp::min_by_key" min_by_key.
-  Smpl Add apply Function_min_by_key : is_function.
+  Global Instance Instance_IsFunction_min_by_key :
+    M.IsFunction.Trait "core::cmp::min_by_key" min_by_key.
+  Admitted.
+  Global Typeclasses Opaque min_by_key.
   
   (*
   pub fn max<T: Ord>(v1: T, v2: T) -> T {
@@ -2022,8 +2037,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_max : M.IsFunction "core::cmp::max" max.
-  Smpl Add apply Function_max : is_function.
+  Global Instance Instance_IsFunction_max : M.IsFunction.Trait "core::cmp::max" max.
+  Admitted.
+  Global Typeclasses Opaque max.
   
   (*
   pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -2102,8 +2118,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_max_by : M.IsFunction "core::cmp::max_by" max_by.
-  Smpl Add apply Function_max_by : is_function.
+  Global Instance Instance_IsFunction_max_by : M.IsFunction.Trait "core::cmp::max_by" max_by.
+  Admitted.
+  Global Typeclasses Opaque max_by.
   
   (*
   pub fn max_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -2235,8 +2252,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_max_by_key : M.IsFunction "core::cmp::max_by_key" max_by_key.
-  Smpl Add apply Function_max_by_key : is_function.
+  Global Instance Instance_IsFunction_max_by_key :
+    M.IsFunction.Trait "core::cmp::max_by_key" max_by_key.
+  Admitted.
+  Global Typeclasses Opaque max_by_key.
   
   (*
   pub fn minmax<T>(v1: T, v2: T) -> [T; 2]
@@ -2286,8 +2305,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_minmax : M.IsFunction "core::cmp::minmax" minmax.
-  Smpl Add apply Function_minmax : is_function.
+  Global Instance Instance_IsFunction_minmax : M.IsFunction.Trait "core::cmp::minmax" minmax.
+  Admitted.
+  Global Typeclasses Opaque minmax.
   
   (*
   pub fn minmax_by<T, F>(v1: T, v2: T, compare: F) -> [T; 2]
@@ -2367,8 +2387,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_minmax_by : M.IsFunction "core::cmp::minmax_by" minmax_by.
-  Smpl Add apply Function_minmax_by : is_function.
+  Global Instance Instance_IsFunction_minmax_by :
+    M.IsFunction.Trait "core::cmp::minmax_by" minmax_by.
+  Admitted.
+  Global Typeclasses Opaque minmax_by.
   
   (*
   pub fn minmax_by_key<T, F, K>(v1: T, v2: T, mut f: F) -> [T; 2]
@@ -2504,8 +2526,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_minmax_by_key : M.IsFunction "core::cmp::minmax_by_key" minmax_by_key.
-  Smpl Add apply Function_minmax_by_key : is_function.
+  Global Instance Instance_IsFunction_minmax_by_key :
+    M.IsFunction.Trait "core::cmp::minmax_by_key" minmax_by_key.
+  Admitted.
+  Global Typeclasses Opaque minmax_by_key.
   
   Module impls.
     Module Impl_core_cmp_PartialEq_for_Tuple_.

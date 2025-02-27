@@ -3,10 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter apply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_apply : M.IsFunction "functions_closures_type_anonymity_define_and_use::apply" apply.
-Smpl Add apply Function_apply : is_function.
+Global Instance Instance_IsFunction_apply :
+  M.IsFunction.Trait "functions_closures_type_anonymity_define_and_use::apply" apply.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "functions_closures_type_anonymity_define_and_use::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "functions_closures_type_anonymity_define_and_use::main" main.
+Admitted.

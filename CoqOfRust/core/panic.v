@@ -21,11 +21,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::UnwindContinue::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End UnwindContinue.
     
     Module UnwindUnreachable.
@@ -46,11 +47,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::UnwindUnreachable::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End UnwindUnreachable.
     
     Module UnwindTerminate.
@@ -71,11 +73,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::UnwindTerminate::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End UnwindTerminate.
     
     Module UnwindCleanup.
@@ -96,11 +99,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::UnwindCleanup::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End UnwindCleanup.
     
     Module ReturnTo.
@@ -121,9 +125,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::ReturnTo::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::ReturnTo::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End ReturnTo.
     
     Module Return.
@@ -144,9 +151,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Return::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Return::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Return.
     
     Module Goto.
@@ -167,9 +175,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Goto::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Goto::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Goto.
     
     Module Unreachable.
@@ -190,9 +199,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Unreachable::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::Unreachable::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Unreachable.
     
     Module Drop.
@@ -213,9 +225,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Drop::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Drop::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Drop.
     
     Module Call.
@@ -236,9 +249,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Call::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Call::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Call.
     
     Module TailCall.
@@ -259,9 +273,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::TailCall::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::TailCall::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End TailCall.
     
     Module UnwindResume.
@@ -282,9 +299,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::UnwindResume::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::UnwindResume::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End UnwindResume.
     
     Module StorageLive.
@@ -305,9 +325,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::StorageLive::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::StorageLive::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End StorageLive.
     
     Module StorageDead.
@@ -328,9 +351,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::StorageDead::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::StorageDead::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End StorageDead.
     
     Module Assume.
@@ -351,9 +377,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Assume::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Assume::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Assume.
     
     Module Deinit.
@@ -374,9 +401,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Deinit::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Deinit::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Deinit.
     
     Module Checked.
@@ -397,9 +425,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Checked::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::Checked::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Checked.
     
     Module Len.
@@ -420,9 +451,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Len::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Len::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Len.
     
     Module PtrMetadata.
@@ -443,9 +475,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::PtrMetadata::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::PtrMetadata::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End PtrMetadata.
     
     Module CopyForDeref.
@@ -466,9 +501,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::CopyForDeref::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::CopyForDeref::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End CopyForDeref.
     
     Module Retag.
@@ -489,9 +527,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Retag::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Retag::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Retag.
     
     Module Move.
@@ -512,9 +551,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Move::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Move::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Move.
     
     Module Static.
@@ -535,9 +575,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Static::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Static::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Static.
     
     Module StaticMut.
@@ -558,9 +599,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::StaticMut::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::StaticMut::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End StaticMut.
     
     Module Discriminant.
@@ -581,9 +625,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Discriminant::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::Discriminant::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Discriminant.
     
     Module SetDiscriminant.
@@ -604,11 +651,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::SetDiscriminant::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End SetDiscriminant.
     
     Module Offset.
@@ -629,9 +677,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Offset::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Offset::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Offset.
     
     Module Field.
@@ -652,9 +701,10 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Field::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait "core::intrinsics::mir::Field::panic_cold_explicit" panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Field.
     
     Module Variant.
@@ -675,9 +725,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::Variant::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::Variant::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End Variant.
     
     Module CastTransmute.
@@ -698,11 +751,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::CastTransmute::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End CastTransmute.
     
     Module CastPtrToPtr.
@@ -723,9 +777,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::CastPtrToPtr::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::CastPtrToPtr::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End CastPtrToPtr.
     
     Module __internal_make_place.
@@ -746,11 +803,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
           "core::intrinsics::mir::__internal_make_place::panic_cold_explicit"
           panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End __internal_make_place.
     
     Module __debuginfo.
@@ -771,9 +829,12 @@ Module intrinsics.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_cold_explicit :
-        M.IsFunction "core::intrinsics::mir::__debuginfo::panic_cold_explicit" panic_cold_explicit.
-      Smpl Add apply Function_panic_cold_explicit : is_function.
+      Global Instance Instance_IsFunction_panic_cold_explicit :
+        M.IsFunction.Trait
+          "core::intrinsics::mir::__debuginfo::panic_cold_explicit"
+          panic_cold_explicit.
+      Admitted.
+      Global Typeclasses Opaque panic_cold_explicit.
     End __debuginfo.
   End mir.
 End intrinsics.
@@ -805,8 +866,10 @@ Module panic.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_abort_unwind : M.IsFunction "core::panic::abort_unwind" abort_unwind.
-  Smpl Add apply Function_abort_unwind : is_function.
+  Global Instance Instance_IsFunction_abort_unwind :
+    M.IsFunction.Trait "core::panic::abort_unwind" abort_unwind.
+  Admitted.
+  Global Typeclasses Opaque abort_unwind.
   
   (* Trait *)
   Module PanicPayload.

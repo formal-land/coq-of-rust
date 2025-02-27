@@ -99,9 +99,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_8digits :
-        M.IsFunction "core::num::dec2flt::parse::parse_8digits" parse_8digits.
-      Smpl Add apply Function_parse_8digits : is_function.
+      Global Instance Instance_IsFunction_parse_8digits :
+        M.IsFunction.Trait "core::num::dec2flt::parse::parse_8digits" parse_8digits.
+      Admitted.
+      Global Typeclasses Opaque parse_8digits.
       
       Module parse_8digits.
         Definition value_MASK : Value.t :=
@@ -159,6 +160,7 @@ Module num.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -429,9 +431,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_try_parse_digits :
-        M.IsFunction "core::num::dec2flt::parse::try_parse_digits" try_parse_digits.
-      Smpl Add apply Function_try_parse_digits : is_function.
+      Global Instance Instance_IsFunction_try_parse_digits :
+        M.IsFunction.Trait "core::num::dec2flt::parse::try_parse_digits" try_parse_digits.
+      Admitted.
+      Global Typeclasses Opaque try_parse_digits.
       
       (*
       fn try_parse_19digits(s_ref: &mut &[u8], x: &mut u64) {
@@ -467,6 +470,7 @@ Module num.
                 M.copy (| M.deref (| M.read (| s_ref |) |) |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -627,9 +631,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_try_parse_19digits :
-        M.IsFunction "core::num::dec2flt::parse::try_parse_19digits" try_parse_19digits.
-      Smpl Add apply Function_try_parse_19digits : is_function.
+      Global Instance Instance_IsFunction_try_parse_19digits :
+        M.IsFunction.Trait "core::num::dec2flt::parse::try_parse_19digits" try_parse_19digits.
+      Admitted.
+      Global Typeclasses Opaque try_parse_19digits.
       
       (*
       fn parse_scientific(s_ref: &mut &[u8]) -> Option<i64> {
@@ -949,9 +954,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_scientific :
-        M.IsFunction "core::num::dec2flt::parse::parse_scientific" parse_scientific.
-      Smpl Add apply Function_parse_scientific : is_function.
+      Global Instance Instance_IsFunction_parse_scientific :
+        M.IsFunction.Trait "core::num::dec2flt::parse::parse_scientific" parse_scientific.
+      Admitted.
+      Global Typeclasses Opaque parse_scientific.
       
       (*
       fn parse_partial_number(mut s: &[u8]) -> Option<(Number, usize)> {
@@ -1662,6 +1668,7 @@ Module num.
                     M.copy (| start |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2062,9 +2069,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_partial_number :
-        M.IsFunction "core::num::dec2flt::parse::parse_partial_number" parse_partial_number.
-      Smpl Add apply Function_parse_partial_number : is_function.
+      Global Instance Instance_IsFunction_parse_partial_number :
+        M.IsFunction.Trait "core::num::dec2flt::parse::parse_partial_number" parse_partial_number.
+      Admitted.
+      Global Typeclasses Opaque parse_partial_number.
       
       (*
       pub fn parse_number(s: &[u8]) -> Option<Number> {
@@ -2176,9 +2184,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_number :
-        M.IsFunction "core::num::dec2flt::parse::parse_number" parse_number.
-      Smpl Add apply Function_parse_number : is_function.
+      Global Instance Instance_IsFunction_parse_number :
+        M.IsFunction.Trait "core::num::dec2flt::parse::parse_number" parse_number.
+      Admitted.
+      Global Typeclasses Opaque parse_number.
       
       (*
       pub(crate) fn parse_inf_nan<F: RawFloat>(s: &[u8], negative: bool) -> Option<F> {
@@ -2507,9 +2516,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_inf_nan :
-        M.IsFunction "core::num::dec2flt::parse::parse_inf_nan" parse_inf_nan.
-      Smpl Add apply Function_parse_inf_nan : is_function.
+      Global Instance Instance_IsFunction_parse_inf_nan :
+        M.IsFunction.Trait "core::num::dec2flt::parse::parse_inf_nan" parse_inf_nan.
+      Admitted.
+      Global Typeclasses Opaque parse_inf_nan.
       
       Module parse_inf_nan.
         Definition value_INF_3 : Value.t :=

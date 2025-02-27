@@ -61,10 +61,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_next_back_unchecked :
+      Global Instance AssociatedFunction_next_back_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "next_back_unchecked" (next_back_unchecked T).
-      Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "next_back_unchecked" (next_back_unchecked T).
+      Admitted.
+      Global Typeclasses Opaque next_back_unchecked.
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -208,10 +209,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_make_slice :
+      Global Instance AssociatedFunction_make_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "make_slice" (make_slice T).
-      Smpl Add apply AssociatedFunction_make_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "make_slice" (make_slice T).
+      Admitted.
+      Global Typeclasses Opaque make_slice.
       
       (*
                   unsafe fn post_inc_start(&mut self, offset: usize) -> NonNull<T> {
@@ -400,10 +402,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_post_inc_start :
+      Global Instance AssociatedFunction_post_inc_start :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "post_inc_start" (post_inc_start T).
-      Smpl Add apply AssociatedFunction_post_inc_start : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "post_inc_start" (post_inc_start T).
+      Admitted.
+      Global Typeclasses Opaque post_inc_start.
       
       (*
                   unsafe fn pre_dec_end(&mut self, offset: usize) -> NonNull<T> {
@@ -563,10 +566,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_pre_dec_end :
+      Global Instance AssociatedFunction_pre_dec_end :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "pre_dec_end" (pre_dec_end T).
-      Smpl Add apply AssociatedFunction_pre_dec_end : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "pre_dec_end" (pre_dec_end T).
+      Admitted.
+      Global Typeclasses Opaque pre_dec_end.
     End Impl_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_Iter_T.
@@ -2041,6 +2045,7 @@ Module slice.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.alloc (|
@@ -2178,6 +2183,7 @@ Module slice.
             let f := M.alloc (| f |) in
             M.read (|
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -2276,6 +2282,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2408,6 +2415,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2537,6 +2545,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2687,6 +2696,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2924,6 +2934,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -3191,6 +3202,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.copy (| n |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -4510,10 +4522,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_next_back_unchecked :
+      Global Instance AssociatedFunction_next_back_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "next_back_unchecked" (next_back_unchecked T).
-      Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "next_back_unchecked" (next_back_unchecked T).
+      Admitted.
+      Global Typeclasses Opaque next_back_unchecked.
       
       (*
                   fn make_slice(&self) -> &'a [T] {
@@ -4657,10 +4670,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_make_slice :
+      Global Instance AssociatedFunction_make_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "make_slice" (make_slice T).
-      Smpl Add apply AssociatedFunction_make_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "make_slice" (make_slice T).
+      Admitted.
+      Global Typeclasses Opaque make_slice.
       
       (*
                   unsafe fn post_inc_start(&mut self, offset: usize) -> NonNull<T> {
@@ -4849,10 +4863,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_post_inc_start :
+      Global Instance AssociatedFunction_post_inc_start :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "post_inc_start" (post_inc_start T).
-      Smpl Add apply AssociatedFunction_post_inc_start : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "post_inc_start" (post_inc_start T).
+      Admitted.
+      Global Typeclasses Opaque post_inc_start.
       
       (*
                   unsafe fn pre_dec_end(&mut self, offset: usize) -> NonNull<T> {
@@ -5012,10 +5027,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_pre_dec_end :
+      Global Instance AssociatedFunction_pre_dec_end :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "pre_dec_end" (pre_dec_end T).
-      Smpl Add apply AssociatedFunction_pre_dec_end : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "pre_dec_end" (pre_dec_end T).
+      Admitted.
+      Global Typeclasses Opaque pre_dec_end.
     End Impl_core_slice_iter_IterMut_T.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_slice_iter_IterMut_T.
@@ -6490,6 +6506,7 @@ Module slice.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.alloc (|
@@ -6632,6 +6649,7 @@ Module slice.
             let f := M.alloc (| f |) in
             M.read (|
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -6734,6 +6752,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -6868,6 +6887,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -6998,6 +7018,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7148,6 +7169,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7385,6 +7407,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7654,6 +7677,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.copy (| n |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),

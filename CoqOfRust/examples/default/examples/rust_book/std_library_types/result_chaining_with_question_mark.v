@@ -171,8 +171,10 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_div : M.IsFunction "result_chaining_with_question_mark::checked::div" div.
-  Smpl Add apply Function_div : is_function.
+  Global Instance Instance_IsFunction_div :
+    M.IsFunction.Trait "result_chaining_with_question_mark::checked::div" div.
+  Admitted.
+  Global Typeclasses Opaque div.
   
   (*
       fn sqrt(x: f64) -> MathResult {
@@ -228,8 +230,10 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_sqrt : M.IsFunction "result_chaining_with_question_mark::checked::sqrt" sqrt.
-  Smpl Add apply Function_sqrt : is_function.
+  Global Instance Instance_IsFunction_sqrt :
+    M.IsFunction.Trait "result_chaining_with_question_mark::checked::sqrt" sqrt.
+  Admitted.
+  Global Typeclasses Opaque sqrt.
   
   (*
       fn ln(x: f64) -> MathResult {
@@ -285,8 +289,10 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ln : M.IsFunction "result_chaining_with_question_mark::checked::ln" ln.
-  Smpl Add apply Function_ln : is_function.
+  Global Instance Instance_IsFunction_ln :
+    M.IsFunction.Trait "result_chaining_with_question_mark::checked::ln" ln.
+  Admitted.
+  Global Typeclasses Opaque ln.
   
   (*
       fn op_(x: f64, y: f64) -> MathResult {
@@ -564,8 +570,10 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_op_ : M.IsFunction "result_chaining_with_question_mark::checked::op_" op_.
-  Smpl Add apply Function_op_ : is_function.
+  Global Instance Instance_IsFunction_op_ :
+    M.IsFunction.Trait "result_chaining_with_question_mark::checked::op_" op_.
+  Admitted.
+  Global Typeclasses Opaque op_.
   
   (*
       pub fn op(x: f64, y: f64) {
@@ -751,8 +759,10 @@ Module checked.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_op : M.IsFunction "result_chaining_with_question_mark::checked::op" op.
-  Smpl Add apply Function_op : is_function.
+  Global Instance Instance_IsFunction_op :
+    M.IsFunction.Trait "result_chaining_with_question_mark::checked::op" op.
+  Admitted.
+  Global Typeclasses Opaque op.
 End checked.
 
 (*
@@ -778,5 +788,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "result_chaining_with_question_mark::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "result_chaining_with_question_mark::main" main.
+Admitted.
+Global Typeclasses Opaque main.

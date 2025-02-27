@@ -670,10 +670,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_calc_split_length :
+        Global Instance AssociatedFunction_calc_split_length :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "calc_split_length" (calc_split_length K V).
-        Smpl Add apply AssociatedFunction_calc_split_length : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "calc_split_length" (calc_split_length K V).
+        Admitted.
+        Global Typeclasses Opaque calc_split_length.
         
         (*
             pub fn split_off<Q: ?Sized + Ord, A: Allocator + Clone>(&mut self, key: &Q, alloc: A) -> Self
@@ -879,6 +880,7 @@ Module collections.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ split_edge :
                           Ty.apply
@@ -1370,10 +1372,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_split_off :
+        Global Instance AssociatedFunction_split_off :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "split_off" (split_off K V).
-        Smpl Add apply AssociatedFunction_split_off : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "split_off" (split_off K V).
+        Admitted.
+        Global Typeclasses Opaque split_off.
         
         (*
             fn new_pillar<A: Allocator + Clone>(height: usize, alloc: A) -> Self {
@@ -1471,6 +1474,7 @@ Module collections.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1592,10 +1596,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new_pillar :
+        Global Instance AssociatedFunction_new_pillar :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "new_pillar" (new_pillar K V).
-        Smpl Add apply AssociatedFunction_new_pillar : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "new_pillar" (new_pillar K V).
+        Admitted.
+        Global Typeclasses Opaque new_pillar.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
     End split.
   End btree.

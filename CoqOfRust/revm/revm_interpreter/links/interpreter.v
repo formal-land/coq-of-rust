@@ -289,7 +289,11 @@ Module Impl_Interpreter.
     }
     intros [|[]]; run_symbolic.
     run_symbolic_let. {
-      admit.
+      unshelve eapply Run.Loop; [smpl of_ty | |]. {
+        run_symbolic.
+        admit.
+      }
+      intros [|[]]; run_symbolic.
     }
     intros [|[]]; run_symbolic.
     run_symbolic_let. {
@@ -312,6 +316,5 @@ Module Impl_Interpreter.
     destruct run_LoopControl_for_Control.
     destruct instruction_result as [instruction_result [H_instruction_result run_instruction_result]].
     run_symbolic.
-    admit.
   Admitted.
 End Impl_Interpreter.

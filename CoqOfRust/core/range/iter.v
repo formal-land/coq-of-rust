@@ -174,10 +174,11 @@ Module range.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_remainder :
+      Global Instance AssociatedFunction_remainder :
         forall (A : Ty.t),
-        M.IsAssociatedFunction (Self A) "remainder" (remainder A).
-      Smpl Add apply AssociatedFunction_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self A) "remainder" (remainder A).
+      Admitted.
+      Global Typeclasses Opaque remainder.
     End Impl_core_range_iter_IterRange_A.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_usize.
@@ -1347,10 +1348,11 @@ Module range.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_remainder :
+      Global Instance AssociatedFunction_remainder :
         forall (A : Ty.t),
-        M.IsAssociatedFunction (Self A) "remainder" (remainder A).
-      Smpl Add apply AssociatedFunction_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self A) "remainder" (remainder A).
+      Admitted.
+      Global Typeclasses Opaque remainder.
     End Impl_core_range_iter_IterRangeInclusive_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_range_Step_A_for_core_range_iter_IterRangeInclusive_A.
@@ -2189,10 +2191,11 @@ Module range.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_remainder :
+      Global Instance AssociatedFunction_remainder :
         forall (A : Ty.t),
-        M.IsAssociatedFunction (Self A) "remainder" (remainder A).
-      Smpl Add apply AssociatedFunction_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self A) "remainder" (remainder A).
+      Admitted.
+      Global Typeclasses Opaque remainder.
     End Impl_core_range_iter_IterRangeFrom_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_range_Step_A_for_core_range_iter_IterRangeFrom_A.

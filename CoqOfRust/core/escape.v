@@ -123,8 +123,10 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_backslash : M.IsFunction "core::escape::backslash" backslash.
-  Smpl Add apply Function_backslash : is_function.
+  Global Instance Instance_IsFunction_backslash :
+    M.IsFunction.Trait "core::escape::backslash" backslash.
+  Admitted.
+  Global Typeclasses Opaque backslash.
   
   (*
   const fn escape_ascii<const N: usize>(byte: u8) -> ([ascii::Char; N], Range<u8>) {
@@ -461,8 +463,10 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_escape_ascii : M.IsFunction "core::escape::escape_ascii" escape_ascii.
-  Smpl Add apply Function_escape_ascii : is_function.
+  Global Instance Instance_IsFunction_escape_ascii :
+    M.IsFunction.Trait "core::escape::escape_ascii" escape_ascii.
+  Admitted.
+  Global Typeclasses Opaque escape_ascii.
   
   (*
   const fn escape_unicode<const N: usize>(c: char) -> ([ascii::Char; N], Range<u8>) {
@@ -670,8 +674,10 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_escape_unicode : M.IsFunction "core::escape::escape_unicode" escape_unicode.
-  Smpl Add apply Function_escape_unicode : is_function.
+  Global Instance Instance_IsFunction_escape_unicode :
+    M.IsFunction.Trait "core::escape::escape_unicode" escape_unicode.
+  Admitted.
+  Global Typeclasses Opaque escape_unicode.
   
   (* StructRecord
     {
@@ -900,10 +906,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_backslash :
+    Global Instance AssociatedFunction_backslash :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "backslash" (backslash N).
-    Smpl Add apply AssociatedFunction_backslash : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "backslash" (backslash N).
+    Admitted.
+    Global Typeclasses Opaque backslash.
     
     (*
         pub const fn ascii(c: u8) -> Self {
@@ -951,10 +958,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ascii :
+    Global Instance AssociatedFunction_ascii :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "ascii" (ascii N).
-    Smpl Add apply AssociatedFunction_ascii : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "ascii" (ascii N).
+    Admitted.
+    Global Typeclasses Opaque ascii.
     
     (*
         pub const fn unicode(c: char) -> Self {
@@ -1002,10 +1010,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unicode :
+    Global Instance AssociatedFunction_unicode :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "unicode" (unicode N).
-    Smpl Add apply AssociatedFunction_unicode : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "unicode" (unicode N).
+    Admitted.
+    Global Typeclasses Opaque unicode.
     
     (*
         pub const fn empty() -> Self {
@@ -1033,10 +1042,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_empty :
+    Global Instance AssociatedFunction_empty :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "empty" (empty N).
-    Smpl Add apply AssociatedFunction_empty : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "empty" (empty N).
+    Admitted.
+    Global Typeclasses Opaque empty.
     
     (*
         pub fn as_ascii(&self) -> &[ascii::Char] {
@@ -1139,10 +1149,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ascii :
+    Global Instance AssociatedFunction_as_ascii :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "as_ascii" (as_ascii N).
-    Smpl Add apply AssociatedFunction_as_ascii : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "as_ascii" (as_ascii N).
+    Admitted.
+    Global Typeclasses Opaque as_ascii.
     
     (*
         pub fn as_str(&self) -> &str {
@@ -1197,10 +1208,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_str :
+    Global Instance AssociatedFunction_as_str :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "as_str" (as_str N).
-    Smpl Add apply AssociatedFunction_as_str : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "as_str" (as_str N).
+    Admitted.
+    Global Typeclasses Opaque as_str.
     
     (*
         pub fn len(&self) -> usize {
@@ -1254,10 +1266,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_len :
+    Global Instance AssociatedFunction_len :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "len" (len N).
-    Smpl Add apply AssociatedFunction_len : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "len" (len N).
+    Admitted.
+    Global Typeclasses Opaque len.
     
     (*
         pub fn next(&mut self) -> Option<u8> {
@@ -1442,10 +1455,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next :
+    Global Instance AssociatedFunction_next :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "next" (next N).
-    Smpl Add apply AssociatedFunction_next : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "next" (next N).
+    Admitted.
+    Global Typeclasses Opaque next.
     
     (*
         pub fn next_back(&mut self) -> Option<u8> {
@@ -1630,10 +1644,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_back :
+    Global Instance AssociatedFunction_next_back :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "next_back" (next_back N).
-    Smpl Add apply AssociatedFunction_next_back : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "next_back" (next_back N).
+    Admitted.
+    Global Typeclasses Opaque next_back.
     
     (*
         pub fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
@@ -1677,10 +1692,11 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_advance_by :
+    Global Instance AssociatedFunction_advance_by :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "advance_by" (advance_by N).
-    Smpl Add apply AssociatedFunction_advance_by : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "advance_by" (advance_by N).
+    Admitted.
+    Global Typeclasses Opaque advance_by.
     
     (*
         pub fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
@@ -1729,9 +1745,10 @@ Module escape.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_advance_back_by :
+    Global Instance AssociatedFunction_advance_back_by :
       forall (N : Value.t),
-      M.IsAssociatedFunction (Self N) "advance_back_by" (advance_back_by N).
-    Smpl Add apply AssociatedFunction_advance_back_by : is_associated.
+      M.IsAssociatedFunction.Trait (Self N) "advance_back_by" (advance_back_by N).
+    Admitted.
+    Global Typeclasses Opaque advance_back_by.
   End Impl_core_escape_EscapeIterInner_N.
 End escape.

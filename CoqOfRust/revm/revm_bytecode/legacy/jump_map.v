@@ -725,8 +725,10 @@ Module legacy.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_slice : M.IsAssociatedFunction Self "as_slice" as_slice.
-      Smpl Add apply AssociatedFunction_as_slice : is_associated.
+      Global Instance AssociatedFunction_as_slice :
+        M.IsAssociatedFunction.Trait Self "as_slice" as_slice.
+      Admitted.
+      Global Typeclasses Opaque as_slice.
       
       (*
           pub fn from_slice(slice: &[u8]) -> Self {
@@ -790,8 +792,10 @@ Module legacy.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_slice : M.IsAssociatedFunction Self "from_slice" from_slice.
-      Smpl Add apply AssociatedFunction_from_slice : is_associated.
+      Global Instance AssociatedFunction_from_slice :
+        M.IsAssociatedFunction.Trait Self "from_slice" from_slice.
+      Admitted.
+      Global Typeclasses Opaque from_slice.
       
       (*
           pub fn is_valid(&self, pc: usize) -> bool {
@@ -995,8 +999,10 @@ Module legacy.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
-      Smpl Add apply AssociatedFunction_is_valid : is_associated.
+      Global Instance AssociatedFunction_is_valid :
+        M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+      Admitted.
+      Global Typeclasses Opaque is_valid.
     End Impl_revm_bytecode_legacy_jump_map_JumpTable.
   End jump_map.
 End legacy.

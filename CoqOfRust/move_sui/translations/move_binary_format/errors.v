@@ -1072,8 +1072,9 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn stack_trace(&self) -> &Vec<(ModuleId, FunctionDefinitionIndex, CodeOffset)> {
@@ -1101,8 +1102,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_stack_trace : M.IsAssociatedFunction Self "stack_trace" stack_trace.
-    Smpl Add apply AssociatedFunction_stack_trace : is_associated.
+    Global Instance AssociatedFunction_stack_trace :
+      M.IsAssociatedFunction.Trait Self "stack_trace" stack_trace.
+    Admitted.
+    Global Typeclasses Opaque stack_trace.
   End Impl_move_binary_format_errors_ExecutionState.
   
   (* StructTuple
@@ -3102,8 +3105,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_major_status : M.IsAssociatedFunction Self "major_status" major_status.
-    Smpl Add apply AssociatedFunction_major_status : is_associated.
+    Global Instance AssociatedFunction_major_status :
+      M.IsAssociatedFunction.Trait Self "major_status" major_status.
+    Admitted.
+    Global Typeclasses Opaque major_status.
     
     (*
         pub fn sub_status(&self) -> Option<u64> {
@@ -3133,8 +3138,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sub_status : M.IsAssociatedFunction Self "sub_status" sub_status.
-    Smpl Add apply AssociatedFunction_sub_status : is_associated.
+    Global Instance AssociatedFunction_sub_status :
+      M.IsAssociatedFunction.Trait Self "sub_status" sub_status.
+    Admitted.
+    Global Typeclasses Opaque sub_status.
     
     (*
         pub fn message(&self) -> Option<&String> {
@@ -3179,8 +3186,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
-    Smpl Add apply AssociatedFunction_message : is_associated.
+    Global Instance AssociatedFunction_message :
+      M.IsAssociatedFunction.Trait Self "message" message.
+    Admitted.
+    Global Typeclasses Opaque message.
     
     (*
         pub fn exec_state(&self) -> Option<&ExecutionState> {
@@ -3229,8 +3238,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_exec_state : M.IsAssociatedFunction Self "exec_state" exec_state.
-    Smpl Add apply AssociatedFunction_exec_state : is_associated.
+    Global Instance AssociatedFunction_exec_state :
+      M.IsAssociatedFunction.Trait Self "exec_state" exec_state.
+    Admitted.
+    Global Typeclasses Opaque exec_state.
     
     (*
         pub fn remove_exec_state(&mut self) {
@@ -3267,9 +3278,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_remove_exec_state :
-      M.IsAssociatedFunction Self "remove_exec_state" remove_exec_state.
-    Smpl Add apply AssociatedFunction_remove_exec_state : is_associated.
+    Global Instance AssociatedFunction_remove_exec_state :
+      M.IsAssociatedFunction.Trait Self "remove_exec_state" remove_exec_state.
+    Admitted.
+    Global Typeclasses Opaque remove_exec_state.
     
     (*
         pub fn location(&self) -> &Location {
@@ -3305,8 +3317,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
-    Smpl Add apply AssociatedFunction_location : is_associated.
+    Global Instance AssociatedFunction_location :
+      M.IsAssociatedFunction.Trait Self "location" location.
+    Admitted.
+    Global Typeclasses Opaque location.
     
     (*
         pub fn indices(&self) -> &Vec<(IndexKind, TableIndex)> {
@@ -3342,8 +3356,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_indices : M.IsAssociatedFunction Self "indices" indices.
-    Smpl Add apply AssociatedFunction_indices : is_associated.
+    Global Instance AssociatedFunction_indices :
+      M.IsAssociatedFunction.Trait Self "indices" indices.
+    Admitted.
+    Global Typeclasses Opaque indices.
     
     (*
         pub fn offsets(&self) -> &Vec<(FunctionDefinitionIndex, CodeOffset)> {
@@ -3379,8 +3395,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_offsets : M.IsAssociatedFunction Self "offsets" offsets.
-    Smpl Add apply AssociatedFunction_offsets : is_associated.
+    Global Instance AssociatedFunction_offsets :
+      M.IsAssociatedFunction.Trait Self "offsets" offsets.
+    Admitted.
+    Global Typeclasses Opaque offsets.
     
     (*
         pub fn status_type(&self) -> StatusType {
@@ -3421,8 +3439,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_status_type : M.IsAssociatedFunction Self "status_type" status_type.
-    Smpl Add apply AssociatedFunction_status_type : is_associated.
+    Global Instance AssociatedFunction_status_type :
+      M.IsAssociatedFunction.Trait Self "status_type" status_type.
+    Admitted.
+    Global Typeclasses Opaque status_type.
     
     (*
         pub fn all_data(
@@ -3542,8 +3562,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_all_data : M.IsAssociatedFunction Self "all_data" all_data.
-    Smpl Add apply AssociatedFunction_all_data : is_associated.
+    Global Instance AssociatedFunction_all_data :
+      M.IsAssociatedFunction.Trait Self "all_data" all_data.
+    Admitted.
+    Global Typeclasses Opaque all_data.
     
     (*
         pub fn to_partial(self) -> PartialVMError {
@@ -3672,8 +3694,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_partial : M.IsAssociatedFunction Self "to_partial" to_partial.
-    Smpl Add apply AssociatedFunction_to_partial : is_associated.
+    Global Instance AssociatedFunction_to_partial :
+      M.IsAssociatedFunction.Trait Self "to_partial" to_partial.
+    Admitted.
+    Global Typeclasses Opaque to_partial.
   End Impl_move_binary_format_errors_VMError.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_errors_VMError.
@@ -4596,8 +4620,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_all_data : M.IsAssociatedFunction Self "all_data" all_data.
-    Smpl Add apply AssociatedFunction_all_data : is_associated.
+    Global Instance AssociatedFunction_all_data :
+      M.IsAssociatedFunction.Trait Self "all_data" all_data.
+    Admitted.
+    Global Typeclasses Opaque all_data.
     
     (*
         pub fn finish(self, location: Location) -> VMError {
@@ -4728,8 +4754,9 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
-    Smpl Add apply AssociatedFunction_finish : is_associated.
+    Global Instance AssociatedFunction_finish : M.IsAssociatedFunction.Trait Self "finish" finish.
+    Admitted.
+    Global Typeclasses Opaque finish.
     
     (*
         pub fn new(major_status: StatusCode) -> Self {
@@ -4842,8 +4869,9 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn major_status(&self) -> StatusCode {
@@ -4873,8 +4901,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_major_status : M.IsAssociatedFunction Self "major_status" major_status.
-    Smpl Add apply AssociatedFunction_major_status : is_associated.
+    Global Instance AssociatedFunction_major_status :
+      M.IsAssociatedFunction.Trait Self "major_status" major_status.
+    Admitted.
+    Global Typeclasses Opaque major_status.
     
     (*
         pub fn with_sub_status(mut self, sub_status: u64) -> Self {
@@ -4990,9 +5020,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_with_sub_status :
-      M.IsAssociatedFunction Self "with_sub_status" with_sub_status.
-    Smpl Add apply AssociatedFunction_with_sub_status : is_associated.
+    Global Instance AssociatedFunction_with_sub_status :
+      M.IsAssociatedFunction.Trait Self "with_sub_status" with_sub_status.
+    Admitted.
+    Global Typeclasses Opaque with_sub_status.
     
     (*
         pub fn with_message(mut self, message: String) -> Self {
@@ -5107,8 +5138,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_with_message : M.IsAssociatedFunction Self "with_message" with_message.
-    Smpl Add apply AssociatedFunction_with_message : is_associated.
+    Global Instance AssociatedFunction_with_message :
+      M.IsAssociatedFunction.Trait Self "with_message" with_message.
+    Admitted.
+    Global Typeclasses Opaque with_message.
     
     (*
         pub fn with_exec_state(mut self, exec_state: ExecutionState) -> Self {
@@ -5225,9 +5258,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_with_exec_state :
-      M.IsAssociatedFunction Self "with_exec_state" with_exec_state.
-    Smpl Add apply AssociatedFunction_with_exec_state : is_associated.
+    Global Instance AssociatedFunction_with_exec_state :
+      M.IsAssociatedFunction.Trait Self "with_exec_state" with_exec_state.
+    Admitted.
+    Global Typeclasses Opaque with_exec_state.
     
     (*
         pub fn at_index(mut self, kind: IndexKind, index: TableIndex) -> Self {
@@ -5285,8 +5319,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_at_index : M.IsAssociatedFunction Self "at_index" at_index.
-    Smpl Add apply AssociatedFunction_at_index : is_associated.
+    Global Instance AssociatedFunction_at_index :
+      M.IsAssociatedFunction.Trait Self "at_index" at_index.
+    Admitted.
+    Global Typeclasses Opaque at_index.
     
     (*
         pub fn at_indices(mut self, additional_indices: Vec<(IndexKind, TableIndex)>) -> Self {
@@ -5354,8 +5390,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_at_indices : M.IsAssociatedFunction Self "at_indices" at_indices.
-    Smpl Add apply AssociatedFunction_at_indices : is_associated.
+    Global Instance AssociatedFunction_at_indices :
+      M.IsAssociatedFunction.Trait Self "at_indices" at_indices.
+    Admitted.
+    Global Typeclasses Opaque at_indices.
     
     (*
         pub fn at_code_offset(mut self, function: FunctionDefinitionIndex, offset: CodeOffset) -> Self {
@@ -5417,9 +5455,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_at_code_offset :
-      M.IsAssociatedFunction Self "at_code_offset" at_code_offset.
-    Smpl Add apply AssociatedFunction_at_code_offset : is_associated.
+    Global Instance AssociatedFunction_at_code_offset :
+      M.IsAssociatedFunction.Trait Self "at_code_offset" at_code_offset.
+    Admitted.
+    Global Typeclasses Opaque at_code_offset.
     
     (*
         pub fn at_code_offsets(
@@ -5504,9 +5543,10 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_at_code_offsets :
-      M.IsAssociatedFunction Self "at_code_offsets" at_code_offsets.
-    Smpl Add apply AssociatedFunction_at_code_offsets : is_associated.
+    Global Instance AssociatedFunction_at_code_offsets :
+      M.IsAssociatedFunction.Trait Self "at_code_offsets" at_code_offsets.
+    Admitted.
+    Global Typeclasses Opaque at_code_offsets.
     
     (*
         pub fn append_message_with_separator(
@@ -5711,9 +5751,13 @@ Module errors.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_append_message_with_separator :
-      M.IsAssociatedFunction Self "append_message_with_separator" append_message_with_separator.
-    Smpl Add apply AssociatedFunction_append_message_with_separator : is_associated.
+    Global Instance AssociatedFunction_append_message_with_separator :
+      M.IsAssociatedFunction.Trait
+        Self
+        "append_message_with_separator"
+        append_message_with_separator.
+    Admitted.
+    Global Typeclasses Opaque append_message_with_separator.
   End Impl_move_binary_format_errors_PartialVMError.
   
   Module Impl_core_fmt_Display_for_move_binary_format_errors_Location.
@@ -6414,6 +6458,7 @@ Module errors.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -6715,6 +6760,7 @@ Module errors.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -7676,6 +7722,7 @@ Module errors.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -7977,6 +8024,7 @@ Module errors.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -8522,9 +8570,10 @@ Module errors.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_offset_out_of_bounds :
-    M.IsFunction "move_binary_format::errors::offset_out_of_bounds" offset_out_of_bounds.
-  Smpl Add apply Function_offset_out_of_bounds : is_function.
+  Global Instance Instance_IsFunction_offset_out_of_bounds :
+    M.IsFunction.Trait "move_binary_format::errors::offset_out_of_bounds" offset_out_of_bounds.
+  Admitted.
+  Global Typeclasses Opaque offset_out_of_bounds.
   
   (*
   pub fn bounds_error(
@@ -8707,9 +8756,10 @@ Module errors.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_bounds_error :
-    M.IsFunction "move_binary_format::errors::bounds_error" bounds_error.
-  Smpl Add apply Function_bounds_error : is_function.
+  Global Instance Instance_IsFunction_bounds_error :
+    M.IsFunction.Trait "move_binary_format::errors::bounds_error" bounds_error.
+  Admitted.
+  Global Typeclasses Opaque bounds_error.
   
   (*
   pub fn verification_error(status: StatusCode, kind: IndexKind, idx: TableIndex) -> PartialVMError {
@@ -8749,9 +8799,10 @@ Module errors.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verification_error :
-    M.IsFunction "move_binary_format::errors::verification_error" verification_error.
-  Smpl Add apply Function_verification_error : is_function.
+  Global Instance Instance_IsFunction_verification_error :
+    M.IsFunction.Trait "move_binary_format::errors::verification_error" verification_error.
+  Admitted.
+  Global Typeclasses Opaque verification_error.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_errors_PartialVMError.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::PartialVMError".

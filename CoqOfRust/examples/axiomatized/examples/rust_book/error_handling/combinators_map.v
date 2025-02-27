@@ -110,30 +110,30 @@ End Impl_core_fmt_Debug_for_combinators_map_Cooked.
 
 Parameter peel : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_peel : M.IsFunction "combinators_map::peel" peel.
-Smpl Add apply Function_peel : is_function.
+Global Instance Instance_IsFunction_peel : M.IsFunction.Trait "combinators_map::peel" peel.
+Admitted.
 
 Parameter chop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_chop : M.IsFunction "combinators_map::chop" chop.
-Smpl Add apply Function_chop : is_function.
+Global Instance Instance_IsFunction_chop : M.IsFunction.Trait "combinators_map::chop" chop.
+Admitted.
 
 Parameter cook : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_cook : M.IsFunction "combinators_map::cook" cook.
-Smpl Add apply Function_cook : is_function.
+Global Instance Instance_IsFunction_cook : M.IsFunction.Trait "combinators_map::cook" cook.
+Admitted.
 
 Parameter process : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_process : M.IsFunction "combinators_map::process" process.
-Smpl Add apply Function_process : is_function.
+Global Instance Instance_IsFunction_process : M.IsFunction.Trait "combinators_map::process" process.
+Admitted.
 
 Parameter eat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_eat : M.IsFunction "combinators_map::eat" eat.
-Smpl Add apply Function_eat : is_function.
+Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_map::eat" eat.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "combinators_map::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_map::main" main.
+Admitted.

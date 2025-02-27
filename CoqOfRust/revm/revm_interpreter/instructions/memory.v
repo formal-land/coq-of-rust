@@ -696,8 +696,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mload : M.IsFunction "revm_interpreter::instructions::memory::mload" mload.
-    Smpl Add apply Function_mload : is_function.
+    Global Instance Instance_IsFunction_mload :
+      M.IsFunction.Trait "revm_interpreter::instructions::memory::mload" mload.
+    Admitted.
+    Global Typeclasses Opaque mload.
     
     (*
     pub fn mstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1276,8 +1278,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mstore : M.IsFunction "revm_interpreter::instructions::memory::mstore" mstore.
-    Smpl Add apply Function_mstore : is_function.
+    Global Instance Instance_IsFunction_mstore :
+      M.IsFunction.Trait "revm_interpreter::instructions::memory::mstore" mstore.
+    Admitted.
+    Global Typeclasses Opaque mstore.
     
     (*
     pub fn mstore8<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1859,8 +1863,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mstore8 : M.IsFunction "revm_interpreter::instructions::memory::mstore8" mstore8.
-    Smpl Add apply Function_mstore8 : is_function.
+    Global Instance Instance_IsFunction_mstore8 :
+      M.IsFunction.Trait "revm_interpreter::instructions::memory::mstore8" mstore8.
+    Admitted.
+    Global Typeclasses Opaque mstore8.
     
     (*
     pub fn msize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2126,8 +2132,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_msize : M.IsFunction "revm_interpreter::instructions::memory::msize" msize.
-    Smpl Add apply Function_msize : is_function.
+    Global Instance Instance_IsFunction_msize :
+      M.IsFunction.Trait "revm_interpreter::instructions::memory::msize" msize.
+    Admitted.
+    Global Typeclasses Opaque msize.
     
     (*
     pub fn mcopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3197,7 +3205,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mcopy : M.IsFunction "revm_interpreter::instructions::memory::mcopy" mcopy.
-    Smpl Add apply Function_mcopy : is_function.
+    Global Instance Instance_IsFunction_mcopy :
+      M.IsFunction.Trait "revm_interpreter::instructions::memory::mcopy" mcopy.
+    Admitted.
+    Global Typeclasses Opaque mcopy.
   End memory.
 End instructions.

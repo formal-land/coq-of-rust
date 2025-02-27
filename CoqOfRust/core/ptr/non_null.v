@@ -84,10 +84,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_dangling :
+      Global Instance AssociatedFunction_dangling :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "dangling" (dangling T).
-      Smpl Add apply AssociatedFunction_dangling : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "dangling" (dangling T).
+      Admitted.
+      Global Typeclasses Opaque dangling.
       
       (*
           pub const unsafe fn as_uninit_ref<'a>(self) -> &'a MaybeUninit<T> {
@@ -150,10 +151,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_uninit_ref :
+      Global Instance AssociatedFunction_as_uninit_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_uninit_ref" (as_uninit_ref T).
-      Smpl Add apply AssociatedFunction_as_uninit_ref : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_uninit_ref" (as_uninit_ref T).
+      Admitted.
+      Global Typeclasses Opaque as_uninit_ref.
       
       (*
           pub const unsafe fn as_uninit_mut<'a>(self) -> &'a mut MaybeUninit<T> {
@@ -242,10 +244,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_uninit_mut :
+      Global Instance AssociatedFunction_as_uninit_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_uninit_mut" (as_uninit_mut T).
-      Smpl Add apply AssociatedFunction_as_uninit_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_uninit_mut" (as_uninit_mut T).
+      Admitted.
+      Global Typeclasses Opaque as_uninit_mut.
       (*
           pub const unsafe fn new_unchecked(ptr: *mut T) -> Self {
               // SAFETY: the caller must guarantee that `ptr` is non-null.
@@ -323,10 +326,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unchecked :
+      Global Instance AssociatedFunction_new_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new_unchecked" (new_unchecked T).
-      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new_unchecked" (new_unchecked T).
+      Admitted.
+      Global Typeclasses Opaque new_unchecked.
       
       (*
           pub const fn new(ptr: *mut T) -> Option<Self> {
@@ -392,10 +396,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn from_raw_parts(
@@ -455,10 +460,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_raw_parts :
+      Global Instance AssociatedFunction_from_raw_parts :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_raw_parts" (from_raw_parts T).
-      Smpl Add apply AssociatedFunction_from_raw_parts : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_raw_parts" (from_raw_parts T).
+      Admitted.
+      Global Typeclasses Opaque from_raw_parts.
       
       (*
           pub const fn to_raw_parts(self) -> (NonNull<()>, <T as super::Pointee>::Metadata) {
@@ -510,10 +516,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_raw_parts :
+      Global Instance AssociatedFunction_to_raw_parts :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "to_raw_parts" (to_raw_parts T).
-      Smpl Add apply AssociatedFunction_to_raw_parts : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "to_raw_parts" (to_raw_parts T).
+      Admitted.
+      Global Typeclasses Opaque to_raw_parts.
       
       (*
           pub fn addr(self) -> NonZero<usize> {
@@ -560,10 +567,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_addr :
+      Global Instance AssociatedFunction_addr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "addr" (addr T).
-      Smpl Add apply AssociatedFunction_addr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "addr" (addr T).
+      Admitted.
+      Global Typeclasses Opaque addr.
       
       (*
           pub fn with_addr(self, addr: NonZero<usize>) -> Self {
@@ -622,10 +630,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_with_addr :
+      Global Instance AssociatedFunction_with_addr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "with_addr" (with_addr T).
-      Smpl Add apply AssociatedFunction_with_addr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "with_addr" (with_addr T).
+      Admitted.
+      Global Typeclasses Opaque with_addr.
       
       (*
           pub fn map_addr(self, f: impl FnOnce(NonZero<usize>) -> NonZero<usize>) -> Self {
@@ -685,10 +694,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_addr :
+      Global Instance AssociatedFunction_map_addr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "map_addr" (map_addr T).
-      Smpl Add apply AssociatedFunction_map_addr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "map_addr" (map_addr T).
+      Admitted.
+      Global Typeclasses Opaque map_addr.
       
       (*
           pub const fn as_ptr(self) -> *mut T {
@@ -713,10 +723,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr :
+      Global Instance AssociatedFunction_as_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
       
       (*
           pub const unsafe fn as_ref<'a>(&self) -> &'a T {
@@ -766,10 +777,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ref :
+      Global Instance AssociatedFunction_as_ref :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
-      Smpl Add apply AssociatedFunction_as_ref : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_ref" (as_ref T).
+      Admitted.
+      Global Typeclasses Opaque as_ref.
       
       (*
           pub const unsafe fn as_mut<'a>(&mut self) -> &'a mut T {
@@ -817,10 +829,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_mut :
+      Global Instance AssociatedFunction_as_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
-      Smpl Add apply AssociatedFunction_as_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_mut" (as_mut T).
+      Admitted.
+      Global Typeclasses Opaque as_mut.
       
       (*
           pub const fn cast<U>(self) -> NonNull<U> {
@@ -856,10 +869,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_cast :
+      Global Instance AssociatedFunction_cast :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "cast" (cast T).
-      Smpl Add apply AssociatedFunction_cast : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "cast" (cast T).
+      Admitted.
+      Global Typeclasses Opaque cast.
       
       (*
           pub const unsafe fn offset(self, count: isize) -> Self
@@ -906,10 +920,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_offset :
+      Global Instance AssociatedFunction_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "offset" (offset T).
-      Smpl Add apply AssociatedFunction_offset : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "offset" (offset T).
+      Admitted.
+      Global Typeclasses Opaque offset.
       
       (*
           pub const unsafe fn byte_offset(self, count: isize) -> Self {
@@ -955,10 +970,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_byte_offset :
+      Global Instance AssociatedFunction_byte_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "byte_offset" (byte_offset T).
-      Smpl Add apply AssociatedFunction_byte_offset : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "byte_offset" (byte_offset T).
+      Admitted.
+      Global Typeclasses Opaque byte_offset.
       
       (*
           pub const unsafe fn add(self, count: usize) -> Self
@@ -1005,10 +1021,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_add :
+      Global Instance AssociatedFunction_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "add" (add T).
-      Smpl Add apply AssociatedFunction_add : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "add" (add T).
+      Admitted.
+      Global Typeclasses Opaque add.
       
       (*
           pub const unsafe fn byte_add(self, count: usize) -> Self {
@@ -1054,10 +1071,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_byte_add :
+      Global Instance AssociatedFunction_byte_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "byte_add" (byte_add T).
-      Smpl Add apply AssociatedFunction_byte_add : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "byte_add" (byte_add T).
+      Admitted.
+      Global Typeclasses Opaque byte_add.
       
       (*
           pub const unsafe fn sub(self, count: usize) -> Self
@@ -1123,10 +1141,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_sub :
+      Global Instance AssociatedFunction_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "sub" (sub T).
-      Smpl Add apply AssociatedFunction_sub : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "sub" (sub T).
+      Admitted.
+      Global Typeclasses Opaque sub.
       
       (*
           pub const unsafe fn byte_sub(self, count: usize) -> Self {
@@ -1172,10 +1191,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_byte_sub :
+      Global Instance AssociatedFunction_byte_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "byte_sub" (byte_sub T).
-      Smpl Add apply AssociatedFunction_byte_sub : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "byte_sub" (byte_sub T).
+      Admitted.
+      Global Typeclasses Opaque byte_sub.
       
       (*
           pub const unsafe fn offset_from(self, origin: NonNull<T>) -> isize
@@ -1221,10 +1241,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_offset_from :
+      Global Instance AssociatedFunction_offset_from :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "offset_from" (offset_from T).
-      Smpl Add apply AssociatedFunction_offset_from : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "offset_from" (offset_from T).
+      Admitted.
+      Global Typeclasses Opaque offset_from.
       
       (*
           pub const unsafe fn byte_offset_from<U: ?Sized>(self, origin: NonNull<U>) -> isize {
@@ -1272,10 +1293,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_byte_offset_from :
+      Global Instance AssociatedFunction_byte_offset_from :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "byte_offset_from" (byte_offset_from T).
-      Smpl Add apply AssociatedFunction_byte_offset_from : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "byte_offset_from" (byte_offset_from T).
+      Admitted.
+      Global Typeclasses Opaque byte_offset_from.
       
       (*
           pub const unsafe fn sub_ptr(self, subtracted: NonNull<T>) -> usize
@@ -1321,10 +1343,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_sub_ptr :
+      Global Instance AssociatedFunction_sub_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "sub_ptr" (sub_ptr T).
-      Smpl Add apply AssociatedFunction_sub_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "sub_ptr" (sub_ptr T).
+      Admitted.
+      Global Typeclasses Opaque sub_ptr.
       
       (*
           pub const unsafe fn read(self) -> T
@@ -1357,10 +1380,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read :
+      Global Instance AssociatedFunction_read :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "read" (read T).
-      Smpl Add apply AssociatedFunction_read : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "read" (read T).
+      Admitted.
+      Global Typeclasses Opaque read.
       
       (*
           pub unsafe fn read_volatile(self) -> T
@@ -1398,10 +1422,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_volatile :
+      Global Instance AssociatedFunction_read_volatile :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "read_volatile" (read_volatile T).
-      Smpl Add apply AssociatedFunction_read_volatile : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "read_volatile" (read_volatile T).
+      Admitted.
+      Global Typeclasses Opaque read_volatile.
       
       (*
           pub const unsafe fn read_unaligned(self) -> T
@@ -1439,10 +1464,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_unaligned :
+      Global Instance AssociatedFunction_read_unaligned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "read_unaligned" (read_unaligned T).
-      Smpl Add apply AssociatedFunction_read_unaligned : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "read_unaligned" (read_unaligned T).
+      Admitted.
+      Global Typeclasses Opaque read_unaligned.
       
       (*
           pub const unsafe fn copy_to(self, dest: NonNull<T>, count: usize)
@@ -1488,10 +1514,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_copy_to :
+      Global Instance AssociatedFunction_copy_to :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "copy_to" (copy_to T).
-      Smpl Add apply AssociatedFunction_copy_to : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "copy_to" (copy_to T).
+      Admitted.
+      Global Typeclasses Opaque copy_to.
       
       (*
           pub const unsafe fn copy_to_nonoverlapping(self, dest: NonNull<T>, count: usize)
@@ -1542,10 +1569,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_copy_to_nonoverlapping :
+      Global Instance AssociatedFunction_copy_to_nonoverlapping :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "copy_to_nonoverlapping" (copy_to_nonoverlapping T).
-      Smpl Add apply AssociatedFunction_copy_to_nonoverlapping : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "copy_to_nonoverlapping" (copy_to_nonoverlapping T).
+      Admitted.
+      Global Typeclasses Opaque copy_to_nonoverlapping.
       
       (*
           pub const unsafe fn copy_from(self, src: NonNull<T>, count: usize)
@@ -1591,10 +1619,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_copy_from :
+      Global Instance AssociatedFunction_copy_from :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "copy_from" (copy_from T).
-      Smpl Add apply AssociatedFunction_copy_from : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "copy_from" (copy_from T).
+      Admitted.
+      Global Typeclasses Opaque copy_from.
       
       (*
           pub const unsafe fn copy_from_nonoverlapping(self, src: NonNull<T>, count: usize)
@@ -1645,10 +1674,14 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_copy_from_nonoverlapping :
+      Global Instance AssociatedFunction_copy_from_nonoverlapping :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "copy_from_nonoverlapping" (copy_from_nonoverlapping T).
-      Smpl Add apply AssociatedFunction_copy_from_nonoverlapping : is_associated.
+        M.IsAssociatedFunction.Trait
+          (Self T)
+          "copy_from_nonoverlapping"
+          (copy_from_nonoverlapping T).
+      Admitted.
+      Global Typeclasses Opaque copy_from_nonoverlapping.
       
       (*
           pub unsafe fn drop_in_place(self) {
@@ -1686,10 +1719,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_drop_in_place :
+      Global Instance AssociatedFunction_drop_in_place :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "drop_in_place" (drop_in_place T).
-      Smpl Add apply AssociatedFunction_drop_in_place : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "drop_in_place" (drop_in_place T).
+      Admitted.
+      Global Typeclasses Opaque drop_in_place.
       
       (*
           pub const unsafe fn write(self, val: T)
@@ -1727,10 +1761,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_write :
+      Global Instance AssociatedFunction_write :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "write" (write T).
-      Smpl Add apply AssociatedFunction_write : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "write" (write T).
+      Admitted.
+      Global Typeclasses Opaque write.
       
       (*
           pub const unsafe fn write_bytes(self, val: u8, count: usize)
@@ -1770,10 +1805,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_write_bytes :
+      Global Instance AssociatedFunction_write_bytes :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "write_bytes" (write_bytes T).
-      Smpl Add apply AssociatedFunction_write_bytes : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "write_bytes" (write_bytes T).
+      Admitted.
+      Global Typeclasses Opaque write_bytes.
       
       (*
           pub unsafe fn write_volatile(self, val: T)
@@ -1816,10 +1852,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_write_volatile :
+      Global Instance AssociatedFunction_write_volatile :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "write_volatile" (write_volatile T).
-      Smpl Add apply AssociatedFunction_write_volatile : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "write_volatile" (write_volatile T).
+      Admitted.
+      Global Typeclasses Opaque write_volatile.
       
       (*
           pub const unsafe fn write_unaligned(self, val: T)
@@ -1862,10 +1899,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_write_unaligned :
+      Global Instance AssociatedFunction_write_unaligned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "write_unaligned" (write_unaligned T).
-      Smpl Add apply AssociatedFunction_write_unaligned : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "write_unaligned" (write_unaligned T).
+      Admitted.
+      Global Typeclasses Opaque write_unaligned.
       
       (*
           pub unsafe fn replace(self, src: T) -> T
@@ -1903,10 +1941,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_replace :
+      Global Instance AssociatedFunction_replace :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "replace" (replace T).
-      Smpl Add apply AssociatedFunction_replace : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "replace" (replace T).
+      Admitted.
+      Global Typeclasses Opaque replace.
       
       (*
           pub const unsafe fn swap(self, with: NonNull<T>)
@@ -1953,10 +1992,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap :
+      Global Instance AssociatedFunction_swap :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "swap" (swap T).
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
           pub const fn align_offset(self, align: usize) -> usize
@@ -2071,10 +2111,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_align_offset :
+      Global Instance AssociatedFunction_align_offset :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "align_offset" (align_offset T).
-      Smpl Add apply AssociatedFunction_align_offset : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "align_offset" (align_offset T).
+      Admitted.
+      Global Typeclasses Opaque align_offset.
       
       (*
           pub const fn is_aligned(self) -> bool
@@ -2111,10 +2152,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_aligned :
+      Global Instance AssociatedFunction_is_aligned :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "is_aligned" (is_aligned T).
-      Smpl Add apply AssociatedFunction_is_aligned : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "is_aligned" (is_aligned T).
+      Admitted.
+      Global Typeclasses Opaque is_aligned.
       
       (*
           pub const fn is_aligned_to(self, align: usize) -> bool {
@@ -2155,10 +2197,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_aligned_to :
+      Global Instance AssociatedFunction_is_aligned_to :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "is_aligned_to" (is_aligned_to T).
-      Smpl Add apply AssociatedFunction_is_aligned_to : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "is_aligned_to" (is_aligned_to T).
+      Admitted.
+      Global Typeclasses Opaque is_aligned_to.
     End Impl_core_ptr_non_null_NonNull_T.
     
     
@@ -2224,10 +2267,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_slice_from_raw_parts :
+      Global Instance AssociatedFunction_slice_from_raw_parts :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "slice_from_raw_parts" (slice_from_raw_parts T).
-      Smpl Add apply AssociatedFunction_slice_from_raw_parts : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "slice_from_raw_parts" (slice_from_raw_parts T).
+      Admitted.
+      Global Typeclasses Opaque slice_from_raw_parts.
       
       (*
           pub const fn len(self) -> usize {
@@ -2267,10 +2311,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len :
+      Global Instance AssociatedFunction_len :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "len" (len T).
-      Smpl Add apply AssociatedFunction_len : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           pub const fn is_empty(self) -> bool {
@@ -2302,10 +2347,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty :
+      Global Instance AssociatedFunction_is_empty :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "is_empty" (is_empty T).
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
+      Admitted.
+      Global Typeclasses Opaque is_empty.
       
       (*
           pub const fn as_non_null_ptr(self) -> NonNull<T> {
@@ -2339,10 +2385,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_non_null_ptr :
+      Global Instance AssociatedFunction_as_non_null_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_non_null_ptr" (as_non_null_ptr T).
-      Smpl Add apply AssociatedFunction_as_non_null_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_non_null_ptr" (as_non_null_ptr T).
+      Admitted.
+      Global Typeclasses Opaque as_non_null_ptr.
       
       (*
           pub const fn as_mut_ptr(self) -> *mut T {
@@ -2382,10 +2429,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_mut_ptr :
+      Global Instance AssociatedFunction_as_mut_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_mut_ptr" (as_mut_ptr T).
-      Smpl Add apply AssociatedFunction_as_mut_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_mut_ptr" (as_mut_ptr T).
+      Admitted.
+      Global Typeclasses Opaque as_mut_ptr.
       
       (*
           pub const unsafe fn as_uninit_slice<'a>(self) -> &'a [MaybeUninit<T>] {
@@ -2479,10 +2527,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_uninit_slice :
+      Global Instance AssociatedFunction_as_uninit_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_uninit_slice" (as_uninit_slice T).
-      Smpl Add apply AssociatedFunction_as_uninit_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_uninit_slice" (as_uninit_slice T).
+      Admitted.
+      Global Typeclasses Opaque as_uninit_slice.
       
       (*
           pub const unsafe fn as_uninit_slice_mut<'a>(self) -> &'a mut [MaybeUninit<T>] {
@@ -2600,10 +2649,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_uninit_slice_mut :
+      Global Instance AssociatedFunction_as_uninit_slice_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_uninit_slice_mut" (as_uninit_slice_mut T).
-      Smpl Add apply AssociatedFunction_as_uninit_slice_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_uninit_slice_mut" (as_uninit_slice_mut T).
+      Admitted.
+      Global Typeclasses Opaque as_uninit_slice_mut.
       
       (*
           pub unsafe fn get_unchecked_mut<I>(self, index: I) -> NonNull<I::Output>
@@ -2631,12 +2681,26 @@ Module ptr.
               Ty.apply
                 (Ty.path "core::ptr::non_null::NonNull")
                 []
-                [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                [
+                  Ty.associated_in_trait
+                    "core::slice::index::SliceIndex"
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    I
+                    "Output"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      I
+                      "Output"
+                  ],
                 "new_unchecked",
                 [],
                 []
@@ -2646,7 +2710,14 @@ Module ptr.
                   Ty.apply
                     (Ty.path "*mut")
                     []
-                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                    [
+                      Ty.associated_in_trait
+                        "core::slice::index::SliceIndex"
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                        I
+                        "Output"
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked_mut",
@@ -2675,10 +2746,11 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_unchecked_mut :
+      Global Instance AssociatedFunction_get_unchecked_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "get_unchecked_mut" (get_unchecked_mut T).
-      Smpl Add apply AssociatedFunction_get_unchecked_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "get_unchecked_mut" (get_unchecked_mut T).
+      Admitted.
+      Global Typeclasses Opaque get_unchecked_mut.
     End Impl_core_ptr_non_null_NonNull_slice_T.
     
     Module Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.

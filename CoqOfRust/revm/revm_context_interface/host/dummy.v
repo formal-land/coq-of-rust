@@ -885,10 +885,11 @@ Module host.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (BLOCK TX CFG : Ty.t),
-        M.IsAssociatedFunction (Self BLOCK TX CFG) "new" (new BLOCK TX CFG).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self BLOCK TX CFG) "new" (new BLOCK TX CFG).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn clear(&mut self) {
@@ -982,10 +983,11 @@ Module host.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_clear :
+      Global Instance AssociatedFunction_clear :
         forall (BLOCK TX CFG : Ty.t),
-        M.IsAssociatedFunction (Self BLOCK TX CFG) "clear" (clear BLOCK TX CFG).
-      Smpl Add apply AssociatedFunction_clear : is_associated.
+        M.IsAssociatedFunction.Trait (Self BLOCK TX CFG) "clear" (clear BLOCK TX CFG).
+      Admitted.
+      Global Typeclasses Opaque clear.
     End Impl_revm_context_interface_host_dummy_DummyHost_BLOCK_TX_CFG.
     
     Module Impl_revm_context_interface_block_BlockGetter_where_revm_context_interface_block_Block_BLOCK_where_revm_context_interface_transaction_Transaction_TX_where_revm_context_interface_cfg_Cfg_CFG_for_revm_context_interface_host_dummy_DummyHost_BLOCK_TX_CFG.

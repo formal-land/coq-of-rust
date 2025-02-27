@@ -133,8 +133,8 @@ Module Impl_call_builder_Selector.
   *)
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
 End Impl_call_builder_Selector.
 
 (* StructTuple
@@ -192,8 +192,9 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn call(&mut self, address: AccountId, selector: [u8; 4]) -> Option<LangError> {
@@ -324,8 +325,9 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_call : M.IsAssociatedFunction Self "call" call.
-  Smpl Add apply AssociatedFunction_call : is_associated.
+  Global Instance AssociatedFunction_call : M.IsAssociatedFunction.Trait Self "call" call.
+  Admitted.
+  Global Typeclasses Opaque call.
   
   (*
       pub fn invoke(&mut self, address: AccountId, selector: [u8; 4]) {
@@ -349,8 +351,9 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
-  Smpl Add apply AssociatedFunction_invoke : is_associated.
+  Global Instance AssociatedFunction_invoke : M.IsAssociatedFunction.Trait Self "invoke" invoke.
+  Admitted.
+  Global Typeclasses Opaque invoke.
   
   (*
       pub fn call_instantiate(
@@ -394,9 +397,10 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_call_instantiate :
-    M.IsAssociatedFunction Self "call_instantiate" call_instantiate.
-  Smpl Add apply AssociatedFunction_call_instantiate : is_associated.
+  Global Instance AssociatedFunction_call_instantiate :
+    M.IsAssociatedFunction.Trait Self "call_instantiate" call_instantiate.
+  Admitted.
+  Global Typeclasses Opaque call_instantiate.
   
   (*
       pub fn call_instantiate_fallible(
@@ -437,7 +441,8 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_call_instantiate_fallible :
-    M.IsAssociatedFunction Self "call_instantiate_fallible" call_instantiate_fallible.
-  Smpl Add apply AssociatedFunction_call_instantiate_fallible : is_associated.
+  Global Instance AssociatedFunction_call_instantiate_fallible :
+    M.IsAssociatedFunction.Trait Self "call_instantiate_fallible" call_instantiate_fallible.
+  Admitted.
+  Global Typeclasses Opaque call_instantiate_fallible.
 End Impl_call_builder_CallBuilderTest.

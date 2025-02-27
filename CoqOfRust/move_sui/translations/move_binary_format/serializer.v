@@ -234,9 +234,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_as_uleb128 :
-    M.IsFunction "move_binary_format::serializer::write_as_uleb128" write_as_uleb128.
-  Smpl Add apply Function_write_as_uleb128 : is_function.
+  Global Instance Instance_IsFunction_write_as_uleb128 :
+    M.IsFunction.Trait "move_binary_format::serializer::write_as_uleb128" write_as_uleb128.
+  Admitted.
+  Global Typeclasses Opaque write_as_uleb128.
   
   (*
   fn serialize_signature_index(binary: &mut BinaryData, idx: &SignatureIndex) -> Result<()> {
@@ -273,11 +274,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_signature_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_signature_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_signature_index"
       serialize_signature_index.
-  Smpl Add apply Function_serialize_signature_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_signature_index.
   
   (*
   fn serialize_module_handle_index(binary: &mut BinaryData, idx: &ModuleHandleIndex) -> Result<()> {
@@ -318,11 +320,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_module_handle_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_module_handle_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_module_handle_index"
       serialize_module_handle_index.
-  Smpl Add apply Function_serialize_module_handle_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_module_handle_index.
   
   (*
   fn serialize_identifier_index(binary: &mut BinaryData, idx: &IdentifierIndex) -> Result<()> {
@@ -359,11 +362,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_identifier_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_identifier_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_identifier_index"
       serialize_identifier_index.
-  Smpl Add apply Function_serialize_identifier_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_identifier_index.
   
   (*
   fn serialize_struct_handle_index(binary: &mut BinaryData, idx: &StructHandleIndex) -> Result<()> {
@@ -404,11 +408,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_struct_handle_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_struct_handle_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_struct_handle_index"
       serialize_struct_handle_index.
-  Smpl Add apply Function_serialize_struct_handle_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_struct_handle_index.
   
   (*
   fn serialize_address_identifier_index(
@@ -450,11 +455,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_address_identifier_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_address_identifier_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_address_identifier_index"
       serialize_address_identifier_index.
-  Smpl Add apply Function_serialize_address_identifier_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_address_identifier_index.
   
   (*
   fn serialize_struct_def_index(binary: &mut BinaryData, idx: &StructDefinitionIndex) -> Result<()> {
@@ -491,11 +497,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_struct_def_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_struct_def_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_struct_def_index"
       serialize_struct_def_index.
-  Smpl Add apply Function_serialize_struct_def_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_struct_def_index.
   
   (*
   fn serialize_function_handle_index(
@@ -539,11 +546,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_function_handle_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_function_handle_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_function_handle_index"
       serialize_function_handle_index.
-  Smpl Add apply Function_serialize_function_handle_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_function_handle_index.
   
   (*
   fn serialize_field_handle_index(binary: &mut BinaryData, idx: &FieldHandleIndex) -> Result<()> {
@@ -584,11 +592,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_handle_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_field_handle_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_field_handle_index"
       serialize_field_handle_index.
-  Smpl Add apply Function_serialize_field_handle_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_handle_index.
   
   (*
   fn serialize_field_inst_index(
@@ -628,11 +637,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_inst_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_field_inst_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_field_inst_index"
       serialize_field_inst_index.
-  Smpl Add apply Function_serialize_field_inst_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_inst_index.
   
   (*
   fn serialize_function_inst_index(
@@ -676,11 +686,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_function_inst_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_function_inst_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_function_inst_index"
       serialize_function_inst_index.
-  Smpl Add apply Function_serialize_function_inst_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_function_inst_index.
   
   (*
   fn serialize_struct_def_inst_index(
@@ -724,11 +735,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_struct_def_inst_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_struct_def_inst_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_struct_def_inst_index"
       serialize_struct_def_inst_index.
-  Smpl Add apply Function_serialize_struct_def_inst_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_struct_def_inst_index.
   
   (*
   fn seiralize_table_offset(binary: &mut BinaryData, offset: u32) -> Result<()> {
@@ -757,9 +769,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_seiralize_table_offset :
-    M.IsFunction "move_binary_format::serializer::seiralize_table_offset" seiralize_table_offset.
-  Smpl Add apply Function_seiralize_table_offset : is_function.
+  Global Instance Instance_IsFunction_seiralize_table_offset :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::seiralize_table_offset"
+      seiralize_table_offset.
+  Admitted.
+  Global Typeclasses Opaque seiralize_table_offset.
   
   (*
   fn serialize_table_size(binary: &mut BinaryData, size: u32) -> Result<()> {
@@ -788,9 +803,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_table_size :
-    M.IsFunction "move_binary_format::serializer::serialize_table_size" serialize_table_size.
-  Smpl Add apply Function_serialize_table_size : is_function.
+  Global Instance Instance_IsFunction_serialize_table_size :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_table_size" serialize_table_size.
+  Admitted.
+  Global Typeclasses Opaque serialize_table_size.
   
   (*
   fn serialize_constant_pool_index(binary: &mut BinaryData, idx: &ConstantPoolIndex) -> Result<()> {
@@ -829,11 +845,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_constant_pool_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_constant_pool_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_constant_pool_index"
       serialize_constant_pool_index.
-  Smpl Add apply Function_serialize_constant_pool_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_constant_pool_index.
   
   (*
   fn serialize_bytecode_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -862,11 +879,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_bytecode_count :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_bytecode_count :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_bytecode_count"
       serialize_bytecode_count.
-  Smpl Add apply Function_serialize_bytecode_count : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_bytecode_count.
   
   (*
   fn serialize_identifier_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -897,11 +915,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_identifier_size :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_identifier_size :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_identifier_size"
       serialize_identifier_size.
-  Smpl Add apply Function_serialize_identifier_size : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_identifier_size.
   
   (*
   fn serialize_constant_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -930,9 +949,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_constant_size :
-    M.IsFunction "move_binary_format::serializer::serialize_constant_size" serialize_constant_size.
-  Smpl Add apply Function_serialize_constant_size : is_function.
+  Global Instance Instance_IsFunction_serialize_constant_size :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_constant_size"
+      serialize_constant_size.
+  Admitted.
+  Global Typeclasses Opaque serialize_constant_size.
   
   (*
   fn serialize_metadata_key_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -967,11 +989,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_metadata_key_size :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_metadata_key_size :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_metadata_key_size"
       serialize_metadata_key_size.
-  Smpl Add apply Function_serialize_metadata_key_size : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_metadata_key_size.
   
   (*
   fn serialize_metadata_value_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1006,11 +1029,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_metadata_value_size :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_metadata_value_size :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_metadata_value_size"
       serialize_metadata_value_size.
-  Smpl Add apply Function_serialize_metadata_value_size : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_metadata_value_size.
   
   (*
   fn serialize_field_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1039,9 +1063,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_count :
-    M.IsFunction "move_binary_format::serializer::serialize_field_count" serialize_field_count.
-  Smpl Add apply Function_serialize_field_count : is_function.
+  Global Instance Instance_IsFunction_serialize_field_count :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_field_count"
+      serialize_field_count.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_count.
   
   (*
   fn serialize_field_offset(binary: &mut BinaryData, offset: u16) -> Result<()> {
@@ -1070,9 +1097,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_offset :
-    M.IsFunction "move_binary_format::serializer::serialize_field_offset" serialize_field_offset.
-  Smpl Add apply Function_serialize_field_offset : is_function.
+  Global Instance Instance_IsFunction_serialize_field_offset :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_field_offset"
+      serialize_field_offset.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_offset.
   
   (*
   fn serialize_acquires_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1101,11 +1131,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_acquires_count :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_acquires_count :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_acquires_count"
       serialize_acquires_count.
-  Smpl Add apply Function_serialize_acquires_count : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_acquires_count.
   
   (*
   fn serialize_signature_size(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1134,11 +1165,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_signature_size :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_signature_size :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_signature_size"
       serialize_signature_size.
-  Smpl Add apply Function_serialize_signature_size : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_signature_size.
   
   (*
   fn serialize_type_parameter_index(binary: &mut BinaryData, idx: u16) -> Result<()> {
@@ -1173,11 +1205,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_type_parameter_index :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_type_parameter_index :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_type_parameter_index"
       serialize_type_parameter_index.
-  Smpl Add apply Function_serialize_type_parameter_index : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_type_parameter_index.
   
   (*
   fn serialize_type_parameter_count(binary: &mut BinaryData, len: usize) -> Result<()> {
@@ -1212,11 +1245,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_type_parameter_count :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_type_parameter_count :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_type_parameter_count"
       serialize_type_parameter_count.
-  Smpl Add apply Function_serialize_type_parameter_count : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_type_parameter_count.
   
   (*
   fn serialize_bytecode_offset(binary: &mut BinaryData, offset: u16) -> Result<()> {
@@ -1245,11 +1279,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_bytecode_offset :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_bytecode_offset :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_bytecode_offset"
       serialize_bytecode_offset.
-  Smpl Add apply Function_serialize_bytecode_offset : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_bytecode_offset.
   
   (*
   fn serialize_table_count(binary: &mut BinaryData, len: u8) -> Result<()> {
@@ -1278,9 +1313,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_table_count :
-    M.IsFunction "move_binary_format::serializer::serialize_table_count" serialize_table_count.
-  Smpl Add apply Function_serialize_table_count : is_function.
+  Global Instance Instance_IsFunction_serialize_table_count :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_table_count"
+      serialize_table_count.
+  Admitted.
+  Global Typeclasses Opaque serialize_table_count.
   
   (*
   fn serialize_local_index(binary: &mut BinaryData, idx: u8) -> Result<()> {
@@ -1309,9 +1347,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_local_index :
-    M.IsFunction "move_binary_format::serializer::serialize_local_index" serialize_local_index.
-  Smpl Add apply Function_serialize_local_index : is_function.
+  Global Instance Instance_IsFunction_serialize_local_index :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_local_index"
+      serialize_local_index.
+  Admitted.
+  Global Typeclasses Opaque serialize_local_index.
   
   (*
   fn validate_version(version: u32) -> Result<()> {
@@ -1574,9 +1615,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_validate_version :
-    M.IsFunction "move_binary_format::serializer::validate_version" validate_version.
-  Smpl Add apply Function_validate_version : is_function.
+  Global Instance Instance_IsFunction_validate_version :
+    M.IsFunction.Trait "move_binary_format::serializer::validate_version" validate_version.
+  Admitted.
+  Global Typeclasses Opaque validate_version.
   
   Module Impl_move_binary_format_file_format_CompiledModule.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::CompiledModule".
@@ -1609,8 +1651,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize : M.IsAssociatedFunction Self "serialize" serialize.
-    Smpl Add apply AssociatedFunction_serialize : is_associated.
+    Global Instance AssociatedFunction_serialize :
+      M.IsAssociatedFunction.Trait Self "serialize" serialize.
+    Admitted.
+    Global Typeclasses Opaque serialize.
     
     (*
         pub fn serialize_for_version(
@@ -2637,9 +2681,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_for_version :
-      M.IsAssociatedFunction Self "serialize_for_version" serialize_for_version.
-    Smpl Add apply AssociatedFunction_serialize_for_version : is_associated.
+    Global Instance AssociatedFunction_serialize_for_version :
+      M.IsAssociatedFunction.Trait Self "serialize_for_version" serialize_for_version.
+    Admitted.
+    Global Typeclasses Opaque serialize_for_version.
   End Impl_move_binary_format_file_format_CompiledModule.
   
   (* StructRecord
@@ -3396,9 +3441,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_index_in_binary :
-    M.IsFunction "move_binary_format::serializer::check_index_in_binary" check_index_in_binary.
-  Smpl Add apply Function_check_index_in_binary : is_function.
+  Global Instance Instance_IsFunction_check_index_in_binary :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::check_index_in_binary"
+      check_index_in_binary.
+  Admitted.
+  Global Typeclasses Opaque check_index_in_binary.
   
   (*
   fn serialize_table_index(
@@ -3768,9 +3816,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_table_index :
-    M.IsFunction "move_binary_format::serializer::serialize_table_index" serialize_table_index.
-  Smpl Add apply Function_serialize_table_index : is_function.
+  Global Instance Instance_IsFunction_serialize_table_index :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_table_index"
+      serialize_table_index.
+  Admitted.
+  Global Typeclasses Opaque serialize_table_index.
   
   (*
   fn serialize_magic(binary: &mut BinaryData) -> Result<()> {
@@ -3824,6 +3875,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3998,9 +4050,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_magic :
-    M.IsFunction "move_binary_format::serializer::serialize_magic" serialize_magic.
-  Smpl Add apply Function_serialize_magic : is_function.
+  Global Instance Instance_IsFunction_serialize_magic :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_magic" serialize_magic.
+  Admitted.
+  Global Typeclasses Opaque serialize_magic.
   
   (* Trait *)
   (* Empty module 'CommonTables' *)
@@ -4807,9 +4860,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_module_handle :
-    M.IsFunction "move_binary_format::serializer::serialize_module_handle" serialize_module_handle.
-  Smpl Add apply Function_serialize_module_handle : is_function.
+  Global Instance Instance_IsFunction_serialize_module_handle :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_module_handle"
+      serialize_module_handle.
+  Admitted.
+  Global Typeclasses Opaque serialize_module_handle.
   
   (*
   fn serialize_struct_handle(binary: &mut BinaryData, struct_handle: &StructHandle) -> Result<()> {
@@ -5231,9 +5287,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_struct_handle :
-    M.IsFunction "move_binary_format::serializer::serialize_struct_handle" serialize_struct_handle.
-  Smpl Add apply Function_serialize_struct_handle : is_function.
+  Global Instance Instance_IsFunction_serialize_struct_handle :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_struct_handle"
+      serialize_struct_handle.
+  Admitted.
+  Global Typeclasses Opaque serialize_struct_handle.
   
   (*
   fn serialize_type_parameters(
@@ -5410,6 +5469,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -5596,11 +5656,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_type_parameters :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_type_parameters :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_type_parameters"
       serialize_type_parameters.
-  Smpl Add apply Function_serialize_type_parameters : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_type_parameters.
   
   (*
   fn serialize_type_parameter(
@@ -5759,11 +5820,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_type_parameter :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_type_parameter :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_type_parameter"
       serialize_type_parameter.
-  Smpl Add apply Function_serialize_type_parameter : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_type_parameter.
   
   (*
   fn serialize_function_handle(
@@ -6309,11 +6371,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_function_handle :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_function_handle :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_function_handle"
       serialize_function_handle.
-  Smpl Add apply Function_serialize_function_handle : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_function_handle.
   
   (*
   fn serialize_function_instantiation(
@@ -6572,11 +6635,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_function_instantiation :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_function_instantiation :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_function_instantiation"
       serialize_function_instantiation.
-  Smpl Add apply Function_serialize_function_instantiation : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_function_instantiation.
   
   (*
   fn serialize_identifier(binary: &mut BinaryData, string: &str) -> Result<()> {
@@ -6743,6 +6807,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -6917,9 +6982,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_identifier :
-    M.IsFunction "move_binary_format::serializer::serialize_identifier" serialize_identifier.
-  Smpl Add apply Function_serialize_identifier : is_function.
+  Global Instance Instance_IsFunction_serialize_identifier :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_identifier" serialize_identifier.
+  Admitted.
+  Global Typeclasses Opaque serialize_identifier.
   
   (*
   fn serialize_address(binary: &mut BinaryData, address: &AccountAddress) -> Result<()> {
@@ -6981,6 +7047,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -7155,9 +7222,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_address :
-    M.IsFunction "move_binary_format::serializer::serialize_address" serialize_address.
-  Smpl Add apply Function_serialize_address : is_function.
+  Global Instance Instance_IsFunction_serialize_address :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_address" serialize_address.
+  Admitted.
+  Global Typeclasses Opaque serialize_address.
   
   (*
   fn serialize_constant(binary: &mut BinaryData, constant: &Constant) -> Result<()> {
@@ -7365,9 +7433,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_constant :
-    M.IsFunction "move_binary_format::serializer::serialize_constant" serialize_constant.
-  Smpl Add apply Function_serialize_constant : is_function.
+  Global Instance Instance_IsFunction_serialize_constant :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_constant" serialize_constant.
+  Admitted.
+  Global Typeclasses Opaque serialize_constant.
   
   (*
   fn serialize_metadata_entry(binary: &mut BinaryData, metadata: &Metadata) -> Result<()> {
@@ -7619,11 +7688,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_metadata_entry :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_metadata_entry :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_metadata_entry"
       serialize_metadata_entry.
-  Smpl Add apply Function_serialize_metadata_entry : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_metadata_entry.
   
   (*
   fn serialize_byte_blob(
@@ -7807,6 +7877,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -7981,9 +8052,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_byte_blob :
-    M.IsFunction "move_binary_format::serializer::serialize_byte_blob" serialize_byte_blob.
-  Smpl Add apply Function_serialize_byte_blob : is_function.
+  Global Instance Instance_IsFunction_serialize_byte_blob :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_byte_blob" serialize_byte_blob.
+  Admitted.
+  Global Typeclasses Opaque serialize_byte_blob.
   
   (*
   fn serialize_struct_definition(
@@ -8355,11 +8427,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_struct_definition :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_struct_definition :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_struct_definition"
       serialize_struct_definition.
-  Smpl Add apply Function_serialize_struct_definition : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_struct_definition.
   
   (*
   fn serialize_struct_def_instantiation(
@@ -8618,11 +8691,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_struct_def_instantiation :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_struct_def_instantiation :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_struct_def_instantiation"
       serialize_struct_def_instantiation.
-  Smpl Add apply Function_serialize_struct_def_instantiation : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_struct_def_instantiation.
   
   (*
   fn serialize_field_definitions(binary: &mut BinaryData, fields: &[FieldDefinition]) -> Result<()> {
@@ -8794,6 +8868,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -8980,11 +9055,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_definitions :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_field_definitions :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_field_definitions"
       serialize_field_definitions.
-  Smpl Add apply Function_serialize_field_definitions : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_definitions.
   
   (*
   fn serialize_field_definition(
@@ -9156,11 +9232,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_definition :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_field_definition :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_field_definition"
       serialize_field_definition.
-  Smpl Add apply Function_serialize_field_definition : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_definition.
   
   (*
   fn serialize_field_handle(binary: &mut BinaryData, field_handle: &FieldHandle) -> Result<()> {
@@ -9406,9 +9483,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_handle :
-    M.IsFunction "move_binary_format::serializer::serialize_field_handle" serialize_field_handle.
-  Smpl Add apply Function_serialize_field_handle : is_function.
+  Global Instance Instance_IsFunction_serialize_field_handle :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_field_handle"
+      serialize_field_handle.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_handle.
   
   (*
   fn serialize_field_instantiation(
@@ -9667,11 +9747,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_field_instantiation :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_field_instantiation :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_field_instantiation"
       serialize_field_instantiation.
-  Smpl Add apply Function_serialize_field_instantiation : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_field_instantiation.
   
   (*
   fn serialize_acquires(binary: &mut BinaryData, indices: &[StructDefinitionIndex]) -> Result<()> {
@@ -9841,6 +9922,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -10027,9 +10109,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_acquires :
-    M.IsFunction "move_binary_format::serializer::serialize_acquires" serialize_acquires.
-  Smpl Add apply Function_serialize_acquires : is_function.
+  Global Instance Instance_IsFunction_serialize_acquires :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_acquires" serialize_acquires.
+  Admitted.
+  Global Typeclasses Opaque serialize_acquires.
   
   (*
   fn serialize_signature(binary: &mut BinaryData, signature: &Signature) -> Result<()> {
@@ -10098,9 +10181,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_signature :
-    M.IsFunction "move_binary_format::serializer::serialize_signature" serialize_signature.
-  Smpl Add apply Function_serialize_signature : is_function.
+  Global Instance Instance_IsFunction_serialize_signature :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_signature" serialize_signature.
+  Admitted.
+  Global Typeclasses Opaque serialize_signature.
   
   (*
   fn serialize_signature_tokens(binary: &mut BinaryData, tokens: &[SignatureToken]) -> Result<()> {
@@ -10268,6 +10352,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -10454,11 +10539,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_signature_tokens :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_signature_tokens :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_signature_tokens"
       serialize_signature_tokens.
-  Smpl Add apply Function_serialize_signature_tokens : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_signature_tokens.
   
   (*
   fn serialize_signature_token_single_node_impl(
@@ -12823,11 +12909,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_signature_token_single_node_impl :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_signature_token_single_node_impl :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_signature_token_single_node_impl"
       serialize_signature_token_single_node_impl.
-  Smpl Add apply Function_serialize_signature_token_single_node_impl : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_signature_token_single_node_impl.
   
   (*
   pub(crate) fn serialize_signature_token(
@@ -12890,6 +12977,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -13167,11 +13255,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_signature_token :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_signature_token :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_signature_token"
       serialize_signature_token.
-  Smpl Add apply Function_serialize_signature_token : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_signature_token.
   
   (*
   fn serialize_ability_set(binary: &mut BinaryData, set: AbilitySet) -> Result<()> {
@@ -13315,9 +13404,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_ability_set :
-    M.IsFunction "move_binary_format::serializer::serialize_ability_set" serialize_ability_set.
-  Smpl Add apply Function_serialize_ability_set : is_function.
+  Global Instance Instance_IsFunction_serialize_ability_set :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_ability_set"
+      serialize_ability_set.
+  Admitted.
+  Global Typeclasses Opaque serialize_ability_set.
   
   (*
   fn serialize_ability_sets(binary: &mut BinaryData, sets: &[AbilitySet]) -> Result<()> {
@@ -13485,6 +13577,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -13663,9 +13756,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_ability_sets :
-    M.IsFunction "move_binary_format::serializer::serialize_ability_sets" serialize_ability_sets.
-  Smpl Add apply Function_serialize_ability_sets : is_function.
+  Global Instance Instance_IsFunction_serialize_ability_sets :
+    M.IsFunction.Trait
+      "move_binary_format::serializer::serialize_ability_sets"
+      serialize_ability_sets.
+  Admitted.
+  Global Typeclasses Opaque serialize_ability_sets.
   
   (*
   fn serialize_code_unit(major_version: u32, binary: &mut BinaryData, code: &CodeUnit) -> Result<()> {
@@ -13861,9 +13957,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_code_unit :
-    M.IsFunction "move_binary_format::serializer::serialize_code_unit" serialize_code_unit.
-  Smpl Add apply Function_serialize_code_unit : is_function.
+  Global Instance Instance_IsFunction_serialize_code_unit :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_code_unit" serialize_code_unit.
+  Admitted.
+  Global Typeclasses Opaque serialize_code_unit.
   
   (*
   fn serialize_instruction_inner(
@@ -22206,11 +22303,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_instruction_inner :
-    M.IsFunction
+  Global Instance Instance_IsFunction_serialize_instruction_inner :
+    M.IsFunction.Trait
       "move_binary_format::serializer::serialize_instruction_inner"
       serialize_instruction_inner.
-  Smpl Add apply Function_serialize_instruction_inner : is_function.
+  Admitted.
+  Global Typeclasses Opaque serialize_instruction_inner.
   
   (*
   fn serialize_code(major_version: u32, binary: &mut BinaryData, code: &[Bytecode]) -> Result<()> {
@@ -22379,6 +22477,7 @@ Module serializer.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -22560,9 +22659,10 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_code :
-    M.IsFunction "move_binary_format::serializer::serialize_code" serialize_code.
-  Smpl Add apply Function_serialize_code : is_function.
+  Global Instance Instance_IsFunction_serialize_code :
+    M.IsFunction.Trait "move_binary_format::serializer::serialize_code" serialize_code.
+  Admitted.
+  Global Typeclasses Opaque serialize_code.
   
   (*
   fn checked_calculate_table_size(binary: &mut BinaryData, start: u32) -> Result<u32> {
@@ -22760,11 +22860,12 @@ Module serializer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_checked_calculate_table_size :
-    M.IsFunction
+  Global Instance Instance_IsFunction_checked_calculate_table_size :
+    M.IsFunction.Trait
       "move_binary_format::serializer::checked_calculate_table_size"
       checked_calculate_table_size.
-  Smpl Add apply Function_checked_calculate_table_size : is_function.
+  Admitted.
+  Global Typeclasses Opaque checked_calculate_table_size.
   
   Module Impl_move_binary_format_serializer_CommonSerializer.
     Definition Self : Ty.t := Ty.path "move_binary_format::serializer::CommonSerializer".
@@ -22818,8 +22919,9 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn serialize_header(&mut self, binary: &mut BinaryData) -> Result<()> {
@@ -23051,9 +23153,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_header :
-      M.IsAssociatedFunction Self "serialize_header" serialize_header.
-    Smpl Add apply AssociatedFunction_serialize_header : is_associated.
+    Global Instance AssociatedFunction_serialize_header :
+      M.IsAssociatedFunction.Trait Self "serialize_header" serialize_header.
+    Admitted.
+    Global Typeclasses Opaque serialize_header.
     
     (*
         fn serialize_table_indices(&mut self, binary: &mut BinaryData) -> Result<()> {
@@ -24393,9 +24496,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_table_indices :
-      M.IsAssociatedFunction Self "serialize_table_indices" serialize_table_indices.
-    Smpl Add apply AssociatedFunction_serialize_table_indices : is_associated.
+    Global Instance AssociatedFunction_serialize_table_indices :
+      M.IsAssociatedFunction.Trait Self "serialize_table_indices" serialize_table_indices.
+    Admitted.
+    Global Typeclasses Opaque serialize_table_indices.
     
     (*
         fn serialize_common_tables<T: CommonTables>(
@@ -25803,9 +25907,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_common_tables :
-      M.IsAssociatedFunction Self "serialize_common_tables" serialize_common_tables.
-    Smpl Add apply AssociatedFunction_serialize_common_tables : is_associated.
+    Global Instance AssociatedFunction_serialize_common_tables :
+      M.IsAssociatedFunction.Trait Self "serialize_common_tables" serialize_common_tables.
+    Admitted.
+    Global Typeclasses Opaque serialize_common_tables.
     
     (*
         fn serialize_module_handles(
@@ -26049,6 +26154,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -26394,9 +26500,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_module_handles :
-      M.IsAssociatedFunction Self "serialize_module_handles" serialize_module_handles.
-    Smpl Add apply AssociatedFunction_serialize_module_handles : is_associated.
+    Global Instance AssociatedFunction_serialize_module_handles :
+      M.IsAssociatedFunction.Trait Self "serialize_module_handles" serialize_module_handles.
+    Admitted.
+    Global Typeclasses Opaque serialize_module_handles.
     
     (*
         fn serialize_struct_handles(
@@ -26640,6 +26747,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -26985,9 +27093,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_struct_handles :
-      M.IsAssociatedFunction Self "serialize_struct_handles" serialize_struct_handles.
-    Smpl Add apply AssociatedFunction_serialize_struct_handles : is_associated.
+    Global Instance AssociatedFunction_serialize_struct_handles :
+      M.IsAssociatedFunction.Trait Self "serialize_struct_handles" serialize_struct_handles.
+    Admitted.
+    Global Typeclasses Opaque serialize_struct_handles.
     
     (*
         fn serialize_function_handles(
@@ -27237,6 +27346,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -27582,9 +27692,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_function_handles :
-      M.IsAssociatedFunction Self "serialize_function_handles" serialize_function_handles.
-    Smpl Add apply AssociatedFunction_serialize_function_handles : is_associated.
+    Global Instance AssociatedFunction_serialize_function_handles :
+      M.IsAssociatedFunction.Trait Self "serialize_function_handles" serialize_function_handles.
+    Admitted.
+    Global Typeclasses Opaque serialize_function_handles.
     
     (*
         fn serialize_function_instantiations(
@@ -27839,6 +27950,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -28187,12 +28299,13 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_function_instantiations :
-      M.IsAssociatedFunction
+    Global Instance AssociatedFunction_serialize_function_instantiations :
+      M.IsAssociatedFunction.Trait
         Self
         "serialize_function_instantiations"
         serialize_function_instantiations.
-    Smpl Add apply AssociatedFunction_serialize_function_instantiations : is_associated.
+    Admitted.
+    Global Typeclasses Opaque serialize_function_instantiations.
     
     (*
         fn serialize_identifiers(
@@ -28434,6 +28547,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -28827,9 +28941,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_identifiers :
-      M.IsAssociatedFunction Self "serialize_identifiers" serialize_identifiers.
-    Smpl Add apply AssociatedFunction_serialize_identifiers : is_associated.
+    Global Instance AssociatedFunction_serialize_identifiers :
+      M.IsAssociatedFunction.Trait Self "serialize_identifiers" serialize_identifiers.
+    Admitted.
+    Global Typeclasses Opaque serialize_identifiers.
     
     (*
         fn serialize_address_identifiers(
@@ -29080,6 +29195,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -29425,9 +29541,13 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_address_identifiers :
-      M.IsAssociatedFunction Self "serialize_address_identifiers" serialize_address_identifiers.
-    Smpl Add apply AssociatedFunction_serialize_address_identifiers : is_associated.
+    Global Instance AssociatedFunction_serialize_address_identifiers :
+      M.IsAssociatedFunction.Trait
+        Self
+        "serialize_address_identifiers"
+        serialize_address_identifiers.
+    Admitted.
+    Global Typeclasses Opaque serialize_address_identifiers.
     
     (*
         fn serialize_constants(
@@ -29668,6 +29788,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -30013,9 +30134,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_constants :
-      M.IsAssociatedFunction Self "serialize_constants" serialize_constants.
-    Smpl Add apply AssociatedFunction_serialize_constants : is_associated.
+    Global Instance AssociatedFunction_serialize_constants :
+      M.IsAssociatedFunction.Trait Self "serialize_constants" serialize_constants.
+    Admitted.
+    Global Typeclasses Opaque serialize_constants.
     
     (*
         fn serialize_metadata(&mut self, binary: &mut BinaryData, metadata: &[Metadata]) -> Result<()> {
@@ -30252,6 +30374,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -30595,9 +30718,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_metadata :
-      M.IsAssociatedFunction Self "serialize_metadata" serialize_metadata.
-    Smpl Add apply AssociatedFunction_serialize_metadata : is_associated.
+    Global Instance AssociatedFunction_serialize_metadata :
+      M.IsAssociatedFunction.Trait Self "serialize_metadata" serialize_metadata.
+    Admitted.
+    Global Typeclasses Opaque serialize_metadata.
     
     (*
         fn serialize_signatures(
@@ -30838,6 +30962,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -31183,9 +31308,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_signatures :
-      M.IsAssociatedFunction Self "serialize_signatures" serialize_signatures.
-    Smpl Add apply AssociatedFunction_serialize_signatures : is_associated.
+    Global Instance AssociatedFunction_serialize_signatures :
+      M.IsAssociatedFunction.Trait Self "serialize_signatures" serialize_signatures.
+    Admitted.
+    Global Typeclasses Opaque serialize_signatures.
     
     (*
         pub fn major_version(&self) -> u32 {
@@ -31207,9 +31333,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_major_version :
-      M.IsAssociatedFunction Self "major_version" major_version.
-    Smpl Add apply AssociatedFunction_major_version : is_associated.
+    Global Instance AssociatedFunction_major_version :
+      M.IsAssociatedFunction.Trait Self "major_version" major_version.
+    Admitted.
+    Global Typeclasses Opaque major_version.
   End Impl_move_binary_format_serializer_CommonSerializer.
   
   Module Impl_move_binary_format_serializer_ModuleSerializer.
@@ -31263,8 +31390,9 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn serialize_tables(&mut self, binary: &mut BinaryData, module: &CompiledModule) -> Result<()> {
@@ -32228,9 +32356,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_tables :
-      M.IsAssociatedFunction Self "serialize_tables" serialize_tables.
-    Smpl Add apply AssociatedFunction_serialize_tables : is_associated.
+    Global Instance AssociatedFunction_serialize_tables :
+      M.IsAssociatedFunction.Trait Self "serialize_tables" serialize_tables.
+    Admitted.
+    Global Typeclasses Opaque serialize_tables.
     
     (*
         fn serialize_table_indices(&mut self, binary: &mut BinaryData) -> Result<()> {
@@ -33143,9 +33272,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_table_indices :
-      M.IsAssociatedFunction Self "serialize_table_indices" serialize_table_indices.
-    Smpl Add apply AssociatedFunction_serialize_table_indices : is_associated.
+    Global Instance AssociatedFunction_serialize_table_indices :
+      M.IsAssociatedFunction.Trait Self "serialize_table_indices" serialize_table_indices.
+    Admitted.
+    Global Typeclasses Opaque serialize_table_indices.
     
     (*
         fn serialize_struct_definitions(
@@ -33421,6 +33551,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -33766,9 +33897,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_struct_definitions :
-      M.IsAssociatedFunction Self "serialize_struct_definitions" serialize_struct_definitions.
-    Smpl Add apply AssociatedFunction_serialize_struct_definitions : is_associated.
+    Global Instance AssociatedFunction_serialize_struct_definitions :
+      M.IsAssociatedFunction.Trait Self "serialize_struct_definitions" serialize_struct_definitions.
+    Admitted.
+    Global Typeclasses Opaque serialize_struct_definitions.
     
     (*
         fn serialize_struct_def_instantiations(
@@ -34047,6 +34179,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -34394,12 +34527,13 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_struct_def_instantiations :
-      M.IsAssociatedFunction
+    Global Instance AssociatedFunction_serialize_struct_def_instantiations :
+      M.IsAssociatedFunction.Trait
         Self
         "serialize_struct_def_instantiations"
         serialize_struct_def_instantiations.
-    Smpl Add apply AssociatedFunction_serialize_struct_def_instantiations : is_associated.
+    Admitted.
+    Global Typeclasses Opaque serialize_struct_def_instantiations.
     
     (*
         fn serialize_field_handles(
@@ -34645,6 +34779,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -34990,9 +35125,10 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_field_handles :
-      M.IsAssociatedFunction Self "serialize_field_handles" serialize_field_handles.
-    Smpl Add apply AssociatedFunction_serialize_field_handles : is_associated.
+    Global Instance AssociatedFunction_serialize_field_handles :
+      M.IsAssociatedFunction.Trait Self "serialize_field_handles" serialize_field_handles.
+    Admitted.
+    Global Typeclasses Opaque serialize_field_handles.
     
     (*
         fn serialize_field_instantiations(
@@ -35251,6 +35387,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -35598,9 +35735,13 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_field_instantiations :
-      M.IsAssociatedFunction Self "serialize_field_instantiations" serialize_field_instantiations.
-    Smpl Add apply AssociatedFunction_serialize_field_instantiations : is_associated.
+    Global Instance AssociatedFunction_serialize_field_instantiations :
+      M.IsAssociatedFunction.Trait
+        Self
+        "serialize_field_instantiations"
+        serialize_field_instantiations.
+    Admitted.
+    Global Typeclasses Opaque serialize_field_instantiations.
     
     (*
         fn serialize_function_definitions(
@@ -35878,6 +36019,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -36231,9 +36373,13 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_function_definitions :
-      M.IsAssociatedFunction Self "serialize_function_definitions" serialize_function_definitions.
-    Smpl Add apply AssociatedFunction_serialize_function_definitions : is_associated.
+    Global Instance AssociatedFunction_serialize_function_definitions :
+      M.IsAssociatedFunction.Trait
+        Self
+        "serialize_function_definitions"
+        serialize_function_definitions.
+    Admitted.
+    Global Typeclasses Opaque serialize_function_definitions.
     
     (*
         fn serialize_function_definition(
@@ -37236,9 +37382,13 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_function_definition :
-      M.IsAssociatedFunction Self "serialize_function_definition" serialize_function_definition.
-    Smpl Add apply AssociatedFunction_serialize_function_definition : is_associated.
+    Global Instance AssociatedFunction_serialize_function_definition :
+      M.IsAssociatedFunction.Trait
+        Self
+        "serialize_function_definition"
+        serialize_function_definition.
+    Admitted.
+    Global Typeclasses Opaque serialize_function_definition.
     
     (*
         fn serialize_friend_declarations(
@@ -37510,6 +37660,7 @@ Module serializer.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -37855,8 +38006,12 @@ Module serializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_friend_declarations :
-      M.IsAssociatedFunction Self "serialize_friend_declarations" serialize_friend_declarations.
-    Smpl Add apply AssociatedFunction_serialize_friend_declarations : is_associated.
+    Global Instance AssociatedFunction_serialize_friend_declarations :
+      M.IsAssociatedFunction.Trait
+        Self
+        "serialize_friend_declarations"
+        serialize_friend_declarations.
+    Admitted.
+    Global Typeclasses Opaque serialize_friend_declarations.
   End Impl_move_binary_format_serializer_ModuleSerializer.
 End serializer.

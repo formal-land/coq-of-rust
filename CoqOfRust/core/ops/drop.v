@@ -24,8 +24,9 @@ Module ops.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fallback_surface_drop :
-      M.IsFunction "core::ops::drop::fallback_surface_drop" fallback_surface_drop.
-    Smpl Add apply Function_fallback_surface_drop : is_function.
+    Global Instance Instance_IsFunction_fallback_surface_drop :
+      M.IsFunction.Trait "core::ops::drop::fallback_surface_drop" fallback_surface_drop.
+    Admitted.
+    Global Typeclasses Opaque fallback_surface_drop.
   End drop.
 End ops.

@@ -282,8 +282,9 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    Smpl Add apply AssociatedFunction_is : is_associated.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Admitted.
+    Global Typeclasses Opaque is.
     
     (*
         pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
@@ -352,8 +353,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
+    Global Instance AssociatedFunction_downcast_ref :
+      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+    Admitted.
+    Global Typeclasses Opaque downcast_ref.
     
     (*
         pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
@@ -427,8 +430,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
+    Global Instance AssociatedFunction_downcast_mut :
+      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+    Admitted.
+    Global Typeclasses Opaque downcast_mut.
     
     (*
         pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
@@ -527,9 +532,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
-    Smpl Add apply AssociatedFunction_downcast_ref_unchecked : is_associated.
+    Global Instance AssociatedFunction_downcast_ref_unchecked :
+      M.IsAssociatedFunction.Trait Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    Admitted.
+    Global Typeclasses Opaque downcast_ref_unchecked.
     
     (*
         pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
@@ -642,9 +648,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
-    Smpl Add apply AssociatedFunction_downcast_mut_unchecked : is_associated.
+    Global Instance AssociatedFunction_downcast_mut_unchecked :
+      M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
+    Admitted.
+    Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait.
   
   Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
@@ -674,8 +681,9 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    Smpl Add apply AssociatedFunction_is : is_associated.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Admitted.
+    Global Typeclasses Opaque is.
     
     (*
         pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
@@ -700,8 +708,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
+    Global Instance AssociatedFunction_downcast_ref :
+      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+    Admitted.
+    Global Typeclasses Opaque downcast_ref.
     
     (*
         pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
@@ -726,8 +736,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
+    Global Instance AssociatedFunction_downcast_mut :
+      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+    Admitted.
+    Global Typeclasses Opaque downcast_mut.
     
     (*
         pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
@@ -758,9 +770,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
-    Smpl Add apply AssociatedFunction_downcast_ref_unchecked : is_associated.
+    Global Instance AssociatedFunction_downcast_ref_unchecked :
+      M.IsAssociatedFunction.Trait Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    Admitted.
+    Global Typeclasses Opaque downcast_ref_unchecked.
     
     (*
         pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
@@ -801,9 +814,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
-    Smpl Add apply AssociatedFunction_downcast_mut_unchecked : is_associated.
+    Global Instance AssociatedFunction_downcast_mut_unchecked :
+      M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
+    Admitted.
+    Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
@@ -838,8 +852,9 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
-    Smpl Add apply AssociatedFunction_is : is_associated.
+    Global Instance AssociatedFunction_is : M.IsAssociatedFunction.Trait Self "is" is.
+    Admitted.
+    Global Typeclasses Opaque is.
     
     (*
         pub fn downcast_ref<T: Any>(&self) -> Option<&T> {
@@ -864,8 +879,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
-    Smpl Add apply AssociatedFunction_downcast_ref : is_associated.
+    Global Instance AssociatedFunction_downcast_ref :
+      M.IsAssociatedFunction.Trait Self "downcast_ref" downcast_ref.
+    Admitted.
+    Global Typeclasses Opaque downcast_ref.
     
     (*
         pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> {
@@ -890,8 +907,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-    Smpl Add apply AssociatedFunction_downcast_mut : is_associated.
+    Global Instance AssociatedFunction_downcast_mut :
+      M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
+    Admitted.
+    Global Typeclasses Opaque downcast_mut.
     
     (*
         pub unsafe fn downcast_ref_unchecked<T: Any>(&self) -> &T {
@@ -922,9 +941,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_ref_unchecked :
-      M.IsAssociatedFunction Self "downcast_ref_unchecked" downcast_ref_unchecked.
-    Smpl Add apply AssociatedFunction_downcast_ref_unchecked : is_associated.
+    Global Instance AssociatedFunction_downcast_ref_unchecked :
+      M.IsAssociatedFunction.Trait Self "downcast_ref_unchecked" downcast_ref_unchecked.
+    Admitted.
+    Global Typeclasses Opaque downcast_ref_unchecked.
     
     (*
         pub unsafe fn downcast_mut_unchecked<T: Any>(&mut self) -> &mut T {
@@ -965,9 +985,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_mut_unchecked :
-      M.IsAssociatedFunction Self "downcast_mut_unchecked" downcast_mut_unchecked.
-    Smpl Add apply AssociatedFunction_downcast_mut_unchecked : is_associated.
+    Global Instance AssociatedFunction_downcast_mut_unchecked :
+      M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
+    Admitted.
+    Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   (* StructRecord
@@ -1270,8 +1291,9 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
-    Smpl Add apply AssociatedFunction_of : is_associated.
+    Global Instance AssociatedFunction_of : M.IsAssociatedFunction.Trait Self "of" of.
+    Admitted.
+    Global Typeclasses Opaque of.
     
     (*
         fn as_u128(self) -> u128 {
@@ -1330,8 +1352,10 @@ Module any.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_u128 : M.IsAssociatedFunction Self "as_u128" as_u128.
-    Smpl Add apply AssociatedFunction_as_u128 : is_associated.
+    Global Instance AssociatedFunction_as_u128 :
+      M.IsAssociatedFunction.Trait Self "as_u128" as_u128.
+    Admitted.
+    Global Typeclasses Opaque as_u128.
   End Impl_core_any_TypeId.
   
   Module Impl_core_hash_Hash_for_core_any_TypeId.
@@ -1566,8 +1590,10 @@ Module any.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_name : M.IsFunction "core::any::type_name" type_name.
-  Smpl Add apply Function_type_name : is_function.
+  Global Instance Instance_IsFunction_type_name :
+    M.IsFunction.Trait "core::any::type_name" type_name.
+  Admitted.
+  Global Typeclasses Opaque type_name.
   
   (*
   pub const fn type_name_of_val<T: ?Sized>(_val: &T) -> &'static str {
@@ -1587,6 +1613,8 @@ Module any.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_name_of_val : M.IsFunction "core::any::type_name_of_val" type_name_of_val.
-  Smpl Add apply Function_type_name_of_val : is_function.
+  Global Instance Instance_IsFunction_type_name_of_val :
+    M.IsFunction.Trait "core::any::type_name_of_val" type_name_of_val.
+  Admitted.
+  Global Typeclasses Opaque type_name_of_val.
 End any.

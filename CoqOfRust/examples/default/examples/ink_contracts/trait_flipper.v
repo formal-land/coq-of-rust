@@ -47,8 +47,9 @@ Module Impl_trait_flipper_Flipper.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

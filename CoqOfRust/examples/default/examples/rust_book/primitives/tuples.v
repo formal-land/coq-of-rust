@@ -31,8 +31,9 @@ Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_reverse : M.IsFunction "tuples::reverse" reverse.
-Smpl Add apply Function_reverse : is_function.
+Global Instance Instance_IsFunction_reverse : M.IsFunction.Trait "tuples::reverse" reverse.
+Admitted.
+Global Typeclasses Opaque reverse.
 
 (* StructTuple
   {
@@ -974,5 +975,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "tuples::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "tuples::main" main.
+Admitted.
+Global Typeclasses Opaque main.

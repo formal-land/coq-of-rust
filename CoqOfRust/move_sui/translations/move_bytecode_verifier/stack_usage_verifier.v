@@ -212,6 +212,7 @@ Module stack_usage_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -431,8 +432,9 @@ Module stack_usage_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify : M.IsAssociatedFunction Self "verify" verify.
-    Smpl Add apply AssociatedFunction_verify : is_associated.
+    Global Instance AssociatedFunction_verify : M.IsAssociatedFunction.Trait Self "verify" verify.
+    Admitted.
+    Global Typeclasses Opaque verify.
     
     (*
         fn verify_block(
@@ -635,6 +637,7 @@ Module stack_usage_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1511,8 +1514,10 @@ Module stack_usage_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_block : M.IsAssociatedFunction Self "verify_block" verify_block.
-    Smpl Add apply AssociatedFunction_verify_block : is_associated.
+    Global Instance AssociatedFunction_verify_block :
+      M.IsAssociatedFunction.Trait Self "verify_block" verify_block.
+    Admitted.
+    Global Typeclasses Opaque verify_block.
     
     (*
         fn instruction_effect(&self, instruction: &Bytecode) -> PartialVMResult<(u64, u64)> {
@@ -3452,9 +3457,10 @@ Module stack_usage_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_instruction_effect :
-      M.IsAssociatedFunction Self "instruction_effect" instruction_effect.
-    Smpl Add apply AssociatedFunction_instruction_effect : is_associated.
+    Global Instance AssociatedFunction_instruction_effect :
+      M.IsAssociatedFunction.Trait Self "instruction_effect" instruction_effect.
+    Admitted.
+    Global Typeclasses Opaque instruction_effect.
     
     (*
         fn current_function(&self) -> FunctionDefinitionIndex {
@@ -3493,8 +3499,9 @@ Module stack_usage_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_current_function :
-      M.IsAssociatedFunction Self "current_function" current_function.
-    Smpl Add apply AssociatedFunction_current_function : is_associated.
+    Global Instance AssociatedFunction_current_function :
+      M.IsAssociatedFunction.Trait Self "current_function" current_function.
+    Admitted.
+    Global Typeclasses Opaque current_function.
   End Impl_move_bytecode_verifier_stack_usage_verifier_StackUsageVerifier.
 End stack_usage_verifier.

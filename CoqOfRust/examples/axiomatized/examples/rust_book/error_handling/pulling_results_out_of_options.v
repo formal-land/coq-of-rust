@@ -3,11 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_double_first :
-  M.IsFunction "pulling_results_out_of_options::double_first" double_first.
-Smpl Add apply Function_double_first : is_function.
+Global Instance Instance_IsFunction_double_first :
+  M.IsFunction.Trait "pulling_results_out_of_options::double_first" double_first.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "pulling_results_out_of_options::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "pulling_results_out_of_options::main" main.
+Admitted.

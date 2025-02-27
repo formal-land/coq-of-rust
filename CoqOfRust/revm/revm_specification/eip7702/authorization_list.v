@@ -734,8 +734,9 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-      Smpl Add apply AssociatedFunction_len : is_associated.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           pub fn empty() -> Self {
@@ -777,8 +778,9 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_empty : M.IsAssociatedFunction Self "empty" empty.
-      Smpl Add apply AssociatedFunction_empty : is_associated.
+      Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+      Admitted.
+      Global Typeclasses Opaque empty.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -806,8 +808,10 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+      Global Instance AssociatedFunction_is_empty :
+        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+      Admitted.
+      Global Typeclasses Opaque is_empty.
       
       (*
           pub fn recovered_iter<'a>(&'a self) -> Box<dyn Iterator<Item = RecoveredAuthorization> + 'a> {
@@ -1193,9 +1197,10 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_recovered_iter :
-        M.IsAssociatedFunction Self "recovered_iter" recovered_iter.
-      Smpl Add apply AssociatedFunction_recovered_iter : is_associated.
+      Global Instance AssociatedFunction_recovered_iter :
+        M.IsAssociatedFunction.Trait Self "recovered_iter" recovered_iter.
+      Admitted.
+      Global Typeclasses Opaque recovered_iter.
       
       (*
           pub fn into_recovered(self) -> Self {
@@ -1397,9 +1402,10 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_recovered :
-        M.IsAssociatedFunction Self "into_recovered" into_recovered.
-      Smpl Add apply AssociatedFunction_into_recovered : is_associated.
+      Global Instance AssociatedFunction_into_recovered :
+        M.IsAssociatedFunction.Trait Self "into_recovered" into_recovered.
+      Admitted.
+      Global Typeclasses Opaque into_recovered.
     End Impl_revm_specification_eip7702_authorization_list_AuthorizationList.
     
     (*

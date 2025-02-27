@@ -15,8 +15,9 @@ Definition id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_id : M.IsFunction "example01::id" id.
-Smpl Add apply Function_id : is_function.
+Global Instance Instance_IsFunction_id : M.IsFunction.Trait "example01::id" id.
+Admitted.
+Global Typeclasses Opaque id.
 
 (* fn tri(a: u64, b: u64, c: u64) {} *)
 Definition tri (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -30,8 +31,9 @@ Definition tri (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_tri : M.IsFunction "example01::tri" tri.
-Smpl Add apply Function_tri : is_function.
+Global Instance Instance_IsFunction_tri : M.IsFunction.Trait "example01::tri" tri.
+Admitted.
+Global Typeclasses Opaque tri.
 
 (*
 fn main() {
@@ -140,5 +142,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "example01::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "example01::main" main.
+Admitted.
+Global Typeclasses Opaque main.

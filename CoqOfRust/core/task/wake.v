@@ -189,8 +189,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           const NOOP: RawWaker = {
@@ -234,8 +235,10 @@ Module task.
               |)
             |))).
       
-      Axiom AssociatedConstant_value_NOOP : M.IsAssociatedConstant Self "value_NOOP" value_NOOP.
-      Smpl Add apply AssociatedConstant_value_NOOP : is_associated.
+      Global Instance AssociatedConstant_value_NOOP :
+        M.IsAssociatedConstant.Trait Self "value_NOOP" value_NOOP.
+      Admitted.
+      Global Typeclasses Opaque value_NOOP.
     End Impl_core_task_wake_RawWaker.
     
     (* StructRecord
@@ -563,8 +566,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_task_wake_RawWakerVTable.
     
     (*
@@ -758,8 +762,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
-      Smpl Add apply AssociatedFunction_from_waker : is_associated.
+      Global Instance AssociatedFunction_from_waker :
+        M.IsAssociatedFunction.Trait Self "from_waker" from_waker.
+      Admitted.
+      Global Typeclasses Opaque from_waker.
       
       (*
           pub const fn waker(&self) -> &'a Waker {
@@ -791,8 +797,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
-      Smpl Add apply AssociatedFunction_waker : is_associated.
+      Global Instance AssociatedFunction_waker : M.IsAssociatedFunction.Trait Self "waker" waker.
+      Admitted.
+      Global Typeclasses Opaque waker.
       
       (*
           pub const fn local_waker(&self) -> &'a LocalWaker {
@@ -824,8 +831,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
-      Smpl Add apply AssociatedFunction_local_waker : is_associated.
+      Global Instance AssociatedFunction_local_waker :
+        M.IsAssociatedFunction.Trait Self "local_waker" local_waker.
+      Admitted.
+      Global Typeclasses Opaque local_waker.
       
       (*
           pub const fn ext(&mut self) -> &mut dyn Any {
@@ -904,8 +913,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
-      Smpl Add apply AssociatedFunction_ext : is_associated.
+      Global Instance AssociatedFunction_ext : M.IsAssociatedFunction.Trait Self "ext" ext.
+      Admitted.
+      Global Typeclasses Opaque ext.
     End Impl_core_task_wake_Context.
     
     Module Impl_core_fmt_Debug_for_core_task_wake_Context.
@@ -1201,8 +1211,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_waker : M.IsAssociatedFunction Self "from_waker" from_waker.
-      Smpl Add apply AssociatedFunction_from_waker : is_associated.
+      Global Instance AssociatedFunction_from_waker :
+        M.IsAssociatedFunction.Trait Self "from_waker" from_waker.
+      Admitted.
+      Global Typeclasses Opaque from_waker.
       
       (*
           pub const fn from(cx: &'a mut Context<'_>) -> Self {
@@ -1317,8 +1329,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from : M.IsAssociatedFunction Self "from" from.
-      Smpl Add apply AssociatedFunction_from : is_associated.
+      Global Instance AssociatedFunction_from : M.IsAssociatedFunction.Trait Self "from" from.
+      Admitted.
+      Global Typeclasses Opaque from.
       
       (*
           pub const fn waker(self, waker: &'a Waker) -> Self {
@@ -1335,8 +1348,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_waker : M.IsAssociatedFunction Self "waker" waker.
-      Smpl Add apply AssociatedFunction_waker : is_associated.
+      Global Instance AssociatedFunction_waker : M.IsAssociatedFunction.Trait Self "waker" waker.
+      Admitted.
+      Global Typeclasses Opaque waker.
       
       (*
           pub const fn local_waker(self, local_waker: &'a LocalWaker) -> Self {
@@ -1355,8 +1369,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_local_waker : M.IsAssociatedFunction Self "local_waker" local_waker.
-      Smpl Add apply AssociatedFunction_local_waker : is_associated.
+      Global Instance AssociatedFunction_local_waker :
+        M.IsAssociatedFunction.Trait Self "local_waker" local_waker.
+      Admitted.
+      Global Typeclasses Opaque local_waker.
       
       (*
           pub const fn ext(self, data: &'a mut dyn Any) -> Self {
@@ -1380,8 +1396,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_ext : M.IsAssociatedFunction Self "ext" ext.
-      Smpl Add apply AssociatedFunction_ext : is_associated.
+      Global Instance AssociatedFunction_ext : M.IsAssociatedFunction.Trait Self "ext" ext.
+      Admitted.
+      Global Typeclasses Opaque ext.
       
       (*
           pub const fn build(self) -> Context<'a> {
@@ -1460,8 +1477,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
-      Smpl Add apply AssociatedFunction_build : is_associated.
+      Global Instance AssociatedFunction_build : M.IsAssociatedFunction.Trait Self "build" build.
+      Admitted.
+      Global Typeclasses Opaque build.
     End Impl_core_task_wake_ContextBuilder.
     
     (* StructRecord
@@ -1631,8 +1649,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
-      Smpl Add apply AssociatedFunction_wake : is_associated.
+      Global Instance AssociatedFunction_wake : M.IsAssociatedFunction.Trait Self "wake" wake.
+      Admitted.
+      Global Typeclasses Opaque wake.
       
       (*
           pub fn wake_by_ref(&self) {
@@ -1686,8 +1705,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
-      Smpl Add apply AssociatedFunction_wake_by_ref : is_associated.
+      Global Instance AssociatedFunction_wake_by_ref :
+        M.IsAssociatedFunction.Trait Self "wake_by_ref" wake_by_ref.
+      Admitted.
+      Global Typeclasses Opaque wake_by_ref.
       
       (*
           pub fn will_wake(&self, other: &Waker) -> bool {
@@ -1783,8 +1804,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
-      Smpl Add apply AssociatedFunction_will_wake : is_associated.
+      Global Instance AssociatedFunction_will_wake :
+        M.IsAssociatedFunction.Trait Self "will_wake" will_wake.
+      Admitted.
+      Global Typeclasses Opaque will_wake.
       
       (*
           pub const unsafe fn new(data: *const (), vtable: &'static RawWakerVTable) -> Self {
@@ -1808,8 +1831,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const unsafe fn from_raw(waker: RawWaker) -> Waker {
@@ -1825,8 +1849,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
-      Smpl Add apply AssociatedFunction_from_raw : is_associated.
+      Global Instance AssociatedFunction_from_raw :
+        M.IsAssociatedFunction.Trait Self "from_raw" from_raw.
+      Admitted.
+      Global Typeclasses Opaque from_raw.
       
       (*
           pub const fn noop() -> &'static Waker {
@@ -1841,8 +1867,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
-      Smpl Add apply AssociatedFunction_noop : is_associated.
+      Global Instance AssociatedFunction_noop : M.IsAssociatedFunction.Trait Self "noop" noop.
+      Admitted.
+      Global Typeclasses Opaque noop.
       
       (*
           pub fn data(&self) -> *const () {
@@ -1868,8 +1895,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
-      Smpl Add apply AssociatedFunction_data : is_associated.
+      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+      Admitted.
+      Global Typeclasses Opaque data.
       
       (*
           pub fn vtable(&self) -> &'static RawWakerVTable {
@@ -1895,8 +1923,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
-      Smpl Add apply AssociatedFunction_vtable : is_associated.
+      Global Instance AssociatedFunction_vtable : M.IsAssociatedFunction.Trait Self "vtable" vtable.
+      Admitted.
+      Global Typeclasses Opaque vtable.
     End Impl_core_task_wake_Waker.
     
     Module Impl_core_clone_Clone_for_core_task_wake_Waker.
@@ -2411,8 +2440,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_wake : M.IsAssociatedFunction Self "wake" wake.
-      Smpl Add apply AssociatedFunction_wake : is_associated.
+      Global Instance AssociatedFunction_wake : M.IsAssociatedFunction.Trait Self "wake" wake.
+      Admitted.
+      Global Typeclasses Opaque wake.
       
       (*
           pub fn wake_by_ref(&self) {
@@ -2466,8 +2496,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_wake_by_ref : M.IsAssociatedFunction Self "wake_by_ref" wake_by_ref.
-      Smpl Add apply AssociatedFunction_wake_by_ref : is_associated.
+      Global Instance AssociatedFunction_wake_by_ref :
+        M.IsAssociatedFunction.Trait Self "wake_by_ref" wake_by_ref.
+      Admitted.
+      Global Typeclasses Opaque wake_by_ref.
       
       (*
           pub fn will_wake(&self, other: &LocalWaker) -> bool {
@@ -2563,8 +2595,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
-      Smpl Add apply AssociatedFunction_will_wake : is_associated.
+      Global Instance AssociatedFunction_will_wake :
+        M.IsAssociatedFunction.Trait Self "will_wake" will_wake.
+      Admitted.
+      Global Typeclasses Opaque will_wake.
       
       (*
           pub const unsafe fn new(data: *const (), vtable: &'static RawWakerVTable) -> Self {
@@ -2588,8 +2622,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const unsafe fn from_raw(waker: RawWaker) -> LocalWaker {
@@ -2605,8 +2640,10 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
-      Smpl Add apply AssociatedFunction_from_raw : is_associated.
+      Global Instance AssociatedFunction_from_raw :
+        M.IsAssociatedFunction.Trait Self "from_raw" from_raw.
+      Admitted.
+      Global Typeclasses Opaque from_raw.
       
       (*
           pub const fn noop() -> &'static LocalWaker {
@@ -2621,8 +2658,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
-      Smpl Add apply AssociatedFunction_noop : is_associated.
+      Global Instance AssociatedFunction_noop : M.IsAssociatedFunction.Trait Self "noop" noop.
+      Admitted.
+      Global Typeclasses Opaque noop.
       
       (*
           pub fn data(&self) -> *const () {
@@ -2648,8 +2686,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
-      Smpl Add apply AssociatedFunction_data : is_associated.
+      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+      Admitted.
+      Global Typeclasses Opaque data.
       
       (*
           pub fn vtable(&self) -> &'static RawWakerVTable {
@@ -2675,8 +2714,9 @@ Module task.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
-      Smpl Add apply AssociatedFunction_vtable : is_associated.
+      Global Instance AssociatedFunction_vtable : M.IsAssociatedFunction.Trait Self "vtable" vtable.
+      Admitted.
+      Global Typeclasses Opaque vtable.
     End Impl_core_task_wake_LocalWaker.
     
     Module Impl_core_clone_Clone_for_core_task_wake_LocalWaker.

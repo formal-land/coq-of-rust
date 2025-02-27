@@ -128,9 +128,10 @@ Module vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_in_place_collectible :
-      M.IsFunction "alloc::vec::in_place_collect::in_place_collectible" in_place_collectible.
-    Smpl Add apply Function_in_place_collectible : is_function.
+    Global Instance Instance_IsFunction_in_place_collectible :
+      M.IsFunction.Trait "alloc::vec::in_place_collect::in_place_collectible" in_place_collectible.
+    Admitted.
+    Global Typeclasses Opaque in_place_collectible.
     
     (*
     const fn needs_realloc<SRC, DEST>(src_cap: usize, dst_cap: usize) -> bool {
@@ -264,9 +265,10 @@ Module vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_needs_realloc :
-      M.IsFunction "alloc::vec::in_place_collect::needs_realloc" needs_realloc.
-    Smpl Add apply Function_needs_realloc : is_function.
+    Global Instance Instance_IsFunction_needs_realloc :
+      M.IsFunction.Trait "alloc::vec::in_place_collect::needs_realloc" needs_realloc.
+    Admitted.
+    Global Typeclasses Opaque needs_realloc.
     
     (* Trait *)
     (* Empty module 'InPlaceCollect' *)
@@ -2022,9 +2024,10 @@ Module vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_iter_in_place :
-      M.IsFunction "alloc::vec::in_place_collect::from_iter_in_place" from_iter_in_place.
-    Smpl Add apply Function_from_iter_in_place : is_function.
+    Global Instance Instance_IsFunction_from_iter_in_place :
+      M.IsFunction.Trait "alloc::vec::in_place_collect::from_iter_in_place" from_iter_in_place.
+    Admitted.
+    Global Typeclasses Opaque from_iter_in_place.
     
     (*
     fn write_in_place_with_drop<T>(
@@ -2236,11 +2239,12 @@ Module vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_write_in_place_with_drop :
-      M.IsFunction
+    Global Instance Instance_IsFunction_write_in_place_with_drop :
+      M.IsFunction.Trait
         "alloc::vec::in_place_collect::write_in_place_with_drop"
         write_in_place_with_drop.
-    Smpl Add apply Function_write_in_place_with_drop : is_function.
+    Admitted.
+    Global Typeclasses Opaque write_in_place_with_drop.
     
     Module write_in_place_with_drop.
       (* Error OpaqueTy *)
@@ -2533,6 +2537,7 @@ Module vec.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|

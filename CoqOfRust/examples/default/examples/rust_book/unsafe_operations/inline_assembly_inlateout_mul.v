@@ -30,8 +30,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "inline_assembly_inlateout_mul::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "inline_assembly_inlateout_mul::main" main.
+Admitted.
+Global Typeclasses Opaque main.
 
 Module main.
   (*
@@ -78,6 +80,8 @@ Module main.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_mul : M.IsFunction "inline_assembly_inlateout_mul::main::mul" mul.
-  Smpl Add apply Function_mul : is_function.
+  Global Instance Instance_IsFunction_mul :
+    M.IsFunction.Trait "inline_assembly_inlateout_mul::main::mul" mul.
+  Admitted.
+  Global Typeclasses Opaque mul.
 End main.

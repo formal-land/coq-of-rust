@@ -793,9 +793,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_default_extend_tuple :
-        M.IsFunction "core::iter::traits::collect::default_extend_tuple" default_extend_tuple.
-      Smpl Add apply Function_default_extend_tuple : is_function.
+      Global Instance Instance_IsFunction_default_extend_tuple :
+        M.IsFunction.Trait "core::iter::traits::collect::default_extend_tuple" default_extend_tuple.
+      Admitted.
+      Global Typeclasses Opaque default_extend_tuple.
       
       Module default_extend_tuple.
         (*
@@ -891,9 +892,10 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_extend :
-          M.IsFunction "core::iter::traits::collect::default_extend_tuple::extend" extend.
-        Smpl Add apply Function_extend : is_function.
+        Global Instance Instance_IsFunction_extend :
+          M.IsFunction.Trait "core::iter::traits::collect::default_extend_tuple::extend" extend.
+        Admitted.
+        Global Typeclasses Opaque extend.
         
         Module extend.
           (* Error OpaqueTy *)

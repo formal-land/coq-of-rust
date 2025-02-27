@@ -57,15 +57,18 @@ End Impl_generics_bounds_test_case_empty_bounds_Blue_for_generics_bounds_test_ca
 
 Parameter red : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_red : M.IsFunction "generics_bounds_test_case_empty_bounds::red" red.
-Smpl Add apply Function_red : is_function.
+Global Instance Instance_IsFunction_red :
+  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::red" red.
+Admitted.
 
 Parameter blue : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_blue : M.IsFunction "generics_bounds_test_case_empty_bounds::blue" blue.
-Smpl Add apply Function_blue : is_function.
+Global Instance Instance_IsFunction_blue :
+  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::blue" blue.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_bounds_test_case_empty_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::main" main.
+Admitted.

@@ -338,8 +338,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn instruction_result(&self) -> &InstructionResult {
@@ -371,9 +372,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_instruction_result :
-        M.IsAssociatedFunction Self "instruction_result" instruction_result.
-      Smpl Add apply AssociatedFunction_instruction_result : is_associated.
+      Global Instance AssociatedFunction_instruction_result :
+        M.IsAssociatedFunction.Trait Self "instruction_result" instruction_result.
+      Admitted.
+      Global Typeclasses Opaque instruction_result.
       
       (*
           pub fn gas(&self) -> Gas {
@@ -399,8 +401,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
-      Smpl Add apply AssociatedFunction_gas : is_associated.
+      Global Instance AssociatedFunction_gas : M.IsAssociatedFunction.Trait Self "gas" gas.
+      Admitted.
+      Global Typeclasses Opaque gas.
       
       (*
           pub fn output(&self) -> &Bytes {
@@ -432,8 +435,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
-      Smpl Add apply AssociatedFunction_output : is_associated.
+      Global Instance AssociatedFunction_output : M.IsAssociatedFunction.Trait Self "output" output.
+      Admitted.
+      Global Typeclasses Opaque output.
       
       (*
           pub fn memory_start(&self) -> usize {
@@ -459,9 +463,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_memory_start :
-        M.IsAssociatedFunction Self "memory_start" memory_start.
-      Smpl Add apply AssociatedFunction_memory_start : is_associated.
+      Global Instance AssociatedFunction_memory_start :
+        M.IsAssociatedFunction.Trait Self "memory_start" memory_start.
+      Admitted.
+      Global Typeclasses Opaque memory_start.
       
       (*
           pub fn memory_length(&self) -> usize {
@@ -498,9 +503,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_memory_length :
-        M.IsAssociatedFunction Self "memory_length" memory_length.
-      Smpl Add apply AssociatedFunction_memory_length : is_associated.
+      Global Instance AssociatedFunction_memory_length :
+        M.IsAssociatedFunction.Trait Self "memory_length" memory_length.
+      Admitted.
+      Global Typeclasses Opaque memory_length.
     End Impl_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
   End call_outcome.
 End interpreter_action.

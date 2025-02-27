@@ -442,9 +442,10 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
-      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+      Global Instance AssociatedFunction_new_unchecked :
+        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+      Admitted.
+      Global Typeclasses Opaque new_unchecked.
       
       (*
           pub fn inner(&self) -> &SignedAuthorization {
@@ -472,8 +473,9 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_inner : M.IsAssociatedFunction Self "inner" inner.
-      Smpl Add apply AssociatedFunction_inner : is_associated.
+      Global Instance AssociatedFunction_inner : M.IsAssociatedFunction.Trait Self "inner" inner.
+      Admitted.
+      Global Typeclasses Opaque inner.
       
       (*
           pub const fn authority(&self) -> Option<Address> {
@@ -495,8 +497,10 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_authority : M.IsAssociatedFunction Self "authority" authority.
-      Smpl Add apply AssociatedFunction_authority : is_associated.
+      Global Instance AssociatedFunction_authority :
+        M.IsAssociatedFunction.Trait Self "authority" authority.
+      Admitted.
+      Global Typeclasses Opaque authority.
       
       (*
           pub const fn into_parts(self) -> (SignedAuthorization, Option<Address>) {
@@ -528,8 +532,10 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_parts : M.IsAssociatedFunction Self "into_parts" into_parts.
-      Smpl Add apply AssociatedFunction_into_parts : is_associated.
+      Global Instance AssociatedFunction_into_parts :
+        M.IsAssociatedFunction.Trait Self "into_parts" into_parts.
+      Admitted.
+      Global Typeclasses Opaque into_parts.
     End Impl_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
     
     Module Impl_core_convert_From_alloy_eip7702_auth_list_SignedAuthorization_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.

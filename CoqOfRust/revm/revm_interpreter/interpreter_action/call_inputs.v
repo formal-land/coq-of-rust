@@ -1467,9 +1467,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_transfers_value :
-        M.IsAssociatedFunction Self "transfers_value" transfers_value.
-      Smpl Add apply AssociatedFunction_transfers_value : is_associated.
+      Global Instance AssociatedFunction_transfers_value :
+        M.IsAssociatedFunction.Trait Self "transfers_value" transfers_value.
+      Admitted.
+      Global Typeclasses Opaque transfers_value.
       
       (*
           pub const fn transfer_value(&self) -> Option<U256> {
@@ -1511,9 +1512,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_transfer_value :
-        M.IsAssociatedFunction Self "transfer_value" transfer_value.
-      Smpl Add apply AssociatedFunction_transfer_value : is_associated.
+      Global Instance AssociatedFunction_transfer_value :
+        M.IsAssociatedFunction.Trait Self "transfer_value" transfer_value.
+      Admitted.
+      Global Typeclasses Opaque transfer_value.
       
       (*
           pub const fn apparent_value(&self) -> Option<U256> {
@@ -1555,9 +1557,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_apparent_value :
-        M.IsAssociatedFunction Self "apparent_value" apparent_value.
-      Smpl Add apply AssociatedFunction_apparent_value : is_associated.
+      Global Instance AssociatedFunction_apparent_value :
+        M.IsAssociatedFunction.Trait Self "apparent_value" apparent_value.
+      Admitted.
+      Global Typeclasses Opaque apparent_value.
       
       (*
           pub const fn transfer_from(&self) -> Address {
@@ -1579,9 +1582,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_transfer_from :
-        M.IsAssociatedFunction Self "transfer_from" transfer_from.
-      Smpl Add apply AssociatedFunction_transfer_from : is_associated.
+      Global Instance AssociatedFunction_transfer_from :
+        M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+      Admitted.
+      Global Typeclasses Opaque transfer_from.
       
       (*
           pub const fn transfer_to(&self) -> Address {
@@ -1603,8 +1607,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_transfer_to : M.IsAssociatedFunction Self "transfer_to" transfer_to.
-      Smpl Add apply AssociatedFunction_transfer_to : is_associated.
+      Global Instance AssociatedFunction_transfer_to :
+        M.IsAssociatedFunction.Trait Self "transfer_to" transfer_to.
+      Admitted.
+      Global Typeclasses Opaque transfer_to.
       
       (*
           pub const fn call_value(&self) -> U256 {
@@ -1641,8 +1647,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_call_value : M.IsAssociatedFunction Self "call_value" call_value.
-      Smpl Add apply AssociatedFunction_call_value : is_associated.
+      Global Instance AssociatedFunction_call_value :
+        M.IsAssociatedFunction.Trait Self "call_value" call_value.
+      Admitted.
+      Global Typeclasses Opaque call_value.
     End Impl_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
     (*
@@ -2098,8 +2106,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ext : M.IsAssociatedFunction Self "is_ext" is_ext.
-      Smpl Add apply AssociatedFunction_is_ext : is_associated.
+      Global Instance AssociatedFunction_is_ext : M.IsAssociatedFunction.Trait Self "is_ext" is_ext.
+      Admitted.
+      Global Typeclasses Opaque is_ext.
       
       (*
           pub fn is_ext_delegate_call(&self) -> bool {
@@ -2131,9 +2140,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ext_delegate_call :
-        M.IsAssociatedFunction Self "is_ext_delegate_call" is_ext_delegate_call.
-      Smpl Add apply AssociatedFunction_is_ext_delegate_call : is_associated.
+      Global Instance AssociatedFunction_is_ext_delegate_call :
+        M.IsAssociatedFunction.Trait Self "is_ext_delegate_call" is_ext_delegate_call.
+      Admitted.
+      Global Typeclasses Opaque is_ext_delegate_call.
     End Impl_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
     (*
@@ -2849,8 +2859,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-      Smpl Add apply AssociatedFunction_get : is_associated.
+      Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+      Admitted.
+      Global Typeclasses Opaque get.
       
       (*
           pub const fn transfer(&self) -> Option<U256> {
@@ -2896,8 +2907,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
-      Smpl Add apply AssociatedFunction_transfer : is_associated.
+      Global Instance AssociatedFunction_transfer :
+        M.IsAssociatedFunction.Trait Self "transfer" transfer.
+      Admitted.
+      Global Typeclasses Opaque transfer.
       
       (*
           pub const fn is_transfer(&self) -> bool {
@@ -2930,8 +2943,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_transfer : M.IsAssociatedFunction Self "is_transfer" is_transfer.
-      Smpl Add apply AssociatedFunction_is_transfer : is_associated.
+      Global Instance AssociatedFunction_is_transfer :
+        M.IsAssociatedFunction.Trait Self "is_transfer" is_transfer.
+      Admitted.
+      Global Typeclasses Opaque is_transfer.
       
       (*
           pub const fn apparent(&self) -> Option<U256> {
@@ -2977,8 +2992,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_apparent : M.IsAssociatedFunction Self "apparent" apparent.
-      Smpl Add apply AssociatedFunction_apparent : is_associated.
+      Global Instance AssociatedFunction_apparent :
+        M.IsAssociatedFunction.Trait Self "apparent" apparent.
+      Admitted.
+      Global Typeclasses Opaque apparent.
       
       (*
           pub const fn is_apparent(&self) -> bool {
@@ -3011,8 +3028,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_apparent : M.IsAssociatedFunction Self "is_apparent" is_apparent.
-      Smpl Add apply AssociatedFunction_is_apparent : is_associated.
+      Global Instance AssociatedFunction_is_apparent :
+        M.IsAssociatedFunction.Trait Self "is_apparent" is_apparent.
+      Admitted.
+      Global Typeclasses Opaque is_apparent.
     End Impl_revm_interpreter_interpreter_action_call_inputs_CallValue.
   End call_inputs.
 End interpreter_action.

@@ -330,9 +330,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
-      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+      Global Instance AssociatedFunction_new_unchecked :
+        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+      Admitted.
+      Global Typeclasses Opaque new_unchecked.
       
       (*
           pub const fn zero_to(end: usize) -> Self {
@@ -350,8 +351,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_zero_to : M.IsAssociatedFunction Self "zero_to" zero_to.
-      Smpl Add apply AssociatedFunction_zero_to : is_associated.
+      Global Instance AssociatedFunction_zero_to :
+        M.IsAssociatedFunction.Trait Self "zero_to" zero_to.
+      Admitted.
+      Global Typeclasses Opaque zero_to.
       
       (*
           pub const fn start(&self) -> usize {
@@ -373,8 +376,9 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_start : M.IsAssociatedFunction Self "start" start.
-      Smpl Add apply AssociatedFunction_start : is_associated.
+      Global Instance AssociatedFunction_start : M.IsAssociatedFunction.Trait Self "start" start.
+      Admitted.
+      Global Typeclasses Opaque start.
       
       (*
           pub const fn end(&self) -> usize {
@@ -396,8 +400,9 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_end_ : M.IsAssociatedFunction Self "end_" end_.
-      Smpl Add apply AssociatedFunction_end_ : is_associated.
+      Global Instance AssociatedFunction_end_ : M.IsAssociatedFunction.Trait Self "end_" end_.
+      Admitted.
+      Global Typeclasses Opaque end_.
       
       (*
           pub const fn len(&self) -> usize {
@@ -433,8 +438,9 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-      Smpl Add apply AssociatedFunction_len : is_associated.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           unsafe fn next_unchecked(&mut self) -> usize {
@@ -542,9 +548,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_next_unchecked :
-        M.IsAssociatedFunction Self "next_unchecked" next_unchecked.
-      Smpl Add apply AssociatedFunction_next_unchecked : is_associated.
+      Global Instance AssociatedFunction_next_unchecked :
+        M.IsAssociatedFunction.Trait Self "next_unchecked" next_unchecked.
+      Admitted.
+      Global Typeclasses Opaque next_unchecked.
       
       (*
           unsafe fn next_back_unchecked(&mut self) -> usize {
@@ -657,9 +664,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_next_back_unchecked :
-        M.IsAssociatedFunction Self "next_back_unchecked" next_back_unchecked.
-      Smpl Add apply AssociatedFunction_next_back_unchecked : is_associated.
+      Global Instance AssociatedFunction_next_back_unchecked :
+        M.IsAssociatedFunction.Trait Self "next_back_unchecked" next_back_unchecked.
+      Admitted.
+      Global Typeclasses Opaque next_back_unchecked.
       
       (*
           pub fn take_prefix(&mut self, n: usize) -> Self {
@@ -777,8 +785,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_take_prefix : M.IsAssociatedFunction Self "take_prefix" take_prefix.
-      Smpl Add apply AssociatedFunction_take_prefix : is_associated.
+      Global Instance AssociatedFunction_take_prefix :
+        M.IsAssociatedFunction.Trait Self "take_prefix" take_prefix.
+      Admitted.
+      Global Typeclasses Opaque take_prefix.
       
       (*
           pub fn take_suffix(&mut self, n: usize) -> Self {
@@ -896,8 +906,10 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_take_suffix : M.IsAssociatedFunction Self "take_suffix" take_suffix.
-      Smpl Add apply AssociatedFunction_take_suffix : is_associated.
+      Global Instance AssociatedFunction_take_suffix :
+        M.IsAssociatedFunction.Trait Self "take_suffix" take_suffix.
+      Admitted.
+      Global Typeclasses Opaque take_suffix.
     End Impl_core_ops_index_range_IndexRange.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_ops_index_range_IndexRange.

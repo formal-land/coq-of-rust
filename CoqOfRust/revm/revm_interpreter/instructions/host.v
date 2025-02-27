@@ -489,8 +489,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_balance : M.IsFunction "revm_interpreter::instructions::host::balance" balance.
-    Smpl Add apply Function_balance : is_function.
+    Global Instance Instance_IsFunction_balance :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::balance" balance.
+    Admitted.
+    Global Typeclasses Opaque balance.
     
     (*
     pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -894,9 +896,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_selfbalance :
-      M.IsFunction "revm_interpreter::instructions::host::selfbalance" selfbalance.
-    Smpl Add apply Function_selfbalance : is_function.
+    Global Instance Instance_IsFunction_selfbalance :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::selfbalance" selfbalance.
+    Admitted.
+    Global Typeclasses Opaque selfbalance.
     
     (*
     pub fn extcodesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1657,9 +1660,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_extcodesize :
-      M.IsFunction "revm_interpreter::instructions::host::extcodesize" extcodesize.
-    Smpl Add apply Function_extcodesize : is_function.
+    Global Instance Instance_IsFunction_extcodesize :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::extcodesize" extcodesize.
+    Admitted.
+    Global Typeclasses Opaque extcodesize.
     
     (*
     pub fn extcodehash<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2503,9 +2507,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_extcodehash :
-      M.IsFunction "revm_interpreter::instructions::host::extcodehash" extcodehash.
-    Smpl Add apply Function_extcodehash : is_function.
+    Global Instance Instance_IsFunction_extcodehash :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::extcodehash" extcodehash.
+    Admitted.
+    Global Typeclasses Opaque extcodehash.
     
     (*
     pub fn extcodecopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3797,9 +3802,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_extcodecopy :
-      M.IsFunction "revm_interpreter::instructions::host::extcodecopy" extcodecopy.
-    Smpl Add apply Function_extcodecopy : is_function.
+    Global Instance Instance_IsFunction_extcodecopy :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::extcodecopy" extcodecopy.
+    Admitted.
+    Global Typeclasses Opaque extcodecopy.
     
     (*
     pub fn blockhash<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4181,9 +4187,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_blockhash :
-      M.IsFunction "revm_interpreter::instructions::host::blockhash" blockhash.
-    Smpl Add apply Function_blockhash : is_function.
+    Global Instance Instance_IsFunction_blockhash :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::blockhash" blockhash.
+    Admitted.
+    Global Typeclasses Opaque blockhash.
     
     (*
     pub fn sload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4537,8 +4544,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sload : M.IsFunction "revm_interpreter::instructions::host::sload" sload.
-    Smpl Add apply Function_sload : is_function.
+    Global Instance Instance_IsFunction_sload :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::sload" sload.
+    Admitted.
+    Global Typeclasses Opaque sload.
     
     (*
     pub fn sstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5235,8 +5244,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sstore : M.IsFunction "revm_interpreter::instructions::host::sstore" sstore.
-    Smpl Add apply Function_sstore : is_function.
+    Global Instance Instance_IsFunction_sstore :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::sstore" sstore.
+    Admitted.
+    Global Typeclasses Opaque sstore.
     
     (*
     pub fn tstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5662,8 +5673,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_tstore : M.IsFunction "revm_interpreter::instructions::host::tstore" tstore.
-    Smpl Add apply Function_tstore : is_function.
+    Global Instance Instance_IsFunction_tstore :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::tstore" tstore.
+    Admitted.
+    Global Typeclasses Opaque tstore.
     
     (*
     pub fn tload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -6031,8 +6044,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_tload : M.IsFunction "revm_interpreter::instructions::host::tload" tload.
-    Smpl Add apply Function_tload : is_function.
+    Global Instance Instance_IsFunction_tload :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::tload" tload.
+    Admitted.
+    Global Typeclasses Opaque tload.
     
     (*
     pub fn log<const N: usize, H: Host + ?Sized>(
@@ -7552,8 +7567,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_log : M.IsFunction "revm_interpreter::instructions::host::log" log.
-    Smpl Add apply Function_log : is_function.
+    Global Instance Instance_IsFunction_log :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::log" log.
+    Admitted.
+    Global Typeclasses Opaque log.
     
     (*
     pub fn selfdestruct<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -8168,8 +8185,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_selfdestruct :
-      M.IsFunction "revm_interpreter::instructions::host::selfdestruct" selfdestruct.
-    Smpl Add apply Function_selfdestruct : is_function.
+    Global Instance Instance_IsFunction_selfdestruct :
+      M.IsFunction.Trait "revm_interpreter::instructions::host::selfdestruct" selfdestruct.
+    Admitted.
+    Global Typeclasses Opaque selfdestruct.
   End host.
 End instructions.

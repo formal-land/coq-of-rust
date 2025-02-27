@@ -853,8 +853,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_map_fp_to_g1 :
-      M.IsFunction "revm_precompile::bls12_381::map_fp_to_g1::map_fp_to_g1" map_fp_to_g1.
-    Smpl Add apply Function_map_fp_to_g1 : is_function.
+    Global Instance Instance_IsFunction_map_fp_to_g1 :
+      M.IsFunction.Trait "revm_precompile::bls12_381::map_fp_to_g1::map_fp_to_g1" map_fp_to_g1.
+    Admitted.
+    Global Typeclasses Opaque map_fp_to_g1.
   End map_fp_to_g1.
 End bls12_381.

@@ -185,8 +185,10 @@ Module locals_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify : M.IsFunction "move_bytecode_verifier::locals_safety::verify" verify.
-  Smpl Add apply Function_verify : is_function.
+  Global Instance Instance_IsFunction_verify :
+    M.IsFunction.Trait "move_bytecode_verifier::locals_safety::verify" verify.
+  Admitted.
+  Global Typeclasses Opaque verify.
   
   (*
   fn execute_inner(
@@ -1452,6 +1454,7 @@ Module locals_safety.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
@@ -2353,9 +2356,10 @@ Module locals_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_execute_inner :
-    M.IsFunction "move_bytecode_verifier::locals_safety::execute_inner" execute_inner.
-  Smpl Add apply Function_execute_inner : is_function.
+  Global Instance Instance_IsFunction_execute_inner :
+    M.IsFunction.Trait "move_bytecode_verifier::locals_safety::execute_inner" execute_inner.
+  Admitted.
+  Global Typeclasses Opaque execute_inner.
   
   (* StructTuple
     {

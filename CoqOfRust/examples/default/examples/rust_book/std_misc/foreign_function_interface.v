@@ -3,13 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter csqrtf : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_csqrtf : M.IsFunction "foreign_function_interface::csqrtf" csqrtf.
-Smpl Add apply Function_csqrtf : is_function.
+Global Instance Instance_IsFunction_csqrtf :
+  M.IsFunction.Trait "foreign_function_interface::csqrtf" csqrtf.
+Admitted.
 
 Parameter ccosf : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_ccosf : M.IsFunction "foreign_function_interface::ccosf" ccosf.
-Smpl Add apply Function_ccosf : is_function.
+Global Instance Instance_IsFunction_ccosf :
+  M.IsFunction.Trait "foreign_function_interface::ccosf" ccosf.
+Admitted.
 
 (*
 fn cos(z: Complex) -> Complex {
@@ -29,8 +31,9 @@ Definition cos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_cos : M.IsFunction "foreign_function_interface::cos" cos.
-Smpl Add apply Function_cos : is_function.
+Global Instance Instance_IsFunction_cos : M.IsFunction.Trait "foreign_function_interface::cos" cos.
+Admitted.
+Global Typeclasses Opaque cos.
 
 (*
 fn main() {
@@ -249,8 +252,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "foreign_function_interface::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "foreign_function_interface::main" main.
+Admitted.
+Global Typeclasses Opaque main.
 
 (* StructRecord
   {

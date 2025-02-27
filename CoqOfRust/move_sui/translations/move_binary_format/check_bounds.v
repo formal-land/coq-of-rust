@@ -201,9 +201,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_impl(&mut self) -> PartialVMResult<()> {
@@ -1558,8 +1559,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_impl : M.IsAssociatedFunction Self "verify_impl" verify_impl.
-    Smpl Add apply AssociatedFunction_verify_impl : is_associated.
+    Global Instance AssociatedFunction_verify_impl :
+      M.IsAssociatedFunction.Trait Self "verify_impl" verify_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_impl.
     
     (*
         fn check_signatures(&self) -> PartialVMResult<()> {
@@ -1643,6 +1646,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1842,9 +1846,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_signatures :
-      M.IsAssociatedFunction Self "check_signatures" check_signatures.
-    Smpl Add apply AssociatedFunction_check_signatures : is_associated.
+    Global Instance AssociatedFunction_check_signatures :
+      M.IsAssociatedFunction.Trait Self "check_signatures" check_signatures.
+    Admitted.
+    Global Typeclasses Opaque check_signatures.
     
     (*
         fn check_constants(&self) -> PartialVMResult<()> {
@@ -1928,6 +1933,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2126,9 +2132,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_constants :
-      M.IsAssociatedFunction Self "check_constants" check_constants.
-    Smpl Add apply AssociatedFunction_check_constants : is_associated.
+    Global Instance AssociatedFunction_check_constants :
+      M.IsAssociatedFunction.Trait Self "check_constants" check_constants.
+    Admitted.
+    Global Typeclasses Opaque check_constants.
     
     (*
         fn check_module_handles(&self) -> PartialVMResult<()> {
@@ -2212,6 +2219,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2415,9 +2423,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_module_handles :
-      M.IsAssociatedFunction Self "check_module_handles" check_module_handles.
-    Smpl Add apply AssociatedFunction_check_module_handles : is_associated.
+    Global Instance AssociatedFunction_check_module_handles :
+      M.IsAssociatedFunction.Trait Self "check_module_handles" check_module_handles.
+    Admitted.
+    Global Typeclasses Opaque check_module_handles.
     
     (*
         fn check_struct_handles(&self) -> PartialVMResult<()> {
@@ -2501,6 +2510,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2704,9 +2714,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_handles :
-      M.IsAssociatedFunction Self "check_struct_handles" check_struct_handles.
-    Smpl Add apply AssociatedFunction_check_struct_handles : is_associated.
+    Global Instance AssociatedFunction_check_struct_handles :
+      M.IsAssociatedFunction.Trait Self "check_struct_handles" check_struct_handles.
+    Admitted.
+    Global Typeclasses Opaque check_struct_handles.
     
     (*
         fn check_function_handles(&self) -> PartialVMResult<()> {
@@ -2790,6 +2801,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2993,9 +3005,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_handles :
-      M.IsAssociatedFunction Self "check_function_handles" check_function_handles.
-    Smpl Add apply AssociatedFunction_check_function_handles : is_associated.
+    Global Instance AssociatedFunction_check_function_handles :
+      M.IsAssociatedFunction.Trait Self "check_function_handles" check_function_handles.
+    Admitted.
+    Global Typeclasses Opaque check_function_handles.
     
     (*
         fn check_field_handles(&self) -> PartialVMResult<()> {
@@ -3079,6 +3092,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -3280,9 +3294,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_handles :
-      M.IsAssociatedFunction Self "check_field_handles" check_field_handles.
-    Smpl Add apply AssociatedFunction_check_field_handles : is_associated.
+    Global Instance AssociatedFunction_check_field_handles :
+      M.IsAssociatedFunction.Trait Self "check_field_handles" check_field_handles.
+    Admitted.
+    Global Typeclasses Opaque check_field_handles.
     
     (*
         fn check_friend_decls(&self) -> PartialVMResult<()> {
@@ -3366,6 +3381,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -3569,9 +3585,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_friend_decls :
-      M.IsAssociatedFunction Self "check_friend_decls" check_friend_decls.
-    Smpl Add apply AssociatedFunction_check_friend_decls : is_associated.
+    Global Instance AssociatedFunction_check_friend_decls :
+      M.IsAssociatedFunction.Trait Self "check_friend_decls" check_friend_decls.
+    Admitted.
+    Global Typeclasses Opaque check_friend_decls.
     
     (*
         fn check_struct_instantiations(&self) -> PartialVMResult<()> {
@@ -3665,6 +3682,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -3870,9 +3888,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_instantiations :
-      M.IsAssociatedFunction Self "check_struct_instantiations" check_struct_instantiations.
-    Smpl Add apply AssociatedFunction_check_struct_instantiations : is_associated.
+    Global Instance AssociatedFunction_check_struct_instantiations :
+      M.IsAssociatedFunction.Trait Self "check_struct_instantiations" check_struct_instantiations.
+    Admitted.
+    Global Typeclasses Opaque check_struct_instantiations.
     
     (*
         fn check_function_instantiations(&self) -> PartialVMResult<()> {
@@ -3964,6 +3983,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4169,9 +4189,13 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_instantiations :
-      M.IsAssociatedFunction Self "check_function_instantiations" check_function_instantiations.
-    Smpl Add apply AssociatedFunction_check_function_instantiations : is_associated.
+    Global Instance AssociatedFunction_check_function_instantiations :
+      M.IsAssociatedFunction.Trait
+        Self
+        "check_function_instantiations"
+        check_function_instantiations.
+    Admitted.
+    Global Typeclasses Opaque check_function_instantiations.
     
     (*
         fn check_field_instantiations(&self) -> PartialVMResult<()> {
@@ -4260,6 +4284,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4465,9 +4490,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_instantiations :
-      M.IsAssociatedFunction Self "check_field_instantiations" check_field_instantiations.
-    Smpl Add apply AssociatedFunction_check_field_instantiations : is_associated.
+    Global Instance AssociatedFunction_check_field_instantiations :
+      M.IsAssociatedFunction.Trait Self "check_field_instantiations" check_field_instantiations.
+    Admitted.
+    Global Typeclasses Opaque check_field_instantiations.
     
     (*
         fn check_struct_defs(&self) -> PartialVMResult<()> {
@@ -4551,6 +4577,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4754,9 +4781,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_defs :
-      M.IsAssociatedFunction Self "check_struct_defs" check_struct_defs.
-    Smpl Add apply AssociatedFunction_check_struct_defs : is_associated.
+    Global Instance AssociatedFunction_check_struct_defs :
+      M.IsAssociatedFunction.Trait Self "check_struct_defs" check_struct_defs.
+    Admitted.
+    Global Typeclasses Opaque check_struct_defs.
     
     (*
         fn check_function_defs(&mut self) -> PartialVMResult<()> {
@@ -4901,6 +4929,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -5117,9 +5146,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_defs :
-      M.IsAssociatedFunction Self "check_function_defs" check_function_defs.
-    Smpl Add apply AssociatedFunction_check_function_defs : is_associated.
+    Global Instance AssociatedFunction_check_function_defs :
+      M.IsAssociatedFunction.Trait Self "check_function_defs" check_function_defs.
+    Admitted.
+    Global Typeclasses Opaque check_function_defs.
     
     (*
         fn check_module_handle(&self, module_handle: &ModuleHandle) -> PartialVMResult<()> {
@@ -5360,9 +5390,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_module_handle :
-      M.IsAssociatedFunction Self "check_module_handle" check_module_handle.
-    Smpl Add apply AssociatedFunction_check_module_handle : is_associated.
+    Global Instance AssociatedFunction_check_module_handle :
+      M.IsAssociatedFunction.Trait Self "check_module_handle" check_module_handle.
+    Admitted.
+    Global Typeclasses Opaque check_module_handle.
     
     (*
         fn check_self_module_handle(&self) -> PartialVMResult<()> {
@@ -5452,9 +5483,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_self_module_handle :
-      M.IsAssociatedFunction Self "check_self_module_handle" check_self_module_handle.
-    Smpl Add apply AssociatedFunction_check_self_module_handle : is_associated.
+    Global Instance AssociatedFunction_check_self_module_handle :
+      M.IsAssociatedFunction.Trait Self "check_self_module_handle" check_self_module_handle.
+    Admitted.
+    Global Typeclasses Opaque check_self_module_handle.
     
     (*
         fn check_struct_handle(&self, struct_handle: &StructHandle) -> PartialVMResult<()> {
@@ -5693,9 +5725,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_handle :
-      M.IsAssociatedFunction Self "check_struct_handle" check_struct_handle.
-    Smpl Add apply AssociatedFunction_check_struct_handle : is_associated.
+    Global Instance AssociatedFunction_check_struct_handle :
+      M.IsAssociatedFunction.Trait Self "check_struct_handle" check_struct_handle.
+    Admitted.
+    Global Typeclasses Opaque check_struct_handle.
     
     (*
         fn check_function_handle(&self, function_handle: &FunctionHandle) -> PartialVMResult<()> {
@@ -6526,6 +6559,7 @@ Module check_bounds.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -6875,6 +6909,7 @@ Module check_bounds.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -7088,9 +7123,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_handle :
-      M.IsAssociatedFunction Self "check_function_handle" check_function_handle.
-    Smpl Add apply AssociatedFunction_check_function_handle : is_associated.
+    Global Instance AssociatedFunction_check_function_handle :
+      M.IsAssociatedFunction.Trait Self "check_function_handle" check_function_handle.
+    Admitted.
+    Global Typeclasses Opaque check_function_handle.
     
     (*
         fn check_field_handle(&self, field_handle: &FieldHandle) -> PartialVMResult<()> {
@@ -7533,9 +7569,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_handle :
-      M.IsAssociatedFunction Self "check_field_handle" check_field_handle.
-    Smpl Add apply AssociatedFunction_check_field_handle : is_associated.
+    Global Instance AssociatedFunction_check_field_handle :
+      M.IsAssociatedFunction.Trait Self "check_field_handle" check_field_handle.
+    Admitted.
+    Global Typeclasses Opaque check_field_handle.
     
     (*
         fn check_struct_instantiation(
@@ -7786,9 +7823,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_instantiation :
-      M.IsAssociatedFunction Self "check_struct_instantiation" check_struct_instantiation.
-    Smpl Add apply AssociatedFunction_check_struct_instantiation : is_associated.
+    Global Instance AssociatedFunction_check_struct_instantiation :
+      M.IsAssociatedFunction.Trait Self "check_struct_instantiation" check_struct_instantiation.
+    Admitted.
+    Global Typeclasses Opaque check_struct_instantiation.
     
     (*
         fn check_function_instantiation(
@@ -8042,9 +8080,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_instantiation :
-      M.IsAssociatedFunction Self "check_function_instantiation" check_function_instantiation.
-    Smpl Add apply AssociatedFunction_check_function_instantiation : is_associated.
+    Global Instance AssociatedFunction_check_function_instantiation :
+      M.IsAssociatedFunction.Trait Self "check_function_instantiation" check_function_instantiation.
+    Admitted.
+    Global Typeclasses Opaque check_function_instantiation.
     
     (*
         fn check_field_instantiation(
@@ -8292,9 +8331,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_instantiation :
-      M.IsAssociatedFunction Self "check_field_instantiation" check_field_instantiation.
-    Smpl Add apply AssociatedFunction_check_field_instantiation : is_associated.
+    Global Instance AssociatedFunction_check_field_instantiation :
+      M.IsAssociatedFunction.Trait Self "check_field_instantiation" check_field_instantiation.
+    Admitted.
+    Global Typeclasses Opaque check_field_instantiation.
     
     (*
         fn check_signature(&self, signature: &Signature) -> PartialVMResult<()> {
@@ -8359,6 +8399,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -8562,9 +8603,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_signature :
-      M.IsAssociatedFunction Self "check_signature" check_signature.
-    Smpl Add apply AssociatedFunction_check_signature : is_associated.
+    Global Instance AssociatedFunction_check_signature :
+      M.IsAssociatedFunction.Trait Self "check_signature" check_signature.
+    Admitted.
+    Global Typeclasses Opaque check_signature.
     
     (*
         fn check_constant(&self, constant: &Constant) -> PartialVMResult<()> {
@@ -8608,9 +8650,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_constant :
-      M.IsAssociatedFunction Self "check_constant" check_constant.
-    Smpl Add apply AssociatedFunction_check_constant : is_associated.
+    Global Instance AssociatedFunction_check_constant :
+      M.IsAssociatedFunction.Trait Self "check_constant" check_constant.
+    Admitted.
+    Global Typeclasses Opaque check_constant.
     
     (*
         fn check_struct_def(&self, struct_def: &StructDefinition) -> PartialVMResult<()> {
@@ -9025,6 +9068,7 @@ Module check_bounds.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -9591,9 +9635,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_def :
-      M.IsAssociatedFunction Self "check_struct_def" check_struct_def.
-    Smpl Add apply AssociatedFunction_check_struct_def : is_associated.
+    Global Instance AssociatedFunction_check_struct_def :
+      M.IsAssociatedFunction.Trait Self "check_struct_def" check_struct_def.
+    Admitted.
+    Global Typeclasses Opaque check_struct_def.
     
     (*
         fn check_function_def(
@@ -9871,6 +9916,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -10600,9 +10646,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_def :
-      M.IsAssociatedFunction Self "check_function_def" check_function_def.
-    Smpl Add apply AssociatedFunction_check_function_def : is_associated.
+    Global Instance AssociatedFunction_check_function_def :
+      M.IsAssociatedFunction.Trait Self "check_function_def" check_function_def.
+    Admitted.
+    Global Typeclasses Opaque check_function_def.
     
     (*
         fn check_code(
@@ -11251,6 +11298,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -11603,6 +11651,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -12633,6 +12682,7 @@ Module check_bounds.
                                                                                           γ
                                                                                         |) in
                                                                                       M.loop (|
+                                                                                        Ty.tuple [],
                                                                                         ltac:(M.monadic
                                                                                           (let~ _ :
                                                                                               Ty.tuple
@@ -13574,6 +13624,7 @@ Module check_bounds.
                                                                             (let iter :=
                                                                               M.copy (| γ |) in
                                                                             M.loop (|
+                                                                              Ty.tuple [],
                                                                               ltac:(M.monadic
                                                                                 (let~ _ :
                                                                                     Ty.tuple [] :=
@@ -14713,6 +14764,7 @@ Module check_bounds.
                                                                                           γ
                                                                                         |) in
                                                                                       M.loop (|
+                                                                                        Ty.tuple [],
                                                                                         ltac:(M.monadic
                                                                                           (let~ _ :
                                                                                               Ty.tuple
@@ -15754,6 +15806,7 @@ Module check_bounds.
                                                                               (let iter :=
                                                                                 M.copy (| γ |) in
                                                                               M.loop (|
+                                                                                Ty.tuple [],
                                                                                 ltac:(M.monadic
                                                                                   (let~ _ :
                                                                                       Ty.tuple [] :=
@@ -16424,8 +16477,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_code : M.IsAssociatedFunction Self "check_code" check_code.
-    Smpl Add apply AssociatedFunction_check_code : is_associated.
+    Global Instance AssociatedFunction_check_code :
+      M.IsAssociatedFunction.Trait Self "check_code" check_code.
+    Admitted.
+    Global Typeclasses Opaque check_code.
     
     (*
         fn check_type(&self, ty: &SignatureToken) -> PartialVMResult<()> {
@@ -16516,6 +16571,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -17931,8 +17987,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_type : M.IsAssociatedFunction Self "check_type" check_type.
-    Smpl Add apply AssociatedFunction_check_type : is_associated.
+    Global Instance AssociatedFunction_check_type :
+      M.IsAssociatedFunction.Trait Self "check_type" check_type.
+    Admitted.
+    Global Typeclasses Opaque check_type.
     
     (*
         fn check_type_parameter(
@@ -18021,6 +18079,7 @@ Module check_bounds.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -18314,9 +18373,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_type_parameter :
-      M.IsAssociatedFunction Self "check_type_parameter" check_type_parameter.
-    Smpl Add apply AssociatedFunction_check_type_parameter : is_associated.
+    Global Instance AssociatedFunction_check_type_parameter :
+      M.IsAssociatedFunction.Trait Self "check_type_parameter" check_type_parameter.
+    Admitted.
+    Global Typeclasses Opaque check_type_parameter.
     
     (*
         fn check_code_unit_bounds_impl<T, I>(
@@ -18429,9 +18489,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_code_unit_bounds_impl :
-      M.IsAssociatedFunction Self "check_code_unit_bounds_impl" check_code_unit_bounds_impl.
-    Smpl Add apply AssociatedFunction_check_code_unit_bounds_impl : is_associated.
+    Global Instance AssociatedFunction_check_code_unit_bounds_impl :
+      M.IsAssociatedFunction.Trait Self "check_code_unit_bounds_impl" check_code_unit_bounds_impl.
+    Admitted.
+    Global Typeclasses Opaque check_code_unit_bounds_impl.
     
     (*
         fn get_locals(&self, code_unit: &CodeUnit) -> PartialVMResult<&[SignatureToken]> {
@@ -18696,8 +18757,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_locals : M.IsAssociatedFunction Self "get_locals" get_locals.
-    Smpl Add apply AssociatedFunction_get_locals : is_associated.
+    Global Instance AssociatedFunction_get_locals :
+      M.IsAssociatedFunction.Trait Self "get_locals" get_locals.
+    Admitted.
+    Global Typeclasses Opaque get_locals.
     
     (*
         fn offset_out_of_bounds(
@@ -18904,9 +18967,10 @@ Module check_bounds.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_offset_out_of_bounds :
-      M.IsAssociatedFunction Self "offset_out_of_bounds" offset_out_of_bounds.
-    Smpl Add apply AssociatedFunction_offset_out_of_bounds : is_associated.
+    Global Instance AssociatedFunction_offset_out_of_bounds :
+      M.IsAssociatedFunction.Trait Self "offset_out_of_bounds" offset_out_of_bounds.
+    Admitted.
+    Global Typeclasses Opaque offset_out_of_bounds.
   End Impl_move_binary_format_check_bounds_BoundsChecker.
   
   (*
@@ -18996,7 +19060,8 @@ Module check_bounds.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_bounds_impl :
-    M.IsFunction "move_binary_format::check_bounds::check_bounds_impl" check_bounds_impl.
-  Smpl Add apply Function_check_bounds_impl : is_function.
+  Global Instance Instance_IsFunction_check_bounds_impl :
+    M.IsFunction.Trait "move_binary_format::check_bounds::check_bounds_impl" check_bounds_impl.
+  Admitted.
+  Global Typeclasses Opaque check_bounds_impl.
 End check_bounds.

@@ -1096,8 +1096,9 @@ Module hardfork.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_n : M.IsAssociatedFunction Self "n" n.
-    Smpl Add apply AssociatedFunction_n : is_associated.
+    Global Instance AssociatedFunction_n : M.IsAssociatedFunction.Trait Self "n" n.
+    Admitted.
+    Global Typeclasses Opaque n.
     (*
         pub fn try_from_u8(spec_id: u8) -> Option<Self> {
             Self::n(spec_id)
@@ -1124,8 +1125,10 @@ Module hardfork.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_from_u8 : M.IsAssociatedFunction Self "try_from_u8" try_from_u8.
-    Smpl Add apply AssociatedFunction_try_from_u8 : is_associated.
+    Global Instance AssociatedFunction_try_from_u8 :
+      M.IsAssociatedFunction.Trait Self "try_from_u8" try_from_u8.
+    Admitted.
+    Global Typeclasses Opaque try_from_u8.
     
     (*
         pub const fn is_enabled_in(self, other: Self) -> bool {
@@ -1145,9 +1148,10 @@ Module hardfork.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_enabled_in :
-      M.IsAssociatedFunction Self "is_enabled_in" is_enabled_in.
-    Smpl Add apply AssociatedFunction_is_enabled_in : is_associated.
+    Global Instance AssociatedFunction_is_enabled_in :
+      M.IsAssociatedFunction.Trait Self "is_enabled_in" is_enabled_in.
+    Admitted.
+    Global Typeclasses Opaque is_enabled_in.
   End Impl_revm_specification_hardfork_SpecId.
   
   

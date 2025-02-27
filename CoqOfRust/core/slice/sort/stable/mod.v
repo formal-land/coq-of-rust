@@ -204,8 +204,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_sort : M.IsFunction "core::slice::sort::stable::sort" sort.
-      Smpl Add apply Function_sort : is_function.
+      Global Instance Instance_IsFunction_sort :
+        M.IsFunction.Trait "core::slice::sort::stable::sort" sort.
+      Admitted.
+      Global Typeclasses Opaque sort.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
@@ -518,9 +520,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_driftsort_main :
-        M.IsFunction "core::slice::sort::stable::driftsort_main" driftsort_main.
-      Smpl Add apply Function_driftsort_main : is_function.
+      Global Instance Instance_IsFunction_driftsort_main :
+        M.IsFunction.Trait "core::slice::sort::stable::driftsort_main" driftsort_main.
+      Admitted.
+      Global Typeclasses Opaque driftsort_main.
       
       Module driftsort_main.
         Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=
@@ -584,10 +587,11 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction (Self N T) "new" (new N T).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             fn as_uninit_slice_mut(&mut self) -> &mut [MaybeUninit<T>] {
@@ -738,10 +742,11 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_as_uninit_slice_mut :
+        Global Instance AssociatedFunction_as_uninit_slice_mut :
           forall (N : Value.t) (T : Ty.t),
-          M.IsAssociatedFunction (Self N T) "as_uninit_slice_mut" (as_uninit_slice_mut N T).
-        Smpl Add apply AssociatedFunction_as_uninit_slice_mut : is_associated.
+          M.IsAssociatedFunction.Trait (Self N T) "as_uninit_slice_mut" (as_uninit_slice_mut N T).
+        Admitted.
+        Global Typeclasses Opaque as_uninit_slice_mut.
       End Impl_core_slice_sort_stable_AlignedStorage_N_T.
     End stable.
   End sort.

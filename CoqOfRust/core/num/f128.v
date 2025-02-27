@@ -150,91 +150,106 @@ Module f128.
     Definition value_RADIX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
     
-    Axiom AssociatedConstant_value_RADIX : M.IsAssociatedConstant Self "value_RADIX" value_RADIX.
-    Smpl Add apply AssociatedConstant_value_RADIX : is_associated.
+    Global Instance AssociatedConstant_value_RADIX :
+      M.IsAssociatedConstant.Trait Self "value_RADIX" value_RADIX.
+    Admitted.
+    Global Typeclasses Opaque value_RADIX.
     
     (*     pub const MANTISSA_DIGITS: u32 = 113; *)
     (* Ty.path "u32" *)
     Definition value_MANTISSA_DIGITS : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 113 |))).
     
-    Axiom AssociatedConstant_value_MANTISSA_DIGITS :
-      M.IsAssociatedConstant Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
-    Smpl Add apply AssociatedConstant_value_MANTISSA_DIGITS : is_associated.
+    Global Instance AssociatedConstant_value_MANTISSA_DIGITS :
+      M.IsAssociatedConstant.Trait Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
+    Admitted.
+    Global Typeclasses Opaque value_MANTISSA_DIGITS.
     
     (*     pub const DIGITS: u32 = 33; *)
     (* Ty.path "u32" *)
     Definition value_DIGITS : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 33 |))).
     
-    Axiom AssociatedConstant_value_DIGITS : M.IsAssociatedConstant Self "value_DIGITS" value_DIGITS.
-    Smpl Add apply AssociatedConstant_value_DIGITS : is_associated.
+    Global Instance AssociatedConstant_value_DIGITS :
+      M.IsAssociatedConstant.Trait Self "value_DIGITS" value_DIGITS.
+    Admitted.
+    Global Typeclasses Opaque value_DIGITS.
     
     (*     pub const EPSILON: f128 = 1.92592994438723585305597794258492732e-34_f128; *)
     (* Ty.path "f128" *)
     Definition value_EPSILON : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom AssociatedConstant_value_EPSILON :
-      M.IsAssociatedConstant Self "value_EPSILON" value_EPSILON.
-    Smpl Add apply AssociatedConstant_value_EPSILON : is_associated.
+    Global Instance AssociatedConstant_value_EPSILON :
+      M.IsAssociatedConstant.Trait Self "value_EPSILON" value_EPSILON.
+    Admitted.
+    Global Typeclasses Opaque value_EPSILON.
     
     (*     pub const MIN: f128 = -1.18973149535723176508575932662800702e+4932_f128; *)
     (* Ty.path "f128" *)
     Definition value_MIN : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*     pub const MIN_POSITIVE: f128 = 3.36210314311209350626267781732175260e-4932_f128; *)
     (* Ty.path "f128" *)
     Definition value_MIN_POSITIVE : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom AssociatedConstant_value_MIN_POSITIVE :
-      M.IsAssociatedConstant Self "value_MIN_POSITIVE" value_MIN_POSITIVE.
-    Smpl Add apply AssociatedConstant_value_MIN_POSITIVE : is_associated.
+    Global Instance AssociatedConstant_value_MIN_POSITIVE :
+      M.IsAssociatedConstant.Trait Self "value_MIN_POSITIVE" value_MIN_POSITIVE.
+    Admitted.
+    Global Typeclasses Opaque value_MIN_POSITIVE.
     
     (*     pub const MAX: f128 = 1.18973149535723176508575932662800702e+4932_f128; *)
     (* Ty.path "f128" *)
     Definition value_MAX : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*     pub const MIN_EXP: i32 = -16_381; *)
     (* Ty.path "i32" *)
     Definition value_MIN_EXP : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-16381) |))).
     
-    Axiom AssociatedConstant_value_MIN_EXP :
-      M.IsAssociatedConstant Self "value_MIN_EXP" value_MIN_EXP.
-    Smpl Add apply AssociatedConstant_value_MIN_EXP : is_associated.
+    Global Instance AssociatedConstant_value_MIN_EXP :
+      M.IsAssociatedConstant.Trait Self "value_MIN_EXP" value_MIN_EXP.
+    Admitted.
+    Global Typeclasses Opaque value_MIN_EXP.
     
     (*     pub const MAX_EXP: i32 = 16_384; *)
     (* Ty.path "i32" *)
     Definition value_MAX_EXP : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 16384 |))).
     
-    Axiom AssociatedConstant_value_MAX_EXP :
-      M.IsAssociatedConstant Self "value_MAX_EXP" value_MAX_EXP.
-    Smpl Add apply AssociatedConstant_value_MAX_EXP : is_associated.
+    Global Instance AssociatedConstant_value_MAX_EXP :
+      M.IsAssociatedConstant.Trait Self "value_MAX_EXP" value_MAX_EXP.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_EXP.
     
     (*     pub const MIN_10_EXP: i32 = -4_931; *)
     (* Ty.path "i32" *)
     Definition value_MIN_10_EXP : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-4931) |))).
     
-    Axiom AssociatedConstant_value_MIN_10_EXP :
-      M.IsAssociatedConstant Self "value_MIN_10_EXP" value_MIN_10_EXP.
-    Smpl Add apply AssociatedConstant_value_MIN_10_EXP : is_associated.
+    Global Instance AssociatedConstant_value_MIN_10_EXP :
+      M.IsAssociatedConstant.Trait Self "value_MIN_10_EXP" value_MIN_10_EXP.
+    Admitted.
+    Global Typeclasses Opaque value_MIN_10_EXP.
     
     (*     pub const MAX_10_EXP: i32 = 4_932; *)
     (* Ty.path "i32" *)
     Definition value_MAX_10_EXP : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 4932 |))).
     
-    Axiom AssociatedConstant_value_MAX_10_EXP :
-      M.IsAssociatedConstant Self "value_MAX_10_EXP" value_MAX_10_EXP.
-    Smpl Add apply AssociatedConstant_value_MAX_10_EXP : is_associated.
+    Global Instance AssociatedConstant_value_MAX_10_EXP :
+      M.IsAssociatedConstant.Trait Self "value_MAX_10_EXP" value_MAX_10_EXP.
+    Admitted.
+    Global Typeclasses Opaque value_MAX_10_EXP.
     
     (*     pub const NAN: f128 = 0.0_f128 / 0.0_f128; *)
     (* Ty.path "f128" *)
@@ -245,8 +260,10 @@ Module f128.
             BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
-    Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
-    Smpl Add apply AssociatedConstant_value_NAN : is_associated.
+    Global Instance AssociatedConstant_value_NAN :
+      M.IsAssociatedConstant.Trait Self "value_NAN" value_NAN.
+    Admitted.
+    Global Typeclasses Opaque value_NAN.
     
     (*     pub const INFINITY: f128 = 1.0_f128 / 0.0_f128; *)
     (* Ty.path "f128" *)
@@ -257,9 +274,10 @@ Module f128.
             BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
-    Axiom AssociatedConstant_value_INFINITY :
-      M.IsAssociatedConstant Self "value_INFINITY" value_INFINITY.
-    Smpl Add apply AssociatedConstant_value_INFINITY : is_associated.
+    Global Instance AssociatedConstant_value_INFINITY :
+      M.IsAssociatedConstant.Trait Self "value_INFINITY" value_INFINITY.
+    Admitted.
+    Global Typeclasses Opaque value_INFINITY.
     
     (*     pub const NEG_INFINITY: f128 = -1.0_f128 / 0.0_f128; *)
     (* Ty.path "f128" *)
@@ -270,9 +288,10 @@ Module f128.
             BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
-    Axiom AssociatedConstant_value_NEG_INFINITY :
-      M.IsAssociatedConstant Self "value_NEG_INFINITY" value_NEG_INFINITY.
-    Smpl Add apply AssociatedConstant_value_NEG_INFINITY : is_associated.
+    Global Instance AssociatedConstant_value_NEG_INFINITY :
+      M.IsAssociatedConstant.Trait Self "value_NEG_INFINITY" value_NEG_INFINITY.
+    Admitted.
+    Global Typeclasses Opaque value_NEG_INFINITY.
     
     (*     pub(crate) const SIGN_MASK: u128 = 0x8000_0000_0000_0000_0000_0000_0000_0000; *)
     (* Ty.path "u128" *)
@@ -281,9 +300,10 @@ Module f128.
         ltac:(M.monadic
           (M.alloc (| Value.Integer IntegerKind.U128 170141183460469231731687303715884105728 |))).
     
-    Axiom AssociatedConstant_value_SIGN_MASK :
-      M.IsAssociatedConstant Self "value_SIGN_MASK" value_SIGN_MASK.
-    Smpl Add apply AssociatedConstant_value_SIGN_MASK : is_associated.
+    Global Instance AssociatedConstant_value_SIGN_MASK :
+      M.IsAssociatedConstant.Trait Self "value_SIGN_MASK" value_SIGN_MASK.
+    Admitted.
+    Global Typeclasses Opaque value_SIGN_MASK.
     
     (*     pub(crate) const EXP_MASK: u128 = 0x7fff_0000_0000_0000_0000_0000_0000_0000; *)
     (* Ty.path "u128" *)
@@ -292,9 +312,10 @@ Module f128.
         ltac:(M.monadic
           (M.alloc (| Value.Integer IntegerKind.U128 170135991163610696904058773219554885632 |))).
     
-    Axiom AssociatedConstant_value_EXP_MASK :
-      M.IsAssociatedConstant Self "value_EXP_MASK" value_EXP_MASK.
-    Smpl Add apply AssociatedConstant_value_EXP_MASK : is_associated.
+    Global Instance AssociatedConstant_value_EXP_MASK :
+      M.IsAssociatedConstant.Trait Self "value_EXP_MASK" value_EXP_MASK.
+    Admitted.
+    Global Typeclasses Opaque value_EXP_MASK.
     
     (*     pub(crate) const MAN_MASK: u128 = 0x0000_ffff_ffff_ffff_ffff_ffff_ffff_ffff; *)
     (* Ty.path "u128" *)
@@ -303,18 +324,20 @@ Module f128.
         ltac:(M.monadic
           (M.alloc (| Value.Integer IntegerKind.U128 5192296858534827628530496329220095 |))).
     
-    Axiom AssociatedConstant_value_MAN_MASK :
-      M.IsAssociatedConstant Self "value_MAN_MASK" value_MAN_MASK.
-    Smpl Add apply AssociatedConstant_value_MAN_MASK : is_associated.
+    Global Instance AssociatedConstant_value_MAN_MASK :
+      M.IsAssociatedConstant.Trait Self "value_MAN_MASK" value_MAN_MASK.
+    Admitted.
+    Global Typeclasses Opaque value_MAN_MASK.
     
     (*     const TINY_BITS: u128 = 0x1; *)
     (* Ty.path "u128" *)
     Definition value_TINY_BITS : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |))).
     
-    Axiom AssociatedConstant_value_TINY_BITS :
-      M.IsAssociatedConstant Self "value_TINY_BITS" value_TINY_BITS.
-    Smpl Add apply AssociatedConstant_value_TINY_BITS : is_associated.
+    Global Instance AssociatedConstant_value_TINY_BITS :
+      M.IsAssociatedConstant.Trait Self "value_TINY_BITS" value_TINY_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_TINY_BITS.
     
     (*     const NEG_TINY_BITS: u128 = Self::TINY_BITS | Self::SIGN_MASK; *)
     (* Ty.path "u128" *)
@@ -327,9 +350,10 @@ Module f128.
               (M.read (| M.get_constant "core::f128::SIGN_MASK" |))
           |))).
     
-    Axiom AssociatedConstant_value_NEG_TINY_BITS :
-      M.IsAssociatedConstant Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
-    Smpl Add apply AssociatedConstant_value_NEG_TINY_BITS : is_associated.
+    Global Instance AssociatedConstant_value_NEG_TINY_BITS :
+      M.IsAssociatedConstant.Trait Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_NEG_TINY_BITS.
     
     (*
         pub const fn is_nan(self) -> bool {
@@ -345,8 +369,9 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_nan : M.IsAssociatedFunction Self "is_nan" is_nan.
-    Smpl Add apply AssociatedFunction_is_nan : is_associated.
+    Global Instance AssociatedFunction_is_nan : M.IsAssociatedFunction.Trait Self "is_nan" is_nan.
+    Admitted.
+    Global Typeclasses Opaque is_nan.
     
     (*
         pub(crate) const fn abs_private(self) -> f128 {
@@ -385,8 +410,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_private : M.IsAssociatedFunction Self "abs_private" abs_private.
-    Smpl Add apply AssociatedFunction_abs_private : is_associated.
+    Global Instance AssociatedFunction_abs_private :
+      M.IsAssociatedFunction.Trait Self "abs_private" abs_private.
+    Admitted.
+    Global Typeclasses Opaque abs_private.
     
     (*
         pub const fn is_infinite(self) -> bool {
@@ -407,8 +434,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_infinite : M.IsAssociatedFunction Self "is_infinite" is_infinite.
-    Smpl Add apply AssociatedFunction_is_infinite : is_associated.
+    Global Instance AssociatedFunction_is_infinite :
+      M.IsAssociatedFunction.Trait Self "is_infinite" is_infinite.
+    Admitted.
+    Global Typeclasses Opaque is_infinite.
     
     (*
         pub const fn is_finite(self) -> bool {
@@ -433,8 +462,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_finite : M.IsAssociatedFunction Self "is_finite" is_finite.
-    Smpl Add apply AssociatedFunction_is_finite : is_associated.
+    Global Instance AssociatedFunction_is_finite :
+      M.IsAssociatedFunction.Trait Self "is_finite" is_finite.
+    Admitted.
+    Global Typeclasses Opaque is_finite.
     
     (*
         pub const fn is_subnormal(self) -> bool {
@@ -467,8 +498,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_subnormal : M.IsAssociatedFunction Self "is_subnormal" is_subnormal.
-    Smpl Add apply AssociatedFunction_is_subnormal : is_associated.
+    Global Instance AssociatedFunction_is_subnormal :
+      M.IsAssociatedFunction.Trait Self "is_subnormal" is_subnormal.
+    Admitted.
+    Global Typeclasses Opaque is_subnormal.
     
     (*
         pub const fn is_normal(self) -> bool {
@@ -501,8 +534,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_normal : M.IsAssociatedFunction Self "is_normal" is_normal.
-    Smpl Add apply AssociatedFunction_is_normal : is_associated.
+    Global Instance AssociatedFunction_is_normal :
+      M.IsAssociatedFunction.Trait Self "is_normal" is_normal.
+    Admitted.
+    Global Typeclasses Opaque is_normal.
     
     (*
         pub const fn classify(self) -> FpCategory {
@@ -602,8 +637,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
-    Smpl Add apply AssociatedFunction_classify : is_associated.
+    Global Instance AssociatedFunction_classify :
+      M.IsAssociatedFunction.Trait Self "classify" classify.
+    Admitted.
+    Global Typeclasses Opaque classify.
     
     (*
         pub fn is_sign_positive(self) -> bool {
@@ -625,9 +662,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_sign_positive :
-      M.IsAssociatedFunction Self "is_sign_positive" is_sign_positive.
-    Smpl Add apply AssociatedFunction_is_sign_positive : is_associated.
+    Global Instance AssociatedFunction_is_sign_positive :
+      M.IsAssociatedFunction.Trait Self "is_sign_positive" is_sign_positive.
+    Admitted.
+    Global Typeclasses Opaque is_sign_positive.
     
     (*
         pub fn is_sign_negative(self) -> bool {
@@ -658,9 +696,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_sign_negative :
-      M.IsAssociatedFunction Self "is_sign_negative" is_sign_negative.
-    Smpl Add apply AssociatedFunction_is_sign_negative : is_associated.
+    Global Instance AssociatedFunction_is_sign_negative :
+      M.IsAssociatedFunction.Trait Self "is_sign_negative" is_sign_negative.
+    Admitted.
+    Global Typeclasses Opaque is_sign_negative.
     
     (*
         pub fn next_up(self) -> Self {
@@ -812,8 +851,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_up : M.IsAssociatedFunction Self "next_up" next_up.
-    Smpl Add apply AssociatedFunction_next_up : is_associated.
+    Global Instance AssociatedFunction_next_up :
+      M.IsAssociatedFunction.Trait Self "next_up" next_up.
+    Admitted.
+    Global Typeclasses Opaque next_up.
     
     (*
         pub fn next_down(self) -> Self {
@@ -965,8 +1006,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_down : M.IsAssociatedFunction Self "next_down" next_down.
-    Smpl Add apply AssociatedFunction_next_down : is_associated.
+    Global Instance AssociatedFunction_next_down :
+      M.IsAssociatedFunction.Trait Self "next_down" next_down.
+    Admitted.
+    Global Typeclasses Opaque next_down.
     
     (*
         pub fn recip(self) -> Self {
@@ -982,8 +1025,9 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_recip : M.IsAssociatedFunction Self "recip" recip.
-    Smpl Add apply AssociatedFunction_recip : is_associated.
+    Global Instance AssociatedFunction_recip : M.IsAssociatedFunction.Trait Self "recip" recip.
+    Admitted.
+    Global Typeclasses Opaque recip.
     
     (*
         pub fn to_degrees(self) -> Self {
@@ -1004,8 +1048,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_degrees : M.IsAssociatedFunction Self "to_degrees" to_degrees.
-    Smpl Add apply AssociatedFunction_to_degrees : is_associated.
+    Global Instance AssociatedFunction_to_degrees :
+      M.IsAssociatedFunction.Trait Self "to_degrees" to_degrees.
+    Admitted.
+    Global Typeclasses Opaque to_degrees.
     
     (*
         pub fn to_radians(self) -> f128 {
@@ -1027,8 +1073,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_radians : M.IsAssociatedFunction Self "to_radians" to_radians.
-    Smpl Add apply AssociatedFunction_to_radians : is_associated.
+    Global Instance AssociatedFunction_to_radians :
+      M.IsAssociatedFunction.Trait Self "to_radians" to_radians.
+    Admitted.
+    Global Typeclasses Opaque to_radians.
     
     (*
         pub fn max(self, other: f128) -> f128 {
@@ -1049,8 +1097,9 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
-    Smpl Add apply AssociatedFunction_max : is_associated.
+    Global Instance AssociatedFunction_max : M.IsAssociatedFunction.Trait Self "max" max.
+    Admitted.
+    Global Typeclasses Opaque max.
     
     (*
         pub fn min(self, other: f128) -> f128 {
@@ -1071,8 +1120,9 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min : M.IsAssociatedFunction Self "min" min.
-    Smpl Add apply AssociatedFunction_min : is_associated.
+    Global Instance AssociatedFunction_min : M.IsAssociatedFunction.Trait Self "min" min.
+    Admitted.
+    Global Typeclasses Opaque min.
     
     (*
         pub fn maximum(self, other: f128) -> f128 {
@@ -1191,8 +1241,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_maximum : M.IsAssociatedFunction Self "maximum" maximum.
-    Smpl Add apply AssociatedFunction_maximum : is_associated.
+    Global Instance AssociatedFunction_maximum :
+      M.IsAssociatedFunction.Trait Self "maximum" maximum.
+    Admitted.
+    Global Typeclasses Opaque maximum.
     
     (*
         pub fn minimum(self, other: f128) -> f128 {
@@ -1312,8 +1364,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_minimum : M.IsAssociatedFunction Self "minimum" minimum.
-    Smpl Add apply AssociatedFunction_minimum : is_associated.
+    Global Instance AssociatedFunction_minimum :
+      M.IsAssociatedFunction.Trait Self "minimum" minimum.
+    Admitted.
+    Global Typeclasses Opaque minimum.
     
     (*
         pub fn midpoint(self, other: f128) -> f128 {
@@ -1485,8 +1539,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
         pub unsafe fn to_int_unchecked<Int>(self) -> Int
@@ -1519,9 +1575,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_int_unchecked :
-      M.IsAssociatedFunction Self "to_int_unchecked" to_int_unchecked.
-    Smpl Add apply AssociatedFunction_to_int_unchecked : is_associated.
+    Global Instance AssociatedFunction_to_int_unchecked :
+      M.IsAssociatedFunction.Trait Self "to_int_unchecked" to_int_unchecked.
+    Admitted.
+    Global Typeclasses Opaque to_int_unchecked.
     
     (*
         pub const fn to_bits(self) -> u128 {
@@ -1546,8 +1603,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
-    Smpl Add apply AssociatedFunction_to_bits : is_associated.
+    Global Instance AssociatedFunction_to_bits :
+      M.IsAssociatedFunction.Trait Self "to_bits" to_bits.
+    Admitted.
+    Global Typeclasses Opaque to_bits.
     
     (*
         pub const fn from_bits(v: u128) -> Self {
@@ -1573,8 +1632,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
-    Smpl Add apply AssociatedFunction_from_bits : is_associated.
+    Global Instance AssociatedFunction_from_bits :
+      M.IsAssociatedFunction.Trait Self "from_bits" from_bits.
+    Admitted.
+    Global Typeclasses Opaque from_bits.
     
     (*
         pub const fn to_be_bytes(self) -> [u8; 16] {
@@ -1600,8 +1661,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
         pub const fn to_le_bytes(self) -> [u8; 16] {
@@ -1627,8 +1690,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
         pub const fn to_ne_bytes(self) -> [u8; 16] {
@@ -1654,8 +1719,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
         pub const fn from_be_bytes(bytes: [u8; 16]) -> Self {
@@ -1681,9 +1748,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
         pub const fn from_le_bytes(bytes: [u8; 16]) -> Self {
@@ -1709,9 +1777,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
         pub const fn from_ne_bytes(bytes: [u8; 16]) -> Self {
@@ -1737,9 +1806,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
         pub fn total_cmp(&self, other: &Self) -> crate::cmp::Ordering {
@@ -1858,8 +1928,10 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_total_cmp : M.IsAssociatedFunction Self "total_cmp" total_cmp.
-    Smpl Add apply AssociatedFunction_total_cmp : is_associated.
+    Global Instance AssociatedFunction_total_cmp :
+      M.IsAssociatedFunction.Trait Self "total_cmp" total_cmp.
+    Admitted.
+    Global Typeclasses Opaque total_cmp.
     
     (*
         pub fn clamp(mut self, min: f128, max: f128) -> f128 {
@@ -2017,7 +2089,8 @@ Module f128.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_clamp : M.IsAssociatedFunction Self "clamp" clamp.
-    Smpl Add apply AssociatedFunction_clamp : is_associated.
+    Global Instance AssociatedFunction_clamp : M.IsAssociatedFunction.Trait Self "clamp" clamp.
+    Admitted.
+    Global Typeclasses Opaque clamp.
   End Impl_f128.
 End f128.

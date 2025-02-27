@@ -20,10 +20,11 @@ pub(crate) enum TopLevelItem {
     Hint {
         kind: String,
         name: String,
-        database: String,
+        database: Option<String>,
     },
     Line,
     Module(Rc<Module>),
+    Empty,
 }
 
 #[derive(Clone)]
@@ -43,6 +44,10 @@ pub(crate) struct Definition {
 #[derive(Clone)]
 /// the kind of a coq definition
 pub(crate) enum DefinitionKind {
+    AdmittedInstance {
+        locality: String,
+        ty: Rc<Expression>,
+    },
     /// an alias for an expression
     /// (using `Definition`)
     Alias {
@@ -318,7 +323,7 @@ impl TopLevel {
         ψ.intersperse(
             Self::group_modules(&self.items)
                 .iter()
-                .map(|item| item.to_doc(ψ)),
+                .filter_map(|item| item.to_doc(ψ)),
             ψ.hardline(),
         )
     }
@@ -332,7 +337,7 @@ impl TopLevel {
 }
 
 impl TopLevelItem {
-    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> DocBuilder<'a, D>
+    pub(crate) fn to_doc<'a, D>(&self, ψ: &'a D) -> Option<DocBuilder<'a, D>>
     where
         D: DocAllocator<'a>,
         D::Doc: Clone,
@@ -341,33 +346,38 @@ impl TopLevelItem {
             TopLevelItem::Comment(expression) => {
                 let expression: Vec<_> = expression.iter().map(|e| e.to_doc(ψ, false)).collect();
                 if expression.len() <= 1 {
-                    ψ.concat([vec![ψ.text("(* ")], expression, vec![ψ.text(" *)")]].concat())
+                    Some(ψ.concat([vec![ψ.text("(* ")], expression, vec![ψ.text(" *)")]].concat()))
                 } else {
-                    ψ.intersperse(
+                    Some(ψ.intersperse(
                         [vec![ψ.text("(*")], expression, vec![ψ.text("*)")]].concat(),
                         ψ.hardline(),
-                    )
+                    ))
                 }
             }
-            TopLevelItem::Definition(definition) => definition.to_doc(ψ),
+            TopLevelItem::Definition(definition) => Some(definition.to_doc(ψ)),
             TopLevelItem::Hint {
                 kind,
                 name,
                 database,
-            } => nest(
+            } => Some(nest(
                 ψ,
                 [
-                    ψ.text(kind.to_owned()),
-                    ψ.text(" "),
-                    ψ.text(name.to_owned()),
-                    ψ.text(" :"),
-                    ψ.line(),
-                    ψ.text(database.to_owned()),
-                    ψ.text("."),
-                ],
-            ),
-            TopLevelItem::Line => ψ.nil(),
-            TopLevelItem::Module(module) => module.to_doc(ψ),
+                    vec![
+                        ψ.text(kind.to_owned()),
+                        ψ.text(" "),
+                        ψ.text(name.to_owned()),
+                    ],
+                    match database {
+                        None => vec![],
+                        Some(database) => vec![ψ.text(" :"), ψ.line(), ψ.text(database.to_owned())],
+                    },
+                    vec![ψ.text(".")],
+                ]
+                .concat(),
+            )),
+            TopLevelItem::Line => Some(ψ.nil()),
+            TopLevelItem::Module(module) => Some(module.to_doc(ψ)),
+            TopLevelItem::Empty => None,
         }
     }
 }
@@ -409,6 +419,22 @@ impl Definition {
         D::Doc: Clone,
     {
         match self.kind.as_ref() {
+            DefinitionKind::AdmittedInstance { locality, ty } => ψ.concat([
+                nest(
+                    ψ,
+                    [
+                        ψ.text(locality.clone()),
+                        ψ.text(" Instance "),
+                        ψ.text(self.name.clone()),
+                        ψ.text(" :"),
+                        ψ.line(),
+                        ty.to_doc(ψ, false),
+                        ψ.text("."),
+                    ],
+                ),
+                ψ.hardline(),
+                ψ.text("Admitted."),
+            ]),
             DefinitionKind::Alias { args, ty, body } => nest(
                 ψ,
                 [

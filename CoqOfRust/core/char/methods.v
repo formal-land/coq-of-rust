@@ -10,34 +10,40 @@ Module char.
       (* Ty.path "char" *)
       Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 0 |))).
       
-      Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+      Global Instance AssociatedConstant_value_MIN :
+        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Admitted.
+      Global Typeclasses Opaque value_MIN.
       
       (*     pub const MAX: char = '\u{10ffff}'; *)
       (* Ty.path "char" *)
       Definition value_MAX : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 1114111 |))).
       
-      Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-      Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+      Global Instance AssociatedConstant_value_MAX :
+        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Admitted.
+      Global Typeclasses Opaque value_MAX.
       
       (*     pub const REPLACEMENT_CHARACTER: char = '\u{FFFD}'; *)
       (* Ty.path "char" *)
       Definition value_REPLACEMENT_CHARACTER : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 65533 |))).
       
-      Axiom AssociatedConstant_value_REPLACEMENT_CHARACTER :
-        M.IsAssociatedConstant Self "value_REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
-      Smpl Add apply AssociatedConstant_value_REPLACEMENT_CHARACTER : is_associated.
+      Global Instance AssociatedConstant_value_REPLACEMENT_CHARACTER :
+        M.IsAssociatedConstant.Trait Self "value_REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
+      Admitted.
+      Global Typeclasses Opaque value_REPLACEMENT_CHARACTER.
       
       (*     pub const UNICODE_VERSION: (u8, u8, u8) = crate::unicode::UNICODE_VERSION; *)
       (* Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ] *)
       Definition value_UNICODE_VERSION : Value.t :=
         M.run ltac:(M.monadic (M.get_constant "core::unicode::UNICODE_VERSION")).
       
-      Axiom AssociatedConstant_value_UNICODE_VERSION :
-        M.IsAssociatedConstant Self "value_UNICODE_VERSION" value_UNICODE_VERSION.
-      Smpl Add apply AssociatedConstant_value_UNICODE_VERSION : is_associated.
+      Global Instance AssociatedConstant_value_UNICODE_VERSION :
+        M.IsAssociatedConstant.Trait Self "value_UNICODE_VERSION" value_UNICODE_VERSION.
+      Admitted.
+      Global Typeclasses Opaque value_UNICODE_VERSION.
       
       (*
           pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> {
@@ -67,9 +73,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_decode_utf16 :
-        M.IsAssociatedFunction Self "decode_utf16" decode_utf16.
-      Smpl Add apply AssociatedFunction_decode_utf16 : is_associated.
+      Global Instance AssociatedFunction_decode_utf16 :
+        M.IsAssociatedFunction.Trait Self "decode_utf16" decode_utf16.
+      Admitted.
+      Global Typeclasses Opaque decode_utf16.
       
       (*
           pub const fn from_u32(i: u32) -> Option<char> {
@@ -89,8 +96,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_u32 : M.IsAssociatedFunction Self "from_u32" from_u32.
-      Smpl Add apply AssociatedFunction_from_u32 : is_associated.
+      Global Instance AssociatedFunction_from_u32 :
+        M.IsAssociatedFunction.Trait Self "from_u32" from_u32.
+      Admitted.
+      Global Typeclasses Opaque from_u32.
       
       (*
           pub const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -111,9 +120,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_u32_unchecked :
-        M.IsAssociatedFunction Self "from_u32_unchecked" from_u32_unchecked.
-      Smpl Add apply AssociatedFunction_from_u32_unchecked : is_associated.
+      Global Instance AssociatedFunction_from_u32_unchecked :
+        M.IsAssociatedFunction.Trait Self "from_u32_unchecked" from_u32_unchecked.
+      Admitted.
+      Global Typeclasses Opaque from_u32_unchecked.
       
       (*
           pub const fn from_digit(num: u32, radix: u32) -> Option<char> {
@@ -134,8 +144,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_digit : M.IsAssociatedFunction Self "from_digit" from_digit.
-      Smpl Add apply AssociatedFunction_from_digit : is_associated.
+      Global Instance AssociatedFunction_from_digit :
+        M.IsAssociatedFunction.Trait Self "from_digit" from_digit.
+      Admitted.
+      Global Typeclasses Opaque from_digit.
       
       (*
           pub fn is_digit(self, radix: u32) -> bool {
@@ -172,8 +184,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_digit : M.IsAssociatedFunction Self "is_digit" is_digit.
-      Smpl Add apply AssociatedFunction_is_digit : is_associated.
+      Global Instance AssociatedFunction_is_digit :
+        M.IsAssociatedFunction.Trait Self "is_digit" is_digit.
+      Admitted.
+      Global Typeclasses Opaque is_digit.
       
       (*
           pub const fn to_digit(self, radix: u32) -> Option<u32> {
@@ -388,8 +402,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_digit : M.IsAssociatedFunction Self "to_digit" to_digit.
-      Smpl Add apply AssociatedFunction_to_digit : is_associated.
+      Global Instance AssociatedFunction_to_digit :
+        M.IsAssociatedFunction.Trait Self "to_digit" to_digit.
+      Admitted.
+      Global Typeclasses Opaque to_digit.
       
       (*
           pub fn escape_unicode(self) -> EscapeUnicode {
@@ -409,9 +425,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_escape_unicode :
-        M.IsAssociatedFunction Self "escape_unicode" escape_unicode.
-      Smpl Add apply AssociatedFunction_escape_unicode : is_associated.
+      Global Instance AssociatedFunction_escape_unicode :
+        M.IsAssociatedFunction.Trait Self "escape_unicode" escape_unicode.
+      Admitted.
+      Global Typeclasses Opaque escape_unicode.
       
       (*
           pub(crate) fn escape_debug_ext(self, args: EscapeDebugExtArgs) -> EscapeDebug {
@@ -651,9 +668,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_escape_debug_ext :
-        M.IsAssociatedFunction Self "escape_debug_ext" escape_debug_ext.
-      Smpl Add apply AssociatedFunction_escape_debug_ext : is_associated.
+      Global Instance AssociatedFunction_escape_debug_ext :
+        M.IsAssociatedFunction.Trait Self "escape_debug_ext" escape_debug_ext.
+      Admitted.
+      Global Typeclasses Opaque escape_debug_ext.
       
       (*
           pub fn escape_debug(self) -> EscapeDebug {
@@ -673,9 +691,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_escape_debug :
-        M.IsAssociatedFunction Self "escape_debug" escape_debug.
-      Smpl Add apply AssociatedFunction_escape_debug : is_associated.
+      Global Instance AssociatedFunction_escape_debug :
+        M.IsAssociatedFunction.Trait Self "escape_debug" escape_debug.
+      Admitted.
+      Global Typeclasses Opaque escape_debug.
       
       (*
           pub fn escape_default(self) -> EscapeDefault {
@@ -887,9 +906,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_escape_default :
-        M.IsAssociatedFunction Self "escape_default" escape_default.
-      Smpl Add apply AssociatedFunction_escape_default : is_associated.
+      Global Instance AssociatedFunction_escape_default :
+        M.IsAssociatedFunction.Trait Self "escape_default" escape_default.
+      Admitted.
+      Global Typeclasses Opaque escape_default.
       
       (*
           pub const fn len_utf8(self) -> usize {
@@ -909,8 +929,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len_utf8 : M.IsAssociatedFunction Self "len_utf8" len_utf8.
-      Smpl Add apply AssociatedFunction_len_utf8 : is_associated.
+      Global Instance AssociatedFunction_len_utf8 :
+        M.IsAssociatedFunction.Trait Self "len_utf8" len_utf8.
+      Admitted.
+      Global Typeclasses Opaque len_utf8.
       
       (*
           pub const fn len_utf16(self) -> usize {
@@ -930,8 +952,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len_utf16 : M.IsAssociatedFunction Self "len_utf16" len_utf16.
-      Smpl Add apply AssociatedFunction_len_utf16 : is_associated.
+      Global Instance AssociatedFunction_len_utf16 :
+        M.IsAssociatedFunction.Trait Self "len_utf16" len_utf16.
+      Admitted.
+      Global Typeclasses Opaque len_utf16.
       
       (*
           pub const fn encode_utf8(self, dst: &mut [u8]) -> &mut str {
@@ -996,8 +1020,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_encode_utf8 : M.IsAssociatedFunction Self "encode_utf8" encode_utf8.
-      Smpl Add apply AssociatedFunction_encode_utf8 : is_associated.
+      Global Instance AssociatedFunction_encode_utf8 :
+        M.IsAssociatedFunction.Trait Self "encode_utf8" encode_utf8.
+      Admitted.
+      Global Typeclasses Opaque encode_utf8.
       
       (*
           pub const fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] {
@@ -1034,9 +1060,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_encode_utf16 :
-        M.IsAssociatedFunction Self "encode_utf16" encode_utf16.
-      Smpl Add apply AssociatedFunction_encode_utf16 : is_associated.
+      Global Instance AssociatedFunction_encode_utf16 :
+        M.IsAssociatedFunction.Trait Self "encode_utf16" encode_utf16.
+      Admitted.
+      Global Typeclasses Opaque encode_utf16.
       
       (*
           pub fn is_alphabetic(self) -> bool {
@@ -1094,9 +1121,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_alphabetic :
-        M.IsAssociatedFunction Self "is_alphabetic" is_alphabetic.
-      Smpl Add apply AssociatedFunction_is_alphabetic : is_associated.
+      Global Instance AssociatedFunction_is_alphabetic :
+        M.IsAssociatedFunction.Trait Self "is_alphabetic" is_alphabetic.
+      Admitted.
+      Global Typeclasses Opaque is_alphabetic.
       
       (*
           pub const fn is_lowercase(self) -> bool {
@@ -1140,9 +1168,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_lowercase :
-        M.IsAssociatedFunction Self "is_lowercase" is_lowercase.
-      Smpl Add apply AssociatedFunction_is_lowercase : is_associated.
+      Global Instance AssociatedFunction_is_lowercase :
+        M.IsAssociatedFunction.Trait Self "is_lowercase" is_lowercase.
+      Admitted.
+      Global Typeclasses Opaque is_lowercase.
       
       (*
           pub const fn is_uppercase(self) -> bool {
@@ -1186,9 +1215,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_uppercase :
-        M.IsAssociatedFunction Self "is_uppercase" is_uppercase.
-      Smpl Add apply AssociatedFunction_is_uppercase : is_associated.
+      Global Instance AssociatedFunction_is_uppercase :
+        M.IsAssociatedFunction.Trait Self "is_uppercase" is_uppercase.
+      Admitted.
+      Global Typeclasses Opaque is_uppercase.
       
       (*
           pub fn is_whitespace(self) -> bool {
@@ -1253,9 +1283,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_whitespace :
-        M.IsAssociatedFunction Self "is_whitespace" is_whitespace.
-      Smpl Add apply AssociatedFunction_is_whitespace : is_associated.
+      Global Instance AssociatedFunction_is_whitespace :
+        M.IsAssociatedFunction.Trait Self "is_whitespace" is_whitespace.
+      Admitted.
+      Global Typeclasses Opaque is_whitespace.
       
       (*
           pub fn is_alphanumeric(self) -> bool {
@@ -1283,9 +1314,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_alphanumeric :
-        M.IsAssociatedFunction Self "is_alphanumeric" is_alphanumeric.
-      Smpl Add apply AssociatedFunction_is_alphanumeric : is_associated.
+      Global Instance AssociatedFunction_is_alphanumeric :
+        M.IsAssociatedFunction.Trait Self "is_alphanumeric" is_alphanumeric.
+      Admitted.
+      Global Typeclasses Opaque is_alphanumeric.
       
       (*
           pub fn is_control(self) -> bool {
@@ -1305,8 +1337,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_control : M.IsAssociatedFunction Self "is_control" is_control.
-      Smpl Add apply AssociatedFunction_is_control : is_associated.
+      Global Instance AssociatedFunction_is_control :
+        M.IsAssociatedFunction.Trait Self "is_control" is_control.
+      Admitted.
+      Global Typeclasses Opaque is_control.
       
       (*
           pub(crate) fn is_grapheme_extended(self) -> bool {
@@ -1326,9 +1360,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_grapheme_extended :
-        M.IsAssociatedFunction Self "is_grapheme_extended" is_grapheme_extended.
-      Smpl Add apply AssociatedFunction_is_grapheme_extended : is_associated.
+      Global Instance AssociatedFunction_is_grapheme_extended :
+        M.IsAssociatedFunction.Trait Self "is_grapheme_extended" is_grapheme_extended.
+      Admitted.
+      Global Typeclasses Opaque is_grapheme_extended.
       
       (*
           pub fn is_numeric(self) -> bool {
@@ -1368,8 +1403,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_numeric : M.IsAssociatedFunction Self "is_numeric" is_numeric.
-      Smpl Add apply AssociatedFunction_is_numeric : is_associated.
+      Global Instance AssociatedFunction_is_numeric :
+        M.IsAssociatedFunction.Trait Self "is_numeric" is_numeric.
+      Admitted.
+      Global Typeclasses Opaque is_numeric.
       
       (*
           pub fn to_lowercase(self) -> ToLowercase {
@@ -1411,9 +1448,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_lowercase :
-        M.IsAssociatedFunction Self "to_lowercase" to_lowercase.
-      Smpl Add apply AssociatedFunction_to_lowercase : is_associated.
+      Global Instance AssociatedFunction_to_lowercase :
+        M.IsAssociatedFunction.Trait Self "to_lowercase" to_lowercase.
+      Admitted.
+      Global Typeclasses Opaque to_lowercase.
       
       (*
           pub fn to_uppercase(self) -> ToUppercase {
@@ -1455,9 +1493,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_uppercase :
-        M.IsAssociatedFunction Self "to_uppercase" to_uppercase.
-      Smpl Add apply AssociatedFunction_to_uppercase : is_associated.
+      Global Instance AssociatedFunction_to_uppercase :
+        M.IsAssociatedFunction.Trait Self "to_uppercase" to_uppercase.
+      Admitted.
+      Global Typeclasses Opaque to_uppercase.
       
       (*
           pub const fn is_ascii(&self) -> bool {
@@ -1476,8 +1515,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
-      Smpl Add apply AssociatedFunction_is_ascii : is_associated.
+      Global Instance AssociatedFunction_is_ascii :
+        M.IsAssociatedFunction.Trait Self "is_ascii" is_ascii.
+      Admitted.
+      Global Typeclasses Opaque is_ascii.
       
       (*
           pub const fn as_ascii(&self) -> Option<ascii::Char> {
@@ -1536,8 +1577,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
-      Smpl Add apply AssociatedFunction_as_ascii : is_associated.
+      Global Instance AssociatedFunction_as_ascii :
+        M.IsAssociatedFunction.Trait Self "as_ascii" as_ascii.
+      Admitted.
+      Global Typeclasses Opaque as_ascii.
       
       (*
           pub const fn to_ascii_uppercase(&self) -> char {
@@ -1604,9 +1647,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_ascii_uppercase :
-        M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
-      Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
+      Global Instance AssociatedFunction_to_ascii_uppercase :
+        M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+      Admitted.
+      Global Typeclasses Opaque to_ascii_uppercase.
       
       (*
           pub const fn to_ascii_lowercase(&self) -> char {
@@ -1673,9 +1717,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_ascii_lowercase :
-        M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
-      Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
+      Global Instance AssociatedFunction_to_ascii_lowercase :
+        M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+      Admitted.
+      Global Typeclasses Opaque to_ascii_lowercase.
       
       (*
           pub const fn eq_ignore_ascii_case(&self, other: &char) -> bool {
@@ -1703,9 +1748,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_eq_ignore_ascii_case :
-        M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
-      Smpl Add apply AssociatedFunction_eq_ignore_ascii_case : is_associated.
+      Global Instance AssociatedFunction_eq_ignore_ascii_case :
+        M.IsAssociatedFunction.Trait Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+      Admitted.
+      Global Typeclasses Opaque eq_ignore_ascii_case.
       
       (*
           pub const fn make_ascii_uppercase(&mut self) {
@@ -1734,9 +1780,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_make_ascii_uppercase :
-        M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
-      Smpl Add apply AssociatedFunction_make_ascii_uppercase : is_associated.
+      Global Instance AssociatedFunction_make_ascii_uppercase :
+        M.IsAssociatedFunction.Trait Self "make_ascii_uppercase" make_ascii_uppercase.
+      Admitted.
+      Global Typeclasses Opaque make_ascii_uppercase.
       
       (*
           pub const fn make_ascii_lowercase(&mut self) {
@@ -1765,9 +1812,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_make_ascii_lowercase :
-        M.IsAssociatedFunction Self "make_ascii_lowercase" make_ascii_lowercase.
-      Smpl Add apply AssociatedFunction_make_ascii_lowercase : is_associated.
+      Global Instance AssociatedFunction_make_ascii_lowercase :
+        M.IsAssociatedFunction.Trait Self "make_ascii_lowercase" make_ascii_lowercase.
+      Admitted.
+      Global Typeclasses Opaque make_ascii_lowercase.
       
       (*
           pub const fn is_ascii_alphabetic(&self) -> bool {
@@ -1805,9 +1853,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_alphabetic :
-        M.IsAssociatedFunction Self "is_ascii_alphabetic" is_ascii_alphabetic.
-      Smpl Add apply AssociatedFunction_is_ascii_alphabetic : is_associated.
+      Global Instance AssociatedFunction_is_ascii_alphabetic :
+        M.IsAssociatedFunction.Trait Self "is_ascii_alphabetic" is_ascii_alphabetic.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_alphabetic.
       
       (*
           pub const fn is_ascii_uppercase(&self) -> bool {
@@ -1831,9 +1880,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_uppercase :
-        M.IsAssociatedFunction Self "is_ascii_uppercase" is_ascii_uppercase.
-      Smpl Add apply AssociatedFunction_is_ascii_uppercase : is_associated.
+      Global Instance AssociatedFunction_is_ascii_uppercase :
+        M.IsAssociatedFunction.Trait Self "is_ascii_uppercase" is_ascii_uppercase.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_uppercase.
       
       (*
           pub const fn is_ascii_lowercase(&self) -> bool {
@@ -1857,9 +1907,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_lowercase :
-        M.IsAssociatedFunction Self "is_ascii_lowercase" is_ascii_lowercase.
-      Smpl Add apply AssociatedFunction_is_ascii_lowercase : is_associated.
+      Global Instance AssociatedFunction_is_ascii_lowercase :
+        M.IsAssociatedFunction.Trait Self "is_ascii_lowercase" is_ascii_lowercase.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_lowercase.
       
       (*
           pub const fn is_ascii_alphanumeric(&self) -> bool {
@@ -1903,9 +1954,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_alphanumeric :
-        M.IsAssociatedFunction Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
-      Smpl Add apply AssociatedFunction_is_ascii_alphanumeric : is_associated.
+      Global Instance AssociatedFunction_is_ascii_alphanumeric :
+        M.IsAssociatedFunction.Trait Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_alphanumeric.
       
       (*
           pub const fn is_ascii_digit(&self) -> bool {
@@ -1929,9 +1981,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_digit :
-        M.IsAssociatedFunction Self "is_ascii_digit" is_ascii_digit.
-      Smpl Add apply AssociatedFunction_is_ascii_digit : is_associated.
+      Global Instance AssociatedFunction_is_ascii_digit :
+        M.IsAssociatedFunction.Trait Self "is_ascii_digit" is_ascii_digit.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_digit.
       
       (*
           pub const fn is_ascii_octdigit(&self) -> bool {
@@ -1955,9 +2008,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_octdigit :
-        M.IsAssociatedFunction Self "is_ascii_octdigit" is_ascii_octdigit.
-      Smpl Add apply AssociatedFunction_is_ascii_octdigit : is_associated.
+      Global Instance AssociatedFunction_is_ascii_octdigit :
+        M.IsAssociatedFunction.Trait Self "is_ascii_octdigit" is_ascii_octdigit.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_octdigit.
       
       (*
           pub const fn is_ascii_hexdigit(&self) -> bool {
@@ -2001,9 +2055,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_hexdigit :
-        M.IsAssociatedFunction Self "is_ascii_hexdigit" is_ascii_hexdigit.
-      Smpl Add apply AssociatedFunction_is_ascii_hexdigit : is_associated.
+      Global Instance AssociatedFunction_is_ascii_hexdigit :
+        M.IsAssociatedFunction.Trait Self "is_ascii_hexdigit" is_ascii_hexdigit.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_hexdigit.
       
       (*
           pub const fn is_ascii_punctuation(&self) -> bool {
@@ -2060,9 +2115,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_punctuation :
-        M.IsAssociatedFunction Self "is_ascii_punctuation" is_ascii_punctuation.
-      Smpl Add apply AssociatedFunction_is_ascii_punctuation : is_associated.
+      Global Instance AssociatedFunction_is_ascii_punctuation :
+        M.IsAssociatedFunction.Trait Self "is_ascii_punctuation" is_ascii_punctuation.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_punctuation.
       
       (*
           pub const fn is_ascii_graphic(&self) -> bool {
@@ -2086,9 +2142,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_graphic :
-        M.IsAssociatedFunction Self "is_ascii_graphic" is_ascii_graphic.
-      Smpl Add apply AssociatedFunction_is_ascii_graphic : is_associated.
+      Global Instance AssociatedFunction_is_ascii_graphic :
+        M.IsAssociatedFunction.Trait Self "is_ascii_graphic" is_ascii_graphic.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_graphic.
       
       (*
           pub const fn is_ascii_whitespace(&self) -> bool {
@@ -2164,9 +2221,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_whitespace :
-        M.IsAssociatedFunction Self "is_ascii_whitespace" is_ascii_whitespace.
-      Smpl Add apply AssociatedFunction_is_ascii_whitespace : is_associated.
+      Global Instance AssociatedFunction_is_ascii_whitespace :
+        M.IsAssociatedFunction.Trait Self "is_ascii_whitespace" is_ascii_whitespace.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_whitespace.
       
       (*
           pub const fn is_ascii_control(&self) -> bool {
@@ -2211,9 +2269,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ascii_control :
-        M.IsAssociatedFunction Self "is_ascii_control" is_ascii_control.
-      Smpl Add apply AssociatedFunction_is_ascii_control : is_associated.
+      Global Instance AssociatedFunction_is_ascii_control :
+        M.IsAssociatedFunction.Trait Self "is_ascii_control" is_ascii_control.
+      Admitted.
+      Global Typeclasses Opaque is_ascii_control.
     End Impl_char.
     
     (* StructRecord
@@ -2253,9 +2312,10 @@ Module char.
                 ]
             |))).
       
-      Axiom AssociatedConstant_value_ESCAPE_ALL :
-        M.IsAssociatedConstant Self "value_ESCAPE_ALL" value_ESCAPE_ALL.
-      Smpl Add apply AssociatedConstant_value_ESCAPE_ALL : is_associated.
+      Global Instance AssociatedConstant_value_ESCAPE_ALL :
+        M.IsAssociatedConstant.Trait Self "value_ESCAPE_ALL" value_ESCAPE_ALL.
+      Admitted.
+      Global Typeclasses Opaque value_ESCAPE_ALL.
     End Impl_core_char_methods_EscapeDebugExtArgs.
     
     (*
@@ -2287,8 +2347,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_len_utf8 : M.IsFunction "core::char::methods::len_utf8" len_utf8.
-    Smpl Add apply Function_len_utf8 : is_function.
+    Global Instance Instance_IsFunction_len_utf8 :
+      M.IsFunction.Trait "core::char::methods::len_utf8" len_utf8.
+    Admitted.
+    Global Typeclasses Opaque len_utf8.
     
     (*
     const fn len_utf16(code: u32) -> usize {
@@ -2323,8 +2385,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_len_utf16 : M.IsFunction "core::char::methods::len_utf16" len_utf16.
-    Smpl Add apply Function_len_utf16 : is_function.
+    Global Instance Instance_IsFunction_len_utf16 :
+      M.IsFunction.Trait "core::char::methods::len_utf16" len_utf16.
+    Admitted.
+    Global Typeclasses Opaque len_utf16.
     
     (*
     pub const fn encode_utf8_raw(code: u32, dst: &mut [u8]) -> &mut [u8] {
@@ -2700,9 +2764,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_encode_utf8_raw :
-      M.IsFunction "core::char::methods::encode_utf8_raw" encode_utf8_raw.
-    Smpl Add apply Function_encode_utf8_raw : is_function.
+    Global Instance Instance_IsFunction_encode_utf8_raw :
+      M.IsFunction.Trait "core::char::methods::encode_utf8_raw" encode_utf8_raw.
+    Admitted.
+    Global Typeclasses Opaque encode_utf8_raw.
     
     Module encode_utf8_raw.
       (*
@@ -2757,9 +2822,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_const :
-        M.IsFunction "core::char::methods::encode_utf8_raw::panic_at_const" panic_at_const.
-      Smpl Add apply Function_panic_at_const : is_function.
+      Global Instance Instance_IsFunction_panic_at_const :
+        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::panic_at_const" panic_at_const.
+      Admitted.
+      Global Typeclasses Opaque panic_at_const.
       
       (*
           fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
@@ -2947,9 +3013,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_rt :
-        M.IsFunction "core::char::methods::encode_utf8_raw::panic_at_rt" panic_at_rt.
-      Smpl Add apply Function_panic_at_rt : is_function.
+      Global Instance Instance_IsFunction_panic_at_rt :
+        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::panic_at_rt" panic_at_rt.
+      Admitted.
+      Global Typeclasses Opaque panic_at_rt.
     End encode_utf8_raw.
     
     (*
@@ -3182,9 +3249,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_encode_utf16_raw :
-      M.IsFunction "core::char::methods::encode_utf16_raw" encode_utf16_raw.
-    Smpl Add apply Function_encode_utf16_raw : is_function.
+    Global Instance Instance_IsFunction_encode_utf16_raw :
+      M.IsFunction.Trait "core::char::methods::encode_utf16_raw" encode_utf16_raw.
+    Admitted.
+    Global Typeclasses Opaque encode_utf16_raw.
     
     Module encode_utf16_raw.
       (*
@@ -3239,9 +3307,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_const :
-        M.IsFunction "core::char::methods::encode_utf16_raw::panic_at_const" panic_at_const.
-      Smpl Add apply Function_panic_at_const : is_function.
+      Global Instance Instance_IsFunction_panic_at_const :
+        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::panic_at_const" panic_at_const.
+      Admitted.
+      Global Typeclasses Opaque panic_at_const.
       
       (*
           fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
@@ -3429,9 +3498,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_rt :
-        M.IsFunction "core::char::methods::encode_utf16_raw::panic_at_rt" panic_at_rt.
-      Smpl Add apply Function_panic_at_rt : is_function.
+      Global Instance Instance_IsFunction_panic_at_rt :
+        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::panic_at_rt" panic_at_rt.
+      Admitted.
+      Global Typeclasses Opaque panic_at_rt.
     End encode_utf16_raw.
   End methods.
 End char.

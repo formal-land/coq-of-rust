@@ -79,15 +79,16 @@ End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_double_first : M.IsFunction "boxing_errors::double_first" double_first.
-Smpl Add apply Function_double_first : is_function.
+Global Instance Instance_IsFunction_double_first :
+  M.IsFunction.Trait "boxing_errors::double_first" double_first.
+Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print : M.IsFunction "boxing_errors::print" print.
-Smpl Add apply Function_print : is_function.
+Global Instance Instance_IsFunction_print : M.IsFunction.Trait "boxing_errors::print" print.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "boxing_errors::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "boxing_errors::main" main.
+Admitted.

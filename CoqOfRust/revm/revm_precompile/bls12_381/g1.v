@@ -211,9 +211,10 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_encode_g1_point :
-      M.IsFunction "revm_precompile::bls12_381::g1::encode_g1_point" encode_g1_point.
-    Smpl Add apply Function_encode_g1_point : is_function.
+    Global Instance Instance_IsFunction_encode_g1_point :
+      M.IsFunction.Trait "revm_precompile::bls12_381::g1::encode_g1_point" encode_g1_point.
+    Admitted.
+    Global Typeclasses Opaque encode_g1_point.
     
     (*
     pub(super) fn decode_and_check_g1(
@@ -498,9 +499,10 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_decode_and_check_g1 :
-      M.IsFunction "revm_precompile::bls12_381::g1::decode_and_check_g1" decode_and_check_g1.
-    Smpl Add apply Function_decode_and_check_g1 : is_function.
+    Global Instance Instance_IsFunction_decode_and_check_g1 :
+      M.IsFunction.Trait "revm_precompile::bls12_381::g1::decode_and_check_g1" decode_and_check_g1.
+    Admitted.
+    Global Typeclasses Opaque decode_and_check_g1.
     
     (*
     pub(super) fn extract_g1_input(
@@ -1474,8 +1476,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_extract_g1_input :
-      M.IsFunction "revm_precompile::bls12_381::g1::extract_g1_input" extract_g1_input.
-    Smpl Add apply Function_extract_g1_input : is_function.
+    Global Instance Instance_IsFunction_extract_g1_input :
+      M.IsFunction.Trait "revm_precompile::bls12_381::g1::extract_g1_input" extract_g1_input.
+    Admitted.
+    Global Typeclasses Opaque extract_g1_input.
   End g1.
 End bls12_381.

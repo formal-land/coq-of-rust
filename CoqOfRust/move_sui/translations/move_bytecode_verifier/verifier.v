@@ -52,11 +52,12 @@ Module verifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_unmetered :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_module_unmetered :
+    M.IsFunction.Trait
       "move_bytecode_verifier::verifier::verify_module_unmetered"
       verify_module_unmetered.
-  Smpl Add apply Function_verify_module_unmetered : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_module_unmetered.
   
   (*
   pub fn verify_module_with_config_for_test(
@@ -790,11 +791,12 @@ Module verifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_with_config_for_test :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_module_with_config_for_test :
+    M.IsFunction.Trait
       "move_bytecode_verifier::verifier::verify_module_with_config_for_test"
       verify_module_with_config_for_test.
-  Smpl Add apply Function_verify_module_with_config_for_test : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_module_with_config_for_test.
   
   Module verify_module_with_config_for_test.
     Definition value_MAX_MODULE_SIZE : Value.t :=
@@ -2081,11 +2083,12 @@ Module verifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_with_config_metered :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_module_with_config_metered :
+    M.IsFunction.Trait
       "move_bytecode_verifier::verifier::verify_module_with_config_metered"
       verify_module_with_config_metered.
-  Smpl Add apply Function_verify_module_with_config_metered : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_module_with_config_metered.
   
   (*
   pub fn verify_module_with_config_unmetered(
@@ -2134,9 +2137,10 @@ Module verifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_with_config_unmetered :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_module_with_config_unmetered :
+    M.IsFunction.Trait
       "move_bytecode_verifier::verifier::verify_module_with_config_unmetered"
       verify_module_with_config_unmetered.
-  Smpl Add apply Function_verify_module_with_config_unmetered : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_module_with_config_unmetered.
 End verifier.

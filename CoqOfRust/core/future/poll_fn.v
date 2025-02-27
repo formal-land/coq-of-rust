@@ -20,8 +20,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_poll_fn : M.IsFunction "core::future::poll_fn::poll_fn" poll_fn.
-    Smpl Add apply Function_poll_fn : is_function.
+    Global Instance Instance_IsFunction_poll_fn :
+      M.IsFunction.Trait "core::future::poll_fn::poll_fn" poll_fn.
+    Admitted.
+    Global Typeclasses Opaque poll_fn.
     
     (* StructRecord
       {

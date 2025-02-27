@@ -165,8 +165,9 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn message(&self) -> PanicMessage<'_> {
@@ -198,8 +199,10 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_message : M.IsAssociatedFunction Self "message" message.
-      Smpl Add apply AssociatedFunction_message : is_associated.
+      Global Instance AssociatedFunction_message :
+        M.IsAssociatedFunction.Trait Self "message" message.
+      Admitted.
+      Global Typeclasses Opaque message.
       
       (*
           pub fn location(&self) -> Option<&Location<'_>> {
@@ -237,8 +240,10 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_location : M.IsAssociatedFunction Self "location" location.
-      Smpl Add apply AssociatedFunction_location : is_associated.
+      Global Instance AssociatedFunction_location :
+        M.IsAssociatedFunction.Trait Self "location" location.
+      Admitted.
+      Global Typeclasses Opaque location.
       
       (*
           pub fn payload(&self) -> &(dyn crate::any::Any + Send) {
@@ -270,8 +275,10 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_payload : M.IsAssociatedFunction Self "payload" payload.
-      Smpl Add apply AssociatedFunction_payload : is_associated.
+      Global Instance AssociatedFunction_payload :
+        M.IsAssociatedFunction.Trait Self "payload" payload.
+      Admitted.
+      Global Typeclasses Opaque payload.
       
       (*
           pub fn can_unwind(&self) -> bool {
@@ -293,8 +300,10 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_can_unwind : M.IsAssociatedFunction Self "can_unwind" can_unwind.
-      Smpl Add apply AssociatedFunction_can_unwind : is_associated.
+      Global Instance AssociatedFunction_can_unwind :
+        M.IsAssociatedFunction.Trait Self "can_unwind" can_unwind.
+      Admitted.
+      Global Typeclasses Opaque can_unwind.
       
       (*
           pub fn force_no_backtrace(&self) -> bool {
@@ -316,9 +325,10 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_force_no_backtrace :
-        M.IsAssociatedFunction Self "force_no_backtrace" force_no_backtrace.
-      Smpl Add apply AssociatedFunction_force_no_backtrace : is_associated.
+      Global Instance AssociatedFunction_force_no_backtrace :
+        M.IsAssociatedFunction.Trait Self "force_no_backtrace" force_no_backtrace.
+      Admitted.
+      Global Typeclasses Opaque force_no_backtrace.
     End Impl_core_panic_panic_info_PanicInfo.
     
     Module Impl_core_fmt_Display_for_core_panic_panic_info_PanicInfo.
@@ -849,8 +859,9 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-      Smpl Add apply AssociatedFunction_as_str : is_associated.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Admitted.
+      Global Typeclasses Opaque as_str.
     End Impl_core_panic_panic_info_PanicMessage.
     
     Module Impl_core_fmt_Display_for_core_panic_panic_info_PanicMessage.

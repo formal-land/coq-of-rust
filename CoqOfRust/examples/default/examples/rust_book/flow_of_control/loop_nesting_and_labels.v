@@ -29,6 +29,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ : Ty.tuple [] :=
           M.loop (|
+            Ty.tuple [],
             ltac:(M.monadic
               (let~ _ : Ty.tuple [] :=
                 let~ _ : Ty.tuple [] :=
@@ -70,6 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             let~ _ : Ty.tuple [] :=
@@ -195,5 +197,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "loop_nesting_and_labels::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "loop_nesting_and_labels::main" main.
+Admitted.
+Global Typeclasses Opaque main.

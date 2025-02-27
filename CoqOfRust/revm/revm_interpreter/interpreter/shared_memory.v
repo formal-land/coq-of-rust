@@ -1618,8 +1618,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn with_capacity(capacity: usize) -> Self {
@@ -1679,9 +1680,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_with_capacity :
-        M.IsAssociatedFunction Self "with_capacity" with_capacity.
-      Smpl Add apply AssociatedFunction_with_capacity : is_associated.
+      Global Instance AssociatedFunction_with_capacity :
+        M.IsAssociatedFunction.Trait Self "with_capacity" with_capacity.
+      Admitted.
+      Global Typeclasses Opaque with_capacity.
       
       (*
           pub fn new_context(&mut self) {
@@ -1763,8 +1765,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_context : M.IsAssociatedFunction Self "new_context" new_context.
-      Smpl Add apply AssociatedFunction_new_context : is_associated.
+      Global Instance AssociatedFunction_new_context :
+        M.IsAssociatedFunction.Trait Self "new_context" new_context.
+      Admitted.
+      Global Typeclasses Opaque new_context.
       
       (*
           pub fn free_context(&mut self) {
@@ -1936,9 +1940,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_free_context :
-        M.IsAssociatedFunction Self "free_context" free_context.
-      Smpl Add apply AssociatedFunction_free_context : is_associated.
+      Global Instance AssociatedFunction_free_context :
+        M.IsAssociatedFunction.Trait Self "free_context" free_context.
+      Admitted.
+      Global Typeclasses Opaque free_context.
       
       (*
           pub fn len(&self) -> usize {
@@ -1984,8 +1989,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-      Smpl Add apply AssociatedFunction_len : is_associated.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Admitted.
+      Global Typeclasses Opaque len.
       
       (*
           pub fn is_empty(&self) -> bool {
@@ -2013,8 +2019,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+      Global Instance AssociatedFunction_is_empty :
+        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+      Admitted.
+      Global Typeclasses Opaque is_empty.
       
       (*
           pub fn resize(&mut self, new_size: usize) {
@@ -2069,8 +2077,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_resize : M.IsAssociatedFunction Self "resize" resize.
-      Smpl Add apply AssociatedFunction_resize : is_associated.
+      Global Instance AssociatedFunction_resize : M.IsAssociatedFunction.Trait Self "resize" resize.
+      Admitted.
+      Global Typeclasses Opaque resize.
       
       (*
           pub fn slice_len(&self, offset: usize, size: usize) -> &[u8] {
@@ -2110,8 +2119,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_slice_len : M.IsAssociatedFunction Self "slice_len" slice_len.
-      Smpl Add apply AssociatedFunction_slice_len : is_associated.
+      Global Instance AssociatedFunction_slice_len :
+        M.IsAssociatedFunction.Trait Self "slice_len" slice_len.
+      Admitted.
+      Global Typeclasses Opaque slice_len.
       
       (*
           pub fn slice_range(&self, range @ Range { start, end }: Range<usize>) -> &[u8] {
@@ -2431,8 +2442,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_slice_range : M.IsAssociatedFunction Self "slice_range" slice_range.
-      Smpl Add apply AssociatedFunction_slice_range : is_associated.
+      Global Instance AssociatedFunction_slice_range :
+        M.IsAssociatedFunction.Trait Self "slice_range" slice_range.
+      Admitted.
+      Global Typeclasses Opaque slice_range.
       
       (*
           pub fn slice_mut(&mut self, offset: usize, size: usize) -> &mut [u8] {
@@ -2686,8 +2699,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_slice_mut : M.IsAssociatedFunction Self "slice_mut" slice_mut.
-      Smpl Add apply AssociatedFunction_slice_mut : is_associated.
+      Global Instance AssociatedFunction_slice_mut :
+        M.IsAssociatedFunction.Trait Self "slice_mut" slice_mut.
+      Admitted.
+      Global Typeclasses Opaque slice_mut.
       
       (*
           pub fn get_byte(&self, offset: usize) -> u8 {
@@ -2724,8 +2739,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_byte : M.IsAssociatedFunction Self "get_byte" get_byte.
-      Smpl Add apply AssociatedFunction_get_byte : is_associated.
+      Global Instance AssociatedFunction_get_byte :
+        M.IsAssociatedFunction.Trait Self "get_byte" get_byte.
+      Admitted.
+      Global Typeclasses Opaque get_byte.
       
       (*
           pub fn get_word(&self, offset: usize) -> B256 {
@@ -2814,8 +2831,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_word : M.IsAssociatedFunction Self "get_word" get_word.
-      Smpl Add apply AssociatedFunction_get_word : is_associated.
+      Global Instance AssociatedFunction_get_word :
+        M.IsAssociatedFunction.Trait Self "get_word" get_word.
+      Admitted.
+      Global Typeclasses Opaque get_word.
       
       (*
           pub fn get_u256(&self, offset: usize) -> U256 {
@@ -2872,8 +2891,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_u256 : M.IsAssociatedFunction Self "get_u256" get_u256.
-      Smpl Add apply AssociatedFunction_get_u256 : is_associated.
+      Global Instance AssociatedFunction_get_u256 :
+        M.IsAssociatedFunction.Trait Self "get_u256" get_u256.
+      Admitted.
+      Global Typeclasses Opaque get_u256.
       
       (*
           pub fn set_byte(&mut self, offset: usize, byte: u8) {
@@ -2918,8 +2939,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_byte : M.IsAssociatedFunction Self "set_byte" set_byte.
-      Smpl Add apply AssociatedFunction_set_byte : is_associated.
+      Global Instance AssociatedFunction_set_byte :
+        M.IsAssociatedFunction.Trait Self "set_byte" set_byte.
+      Admitted.
+      Global Typeclasses Opaque set_byte.
       
       (*
           pub fn set_word(&mut self, offset: usize, value: &B256) {
@@ -2987,8 +3010,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_word : M.IsAssociatedFunction Self "set_word" set_word.
-      Smpl Add apply AssociatedFunction_set_word : is_associated.
+      Global Instance AssociatedFunction_set_word :
+        M.IsAssociatedFunction.Trait Self "set_word" set_word.
+      Admitted.
+      Global Typeclasses Opaque set_word.
       
       (*
           pub fn set_u256(&mut self, offset: usize, value: U256) {
@@ -3053,8 +3078,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_u256 : M.IsAssociatedFunction Self "set_u256" set_u256.
-      Smpl Add apply AssociatedFunction_set_u256 : is_associated.
+      Global Instance AssociatedFunction_set_u256 :
+        M.IsAssociatedFunction.Trait Self "set_u256" set_u256.
+      Admitted.
+      Global Typeclasses Opaque set_u256.
       
       (*
           pub fn set(&mut self, offset: usize, value: &[u8]) {
@@ -3157,8 +3184,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set : M.IsAssociatedFunction Self "set" set.
-      Smpl Add apply AssociatedFunction_set : is_associated.
+      Global Instance AssociatedFunction_set : M.IsAssociatedFunction.Trait Self "set" set.
+      Admitted.
+      Global Typeclasses Opaque set.
       
       (*
           pub fn set_data(&mut self, memory_offset: usize, data_offset: usize, len: usize, data: &[u8]) {
@@ -3506,8 +3534,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_data : M.IsAssociatedFunction Self "set_data" set_data.
-      Smpl Add apply AssociatedFunction_set_data : is_associated.
+      Global Instance AssociatedFunction_set_data :
+        M.IsAssociatedFunction.Trait Self "set_data" set_data.
+      Admitted.
+      Global Typeclasses Opaque set_data.
       
       (*
           pub fn copy(&mut self, dst: usize, src: usize, len: usize) {
@@ -3567,8 +3597,9 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_copy : M.IsAssociatedFunction Self "copy" copy.
-      Smpl Add apply AssociatedFunction_copy : is_associated.
+      Global Instance AssociatedFunction_copy : M.IsAssociatedFunction.Trait Self "copy" copy.
+      Admitted.
+      Global Typeclasses Opaque copy.
       
       (*
           pub fn context_memory(&self) -> &[u8] {
@@ -3671,9 +3702,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_context_memory :
-        M.IsAssociatedFunction Self "context_memory" context_memory.
-      Smpl Add apply AssociatedFunction_context_memory : is_associated.
+      Global Instance AssociatedFunction_context_memory :
+        M.IsAssociatedFunction.Trait Self "context_memory" context_memory.
+      Admitted.
+      Global Typeclasses Opaque context_memory.
       
       (*
           pub fn context_memory_mut(&mut self) -> &mut [u8] {
@@ -3799,9 +3831,10 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_context_memory_mut :
-        M.IsAssociatedFunction Self "context_memory_mut" context_memory_mut.
-      Smpl Add apply AssociatedFunction_context_memory_mut : is_associated.
+      Global Instance AssociatedFunction_context_memory_mut :
+        M.IsAssociatedFunction.Trait Self "context_memory_mut" context_memory_mut.
+      Admitted.
+      Global Typeclasses Opaque context_memory_mut.
     End Impl_revm_interpreter_interpreter_shared_memory_SharedMemory.
     
     (*
@@ -3825,8 +3858,9 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_num_words :
-      M.IsFunction "revm_interpreter::interpreter::shared_memory::num_words" num_words.
-    Smpl Add apply Function_num_words : is_function.
+    Global Instance Instance_IsFunction_num_words :
+      M.IsFunction.Trait "revm_interpreter::interpreter::shared_memory::num_words" num_words.
+    Admitted.
+    Global Typeclasses Opaque num_words.
   End shared_memory.
 End interpreter.

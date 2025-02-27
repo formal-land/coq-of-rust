@@ -208,8 +208,10 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
-Smpl Add apply Function_print_debug : is_function.
+Global Instance Instance_IsFunction_print_debug :
+  M.IsFunction.Trait "generics_bounds::print_debug" print_debug.
+Admitted.
+Global Typeclasses Opaque print_debug.
 
 (*
 fn area<T: HasArea>(t: &T) -> f64 {
@@ -229,8 +231,9 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_area : M.IsFunction "generics_bounds::area" area.
-Smpl Add apply Function_area : is_function.
+Global Instance Instance_IsFunction_area : M.IsFunction.Trait "generics_bounds::area" area.
+Admitted.
+Global Typeclasses Opaque area.
 
 (*
 fn main() {
@@ -380,5 +383,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_bounds::main" main.
+Admitted.
+Global Typeclasses Opaque main.

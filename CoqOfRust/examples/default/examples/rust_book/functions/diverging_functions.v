@@ -14,8 +14,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "diverging_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "diverging_functions::main" main.
+Admitted.
+Global Typeclasses Opaque main.
 
 Module main.
   (*
@@ -39,6 +40,7 @@ Module main.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_foo : M.IsFunction "diverging_functions::main::foo" foo.
-  Smpl Add apply Function_foo : is_function.
+  Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "diverging_functions::main::foo" foo.
+  Admitted.
+  Global Typeclasses Opaque foo.
 End main.

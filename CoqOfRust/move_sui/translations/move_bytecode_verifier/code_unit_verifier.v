@@ -143,9 +143,10 @@ Module code_unit_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_module_impl(
@@ -344,6 +345,7 @@ Module code_unit_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -630,6 +632,7 @@ Module code_unit_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1044,9 +1047,10 @@ Module code_unit_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
-    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
+    Global Instance AssociatedFunction_verify_module_impl :
+      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_module_impl.
     
     (*
         fn verify_function(
@@ -2047,9 +2051,10 @@ Module code_unit_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_function :
-      M.IsAssociatedFunction Self "verify_function" verify_function.
-    Smpl Add apply AssociatedFunction_verify_function : is_associated.
+    Global Instance AssociatedFunction_verify_function :
+      M.IsAssociatedFunction.Trait Self "verify_function" verify_function.
+    Admitted.
+    Global Typeclasses Opaque verify_function.
     
     (*
         fn verify_common(
@@ -2547,8 +2552,9 @@ Module code_unit_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_common :
-      M.IsAssociatedFunction Self "verify_common" verify_common.
-    Smpl Add apply AssociatedFunction_verify_common : is_associated.
+    Global Instance AssociatedFunction_verify_common :
+      M.IsAssociatedFunction.Trait Self "verify_common" verify_common.
+    Admitted.
+    Global Typeclasses Opaque verify_common.
   End Impl_move_bytecode_verifier_code_unit_verifier_CodeUnitVerifier.
 End code_unit_verifier.

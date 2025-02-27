@@ -18,8 +18,9 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
 *)
 Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_set_code_hash : M.IsFunction "set_code_hash::set_code_hash" set_code_hash.
-Smpl Add apply Function_set_code_hash : is_function.
+Global Instance Instance_IsFunction_set_code_hash :
+  M.IsFunction.Trait "set_code_hash::set_code_hash" set_code_hash.
+Admitted.
 
 (* StructRecord
   {
@@ -95,8 +96,9 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn inc(&mut self) {
@@ -206,8 +208,9 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
-  Smpl Add apply AssociatedFunction_inc : is_associated.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Admitted.
+  Global Typeclasses Opaque inc.
   
   (*
       pub fn get(&self) -> u32 {
@@ -229,8 +232,9 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
+  Global Typeclasses Opaque get.
   
   (*
       pub fn set_code(&mut self, code_hash: [u8; 32]) {
@@ -394,6 +398,8 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.
-  Smpl Add apply AssociatedFunction_set_code : is_associated.
+  Global Instance AssociatedFunction_set_code :
+    M.IsAssociatedFunction.Trait Self "set_code" set_code.
+  Admitted.
+  Global Typeclasses Opaque set_code.
 End Impl_set_code_hash_Incrementer.

@@ -341,8 +341,9 @@ Module opcode.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse : M.IsAssociatedFunction Self "parse" parse.
-      Smpl Add apply AssociatedFunction_parse : is_associated.
+      Global Instance AssociatedFunction_parse : M.IsAssociatedFunction.Trait Self "parse" parse.
+      Admitted.
+      Global Typeclasses Opaque parse.
     End Impl_revm_bytecode_opcode_OpCode.
   End parse.
 End opcode.

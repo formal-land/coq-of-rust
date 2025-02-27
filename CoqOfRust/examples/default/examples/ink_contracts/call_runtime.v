@@ -404,8 +404,9 @@ Module Impl_call_runtime_Env.
   *)
   Parameter call_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
-  Smpl Add apply AssociatedFunction_call_runtime : is_associated.
+  Global Instance AssociatedFunction_call_runtime :
+    M.IsAssociatedFunction.Trait Self "call_runtime" call_runtime.
+  Admitted.
 End Impl_call_runtime_Env.
 
 Module Impl_call_runtime_RuntimeCaller.
@@ -418,8 +419,9 @@ Module Impl_call_runtime_RuntimeCaller.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -439,8 +441,9 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -467,8 +470,9 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn transfer_through_runtime(
@@ -595,9 +599,10 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_transfer_through_runtime :
-    M.IsAssociatedFunction Self "transfer_through_runtime" transfer_through_runtime.
-  Smpl Add apply AssociatedFunction_transfer_through_runtime : is_associated.
+  Global Instance AssociatedFunction_transfer_through_runtime :
+    M.IsAssociatedFunction.Trait Self "transfer_through_runtime" transfer_through_runtime.
+  Admitted.
+  Global Typeclasses Opaque transfer_through_runtime.
   
   (*
       pub fn call_nonexistent_extrinsic(&mut self) -> Result<(), RuntimeError> {
@@ -676,7 +681,8 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_call_nonexistent_extrinsic :
-    M.IsAssociatedFunction Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
-  Smpl Add apply AssociatedFunction_call_nonexistent_extrinsic : is_associated.
+  Global Instance AssociatedFunction_call_nonexistent_extrinsic :
+    M.IsAssociatedFunction.Trait Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
+  Admitted.
+  Global Typeclasses Opaque call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller.

@@ -1680,8 +1680,9 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn local_abilities(&self, idx: LocalIndex) -> AbilitySet {
@@ -1733,9 +1734,10 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_local_abilities :
-        M.IsAssociatedFunction Self "local_abilities" local_abilities.
-      Smpl Add apply AssociatedFunction_local_abilities : is_associated.
+      Global Instance AssociatedFunction_local_abilities :
+        M.IsAssociatedFunction.Trait Self "local_abilities" local_abilities.
+      Admitted.
+      Global Typeclasses Opaque local_abilities.
       
       (*
           pub fn all_local_abilities(&self) -> &Vec<AbilitySet> {
@@ -1763,9 +1765,10 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_all_local_abilities :
-        M.IsAssociatedFunction Self "all_local_abilities" all_local_abilities.
-      Smpl Add apply AssociatedFunction_all_local_abilities : is_associated.
+      Global Instance AssociatedFunction_all_local_abilities :
+        M.IsAssociatedFunction.Trait Self "all_local_abilities" all_local_abilities.
+      Admitted.
+      Global Typeclasses Opaque all_local_abilities.
       
       (*
           pub fn local_state(&self, idx: LocalIndex) -> LocalState {
@@ -1817,8 +1820,10 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_local_state : M.IsAssociatedFunction Self "local_state" local_state.
-      Smpl Add apply AssociatedFunction_local_state : is_associated.
+      Global Instance AssociatedFunction_local_state :
+        M.IsAssociatedFunction.Trait Self "local_state" local_state.
+      Admitted.
+      Global Typeclasses Opaque local_state.
       
       (*
           pub fn local_states(&self) -> &Vec<LocalState> {
@@ -1846,9 +1851,10 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_local_states :
-        M.IsAssociatedFunction Self "local_states" local_states.
-      Smpl Add apply AssociatedFunction_local_states : is_associated.
+      Global Instance AssociatedFunction_local_states :
+        M.IsAssociatedFunction.Trait Self "local_states" local_states.
+      Admitted.
+      Global Typeclasses Opaque local_states.
       
       (*
           pub fn set_available(&mut self, idx: LocalIndex) {
@@ -1903,9 +1909,10 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_available :
-        M.IsAssociatedFunction Self "set_available" set_available.
-      Smpl Add apply AssociatedFunction_set_available : is_associated.
+      Global Instance AssociatedFunction_set_available :
+        M.IsAssociatedFunction.Trait Self "set_available" set_available.
+      Admitted.
+      Global Typeclasses Opaque set_available.
       
       (*
           pub fn set_unavailable(&mut self, idx: LocalIndex) {
@@ -2067,9 +2074,10 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_unavailable :
-        M.IsAssociatedFunction Self "set_unavailable" set_unavailable.
-      Smpl Add apply AssociatedFunction_set_unavailable : is_associated.
+      Global Instance AssociatedFunction_set_unavailable :
+        M.IsAssociatedFunction.Trait Self "set_unavailable" set_unavailable.
+      Admitted.
+      Global Typeclasses Opaque set_unavailable.
       
       (*
           pub fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -2135,8 +2143,9 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
-      Smpl Add apply AssociatedFunction_error : is_associated.
+      Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+      Admitted.
+      Global Typeclasses Opaque error.
       
       (*
           fn join_(&self, other: &Self) -> Self {
@@ -3091,8 +3100,9 @@ Module locals_safety.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_join_ : M.IsAssociatedFunction Self "join_" join_.
-      Smpl Add apply AssociatedFunction_join_ : is_associated.
+      Global Instance AssociatedFunction_join_ : M.IsAssociatedFunction.Trait Self "join_" join_.
+      Admitted.
+      Global Typeclasses Opaque join_.
     End Impl_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
     
     Module Impl_move_bytecode_verifier_absint_AbstractDomain_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.

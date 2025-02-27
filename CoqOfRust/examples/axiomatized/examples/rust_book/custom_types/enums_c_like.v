@@ -57,5 +57,5 @@ Axiom IsDiscriminant_Color_Blue : M.IsDiscriminant "enums_c_like::Color::Blue" 2
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "enums_c_like::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums_c_like::main" main.
+Admitted.

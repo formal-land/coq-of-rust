@@ -321,6 +321,7 @@ Module clone.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -762,10 +763,11 @@ Module clone.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_fully_uninit :
+      Global Instance AssociatedFunction_from_fully_uninit :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_fully_uninit" (from_fully_uninit T).
-      Smpl Add apply AssociatedFunction_from_fully_uninit : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_fully_uninit" (from_fully_uninit T).
+      Admitted.
+      Global Typeclasses Opaque from_fully_uninit.
       
       (*
           fn push(&mut self, value: T) {
@@ -840,10 +842,11 @@ Module clone.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_push :
+      Global Instance AssociatedFunction_push :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "push" (push T).
-      Smpl Add apply AssociatedFunction_push : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "push" (push T).
+      Admitted.
+      Global Typeclasses Opaque push.
     End Impl_core_clone_uninit_InitializingSlice_T.
     
     Module Impl_core_ops_drop_Drop_for_core_clone_uninit_InitializingSlice_T.

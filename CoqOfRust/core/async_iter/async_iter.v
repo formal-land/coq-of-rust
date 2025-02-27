@@ -345,10 +345,11 @@ Module async_iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_async_gen_ready :
+      Global Instance AssociatedFunction_async_gen_ready :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "async_gen_ready" (async_gen_ready T).
-      Smpl Add apply AssociatedFunction_async_gen_ready : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "async_gen_ready" (async_gen_ready T).
+      Admitted.
+      Global Typeclasses Opaque async_gen_ready.
       
       (*     pub const PENDING: Self = Poll::Pending; *)
       (* Ty.apply
@@ -360,10 +361,11 @@ Module async_iter.
         M.run
           ltac:(M.monadic (M.alloc (| Value.StructTuple "core::task::poll::Poll::Pending" [] |))).
       
-      Axiom AssociatedConstant_value_PENDING :
+      Global Instance AssociatedConstant_value_PENDING :
         forall (T : Ty.t),
-        M.IsAssociatedConstant (Self T) "value_PENDING" (value_PENDING T).
-      Smpl Add apply AssociatedConstant_value_PENDING : is_associated.
+        M.IsAssociatedConstant.Trait (Self T) "value_PENDING" (value_PENDING T).
+      Admitted.
+      Global Typeclasses Opaque value_PENDING.
       
       (*     pub const FINISHED: Self = Poll::Ready(None); *)
       (* Ty.apply
@@ -380,10 +382,11 @@ Module async_iter.
                 [ Value.StructTuple "core::option::Option::None" [] ]
             |))).
       
-      Axiom AssociatedConstant_value_FINISHED :
+      Global Instance AssociatedConstant_value_FINISHED :
         forall (T : Ty.t),
-        M.IsAssociatedConstant (Self T) "value_FINISHED" (value_FINISHED T).
-      Smpl Add apply AssociatedConstant_value_FINISHED : is_associated.
+        M.IsAssociatedConstant.Trait (Self T) "value_FINISHED" (value_FINISHED T).
+      Admitted.
+      Global Typeclasses Opaque value_FINISHED.
     End Impl_core_task_poll_Poll_core_option_Option_T.
     
     (* Trait *)

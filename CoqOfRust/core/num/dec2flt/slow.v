@@ -272,6 +272,7 @@ Module num.
                   let~ exp2 : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -411,6 +412,7 @@ Module num.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -656,6 +658,7 @@ Module num.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -1020,9 +1023,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_long_mantissa :
-        M.IsFunction "core::num::dec2flt::slow::parse_long_mantissa" parse_long_mantissa.
-      Smpl Add apply Function_parse_long_mantissa : is_function.
+      Global Instance Instance_IsFunction_parse_long_mantissa :
+        M.IsFunction.Trait "core::num::dec2flt::slow::parse_long_mantissa" parse_long_mantissa.
+      Admitted.
+      Global Typeclasses Opaque parse_long_mantissa.
       
       Module parse_long_mantissa.
         Definition value_MAX_SHIFT : Value.t :=

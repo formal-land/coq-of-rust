@@ -82,10 +82,11 @@ Module array.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ascii :
+      Global Instance AssociatedFunction_as_ascii :
         forall (N : Value.t),
-        M.IsAssociatedFunction (Self N) "as_ascii" (as_ascii N).
-      Smpl Add apply AssociatedFunction_as_ascii : is_associated.
+        M.IsAssociatedFunction.Trait (Self N) "as_ascii" (as_ascii N).
+      Admitted.
+      Global Typeclasses Opaque as_ascii.
       
       (*
           pub const unsafe fn as_ascii_unchecked(&self) -> &[ascii::Char; N] {
@@ -150,10 +151,11 @@ Module array.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ascii_unchecked :
+      Global Instance AssociatedFunction_as_ascii_unchecked :
         forall (N : Value.t),
-        M.IsAssociatedFunction (Self N) "as_ascii_unchecked" (as_ascii_unchecked N).
-      Smpl Add apply AssociatedFunction_as_ascii_unchecked : is_associated.
+        M.IsAssociatedFunction.Trait (Self N) "as_ascii_unchecked" (as_ascii_unchecked N).
+      Admitted.
+      Global Typeclasses Opaque as_ascii_unchecked.
     End Impl_array_N_u8.
   End ascii.
 End array.

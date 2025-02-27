@@ -141,10 +141,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn into_inner(self) -> T {
@@ -167,10 +168,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner :
+      Global Instance AssociatedFunction_into_inner :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       (*
           pub const fn get_mut(&mut self) -> &mut T {
               &mut self.inner
@@ -203,10 +205,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut :
+      Global Instance AssociatedFunction_get_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
           pub const fn get_pin_mut(self: Pin<&mut Self>) -> Pin<&mut T> {
@@ -271,10 +274,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_pin_mut :
+      Global Instance AssociatedFunction_get_pin_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "get_pin_mut" (get_pin_mut T).
-      Smpl Add apply AssociatedFunction_get_pin_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "get_pin_mut" (get_pin_mut T).
+      Admitted.
+      Global Typeclasses Opaque get_pin_mut.
       
       (*
           pub const fn from_mut(r: &'_ mut T) -> &'_ mut Exclusive<T> {
@@ -325,10 +329,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut :
+      Global Instance AssociatedFunction_from_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
           pub const fn from_pin_mut(r: Pin<&'_ mut T>) -> Pin<&'_ mut Exclusive<T>> {
@@ -415,10 +420,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_pin_mut :
+      Global Instance AssociatedFunction_from_pin_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_pin_mut" (from_pin_mut T).
-      Smpl Add apply AssociatedFunction_from_pin_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_pin_mut" (from_pin_mut T).
+      Admitted.
+      Global Typeclasses Opaque from_pin_mut.
     End Impl_core_sync_exclusive_Exclusive_T.
     
     
@@ -466,7 +472,7 @@ Module sync.
       
       (*     type Output = F::Output; *)
       Definition _Output (F Args : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
+        Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output".
       
       (*
           extern "rust-call" fn call_once(self, args: Args) -> Self::Output {
@@ -486,7 +492,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
             M.call_closure (|
-              Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+              Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
@@ -549,7 +555,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
             M.call_closure (|
-              Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+              Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 F,
@@ -651,11 +657,11 @@ Module sync.
       
       (*     type Yield = G::Yield; *)
       Definition _Yield (R G : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
       
       (*     type Return = G::Return; *)
       Definition _Return (R G : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
       
       (*
           fn resume(self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -674,8 +680,8 @@ Module sync.
                 (Ty.path "core::ops::coroutine::CoroutineState")
                 []
                 [
-                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
                 ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",

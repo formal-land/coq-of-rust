@@ -264,8 +264,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_va_list : M.IsAssociatedFunction Self "as_va_list" as_va_list.
-      Smpl Add apply AssociatedFunction_as_va_list : is_associated.
+      Global Instance AssociatedFunction_as_va_list :
+        M.IsAssociatedFunction.Trait Self "as_va_list" as_va_list.
+      Admitted.
+      Global Typeclasses Opaque as_va_list.
       (*
           pub unsafe fn arg<T: sealed_trait::VaArgSafe>(&mut self) -> T {
               // SAFETY: the caller must uphold the safety contract for `va_arg`.
@@ -285,8 +287,9 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_arg : M.IsAssociatedFunction Self "arg" arg.
-      Smpl Add apply AssociatedFunction_arg : is_associated.
+      Global Instance AssociatedFunction_arg : M.IsAssociatedFunction.Trait Self "arg" arg.
+      Admitted.
+      Global Typeclasses Opaque arg.
       
       (*
           pub unsafe fn with_copy<F, R>(&self, f: F) -> R
@@ -376,8 +379,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_with_copy : M.IsAssociatedFunction Self "with_copy" with_copy.
-      Smpl Add apply AssociatedFunction_with_copy : is_associated.
+      Global Instance AssociatedFunction_with_copy :
+        M.IsAssociatedFunction.Trait Self "with_copy" with_copy.
+      Admitted.
+      Global Typeclasses Opaque with_copy.
     End Impl_core_ffi_va_list_VaListImpl.
     
     Module Impl_core_ops_deref_Deref_for_core_ffi_va_list_VaList.
@@ -767,17 +772,20 @@ Module ffi.
     
     Parameter va_end : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_va_end : M.IsFunction "core::ffi::va_list::va_end" va_end.
-    Smpl Add apply Function_va_end : is_function.
+    Global Instance Instance_IsFunction_va_end :
+      M.IsFunction.Trait "core::ffi::va_list::va_end" va_end.
+    Admitted.
     
     Parameter va_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_va_copy : M.IsFunction "core::ffi::va_list::va_copy" va_copy.
-    Smpl Add apply Function_va_copy : is_function.
+    Global Instance Instance_IsFunction_va_copy :
+      M.IsFunction.Trait "core::ffi::va_list::va_copy" va_copy.
+    Admitted.
     
     Parameter va_arg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_va_arg : M.IsFunction "core::ffi::va_list::va_arg" va_arg.
-    Smpl Add apply Function_va_arg : is_function.
+    Global Instance Instance_IsFunction_va_arg :
+      M.IsFunction.Trait "core::ffi::va_list::va_arg" va_arg.
+    Admitted.
   End va_list.
 End ffi.

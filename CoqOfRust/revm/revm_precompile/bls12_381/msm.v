@@ -261,8 +261,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_msm_required_gas :
-      M.IsFunction "revm_precompile::bls12_381::msm::msm_required_gas" msm_required_gas.
-    Smpl Add apply Function_msm_required_gas : is_function.
+    Global Instance Instance_IsFunction_msm_required_gas :
+      M.IsFunction.Trait "revm_precompile::bls12_381::msm::msm_required_gas" msm_required_gas.
+    Admitted.
+    Global Typeclasses Opaque msm_required_gas.
   End msm.
 End bls12_381.

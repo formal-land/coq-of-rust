@@ -194,9 +194,10 @@ Module modexp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_byzantium_run :
-    M.IsFunction "revm_precompile::modexp::byzantium_run" byzantium_run.
-  Smpl Add apply Function_byzantium_run : is_function.
+  Global Instance Instance_IsFunction_byzantium_run :
+    M.IsFunction.Trait "revm_precompile::modexp::byzantium_run" byzantium_run.
+  Admitted.
+  Global Typeclasses Opaque byzantium_run.
   
   (*
   pub fn berlin_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -347,8 +348,10 @@ Module modexp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_berlin_run : M.IsFunction "revm_precompile::modexp::berlin_run" berlin_run.
-  Smpl Add apply Function_berlin_run : is_function.
+  Global Instance Instance_IsFunction_berlin_run :
+    M.IsFunction.Trait "revm_precompile::modexp::berlin_run" berlin_run.
+  Admitted.
+  Global Typeclasses Opaque berlin_run.
   
   (*
   pub fn calculate_iteration_count(exp_length: u64, exp_highp: &U256) -> u64 {
@@ -577,9 +580,12 @@ Module modexp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_calculate_iteration_count :
-    M.IsFunction "revm_precompile::modexp::calculate_iteration_count" calculate_iteration_count.
-  Smpl Add apply Function_calculate_iteration_count : is_function.
+  Global Instance Instance_IsFunction_calculate_iteration_count :
+    M.IsFunction.Trait
+      "revm_precompile::modexp::calculate_iteration_count"
+      calculate_iteration_count.
+  Admitted.
+  Global Typeclasses Opaque calculate_iteration_count.
   
   (*
   pub fn run_inner<F>(input: &[u8], gas_limit: u64, min_gas: u64, calc_gas: F) -> PrecompileResult
@@ -2061,8 +2067,10 @@ Module modexp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run_inner : M.IsFunction "revm_precompile::modexp::run_inner" run_inner.
-  Smpl Add apply Function_run_inner : is_function.
+  Global Instance Instance_IsFunction_run_inner :
+    M.IsFunction.Trait "revm_precompile::modexp::run_inner" run_inner.
+  Admitted.
+  Global Typeclasses Opaque run_inner.
   
   Module run_inner.
     Definition value_HEADER_LENGTH : Value.t :=
@@ -2257,9 +2265,10 @@ Module modexp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_byzantium_gas_calc :
-    M.IsFunction "revm_precompile::modexp::byzantium_gas_calc" byzantium_gas_calc.
-  Smpl Add apply Function_byzantium_gas_calc : is_function.
+  Global Instance Instance_IsFunction_byzantium_gas_calc :
+    M.IsFunction.Trait "revm_precompile::modexp::byzantium_gas_calc" byzantium_gas_calc.
+  Admitted.
+  Global Typeclasses Opaque byzantium_gas_calc.
   
   Module byzantium_gas_calc.
     (*
@@ -2655,9 +2664,12 @@ Module modexp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mul_complexity :
-      M.IsFunction "revm_precompile::modexp::byzantium_gas_calc::mul_complexity" mul_complexity.
-    Smpl Add apply Function_mul_complexity : is_function.
+    Global Instance Instance_IsFunction_mul_complexity :
+      M.IsFunction.Trait
+        "revm_precompile::modexp::byzantium_gas_calc::mul_complexity"
+        mul_complexity.
+    Admitted.
+    Global Typeclasses Opaque mul_complexity.
   End byzantium_gas_calc.
   
   (*
@@ -2839,9 +2851,10 @@ Module modexp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_berlin_gas_calc :
-    M.IsFunction "revm_precompile::modexp::berlin_gas_calc" berlin_gas_calc.
-  Smpl Add apply Function_berlin_gas_calc : is_function.
+  Global Instance Instance_IsFunction_berlin_gas_calc :
+    M.IsFunction.Trait "revm_precompile::modexp::berlin_gas_calc" berlin_gas_calc.
+  Admitted.
+  Global Typeclasses Opaque berlin_gas_calc.
   
   Module berlin_gas_calc.
     (*
@@ -2961,10 +2974,11 @@ Module modexp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_calculate_multiplication_complexity :
-      M.IsFunction
+    Global Instance Instance_IsFunction_calculate_multiplication_complexity :
+      M.IsFunction.Trait
         "revm_precompile::modexp::berlin_gas_calc::calculate_multiplication_complexity"
         calculate_multiplication_complexity.
-    Smpl Add apply Function_calculate_multiplication_complexity : is_function.
+    Admitted.
+    Global Typeclasses Opaque calculate_multiplication_complexity.
   End berlin_gas_calc.
 End modexp.

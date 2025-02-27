@@ -3,26 +3,30 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter print_one : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print_one : M.IsFunction "scoping_rules_lifetimes_functions::print_one" print_one.
-Smpl Add apply Function_print_one : is_function.
+Global Instance Instance_IsFunction_print_one :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::print_one" print_one.
+Admitted.
 
 Parameter add_one : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_add_one : M.IsFunction "scoping_rules_lifetimes_functions::add_one" add_one.
-Smpl Add apply Function_add_one : is_function.
+Global Instance Instance_IsFunction_add_one :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::add_one" add_one.
+Admitted.
 
 Parameter print_multi : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print_multi :
-  M.IsFunction "scoping_rules_lifetimes_functions::print_multi" print_multi.
-Smpl Add apply Function_print_multi : is_function.
+Global Instance Instance_IsFunction_print_multi :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::print_multi" print_multi.
+Admitted.
 
 Parameter pass_x : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_pass_x : M.IsFunction "scoping_rules_lifetimes_functions::pass_x" pass_x.
-Smpl Add apply Function_pass_x : is_function.
+Global Instance Instance_IsFunction_pass_x :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::pass_x" pass_x.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::main" main.
+Admitted.

@@ -33,8 +33,10 @@ Definition call_me (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
-Smpl Add apply Function_call_me : is_function.
+Global Instance Instance_IsFunction_call_me :
+  M.IsFunction.Trait "functions_closures_input_functions::call_me" call_me.
+Admitted.
+Global Typeclasses Opaque call_me.
 
 (*
 fn function() {
@@ -85,8 +87,10 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
-Smpl Add apply Function_function : is_function.
+Global Instance Instance_IsFunction_function :
+  M.IsFunction.Trait "functions_closures_input_functions::function" function.
+Admitted.
+Global Typeclasses Opaque function.
 
 (*
 fn main() {
@@ -186,5 +190,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "functions_closures_input_functions::main" main.
+Admitted.
+Global Typeclasses Opaque main.

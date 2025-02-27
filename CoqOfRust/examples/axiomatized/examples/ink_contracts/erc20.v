@@ -33,17 +33,17 @@ Module Impl_erc20_Mapping_K_V.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
 End Impl_erc20_Mapping_K_V.
 
 (* StructTuple
@@ -218,13 +218,14 @@ Module Impl_erc20_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_erc20_Env.
 
 Module Impl_erc20_Erc20.
@@ -232,65 +233,70 @@ Module Impl_erc20_Erc20.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter total_supply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_total_supply : M.IsAssociatedFunction Self "total_supply" total_supply.
-  Smpl Add apply AssociatedFunction_total_supply : is_associated.
+  Global Instance AssociatedFunction_total_supply :
+    M.IsAssociatedFunction.Trait Self "total_supply" total_supply.
+  Admitted.
   
   Parameter balance_of_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance_of_impl :
-    M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
-  Smpl Add apply AssociatedFunction_balance_of_impl : is_associated.
+  Global Instance AssociatedFunction_balance_of_impl :
+    M.IsAssociatedFunction.Trait Self "balance_of_impl" balance_of_impl.
+  Admitted.
   
   Parameter balance_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
-  Smpl Add apply AssociatedFunction_balance_of : is_associated.
+  Global Instance AssociatedFunction_balance_of :
+    M.IsAssociatedFunction.Trait Self "balance_of" balance_of.
+  Admitted.
   
   Parameter allowance_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_allowance_impl :
-    M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
-  Smpl Add apply AssociatedFunction_allowance_impl : is_associated.
+  Global Instance AssociatedFunction_allowance_impl :
+    M.IsAssociatedFunction.Trait Self "allowance_impl" allowance_impl.
+  Admitted.
   
   Parameter allowance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_allowance : M.IsAssociatedFunction Self "allowance" allowance.
-  Smpl Add apply AssociatedFunction_allowance : is_associated.
+  Global Instance AssociatedFunction_allowance :
+    M.IsAssociatedFunction.Trait Self "allowance" allowance.
+  Admitted.
   
   Parameter transfer_from_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer_from_to :
-    M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
-  Smpl Add apply AssociatedFunction_transfer_from_to : is_associated.
+  Global Instance AssociatedFunction_transfer_from_to :
+    M.IsAssociatedFunction.Trait Self "transfer_from_to" transfer_from_to.
+  Admitted.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
-  Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Instance AssociatedFunction_transfer :
+    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Admitted.
   
   Parameter approve : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
-  Smpl Add apply AssociatedFunction_approve : is_associated.
+  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.Trait Self "approve" approve.
+  Admitted.
   
   Parameter transfer_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer_from :
-    M.IsAssociatedFunction Self "transfer_from" transfer_from.
-  Smpl Add apply AssociatedFunction_transfer_from : is_associated.
+  Global Instance AssociatedFunction_transfer_from :
+    M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+  Admitted.
 End Impl_erc20_Erc20.
 

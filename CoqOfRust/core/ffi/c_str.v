@@ -730,9 +730,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_interior_nul :
-        M.IsAssociatedFunction Self "interior_nul" interior_nul.
-      Smpl Add apply AssociatedFunction_interior_nul : is_associated.
+      Global Instance AssociatedFunction_interior_nul :
+        M.IsAssociatedFunction.Trait Self "interior_nul" interior_nul.
+      Admitted.
+      Global Typeclasses Opaque interior_nul.
       
       (*
           const fn not_nul_terminated() -> FromBytesWithNulError {
@@ -754,9 +755,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_not_nul_terminated :
-        M.IsAssociatedFunction Self "not_nul_terminated" not_nul_terminated.
-      Smpl Add apply AssociatedFunction_not_nul_terminated : is_associated.
+      Global Instance AssociatedFunction_not_nul_terminated :
+        M.IsAssociatedFunction.Trait Self "not_nul_terminated" not_nul_terminated.
+      Admitted.
+      Global Typeclasses Opaque not_nul_terminated.
     End Impl_core_ffi_c_str_FromBytesWithNulError.
     
     Module Impl_core_error_Error_for_core_ffi_c_str_FromBytesWithNulError.
@@ -1733,8 +1735,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
           pub const fn from_bytes_until_nul(bytes: &[u8]) -> Result<&CStr, FromBytesUntilNulError> {
@@ -1860,9 +1864,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_bytes_until_nul :
-        M.IsAssociatedFunction Self "from_bytes_until_nul" from_bytes_until_nul.
-      Smpl Add apply AssociatedFunction_from_bytes_until_nul : is_associated.
+      Global Instance AssociatedFunction_from_bytes_until_nul :
+        M.IsAssociatedFunction.Trait Self "from_bytes_until_nul" from_bytes_until_nul.
+      Admitted.
+      Global Typeclasses Opaque from_bytes_until_nul.
       
       (*
           pub const fn from_bytes_with_nul(bytes: &[u8]) -> Result<&Self, FromBytesWithNulError> {
@@ -2003,9 +2008,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_bytes_with_nul :
-        M.IsAssociatedFunction Self "from_bytes_with_nul" from_bytes_with_nul.
-      Smpl Add apply AssociatedFunction_from_bytes_with_nul : is_associated.
+      Global Instance AssociatedFunction_from_bytes_with_nul :
+        M.IsAssociatedFunction.Trait Self "from_bytes_with_nul" from_bytes_with_nul.
+      Admitted.
+      Global Typeclasses Opaque from_bytes_with_nul.
       
       (*
           pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &CStr {
@@ -2107,9 +2113,13 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_bytes_with_nul_unchecked :
-        M.IsAssociatedFunction Self "from_bytes_with_nul_unchecked" from_bytes_with_nul_unchecked.
-      Smpl Add apply AssociatedFunction_from_bytes_with_nul_unchecked : is_associated.
+      Global Instance AssociatedFunction_from_bytes_with_nul_unchecked :
+        M.IsAssociatedFunction.Trait
+          Self
+          "from_bytes_with_nul_unchecked"
+          from_bytes_with_nul_unchecked.
+      Admitted.
+      Global Typeclasses Opaque from_bytes_with_nul_unchecked.
       
       (*
           pub const fn as_ptr(&self) -> *const c_char {
@@ -2143,8 +2153,9 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
       
       (*
           const fn as_non_null_ptr(&self) -> NonNull<c_char> {
@@ -2216,9 +2227,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_non_null_ptr :
-        M.IsAssociatedFunction Self "as_non_null_ptr" as_non_null_ptr.
-      Smpl Add apply AssociatedFunction_as_non_null_ptr : is_associated.
+      Global Instance AssociatedFunction_as_non_null_ptr :
+        M.IsAssociatedFunction.Trait Self "as_non_null_ptr" as_non_null_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_non_null_ptr.
       
       (*
           pub const fn count_bytes(&self) -> usize {
@@ -2255,8 +2267,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_count_bytes : M.IsAssociatedFunction Self "count_bytes" count_bytes.
-      Smpl Add apply AssociatedFunction_count_bytes : is_associated.
+      Global Instance AssociatedFunction_count_bytes :
+        M.IsAssociatedFunction.Trait Self "count_bytes" count_bytes.
+      Admitted.
+      Global Typeclasses Opaque count_bytes.
       
       (*
           pub const fn is_empty(&self) -> bool {
@@ -2300,8 +2314,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+      Global Instance AssociatedFunction_is_empty :
+        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+      Admitted.
+      Global Typeclasses Opaque is_empty.
       
       (*
           pub const fn to_bytes(&self) -> &[u8] {
@@ -2371,8 +2387,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_bytes : M.IsAssociatedFunction Self "to_bytes" to_bytes.
-      Smpl Add apply AssociatedFunction_to_bytes : is_associated.
+      Global Instance AssociatedFunction_to_bytes :
+        M.IsAssociatedFunction.Trait Self "to_bytes" to_bytes.
+      Admitted.
+      Global Typeclasses Opaque to_bytes.
       
       (*
           pub const fn to_bytes_with_nul(&self) -> &[u8] {
@@ -2412,9 +2430,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_bytes_with_nul :
-        M.IsAssociatedFunction Self "to_bytes_with_nul" to_bytes_with_nul.
-      Smpl Add apply AssociatedFunction_to_bytes_with_nul : is_associated.
+      Global Instance AssociatedFunction_to_bytes_with_nul :
+        M.IsAssociatedFunction.Trait Self "to_bytes_with_nul" to_bytes_with_nul.
+      Admitted.
+      Global Typeclasses Opaque to_bytes_with_nul.
       
       (*
           pub fn bytes(&self) -> Bytes<'_> {
@@ -2434,8 +2453,9 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_bytes : M.IsAssociatedFunction Self "bytes" bytes.
-      Smpl Add apply AssociatedFunction_bytes : is_associated.
+      Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.Trait Self "bytes" bytes.
+      Admitted.
+      Global Typeclasses Opaque bytes.
       
       (*
           pub const fn to_str(&self) -> Result<&str, str::Utf8Error> {
@@ -2479,8 +2499,9 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_str : M.IsAssociatedFunction Self "to_str" to_str.
-      Smpl Add apply AssociatedFunction_to_str : is_associated.
+      Global Instance AssociatedFunction_to_str : M.IsAssociatedFunction.Trait Self "to_str" to_str.
+      Admitted.
+      Global Typeclasses Opaque to_str.
     End Impl_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
@@ -3003,8 +3024,10 @@ Module ffi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen" strlen.
-    Smpl Add apply Function_strlen : is_function.
+    Global Instance Instance_IsFunction_strlen :
+      M.IsFunction.Trait "core::ffi::c_str::strlen" strlen.
+    Admitted.
+    Global Typeclasses Opaque strlen.
     
     Module strlen.
       (*
@@ -3028,6 +3051,7 @@ Module ffi.
               let~ len : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -3088,8 +3112,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_strlen_ct : M.IsFunction "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
-      Smpl Add apply Function_strlen_ct : is_function.
+      Global Instance Instance_IsFunction_strlen_ct :
+        M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
+      Admitted.
+      Global Typeclasses Opaque strlen_ct.
       
       (*
           fn strlen_rt(s: *const c_char) -> usize {
@@ -3115,14 +3141,17 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_strlen_rt : M.IsFunction "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
-      Smpl Add apply Function_strlen_rt : is_function.
+      Global Instance Instance_IsFunction_strlen_rt :
+        M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
+      Admitted.
+      Global Typeclasses Opaque strlen_rt.
       
       Module strlen_rt.
         Parameter strlen : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
         
-        Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
-        Smpl Add apply Function_strlen : is_function.
+        Global Instance Instance_IsFunction_strlen :
+          M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
+        Admitted.
       End strlen_rt.
     End strlen.
     
@@ -3373,8 +3402,9 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           fn is_empty(&self) -> bool {
@@ -3413,8 +3443,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-      Smpl Add apply AssociatedFunction_is_empty : is_associated.
+      Global Instance AssociatedFunction_is_empty :
+        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+      Admitted.
+      Global Typeclasses Opaque is_empty.
     End Impl_core_ffi_c_str_Bytes.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_ffi_c_str_Bytes.

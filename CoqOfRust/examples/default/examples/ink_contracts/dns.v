@@ -77,10 +77,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_contains :
+  Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
-  Smpl Add apply AssociatedFunction_contains : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+  Admitted.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -89,10 +89,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -101,10 +101,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -113,10 +113,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter new : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new :
+  Global Instance AssociatedFunction_new :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "new" (new K V).
-  Smpl Add apply AssociatedFunction_new : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "new" (new K V).
+  Admitted.
   
   (*
       fn remove(&self, _key: K) {
@@ -125,10 +125,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_remove :
+  Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
-  Smpl Add apply AssociatedFunction_remove : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+  Admitted.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -137,10 +137,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_size :
+  Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" (size K V).
-  Smpl Add apply AssociatedFunction_size : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+  Admitted.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -149,10 +149,10 @@ Module Impl_dns_Mapping_K_V.
   *)
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_take :
+  Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" (take K V).
-  Smpl Add apply AssociatedFunction_take : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+  Admitted.
 End Impl_dns_Mapping_K_V.
 
 (* StructTuple
@@ -416,8 +416,9 @@ Module Impl_dns_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -426,8 +427,9 @@ Module Impl_dns_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_dns_Env.
 
 (* StructRecord
@@ -482,8 +484,10 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
-Smpl Add apply Function_zero_address : is_function.
+Global Instance Instance_IsFunction_zero_address :
+  M.IsFunction.Trait "dns::zero_address" zero_address.
+Admitted.
+Global Typeclasses Opaque zero_address.
 
 Module Impl_core_default_Default_for_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".
@@ -837,8 +841,9 @@ Module Impl_dns_DomainNameService.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -858,8 +863,9 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -886,8 +892,9 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn register(&mut self, name: Hash) -> Result<()> {
@@ -1064,8 +1071,10 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_register : M.IsAssociatedFunction Self "register" register.
-  Smpl Add apply AssociatedFunction_register : is_associated.
+  Global Instance AssociatedFunction_register :
+    M.IsAssociatedFunction.Trait Self "register" register.
+  Admitted.
+  Global Typeclasses Opaque register.
   
   (*
       fn get_owner_or_default(&self, name: Hash) -> AccountId {
@@ -1130,9 +1139,10 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_owner_or_default :
-    M.IsAssociatedFunction Self "get_owner_or_default" get_owner_or_default.
-  Smpl Add apply AssociatedFunction_get_owner_or_default : is_associated.
+  Global Instance AssociatedFunction_get_owner_or_default :
+    M.IsAssociatedFunction.Trait Self "get_owner_or_default" get_owner_or_default.
+  Admitted.
+  Global Typeclasses Opaque get_owner_or_default.
   
   (*
       pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
@@ -1357,8 +1367,10 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_set_address : M.IsAssociatedFunction Self "set_address" set_address.
-  Smpl Add apply AssociatedFunction_set_address : is_associated.
+  Global Instance AssociatedFunction_set_address :
+    M.IsAssociatedFunction.Trait Self "set_address" set_address.
+  Admitted.
+  Global Typeclasses Opaque set_address.
   
   (*
       pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
@@ -1584,8 +1596,10 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
-  Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Instance AssociatedFunction_transfer :
+    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Admitted.
+  Global Typeclasses Opaque transfer.
   
   (*
       fn get_address_or_default(&self, name: Hash) -> AccountId {
@@ -1650,9 +1664,10 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_address_or_default :
-    M.IsAssociatedFunction Self "get_address_or_default" get_address_or_default.
-  Smpl Add apply AssociatedFunction_get_address_or_default : is_associated.
+  Global Instance AssociatedFunction_get_address_or_default :
+    M.IsAssociatedFunction.Trait Self "get_address_or_default" get_address_or_default.
+  Admitted.
+  Global Typeclasses Opaque get_address_or_default.
   
   (*
       pub fn get_address(&self, name: Hash) -> AccountId {
@@ -1678,8 +1693,10 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_address : M.IsAssociatedFunction Self "get_address" get_address.
-  Smpl Add apply AssociatedFunction_get_address : is_associated.
+  Global Instance AssociatedFunction_get_address :
+    M.IsAssociatedFunction.Trait Self "get_address" get_address.
+  Admitted.
+  Global Typeclasses Opaque get_address.
   
   (*
       pub fn get_owner(&self, name: Hash) -> AccountId {
@@ -1705,6 +1722,8 @@ Module Impl_dns_DomainNameService.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_owner : M.IsAssociatedFunction Self "get_owner" get_owner.
-  Smpl Add apply AssociatedFunction_get_owner : is_associated.
+  Global Instance AssociatedFunction_get_owner :
+    M.IsAssociatedFunction.Trait Self "get_owner" get_owner.
+  Admitted.
+  Global Typeclasses Opaque get_owner.
 End Impl_dns_DomainNameService.

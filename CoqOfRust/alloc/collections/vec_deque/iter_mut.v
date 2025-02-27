@@ -38,10 +38,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "new" (new T).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_mut_IterMut_T.

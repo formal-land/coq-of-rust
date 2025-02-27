@@ -194,8 +194,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn is_empty(&self) -> bool {
@@ -507,10 +510,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_is_empty :
+  Global Instance AssociatedFunction_is_empty :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_empty" (is_empty T).
-  Smpl Add apply AssociatedFunction_is_empty : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
+  Admitted.
+  Global Typeclasses Opaque is_empty.
   
   (*
       pub fn len(&self) -> u64 {
@@ -821,8 +825,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_len : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "len" (len T).
-  Smpl Add apply AssociatedFunction_len : is_associated.
+  Global Instance AssociatedFunction_len :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+  Admitted.
+  Global Typeclasses Opaque len.
   
   (*
       pub fn push(&mut self, item: T) -> Result<(), AbsStackError> {
@@ -856,10 +863,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_push :
+  Global Instance AssociatedFunction_push :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "push" (push T).
-  Smpl Add apply AssociatedFunction_push : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "push" (push T).
+  Admitted.
+  Global Typeclasses Opaque push.
   
   (*
       pub fn push_n(&mut self, item: T, n: u64) -> Result<(), AbsStackError> {
@@ -1165,10 +1173,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_push_n :
+  Global Instance AssociatedFunction_push_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "push_n" (push_n T).
-  Smpl Add apply AssociatedFunction_push_n : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "push_n" (push_n T).
+  Admitted.
+  Global Typeclasses Opaque push_n.
   
   (*
       pub fn pop(&mut self) -> Result<T, AbsStackError> {
@@ -1226,8 +1235,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_pop : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pop" (pop T).
-  Smpl Add apply AssociatedFunction_pop : is_associated.
+  Global Instance AssociatedFunction_pop :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "pop" (pop T).
+  Admitted.
+  Global Typeclasses Opaque pop.
   
   (*
       pub fn pop_eq_n(&mut self, n: NonZeroU64) -> Result<T, AbsStackError> {
@@ -1620,10 +1632,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_pop_eq_n :
+  Global Instance AssociatedFunction_pop_eq_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "pop_eq_n" (pop_eq_n T).
-  Smpl Add apply AssociatedFunction_pop_eq_n : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "pop_eq_n" (pop_eq_n T).
+  Admitted.
+  Global Typeclasses Opaque pop_eq_n.
   
   (*
       pub fn pop_any_n(&mut self, n: NonZeroU64) -> Result<(), AbsStackError> {
@@ -1733,6 +1746,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               let~ rem : Ty.path "u64" := M.copy (| n |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2077,10 +2091,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_pop_any_n :
+  Global Instance AssociatedFunction_pop_any_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "pop_any_n" (pop_any_n T).
-  Smpl Add apply AssociatedFunction_pop_any_n : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "pop_any_n" (pop_any_n T).
+  Admitted.
+  Global Typeclasses Opaque pop_any_n.
 End Impl_move_abstract_stack_AbstractStack_T.
 
 (*
