@@ -96,7 +96,9 @@ def pp_path(path) -> str:
     if path == ["usize"]:
         return "Usize"
 
-    return ".".join(path[:-2] + (["links"] if len(path) >= 3 else []) + path[-2:])
+    # We limit the size of the path for readability, and count on the user to make the
+    # right file imports in case of name collisions
+    return ".".join(path[-2:])
 
 def pp_const(const) -> str:
     if "Literal" in const:
@@ -427,6 +429,67 @@ Smpl Add simple apply of_value_with_{variant_name} : of_value."""
         of_value += f"""Proof. econstructor; apply of_value_with_{variant_name}; eassumption. Defined.
 Smpl Add simple apply of_value_{variant_name} : of_value."""
 
+    sub_pointers = []
+    for variant in variants:
+        variant_name = variant["name"]
+        fields = \
+            [*enumerate(variant["item"]["Tuple"]["tys"])] \
+            if "Tuple" in variant["item"] \
+            else variant["item"]["Struct"]["fields"]
+        for index, ty in fields:
+            sub_pointer = f"Definition get_{variant_name}_{index} : SubPointer.Runner.t t\n"
+            if "Tuple" in variant["item"]:
+                sub_pointer += indent(f'(Pointer.Index.StructTuple "{"::".join(prefix + [name, variant_name])}" {index}) :=\n')
+            else:
+                sub_pointer += indent(f'(Pointer.Index.StructRecord "{"::".join(prefix + [name, variant_name])}" "{index}") :=\n')
+            sub_pointer += "{|\n"
+            sub_pointer += indent("SubPointer.Runner.projection (γ : t) :=\n")
+            sub_pointer += indent(indent("match γ with\n"))
+            pattern = " ".join(
+                [variant_name] +
+                [
+                    (
+                        f"γ_{current_index}"
+                        if current_index == index
+                        else "_"
+                    )
+                    for current_index, _ in fields
+                ]
+            )
+            sub_pointer += indent(indent(f"| {pattern} => Some γ_{index}\n"))
+            if len(variants) >= 2:
+                sub_pointer += indent(indent("| _ => None\n"))
+            sub_pointer += indent(indent("end;\n"))
+            sub_pointer += indent(f"SubPointer.Runner.injection (γ : t) (γ_{index} : {pp_type(False, ty)}) :=\n")
+            sub_pointer += indent(indent("match γ with\n"))
+            pattern = " ".join(
+                [variant_name] +
+                [
+                    (
+                        f"γ_{current_index}"
+                        if current_index != index
+                        else "_"
+                    )
+                    for current_index, _ in fields
+                ]
+            )
+            new_expression = " ".join(
+                [variant_name] +
+                [
+                    f"γ_{current_index}"
+                    for current_index, _ in fields
+                ]
+            )
+            sub_pointer += indent(indent(f"| {pattern} => Some ({new_expression})\n"))
+            if len(variants) >= 2:
+                sub_pointer += indent(indent("| _ => None\n"))
+            sub_pointer += indent(indent("end;\n"))
+            sub_pointer += "|}.\n\n"
+            sub_pointer += f"Lemma get_{variant_name}_{index}_is_valid : SubPointer.Runner.Valid.t get_{variant_name}_{index}.\n"
+            sub_pointer += "Proof. sauto lq: on. Qed.\n"
+            sub_pointer += f"Smpl Add apply get_{variant_name}_{index}_is_valid : run_sub_pointer."
+            sub_pointers += [sub_pointer]
+
     return pp_module(name,
         inductive_def +
         arguments_line +
@@ -435,7 +498,9 @@ Smpl Add simple apply of_value_{variant_name} : of_value."""
         "\n\n" +
         of_ty +
         of_value_with +
-        of_value
+        of_value +
+        "\n\n" +
+        pp_module("SubPointer", "\n\n".join(sub_pointers))
     )
 
 

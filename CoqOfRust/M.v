@@ -765,6 +765,21 @@ Definition never_to_any (x : Value.t) : M :=
 Definition use (x : Value.t) : Value.t :=
   x.
 
+Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
+  match value with
+  | Value.Pointer {| Pointer.kind := Pointer.Kind.Raw; Pointer.core := core |} =>
+    pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
+  | _ => impossible "expected a raw pointer"
+  end.
+Global Opaque borrow.
+
+Definition deref (value : Value.t) : M :=
+  match value with
+  | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
+  | _ => impossible "expected a pointer"
+  end.
+Global Opaque deref.
+
 Module SubPointer.
   Definition get_tuple_field (value : Value.t) (index : Z) : M :=
     get_sub_pointer value (Pointer.Index.Tuple index).
@@ -776,7 +791,9 @@ Module SubPointer.
     end.
 
   Definition get_struct_tuple_field (value : Value.t) (constructor : string) (index : Z) : M :=
+    let* value := deref value in
     get_sub_pointer value (Pointer.Index.StructTuple constructor index).
+  Arguments get_struct_tuple_field /.
 
   Definition get_struct_record_field (value : Value.t) (constructor field : string) : M :=
     get_sub_pointer value (Pointer.Index.StructRecord constructor field).
@@ -800,21 +817,6 @@ Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
   | Value.Bool false => else_
   | _ => impossible "if_then_else_bool: expected a boolean"
   end.
-
-Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
-  match value with
-  | Value.Pointer {| Pointer.kind := Pointer.Kind.Raw; Pointer.core := core |} =>
-    pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
-  | _ => impossible "expected a raw pointer"
-  end.
-Global Opaque borrow.
-
-Definition deref (value : Value.t) : M :=
-  match value with
-  | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
-  | _ => impossible "expected a pointer"
-  end.
-Global Opaque deref.
 
 Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   let* are_equal := are_equal value expected_value in
