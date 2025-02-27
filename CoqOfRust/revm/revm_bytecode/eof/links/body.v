@@ -4,6 +4,7 @@ Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require core.links.clone.
 Require core.links.default.
+Require Import core.links.option.
 Require Import revm.links.dependencies.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
@@ -208,9 +209,51 @@ Module Impl_Default_for_EofBody.
       { apply body.eof.body.Impl_core_default_Default_for_revm_bytecode_eof_body_EofBody.Implements. }
       { reflexivity. }
     }
-    {
-      intros; cbn.
-
+    { intros.
+      destruct (vec.links.mod.Impl_Default_for_Vec.run (T := TypesSection.t) (A := Global.t)).
+      destruct default.
+      destruct (vec.links.mod.Impl_Default_for_Vec.run (T := Usize.t) (A := Global.t)).
+      destruct default.
+      destruct alloy_primitives.links.bytes_.Impl_Default_for_Bytes.run.
+      destruct default.
+      destruct (vec.links.mod.Impl_Default_for_Vec.run (T := alloy_primitives.links.bytes_.Bytes.t) (A := Global.t)).
+      destruct default.
+      destruct default.Impl_Default_for_bool.run.
+      destruct default.
+      run_symbolic.
     }
-  Admitted.
+  Defined.
 End Impl_Default_for_EofBody.
+
+Module Impl_EofBody.
+  Definition Self : Set := EofBody.t.
+
+  (*
+      pub fn code(&self, index: usize) -> Option<Bytes> {
+        if index == 0 {
+            // There should be at least one code section.
+            return Some(self.code.slice(..self.code_section[0]));
+        }
+        self.code_section
+            .get(index)
+            .map(|end| self.code.slice(self.code_section[index - 1]..*end))
+      }
+  *)
+  Definition run_code (self : Ref.t Pointer.Kind.Ref Self) (index : Usize.t) :
+    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] 🔽 option alloy_primitives.links.bytes_.Bytes.t }}.
+  Proof.
+    run_symbolic.
+    run_symbolic_let. {
+      run_symbolic.
+      run_symbolic_are_equal_integer; run_symbolic.
+      { run_symbolic_are_equal_bool; run_symbolic.
+        admit.
+      }
+      { run_symbolic_are_equal_bool; run_symbolic.
+        admit.
+      }
+    }
+    intros [|[]]; run_symbolic.
+
+  Defined.
+End Impl_EofBody.
