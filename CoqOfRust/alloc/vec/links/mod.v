@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require core.links.clone.
+Require core.links.default.
 Require Import move_sui.translations.move_binary_format.file_format.
 
 Import Run.
@@ -43,3 +44,16 @@ Module Impl_Clone_for_Vec.
     }
   Defined.
 End Impl_Clone_for_Vec.
+
+Module Impl_Default_for_Vec.
+  Definition run_default {T A : Set} `{Link T} `{Link A} : default.Default.Run_default (Vec.t T A).
+  Admitted.
+
+  Definition run {T A : Set} `{Link T} `{Link A} : default.Default.Run (Vec.t T A).
+  Proof.
+    constructor.
+    { (* clone *)
+      exact run_default.
+    }
+  Defined.
+End Impl_Default_for_Vec.

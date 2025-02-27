@@ -1,5 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
+Require Import core.option.
+Require core.ops.links.function.
+Import Run.
 
 Module Option.
   Global Instance IsLink (A : Set) `{Link A} : Link (option A) := {
@@ -67,3 +70,23 @@ Module Option.
     Smpl Add apply get_Some_0_is_valid : run_sub_pointer.
   End SubPointer.
 End Option.
+
+Module Impl_Option.
+  Definition Self (T : Set) `{Link T} : Set := option T.
+
+  (*
+    pub fn map<U, F>(self, f: F) -> Option<U>
+    where
+        F: FnOnce(T) -> U
+  *)
+  Definition run_map {F T U : Set} `{Link F} `{Link T} `{Link U} 
+    (Run_FnOnce_for_F :
+      function.FnOnce.Run
+        F
+        T
+        (Output := U)
+    )
+    (self: Self T) (f : F) :
+    {{ option.Impl_core_option_Option_T.map (Φ T) [] [ Φ U; Φ F ] [ φ self; φ f ] 🔽 option U }}.
+    Admitted.
+End Impl_Option.
