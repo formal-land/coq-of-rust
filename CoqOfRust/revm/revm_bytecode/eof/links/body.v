@@ -4,6 +4,7 @@ Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require core.links.clone.
 Require core.links.default.
+Require Import core.links.option.
 Require Import revm.links.dependencies.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
