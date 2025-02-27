@@ -159,6 +159,7 @@ Module num.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -467,6 +468,7 @@ Module num.
                 M.copy (| M.deref (| M.read (| s_ref |) |) |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1662,6 +1664,7 @@ Module num.
                     M.copy (| start |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),

@@ -720,6 +720,7 @@ Module gas.
                 let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 3 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.match_operator (|

@@ -1181,6 +1181,7 @@ Module str.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2243,6 +2244,7 @@ Module str.
                                                 |) in
                                               let~ _ : Ty.tuple [] :=
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
@@ -2412,6 +2414,7 @@ Module str.
                                                     |)))
                                                 |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),

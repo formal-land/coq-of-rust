@@ -11705,6 +11705,7 @@ Module collections.
               let~ cur : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -11845,6 +11846,7 @@ Module collections.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),

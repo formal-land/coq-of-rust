@@ -167,6 +167,7 @@ Module slice.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -300,6 +301,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),

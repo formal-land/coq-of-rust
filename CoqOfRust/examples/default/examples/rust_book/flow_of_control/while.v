@@ -30,6 +30,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ n : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
         M.loop (|
+          Ty.tuple [],
           ltac:(M.monadic
             (M.match_operator (|
               M.alloc (| Value.Tuple [] |),

@@ -863,6 +863,15 @@ Module Run.
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.Let ty e k 🔽 R, Output }}
+  | Loop
+      (ty : Ty.t) (body : M) (k : Value.t + Exception.t -> M)
+      (of_ty : OfTy.t ty) :
+    let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
+    {{ body 🔽 R, Output' }} ->
+    (forall (value_inter : Output.t R Output'),
+      {{ k (Output.to_value value_inter) 🔽 R, Output }}
+    ) ->
+    {{ LowM.Loop ty body k 🔽 R, Output }}
   (** This primitive is useful to avoid blocking the reduction of this inductive with a [rewrite]
       that is hard to eliminate. *)
   | Rewrite
@@ -907,7 +916,7 @@ Module LowM.
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t R Output)
   | Let {A : Set} (e : t R A) (k : Output.t R A -> t R Output)
   | Call {A : Set} (e : t A A) (k : SuccessOrPanic.t A -> t R Output)
-  | Loop {A : Set} (body : t R A) (k : A -> t R Output).
+  | Loop {A : Set} (body : t R A) (k : Output.t R A -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
   Arguments Let {_ _ _}.
@@ -1018,6 +1027,15 @@ Proof.
   }
   { (* Let *)
     eapply LowM.Let. {
+      exact (evaluate _ _ _ _ _ run).
+    }
+    intros output'; eapply evaluate.
+    match goal with
+    | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
+    end.
+  }
+  { (* Loop *)
+    eapply LowM.Loop. {
       exact (evaluate _ _ _ _ _ run).
     }
     intros output'; eapply evaluate.

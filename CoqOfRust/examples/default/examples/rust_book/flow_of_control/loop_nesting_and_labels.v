@@ -29,6 +29,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ : Ty.tuple [] :=
           M.loop (|
+            Ty.tuple [],
             ltac:(M.monadic
               (let~ _ : Ty.tuple [] :=
                 let~ _ : Ty.tuple [] :=
@@ -70,6 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             let~ _ : Ty.tuple [] :=

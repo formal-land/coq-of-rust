@@ -302,7 +302,7 @@ Module LowM.
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | Let (ty : Ty.t) (e : t A) (k : A -> t A)
-  | Loop (body : t A) (k : A -> t A)
+  | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
@@ -320,8 +320,8 @@ Module LowM.
       CallClosure ty f args (fun v => let_ (k v) e2)
     | Let ty e k =>
       Let ty e (fun v => let_ (k v) e2)
-    | Loop body k =>
-      Loop body (fun v => let_ (k v) e2)
+    | Loop ty body k =>
+      Loop ty body (fun v => let_ (k v) e2)
     | Impossible message => Impossible message
     end.
 End LowM.
@@ -704,8 +704,9 @@ Definition catch_break (body : M) : M :=
       end
     ).
 
-Definition loop (body : M) : M :=
+Definition loop (ty : Ty.t) (body : M) : M :=
   LowM.Loop
+    ty
     (catch_continue body)
     (fun result =>
       catch_break (LowM.Pure result)).
@@ -887,6 +888,6 @@ Fixpoint run_constant (constant : M) : Value.t :=
     run_constant (k value)
   | LowM.CallClosure _ _ _ _ => Value.Error "unexpected closure call"
   | LowM.Let _ _ _ => Value.Error "unexpected let"
-  | LowM.Loop _ _ => Value.Error "unexpected loop"
+  | LowM.Loop _ _ _ => Value.Error "unexpected loop"
   | LowM.Impossible _ => Value.Error "impossible"
   end.

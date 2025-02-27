@@ -906,6 +906,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -5172,6 +5173,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5220,6 +5222,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5396,6 +5399,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5444,6 +5448,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5617,6 +5622,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5665,6 +5671,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5838,6 +5845,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5886,6 +5894,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),

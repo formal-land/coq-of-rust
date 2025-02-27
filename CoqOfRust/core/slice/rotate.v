@@ -210,6 +210,7 @@ Module slice.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -331,6 +332,7 @@ Module slice.
                                         let~ gcd : Ty.path "usize" := M.copy (| right |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.alloc (|
@@ -523,6 +525,7 @@ Module slice.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
@@ -630,6 +633,7 @@ Module slice.
                                                                       |)
                                                                     |) in
                                                                   M.loop (|
+                                                                    Ty.tuple [],
                                                                     ltac:(M.monadic
                                                                       (let~ _ : Ty.tuple [] :=
                                                                         M.alloc (|
@@ -1297,6 +1301,7 @@ Module slice.
                                                       Value.Bool true
                                                     |) in
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (let~ _ : Ty.tuple [] :=
                                                         let~ _ : Ty.tuple [] :=
@@ -1399,6 +1404,7 @@ Module slice.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (let~ _ : Ty.tuple [] :=
                                                         let~ _ : Ty.tuple [] :=

@@ -979,6 +979,7 @@ Module ptr.
             |) in
           let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           M.loop (|
+            Ty.tuple [],
             ltac:(M.monadic
               (M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -2347,6 +2348,7 @@ Module ptr.
               M.copy (| M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD" |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (let~ _ : Ty.tuple [] :=
                     M.match_operator (|

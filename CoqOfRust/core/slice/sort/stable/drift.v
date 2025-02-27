@@ -431,6 +431,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             Value.DeclaredButUndefined,
@@ -618,6 +619,7 @@ Module slice.
                                   let~ _ : Ty.tuple [] :=
                                     let~ _ : Ty.tuple [] :=
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),

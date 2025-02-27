@@ -398,6 +398,7 @@ Module iter.
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -1220,6 +1221,7 @@ Module iter.
                   (M.read (|
                     let~ acc : B := M.copy (| init |) in
                     M.loop (|
+                      R,
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1847,6 +1849,7 @@ Module iter.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -2497,6 +2500,7 @@ Module iter.
                 let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),

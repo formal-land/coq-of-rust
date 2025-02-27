@@ -441,6 +441,7 @@ Module slice.
                       |)
                     |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -697,6 +698,7 @@ Module slice.
                 let is_less := M.alloc (| is_less |) in
                 M.read (|
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ left : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.alloc (|

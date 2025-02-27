@@ -88,6 +88,7 @@ Module slice.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ len : Ty.path "usize" :=
                             M.alloc (|
@@ -1057,6 +1058,7 @@ Module slice.
                 let~ loop_end_pos : Ty.path "usize" := M.copy (| pivot_pos |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
@@ -1108,6 +1110,7 @@ Module slice.
                                     |)
                                   |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
@@ -1456,6 +1459,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -1728,6 +1732,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|

@@ -352,6 +352,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -1457,6 +1458,7 @@ Module slice.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -1557,6 +1559,7 @@ Module slice.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.loop (|
+                                                                Ty.tuple [],
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
                                                                     M.alloc (| Value.Tuple [] |),
@@ -2006,6 +2009,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2087,6 +2091,7 @@ Module slice.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
@@ -2519,6 +2524,7 @@ Module slice.
                       BinOp.Wrap.shr (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
                     |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -3278,6 +3284,7 @@ Module slice.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -3710,6 +3717,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4188,6 +4196,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|

@@ -740,6 +740,7 @@ Module future.
                                       ltac:(M.monadic
                                         (let __awaitee := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -1266,6 +1267,7 @@ Module future.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1385,6 +1387,7 @@ Module future.
                                                               ltac:(M.monadic
                                                                 (let __awaitee := M.copy (| γ |) in
                                                                 M.loop (|
+                                                                  Ty.tuple [],
                                                                   ltac:(M.monadic
                                                                     (let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
@@ -1619,6 +1622,7 @@ Module future.
                                         ltac:(M.monadic
                                           (let __awaitee := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1781,6 +1785,7 @@ Module future.
                                         ltac:(M.monadic
                                           (let __awaitee := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1999,6 +2004,7 @@ Module future.
                                       ltac:(M.monadic
                                         (let __awaitee := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -2298,6 +2304,7 @@ Module future.
                                               ltac:(M.monadic
                                                 (let __awaitee := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
@@ -2469,6 +2476,7 @@ Module future.
                                               ltac:(M.monadic
                                                 (let __awaitee := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|

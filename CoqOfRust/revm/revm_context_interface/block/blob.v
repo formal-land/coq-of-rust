@@ -597,6 +597,7 @@ Module block.
               M.alloc (| BinOp.Wrap.mul (| M.read (| factor |), M.read (| denominator |) |) |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),

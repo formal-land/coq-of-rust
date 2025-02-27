@@ -620,9 +620,10 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::Loop { body, .. } => {
+            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let body = compile_expr(env, generics, thir, body);
 
-            Rc::new(Expr::Loop { body })
+            Rc::new(Expr::Loop { ty, body })
         }
         thir::ExprKind::Let { .. } => {
             let error_message = "Unexpected `if let` outside of an `if`";

@@ -105,6 +105,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.loop (|
+          Ty.tuple [],
           ltac:(M.monadic
             (let~ _ : Ty.tuple [] :=
               let~ _ : Ty.tuple [] :=

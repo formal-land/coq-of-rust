@@ -6521,6 +6521,7 @@ Module u256.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ v : Ty.path "move_core_types::u256::U256" :=
                                     M.alloc (|
@@ -7143,6 +7144,7 @@ Module u256.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ v : Ty.path "move_core_types::u256::U256" :=
                             M.alloc (|

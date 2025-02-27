@@ -289,7 +289,11 @@ Module Impl_Interpreter.
     }
     intros [|[]]; run_symbolic.
     run_symbolic_let. {
-      admit.
+      unshelve eapply Run.Loop; [smpl of_ty | |]. {
+        run_symbolic.
+        admit.
+      }
+      intros [|[]]; run_symbolic.
     }
     intros [|[]]; run_symbolic.
     run_symbolic_let. {

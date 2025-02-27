@@ -4122,6 +4122,7 @@ Module file_format_common.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (let~ cur : Ty.path "u64" :=
                       M.alloc (|
@@ -5003,6 +5004,7 @@ Module file_format_common.
                 let~ shift : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),

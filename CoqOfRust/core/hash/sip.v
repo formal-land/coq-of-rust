@@ -2482,6 +2482,7 @@ Module hash.
                   let~ i : Ty.path "usize" := M.copy (| needed |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),

@@ -1308,6 +1308,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1399,6 +1400,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1494,6 +1496,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1585,6 +1588,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -2458,6 +2462,7 @@ Module str.
                 (M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (let~ bytes :
                             Ty.apply
@@ -3446,6 +3451,7 @@ Module str.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ bytes :
                                 Ty.apply
@@ -11774,6 +11780,7 @@ Module str.
                                   let b := M.copy (| γ0_1 |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -11948,6 +11955,7 @@ Module str.
                             M.never_to_any (|
                               M.read (|
                                 M.loop (|
+                                  Ty.path "never",
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       M.alloc (|
@@ -12712,6 +12720,7 @@ Module str.
                                   let b := M.copy (| γ0_1 |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
@@ -12885,6 +12894,7 @@ Module str.
                             M.never_to_any (|
                               M.read (|
                                 M.loop (|
+                                  Ty.path "never",
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       M.alloc (|
@@ -14466,6 +14476,7 @@ Module str.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ tail_byte : Ty.path "u8" :=
                               M.copy (|
@@ -14869,6 +14880,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -15171,6 +15183,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -15619,6 +15632,7 @@ Module str.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ front_byte : Ty.path "u8" :=
                               M.copy (|
@@ -16059,6 +16073,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -16394,6 +16409,7 @@ Module str.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -16820,6 +16836,7 @@ Module str.
               let~ period : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -17114,6 +17131,7 @@ Module str.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -18301,6 +18319,7 @@ Module str.
                                                           M.copy (| mask |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.loop (|
+                                                            Ty.tuple [],
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
                                                                 M.alloc (| Value.Tuple [] |),
@@ -18937,6 +18956,7 @@ Module str.
                 let~ result : Ty.path "bool" := M.alloc (| Value.Bool false |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -19038,6 +19058,7 @@ Module str.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -19180,6 +19201,7 @@ Module str.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -19365,6 +19387,7 @@ Module str.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -19969,6 +19992,7 @@ Module str.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -20213,6 +20237,7 @@ Module str.
                                 let pyend := M.copy (| γ0_1 |) in
                                 let~ _ : Ty.tuple [] :=
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
