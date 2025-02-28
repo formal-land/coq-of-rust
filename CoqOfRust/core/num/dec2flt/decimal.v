@@ -404,6 +404,7 @@ Module num.
                     ]
                   |) in
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -651,6 +652,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -1062,6 +1064,7 @@ Module num.
                     let~ n : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1241,6 +1244,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1542,6 +1546,7 @@ Module num.
                     let~ n : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1653,6 +1658,7 @@ Module num.
                                                       M.read (|
                                                         let~ _ : Ty.tuple [] :=
                                                           M.loop (|
+                                                            Ty.tuple [],
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
                                                                 M.alloc (| Value.Tuple [] |),
@@ -1853,6 +1859,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1963,6 +1970,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -2238,6 +2246,7 @@ Module num.
                 M.copy (| s |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2449,6 +2458,7 @@ Module num.
                                       Value.Bool true
                                     |) in
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
@@ -2547,6 +2557,7 @@ Module num.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -3100,6 +3111,7 @@ Module num.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -3693,6 +3705,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3765,9 +3778,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_decimal :
-        M.IsFunction "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
-      Smpl Add apply Function_parse_decimal : is_function.
+      Global Instance Instance_IsFunction_parse_decimal :
+        M.IsFunction.Trait "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
+      Admitted.
+      Global Opaque parse_decimal.
       
       (*
       fn number_of_digits_decimal_left_shift(d: &Decimal, mut shift: usize) -> usize {
@@ -4074,6 +4088,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -4296,11 +4311,12 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_number_of_digits_decimal_left_shift :
-        M.IsFunction
+      Global Instance Instance_IsFunction_number_of_digits_decimal_left_shift :
+        M.IsFunction.Trait
           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift"
           number_of_digits_decimal_left_shift.
-      Smpl Add apply Function_number_of_digits_decimal_left_shift : is_function.
+      Admitted.
+      Global Opaque number_of_digits_decimal_left_shift.
       
       Module number_of_digits_decimal_left_shift.
         Definition value_TABLE : Value.t :=

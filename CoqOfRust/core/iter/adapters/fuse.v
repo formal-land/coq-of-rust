@@ -3878,9 +3878,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_and_then_or_clear :
-        M.IsFunction "core::iter::adapters::fuse::and_then_or_clear" and_then_or_clear.
-      Smpl Add apply Function_and_then_or_clear : is_function.
+      Global Instance Instance_IsFunction_and_then_or_clear :
+        M.IsFunction.Trait "core::iter::adapters::fuse::and_then_or_clear" and_then_or_clear.
+      Admitted.
+      Global Opaque and_then_or_clear.
     End fuse.
   End adapters.
 End iter.

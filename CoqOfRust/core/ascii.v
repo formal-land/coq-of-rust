@@ -92,8 +92,10 @@ Module ascii.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_escape_default : M.IsFunction "core::ascii::escape_default" escape_default.
-  Smpl Add apply Function_escape_default : is_function.
+  Global Instance Instance_IsFunction_escape_default :
+    M.IsFunction.Trait "core::ascii::escape_default" escape_default.
+  Admitted.
+  Global Opaque escape_default.
   
   Module Impl_core_ascii_EscapeDefault.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".

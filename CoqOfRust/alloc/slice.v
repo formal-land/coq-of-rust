@@ -78,8 +78,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_into_vec : M.IsFunction "alloc::slice::hack::into_vec" into_vec.
-    Smpl Add apply Function_into_vec : is_function.
+    Global Instance Instance_IsFunction_into_vec :
+      M.IsFunction.Trait "alloc::slice::hack::into_vec" into_vec.
+    Admitted.
+    Global Opaque into_vec.
     
     (*
         pub fn to_vec<T: ConvertVec, A: Allocator>(s: &[T], alloc: A) -> Vec<T, A> {
@@ -108,8 +110,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_to_vec : M.IsFunction "alloc::slice::hack::to_vec" to_vec.
-    Smpl Add apply Function_to_vec : is_function.
+    Global Instance Instance_IsFunction_to_vec :
+      M.IsFunction.Trait "alloc::slice::hack::to_vec" to_vec.
+    Admitted.
+    Global Opaque to_vec.
     
     (* Trait *)
     (* Empty module 'ConvertVec' *)
@@ -352,6 +356,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -1457,6 +1462,7 @@ Module slice.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -1557,6 +1563,7 @@ Module slice.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.loop (|
+                                                                Ty.tuple [],
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
                                                                     M.alloc (| Value.Tuple [] |),
@@ -2006,6 +2013,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2087,6 +2095,7 @@ Module slice.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
@@ -2519,6 +2528,7 @@ Module slice.
                       BinOp.Wrap.shr (| M.read (| n |), Value.Integer IntegerKind.I32 1 |)
                     |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2827,7 +2837,7 @@ Module slice.
             Ty.associated_in_trait
               "alloc::slice::Concat"
               []
-              []
+              [ Item ]
               (Ty.apply (Ty.path "slice") [] [ T ])
               "Output",
             M.get_trait_method (|
@@ -2868,7 +2878,7 @@ Module slice.
             Ty.associated_in_trait
               "alloc::slice::Join"
               []
-              []
+              [ Separator ]
               (Ty.apply (Ty.path "slice") [] [ T ])
               "Output",
             M.get_trait_method (|
@@ -2909,7 +2919,7 @@ Module slice.
             Ty.associated_in_trait
               "alloc::slice::Join"
               []
-              []
+              [ Separator ]
               (Ty.apply (Ty.path "slice") [] [ T ])
               "Output",
             M.get_trait_method (|
@@ -3278,6 +3288,7 @@ Module slice.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -3710,6 +3721,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4188,6 +4200,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4778,8 +4791,10 @@ Module slice.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_stable_sort : M.IsFunction "alloc::slice::stable_sort" stable_sort.
-  Smpl Add apply Function_stable_sort : is_function.
+  Global Instance Instance_IsFunction_stable_sort :
+    M.IsFunction.Trait "alloc::slice::stable_sort" stable_sort.
+  Admitted.
+  Global Opaque stable_sort.
   
   Module Impl_core_slice_sort_stable_BufGuard_T_for_alloc_vec_Vec_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=

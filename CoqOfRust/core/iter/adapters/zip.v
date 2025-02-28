@@ -236,6 +236,7 @@ Module iter.
                   (M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -478,8 +479,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_zip : M.IsFunction "core::iter::adapters::zip::zip" zip.
-      Smpl Add apply Function_zip : is_function.
+      Global Instance Instance_IsFunction_zip :
+        M.IsFunction.Trait "core::iter::adapters::zip::zip" zip.
+      Admitted.
+      Global Opaque zip.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_A_where_core_iter_traits_iterator_Iterator_B_for_core_iter_adapters_zip_Zip_A_B.
         Definition Self (A B : Ty.t) : Ty.t :=
@@ -1397,6 +1400,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -1548,6 +1552,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -2747,6 +2752,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -2898,6 +2904,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -3401,6 +3408,7 @@ Module iter.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4038,6 +4046,7 @@ Module iter.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -4503,6 +4512,7 @@ Module iter.
                                                       ltac:(M.monadic
                                                         (let iter := M.copy (| γ |) in
                                                         M.loop (|
+                                                          Ty.tuple [],
                                                           ltac:(M.monadic
                                                             (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
@@ -4906,6 +4916,7 @@ Module iter.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
@@ -5763,9 +5774,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_try_get_unchecked :
-        M.IsFunction "core::iter::adapters::zip::try_get_unchecked" try_get_unchecked.
-      Smpl Add apply Function_try_get_unchecked : is_function.
+      Global Instance Instance_IsFunction_try_get_unchecked :
+        M.IsFunction.Trait "core::iter::adapters::zip::try_get_unchecked" try_get_unchecked.
+      Admitted.
+      Global Opaque try_get_unchecked.
       
       (* Trait *)
       (* Empty module 'SpecTrustedRandomAccess' *)
@@ -5933,6 +5945,7 @@ Module iter.
                 let~ accum : Acc := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -6113,6 +6126,7 @@ Module iter.
                 let~ accum : Acc := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.match_operator (|
@@ -6216,6 +6230,7 @@ Module iter.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|

@@ -16,14 +16,18 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
   
   Axiom AssociatedFunction_add_one : M.IsAssociatedFunction Self "add_one" add_one.
   Smpl Add apply AssociatedFunction_add_one : is_associated.
+  Global Opaque add_one.
   
   Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_print : M.IsAssociatedFunction Self "print" print.
   Smpl Add apply AssociatedFunction_print : is_associated.
+  Global Opaque print.
 End Impl_scoping_rules_lifetimes_methods_Owner.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_methods::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_methods::main" main.
+Admitted.
+Global Opaque main.

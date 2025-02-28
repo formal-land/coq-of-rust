@@ -51,6 +51,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
     forall (A : Ty.t),
     M.IsAssociatedFunction (Self A) "convert" (convert A).
   Smpl Add apply AssociatedFunction_convert : is_associated.
+  Global Opaque convert.
 End Impl_polymorphic_associated_function_Foo_A.
 
 (*
@@ -177,5 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "polymorphic_associated_function::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "polymorphic_associated_function::main" main.
+Admitted.
+Global Opaque main.

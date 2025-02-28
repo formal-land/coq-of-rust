@@ -37,6 +37,7 @@ Module Impl_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   Smpl Add apply AssociatedFunction_contains : is_associated.
+  Global Opaque contains.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -44,6 +45,7 @@ Module Impl_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -51,6 +53,7 @@ Module Impl_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
   
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -58,6 +61,7 @@ Module Impl_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   Smpl Add apply AssociatedFunction_remove : is_associated.
+  Global Opaque remove.
   
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -65,6 +69,7 @@ Module Impl_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   Smpl Add apply AssociatedFunction_size : is_associated.
+  Global Opaque size.
   
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -72,6 +77,7 @@ Module Impl_erc721_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
   Smpl Add apply AssociatedFunction_take : is_associated.
+  Global Opaque take.
 End Impl_erc721_Mapping_K_V.
 
 (* StructTuple
@@ -397,11 +403,13 @@ Module Impl_erc721_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
 End Impl_erc721_Env.
 
 Module Impl_erc721_Erc721.
@@ -411,124 +419,147 @@ Module Impl_erc721_Erc721.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter balance_of_or_zero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of_or_zero :
     M.IsAssociatedFunction Self "balance_of_or_zero" balance_of_or_zero.
   Smpl Add apply AssociatedFunction_balance_of_or_zero : is_associated.
+  Global Opaque balance_of_or_zero.
   
   Parameter clear_approval : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_clear_approval :
     M.IsAssociatedFunction Self "clear_approval" clear_approval.
   Smpl Add apply AssociatedFunction_clear_approval : is_associated.
+  Global Opaque clear_approval.
   
   Parameter approved_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approved_for_all :
     M.IsAssociatedFunction Self "approved_for_all" approved_for_all.
   Smpl Add apply AssociatedFunction_approved_for_all : is_associated.
+  Global Opaque approved_for_all.
   
   Parameter owner_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_owner_of : M.IsAssociatedFunction Self "owner_of" owner_of.
   Smpl Add apply AssociatedFunction_owner_of : is_associated.
+  Global Opaque owner_of.
   
   Parameter approved_or_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approved_or_owner :
     M.IsAssociatedFunction Self "approved_or_owner" approved_or_owner.
   Smpl Add apply AssociatedFunction_approved_or_owner : is_associated.
+  Global Opaque approved_or_owner.
   
   Parameter exists_ : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
   Smpl Add apply AssociatedFunction_exists_ : is_associated.
+  Global Opaque exists_.
   
   Parameter balance_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
   Smpl Add apply AssociatedFunction_balance_of : is_associated.
+  Global Opaque balance_of.
   
   Parameter get_approved : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_approved : M.IsAssociatedFunction Self "get_approved" get_approved.
   Smpl Add apply AssociatedFunction_get_approved : is_associated.
+  Global Opaque get_approved.
   
   Parameter is_approved_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_is_approved_for_all :
     M.IsAssociatedFunction Self "is_approved_for_all" is_approved_for_all.
   Smpl Add apply AssociatedFunction_is_approved_for_all : is_associated.
+  Global Opaque is_approved_for_all.
   
   Parameter approve_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve_for_all :
     M.IsAssociatedFunction Self "approve_for_all" approve_for_all.
   Smpl Add apply AssociatedFunction_approve_for_all : is_associated.
+  Global Opaque approve_for_all.
   
   Parameter set_approval_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_set_approval_for_all :
     M.IsAssociatedFunction Self "set_approval_for_all" set_approval_for_all.
   Smpl Add apply AssociatedFunction_set_approval_for_all : is_associated.
+  Global Opaque set_approval_for_all.
   
   Parameter approve_for : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve_for : M.IsAssociatedFunction Self "approve_for" approve_for.
   Smpl Add apply AssociatedFunction_approve_for : is_associated.
+  Global Opaque approve_for.
   
   Parameter approve : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
   Smpl Add apply AssociatedFunction_approve : is_associated.
+  Global Opaque approve.
   
   Parameter remove_token_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove_token_from :
     M.IsAssociatedFunction Self "remove_token_from" remove_token_from.
   Smpl Add apply AssociatedFunction_remove_token_from : is_associated.
+  Global Opaque remove_token_from.
   
   Parameter add_token_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_token_to : M.IsAssociatedFunction Self "add_token_to" add_token_to.
   Smpl Add apply AssociatedFunction_add_token_to : is_associated.
+  Global Opaque add_token_to.
   
   Parameter transfer_token_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_token_from :
     M.IsAssociatedFunction Self "transfer_token_from" transfer_token_from.
   Smpl Add apply AssociatedFunction_transfer_token_from : is_associated.
+  Global Opaque transfer_token_from.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Opaque transfer.
   
   Parameter transfer_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.
   Smpl Add apply AssociatedFunction_transfer_from : is_associated.
+  Global Opaque transfer_from.
   
   Parameter mint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
   Smpl Add apply AssociatedFunction_mint : is_associated.
+  Global Opaque mint.
   
   Parameter burn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_burn : M.IsAssociatedFunction Self "burn" burn.
   Smpl Add apply AssociatedFunction_burn : is_associated.
+  Global Opaque burn.
 End Impl_erc721_Erc721.

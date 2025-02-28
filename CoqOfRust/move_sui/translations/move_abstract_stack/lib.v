@@ -1733,6 +1733,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               let~ rem : Ty.path "u64" := M.copy (| n |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),

@@ -128,6 +128,7 @@ Module Impl_basic_contract_caller_OtherContract.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn flip(&mut self) {
@@ -166,6 +167,7 @@ Module Impl_basic_contract_caller_OtherContract.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -189,6 +191,7 @@ Module Impl_basic_contract_caller_OtherContract.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_basic_contract_caller_OtherContract.
 
 (* StructRecord
@@ -241,6 +244,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn flip_and_get(&mut self) -> bool {
@@ -303,4 +307,5 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   
   Axiom AssociatedFunction_flip_and_get : M.IsAssociatedFunction Self "flip_and_get" flip_and_get.
   Smpl Add apply AssociatedFunction_flip_and_get : is_associated.
+  Global Opaque flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller.

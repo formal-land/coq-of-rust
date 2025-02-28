@@ -16,9 +16,11 @@ Module Impl_example05_Foo.
   
   Axiom AssociatedFunction_plus1 : M.IsAssociatedFunction Self "plus1" plus1.
   Smpl Add apply AssociatedFunction_plus1 : is_associated.
+  Global Opaque plus1.
 End Impl_example05_Foo.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "example05::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "example05::main" main.
+Admitted.
+Global Opaque main.

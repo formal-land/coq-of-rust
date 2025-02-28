@@ -200,6 +200,7 @@ Module annotated_visitor.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -440,6 +441,7 @@ Module annotated_visitor.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -5380,6 +5382,7 @@ Module annotated_visitor.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -5601,9 +5604,10 @@ Module annotated_visitor.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_visit_value :
-    M.IsFunction "move_core_types::annotated_visitor::visit_value" visit_value.
-  Smpl Add apply Function_visit_value : is_function.
+  Global Instance Instance_IsFunction_visit_value :
+    M.IsFunction.Trait "move_core_types::annotated_visitor::visit_value" visit_value.
+  Admitted.
+  Global Opaque visit_value.
   
   (*
   pub(crate) fn visit_struct<V: Visitor + ?Sized>(
@@ -5835,6 +5839,7 @@ Module annotated_visitor.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -6066,9 +6071,10 @@ Module annotated_visitor.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_visit_struct :
-    M.IsFunction "move_core_types::annotated_visitor::visit_struct" visit_struct.
-  Smpl Add apply Function_visit_struct : is_function.
+  Global Instance Instance_IsFunction_visit_struct :
+    M.IsFunction.Trait "move_core_types::annotated_visitor::visit_struct" visit_struct.
+  Admitted.
+  Global Opaque visit_struct.
   
   (*
   fn read_exact<const N: usize>(bytes: &mut &[u8]) -> Result<[u8; N], Error> {
@@ -6259,7 +6265,8 @@ Module annotated_visitor.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_exact :
-    M.IsFunction "move_core_types::annotated_visitor::read_exact" read_exact.
-  Smpl Add apply Function_read_exact : is_function.
+  Global Instance Instance_IsFunction_read_exact :
+    M.IsFunction.Trait "move_core_types::annotated_visitor::read_exact" read_exact.
+  Admitted.
+  Global Opaque read_exact.
 End annotated_visitor.

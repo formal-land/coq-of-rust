@@ -1787,8 +1787,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min : M.IsFunction "core::cmp::min" min.
-  Smpl Add apply Function_min : is_function.
+  Global Instance Instance_IsFunction_min : M.IsFunction.Trait "core::cmp::min" min.
+  Admitted.
+  Global Opaque min.
   
   (*
   pub fn min_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -1867,8 +1868,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_by : M.IsFunction "core::cmp::min_by" min_by.
-  Smpl Add apply Function_min_by : is_function.
+  Global Instance Instance_IsFunction_min_by : M.IsFunction.Trait "core::cmp::min_by" min_by.
+  Admitted.
+  Global Opaque min_by.
   
   (*
   pub fn min_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -2000,8 +2002,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_min_by_key : M.IsFunction "core::cmp::min_by_key" min_by_key.
-  Smpl Add apply Function_min_by_key : is_function.
+  Global Instance Instance_IsFunction_min_by_key :
+    M.IsFunction.Trait "core::cmp::min_by_key" min_by_key.
+  Admitted.
+  Global Opaque min_by_key.
   
   (*
   pub fn max<T: Ord>(v1: T, v2: T) -> T {
@@ -2022,8 +2026,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_max : M.IsFunction "core::cmp::max" max.
-  Smpl Add apply Function_max : is_function.
+  Global Instance Instance_IsFunction_max : M.IsFunction.Trait "core::cmp::max" max.
+  Admitted.
+  Global Opaque max.
   
   (*
   pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -2102,8 +2107,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_max_by : M.IsFunction "core::cmp::max_by" max_by.
-  Smpl Add apply Function_max_by : is_function.
+  Global Instance Instance_IsFunction_max_by : M.IsFunction.Trait "core::cmp::max_by" max_by.
+  Admitted.
+  Global Opaque max_by.
   
   (*
   pub fn max_by_key<T, F: FnMut(&T) -> K, K: Ord>(v1: T, v2: T, mut f: F) -> T {
@@ -2235,8 +2241,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_max_by_key : M.IsFunction "core::cmp::max_by_key" max_by_key.
-  Smpl Add apply Function_max_by_key : is_function.
+  Global Instance Instance_IsFunction_max_by_key :
+    M.IsFunction.Trait "core::cmp::max_by_key" max_by_key.
+  Admitted.
+  Global Opaque max_by_key.
   
   (*
   pub fn minmax<T>(v1: T, v2: T) -> [T; 2]
@@ -2286,8 +2294,9 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_minmax : M.IsFunction "core::cmp::minmax" minmax.
-  Smpl Add apply Function_minmax : is_function.
+  Global Instance Instance_IsFunction_minmax : M.IsFunction.Trait "core::cmp::minmax" minmax.
+  Admitted.
+  Global Opaque minmax.
   
   (*
   pub fn minmax_by<T, F>(v1: T, v2: T, compare: F) -> [T; 2]
@@ -2367,8 +2376,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_minmax_by : M.IsFunction "core::cmp::minmax_by" minmax_by.
-  Smpl Add apply Function_minmax_by : is_function.
+  Global Instance Instance_IsFunction_minmax_by :
+    M.IsFunction.Trait "core::cmp::minmax_by" minmax_by.
+  Admitted.
+  Global Opaque minmax_by.
   
   (*
   pub fn minmax_by_key<T, F, K>(v1: T, v2: T, mut f: F) -> [T; 2]
@@ -2504,8 +2515,10 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_minmax_by_key : M.IsFunction "core::cmp::minmax_by_key" minmax_by_key.
-  Smpl Add apply Function_minmax_by_key : is_function.
+  Global Instance Instance_IsFunction_minmax_by_key :
+    M.IsFunction.Trait "core::cmp::minmax_by_key" minmax_by_key.
+  Admitted.
+  Global Opaque minmax_by_key.
   
   Module impls.
     Module Impl_core_cmp_PartialEq_for_Tuple_.

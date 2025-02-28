@@ -406,6 +406,7 @@ Module Impl_payment_channel_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -416,6 +417,7 @@ Module Impl_payment_channel_Env.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
   
   (*
       fn terminate_contract(&self, sender: AccountId) {
@@ -427,6 +429,7 @@ Module Impl_payment_channel_Env.
   Axiom AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
   Smpl Add apply AssociatedFunction_terminate_contract : is_associated.
+  Global Opaque terminate_contract.
   
   (*
       fn transfer(&self, recipient: AccountId, amount: Balance) -> Result<()> {
@@ -437,6 +440,7 @@ Module Impl_payment_channel_Env.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Opaque transfer.
   
   (*
       fn block_timestamp(&self) -> Timestamp {
@@ -448,6 +452,7 @@ Module Impl_payment_channel_Env.
   Axiom AssociatedFunction_block_timestamp :
     M.IsAssociatedFunction Self "block_timestamp" block_timestamp.
   Smpl Add apply AssociatedFunction_block_timestamp : is_associated.
+  Global Opaque block_timestamp.
   
   (*
       fn balance(&self) -> Balance {
@@ -458,6 +463,7 @@ Module Impl_payment_channel_Env.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   Smpl Add apply AssociatedFunction_balance : is_associated.
+  Global Opaque balance.
   
   (*
       fn account_id(&self) -> AccountId {
@@ -468,6 +474,7 @@ Module Impl_payment_channel_Env.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
   Smpl Add apply AssociatedFunction_account_id : is_associated.
+  Global Opaque account_id.
 End Impl_payment_channel_Env.
 
 (* Trait *)
@@ -486,8 +493,10 @@ where
 *)
 Parameter hash_encoded : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_hash_encoded : M.IsFunction "payment_channel::hash_encoded" hash_encoded.
-Smpl Add apply Function_hash_encoded : is_function.
+Global Instance Instance_IsFunction_hash_encoded :
+  M.IsFunction.Trait "payment_channel::hash_encoded" hash_encoded.
+Admitted.
+Global Opaque hash_encoded.
 
 (*
 pub fn ecdsa_recover(
@@ -500,8 +509,10 @@ pub fn ecdsa_recover(
 *)
 Parameter ecdsa_recover : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_ecdsa_recover : M.IsFunction "payment_channel::ecdsa_recover" ecdsa_recover.
-Smpl Add apply Function_ecdsa_recover : is_function.
+Global Instance Instance_IsFunction_ecdsa_recover :
+  M.IsFunction.Trait "payment_channel::ecdsa_recover" ecdsa_recover.
+Admitted.
+Global Opaque ecdsa_recover.
 
 (*
 Enum Sha2x256
@@ -695,6 +706,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -721,6 +733,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       fn is_signature_valid(&self, amount: Balance, signature: [u8; 65]) -> bool {
@@ -974,6 +987,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_is_signature_valid :
     M.IsAssociatedFunction Self "is_signature_valid" is_signature_valid.
   Smpl Add apply AssociatedFunction_is_signature_valid : is_associated.
+  Global Opaque is_signature_valid.
   
   (*
       pub fn new(recipient: AccountId, close_duration: Timestamp) -> Self {
@@ -1027,6 +1041,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       fn close_inner(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -1421,6 +1436,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_close_inner : M.IsAssociatedFunction Self "close_inner" close_inner.
   Smpl Add apply AssociatedFunction_close_inner : is_associated.
+  Global Opaque close_inner.
   
   (*
       pub fn close(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -1589,6 +1605,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_close : M.IsAssociatedFunction Self "close" close.
   Smpl Add apply AssociatedFunction_close : is_associated.
+  Global Opaque close.
   
   (*
       pub fn start_sender_close(&mut self) -> Result<()> {
@@ -1811,6 +1828,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_start_sender_close :
     M.IsAssociatedFunction Self "start_sender_close" start_sender_close.
   Smpl Add apply AssociatedFunction_start_sender_close : is_associated.
+  Global Opaque start_sender_close.
   
   (*
       pub fn claim_timeout(&mut self) -> Result<()> {
@@ -1986,6 +2004,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_claim_timeout :
     M.IsAssociatedFunction Self "claim_timeout" claim_timeout.
   Smpl Add apply AssociatedFunction_claim_timeout : is_associated.
+  Global Opaque claim_timeout.
   
   (*
       pub fn withdraw(&mut self, amount: Balance, signature: [u8; 65]) -> Result<()> {
@@ -2401,6 +2420,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_withdraw : M.IsAssociatedFunction Self "withdraw" withdraw.
   Smpl Add apply AssociatedFunction_withdraw : is_associated.
+  Global Opaque withdraw.
   
   (*
       pub fn get_sender(&self) -> AccountId {
@@ -2424,6 +2444,7 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_get_sender : M.IsAssociatedFunction Self "get_sender" get_sender.
   Smpl Add apply AssociatedFunction_get_sender : is_associated.
+  Global Opaque get_sender.
   
   (*
       pub fn get_recipient(&self) -> AccountId {
@@ -2448,6 +2469,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_get_recipient :
     M.IsAssociatedFunction Self "get_recipient" get_recipient.
   Smpl Add apply AssociatedFunction_get_recipient : is_associated.
+  Global Opaque get_recipient.
   
   (*
       pub fn get_expiration(&self) -> Option<Timestamp> {
@@ -2472,6 +2494,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_get_expiration :
     M.IsAssociatedFunction Self "get_expiration" get_expiration.
   Smpl Add apply AssociatedFunction_get_expiration : is_associated.
+  Global Opaque get_expiration.
   
   (*
       pub fn get_withdrawn(&self) -> Balance {
@@ -2496,6 +2519,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_get_withdrawn :
     M.IsAssociatedFunction Self "get_withdrawn" get_withdrawn.
   Smpl Add apply AssociatedFunction_get_withdrawn : is_associated.
+  Global Opaque get_withdrawn.
   
   (*
       pub fn get_close_duration(&self) -> Timestamp {
@@ -2520,6 +2544,7 @@ Module Impl_payment_channel_PaymentChannel.
   Axiom AssociatedFunction_get_close_duration :
     M.IsAssociatedFunction Self "get_close_duration" get_close_duration.
   Smpl Add apply AssociatedFunction_get_close_duration : is_associated.
+  Global Opaque get_close_duration.
   
   (*
       pub fn get_balance(&self) -> Balance {
@@ -2557,4 +2582,5 @@ Module Impl_payment_channel_PaymentChannel.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
   Smpl Add apply AssociatedFunction_get_balance : is_associated.
+  Global Opaque get_balance.
 End Impl_payment_channel_PaymentChannel.

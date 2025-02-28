@@ -131,6 +131,7 @@ pub(crate) enum Expr {
         arms: Vec<Rc<Expr>>,
     },
     Loop {
+        ty: Rc<CoqType>,
         body: Rc<Expr>,
     },
     Index {
@@ -278,7 +279,7 @@ impl Expr {
                 init,
                 body,
             } => init.has_return() || body.has_return(),
-            Expr::Loop { body } => body.has_return(),
+            Expr::Loop { ty: _, body } => body.has_return(),
             Expr::Match { scrutinee, arms } => {
                 scrutinee.has_return() || arms.iter().any(|arm| arm.has_return())
             }
@@ -639,8 +640,8 @@ impl Expr {
                         exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
                     }),
                 ]),
-            Expr::Loop { body } => coq::Expression::just_name("M.loop")
-                .monadic_apply(coq::Expression::monadic(body.to_coq())),
+            Expr::Loop { ty, body } => coq::Expression::just_name("M.loop")
+                .monadic_apply_many(&[ty.to_coq(), coq::Expression::monadic(body.to_coq())]),
             Expr::Index { base, index } => {
                 coq::Expression::just_name("M.SubPointer.get_array_field")
                     .monadic_apply_many(&[base.to_coq(), index.to_coq()])

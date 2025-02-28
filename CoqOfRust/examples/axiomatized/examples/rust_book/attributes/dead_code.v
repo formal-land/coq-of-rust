@@ -3,21 +3,27 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter used_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_function.
-Smpl Add apply Function_used_function : is_function.
+Global Instance Instance_IsFunction_used_function :
+  M.IsFunction.Trait "dead_code::used_function" used_function.
+Admitted.
+Global Opaque used_function.
 
 Parameter unused_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unused_function.
-Smpl Add apply Function_unused_function : is_function.
+Global Instance Instance_IsFunction_unused_function :
+  M.IsFunction.Trait "dead_code::unused_function" unused_function.
+Admitted.
+Global Opaque unused_function.
 
 Parameter noisy_unused_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_noisy_unused_function :
-  M.IsFunction "dead_code::noisy_unused_function" noisy_unused_function.
-Smpl Add apply Function_noisy_unused_function : is_function.
+Global Instance Instance_IsFunction_noisy_unused_function :
+  M.IsFunction.Trait "dead_code::noisy_unused_function" noisy_unused_function.
+Admitted.
+Global Opaque noisy_unused_function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "dead_code::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "dead_code::main" main.
+Admitted.
+Global Opaque main.

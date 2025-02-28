@@ -7,6 +7,9 @@ Require Import revm.revm_interpreter.interpreter_action.links.create_inputs.
 Require Import revm.revm_interpreter.interpreter_action.links.eof_create_inputs.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter_InterpreterResult.
+Require Import revm.revm_interpreter.interpreter_action.
+
+Import Run.
 
 Module FrameInput.
   Inductive t : Set :=
@@ -111,7 +114,7 @@ Module InterpreterAction.
     (_ : revm_interpreter.links.interpreter_action.FrameInput.t)
   | Return
     (result : InterpreterResult.t)
-  | None
+  | None_
   .
 
   Global Instance IsLink : Link t := {
@@ -126,7 +129,7 @@ Module InterpreterAction.
         Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
           ("result", φ result)
         ]
-      | None =>
+      | None_ =>
         Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
       end
   }.
@@ -157,7 +160,7 @@ Module InterpreterAction.
 
   Lemma of_value_with_None :
     Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] =
-    φ None.
+    φ None_.
   Proof. now intros; subst. Qed.
   Smpl Add simple apply of_value_with_None : of_value.
 
@@ -189,4 +192,124 @@ Module InterpreterAction.
     ).
   Proof. econstructor; apply of_value_with_None; eassumption. Defined.
   Smpl Add simple apply of_value_None : of_value.
+
+  Module SubPointer.
+    Definition get_NewFrame_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | NewFrame γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : interpreter_action.FrameInput.t) :=
+        match γ with
+        | NewFrame _ => Some (NewFrame γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_NewFrame_0_is_valid : SubPointer.Runner.Valid.t get_NewFrame_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_NewFrame_0_is_valid : run_sub_pointer.
+
+    Definition get_Return_result : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" "result") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Return γ_result => Some γ_result
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_result : InterpreterResult.t) :=
+        match γ with
+        | Return _ => Some (Return γ_result)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Return_result_is_valid : SubPointer.Runner.Valid.t get_Return_result.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Return_result_is_valid : run_sub_pointer.
+  End SubPointer.
 End InterpreterAction.
+
+(* impl InterpreterAction { *)
+Module Impl_InterpreterAction.
+  Definition Self : Set :=
+    InterpreterAction.t.
+
+  (* pub fn is_call(&self) -> bool *)
+  Definition run_is_call (self : Ref.t Pointer.Kind.Ref Self) :
+    {{
+      interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_call
+        [] [] [φ self] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+    destruct_all FrameInput.t; run_symbolic.
+  Defined.
+
+  (* pub fn is_create(&self) -> bool *)
+  Definition run_is_create (self : Ref.t Pointer.Kind.Ref Self) :
+    {{
+      interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_create
+        [] [] [φ self] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+    destruct_all FrameInput.t; run_symbolic.
+  Defined.
+
+  (* pub fn is_return(&self) -> bool *)
+  Definition run_is_return (self : Ref.t Pointer.Kind.Ref Self) :
+    {{
+      interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_return
+        [] [] [φ self] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+    destruct_all Self; run_symbolic.
+  Defined.
+
+  (* pub fn is_none(&self) -> bool *)
+  Definition run_is_none (self : Ref.t Pointer.Kind.Ref Self) :
+    {{
+      interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_none
+        [] [] [φ self] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+    destruct_all Self; run_symbolic.
+  Defined.
+
+  (* pub fn is_some(&self) -> bool *)
+  Definition run_is_some (self : Ref.t Pointer.Kind.Ref Self) :
+    {{
+      interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_some
+        [] [] [φ self] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+    run_symbolic_closure. {
+      apply run_is_none.
+    }
+    intros []; run_symbolic.
+  Defined.
+
+  (* pub fn into_result_return(self) -> Option<InterpreterResult> *)
+  Definition run_into_result_return (self : Self) :
+    {{
+      interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.into_result_return
+        [] [] [φ self] 🔽
+      option InterpreterResult.t
+    }}.
+  Proof.
+    run_symbolic.
+  Defined.
+End Impl_InterpreterAction.

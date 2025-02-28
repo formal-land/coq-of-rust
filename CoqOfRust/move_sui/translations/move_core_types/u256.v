@@ -3831,7 +3831,15 @@ Module u256.
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
-                    [ T; Ty.associated_in_trait "core::convert::TryFrom" [] [] T "Error" ],
+                    [
+                      T;
+                      Ty.associated_in_trait
+                        "core::convert::TryFrom"
+                        []
+                        [ Ty.path "u128" ]
+                        T
+                        "Error"
+                    ],
                   M.get_trait_method (|
                     "core::convert::TryFrom",
                     T,
@@ -6521,6 +6529,7 @@ Module u256.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ v : Ty.path "move_core_types::u256::U256" :=
                                     M.alloc (|
@@ -7143,6 +7152,7 @@ Module u256.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ v : Ty.path "move_core_types::u256::U256" :=
                             M.alloc (|

@@ -37,6 +37,7 @@ Module Impl_mother_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -44,6 +45,7 @@ Module Impl_mother_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
 End Impl_mother_Mapping_K_V.
 
 (* StructTuple
@@ -605,11 +607,13 @@ Module Impl_mother_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
 End Impl_mother_Env.
 
 (* StructRecord
@@ -646,40 +650,48 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter new_default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Opaque new_default.
   
   Parameter failed_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
   Smpl Add apply AssociatedFunction_failed_new : is_associated.
+  Global Opaque failed_new.
   
   Parameter echo_auction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
   Smpl Add apply AssociatedFunction_echo_auction : is_associated.
+  Global Opaque echo_auction.
   
   Parameter revert_or_trap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_revert_or_trap :
     M.IsAssociatedFunction Self "revert_or_trap" revert_or_trap.
   Smpl Add apply AssociatedFunction_revert_or_trap : is_associated.
+  Global Opaque revert_or_trap.
   
   Parameter debug_log : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.
   Smpl Add apply AssociatedFunction_debug_log : is_associated.
+  Global Opaque debug_log.
 End Impl_mother_Mother.

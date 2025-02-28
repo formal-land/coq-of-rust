@@ -976,6 +976,7 @@ Module dependencies.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -1232,6 +1233,7 @@ Module dependencies.
                                                 ltac:(M.monadic
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
@@ -1592,6 +1594,7 @@ Module dependencies.
                                               ltac:(M.monadic
                                                 (let iter := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
@@ -2151,6 +2154,7 @@ Module dependencies.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -2580,6 +2584,7 @@ Module dependencies.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -3428,9 +3433,10 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module :
-    M.IsFunction "move_bytecode_verifier::dependencies::verify_module" verify_module.
-  Smpl Add apply Function_verify_module : is_function.
+  Global Instance Instance_IsFunction_verify_module :
+    M.IsFunction.Trait "move_bytecode_verifier::dependencies::verify_module" verify_module.
+  Admitted.
+  Global Opaque verify_module.
   
   (*
   fn verify_module_impl<'a>(
@@ -3822,9 +3828,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_impl :
-    M.IsFunction "move_bytecode_verifier::dependencies::verify_module_impl" verify_module_impl.
-  Smpl Add apply Function_verify_module_impl : is_function.
+  Global Instance Instance_IsFunction_verify_module_impl :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::dependencies::verify_module_impl"
+      verify_module_impl.
+  Admitted.
+  Global Opaque verify_module_impl.
   
   (*
   fn verify_imported_modules(context: &Context) -> PartialVMResult<()> {
@@ -3999,6 +4008,7 @@ Module dependencies.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -4248,11 +4258,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_imported_modules :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_imported_modules :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::verify_imported_modules"
       verify_imported_modules.
-  Smpl Add apply Function_verify_imported_modules : is_function.
+  Admitted.
+  Global Opaque verify_imported_modules.
   
   (*
   fn verify_imported_structs(context: &Context) -> PartialVMResult<()> {
@@ -4453,6 +4464,7 @@ Module dependencies.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -5448,11 +5460,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_imported_structs :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_imported_structs :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::verify_imported_structs"
       verify_imported_structs.
-  Smpl Add apply Function_verify_imported_structs : is_function.
+  Admitted.
+  Global Opaque verify_imported_structs.
   
   (*
   fn verify_imported_functions(context: &Context) -> PartialVMResult<()> {
@@ -5692,6 +5705,7 @@ Module dependencies.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -7767,11 +7781,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_imported_functions :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_imported_functions :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::verify_imported_functions"
       verify_imported_functions.
-  Smpl Add apply Function_verify_imported_functions : is_function.
+  Admitted.
+  Global Opaque verify_imported_functions.
   
   (*
   fn compatible_struct_abilities(
@@ -7805,11 +7820,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compatible_struct_abilities :
-    M.IsFunction
+  Global Instance Instance_IsFunction_compatible_struct_abilities :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::compatible_struct_abilities"
       compatible_struct_abilities.
-  Smpl Add apply Function_compatible_struct_abilities : is_function.
+  Admitted.
+  Global Opaque compatible_struct_abilities.
   
   (*
   fn compatible_fun_type_parameters(
@@ -8034,11 +8050,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compatible_fun_type_parameters :
-    M.IsFunction
+  Global Instance Instance_IsFunction_compatible_fun_type_parameters :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::compatible_fun_type_parameters"
       compatible_fun_type_parameters.
-  Smpl Add apply Function_compatible_fun_type_parameters : is_function.
+  Admitted.
+  Global Opaque compatible_fun_type_parameters.
   
   (*
   fn compatible_struct_type_parameters(
@@ -8291,11 +8308,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compatible_struct_type_parameters :
-    M.IsFunction
+  Global Instance Instance_IsFunction_compatible_struct_type_parameters :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::compatible_struct_type_parameters"
       compatible_struct_type_parameters.
-  Smpl Add apply Function_compatible_struct_type_parameters : is_function.
+  Admitted.
+  Global Opaque compatible_struct_type_parameters.
   
   (*
   fn compatible_type_parameter_constraints(
@@ -8335,11 +8353,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compatible_type_parameter_constraints :
-    M.IsFunction
+  Global Instance Instance_IsFunction_compatible_type_parameter_constraints :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::compatible_type_parameter_constraints"
       compatible_type_parameter_constraints.
-  Smpl Add apply Function_compatible_type_parameter_constraints : is_function.
+  Admitted.
+  Global Opaque compatible_type_parameter_constraints.
   
   (*
   fn compatible_type_parameter_phantom_decl(
@@ -8382,11 +8401,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compatible_type_parameter_phantom_decl :
-    M.IsFunction
+  Global Instance Instance_IsFunction_compatible_type_parameter_phantom_decl :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::compatible_type_parameter_phantom_decl"
       compatible_type_parameter_phantom_decl.
-  Smpl Add apply Function_compatible_type_parameter_phantom_decl : is_function.
+  Admitted.
+  Global Opaque compatible_type_parameter_phantom_decl.
   
   (*
   fn compare_cross_module_signatures(
@@ -8607,6 +8627,7 @@ Module dependencies.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -8840,11 +8861,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compare_cross_module_signatures :
-    M.IsFunction
+  Global Instance Instance_IsFunction_compare_cross_module_signatures :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::compare_cross_module_signatures"
       compare_cross_module_signatures.
-  Smpl Add apply Function_compare_cross_module_signatures : is_function.
+  Admitted.
+  Global Opaque compare_cross_module_signatures.
   
   (*
   fn compare_types(
@@ -9850,9 +9872,10 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compare_types :
-    M.IsFunction "move_bytecode_verifier::dependencies::compare_types" compare_types.
-  Smpl Add apply Function_compare_types : is_function.
+  Global Instance Instance_IsFunction_compare_types :
+    M.IsFunction.Trait "move_bytecode_verifier::dependencies::compare_types" compare_types.
+  Admitted.
+  Global Opaque compare_types.
   
   (*
   fn compare_structs(
@@ -10197,9 +10220,10 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_compare_structs :
-    M.IsFunction "move_bytecode_verifier::dependencies::compare_structs" compare_structs.
-  Smpl Add apply Function_compare_structs : is_function.
+  Global Instance Instance_IsFunction_compare_structs :
+    M.IsFunction.Trait "move_bytecode_verifier::dependencies::compare_structs" compare_structs.
+  Admitted.
+  Global Opaque compare_structs.
   
   (*
   fn verify_all_script_visibility_usage(context: &Context) -> PartialVMResult<()> {
@@ -10498,6 +10522,7 @@ Module dependencies.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -10830,11 +10855,12 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_all_script_visibility_usage :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_all_script_visibility_usage :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::verify_all_script_visibility_usage"
       verify_all_script_visibility_usage.
-  Smpl Add apply Function_verify_all_script_visibility_usage : is_function.
+  Admitted.
+  Global Opaque verify_all_script_visibility_usage.
   
   (*
   fn verify_script_visibility_usage(
@@ -10969,6 +10995,7 @@ Module dependencies.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -11286,9 +11313,10 @@ Module dependencies.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_script_visibility_usage :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_script_visibility_usage :
+    M.IsFunction.Trait
       "move_bytecode_verifier::dependencies::verify_script_visibility_usage"
       verify_script_visibility_usage.
-  Smpl Add apply Function_verify_script_visibility_usage : is_function.
+  Admitted.
+  Global Opaque verify_script_visibility_usage.
 End dependencies.

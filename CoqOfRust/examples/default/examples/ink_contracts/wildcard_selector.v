@@ -8,8 +8,10 @@ fn decode_input<T>() -> Result<T, ()> {
 *)
 Parameter decode_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_decode_input : M.IsFunction "wildcard_selector::decode_input" decode_input.
-Smpl Add apply Function_decode_input : is_function.
+Global Instance Instance_IsFunction_decode_input :
+  M.IsFunction.Trait "wildcard_selector::decode_input" decode_input.
+Admitted.
+Global Opaque decode_input.
 
 (* StructTuple
   {
@@ -35,6 +37,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn wildcard(&mut self) {
@@ -223,6 +226,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   
   Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
   Smpl Add apply AssociatedFunction_wildcard : is_associated.
+  Global Opaque wildcard.
   
   (*
       pub fn wildcard_complement(&mut self, _message: String) {
@@ -310,4 +314,5 @@ Module Impl_wildcard_selector_WildcardSelector.
   Axiom AssociatedFunction_wildcard_complement :
     M.IsAssociatedFunction Self "wildcard_complement" wildcard_complement.
   Smpl Add apply AssociatedFunction_wildcard_complement : is_associated.
+  Global Opaque wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector.

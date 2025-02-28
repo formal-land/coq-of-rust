@@ -392,8 +392,10 @@ Module slice.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_split_point_of : M.IsFunction "core::slice::split_point_of" split_point_of.
-  Smpl Add apply Function_split_point_of : is_function.
+  Global Instance Instance_IsFunction_split_point_of :
+    M.IsFunction.Trait "core::slice::split_point_of" split_point_of.
+  Admitted.
+  Global Opaque split_point_of.
   
   (*
   Enum Direction
@@ -2002,7 +2004,14 @@ Module slice.
                 Ty.apply
                   (Ty.path "&")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      I
+                      "Output"
+                  ]
               ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
@@ -2044,7 +2053,14 @@ Module slice.
                 Ty.apply
                   (Ty.path "&mut")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      I
+                      "Output"
+                  ]
               ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
@@ -2096,7 +2112,14 @@ Module slice.
                     Ty.apply
                       (Ty.path "*const")
                       []
-                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                      [
+                        Ty.associated_in_trait
+                          "core::slice::index::SliceIndex"
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          I
+                          "Output"
+                      ],
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       I,
@@ -2166,7 +2189,7 @@ Module slice.
                                 Ty.associated_in_trait
                                   "core::slice::index::SliceIndex"
                                   []
-                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                   I
                                   "Output"
                               ],
@@ -7501,6 +7524,7 @@ Module slice.
                 let~ base : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -8943,6 +8967,7 @@ Module slice.
                   M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -9671,6 +9696,7 @@ Module slice.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -13340,6 +13366,7 @@ Module slice.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -14696,6 +14723,7 @@ Module slice.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -15066,6 +15094,7 @@ Module slice.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -15207,6 +15236,7 @@ Module slice.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -15300,9 +15330,10 @@ Module slice.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_get_many_check_valid :
-    M.IsFunction "core::slice::get_many_check_valid" get_many_check_valid.
-  Smpl Add apply Function_get_many_check_valid : is_function.
+  Global Instance Instance_IsFunction_get_many_check_valid :
+    M.IsFunction.Trait "core::slice::get_many_check_valid" get_many_check_valid.
+  Admitted.
+  Global Opaque get_many_check_valid.
   
   (* StructRecord
     {

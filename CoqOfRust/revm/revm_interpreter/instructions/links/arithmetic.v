@@ -26,6 +26,7 @@ Definition run_add
     unit
   }}.
 Proof.
+  with_strategy transparent [instructions.arithmetic.add] unfold instructions.arithmetic.add.
   run_symbolic.
   eapply Run.Rewrite. {
     repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.

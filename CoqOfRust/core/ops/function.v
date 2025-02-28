@@ -29,7 +29,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output",
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (|
@@ -73,7 +73,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output",
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (|
@@ -101,7 +101,7 @@ Module ops.
         
         (*         type Output = F::Output; *)
         Definition _Output (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
+          Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output".
         
         (*
                 extern "rust-call" fn call_once(self, args: A) -> F::Output {
@@ -121,7 +121,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output",
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -166,7 +166,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output",
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,
@@ -202,7 +202,7 @@ Module ops.
         
         (*         type Output = F::Output; *)
         Definition _Output (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
+          Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output".
         
         (*
                 extern "rust-call" fn call_once(self, args: A) -> F::Output {
@@ -222,7 +222,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [ A ] F "Output",
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,

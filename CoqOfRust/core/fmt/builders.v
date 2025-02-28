@@ -229,6 +229,7 @@ Module fmt.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -950,9 +951,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_debug_struct_new :
-      M.IsFunction "core::fmt::builders::debug_struct_new" debug_struct_new.
-    Smpl Add apply Function_debug_struct_new : is_function.
+    Global Instance Instance_IsFunction_debug_struct_new :
+      M.IsFunction.Trait "core::fmt::builders::debug_struct_new" debug_struct_new.
+    Admitted.
+    Global Opaque debug_struct_new.
     
     Module Impl_core_fmt_builders_DebugStruct.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugStruct".
@@ -3331,9 +3333,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_debug_tuple_new :
-      M.IsFunction "core::fmt::builders::debug_tuple_new" debug_tuple_new.
-    Smpl Add apply Function_debug_tuple_new : is_function.
+    Global Instance Instance_IsFunction_debug_tuple_new :
+      M.IsFunction.Trait "core::fmt::builders::debug_tuple_new" debug_tuple_new.
+    Admitted.
+    Global Opaque debug_tuple_new.
     
     Module Impl_core_fmt_builders_DebugTuple.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugTuple".
@@ -6173,8 +6176,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
-    Smpl Add apply Function_debug_set_new : is_function.
+    Global Instance Instance_IsFunction_debug_set_new :
+      M.IsFunction.Trait "core::fmt::builders::debug_set_new" debug_set_new.
+    Admitted.
+    Global Opaque debug_set_new.
     
     Module Impl_core_fmt_builders_DebugSet.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugSet".
@@ -6381,6 +6386,7 @@ Module fmt.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -7203,9 +7209,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_debug_list_new :
-      M.IsFunction "core::fmt::builders::debug_list_new" debug_list_new.
-    Smpl Add apply Function_debug_list_new : is_function.
+    Global Instance Instance_IsFunction_debug_list_new :
+      M.IsFunction.Trait "core::fmt::builders::debug_list_new" debug_list_new.
+    Admitted.
+    Global Opaque debug_list_new.
     
     Module Impl_core_fmt_builders_DebugList.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugList".
@@ -7412,6 +7419,7 @@ Module fmt.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -8201,8 +8209,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
-    Smpl Add apply Function_debug_map_new : is_function.
+    Global Instance Instance_IsFunction_debug_map_new :
+      M.IsFunction.Trait "core::fmt::builders::debug_map_new" debug_map_new.
+    Admitted.
+    Global Opaque debug_map_new.
     
     Module Impl_core_fmt_builders_DebugMap.
       Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugMap".
@@ -10646,6 +10656,7 @@ Module fmt.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -11579,8 +11590,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_fn : M.IsFunction "core::fmt::builders::from_fn" from_fn.
-    Smpl Add apply Function_from_fn : is_function.
+    Global Instance Instance_IsFunction_from_fn :
+      M.IsFunction.Trait "core::fmt::builders::from_fn" from_fn.
+    Admitted.
+    Global Opaque from_fn.
     
     (* StructTuple
       {

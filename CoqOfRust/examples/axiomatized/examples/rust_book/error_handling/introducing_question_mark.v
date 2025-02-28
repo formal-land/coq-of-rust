@@ -3,15 +3,21 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_multiply : M.IsFunction "introducing_question_mark::multiply" multiply.
-Smpl Add apply Function_multiply : is_function.
+Global Instance Instance_IsFunction_multiply :
+  M.IsFunction.Trait "introducing_question_mark::multiply" multiply.
+Admitted.
+Global Opaque multiply.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print : M.IsFunction "introducing_question_mark::print" print.
-Smpl Add apply Function_print : is_function.
+Global Instance Instance_IsFunction_print :
+  M.IsFunction.Trait "introducing_question_mark::print" print.
+Admitted.
+Global Opaque print.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "introducing_question_mark::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "introducing_question_mark::main" main.
+Admitted.
+Global Opaque main.

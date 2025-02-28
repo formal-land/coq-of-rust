@@ -4,24 +4,31 @@ Require Import CoqOfRust.CoqOfRust.
 Module alloc.
   Parameter __rust_alloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function___rust_alloc : M.IsFunction "alloc::alloc::__rust_alloc" __rust_alloc.
-  Smpl Add apply Function___rust_alloc : is_function.
+  Global Instance Instance_IsFunction___rust_alloc :
+    M.IsFunction.Trait "alloc::alloc::__rust_alloc" __rust_alloc.
+  Admitted.
+  Global Opaque __rust_alloc.
   
   Parameter __rust_dealloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function___rust_dealloc : M.IsFunction "alloc::alloc::__rust_dealloc" __rust_dealloc.
-  Smpl Add apply Function___rust_dealloc : is_function.
+  Global Instance Instance_IsFunction___rust_dealloc :
+    M.IsFunction.Trait "alloc::alloc::__rust_dealloc" __rust_dealloc.
+  Admitted.
+  Global Opaque __rust_dealloc.
   
   Parameter __rust_realloc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function___rust_realloc : M.IsFunction "alloc::alloc::__rust_realloc" __rust_realloc.
-  Smpl Add apply Function___rust_realloc : is_function.
+  Global Instance Instance_IsFunction___rust_realloc :
+    M.IsFunction.Trait "alloc::alloc::__rust_realloc" __rust_realloc.
+  Admitted.
+  Global Opaque __rust_realloc.
   
   Parameter __rust_alloc_zeroed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function___rust_alloc_zeroed :
-    M.IsFunction "alloc::alloc::__rust_alloc_zeroed" __rust_alloc_zeroed.
-  Smpl Add apply Function___rust_alloc_zeroed : is_function.
+  Global Instance Instance_IsFunction___rust_alloc_zeroed :
+    M.IsFunction.Trait "alloc::alloc::__rust_alloc_zeroed" __rust_alloc_zeroed.
+  Admitted.
+  Global Opaque __rust_alloc_zeroed.
   
   Parameter __rust_no_alloc_shim_is_unstable : Value.t.
   
@@ -195,8 +202,9 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_alloc : M.IsFunction "alloc::alloc::alloc" alloc.
-  Smpl Add apply Function_alloc : is_function.
+  Global Instance Instance_IsFunction_alloc : M.IsFunction.Trait "alloc::alloc::alloc" alloc.
+  Admitted.
+  Global Opaque alloc.
   
   (*
   pub unsafe fn dealloc(ptr: *mut u8, layout: Layout) {
@@ -234,8 +242,9 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_dealloc : M.IsFunction "alloc::alloc::dealloc" dealloc.
-  Smpl Add apply Function_dealloc : is_function.
+  Global Instance Instance_IsFunction_dealloc : M.IsFunction.Trait "alloc::alloc::dealloc" dealloc.
+  Admitted.
+  Global Opaque dealloc.
   
   (*
   pub unsafe fn realloc(ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
@@ -275,8 +284,9 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_realloc : M.IsFunction "alloc::alloc::realloc" realloc.
-  Smpl Add apply Function_realloc : is_function.
+  Global Instance Instance_IsFunction_realloc : M.IsFunction.Trait "alloc::alloc::realloc" realloc.
+  Admitted.
+  Global Opaque realloc.
   
   (*
   pub unsafe fn alloc_zeroed(layout: Layout) -> *mut u8 {
@@ -349,8 +359,10 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_alloc_zeroed : M.IsFunction "alloc::alloc::alloc_zeroed" alloc_zeroed.
-  Smpl Add apply Function_alloc_zeroed : is_function.
+  Global Instance Instance_IsFunction_alloc_zeroed :
+    M.IsFunction.Trait "alloc::alloc::alloc_zeroed" alloc_zeroed.
+  Admitted.
+  Global Opaque alloc_zeroed.
   
   Module Impl_alloc_alloc_Global.
     Definition Self : Ty.t := Ty.path "alloc::alloc::Global".
@@ -2477,14 +2489,17 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_exchange_malloc : M.IsFunction "alloc::alloc::exchange_malloc" exchange_malloc.
-  Smpl Add apply Function_exchange_malloc : is_function.
+  Global Instance Instance_IsFunction_exchange_malloc :
+    M.IsFunction.Trait "alloc::alloc::exchange_malloc" exchange_malloc.
+  Admitted.
+  Global Opaque exchange_malloc.
   
   Parameter __rust_alloc_error_handler : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function___rust_alloc_error_handler :
-    M.IsFunction "alloc::alloc::__rust_alloc_error_handler" __rust_alloc_error_handler.
-  Smpl Add apply Function___rust_alloc_error_handler : is_function.
+  Global Instance Instance_IsFunction___rust_alloc_error_handler :
+    M.IsFunction.Trait "alloc::alloc::__rust_alloc_error_handler" __rust_alloc_error_handler.
+  Admitted.
+  Global Opaque __rust_alloc_error_handler.
   
   (*
   pub const fn handle_alloc_error(layout: Layout) -> ! {
@@ -2534,9 +2549,10 @@ Module alloc.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_handle_alloc_error :
-    M.IsFunction "alloc::alloc::handle_alloc_error" handle_alloc_error.
-  Smpl Add apply Function_handle_alloc_error : is_function.
+  Global Instance Instance_IsFunction_handle_alloc_error :
+    M.IsFunction.Trait "alloc::alloc::handle_alloc_error" handle_alloc_error.
+  Admitted.
+  Global Opaque handle_alloc_error.
   
   Module handle_alloc_error.
     (*
@@ -2587,8 +2603,10 @@ Module alloc.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_ct_error : M.IsFunction "alloc::alloc::handle_alloc_error::ct_error" ct_error.
-    Smpl Add apply Function_ct_error : is_function.
+    Global Instance Instance_IsFunction_ct_error :
+      M.IsFunction.Trait "alloc::alloc::handle_alloc_error::ct_error" ct_error.
+    Admitted.
+    Global Opaque ct_error.
     
     (*
         fn rt_error(layout: Layout) -> ! {
@@ -2631,8 +2649,10 @@ Module alloc.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_rt_error : M.IsFunction "alloc::alloc::handle_alloc_error::rt_error" rt_error.
-    Smpl Add apply Function_rt_error : is_function.
+    Global Instance Instance_IsFunction_rt_error :
+      M.IsFunction.Trait "alloc::alloc::handle_alloc_error::rt_error" rt_error.
+    Admitted.
+    Global Opaque rt_error.
   End handle_alloc_error.
   
   Module __alloc_error_handler.
@@ -2817,9 +2837,10 @@ Module alloc.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function___rdl_oom :
-      M.IsFunction "alloc::alloc::__alloc_error_handler::__rdl_oom" __rdl_oom.
-    Smpl Add apply Function___rdl_oom : is_function.
+    Global Instance Instance_IsFunction___rdl_oom :
+      M.IsFunction.Trait "alloc::alloc::__alloc_error_handler::__rdl_oom" __rdl_oom.
+    Admitted.
+    Global Opaque __rdl_oom.
     
     Module __rdl_oom.
       Parameter __rust_alloc_error_handler_should_panic : Value.t.

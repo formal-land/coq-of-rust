@@ -7684,9 +7684,10 @@ Module file_format.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_self_module_name :
-    M.IsFunction "move_binary_format::file_format::self_module_name" self_module_name.
-  Smpl Add apply Function_self_module_name : is_function.
+  Global Instance Instance_IsFunction_self_module_name :
+    M.IsFunction.Trait "move_binary_format::file_format::self_module_name" self_module_name.
+  Admitted.
+  Global Opaque self_module_name.
   
   Definition value_NO_TYPE_ARGUMENTS : Value.t :=
     M.run_constant
@@ -19826,6 +19827,7 @@ Module file_format.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -20184,6 +20186,7 @@ Module file_format.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -48515,9 +48518,10 @@ Module file_format.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_empty_module :
-    M.IsFunction "move_binary_format::file_format::empty_module" empty_module.
-  Smpl Add apply Function_empty_module : is_function.
+  Global Instance Instance_IsFunction_empty_module :
+    M.IsFunction.Trait "move_binary_format::file_format::empty_module" empty_module.
+  Admitted.
+  Global Opaque empty_module.
   
   (*
   pub fn basic_test_module() -> CompiledModule {
@@ -49301,7 +49305,8 @@ Module file_format.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_basic_test_module :
-    M.IsFunction "move_binary_format::file_format::basic_test_module" basic_test_module.
-  Smpl Add apply Function_basic_test_module : is_function.
+  Global Instance Instance_IsFunction_basic_test_module :
+    M.IsFunction.Trait "move_binary_format::file_format::basic_test_module" basic_test_module.
+  Admitted.
+  Global Opaque basic_test_module.
 End file_format.

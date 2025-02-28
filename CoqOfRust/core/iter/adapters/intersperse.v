@@ -1957,11 +1957,12 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_intersperse_size_hint :
-        M.IsFunction
+      Global Instance Instance_IsFunction_intersperse_size_hint :
+        M.IsFunction.Trait
           "core::iter::adapters::intersperse::intersperse_size_hint"
           intersperse_size_hint.
-      Smpl Add apply Function_intersperse_size_hint : is_function.
+      Admitted.
+      Global Opaque intersperse_size_hint.
       
       (*
       fn intersperse_fold<I, B, F, G>(
@@ -2290,9 +2291,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_intersperse_fold :
-        M.IsFunction "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
-      Smpl Add apply Function_intersperse_fold : is_function.
+      Global Instance Instance_IsFunction_intersperse_fold :
+        M.IsFunction.Trait "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
+      Admitted.
+      Global Opaque intersperse_fold.
     End intersperse.
   End adapters.
 End iter.

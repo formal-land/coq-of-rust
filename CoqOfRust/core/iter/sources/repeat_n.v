@@ -75,8 +75,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_repeat_n : M.IsFunction "core::iter::sources::repeat_n::repeat_n" repeat_n.
-      Smpl Add apply Function_repeat_n : is_function.
+      Global Instance Instance_IsFunction_repeat_n :
+        M.IsFunction.Trait "core::iter::sources::repeat_n::repeat_n" repeat_n.
+      Admitted.
+      Global Opaque repeat_n.
       
       (* StructRecord
         {

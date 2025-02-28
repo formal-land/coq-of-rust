@@ -16,19 +16,23 @@ Module Impl_flipper_Flipper.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter new_default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Opaque new_default.
   
   Parameter flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_flipper_Flipper.

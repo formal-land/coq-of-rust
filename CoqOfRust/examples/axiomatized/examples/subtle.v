@@ -56,6 +56,7 @@ Module Impl_subtle_Choice.
   
   Axiom AssociatedFunction_unwrap_u8 : M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
   Smpl Add apply AssociatedFunction_unwrap_u8 : is_associated.
+  Global Opaque unwrap_u8.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
@@ -183,8 +184,9 @@ End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
-Smpl Add apply Function_black_box : is_function.
+Global Instance Instance_IsFunction_black_box : M.IsFunction.Trait "subtle::black_box" black_box.
+Admitted.
+Global Opaque black_box.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
@@ -679,6 +681,7 @@ Module Impl_subtle_CtOption_T.
   
   Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter expect : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -686,6 +689,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "expect" (expect T).
   Smpl Add apply AssociatedFunction_expect : is_associated.
+  Global Opaque expect.
   
   Parameter unwrap : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -693,6 +697,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "unwrap" (unwrap T).
   Smpl Add apply AssociatedFunction_unwrap : is_associated.
+  Global Opaque unwrap.
   
   Parameter unwrap_or : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -700,6 +705,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "unwrap_or" (unwrap_or T).
   Smpl Add apply AssociatedFunction_unwrap_or : is_associated.
+  Global Opaque unwrap_or.
   
   Parameter unwrap_or_else :
       forall (T : Ty.t),
@@ -709,6 +715,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "unwrap_or_else" (unwrap_or_else T).
   Smpl Add apply AssociatedFunction_unwrap_or_else : is_associated.
+  Global Opaque unwrap_or_else.
   
   Parameter is_some : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -716,6 +723,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "is_some" (is_some T).
   Smpl Add apply AssociatedFunction_is_some : is_associated.
+  Global Opaque is_some.
   
   Parameter is_none : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -723,11 +731,13 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "is_none" (is_none T).
   Smpl Add apply AssociatedFunction_is_none : is_associated.
+  Global Opaque is_none.
   
   Parameter map : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
   Smpl Add apply AssociatedFunction_map : is_associated.
+  Global Opaque map.
   
   Parameter and_then : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -735,6 +745,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "and_then" (and_then T).
   Smpl Add apply AssociatedFunction_and_then : is_associated.
+  Global Opaque and_then.
   
   Parameter or_else : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -742,6 +753,7 @@ Module Impl_subtle_CtOption_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "or_else" (or_else T).
   Smpl Add apply AssociatedFunction_or_else : is_associated.
+  Global Opaque or_else.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.

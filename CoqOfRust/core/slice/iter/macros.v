@@ -2041,6 +2041,7 @@ Module slice.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.alloc (|
@@ -2178,6 +2179,7 @@ Module slice.
             let f := M.alloc (| f |) in
             M.read (|
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -2276,6 +2278,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2408,6 +2411,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2537,6 +2541,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2687,6 +2692,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2924,6 +2930,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -3191,6 +3198,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.copy (| n |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -6490,6 +6498,7 @@ Module slice.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.alloc (|
@@ -6632,6 +6641,7 @@ Module slice.
             let f := M.alloc (| f |) in
             M.read (|
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -6734,6 +6744,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -6868,6 +6879,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -6998,6 +7010,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7148,6 +7161,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7385,6 +7399,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7654,6 +7669,7 @@ Module slice.
                   let~ i : Ty.path "usize" := M.copy (| n |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),

@@ -4551,6 +4551,7 @@ Module collections.
                                                       ltac:(M.monadic
                                                         (let iter := M.copy (| γ |) in
                                                         M.loop (|
+                                                          Ty.tuple [],
                                                           ltac:(M.monadic
                                                             (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
@@ -4806,6 +4807,7 @@ Module collections.
                                                   |)
                                                 |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
@@ -10443,6 +10445,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (|
@@ -10864,6 +10867,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (let~ self_next : Ty.apply (Ty.path "&") [] [ T ] :=
                                         M.copy (|
@@ -11477,6 +11481,7 @@ Module collections.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (|
@@ -12249,6 +12254,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (|
@@ -12642,6 +12648,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (let~ small_next : Ty.apply (Ty.path "&") [] [ T ] :=
                                         M.copy (|

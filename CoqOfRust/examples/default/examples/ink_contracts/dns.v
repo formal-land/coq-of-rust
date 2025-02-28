@@ -81,6 +81,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   Smpl Add apply AssociatedFunction_contains : is_associated.
+  Global Opaque contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -93,6 +94,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -105,6 +107,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -117,6 +120,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "new" (new K V).
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       fn remove(&self, _key: K) {
@@ -129,6 +133,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   Smpl Add apply AssociatedFunction_remove : is_associated.
+  Global Opaque remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -141,6 +146,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   Smpl Add apply AssociatedFunction_size : is_associated.
+  Global Opaque size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -153,6 +159,7 @@ Module Impl_dns_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
   Smpl Add apply AssociatedFunction_take : is_associated.
+  Global Opaque take.
 End Impl_dns_Mapping_K_V.
 
 (* StructTuple
@@ -418,6 +425,7 @@ Module Impl_dns_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -428,6 +436,7 @@ Module Impl_dns_Env.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
 End Impl_dns_Env.
 
 (* StructRecord
@@ -482,8 +491,10 @@ Definition zero_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_zero_address : M.IsFunction "dns::zero_address" zero_address.
-Smpl Add apply Function_zero_address : is_function.
+Global Instance Instance_IsFunction_zero_address :
+  M.IsFunction.Trait "dns::zero_address" zero_address.
+Admitted.
+Global Opaque zero_address.
 
 Module Impl_core_default_Default_for_dns_DomainNameService.
   Definition Self : Ty.t := Ty.path "dns::DomainNameService".
@@ -839,6 +850,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -860,6 +872,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -888,6 +901,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn register(&mut self, name: Hash) -> Result<()> {
@@ -1066,6 +1080,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_register : M.IsAssociatedFunction Self "register" register.
   Smpl Add apply AssociatedFunction_register : is_associated.
+  Global Opaque register.
   
   (*
       fn get_owner_or_default(&self, name: Hash) -> AccountId {
@@ -1133,6 +1148,7 @@ Module Impl_dns_DomainNameService.
   Axiom AssociatedFunction_get_owner_or_default :
     M.IsAssociatedFunction Self "get_owner_or_default" get_owner_or_default.
   Smpl Add apply AssociatedFunction_get_owner_or_default : is_associated.
+  Global Opaque get_owner_or_default.
   
   (*
       pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
@@ -1359,6 +1375,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_set_address : M.IsAssociatedFunction Self "set_address" set_address.
   Smpl Add apply AssociatedFunction_set_address : is_associated.
+  Global Opaque set_address.
   
   (*
       pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
@@ -1586,6 +1603,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Opaque transfer.
   
   (*
       fn get_address_or_default(&self, name: Hash) -> AccountId {
@@ -1653,6 +1671,7 @@ Module Impl_dns_DomainNameService.
   Axiom AssociatedFunction_get_address_or_default :
     M.IsAssociatedFunction Self "get_address_or_default" get_address_or_default.
   Smpl Add apply AssociatedFunction_get_address_or_default : is_associated.
+  Global Opaque get_address_or_default.
   
   (*
       pub fn get_address(&self, name: Hash) -> AccountId {
@@ -1680,6 +1699,7 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_get_address : M.IsAssociatedFunction Self "get_address" get_address.
   Smpl Add apply AssociatedFunction_get_address : is_associated.
+  Global Opaque get_address.
   
   (*
       pub fn get_owner(&self, name: Hash) -> AccountId {
@@ -1707,4 +1727,5 @@ Module Impl_dns_DomainNameService.
   
   Axiom AssociatedFunction_get_owner : M.IsAssociatedFunction Self "get_owner" get_owner.
   Smpl Add apply AssociatedFunction_get_owner : is_associated.
+  Global Opaque get_owner.
 End Impl_dns_DomainNameService.

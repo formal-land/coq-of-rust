@@ -27,9 +27,10 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_calc_linear_cost_u32 :
-  M.IsFunction "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
-Smpl Add apply Function_calc_linear_cost_u32 : is_function.
+Global Instance Instance_IsFunction_calc_linear_cost_u32 :
+  M.IsFunction.Trait "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
+Admitted.
+Global Opaque calc_linear_cost_u32.
 
 (* StructRecord
   {
@@ -3793,5 +3794,7 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_u64_to_address : M.IsFunction "revm_precompile::u64_to_address" u64_to_address.
-Smpl Add apply Function_u64_to_address : is_function.
+Global Instance Instance_IsFunction_u64_to_address :
+  M.IsFunction.Trait "revm_precompile::u64_to_address" u64_to_address.
+Admitted.
+Global Opaque u64_to_address.

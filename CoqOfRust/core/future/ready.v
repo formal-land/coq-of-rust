@@ -290,7 +290,9 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.
-    Smpl Add apply Function_ready : is_function.
+    Global Instance Instance_IsFunction_ready :
+      M.IsFunction.Trait "core::future::ready::ready" ready.
+    Admitted.
+    Global Opaque ready.
   End ready.
 End future.

@@ -1258,6 +1258,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -1905,6 +1906,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -2552,6 +2554,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -3199,6 +3202,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -3846,6 +3850,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -4488,6 +4493,7 @@ Module str.
                                             ltac:(M.monadic
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
@@ -5105,8 +5111,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_join_generic_copy : M.IsFunction "alloc::str::join_generic_copy" join_generic_copy.
-  Smpl Add apply Function_join_generic_copy : is_function.
+  Global Instance Instance_IsFunction_join_generic_copy :
+    M.IsFunction.Trait "alloc::str::join_generic_copy" join_generic_copy.
+  Admitted.
+  Global Opaque join_generic_copy.
   
   Module Impl_core_borrow_Borrow_str_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -5437,6 +5445,7 @@ Module str.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -5739,6 +5748,7 @@ Module str.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -6091,6 +6101,7 @@ Module str.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -6518,6 +6529,7 @@ Module str.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -7051,9 +7063,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_boxed_utf8_unchecked :
-    M.IsFunction "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
-  Smpl Add apply Function_from_boxed_utf8_unchecked : is_function.
+  Global Instance Instance_IsFunction_from_boxed_utf8_unchecked :
+    M.IsFunction.Trait "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
+  Admitted.
+  Global Opaque from_boxed_utf8_unchecked.
   
   (*
   pub fn convert_while_ascii(s: &str, convert: fn(&u8) -> u8) -> (String, &str) {
@@ -7226,6 +7239,7 @@ Module str.
             M.alloc (| repeat (| Value.Bool false, Value.Integer IntegerKind.Usize 16 |) |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -7401,6 +7415,7 @@ Module str.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -7664,6 +7679,7 @@ Module str.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -7906,6 +7922,7 @@ Module str.
             |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -8202,9 +8219,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_convert_while_ascii :
-    M.IsFunction "alloc::str::convert_while_ascii" convert_while_ascii.
-  Smpl Add apply Function_convert_while_ascii : is_function.
+  Global Instance Instance_IsFunction_convert_while_ascii :
+    M.IsFunction.Trait "alloc::str::convert_while_ascii" convert_while_ascii.
+  Admitted.
+  Global Opaque convert_while_ascii.
   
   Module convert_while_ascii.
     Definition value_N : Value.t :=

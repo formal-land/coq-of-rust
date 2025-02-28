@@ -21,9 +21,11 @@ Module Impl_polymorphic_constants_Foo_N_A.
     forall (N : Value.t) (A : Ty.t),
     M.IsAssociatedFunction (Self N A) "convert" (convert N A).
   Smpl Add apply AssociatedFunction_convert : is_associated.
+  Global Opaque convert.
 End Impl_polymorphic_constants_Foo_N_A.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "polymorphic_constants::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "polymorphic_constants::main" main.
+Admitted.
+Global Opaque main.

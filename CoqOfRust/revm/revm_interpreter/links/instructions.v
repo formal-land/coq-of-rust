@@ -25,6 +25,7 @@ Definition run_instruction_table
     array.t (Instruction.t WIRE H WIRE_types) {| Integer.value := 256 |}
   }}.
 Proof.
+  with_strategy transparent [instructions.instruction_table] unfold instructions.instruction_table.
   run_symbolic_one_step_immediate.
   run_symbolic_let. {
     run_symbolic.
@@ -74,6 +75,33 @@ Proof.
       |} in _).
     change (Value.Closure _) with (φ f_with_run).
     run_symbolic.
+  }
+  intros []; run_symbolic.
+Defined.
+
+(*
+pub const fn instruction<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    opcode: u8,
+)
+*)
+Definition run_instruction
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (opcode : U8.t) :
+  {{
+    instructions.instruction [] [ Φ WIRE; Φ H ] [ φ opcode ] 🔽
+    Instruction.t WIRE H WIRE_types
+  }}.
+Proof.
+  with_strategy transparent [instructions.instruction] unfold instructions.instruction.
+  run_symbolic.
+  run_symbolic_let. {
+    run_symbolic.
+    run_symbolic_closure. {
+      apply (run_instruction_table run_InterpreterTypes_for_WIRE).
+    }
+    intros []; run_symbolic.
   }
   intros []; run_symbolic.
 Defined.

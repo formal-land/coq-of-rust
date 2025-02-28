@@ -2154,6 +2154,7 @@ Module eof.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -2387,11 +2388,12 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_consume_header_section_size :
-      M.IsFunction
+    Global Instance Instance_IsFunction_consume_header_section_size :
+      M.IsFunction.Trait
         "revm_bytecode::eof::header::consume_header_section_size"
         consume_header_section_size.
-    Smpl Add apply Function_consume_header_section_size : is_function.
+    Admitted.
+    Global Opaque consume_header_section_size.
     
     Module Impl_revm_bytecode_eof_header_EofHeader.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::header::EofHeader".
@@ -2984,6 +2986,7 @@ Module eof.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3278,6 +3281,7 @@ Module eof.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|

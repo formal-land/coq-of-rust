@@ -3,10 +3,12 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter call : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_call : M.IsFunction "hash_map::call" call.
-Smpl Add apply Function_call : is_function.
+Global Instance Instance_IsFunction_call : M.IsFunction.Trait "hash_map::call" call.
+Admitted.
+Global Opaque call.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "hash_map::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "hash_map::main" main.
+Admitted.
+Global Opaque main.

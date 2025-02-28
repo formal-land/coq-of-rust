@@ -1902,6 +1902,7 @@ Module effects.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2496,8 +2497,10 @@ Module effects.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_squash : M.IsFunction "move_core_types::effects::squash" squash.
-  Smpl Add apply Function_squash : is_function.
+  Global Instance Instance_IsFunction_squash :
+    M.IsFunction.Trait "move_core_types::effects::squash" squash.
+  Admitted.
+  Global Opaque squash.
   
   Module Impl_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
@@ -4928,6 +4931,7 @@ Module effects.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|

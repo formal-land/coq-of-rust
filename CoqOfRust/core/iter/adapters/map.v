@@ -312,8 +312,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_map_fold : M.IsFunction "core::iter::adapters::map::map_fold" map_fold.
-      Smpl Add apply Function_map_fold : is_function.
+      Global Instance Instance_IsFunction_map_fold :
+        M.IsFunction.Trait "core::iter::adapters::map::map_fold" map_fold.
+      Admitted.
+      Global Opaque map_fold.
       
       Module map_fold.
         (* Error OpaqueTy *)
@@ -400,9 +402,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_map_try_fold :
-        M.IsFunction "core::iter::adapters::map::map_try_fold" map_try_fold.
-      Smpl Add apply Function_map_try_fold : is_function.
+      Global Instance Instance_IsFunction_map_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::map::map_try_fold" map_try_fold.
+      Admitted.
+      Global Opaque map_try_fold.
       
       Module map_try_fold.
         (* Error OpaqueTy *)

@@ -767,9 +767,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_filter_fold :
-        M.IsFunction "core::iter::adapters::filter::filter_fold" filter_fold.
-      Smpl Add apply Function_filter_fold : is_function.
+      Global Instance Instance_IsFunction_filter_fold :
+        M.IsFunction.Trait "core::iter::adapters::filter::filter_fold" filter_fold.
+      Admitted.
+      Global Opaque filter_fold.
       
       Module filter_fold.
         (* Error OpaqueTy *)
@@ -905,9 +906,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_filter_try_fold :
-        M.IsFunction "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
-      Smpl Add apply Function_filter_try_fold : is_function.
+      Global Instance Instance_IsFunction_filter_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
+      Admitted.
+      Global Opaque filter_try_fold.
       
       Module filter_try_fold.
         (* Error OpaqueTy *)

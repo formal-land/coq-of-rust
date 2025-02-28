@@ -204,8 +204,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_sort : M.IsFunction "core::slice::sort::stable::sort" sort.
-      Smpl Add apply Function_sort : is_function.
+      Global Instance Instance_IsFunction_sort :
+        M.IsFunction.Trait "core::slice::sort::stable::sort" sort.
+      Admitted.
+      Global Opaque sort.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
@@ -518,9 +520,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_driftsort_main :
-        M.IsFunction "core::slice::sort::stable::driftsort_main" driftsort_main.
-      Smpl Add apply Function_driftsort_main : is_function.
+      Global Instance Instance_IsFunction_driftsort_main :
+        M.IsFunction.Trait "core::slice::sort::stable::driftsort_main" driftsort_main.
+      Admitted.
+      Global Opaque driftsort_main.
       
       Module driftsort_main.
         Definition value_MAX_FULL_ALLOC_BYTES : Value.t :=

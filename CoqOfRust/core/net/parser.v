@@ -1974,6 +1974,7 @@ Module net.
                                                   M.alloc (| Value.Integer IntegerKind.U32 0 |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
                                                         M.alloc (| Value.Tuple [] |),
@@ -2331,7 +2332,7 @@ Module net.
                                                           Ty.associated_in_trait
                                                             "core::convert::TryFrom"
                                                             []
-                                                            []
+                                                            [ Ty.path "u32" ]
                                                             T
                                                             "Error"
                                                         ],
@@ -2349,7 +2350,7 @@ Module net.
                                                             Ty.associated_in_trait
                                                               "core::convert::TryFrom"
                                                               []
-                                                              []
+                                                              [ Ty.path "u32" ]
                                                               T
                                                               "Error"
                                                           ],
@@ -2376,6 +2377,7 @@ Module net.
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
                                                         M.alloc (| Value.Tuple [] |),
@@ -3157,6 +3159,7 @@ Module net.
                                               ltac:(M.monadic
                                                 (let iter := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|

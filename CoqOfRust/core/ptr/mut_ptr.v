@@ -2672,7 +2672,14 @@ Module ptr.
               Ty.apply
                 (Ty.path "*mut")
                 []
-                [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                [
+                  Ty.associated_in_trait
+                    "core::slice::index::SliceIndex"
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    I
+                    "Output"
+                ],
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,

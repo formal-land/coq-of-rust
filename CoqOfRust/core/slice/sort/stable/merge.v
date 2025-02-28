@@ -357,8 +357,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge : M.IsFunction "core::slice::sort::stable::merge::merge" merge.
-        Smpl Add apply Function_merge : is_function.
+        Global Instance Instance_IsFunction_merge :
+          M.IsFunction.Trait "core::slice::sort::stable::merge::merge" merge.
+        Admitted.
+        Global Opaque merge.
         
         (* StructRecord
           {
@@ -441,6 +443,7 @@ Module slice.
                       |)
                     |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -697,6 +700,7 @@ Module slice.
                 let is_less := M.alloc (| is_less |) in
                 M.read (|
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ left : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.alloc (|

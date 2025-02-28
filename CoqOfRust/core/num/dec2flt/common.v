@@ -234,6 +234,7 @@ Module num.
                   M.copy (| self |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -424,8 +425,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_is_8digits : M.IsFunction "core::num::dec2flt::common::is_8digits" is_8digits.
-      Smpl Add apply Function_is_8digits : is_function.
+      Global Instance Instance_IsFunction_is_8digits :
+        M.IsFunction.Trait "core::num::dec2flt::common::is_8digits" is_8digits.
+      Admitted.
+      Global Opaque is_8digits.
       
       (* StructRecord
         {

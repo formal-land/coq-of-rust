@@ -1434,6 +1434,7 @@ Module string.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1880,6 +1881,7 @@ Module string.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -6573,6 +6575,7 @@ Module string.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -6840,6 +6843,7 @@ Module string.
               |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -9268,6 +9272,7 @@ Module string.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -13907,7 +13912,7 @@ Module string.
     
     (*     type Output = I::Output; *)
     Definition _Output (I : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
+      Ty.associated_in_trait "core::slice::index::SliceIndex" [] [ Ty.path "str" ] I "Output".
     
     (*
         fn index(&self, index: I) -> &I::Output {
@@ -13928,7 +13933,14 @@ Module string.
                 Ty.apply
                   (Ty.path "&")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.path "str" ]
+                      I
+                      "Output"
+                  ],
                 M.get_trait_method (|
                   "core::slice::index::SliceIndex",
                   I,
@@ -13998,7 +14010,14 @@ Module string.
                     Ty.apply
                       (Ty.path "&mut")
                       []
-                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                      [
+                        Ty.associated_in_trait
+                          "core::slice::index::SliceIndex"
+                          []
+                          [ Ty.path "str" ]
+                          I
+                          "Output"
+                      ],
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       I,

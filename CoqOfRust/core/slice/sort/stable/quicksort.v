@@ -88,6 +88,7 @@ Module slice.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ len : Ty.path "usize" :=
                             M.alloc (|
@@ -801,9 +802,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_quicksort :
-          M.IsFunction "core::slice::sort::stable::quicksort::quicksort" quicksort.
-        Smpl Add apply Function_quicksort : is_function.
+        Global Instance Instance_IsFunction_quicksort :
+          M.IsFunction.Trait "core::slice::sort::stable::quicksort::quicksort" quicksort.
+        Admitted.
+        Global Opaque quicksort.
         
         (*
         fn stable_partition<T, F: FnMut(&T, &T) -> bool>(
@@ -1057,6 +1059,7 @@ Module slice.
                 let~ loop_end_pos : Ty.path "usize" := M.copy (| pivot_pos |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
@@ -1108,6 +1111,7 @@ Module slice.
                                     |)
                                   |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
@@ -1456,6 +1460,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -1728,6 +1733,7 @@ Module slice.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1850,9 +1856,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_stable_partition :
-          M.IsFunction "core::slice::sort::stable::quicksort::stable_partition" stable_partition.
-        Smpl Add apply Function_stable_partition : is_function.
+        Global Instance Instance_IsFunction_stable_partition :
+          M.IsFunction.Trait
+            "core::slice::sort::stable::quicksort::stable_partition"
+            stable_partition.
+        Admitted.
+        Global Opaque stable_partition.
         
         Module stable_partition.
           Definition value_UNROLL_LEN : Value.t :=
@@ -2207,11 +2216,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_has_direct_interior_mutability :
-          M.IsFunction
+        Global Instance Instance_IsFunction_has_direct_interior_mutability :
+          M.IsFunction.Trait
             "core::slice::sort::stable::quicksort::has_direct_interior_mutability"
             has_direct_interior_mutability.
-        Smpl Add apply Function_has_direct_interior_mutability : is_function.
+        Admitted.
+        Global Opaque has_direct_interior_mutability.
       End quicksort.
     End stable.
   End sort.

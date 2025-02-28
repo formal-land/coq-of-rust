@@ -98,6 +98,7 @@ Module collections.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ next : Ty.tuple [ K; V ] :=
                             M.copy (|

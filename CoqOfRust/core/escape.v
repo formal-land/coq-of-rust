@@ -123,8 +123,10 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_backslash : M.IsFunction "core::escape::backslash" backslash.
-  Smpl Add apply Function_backslash : is_function.
+  Global Instance Instance_IsFunction_backslash :
+    M.IsFunction.Trait "core::escape::backslash" backslash.
+  Admitted.
+  Global Opaque backslash.
   
   (*
   const fn escape_ascii<const N: usize>(byte: u8) -> ([ascii::Char; N], Range<u8>) {
@@ -461,8 +463,10 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_escape_ascii : M.IsFunction "core::escape::escape_ascii" escape_ascii.
-  Smpl Add apply Function_escape_ascii : is_function.
+  Global Instance Instance_IsFunction_escape_ascii :
+    M.IsFunction.Trait "core::escape::escape_ascii" escape_ascii.
+  Admitted.
+  Global Opaque escape_ascii.
   
   (*
   const fn escape_unicode<const N: usize>(c: char) -> ([ascii::Char; N], Range<u8>) {
@@ -670,8 +674,10 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_escape_unicode : M.IsFunction "core::escape::escape_unicode" escape_unicode.
-  Smpl Add apply Function_escape_unicode : is_function.
+  Global Instance Instance_IsFunction_escape_unicode :
+    M.IsFunction.Trait "core::escape::escape_unicode" escape_unicode.
+  Admitted.
+  Global Opaque escape_unicode.
   
   (* StructRecord
     {

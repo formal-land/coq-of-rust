@@ -3,15 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter checked_division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
-Smpl Add apply Function_checked_division : is_function.
+Global Instance Instance_IsFunction_checked_division :
+  M.IsFunction.Trait "option::checked_division" checked_division.
+Admitted.
+Global Opaque checked_division.
 
 Parameter try_division : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
-Smpl Add apply Function_try_division : is_function.
+Global Instance Instance_IsFunction_try_division :
+  M.IsFunction.Trait "option::try_division" try_division.
+Admitted.
+Global Opaque try_division.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "option::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option::main" main.
+Admitted.
+Global Opaque main.

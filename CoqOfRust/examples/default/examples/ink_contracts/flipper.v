@@ -28,6 +28,7 @@ Module Impl_flipper_Flipper.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn new_default() -> Self {
@@ -62,6 +63,7 @@ Module Impl_flipper_Flipper.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Opaque new_default.
   
   (*
       pub fn flip(&mut self) {
@@ -100,6 +102,7 @@ Module Impl_flipper_Flipper.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -123,4 +126,5 @@ Module Impl_flipper_Flipper.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_flipper_Flipper.

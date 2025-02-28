@@ -5815,6 +5815,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (|
@@ -6394,6 +6395,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -6644,6 +6646,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -6905,6 +6908,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -7173,6 +7177,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (|
@@ -7430,9 +7435,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_full_range :
-        M.IsFunction "alloc::collections::btree::navigate::full_range" full_range.
-      Smpl Add apply Function_full_range : is_function.
+      Global Instance Instance_IsFunction_full_range :
+        M.IsFunction.Trait "alloc::collections::btree::navigate::full_range" full_range.
+      Admitted.
+      Global Opaque full_range.
       
       Module Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
         Definition Self (K V : Ty.t) : Ty.t :=
@@ -7771,6 +7777,7 @@ Module collections.
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
+                                    Ty.path "never",
                                     ltac:(M.monadic
                                       (M.alloc (|
                                         M.write (|
@@ -8759,6 +8766,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -9152,6 +9160,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -9520,6 +9529,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -9887,6 +9897,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -10404,6 +10415,7 @@ Module collections.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.write (|
@@ -10906,6 +10918,7 @@ Module collections.
                     |)
                   |) in
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),

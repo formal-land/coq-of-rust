@@ -2287,8 +2287,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_len_utf8 : M.IsFunction "core::char::methods::len_utf8" len_utf8.
-    Smpl Add apply Function_len_utf8 : is_function.
+    Global Instance Instance_IsFunction_len_utf8 :
+      M.IsFunction.Trait "core::char::methods::len_utf8" len_utf8.
+    Admitted.
+    Global Opaque len_utf8.
     
     (*
     const fn len_utf16(code: u32) -> usize {
@@ -2323,8 +2325,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_len_utf16 : M.IsFunction "core::char::methods::len_utf16" len_utf16.
-    Smpl Add apply Function_len_utf16 : is_function.
+    Global Instance Instance_IsFunction_len_utf16 :
+      M.IsFunction.Trait "core::char::methods::len_utf16" len_utf16.
+    Admitted.
+    Global Opaque len_utf16.
     
     (*
     pub const fn encode_utf8_raw(code: u32, dst: &mut [u8]) -> &mut [u8] {
@@ -2700,9 +2704,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_encode_utf8_raw :
-      M.IsFunction "core::char::methods::encode_utf8_raw" encode_utf8_raw.
-    Smpl Add apply Function_encode_utf8_raw : is_function.
+    Global Instance Instance_IsFunction_encode_utf8_raw :
+      M.IsFunction.Trait "core::char::methods::encode_utf8_raw" encode_utf8_raw.
+    Admitted.
+    Global Opaque encode_utf8_raw.
     
     Module encode_utf8_raw.
       (*
@@ -2757,9 +2762,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_const :
-        M.IsFunction "core::char::methods::encode_utf8_raw::panic_at_const" panic_at_const.
-      Smpl Add apply Function_panic_at_const : is_function.
+      Global Instance Instance_IsFunction_panic_at_const :
+        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::panic_at_const" panic_at_const.
+      Admitted.
+      Global Opaque panic_at_const.
       
       (*
           fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
@@ -2947,9 +2953,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_rt :
-        M.IsFunction "core::char::methods::encode_utf8_raw::panic_at_rt" panic_at_rt.
-      Smpl Add apply Function_panic_at_rt : is_function.
+      Global Instance Instance_IsFunction_panic_at_rt :
+        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::panic_at_rt" panic_at_rt.
+      Admitted.
+      Global Opaque panic_at_rt.
     End encode_utf8_raw.
     
     (*
@@ -3182,9 +3189,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_encode_utf16_raw :
-      M.IsFunction "core::char::methods::encode_utf16_raw" encode_utf16_raw.
-    Smpl Add apply Function_encode_utf16_raw : is_function.
+    Global Instance Instance_IsFunction_encode_utf16_raw :
+      M.IsFunction.Trait "core::char::methods::encode_utf16_raw" encode_utf16_raw.
+    Admitted.
+    Global Opaque encode_utf16_raw.
     
     Module encode_utf16_raw.
       (*
@@ -3239,9 +3247,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_const :
-        M.IsFunction "core::char::methods::encode_utf16_raw::panic_at_const" panic_at_const.
-      Smpl Add apply Function_panic_at_const : is_function.
+      Global Instance Instance_IsFunction_panic_at_const :
+        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::panic_at_const" panic_at_const.
+      Admitted.
+      Global Opaque panic_at_const.
       
       (*
           fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
@@ -3429,9 +3438,10 @@ Module char.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_panic_at_rt :
-        M.IsFunction "core::char::methods::encode_utf16_raw::panic_at_rt" panic_at_rt.
-      Smpl Add apply Function_panic_at_rt : is_function.
+      Global Instance Instance_IsFunction_panic_at_rt :
+        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::panic_at_rt" panic_at_rt.
+      Admitted.
+      Global Opaque panic_at_rt.
     End encode_utf16_raw.
   End methods.
 End char.
