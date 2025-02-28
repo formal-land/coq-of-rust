@@ -1206,7 +1206,9 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_poisoned : M.IsFunction "core::cell::lazy::panic_poisoned" panic_poisoned.
-    Smpl Add apply Function_panic_poisoned : is_function.
+    Global Instance Instance_IsFunction_panic_poisoned :
+      M.IsFunction.Trait "core::cell::lazy::panic_poisoned" panic_poisoned.
+    Admitted.
+    Global Opaque panic_poisoned.
   End lazy.
 End cell.

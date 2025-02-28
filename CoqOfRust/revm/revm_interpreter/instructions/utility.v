@@ -1283,9 +1283,12 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_cast_slice_to_u256 :
-      M.IsFunction "revm_interpreter::instructions::utility::cast_slice_to_u256" cast_slice_to_u256.
-    Smpl Add apply Function_cast_slice_to_u256 : is_function.
+    Global Instance Instance_IsFunction_cast_slice_to_u256 :
+      M.IsFunction.Trait
+        "revm_interpreter::instructions::utility::cast_slice_to_u256"
+        cast_slice_to_u256.
+    Admitted.
+    Global Opaque cast_slice_to_u256.
     
     (* Trait *)
     (* Empty module 'IntoU256' *)

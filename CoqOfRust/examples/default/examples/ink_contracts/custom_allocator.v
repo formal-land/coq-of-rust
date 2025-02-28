@@ -85,6 +85,7 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn default() -> Self {
@@ -124,6 +125,7 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Axiom AssociatedFunction_default : M.IsAssociatedFunction Self "default" default.
   Smpl Add apply AssociatedFunction_default : is_associated.
+  Global Opaque default.
   
   (*
       pub fn flip(&mut self) {
@@ -208,6 +210,7 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -254,4 +257,5 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_custom_allocator_CustomAllocator.

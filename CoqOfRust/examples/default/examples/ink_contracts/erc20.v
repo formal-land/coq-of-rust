@@ -81,6 +81,7 @@ Module Impl_erc20_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -93,6 +94,7 @@ Module Impl_erc20_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
 End Impl_erc20_Mapping_K_V.
 
 (* StructTuple
@@ -393,6 +395,7 @@ Module Impl_erc20_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -403,6 +406,7 @@ Module Impl_erc20_Env.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
 End Impl_erc20_Env.
 
 Module Impl_erc20_Erc20.
@@ -417,6 +421,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -438,6 +443,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   (*
       fn new(total_supply: Balance) -> Self {
           let mut balances = Mapping::default();
@@ -597,6 +603,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       fn total_supply(&self) -> Balance {
@@ -620,6 +627,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_total_supply : M.IsAssociatedFunction Self "total_supply" total_supply.
   Smpl Add apply AssociatedFunction_total_supply : is_associated.
+  Global Opaque total_supply.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -672,6 +680,7 @@ Module Impl_erc20_Erc20.
   Axiom AssociatedFunction_balance_of_impl :
     M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
   Smpl Add apply AssociatedFunction_balance_of_impl : is_associated.
+  Global Opaque balance_of_impl.
   
   (*
       fn balance_of(&self, owner: AccountId) -> Balance {
@@ -697,6 +706,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
   Smpl Add apply AssociatedFunction_balance_of : is_associated.
+  Global Opaque balance_of.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -767,6 +777,7 @@ Module Impl_erc20_Erc20.
   Axiom AssociatedFunction_allowance_impl :
     M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
   Smpl Add apply AssociatedFunction_allowance_impl : is_associated.
+  Global Opaque allowance_impl.
   
   (*
       fn allowance(&self, owner: AccountId, spender: AccountId) -> Balance {
@@ -794,6 +805,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_allowance : M.IsAssociatedFunction Self "allowance" allowance.
   Smpl Add apply AssociatedFunction_allowance : is_associated.
+  Global Opaque allowance.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -982,6 +994,7 @@ Module Impl_erc20_Erc20.
   Axiom AssociatedFunction_transfer_from_to :
     M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
   Smpl Add apply AssociatedFunction_transfer_from_to : is_associated.
+  Global Opaque transfer_from_to.
   
   (*
       fn transfer(&mut self, to: AccountId, value: Balance) -> Result<()> {
@@ -1037,6 +1050,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Opaque transfer.
   
   (*
       fn approve(&mut self, spender: AccountId, value: Balance) -> Result<()> {
@@ -1144,6 +1158,7 @@ Module Impl_erc20_Erc20.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
   Smpl Add apply AssociatedFunction_approve : is_associated.
+  Global Opaque approve.
   
   (*
       fn transfer_from(&mut self, from: AccountId, to: AccountId, value: Balance) -> Result<()> {
@@ -1387,5 +1402,6 @@ Module Impl_erc20_Erc20.
   Axiom AssociatedFunction_transfer_from :
     M.IsAssociatedFunction Self "transfer_from" transfer_from.
   Smpl Add apply AssociatedFunction_transfer_from : is_associated.
+  Global Opaque transfer_from.
 End Impl_erc20_Erc20.
 

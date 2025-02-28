@@ -33,9 +33,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_raw_eof :
-      M.IsFunction "revm_bytecode::eof::verification::validate_raw_eof" validate_raw_eof.
-    Smpl Add apply Function_validate_raw_eof : is_function.
+    Global Instance Instance_IsFunction_validate_raw_eof :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_raw_eof" validate_raw_eof.
+    Admitted.
+    Global Opaque validate_raw_eof.
     
     (*
     pub fn validate_raw_eof_inner(
@@ -368,11 +369,12 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_raw_eof_inner :
-      M.IsFunction
+    Global Instance Instance_IsFunction_validate_raw_eof_inner :
+      M.IsFunction.Trait
         "revm_bytecode::eof::verification::validate_raw_eof_inner"
         validate_raw_eof_inner.
-    Smpl Add apply Function_validate_raw_eof_inner : is_function.
+    Admitted.
+    Global Opaque validate_raw_eof_inner.
     
     (*
     pub fn validate_eof(eof: &Eof) -> Result<(), EofError> {
@@ -401,9 +403,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof" validate_eof.
-    Smpl Add apply Function_validate_eof : is_function.
+    Global Instance Instance_IsFunction_validate_eof :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof" validate_eof.
+    Admitted.
+    Global Opaque validate_eof.
     
     (*
     pub fn validate_eof_inner(eof: &Eof, first_code_type: Option<CodeType>) -> Result<(), EofError> {
@@ -1617,9 +1620,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof_inner :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof_inner" validate_eof_inner.
-    Smpl Add apply Function_validate_eof_inner : is_function.
+    Global Instance Instance_IsFunction_validate_eof_inner :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_inner" validate_eof_inner.
+    Admitted.
+    Global Opaque validate_eof_inner.
     
     (*
     pub fn validate_eof_codes(
@@ -2983,9 +2987,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof_codes :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof_codes" validate_eof_codes.
-    Smpl Add apply Function_validate_eof_codes : is_function.
+    Global Instance Instance_IsFunction_validate_eof_codes :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_codes" validate_eof_codes.
+    Admitted.
+    Global Opaque validate_eof_codes.
     
     (*
     Enum EofError
@@ -9275,9 +9280,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof_code :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof_code" validate_eof_code.
-    Smpl Add apply Function_validate_eof_code : is_function.
+    Global Instance Instance_IsFunction_validate_eof_code :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_code" validate_eof_code.
+    Admitted.
+    Global Opaque validate_eof_code.
     
     Module validate_eof_code.
       (* StructRecord

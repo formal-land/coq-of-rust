@@ -157,6 +157,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -178,6 +179,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       pub fn new(init_value: bool) -> Self {
@@ -195,6 +197,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn new_default() -> Self {
@@ -229,6 +232,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Opaque new_default.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -283,6 +287,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   Smpl Add apply AssociatedFunction_try_new : is_associated.
+  Global Opaque try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -321,6 +326,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -344,6 +350,7 @@ Module Impl_contract_ref_FlipperRef.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_contract_ref_FlipperRef.
 
 (* StructRecord
@@ -407,6 +414,7 @@ Module Impl_contract_ref_ContractRef.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn try_new(version: u32, flipper_code_hash: Hash, succeed: bool) -> Self {
@@ -482,6 +490,7 @@ Module Impl_contract_ref_ContractRef.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
   Smpl Add apply AssociatedFunction_try_new : is_associated.
+  Global Opaque try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -518,6 +527,7 @@ Module Impl_contract_ref_ContractRef.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   (*
       pub fn get(&mut self) -> bool {
@@ -548,4 +558,5 @@ Module Impl_contract_ref_ContractRef.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_contract_ref_ContractRef.

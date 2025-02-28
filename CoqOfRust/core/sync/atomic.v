@@ -17836,9 +17836,12 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_strongest_failure_ordering :
-      M.IsFunction "core::sync::atomic::strongest_failure_ordering" strongest_failure_ordering.
-    Smpl Add apply Function_strongest_failure_ordering : is_function.
+    Global Instance Instance_IsFunction_strongest_failure_ordering :
+      M.IsFunction.Trait
+        "core::sync::atomic::strongest_failure_ordering"
+        strongest_failure_ordering.
+    Admitted.
+    Global Opaque strongest_failure_ordering.
     
     (*
     unsafe fn atomic_store<T: Copy>(dst: *mut T, val: T, order: Ordering) {
@@ -17983,8 +17986,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_store : M.IsFunction "core::sync::atomic::atomic_store" atomic_store.
-    Smpl Add apply Function_atomic_store : is_function.
+    Global Instance Instance_IsFunction_atomic_store :
+      M.IsFunction.Trait "core::sync::atomic::atomic_store" atomic_store.
+    Admitted.
+    Global Opaque atomic_store.
     
     (*
     unsafe fn atomic_load<T: Copy>(dst: *const T, order: Ordering) -> T {
@@ -18128,8 +18133,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_load : M.IsFunction "core::sync::atomic::atomic_load" atomic_load.
-    Smpl Add apply Function_atomic_load : is_function.
+    Global Instance Instance_IsFunction_atomic_load :
+      M.IsFunction.Trait "core::sync::atomic::atomic_load" atomic_load.
+    Admitted.
+    Global Opaque atomic_load.
     
     (*
     unsafe fn atomic_swap<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18212,8 +18219,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_swap : M.IsFunction "core::sync::atomic::atomic_swap" atomic_swap.
-    Smpl Add apply Function_atomic_swap : is_function.
+    Global Instance Instance_IsFunction_atomic_swap :
+      M.IsFunction.Trait "core::sync::atomic::atomic_swap" atomic_swap.
+    Admitted.
+    Global Opaque atomic_swap.
     
     (*
     unsafe fn atomic_add<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18296,8 +18305,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_add : M.IsFunction "core::sync::atomic::atomic_add" atomic_add.
-    Smpl Add apply Function_atomic_add : is_function.
+    Global Instance Instance_IsFunction_atomic_add :
+      M.IsFunction.Trait "core::sync::atomic::atomic_add" atomic_add.
+    Admitted.
+    Global Opaque atomic_add.
     
     (*
     unsafe fn atomic_sub<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18380,8 +18391,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_sub : M.IsFunction "core::sync::atomic::atomic_sub" atomic_sub.
-    Smpl Add apply Function_atomic_sub : is_function.
+    Global Instance Instance_IsFunction_atomic_sub :
+      M.IsFunction.Trait "core::sync::atomic::atomic_sub" atomic_sub.
+    Admitted.
+    Global Opaque atomic_sub.
     
     (*
     unsafe fn atomic_compare_exchange<T: Copy>(
@@ -18836,9 +18849,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_compare_exchange :
-      M.IsFunction "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
-    Smpl Add apply Function_atomic_compare_exchange : is_function.
+    Global Instance Instance_IsFunction_atomic_compare_exchange :
+      M.IsFunction.Trait "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
+    Admitted.
+    Global Opaque atomic_compare_exchange.
     
     (*
     unsafe fn atomic_compare_exchange_weak<T: Copy>(
@@ -19297,9 +19311,12 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_compare_exchange_weak :
-      M.IsFunction "core::sync::atomic::atomic_compare_exchange_weak" atomic_compare_exchange_weak.
-    Smpl Add apply Function_atomic_compare_exchange_weak : is_function.
+    Global Instance Instance_IsFunction_atomic_compare_exchange_weak :
+      M.IsFunction.Trait
+        "core::sync::atomic::atomic_compare_exchange_weak"
+        atomic_compare_exchange_weak.
+    Admitted.
+    Global Opaque atomic_compare_exchange_weak.
     
     (*
     unsafe fn atomic_and<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19382,8 +19399,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_and : M.IsFunction "core::sync::atomic::atomic_and" atomic_and.
-    Smpl Add apply Function_atomic_and : is_function.
+    Global Instance Instance_IsFunction_atomic_and :
+      M.IsFunction.Trait "core::sync::atomic::atomic_and" atomic_and.
+    Admitted.
+    Global Opaque atomic_and.
     
     (*
     unsafe fn atomic_nand<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19466,8 +19485,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_nand : M.IsFunction "core::sync::atomic::atomic_nand" atomic_nand.
-    Smpl Add apply Function_atomic_nand : is_function.
+    Global Instance Instance_IsFunction_atomic_nand :
+      M.IsFunction.Trait "core::sync::atomic::atomic_nand" atomic_nand.
+    Admitted.
+    Global Opaque atomic_nand.
     
     (*
     unsafe fn atomic_or<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19550,8 +19571,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_or : M.IsFunction "core::sync::atomic::atomic_or" atomic_or.
-    Smpl Add apply Function_atomic_or : is_function.
+    Global Instance Instance_IsFunction_atomic_or :
+      M.IsFunction.Trait "core::sync::atomic::atomic_or" atomic_or.
+    Admitted.
+    Global Opaque atomic_or.
     
     (*
     unsafe fn atomic_xor<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19634,8 +19657,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_xor : M.IsFunction "core::sync::atomic::atomic_xor" atomic_xor.
-    Smpl Add apply Function_atomic_xor : is_function.
+    Global Instance Instance_IsFunction_atomic_xor :
+      M.IsFunction.Trait "core::sync::atomic::atomic_xor" atomic_xor.
+    Admitted.
+    Global Opaque atomic_xor.
     
     (*
     unsafe fn atomic_max<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19718,8 +19743,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_max : M.IsFunction "core::sync::atomic::atomic_max" atomic_max.
-    Smpl Add apply Function_atomic_max : is_function.
+    Global Instance Instance_IsFunction_atomic_max :
+      M.IsFunction.Trait "core::sync::atomic::atomic_max" atomic_max.
+    Admitted.
+    Global Opaque atomic_max.
     
     (*
     unsafe fn atomic_min<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19802,8 +19829,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_min : M.IsFunction "core::sync::atomic::atomic_min" atomic_min.
-    Smpl Add apply Function_atomic_min : is_function.
+    Global Instance Instance_IsFunction_atomic_min :
+      M.IsFunction.Trait "core::sync::atomic::atomic_min" atomic_min.
+    Admitted.
+    Global Opaque atomic_min.
     
     (*
     unsafe fn atomic_umax<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19886,8 +19915,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_umax : M.IsFunction "core::sync::atomic::atomic_umax" atomic_umax.
-    Smpl Add apply Function_atomic_umax : is_function.
+    Global Instance Instance_IsFunction_atomic_umax :
+      M.IsFunction.Trait "core::sync::atomic::atomic_umax" atomic_umax.
+    Admitted.
+    Global Opaque atomic_umax.
     
     (*
     unsafe fn atomic_umin<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19970,8 +20001,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_umin : M.IsFunction "core::sync::atomic::atomic_umin" atomic_umin.
-    Smpl Add apply Function_atomic_umin : is_function.
+    Global Instance Instance_IsFunction_atomic_umin :
+      M.IsFunction.Trait "core::sync::atomic::atomic_umin" atomic_umin.
+    Admitted.
+    Global Opaque atomic_umin.
     
     (*
     pub fn fence(order: Ordering) {
@@ -20083,8 +20116,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fence : M.IsFunction "core::sync::atomic::fence" fence.
-    Smpl Add apply Function_fence : is_function.
+    Global Instance Instance_IsFunction_fence :
+      M.IsFunction.Trait "core::sync::atomic::fence" fence.
+    Admitted.
+    Global Opaque fence.
     
     (*
     pub fn compiler_fence(order: Ordering) {
@@ -20212,9 +20247,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_compiler_fence :
-      M.IsFunction "core::sync::atomic::compiler_fence" compiler_fence.
-    Smpl Add apply Function_compiler_fence : is_function.
+    Global Instance Instance_IsFunction_compiler_fence :
+      M.IsFunction.Trait "core::sync::atomic::compiler_fence" compiler_fence.
+    Admitted.
+    Global Opaque compiler_fence.
     
     Module Impl_core_fmt_Debug_for_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -20432,8 +20468,9 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_spin_loop_hint :
-      M.IsFunction "core::sync::atomic::spin_loop_hint" spin_loop_hint.
-    Smpl Add apply Function_spin_loop_hint : is_function.
+    Global Instance Instance_IsFunction_spin_loop_hint :
+      M.IsFunction.Trait "core::sync::atomic::spin_loop_hint" spin_loop_hint.
+    Admitted.
+    Global Opaque spin_loop_hint.
   End atomic.
 End sync.

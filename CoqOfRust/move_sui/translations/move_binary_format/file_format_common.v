@@ -4392,11 +4392,12 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u64_as_uleb128 :
-    M.IsFunction
+  Global Instance Instance_IsFunction_write_u64_as_uleb128 :
+    M.IsFunction.Trait
       "move_binary_format::file_format_common::write_u64_as_uleb128"
       write_u64_as_uleb128.
-  Smpl Add apply Function_write_u64_as_uleb128 : is_function.
+  Admitted.
+  Global Opaque write_u64_as_uleb128.
   
   (*
   pub(crate) fn write_u16(binary: &mut BinaryData, value: u16) -> Result<()> {
@@ -4442,9 +4443,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u16 :
-    M.IsFunction "move_binary_format::file_format_common::write_u16" write_u16.
-  Smpl Add apply Function_write_u16 : is_function.
+  Global Instance Instance_IsFunction_write_u16 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u16" write_u16.
+  Admitted.
+  Global Opaque write_u16.
   
   (*
   pub(crate) fn write_u32(binary: &mut BinaryData, value: u32) -> Result<()> {
@@ -4490,9 +4492,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u32 :
-    M.IsFunction "move_binary_format::file_format_common::write_u32" write_u32.
-  Smpl Add apply Function_write_u32 : is_function.
+  Global Instance Instance_IsFunction_write_u32 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u32" write_u32.
+  Admitted.
+  Global Opaque write_u32.
   
   (*
   pub(crate) fn write_u64(binary: &mut BinaryData, value: u64) -> Result<()> {
@@ -4538,9 +4541,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u64 :
-    M.IsFunction "move_binary_format::file_format_common::write_u64" write_u64.
-  Smpl Add apply Function_write_u64 : is_function.
+  Global Instance Instance_IsFunction_write_u64 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u64" write_u64.
+  Admitted.
+  Global Opaque write_u64.
   
   (*
   pub(crate) fn write_u128(binary: &mut BinaryData, value: u128) -> Result<()> {
@@ -4586,9 +4590,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u128 :
-    M.IsFunction "move_binary_format::file_format_common::write_u128" write_u128.
-  Smpl Add apply Function_write_u128 : is_function.
+  Global Instance Instance_IsFunction_write_u128 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u128" write_u128.
+  Admitted.
+  Global Opaque write_u128.
   
   (*
   pub(crate) fn write_u256(
@@ -4642,9 +4647,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u256 :
-    M.IsFunction "move_binary_format::file_format_common::write_u256" write_u256.
-  Smpl Add apply Function_write_u256 : is_function.
+  Global Instance Instance_IsFunction_write_u256 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u256" write_u256.
+  Admitted.
+  Global Opaque write_u256.
   
   (*
   pub fn read_u8(cursor: &mut Cursor<&[u8]>) -> Result<u8> {
@@ -4801,8 +4807,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_u8 : M.IsFunction "move_binary_format::file_format_common::read_u8" read_u8.
-  Smpl Add apply Function_read_u8 : is_function.
+  Global Instance Instance_IsFunction_read_u8 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::read_u8" read_u8.
+  Admitted.
+  Global Opaque read_u8.
   
   (*
   pub fn read_u32(cursor: &mut Cursor<&[u8]>) -> Result<u32> {
@@ -4961,9 +4969,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_u32 :
-    M.IsFunction "move_binary_format::file_format_common::read_u32" read_u32.
-  Smpl Add apply Function_read_u32 : is_function.
+  Global Instance Instance_IsFunction_read_u32 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::read_u32" read_u32.
+  Admitted.
+  Global Opaque read_u32.
   
   (*
   pub fn read_uleb128_as_u64(cursor: &mut Cursor<&[u8]>) -> Result<u64> {
@@ -5375,9 +5384,12 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_uleb128_as_u64 :
-    M.IsFunction "move_binary_format::file_format_common::read_uleb128_as_u64" read_uleb128_as_u64.
-  Smpl Add apply Function_read_uleb128_as_u64 : is_function.
+  Global Instance Instance_IsFunction_read_uleb128_as_u64 :
+    M.IsFunction.Trait
+      "move_binary_format::file_format_common::read_uleb128_as_u64"
+      read_uleb128_as_u64.
+  Admitted.
+  Global Opaque read_uleb128_as_u64.
   
   Definition value_VERSION_1 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
@@ -6540,7 +6552,8 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_instruction_key :
-    M.IsFunction "move_binary_format::file_format_common::instruction_key" instruction_key.
-  Smpl Add apply Function_instruction_key : is_function.
+  Global Instance Instance_IsFunction_instruction_key :
+    M.IsFunction.Trait "move_binary_format::file_format_common::instruction_key" instruction_key.
+  Admitted.
+  Global Opaque instruction_key.
 End file_format_common.

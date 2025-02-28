@@ -78,16 +78,19 @@ Module Impl_basic_contract_caller_OtherContract.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
   Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Opaque flip.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
 End Impl_basic_contract_caller_OtherContract.
 
 (* StructRecord
@@ -105,9 +108,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter flip_and_get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_flip_and_get : M.IsAssociatedFunction Self "flip_and_get" flip_and_get.
   Smpl Add apply AssociatedFunction_flip_and_get : is_associated.
+  Global Opaque flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller.

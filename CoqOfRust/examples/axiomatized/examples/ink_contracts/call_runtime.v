@@ -272,6 +272,7 @@ Module Impl_call_runtime_Env.
   
   Axiom AssociatedFunction_call_runtime : M.IsAssociatedFunction Self "call_runtime" call_runtime.
   Smpl Add apply AssociatedFunction_call_runtime : is_associated.
+  Global Opaque call_runtime.
 End Impl_call_runtime_Env.
 
 Module Impl_call_runtime_RuntimeCaller.
@@ -281,26 +282,31 @@ Module Impl_call_runtime_RuntimeCaller.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter transfer_through_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_through_runtime :
     M.IsAssociatedFunction Self "transfer_through_runtime" transfer_through_runtime.
   Smpl Add apply AssociatedFunction_transfer_through_runtime : is_associated.
+  Global Opaque transfer_through_runtime.
   
   Parameter call_nonexistent_extrinsic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_call_nonexistent_extrinsic :
     M.IsAssociatedFunction Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
   Smpl Add apply AssociatedFunction_call_nonexistent_extrinsic : is_associated.
+  Global Opaque call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller.

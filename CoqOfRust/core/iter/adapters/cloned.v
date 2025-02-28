@@ -221,9 +221,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_clone_try_fold :
-        M.IsFunction "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
-      Smpl Add apply Function_clone_try_fold : is_function.
+      Global Instance Instance_IsFunction_clone_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
+      Admitted.
+      Global Opaque clone_try_fold.
       
       Module clone_try_fold.
         (* Error OpaqueTy *)

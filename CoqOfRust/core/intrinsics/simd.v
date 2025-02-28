@@ -5,360 +5,477 @@ Module intrinsics.
   Module simd.
     Parameter simd_insert : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_insert : M.IsFunction "core::intrinsics::simd::simd_insert" simd_insert.
-    Smpl Add apply Function_simd_insert : is_function.
+    Global Instance Instance_IsFunction_simd_insert :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_insert" simd_insert.
+    Admitted.
+    Global Opaque simd_insert.
     
     Parameter simd_extract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_extract : M.IsFunction "core::intrinsics::simd::simd_extract" simd_extract.
-    Smpl Add apply Function_simd_extract : is_function.
+    Global Instance Instance_IsFunction_simd_extract :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_extract" simd_extract.
+    Admitted.
+    Global Opaque simd_extract.
     
     Parameter simd_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_add : M.IsFunction "core::intrinsics::simd::simd_add" simd_add.
-    Smpl Add apply Function_simd_add : is_function.
+    Global Instance Instance_IsFunction_simd_add :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_add" simd_add.
+    Admitted.
+    Global Opaque simd_add.
     
     Parameter simd_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_sub : M.IsFunction "core::intrinsics::simd::simd_sub" simd_sub.
-    Smpl Add apply Function_simd_sub : is_function.
+    Global Instance Instance_IsFunction_simd_sub :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_sub" simd_sub.
+    Admitted.
+    Global Opaque simd_sub.
     
     Parameter simd_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_mul : M.IsFunction "core::intrinsics::simd::simd_mul" simd_mul.
-    Smpl Add apply Function_simd_mul : is_function.
+    Global Instance Instance_IsFunction_simd_mul :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_mul" simd_mul.
+    Admitted.
+    Global Opaque simd_mul.
     
     Parameter simd_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_div : M.IsFunction "core::intrinsics::simd::simd_div" simd_div.
-    Smpl Add apply Function_simd_div : is_function.
+    Global Instance Instance_IsFunction_simd_div :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_div" simd_div.
+    Admitted.
+    Global Opaque simd_div.
     
     Parameter simd_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_rem : M.IsFunction "core::intrinsics::simd::simd_rem" simd_rem.
-    Smpl Add apply Function_simd_rem : is_function.
+    Global Instance Instance_IsFunction_simd_rem :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_rem" simd_rem.
+    Admitted.
+    Global Opaque simd_rem.
     
     Parameter simd_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_shl : M.IsFunction "core::intrinsics::simd::simd_shl" simd_shl.
-    Smpl Add apply Function_simd_shl : is_function.
+    Global Instance Instance_IsFunction_simd_shl :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_shl" simd_shl.
+    Admitted.
+    Global Opaque simd_shl.
     
     Parameter simd_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_shr : M.IsFunction "core::intrinsics::simd::simd_shr" simd_shr.
-    Smpl Add apply Function_simd_shr : is_function.
+    Global Instance Instance_IsFunction_simd_shr :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_shr" simd_shr.
+    Admitted.
+    Global Opaque simd_shr.
     
     Parameter simd_and : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_and : M.IsFunction "core::intrinsics::simd::simd_and" simd_and.
-    Smpl Add apply Function_simd_and : is_function.
+    Global Instance Instance_IsFunction_simd_and :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_and" simd_and.
+    Admitted.
+    Global Opaque simd_and.
     
     Parameter simd_or : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_or : M.IsFunction "core::intrinsics::simd::simd_or" simd_or.
-    Smpl Add apply Function_simd_or : is_function.
+    Global Instance Instance_IsFunction_simd_or :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_or" simd_or.
+    Admitted.
+    Global Opaque simd_or.
     
     Parameter simd_xor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_xor : M.IsFunction "core::intrinsics::simd::simd_xor" simd_xor.
-    Smpl Add apply Function_simd_xor : is_function.
+    Global Instance Instance_IsFunction_simd_xor :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_xor" simd_xor.
+    Admitted.
+    Global Opaque simd_xor.
     
     Parameter simd_cast : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_cast : M.IsFunction "core::intrinsics::simd::simd_cast" simd_cast.
-    Smpl Add apply Function_simd_cast : is_function.
+    Global Instance Instance_IsFunction_simd_cast :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_cast" simd_cast.
+    Admitted.
+    Global Opaque simd_cast.
     
     Parameter simd_as : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_as : M.IsFunction "core::intrinsics::simd::simd_as" simd_as.
-    Smpl Add apply Function_simd_as : is_function.
+    Global Instance Instance_IsFunction_simd_as :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_as" simd_as.
+    Admitted.
+    Global Opaque simd_as.
     
     Parameter simd_neg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_neg : M.IsFunction "core::intrinsics::simd::simd_neg" simd_neg.
-    Smpl Add apply Function_simd_neg : is_function.
+    Global Instance Instance_IsFunction_simd_neg :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_neg" simd_neg.
+    Admitted.
+    Global Opaque simd_neg.
     
     Parameter simd_fabs : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fabs : M.IsFunction "core::intrinsics::simd::simd_fabs" simd_fabs.
-    Smpl Add apply Function_simd_fabs : is_function.
+    Global Instance Instance_IsFunction_simd_fabs :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fabs" simd_fabs.
+    Admitted.
+    Global Opaque simd_fabs.
     
     Parameter simd_fmin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fmin : M.IsFunction "core::intrinsics::simd::simd_fmin" simd_fmin.
-    Smpl Add apply Function_simd_fmin : is_function.
+    Global Instance Instance_IsFunction_simd_fmin :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fmin" simd_fmin.
+    Admitted.
+    Global Opaque simd_fmin.
     
     Parameter simd_fmax : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fmax : M.IsFunction "core::intrinsics::simd::simd_fmax" simd_fmax.
-    Smpl Add apply Function_simd_fmax : is_function.
+    Global Instance Instance_IsFunction_simd_fmax :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fmax" simd_fmax.
+    Admitted.
+    Global Opaque simd_fmax.
     
     Parameter simd_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_eq : M.IsFunction "core::intrinsics::simd::simd_eq" simd_eq.
-    Smpl Add apply Function_simd_eq : is_function.
+    Global Instance Instance_IsFunction_simd_eq :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_eq" simd_eq.
+    Admitted.
+    Global Opaque simd_eq.
     
     Parameter simd_ne : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_ne : M.IsFunction "core::intrinsics::simd::simd_ne" simd_ne.
-    Smpl Add apply Function_simd_ne : is_function.
+    Global Instance Instance_IsFunction_simd_ne :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_ne" simd_ne.
+    Admitted.
+    Global Opaque simd_ne.
     
     Parameter simd_lt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_lt : M.IsFunction "core::intrinsics::simd::simd_lt" simd_lt.
-    Smpl Add apply Function_simd_lt : is_function.
+    Global Instance Instance_IsFunction_simd_lt :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_lt" simd_lt.
+    Admitted.
+    Global Opaque simd_lt.
     
     Parameter simd_le : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_le : M.IsFunction "core::intrinsics::simd::simd_le" simd_le.
-    Smpl Add apply Function_simd_le : is_function.
+    Global Instance Instance_IsFunction_simd_le :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_le" simd_le.
+    Admitted.
+    Global Opaque simd_le.
     
     Parameter simd_gt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_gt : M.IsFunction "core::intrinsics::simd::simd_gt" simd_gt.
-    Smpl Add apply Function_simd_gt : is_function.
+    Global Instance Instance_IsFunction_simd_gt :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_gt" simd_gt.
+    Admitted.
+    Global Opaque simd_gt.
     
     Parameter simd_ge : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_ge : M.IsFunction "core::intrinsics::simd::simd_ge" simd_ge.
-    Smpl Add apply Function_simd_ge : is_function.
+    Global Instance Instance_IsFunction_simd_ge :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_ge" simd_ge.
+    Admitted.
+    Global Opaque simd_ge.
     
     Parameter simd_shuffle : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_shuffle : M.IsFunction "core::intrinsics::simd::simd_shuffle" simd_shuffle.
-    Smpl Add apply Function_simd_shuffle : is_function.
+    Global Instance Instance_IsFunction_simd_shuffle :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_shuffle" simd_shuffle.
+    Admitted.
+    Global Opaque simd_shuffle.
     
     Parameter simd_gather : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_gather : M.IsFunction "core::intrinsics::simd::simd_gather" simd_gather.
-    Smpl Add apply Function_simd_gather : is_function.
+    Global Instance Instance_IsFunction_simd_gather :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_gather" simd_gather.
+    Admitted.
+    Global Opaque simd_gather.
     
     Parameter simd_scatter : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_scatter : M.IsFunction "core::intrinsics::simd::simd_scatter" simd_scatter.
-    Smpl Add apply Function_simd_scatter : is_function.
+    Global Instance Instance_IsFunction_simd_scatter :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_scatter" simd_scatter.
+    Admitted.
+    Global Opaque simd_scatter.
     
     Parameter simd_masked_load : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_masked_load :
-      M.IsFunction "core::intrinsics::simd::simd_masked_load" simd_masked_load.
-    Smpl Add apply Function_simd_masked_load : is_function.
+    Global Instance Instance_IsFunction_simd_masked_load :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_masked_load" simd_masked_load.
+    Admitted.
+    Global Opaque simd_masked_load.
     
     Parameter simd_masked_store : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_masked_store :
-      M.IsFunction "core::intrinsics::simd::simd_masked_store" simd_masked_store.
-    Smpl Add apply Function_simd_masked_store : is_function.
+    Global Instance Instance_IsFunction_simd_masked_store :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_masked_store" simd_masked_store.
+    Admitted.
+    Global Opaque simd_masked_store.
     
     Parameter simd_saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_saturating_add :
-      M.IsFunction "core::intrinsics::simd::simd_saturating_add" simd_saturating_add.
-    Smpl Add apply Function_simd_saturating_add : is_function.
+    Global Instance Instance_IsFunction_simd_saturating_add :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_saturating_add" simd_saturating_add.
+    Admitted.
+    Global Opaque simd_saturating_add.
     
     Parameter simd_saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_saturating_sub :
-      M.IsFunction "core::intrinsics::simd::simd_saturating_sub" simd_saturating_sub.
-    Smpl Add apply Function_simd_saturating_sub : is_function.
+    Global Instance Instance_IsFunction_simd_saturating_sub :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_saturating_sub" simd_saturating_sub.
+    Admitted.
+    Global Opaque simd_saturating_sub.
     
     Parameter simd_reduce_add_ordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_add_ordered :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_add_ordered" simd_reduce_add_ordered.
-    Smpl Add apply Function_simd_reduce_add_ordered : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_add_ordered :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_add_ordered" simd_reduce_add_ordered.
+    Admitted.
+    Global Opaque simd_reduce_add_ordered.
     
     Parameter simd_reduce_add_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_add_unordered :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_add_unordered" simd_reduce_add_unordered.
-    Smpl Add apply Function_simd_reduce_add_unordered : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_add_unordered :
+      M.IsFunction.Trait
+        "core::intrinsics::simd::simd_reduce_add_unordered"
+        simd_reduce_add_unordered.
+    Admitted.
+    Global Opaque simd_reduce_add_unordered.
     
     Parameter simd_reduce_mul_ordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_mul_ordered :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_mul_ordered" simd_reduce_mul_ordered.
-    Smpl Add apply Function_simd_reduce_mul_ordered : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_mul_ordered :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_mul_ordered" simd_reduce_mul_ordered.
+    Admitted.
+    Global Opaque simd_reduce_mul_ordered.
     
     Parameter simd_reduce_mul_unordered : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_mul_unordered :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_mul_unordered" simd_reduce_mul_unordered.
-    Smpl Add apply Function_simd_reduce_mul_unordered : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_mul_unordered :
+      M.IsFunction.Trait
+        "core::intrinsics::simd::simd_reduce_mul_unordered"
+        simd_reduce_mul_unordered.
+    Admitted.
+    Global Opaque simd_reduce_mul_unordered.
     
     Parameter simd_reduce_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_all :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_all" simd_reduce_all.
-    Smpl Add apply Function_simd_reduce_all : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_all :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_all" simd_reduce_all.
+    Admitted.
+    Global Opaque simd_reduce_all.
     
     Parameter simd_reduce_any : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_any :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_any" simd_reduce_any.
-    Smpl Add apply Function_simd_reduce_any : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_any :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_any" simd_reduce_any.
+    Admitted.
+    Global Opaque simd_reduce_any.
     
     Parameter simd_reduce_max : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_max :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_max" simd_reduce_max.
-    Smpl Add apply Function_simd_reduce_max : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_max :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_max" simd_reduce_max.
+    Admitted.
+    Global Opaque simd_reduce_max.
     
     Parameter simd_reduce_min : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_min :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_min" simd_reduce_min.
-    Smpl Add apply Function_simd_reduce_min : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_min :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_min" simd_reduce_min.
+    Admitted.
+    Global Opaque simd_reduce_min.
     
     Parameter simd_reduce_and : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_and :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_and" simd_reduce_and.
-    Smpl Add apply Function_simd_reduce_and : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_and :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_and" simd_reduce_and.
+    Admitted.
+    Global Opaque simd_reduce_and.
     
     Parameter simd_reduce_or : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_or :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_or" simd_reduce_or.
-    Smpl Add apply Function_simd_reduce_or : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_or :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_or" simd_reduce_or.
+    Admitted.
+    Global Opaque simd_reduce_or.
     
     Parameter simd_reduce_xor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_reduce_xor :
-      M.IsFunction "core::intrinsics::simd::simd_reduce_xor" simd_reduce_xor.
-    Smpl Add apply Function_simd_reduce_xor : is_function.
+    Global Instance Instance_IsFunction_simd_reduce_xor :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_reduce_xor" simd_reduce_xor.
+    Admitted.
+    Global Opaque simd_reduce_xor.
     
     Parameter simd_bitmask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_bitmask : M.IsFunction "core::intrinsics::simd::simd_bitmask" simd_bitmask.
-    Smpl Add apply Function_simd_bitmask : is_function.
+    Global Instance Instance_IsFunction_simd_bitmask :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_bitmask" simd_bitmask.
+    Admitted.
+    Global Opaque simd_bitmask.
     
     Parameter simd_select : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_select : M.IsFunction "core::intrinsics::simd::simd_select" simd_select.
-    Smpl Add apply Function_simd_select : is_function.
+    Global Instance Instance_IsFunction_simd_select :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_select" simd_select.
+    Admitted.
+    Global Opaque simd_select.
     
     Parameter simd_select_bitmask : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_select_bitmask :
-      M.IsFunction "core::intrinsics::simd::simd_select_bitmask" simd_select_bitmask.
-    Smpl Add apply Function_simd_select_bitmask : is_function.
+    Global Instance Instance_IsFunction_simd_select_bitmask :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_select_bitmask" simd_select_bitmask.
+    Admitted.
+    Global Opaque simd_select_bitmask.
     
     Parameter simd_arith_offset : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_arith_offset :
-      M.IsFunction "core::intrinsics::simd::simd_arith_offset" simd_arith_offset.
-    Smpl Add apply Function_simd_arith_offset : is_function.
+    Global Instance Instance_IsFunction_simd_arith_offset :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_arith_offset" simd_arith_offset.
+    Admitted.
+    Global Opaque simd_arith_offset.
     
     Parameter simd_cast_ptr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_cast_ptr :
-      M.IsFunction "core::intrinsics::simd::simd_cast_ptr" simd_cast_ptr.
-    Smpl Add apply Function_simd_cast_ptr : is_function.
+    Global Instance Instance_IsFunction_simd_cast_ptr :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_cast_ptr" simd_cast_ptr.
+    Admitted.
+    Global Opaque simd_cast_ptr.
     
     Parameter simd_expose_provenance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_expose_provenance :
-      M.IsFunction "core::intrinsics::simd::simd_expose_provenance" simd_expose_provenance.
-    Smpl Add apply Function_simd_expose_provenance : is_function.
+    Global Instance Instance_IsFunction_simd_expose_provenance :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_expose_provenance" simd_expose_provenance.
+    Admitted.
+    Global Opaque simd_expose_provenance.
     
     Parameter simd_with_exposed_provenance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_with_exposed_provenance :
-      M.IsFunction
+    Global Instance Instance_IsFunction_simd_with_exposed_provenance :
+      M.IsFunction.Trait
         "core::intrinsics::simd::simd_with_exposed_provenance"
         simd_with_exposed_provenance.
-    Smpl Add apply Function_simd_with_exposed_provenance : is_function.
+    Admitted.
+    Global Opaque simd_with_exposed_provenance.
     
     Parameter simd_bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_bswap : M.IsFunction "core::intrinsics::simd::simd_bswap" simd_bswap.
-    Smpl Add apply Function_simd_bswap : is_function.
+    Global Instance Instance_IsFunction_simd_bswap :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_bswap" simd_bswap.
+    Admitted.
+    Global Opaque simd_bswap.
     
     Parameter simd_bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_bitreverse :
-      M.IsFunction "core::intrinsics::simd::simd_bitreverse" simd_bitreverse.
-    Smpl Add apply Function_simd_bitreverse : is_function.
+    Global Instance Instance_IsFunction_simd_bitreverse :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_bitreverse" simd_bitreverse.
+    Admitted.
+    Global Opaque simd_bitreverse.
     
     Parameter simd_ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_ctlz : M.IsFunction "core::intrinsics::simd::simd_ctlz" simd_ctlz.
-    Smpl Add apply Function_simd_ctlz : is_function.
+    Global Instance Instance_IsFunction_simd_ctlz :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_ctlz" simd_ctlz.
+    Admitted.
+    Global Opaque simd_ctlz.
     
     Parameter simd_ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_ctpop : M.IsFunction "core::intrinsics::simd::simd_ctpop" simd_ctpop.
-    Smpl Add apply Function_simd_ctpop : is_function.
+    Global Instance Instance_IsFunction_simd_ctpop :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_ctpop" simd_ctpop.
+    Admitted.
+    Global Opaque simd_ctpop.
     
     Parameter simd_cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_cttz : M.IsFunction "core::intrinsics::simd::simd_cttz" simd_cttz.
-    Smpl Add apply Function_simd_cttz : is_function.
+    Global Instance Instance_IsFunction_simd_cttz :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_cttz" simd_cttz.
+    Admitted.
+    Global Opaque simd_cttz.
     
     Parameter simd_ceil : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_ceil : M.IsFunction "core::intrinsics::simd::simd_ceil" simd_ceil.
-    Smpl Add apply Function_simd_ceil : is_function.
+    Global Instance Instance_IsFunction_simd_ceil :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_ceil" simd_ceil.
+    Admitted.
+    Global Opaque simd_ceil.
     
     Parameter simd_floor : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_floor : M.IsFunction "core::intrinsics::simd::simd_floor" simd_floor.
-    Smpl Add apply Function_simd_floor : is_function.
+    Global Instance Instance_IsFunction_simd_floor :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_floor" simd_floor.
+    Admitted.
+    Global Opaque simd_floor.
     
     Parameter simd_round : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_round : M.IsFunction "core::intrinsics::simd::simd_round" simd_round.
-    Smpl Add apply Function_simd_round : is_function.
+    Global Instance Instance_IsFunction_simd_round :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_round" simd_round.
+    Admitted.
+    Global Opaque simd_round.
     
     Parameter simd_trunc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_trunc : M.IsFunction "core::intrinsics::simd::simd_trunc" simd_trunc.
-    Smpl Add apply Function_simd_trunc : is_function.
+    Global Instance Instance_IsFunction_simd_trunc :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_trunc" simd_trunc.
+    Admitted.
+    Global Opaque simd_trunc.
     
     Parameter simd_fsqrt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fsqrt : M.IsFunction "core::intrinsics::simd::simd_fsqrt" simd_fsqrt.
-    Smpl Add apply Function_simd_fsqrt : is_function.
+    Global Instance Instance_IsFunction_simd_fsqrt :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fsqrt" simd_fsqrt.
+    Admitted.
+    Global Opaque simd_fsqrt.
     
     Parameter simd_fma : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fma : M.IsFunction "core::intrinsics::simd::simd_fma" simd_fma.
-    Smpl Add apply Function_simd_fma : is_function.
+    Global Instance Instance_IsFunction_simd_fma :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fma" simd_fma.
+    Admitted.
+    Global Opaque simd_fma.
     
     Parameter simd_fsin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fsin : M.IsFunction "core::intrinsics::simd::simd_fsin" simd_fsin.
-    Smpl Add apply Function_simd_fsin : is_function.
+    Global Instance Instance_IsFunction_simd_fsin :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fsin" simd_fsin.
+    Admitted.
+    Global Opaque simd_fsin.
     
     Parameter simd_fcos : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fcos : M.IsFunction "core::intrinsics::simd::simd_fcos" simd_fcos.
-    Smpl Add apply Function_simd_fcos : is_function.
+    Global Instance Instance_IsFunction_simd_fcos :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fcos" simd_fcos.
+    Admitted.
+    Global Opaque simd_fcos.
     
     Parameter simd_fexp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fexp : M.IsFunction "core::intrinsics::simd::simd_fexp" simd_fexp.
-    Smpl Add apply Function_simd_fexp : is_function.
+    Global Instance Instance_IsFunction_simd_fexp :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fexp" simd_fexp.
+    Admitted.
+    Global Opaque simd_fexp.
     
     Parameter simd_fexp2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_fexp2 : M.IsFunction "core::intrinsics::simd::simd_fexp2" simd_fexp2.
-    Smpl Add apply Function_simd_fexp2 : is_function.
+    Global Instance Instance_IsFunction_simd_fexp2 :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_fexp2" simd_fexp2.
+    Admitted.
+    Global Opaque simd_fexp2.
     
     Parameter simd_flog10 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_flog10 : M.IsFunction "core::intrinsics::simd::simd_flog10" simd_flog10.
-    Smpl Add apply Function_simd_flog10 : is_function.
+    Global Instance Instance_IsFunction_simd_flog10 :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_flog10" simd_flog10.
+    Admitted.
+    Global Opaque simd_flog10.
     
     Parameter simd_flog2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_flog2 : M.IsFunction "core::intrinsics::simd::simd_flog2" simd_flog2.
-    Smpl Add apply Function_simd_flog2 : is_function.
+    Global Instance Instance_IsFunction_simd_flog2 :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_flog2" simd_flog2.
+    Admitted.
+    Global Opaque simd_flog2.
     
     Parameter simd_flog : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_simd_flog : M.IsFunction "core::intrinsics::simd::simd_flog" simd_flog.
-    Smpl Add apply Function_simd_flog : is_function.
+    Global Instance Instance_IsFunction_simd_flog :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_flog" simd_flog.
+    Admitted.
+    Global Opaque simd_flog.
   End simd.
 End intrinsics.

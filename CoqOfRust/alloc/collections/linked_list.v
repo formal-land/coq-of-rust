@@ -17056,9 +17056,10 @@ Module collections.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_assert_covariance :
-      M.IsFunction "alloc::collections::linked_list::assert_covariance" assert_covariance.
-    Smpl Add apply Function_assert_covariance : is_function.
+    Global Instance Instance_IsFunction_assert_covariance :
+      M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance" assert_covariance.
+    Admitted.
+    Global Opaque assert_covariance.
     
     Module assert_covariance.
       (*
@@ -17075,8 +17076,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_a : M.IsFunction "alloc::collections::linked_list::assert_covariance::a" a.
-      Smpl Add apply Function_a : is_function.
+      Global Instance Instance_IsFunction_a :
+        M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance::a" a.
+      Admitted.
+      Global Opaque a.
       
       (*
           fn b<'i, 'a>(x: Iter<'i, &'static str>) -> Iter<'i, &'a str> {
@@ -17092,8 +17095,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_b : M.IsFunction "alloc::collections::linked_list::assert_covariance::b" b.
-      Smpl Add apply Function_b : is_function.
+      Global Instance Instance_IsFunction_b :
+        M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance::b" b.
+      Admitted.
+      Global Opaque b.
       
       (*
           fn c<'a>(x: IntoIter<&'static str>) -> IntoIter<&'a str> {
@@ -17109,8 +17114,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_c : M.IsFunction "alloc::collections::linked_list::assert_covariance::c" c.
-      Smpl Add apply Function_c : is_function.
+      Global Instance Instance_IsFunction_c :
+        M.IsFunction.Trait "alloc::collections::linked_list::assert_covariance::c" c.
+      Admitted.
+      Global Opaque c.
     End assert_covariance.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_LinkedList_T_A.

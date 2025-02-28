@@ -1010,8 +1010,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sort : M.IsFunction "core::slice::sort::stable::drift::sort" sort.
-        Smpl Add apply Function_sort : is_function.
+        Global Instance Instance_IsFunction_sort :
+          M.IsFunction.Trait "core::slice::sort::stable::drift::sort" sort.
+        Admitted.
+        Global Opaque sort.
         
         Module sort.
           Definition value_MIN_SQRT_RUN_LEN : Value.t :=
@@ -1114,11 +1116,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge_tree_scale_factor :
-          M.IsFunction
+        Global Instance Instance_IsFunction_merge_tree_scale_factor :
+          M.IsFunction.Trait
             "core::slice::sort::stable::drift::merge_tree_scale_factor"
             merge_tree_scale_factor.
-        Smpl Add apply Function_merge_tree_scale_factor : is_function.
+        Admitted.
+        Global Opaque merge_tree_scale_factor.
         
         (*
         fn merge_tree_depth(left: usize, mid: usize, right: usize, scale_factor: u64) -> u8 {
@@ -1167,9 +1170,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge_tree_depth :
-          M.IsFunction "core::slice::sort::stable::drift::merge_tree_depth" merge_tree_depth.
-        Smpl Add apply Function_merge_tree_depth : is_function.
+        Global Instance Instance_IsFunction_merge_tree_depth :
+          M.IsFunction.Trait "core::slice::sort::stable::drift::merge_tree_depth" merge_tree_depth.
+        Admitted.
+        Global Opaque merge_tree_depth.
         
         (*
         fn sqrt_approx(n: usize) -> usize {
@@ -1222,9 +1226,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sqrt_approx :
-          M.IsFunction "core::slice::sort::stable::drift::sqrt_approx" sqrt_approx.
-        Smpl Add apply Function_sqrt_approx : is_function.
+        Global Instance Instance_IsFunction_sqrt_approx :
+          M.IsFunction.Trait "core::slice::sort::stable::drift::sqrt_approx" sqrt_approx.
+        Admitted.
+        Global Opaque sqrt_approx.
         
         (*
         fn logical_merge<T, F: FnMut(&T, &T) -> bool>(
@@ -1609,9 +1614,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_logical_merge :
-          M.IsFunction "core::slice::sort::stable::drift::logical_merge" logical_merge.
-        Smpl Add apply Function_logical_merge : is_function.
+        Global Instance Instance_IsFunction_logical_merge :
+          M.IsFunction.Trait "core::slice::sort::stable::drift::logical_merge" logical_merge.
+        Admitted.
+        Global Opaque logical_merge.
         
         (*
         fn create_run<T, F: FnMut(&T, &T) -> bool>(
@@ -1989,9 +1995,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_create_run :
-          M.IsFunction "core::slice::sort::stable::drift::create_run" create_run.
-        Smpl Add apply Function_create_run : is_function.
+        Global Instance Instance_IsFunction_create_run :
+          M.IsFunction.Trait "core::slice::sort::stable::drift::create_run" create_run.
+        Admitted.
+        Global Opaque create_run.
         
         (*
         fn stable_quicksort<T, F: FnMut(&T, &T) -> bool>(
@@ -2060,9 +2067,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_stable_quicksort :
-          M.IsFunction "core::slice::sort::stable::drift::stable_quicksort" stable_quicksort.
-        Smpl Add apply Function_stable_quicksort : is_function.
+        Global Instance Instance_IsFunction_stable_quicksort :
+          M.IsFunction.Trait "core::slice::sort::stable::drift::stable_quicksort" stable_quicksort.
+        Admitted.
+        Global Opaque stable_quicksort.
         
         (* StructTuple
           {

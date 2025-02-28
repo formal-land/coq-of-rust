@@ -444,9 +444,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_find_existing_run :
-        M.IsFunction "core::slice::sort::shared::find_existing_run" find_existing_run.
-      Smpl Add apply Function_find_existing_run : is_function.
+      Global Instance Instance_IsFunction_find_existing_run :
+        M.IsFunction.Trait "core::slice::sort::shared::find_existing_run" find_existing_run.
+      Admitted.
+      Global Opaque find_existing_run.
     End shared.
   End sort.
 End slice.

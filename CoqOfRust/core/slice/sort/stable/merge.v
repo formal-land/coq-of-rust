@@ -357,8 +357,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge : M.IsFunction "core::slice::sort::stable::merge::merge" merge.
-        Smpl Add apply Function_merge : is_function.
+        Global Instance Instance_IsFunction_merge :
+          M.IsFunction.Trait "core::slice::sort::stable::merge::merge" merge.
+        Admitted.
+        Global Opaque merge.
         
         (* StructRecord
           {

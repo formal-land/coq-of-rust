@@ -3611,8 +3611,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_not_eof : M.IsFunction "revm_bytecode::opcode::not_eof" not_eof.
-  Smpl Add apply Function_not_eof : is_function.
+  Global Instance Instance_IsFunction_not_eof :
+    M.IsFunction.Trait "revm_bytecode::opcode::not_eof" not_eof.
+  Admitted.
+  Global Opaque not_eof.
   
   (*
   pub const fn immediate_size(mut op: OpCodeInfo, n: u8) -> OpCodeInfo {
@@ -3643,9 +3645,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_immediate_size :
-    M.IsFunction "revm_bytecode::opcode::immediate_size" immediate_size.
-  Smpl Add apply Function_immediate_size : is_function.
+  Global Instance Instance_IsFunction_immediate_size :
+    M.IsFunction.Trait "revm_bytecode::opcode::immediate_size" immediate_size.
+  Admitted.
+  Global Opaque immediate_size.
   
   (*
   pub const fn terminating(mut op: OpCodeInfo) -> OpCodeInfo {
@@ -3675,8 +3678,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_terminating : M.IsFunction "revm_bytecode::opcode::terminating" terminating.
-  Smpl Add apply Function_terminating : is_function.
+  Global Instance Instance_IsFunction_terminating :
+    M.IsFunction.Trait "revm_bytecode::opcode::terminating" terminating.
+  Admitted.
+  Global Opaque terminating.
   
   (*
   pub const fn stack_io(mut op: OpCodeInfo, inputs: u8, outputs: u8) -> OpCodeInfo {
@@ -3720,8 +3725,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_stack_io : M.IsFunction "revm_bytecode::opcode::stack_io" stack_io.
-  Smpl Add apply Function_stack_io : is_function.
+  Global Instance Instance_IsFunction_stack_io :
+    M.IsFunction.Trait "revm_bytecode::opcode::stack_io" stack_io.
+  Admitted.
+  Global Opaque stack_io.
   
   Definition value_STOP : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).

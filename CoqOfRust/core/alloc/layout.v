@@ -28,8 +28,10 @@ Module alloc.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_size_align : M.IsFunction "core::alloc::layout::size_align" size_align.
-    Smpl Add apply Function_size_align : is_function.
+    Global Instance Instance_IsFunction_size_align :
+      M.IsFunction.Trait "core::alloc::layout::size_align" size_align.
+    Admitted.
+    Global Opaque size_align.
     
     (* StructRecord
       {

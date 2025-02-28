@@ -37,6 +37,7 @@ Module Impl_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   Smpl Add apply AssociatedFunction_contains : is_associated.
+  Global Opaque contains.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -44,6 +45,7 @@ Module Impl_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -51,6 +53,7 @@ Module Impl_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
   
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -58,6 +61,7 @@ Module Impl_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   Smpl Add apply AssociatedFunction_remove : is_associated.
+  Global Opaque remove.
   
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -65,6 +69,7 @@ Module Impl_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   Smpl Add apply AssociatedFunction_size : is_associated.
+  Global Opaque size.
   
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -72,6 +77,7 @@ Module Impl_multisig_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
   Smpl Add apply AssociatedFunction_take : is_associated.
+  Global Opaque take.
 End Impl_multisig_Mapping_K_V.
 
 (* StructTuple
@@ -581,22 +587,26 @@ Module Impl_multisig_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
   
   Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
   Smpl Add apply AssociatedFunction_transferred_value : is_associated.
+  Global Opaque transferred_value.
   
   Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
   Smpl Add apply AssociatedFunction_account_id : is_associated.
+  Global Opaque account_id.
 End Impl_multisig_Env.
 
 (* StructRecord
@@ -646,9 +656,10 @@ End Impl_core_default_Default_for_multisig_Multisig.
 
 Parameter ensure_requirement_is_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_ensure_requirement_is_valid :
-  M.IsFunction "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
-Smpl Add apply Function_ensure_requirement_is_valid : is_function.
+Global Instance Instance_IsFunction_ensure_requirement_is_valid :
+  M.IsFunction.Trait "multisig::ensure_requirement_is_valid" ensure_requirement_is_valid.
+Admitted.
+Global Opaque ensure_requirement_is_valid.
 
 Module Impl_multisig_Multisig.
   Definition Self : Ty.t := Ty.path "multisig::Multisig".
@@ -657,130 +668,153 @@ Module Impl_multisig_Multisig.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter ensure_confirmed : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_confirmed :
     M.IsAssociatedFunction Self "ensure_confirmed" ensure_confirmed.
   Smpl Add apply AssociatedFunction_ensure_confirmed : is_associated.
+  Global Opaque ensure_confirmed.
   
   Parameter ensure_transaction_exists : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_transaction_exists :
     M.IsAssociatedFunction Self "ensure_transaction_exists" ensure_transaction_exists.
   Smpl Add apply AssociatedFunction_ensure_transaction_exists : is_associated.
+  Global Opaque ensure_transaction_exists.
   
   Parameter ensure_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_owner : M.IsAssociatedFunction Self "ensure_owner" ensure_owner.
   Smpl Add apply AssociatedFunction_ensure_owner : is_associated.
+  Global Opaque ensure_owner.
   
   Parameter ensure_caller_is_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_caller_is_owner :
     M.IsAssociatedFunction Self "ensure_caller_is_owner" ensure_caller_is_owner.
   Smpl Add apply AssociatedFunction_ensure_caller_is_owner : is_associated.
+  Global Opaque ensure_caller_is_owner.
   
   Parameter ensure_from_wallet : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_from_wallet :
     M.IsAssociatedFunction Self "ensure_from_wallet" ensure_from_wallet.
   Smpl Add apply AssociatedFunction_ensure_from_wallet : is_associated.
+  Global Opaque ensure_from_wallet.
   
   Parameter ensure_no_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_ensure_no_owner :
     M.IsAssociatedFunction Self "ensure_no_owner" ensure_no_owner.
   Smpl Add apply AssociatedFunction_ensure_no_owner : is_associated.
+  Global Opaque ensure_no_owner.
   
   Parameter add_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_add_owner : M.IsAssociatedFunction Self "add_owner" add_owner.
   Smpl Add apply AssociatedFunction_add_owner : is_associated.
+  Global Opaque add_owner.
   
   Parameter owner_index : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_owner_index : M.IsAssociatedFunction Self "owner_index" owner_index.
   Smpl Add apply AssociatedFunction_owner_index : is_associated.
+  Global Opaque owner_index.
   
   Parameter clean_owner_confirmations : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_clean_owner_confirmations :
     M.IsAssociatedFunction Self "clean_owner_confirmations" clean_owner_confirmations.
   Smpl Add apply AssociatedFunction_clean_owner_confirmations : is_associated.
+  Global Opaque clean_owner_confirmations.
   
   Parameter remove_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_remove_owner : M.IsAssociatedFunction Self "remove_owner" remove_owner.
   Smpl Add apply AssociatedFunction_remove_owner : is_associated.
+  Global Opaque remove_owner.
   
   Parameter replace_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_replace_owner :
     M.IsAssociatedFunction Self "replace_owner" replace_owner.
   Smpl Add apply AssociatedFunction_replace_owner : is_associated.
+  Global Opaque replace_owner.
   
   Parameter change_requirement : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_change_requirement :
     M.IsAssociatedFunction Self "change_requirement" change_requirement.
   Smpl Add apply AssociatedFunction_change_requirement : is_associated.
+  Global Opaque change_requirement.
   
   Parameter confirm_by_caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_confirm_by_caller :
     M.IsAssociatedFunction Self "confirm_by_caller" confirm_by_caller.
   Smpl Add apply AssociatedFunction_confirm_by_caller : is_associated.
+  Global Opaque confirm_by_caller.
   
   Parameter submit_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_submit_transaction :
     M.IsAssociatedFunction Self "submit_transaction" submit_transaction.
   Smpl Add apply AssociatedFunction_submit_transaction : is_associated.
+  Global Opaque submit_transaction.
   
   Parameter take_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_take_transaction :
     M.IsAssociatedFunction Self "take_transaction" take_transaction.
   Smpl Add apply AssociatedFunction_take_transaction : is_associated.
+  Global Opaque take_transaction.
   
   Parameter cancel_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_cancel_transaction :
     M.IsAssociatedFunction Self "cancel_transaction" cancel_transaction.
   Smpl Add apply AssociatedFunction_cancel_transaction : is_associated.
+  Global Opaque cancel_transaction.
   
   Parameter confirm_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_confirm_transaction :
     M.IsAssociatedFunction Self "confirm_transaction" confirm_transaction.
   Smpl Add apply AssociatedFunction_confirm_transaction : is_associated.
+  Global Opaque confirm_transaction.
   
   Parameter revoke_confirmation : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_revoke_confirmation :
     M.IsAssociatedFunction Self "revoke_confirmation" revoke_confirmation.
   Smpl Add apply AssociatedFunction_revoke_confirmation : is_associated.
+  Global Opaque revoke_confirmation.
   
   Parameter invoke_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_invoke_transaction :
     M.IsAssociatedFunction Self "invoke_transaction" invoke_transaction.
   Smpl Add apply AssociatedFunction_invoke_transaction : is_associated.
+  Global Opaque invoke_transaction.
   
   Parameter eval_transaction : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_eval_transaction :
     M.IsAssociatedFunction Self "eval_transaction" eval_transaction.
   Smpl Add apply AssociatedFunction_eval_transaction : is_associated.
+  Global Opaque eval_transaction.
 End Impl_multisig_Multisig.

@@ -27,8 +27,8 @@ Definition run_max_by {T F : Set} `{Link T} `{Link F}
   {{ cmp.max_by [] [ Φ T; Φ F ] [ φ v1; φ v2; φ compare ] 🔽 T }}.
 Proof.
   destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
-  run_symbolic.
-  cbn in *; destruct_all Ordering.t; run_symbolic.
+  run.
+  destruct_all Ordering.t; run_symbolic.
 Defined.
 Smpl Add apply run_max_by : run_closure.
 

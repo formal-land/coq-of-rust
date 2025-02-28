@@ -1566,8 +1566,10 @@ Module any.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_name : M.IsFunction "core::any::type_name" type_name.
-  Smpl Add apply Function_type_name : is_function.
+  Global Instance Instance_IsFunction_type_name :
+    M.IsFunction.Trait "core::any::type_name" type_name.
+  Admitted.
+  Global Opaque type_name.
   
   (*
   pub const fn type_name_of_val<T: ?Sized>(_val: &T) -> &'static str {
@@ -1587,6 +1589,8 @@ Module any.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_name_of_val : M.IsFunction "core::any::type_name_of_val" type_name_of_val.
-  Smpl Add apply Function_type_name_of_val : is_function.
+  Global Instance Instance_IsFunction_type_name_of_val :
+    M.IsFunction.Trait "core::any::type_name_of_val" type_name_of_val.
+  Admitted.
+  Global Opaque type_name_of_val.
 End any.

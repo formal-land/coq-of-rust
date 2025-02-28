@@ -38,8 +38,10 @@ Module ops.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
-    Smpl Add apply Function_from_yeet : is_function.
+    Global Instance Instance_IsFunction_from_yeet :
+      M.IsFunction.Trait "core::ops::try_trait::from_yeet" from_yeet.
+    Admitted.
+    Global Opaque from_yeet.
     
     (* Trait *)
     (* Empty module 'Residual' *)
@@ -50,7 +52,7 @@ Module ops.
         (Ty.associated_in_trait
           "core::ops::try_trait::Residual"
           []
-          []
+          [ V ]
           (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] T "Residual")
           "TryType").
     

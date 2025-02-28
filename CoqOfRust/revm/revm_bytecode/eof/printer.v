@@ -932,7 +932,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_print : M.IsFunction "revm_bytecode::eof::printer::print" print.
-    Smpl Add apply Function_print : is_function.
+    Global Instance Instance_IsFunction_print :
+      M.IsFunction.Trait "revm_bytecode::eof::printer::print" print.
+    Admitted.
+    Global Opaque print.
   End printer.
 End eof.

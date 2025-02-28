@@ -64,12 +64,14 @@ Module Impl_contract_terminate_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
   Smpl Add apply AssociatedFunction_terminate_contract : is_associated.
+  Global Opaque terminate_contract.
 End Impl_contract_terminate_Env.
 
 (* StructTuple
@@ -87,19 +89,23 @@ Module Impl_contract_terminate_JustTerminate.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter terminate_me : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_terminate_me : M.IsAssociatedFunction Self "terminate_me" terminate_me.
   Smpl Add apply AssociatedFunction_terminate_me : is_associated.
+  Global Opaque terminate_me.
 End Impl_contract_terminate_JustTerminate.

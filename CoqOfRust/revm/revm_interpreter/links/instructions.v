@@ -25,6 +25,7 @@ Definition run_instruction_table
     array.t (Instruction.t WIRE H WIRE_types) {| Integer.value := 256 |}
   }}.
 Proof.
+  with_strategy transparent [instructions.instruction_table] unfold instructions.instruction_table.
   run_symbolic_one_step_immediate.
   run_symbolic_let. {
     run_symbolic.
@@ -93,6 +94,7 @@ Definition run_instruction
     Instruction.t WIRE H WIRE_types
   }}.
 Proof.
+  with_strategy transparent [instructions.instruction] unfold instructions.instruction.
   run_symbolic.
   run_symbolic_let. {
     run_symbolic.

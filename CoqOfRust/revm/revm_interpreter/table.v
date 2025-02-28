@@ -743,9 +743,10 @@ Module table.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_make_instruction_table :
-    M.IsFunction "revm_interpreter::table::make_instruction_table" make_instruction_table.
-  Smpl Add apply Function_make_instruction_table : is_function.
+  Global Instance Instance_IsFunction_make_instruction_table :
+    M.IsFunction.Trait "revm_interpreter::table::make_instruction_table" make_instruction_table.
+  Admitted.
+  Global Opaque make_instruction_table.
   
   (*
   pub fn make_custom_instruction_table<W, H, FN, CI: CustomInstruction<Wire = W, Host = H>>(
@@ -842,9 +843,10 @@ Module table.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_make_custom_instruction_table :
-    M.IsFunction
+  Global Instance Instance_IsFunction_make_custom_instruction_table :
+    M.IsFunction.Trait
       "revm_interpreter::table::make_custom_instruction_table"
       make_custom_instruction_table.
-  Smpl Add apply Function_make_custom_instruction_table : is_function.
+  Admitted.
+  Global Opaque make_custom_instruction_table.
 End table.

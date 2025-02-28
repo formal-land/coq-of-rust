@@ -8967,9 +8967,12 @@ Module sync.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_arcinner_layout_for_value_layout :
-    M.IsFunction "alloc::sync::arcinner_layout_for_value_layout" arcinner_layout_for_value_layout.
-  Smpl Add apply Function_arcinner_layout_for_value_layout : is_function.
+  Global Instance Instance_IsFunction_arcinner_layout_for_value_layout :
+    M.IsFunction.Trait
+      "alloc::sync::arcinner_layout_for_value_layout"
+      arcinner_layout_for_value_layout.
+  Admitted.
+  Global Opaque arcinner_layout_for_value_layout.
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_for_alloc_sync_ArcInner_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ].
@@ -17524,8 +17527,10 @@ Module sync.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_data_offset : M.IsFunction "alloc::sync::data_offset" data_offset.
-  Smpl Add apply Function_data_offset : is_function.
+  Global Instance Instance_IsFunction_data_offset :
+    M.IsFunction.Trait "alloc::sync::data_offset" data_offset.
+  Admitted.
+  Global Opaque data_offset.
   
   (*
   fn data_offset_align(align: usize) -> usize {
@@ -17580,9 +17585,10 @@ Module sync.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_data_offset_align :
-    M.IsFunction "alloc::sync::data_offset_align" data_offset_align.
-  Smpl Add apply Function_data_offset_align : is_function.
+  Global Instance Instance_IsFunction_data_offset_align :
+    M.IsFunction.Trait "alloc::sync::data_offset_align" data_offset_align.
+  Admitted.
+  Global Opaque data_offset_align.
   
   (* StructRecord
     {

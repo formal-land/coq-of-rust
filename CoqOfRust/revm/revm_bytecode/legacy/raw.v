@@ -889,8 +889,9 @@ Module legacy.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_analyze_legacy :
-      M.IsFunction "revm_bytecode::legacy::raw::analyze_legacy" analyze_legacy.
-    Smpl Add apply Function_analyze_legacy : is_function.
+    Global Instance Instance_IsFunction_analyze_legacy :
+      M.IsFunction.Trait "revm_bytecode::legacy::raw::analyze_legacy" analyze_legacy.
+    Admitted.
+    Global Opaque analyze_legacy.
   End raw.
 End legacy.

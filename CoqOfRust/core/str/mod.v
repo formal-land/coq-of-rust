@@ -40,8 +40,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_slice_error_fail : M.IsFunction "core::str::slice_error_fail" slice_error_fail.
-  Smpl Add apply Function_slice_error_fail : is_function.
+  Global Instance Instance_IsFunction_slice_error_fail :
+    M.IsFunction.Trait "core::str::slice_error_fail" slice_error_fail.
+  Admitted.
+  Global Opaque slice_error_fail.
   
   (*
   const fn slice_error_fail_ct(_: &str, _: usize, _: usize) -> ! {
@@ -112,9 +114,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_slice_error_fail_ct :
-    M.IsFunction "core::str::slice_error_fail_ct" slice_error_fail_ct.
-  Smpl Add apply Function_slice_error_fail_ct : is_function.
+  Global Instance Instance_IsFunction_slice_error_fail_ct :
+    M.IsFunction.Trait "core::str::slice_error_fail_ct" slice_error_fail_ct.
+  Admitted.
+  Global Opaque slice_error_fail_ct.
   
   (*
   fn slice_error_fail_rt(s: &str, begin: usize, end: usize) -> ! {
@@ -802,9 +805,10 @@ Module str.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_slice_error_fail_rt :
-    M.IsFunction "core::str::slice_error_fail_rt" slice_error_fail_rt.
-  Smpl Add apply Function_slice_error_fail_rt : is_function.
+  Global Instance Instance_IsFunction_slice_error_fail_rt :
+    M.IsFunction.Trait "core::str::slice_error_fail_rt" slice_error_fail_rt.
+  Admitted.
+  Global Opaque slice_error_fail_rt.
   
   Module slice_error_fail_rt.
     Definition value_MAX_DISPLAY_LENGTH : Value.t :=
@@ -1619,7 +1623,14 @@ Module str.
                 Ty.apply
                   (Ty.path "&")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.path "str" ]
+                      I
+                      "Output"
+                  ]
               ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
@@ -1657,7 +1668,14 @@ Module str.
                 Ty.apply
                   (Ty.path "&mut")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.path "str" ]
+                      I
+                      "Output"
+                  ]
               ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
@@ -1700,7 +1718,14 @@ Module str.
                     Ty.apply
                       (Ty.path "*const")
                       []
-                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                      [
+                        Ty.associated_in_trait
+                          "core::slice::index::SliceIndex"
+                          []
+                          [ Ty.path "str" ]
+                          I
+                          "Output"
+                      ],
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       I,
@@ -1760,7 +1785,7 @@ Module str.
                                 Ty.associated_in_trait
                                   "core::slice::index::SliceIndex"
                                   []
-                                  []
+                                  [ Ty.path "str" ]
                                   I
                                   "Output"
                               ],

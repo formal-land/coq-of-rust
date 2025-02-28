@@ -15200,8 +15200,10 @@ Module collections.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_wrap_index : M.IsFunction "alloc::collections::vec_deque::wrap_index" wrap_index.
-    Smpl Add apply Function_wrap_index : is_function.
+    Global Instance Instance_IsFunction_wrap_index :
+      M.IsFunction.Trait "alloc::collections::vec_deque::wrap_index" wrap_index.
+    Admitted.
+    Global Opaque wrap_index.
     
     Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=

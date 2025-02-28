@@ -30,8 +30,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_metadata : M.IsFunction "core::ptr::metadata::metadata" metadata.
-    Smpl Add apply Function_metadata : is_function.
+    Global Instance Instance_IsFunction_metadata :
+      M.IsFunction.Trait "core::ptr::metadata::metadata" metadata.
+    Admitted.
+    Global Opaque metadata.
     
     (*
     pub const fn from_raw_parts<T: ?Sized>(
@@ -63,9 +65,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_raw_parts :
-      M.IsFunction "core::ptr::metadata::from_raw_parts" from_raw_parts.
-    Smpl Add apply Function_from_raw_parts : is_function.
+    Global Instance Instance_IsFunction_from_raw_parts :
+      M.IsFunction.Trait "core::ptr::metadata::from_raw_parts" from_raw_parts.
+    Admitted.
+    Global Opaque from_raw_parts.
     
     (*
     pub const fn from_raw_parts_mut<T: ?Sized>(
@@ -97,9 +100,10 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_raw_parts_mut :
-      M.IsFunction "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
-    Smpl Add apply Function_from_raw_parts_mut : is_function.
+    Global Instance Instance_IsFunction_from_raw_parts_mut :
+      M.IsFunction.Trait "core::ptr::metadata::from_raw_parts_mut" from_raw_parts_mut.
+    Admitted.
+    Global Opaque from_raw_parts_mut.
     
     (* StructRecord
       {

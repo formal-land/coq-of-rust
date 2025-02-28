@@ -3831,7 +3831,15 @@ Module u256.
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
-                    [ T; Ty.associated_in_trait "core::convert::TryFrom" [] [] T "Error" ],
+                    [
+                      T;
+                      Ty.associated_in_trait
+                        "core::convert::TryFrom"
+                        []
+                        [ Ty.path "u128" ]
+                        T
+                        "Error"
+                    ],
                   M.get_trait_method (|
                     "core::convert::TryFrom",
                     T,

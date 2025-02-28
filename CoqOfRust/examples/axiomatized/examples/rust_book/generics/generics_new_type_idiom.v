@@ -24,6 +24,7 @@ Module Impl_generics_new_type_idiom_Years.
   
   Axiom AssociatedFunction_to_days : M.IsAssociatedFunction Self "to_days" to_days.
   Smpl Add apply AssociatedFunction_to_days : is_associated.
+  Global Opaque to_days.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
@@ -33,14 +34,18 @@ Module Impl_generics_new_type_idiom_Days.
   
   Axiom AssociatedFunction_to_years : M.IsAssociatedFunction Self "to_years" to_years.
   Smpl Add apply AssociatedFunction_to_years : is_associated.
+  Global Opaque to_years.
 End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_old_enough : M.IsFunction "generics_new_type_idiom::old_enough" old_enough.
-Smpl Add apply Function_old_enough : is_function.
+Global Instance Instance_IsFunction_old_enough :
+  M.IsFunction.Trait "generics_new_type_idiom::old_enough" old_enough.
+Admitted.
+Global Opaque old_enough.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_new_type_idiom::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_new_type_idiom::main" main.
+Admitted.
+Global Opaque main.

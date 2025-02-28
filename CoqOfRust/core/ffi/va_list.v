@@ -767,17 +767,23 @@ Module ffi.
     
     Parameter va_end : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_va_end : M.IsFunction "core::ffi::va_list::va_end" va_end.
-    Smpl Add apply Function_va_end : is_function.
+    Global Instance Instance_IsFunction_va_end :
+      M.IsFunction.Trait "core::ffi::va_list::va_end" va_end.
+    Admitted.
+    Global Opaque va_end.
     
     Parameter va_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_va_copy : M.IsFunction "core::ffi::va_list::va_copy" va_copy.
-    Smpl Add apply Function_va_copy : is_function.
+    Global Instance Instance_IsFunction_va_copy :
+      M.IsFunction.Trait "core::ffi::va_list::va_copy" va_copy.
+    Admitted.
+    Global Opaque va_copy.
     
     Parameter va_arg : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_va_arg : M.IsFunction "core::ffi::va_list::va_arg" va_arg.
-    Smpl Add apply Function_va_arg : is_function.
+    Global Instance Instance_IsFunction_va_arg :
+      M.IsFunction.Trait "core::ffi::va_list::va_arg" va_arg.
+    Admitted.
+    Global Opaque va_arg.
   End va_list.
 End ffi.

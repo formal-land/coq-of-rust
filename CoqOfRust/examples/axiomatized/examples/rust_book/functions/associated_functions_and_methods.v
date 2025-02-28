@@ -16,11 +16,13 @@ Module Impl_associated_functions_and_methods_Point.
   
   Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
   Smpl Add apply AssociatedFunction_origin : is_associated.
+  Global Opaque origin.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
 End Impl_associated_functions_and_methods_Point.
 
 (* StructRecord
@@ -42,21 +44,25 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
   Smpl Add apply AssociatedFunction_get_p1 : is_associated.
+  Global Opaque get_p1.
   
   Parameter area : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
   Smpl Add apply AssociatedFunction_area : is_associated.
+  Global Opaque area.
   
   Parameter perimeter : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_perimeter : M.IsAssociatedFunction Self "perimeter" perimeter.
   Smpl Add apply AssociatedFunction_perimeter : is_associated.
+  Global Opaque perimeter.
   
   Parameter translate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_translate : M.IsAssociatedFunction Self "translate" translate.
   Smpl Add apply AssociatedFunction_translate : is_associated.
+  Global Opaque translate.
 End Impl_associated_functions_and_methods_Rectangle.
 
 (* StructTuple
@@ -78,9 +84,12 @@ Module Impl_associated_functions_and_methods_Pair.
   
   Axiom AssociatedFunction_destroy : M.IsAssociatedFunction Self "destroy" destroy.
   Smpl Add apply AssociatedFunction_destroy : is_associated.
+  Global Opaque destroy.
 End Impl_associated_functions_and_methods_Pair.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "associated_functions_and_methods::main" main.
+Admitted.
+Global Opaque main.

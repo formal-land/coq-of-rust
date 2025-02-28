@@ -3825,8 +3825,9 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_num_words :
-      M.IsFunction "revm_interpreter::interpreter::shared_memory::num_words" num_words.
-    Smpl Add apply Function_num_words : is_function.
+    Global Instance Instance_IsFunction_num_words :
+      M.IsFunction.Trait "revm_interpreter::interpreter::shared_memory::num_words" num_words.
+    Admitted.
+    Global Opaque num_words.
   End shared_memory.
 End interpreter.

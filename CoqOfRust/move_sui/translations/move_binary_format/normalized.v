@@ -38983,9 +38983,10 @@ Module normalized.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_struct_instantiation :
-    M.IsFunction "move_binary_format::normalized::struct_instantiation" struct_instantiation.
-  Smpl Add apply Function_struct_instantiation : is_function.
+  Global Instance Instance_IsFunction_struct_instantiation :
+    M.IsFunction.Trait "move_binary_format::normalized::struct_instantiation" struct_instantiation.
+  Admitted.
+  Global Opaque struct_instantiation.
   
   (*
   fn field_instantiation(m: &CompiledModule, idx: &FieldInstantiationIndex) -> (FieldRef, Vec<Type>) {
@@ -39326,9 +39327,10 @@ Module normalized.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_field_instantiation :
-    M.IsFunction "move_binary_format::normalized::field_instantiation" field_instantiation.
-  Smpl Add apply Function_field_instantiation : is_function.
+  Global Instance Instance_IsFunction_field_instantiation :
+    M.IsFunction.Trait "move_binary_format::normalized::field_instantiation" field_instantiation.
+  Admitted.
+  Global Opaque field_instantiation.
   
   (*
   fn signature_to_single_type(m: &CompiledModule, sig_idx: &SignatureIndex) -> Type {
@@ -39415,9 +39417,10 @@ Module normalized.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_signature_to_single_type :
-    M.IsFunction
+  Global Instance Instance_IsFunction_signature_to_single_type :
+    M.IsFunction.Trait
       "move_binary_format::normalized::signature_to_single_type"
       signature_to_single_type.
-  Smpl Add apply Function_signature_to_single_type : is_function.
+  Admitted.
+  Global Opaque signature_to_single_type.
 End normalized.

@@ -19021,7 +19021,8 @@ Module check_bounds.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_bounds_impl :
-    M.IsFunction "move_binary_format::check_bounds::check_bounds_impl" check_bounds_impl.
-  Smpl Add apply Function_check_bounds_impl : is_function.
+  Global Instance Instance_IsFunction_check_bounds_impl :
+    M.IsFunction.Trait "move_binary_format::check_bounds::check_bounds_impl" check_bounds_impl.
+  Admitted.
+  Global Opaque check_bounds_impl.
 End check_bounds.

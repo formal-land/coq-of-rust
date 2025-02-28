@@ -3,16 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter combine_vecs_explicit_return_type : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_combine_vecs_explicit_return_type :
-  M.IsFunction
+Global Instance Instance_IsFunction_combine_vecs_explicit_return_type :
+  M.IsFunction.Trait
     "impl_trait_as_return_type::combine_vecs_explicit_return_type"
     combine_vecs_explicit_return_type.
-Smpl Add apply Function_combine_vecs_explicit_return_type : is_function.
+Admitted.
+Global Opaque combine_vecs_explicit_return_type.
 
 Parameter combine_vecs : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_combine_vecs : M.IsFunction "impl_trait_as_return_type::combine_vecs" combine_vecs.
-Smpl Add apply Function_combine_vecs : is_function.
+Global Instance Instance_IsFunction_combine_vecs :
+  M.IsFunction.Trait "impl_trait_as_return_type::combine_vecs" combine_vecs.
+Admitted.
+Global Opaque combine_vecs.
 
 Module combine_vecs.
   (* Error OpaqueTy *)
@@ -20,5 +23,7 @@ End combine_vecs.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "impl_trait_as_return_type::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "impl_trait_as_return_type::main" main.
+Admitted.
+Global Opaque main.

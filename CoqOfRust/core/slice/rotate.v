@@ -1519,8 +1519,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_ptr_rotate : M.IsFunction "core::slice::rotate::ptr_rotate" ptr_rotate.
-    Smpl Add apply Function_ptr_rotate : is_function.
+    Global Instance Instance_IsFunction_ptr_rotate :
+      M.IsFunction.Trait "core::slice::rotate::ptr_rotate" ptr_rotate.
+    Admitted.
+    Global Opaque ptr_rotate.
     
     Module ptr_rotate.
       Axiom BufType :

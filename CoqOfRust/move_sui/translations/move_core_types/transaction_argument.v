@@ -3776,9 +3776,10 @@ Module transaction_argument.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_convert_txn_args :
-    M.IsFunction "move_core_types::transaction_argument::convert_txn_args" convert_txn_args.
-  Smpl Add apply Function_convert_txn_args : is_function.
+  Global Instance Instance_IsFunction_convert_txn_args :
+    M.IsFunction.Trait "move_core_types::transaction_argument::convert_txn_args" convert_txn_args.
+  Admitted.
+  Global Opaque convert_txn_args.
   
   (* StructTuple
     {

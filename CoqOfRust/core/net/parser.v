@@ -2332,7 +2332,7 @@ Module net.
                                                           Ty.associated_in_trait
                                                             "core::convert::TryFrom"
                                                             []
-                                                            []
+                                                            [ Ty.path "u32" ]
                                                             T
                                                             "Error"
                                                         ],
@@ -2350,7 +2350,7 @@ Module net.
                                                             Ty.associated_in_trait
                                                               "core::convert::TryFrom"
                                                               []
-                                                              []
+                                                              [ Ty.path "u32" ]
                                                               T
                                                               "Error"
                                                           ],

@@ -81,6 +81,7 @@ Module Impl_mother_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -93,6 +94,7 @@ Module Impl_mother_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
 End Impl_mother_Mapping_K_V.
 
 (* StructTuple
@@ -2059,6 +2061,7 @@ Module Impl_mother_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -2069,6 +2072,7 @@ Module Impl_mother_Env.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
 End Impl_mother_Env.
 
 (* StructRecord
@@ -2154,6 +2158,7 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -2175,6 +2180,7 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       pub fn new(auction: Auction) -> Self {
@@ -2219,6 +2225,7 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn new_default() -> Self {
@@ -2247,6 +2254,7 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
   Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Opaque new_default.
   
   (*
       pub fn failed_new(fail: bool) -> Result<Self, Failure> {
@@ -2327,6 +2335,7 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
   Smpl Add apply AssociatedFunction_failed_new : is_associated.
+  Global Opaque failed_new.
   
   (*
       pub fn echo_auction(&mut self, auction: Auction) -> Auction {
@@ -2391,6 +2400,7 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
   Smpl Add apply AssociatedFunction_echo_auction : is_associated.
+  Global Opaque echo_auction.
   
   (*
       pub fn revert_or_trap(&mut self, fail: Option<Failure>) -> Result<(), Failure> {
@@ -2482,6 +2492,7 @@ Module Impl_mother_Mother.
   Axiom AssociatedFunction_revert_or_trap :
     M.IsAssociatedFunction Self "revert_or_trap" revert_or_trap.
   Smpl Add apply AssociatedFunction_revert_or_trap : is_associated.
+  Global Opaque revert_or_trap.
   
   (*
       pub fn debug_log(&mut self, _message: String) {
@@ -2568,4 +2579,5 @@ Module Impl_mother_Mother.
   
   Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.
   Smpl Add apply AssociatedFunction_debug_log : is_associated.
+  Global Opaque debug_log.
 End Impl_mother_Mother.

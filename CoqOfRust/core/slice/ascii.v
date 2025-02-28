@@ -2695,9 +2695,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_contains_nonascii :
-      M.IsFunction "core::slice::ascii::contains_nonascii" contains_nonascii.
-    Smpl Add apply Function_contains_nonascii : is_function.
+    Global Instance Instance_IsFunction_contains_nonascii :
+      M.IsFunction.Trait "core::slice::ascii::contains_nonascii" contains_nonascii.
+    Admitted.
+    Global Opaque contains_nonascii.
     
     Module contains_nonascii.
       Definition value_NONASCII_MASK : Value.t :=
@@ -2823,9 +2824,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_ascii_simple :
-      M.IsFunction "core::slice::ascii::is_ascii_simple" is_ascii_simple.
-    Smpl Add apply Function_is_ascii_simple : is_function.
+    Global Instance Instance_IsFunction_is_ascii_simple :
+      M.IsFunction.Trait "core::slice::ascii::is_ascii_simple" is_ascii_simple.
+    Admitted.
+    Global Opaque is_ascii_simple.
     
     (*
     const fn is_ascii(s: &[u8]) -> bool {
@@ -3690,8 +3692,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.
-    Smpl Add apply Function_is_ascii : is_function.
+    Global Instance Instance_IsFunction_is_ascii :
+      M.IsFunction.Trait "core::slice::ascii::is_ascii" is_ascii.
+    Admitted.
+    Global Opaque is_ascii.
     
     Module is_ascii.
       Definition value_USIZE_SIZE : Value.t :=

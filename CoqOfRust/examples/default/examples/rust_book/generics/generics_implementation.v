@@ -48,6 +48,7 @@ Module Impl_generics_implementation_Val.
   
   Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
   Smpl Add apply AssociatedFunction_value : is_associated.
+  Global Opaque value.
 End Impl_generics_implementation_Val.
 
 Module Impl_generics_implementation_GenVal_T.
@@ -85,6 +86,7 @@ Module Impl_generics_implementation_GenVal_T.
     forall (T : Ty.t),
     M.IsAssociatedFunction (Self T) "value" (value T).
   Smpl Add apply AssociatedFunction_value : is_associated.
+  Global Opaque value.
 End Impl_generics_implementation_GenVal_T.
 
 (*
@@ -234,5 +236,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_implementation::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_implementation::main" main.
+Admitted.
+Global Opaque main.

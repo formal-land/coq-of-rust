@@ -389,9 +389,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_inspect_fold :
-        M.IsFunction "core::iter::adapters::inspect::inspect_fold" inspect_fold.
-      Smpl Add apply Function_inspect_fold : is_function.
+      Global Instance Instance_IsFunction_inspect_fold :
+        M.IsFunction.Trait "core::iter::adapters::inspect::inspect_fold" inspect_fold.
+      Admitted.
+      Global Opaque inspect_fold.
       
       Module inspect_fold.
         (* Error OpaqueTy *)
@@ -491,9 +492,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_inspect_try_fold :
-        M.IsFunction "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
-      Smpl Add apply Function_inspect_try_fold : is_function.
+      Global Instance Instance_IsFunction_inspect_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
+      Admitted.
+      Global Opaque inspect_try_fold.
       
       Module inspect_try_fold.
         (* Error OpaqueTy *)

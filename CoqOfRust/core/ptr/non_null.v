@@ -2631,12 +2631,26 @@ Module ptr.
               Ty.apply
                 (Ty.path "core::ptr::non_null::NonNull")
                 []
-                [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                [
+                  Ty.associated_in_trait
+                    "core::slice::index::SliceIndex"
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    I
+                    "Output"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      I
+                      "Output"
+                  ],
                 "new_unchecked",
                 [],
                 []
@@ -2646,7 +2660,14 @@ Module ptr.
                   Ty.apply
                     (Ty.path "*mut")
                     []
-                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                    [
+                      Ty.associated_in_trait
+                        "core::slice::index::SliceIndex"
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                        I
+                        "Output"
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked_mut",

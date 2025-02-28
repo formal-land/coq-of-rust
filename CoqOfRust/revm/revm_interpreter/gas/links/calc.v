@@ -19,15 +19,8 @@ pub const fn memory_gas(num_words: usize) -> u64 {
 Lemma run_memory_gas (num_words: Usize.t) :
   {{ gas.calc.memory_gas [] [] [ φ num_words ] 🔽 U64.t }}.
 Proof.
+  run; try apply links.mod.Impl_u64.run_saturating_mul.
   run_symbolic.
-  run_symbolic_closure. {
-    apply links.mod.Impl_u64.run_saturating_mul.
-  }
-  intros []; run_symbolic.
-  run_symbolic_closure. {
-    apply links.mod.Impl_u64.run_saturating_mul.
-  }
-  intros []; run_symbolic.
   run_symbolic_closure. {
     apply links.mod.Impl_u64.run_saturating_add.
   }

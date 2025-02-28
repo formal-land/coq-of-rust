@@ -3003,8 +3003,10 @@ Module ffi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen" strlen.
-    Smpl Add apply Function_strlen : is_function.
+    Global Instance Instance_IsFunction_strlen :
+      M.IsFunction.Trait "core::ffi::c_str::strlen" strlen.
+    Admitted.
+    Global Opaque strlen.
     
     Module strlen.
       (*
@@ -3089,8 +3091,10 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_strlen_ct : M.IsFunction "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
-      Smpl Add apply Function_strlen_ct : is_function.
+      Global Instance Instance_IsFunction_strlen_ct :
+        M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
+      Admitted.
+      Global Opaque strlen_ct.
       
       (*
           fn strlen_rt(s: *const c_char) -> usize {
@@ -3116,14 +3120,18 @@ Module ffi.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_strlen_rt : M.IsFunction "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
-      Smpl Add apply Function_strlen_rt : is_function.
+      Global Instance Instance_IsFunction_strlen_rt :
+        M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
+      Admitted.
+      Global Opaque strlen_rt.
       
       Module strlen_rt.
         Parameter strlen : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
         
-        Axiom Function_strlen : M.IsFunction "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
-        Smpl Add apply Function_strlen : is_function.
+        Global Instance Instance_IsFunction_strlen :
+          M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
+        Admitted.
+        Global Opaque strlen.
       End strlen_rt.
     End strlen.
     

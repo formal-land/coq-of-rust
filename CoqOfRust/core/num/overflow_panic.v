@@ -43,8 +43,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_add : M.IsFunction "core::num::overflow_panic::add" add.
-    Smpl Add apply Function_add : is_function.
+    Global Instance Instance_IsFunction_add :
+      M.IsFunction.Trait "core::num::overflow_panic::add" add.
+    Admitted.
+    Global Opaque add.
     
     (*
     pub const fn sub() -> ! {
@@ -87,8 +89,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sub : M.IsFunction "core::num::overflow_panic::sub" sub.
-    Smpl Add apply Function_sub : is_function.
+    Global Instance Instance_IsFunction_sub :
+      M.IsFunction.Trait "core::num::overflow_panic::sub" sub.
+    Admitted.
+    Global Opaque sub.
     
     (*
     pub const fn mul() -> ! {
@@ -131,8 +135,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_mul : M.IsFunction "core::num::overflow_panic::mul" mul.
-    Smpl Add apply Function_mul : is_function.
+    Global Instance Instance_IsFunction_mul :
+      M.IsFunction.Trait "core::num::overflow_panic::mul" mul.
+    Admitted.
+    Global Opaque mul.
     
     (*
     pub const fn div() -> ! {
@@ -175,8 +181,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_div : M.IsFunction "core::num::overflow_panic::div" div.
-    Smpl Add apply Function_div : is_function.
+    Global Instance Instance_IsFunction_div :
+      M.IsFunction.Trait "core::num::overflow_panic::div" div.
+    Admitted.
+    Global Opaque div.
     
     (*
     pub const fn rem() -> ! {
@@ -223,8 +231,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_rem : M.IsFunction "core::num::overflow_panic::rem" rem.
-    Smpl Add apply Function_rem : is_function.
+    Global Instance Instance_IsFunction_rem :
+      M.IsFunction.Trait "core::num::overflow_panic::rem" rem.
+    Admitted.
+    Global Opaque rem.
     
     (*
     pub const fn neg() -> ! {
@@ -267,8 +277,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_neg : M.IsFunction "core::num::overflow_panic::neg" neg.
-    Smpl Add apply Function_neg : is_function.
+    Global Instance Instance_IsFunction_neg :
+      M.IsFunction.Trait "core::num::overflow_panic::neg" neg.
+    Admitted.
+    Global Opaque neg.
     
     (*
     pub const fn shr() -> ! {
@@ -311,8 +323,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_shr : M.IsFunction "core::num::overflow_panic::shr" shr.
-    Smpl Add apply Function_shr : is_function.
+    Global Instance Instance_IsFunction_shr :
+      M.IsFunction.Trait "core::num::overflow_panic::shr" shr.
+    Admitted.
+    Global Opaque shr.
     
     (*
     pub const fn shl() -> ! {
@@ -355,7 +369,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_shl : M.IsFunction "core::num::overflow_panic::shl" shl.
-    Smpl Add apply Function_shl : is_function.
+    Global Instance Instance_IsFunction_shl :
+      M.IsFunction.Trait "core::num::overflow_panic::shl" shl.
+    Admitted.
+    Global Opaque shl.
   End overflow_panic.
 End num.

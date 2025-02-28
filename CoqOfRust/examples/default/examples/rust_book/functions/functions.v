@@ -50,8 +50,10 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
-Smpl Add apply Function_is_divisible_by : is_function.
+Global Instance Instance_IsFunction_is_divisible_by :
+  M.IsFunction.Trait "functions::is_divisible_by" is_divisible_by.
+Admitted.
+Global Opaque is_divisible_by.
 
 (*
 fn fizzbuzz(n: u32) -> () {
@@ -316,8 +318,9 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
-Smpl Add apply Function_fizzbuzz : is_function.
+Global Instance Instance_IsFunction_fizzbuzz : M.IsFunction.Trait "functions::fizzbuzz" fizzbuzz.
+Admitted.
+Global Opaque fizzbuzz.
 
 (*
 fn fizzbuzz_to(n: u32) {
@@ -425,8 +428,10 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
-Smpl Add apply Function_fizzbuzz_to : is_function.
+Global Instance Instance_IsFunction_fizzbuzz_to :
+  M.IsFunction.Trait "functions::fizzbuzz_to" fizzbuzz_to.
+Admitted.
+Global Opaque fizzbuzz_to.
 
 (*
 fn main() {
@@ -452,5 +457,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions::main" main.
+Admitted.
+Global Opaque main.

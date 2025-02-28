@@ -936,11 +936,11 @@ Module ops.
       
       (*     type Yield = G::Yield; *)
       Definition _Yield (G R : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
       
       (*     type Return = G::Return; *)
       Definition _Return (G R : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
       
       (*
           fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -959,8 +959,8 @@ Module ops.
                 (Ty.path "core::ops::coroutine::CoroutineState")
                 []
                 [
-                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
                 ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
@@ -1048,11 +1048,11 @@ Module ops.
       
       (*     type Yield = G::Yield; *)
       Definition _Yield (G R : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
       
       (*     type Return = G::Return; *)
       Definition _Return (G R : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
       
       (*
           fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -1071,8 +1071,8 @@ Module ops.
                 (Ty.path "core::ops::coroutine::CoroutineState")
                 []
                 [
-                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
                 ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",

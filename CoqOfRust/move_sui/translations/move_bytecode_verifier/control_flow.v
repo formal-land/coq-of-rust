@@ -528,9 +528,10 @@ Module control_flow.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_function :
-    M.IsFunction "move_bytecode_verifier::control_flow::verify_function" verify_function.
-  Smpl Add apply Function_verify_function : is_function.
+  Global Instance Instance_IsFunction_verify_function :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow::verify_function" verify_function.
+  Admitted.
+  Global Opaque verify_function.
   
   (*
   fn verify_fallthrough(
@@ -761,9 +762,12 @@ Module control_flow.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_fallthrough :
-    M.IsFunction "move_bytecode_verifier::control_flow::verify_fallthrough" verify_fallthrough.
-  Smpl Add apply Function_verify_fallthrough : is_function.
+  Global Instance Instance_IsFunction_verify_fallthrough :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::control_flow::verify_fallthrough"
+      verify_fallthrough.
+  Admitted.
+  Global Opaque verify_fallthrough.
   
   (*
   fn verify_reducibility<'a>(
@@ -2239,7 +2243,10 @@ Module control_flow.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_reducibility :
-    M.IsFunction "move_bytecode_verifier::control_flow::verify_reducibility" verify_reducibility.
-  Smpl Add apply Function_verify_reducibility : is_function.
+  Global Instance Instance_IsFunction_verify_reducibility :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::control_flow::verify_reducibility"
+      verify_reducibility.
+  Admitted.
+  Global Opaque verify_reducibility.
 End control_flow.

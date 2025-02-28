@@ -394,11 +394,17 @@ Parameter IsTraitInstance :
     (instance : Instance.t),
   Prop.
 
-Parameter IsFunction :
-  forall
-    (name : string)
-    (function : PolymorphicFunction.t),
-  Prop.
+Module IsFunction.
+  Parameter t :
+    forall
+      (name : string)
+      (function : PolymorphicFunction.t),
+    Prop.
+
+  Class Trait (trait_name : string) (function : PolymorphicFunction.t) : Prop := {
+    is_function : t trait_name function;
+  }.
+End IsFunction.
 
 Smpl Create is_function.
 
@@ -607,6 +613,7 @@ Definition panic (panic : Panic.t) : M :=
 
 Definition call_closure (ty : Ty.t) (f : Value.t) (args : list Value.t) : M :=
   LowM.CallClosure ty f args LowM.Pure.
+Arguments call_closure /.
 
 Definition impossible (message : string) : M :=
   LowM.Impossible message.
@@ -623,6 +630,7 @@ Arguments alloc /.
 
 Definition read (pointer : Value.t) : M :=
   call_primitive (Primitive.StateRead pointer).
+Arguments read /.
 
 Definition write (pointer : Value.t) (update : Value.t) : M :=
   call_primitive (Primitive.StateWrite pointer update).

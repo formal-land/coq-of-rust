@@ -25,5 +25,6 @@ End Impl_core_convert_From_i32_for_from_Number.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "from::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "from::main" main.
+Admitted.
+Global Opaque main.

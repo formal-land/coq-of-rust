@@ -646,8 +646,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_check : M.IsFunction "core::unicode::printable::check" check.
-    Smpl Add apply Function_check : is_function.
+    Global Instance Instance_IsFunction_check :
+      M.IsFunction.Trait "core::unicode::printable::check" check.
+    Admitted.
+    Global Opaque check.
     
     (*
     pub(crate) fn is_printable(x: char) -> bool {
@@ -1300,9 +1302,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_printable :
-      M.IsFunction "core::unicode::printable::is_printable" is_printable.
-    Smpl Add apply Function_is_printable : is_function.
+    Global Instance Instance_IsFunction_is_printable :
+      M.IsFunction.Trait "core::unicode::printable::is_printable" is_printable.
+    Admitted.
+    Global Opaque is_printable.
     
     Definition value_SINGLETONS0U : Value.t :=
       M.run_constant

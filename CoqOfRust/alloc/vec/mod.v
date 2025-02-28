@@ -7735,8 +7735,10 @@ Module vec.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_elem : M.IsFunction "alloc::vec::from_elem" from_elem.
-  Smpl Add apply Function_from_elem : is_function.
+  Global Instance Instance_IsFunction_from_elem :
+    M.IsFunction.Trait "alloc::vec::from_elem" from_elem.
+  Admitted.
+  Global Opaque from_elem.
   
   (*
   pub fn from_elem_in<T: Clone, A: Allocator>(elem: T, n: usize, alloc: A) -> Vec<T, A> {
@@ -7766,8 +7768,10 @@ Module vec.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_elem_in : M.IsFunction "alloc::vec::from_elem_in" from_elem_in.
-  Smpl Add apply Function_from_elem_in : is_function.
+  Global Instance Instance_IsFunction_from_elem_in :
+    M.IsFunction.Trait "alloc::vec::from_elem_in" from_elem_in.
+  Admitted.
+  Global Opaque from_elem_in.
   
   (* Trait *)
   (* Empty module 'ExtendFromWithinSpec' *)
@@ -8695,7 +8699,12 @@ Module vec.
     
     (*     type Output = I::Output; *)
     Definition _Output (T I A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
+      Ty.associated_in_trait
+        "core::slice::index::SliceIndex"
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+        I
+        "Output".
     
     (*
         fn index(&self, index: I) -> &Self::Output {
@@ -8716,7 +8725,14 @@ Module vec.
                 Ty.apply
                   (Ty.path "&")
                   []
-                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                  [
+                    Ty.associated_in_trait
+                      "core::slice::index::SliceIndex"
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      I
+                      "Output"
+                  ],
                 M.get_trait_method (|
                   "core::ops::index::Index",
                   Ty.apply (Ty.path "slice") [] [ T ],
@@ -8797,7 +8813,14 @@ Module vec.
                     Ty.apply
                       (Ty.path "&mut")
                       []
-                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                      [
+                        Ty.associated_in_trait
+                          "core::slice::index::SliceIndex"
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          I
+                          "Output"
+                      ],
                     M.get_trait_method (|
                       "core::ops::index::IndexMut",
                       Ty.apply (Ty.path "slice") [] [ T ],

@@ -66,6 +66,7 @@ Module Impl_e2e_call_runtime_Env.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   Smpl Add apply AssociatedFunction_balance : is_associated.
+  Global Opaque balance.
 End Impl_e2e_call_runtime_Env.
 
 (* StructTuple
@@ -97,20 +98,24 @@ Module Impl_e2e_call_runtime_Contract.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter get_contract_balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_get_contract_balance :
     M.IsAssociatedFunction Self "get_contract_balance" get_contract_balance.
   Smpl Add apply AssociatedFunction_get_contract_balance : is_associated.
+  Global Opaque get_contract_balance.
 End Impl_e2e_call_runtime_Contract.

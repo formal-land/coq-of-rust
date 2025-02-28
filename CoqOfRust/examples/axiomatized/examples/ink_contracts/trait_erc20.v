@@ -37,6 +37,7 @@ Module Impl_trait_erc20_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -44,6 +45,7 @@ Module Impl_trait_erc20_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
 End Impl_trait_erc20_Mapping_K_V.
 
 (* StructTuple
@@ -284,11 +286,13 @@ Module Impl_trait_erc20_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
 End Impl_trait_erc20_Env.
 
 Module Impl_trait_erc20_Erc20.
@@ -298,34 +302,40 @@ Module Impl_trait_erc20_Erc20.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter balance_of_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_balance_of_impl :
     M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
   Smpl Add apply AssociatedFunction_balance_of_impl : is_associated.
+  Global Opaque balance_of_impl.
   
   Parameter allowance_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_allowance_impl :
     M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
   Smpl Add apply AssociatedFunction_allowance_impl : is_associated.
+  Global Opaque allowance_impl.
   
   Parameter transfer_from_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_transfer_from_to :
     M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
   Smpl Add apply AssociatedFunction_transfer_from_to : is_associated.
+  Global Opaque transfer_from_to.
 End Impl_trait_erc20_Erc20.
 
 Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

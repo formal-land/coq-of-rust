@@ -86,8 +86,10 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_decode_utf16 : M.IsFunction "core::char::decode_utf16" decode_utf16.
-  Smpl Add apply Function_decode_utf16 : is_function.
+  Global Instance Instance_IsFunction_decode_utf16 :
+    M.IsFunction.Trait "core::char::decode_utf16" decode_utf16.
+  Admitted.
+  Global Opaque decode_utf16.
   
   (*
   pub const fn from_u32(i: u32) -> Option<char> {
@@ -107,8 +109,9 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_u32 : M.IsFunction "core::char::from_u32" from_u32.
-  Smpl Add apply Function_from_u32 : is_function.
+  Global Instance Instance_IsFunction_from_u32 : M.IsFunction.Trait "core::char::from_u32" from_u32.
+  Admitted.
+  Global Opaque from_u32.
   
   (*
   pub const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -129,9 +132,10 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_u32_unchecked :
-    M.IsFunction "core::char::from_u32_unchecked" from_u32_unchecked.
-  Smpl Add apply Function_from_u32_unchecked : is_function.
+  Global Instance Instance_IsFunction_from_u32_unchecked :
+    M.IsFunction.Trait "core::char::from_u32_unchecked" from_u32_unchecked.
+  Admitted.
+  Global Opaque from_u32_unchecked.
   
   (*
   pub const fn from_digit(num: u32, radix: u32) -> Option<char> {
@@ -152,8 +156,10 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_digit : M.IsFunction "core::char::from_digit" from_digit.
-  Smpl Add apply Function_from_digit : is_function.
+  Global Instance Instance_IsFunction_from_digit :
+    M.IsFunction.Trait "core::char::from_digit" from_digit.
+  Admitted.
+  Global Opaque from_digit.
   
   (* StructTuple
     {

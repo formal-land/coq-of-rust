@@ -38,24 +38,30 @@ Module Impl_enums_testcase_linked_list_List.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   Parameter prepend : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_prepend : M.IsAssociatedFunction Self "prepend" prepend.
   Smpl Add apply AssociatedFunction_prepend : is_associated.
+  Global Opaque prepend.
   
   Parameter len : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
   Smpl Add apply AssociatedFunction_len : is_associated.
+  Global Opaque len.
   
   Parameter stringify : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_stringify : M.IsAssociatedFunction Self "stringify" stringify.
   Smpl Add apply AssociatedFunction_stringify : is_associated.
+  Global Opaque stringify.
 End Impl_enums_testcase_linked_list_List.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "enums_testcase_linked_list::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "enums_testcase_linked_list::main" main.
+Admitted.
+Global Opaque main.

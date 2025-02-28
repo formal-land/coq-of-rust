@@ -4,92 +4,111 @@ Require Import CoqOfRust.CoqOfRust.
 Module my_mod.
   Parameter private_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_private_function :
-    M.IsFunction "visibility::my_mod::private_function" private_function.
-  Smpl Add apply Function_private_function : is_function.
+  Global Instance Instance_IsFunction_private_function :
+    M.IsFunction.Trait "visibility::my_mod::private_function" private_function.
+  Admitted.
+  Global Opaque private_function.
   
   Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_function : M.IsFunction "visibility::my_mod::function" function.
-  Smpl Add apply Function_function : is_function.
+  Global Instance Instance_IsFunction_function :
+    M.IsFunction.Trait "visibility::my_mod::function" function.
+  Admitted.
+  Global Opaque function.
   
   Parameter indirect_access : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_indirect_access :
-    M.IsFunction "visibility::my_mod::indirect_access" indirect_access.
-  Smpl Add apply Function_indirect_access : is_function.
+  Global Instance Instance_IsFunction_indirect_access :
+    M.IsFunction.Trait "visibility::my_mod::indirect_access" indirect_access.
+  Admitted.
+  Global Opaque indirect_access.
   
   Module nested.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_function : M.IsFunction "visibility::my_mod::nested::function" function.
-    Smpl Add apply Function_function : is_function.
+    Global Instance Instance_IsFunction_function :
+      M.IsFunction.Trait "visibility::my_mod::nested::function" function.
+    Admitted.
+    Global Opaque function.
     
     Parameter private_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_private_function :
-      M.IsFunction "visibility::my_mod::nested::private_function" private_function.
-    Smpl Add apply Function_private_function : is_function.
+    Global Instance Instance_IsFunction_private_function :
+      M.IsFunction.Trait "visibility::my_mod::nested::private_function" private_function.
+    Admitted.
+    Global Opaque private_function.
     
     Parameter public_function_in_my_mod : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_public_function_in_my_mod :
-      M.IsFunction
+    Global Instance Instance_IsFunction_public_function_in_my_mod :
+      M.IsFunction.Trait
         "visibility::my_mod::nested::public_function_in_my_mod"
         public_function_in_my_mod.
-    Smpl Add apply Function_public_function_in_my_mod : is_function.
+    Admitted.
+    Global Opaque public_function_in_my_mod.
     
     Parameter public_function_in_nested : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_public_function_in_nested :
-      M.IsFunction
+    Global Instance Instance_IsFunction_public_function_in_nested :
+      M.IsFunction.Trait
         "visibility::my_mod::nested::public_function_in_nested"
         public_function_in_nested.
-    Smpl Add apply Function_public_function_in_nested : is_function.
+    Admitted.
+    Global Opaque public_function_in_nested.
     
     Parameter public_function_in_super_mod : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_public_function_in_super_mod :
-      M.IsFunction
+    Global Instance Instance_IsFunction_public_function_in_super_mod :
+      M.IsFunction.Trait
         "visibility::my_mod::nested::public_function_in_super_mod"
         public_function_in_super_mod.
-    Smpl Add apply Function_public_function_in_super_mod : is_function.
+    Admitted.
+    Global Opaque public_function_in_super_mod.
   End nested.
   
   Parameter call_public_function_in_my_mod : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_call_public_function_in_my_mod :
-    M.IsFunction
+  Global Instance Instance_IsFunction_call_public_function_in_my_mod :
+    M.IsFunction.Trait
       "visibility::my_mod::call_public_function_in_my_mod"
       call_public_function_in_my_mod.
-  Smpl Add apply Function_call_public_function_in_my_mod : is_function.
+  Admitted.
+  Global Opaque call_public_function_in_my_mod.
   
   Parameter public_function_in_crate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_public_function_in_crate :
-    M.IsFunction "visibility::my_mod::public_function_in_crate" public_function_in_crate.
-  Smpl Add apply Function_public_function_in_crate : is_function.
+  Global Instance Instance_IsFunction_public_function_in_crate :
+    M.IsFunction.Trait "visibility::my_mod::public_function_in_crate" public_function_in_crate.
+  Admitted.
+  Global Opaque public_function_in_crate.
   
   Module private_nested.
     Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_function : M.IsFunction "visibility::my_mod::private_nested::function" function.
-    Smpl Add apply Function_function : is_function.
+    Global Instance Instance_IsFunction_function :
+      M.IsFunction.Trait "visibility::my_mod::private_nested::function" function.
+    Admitted.
+    Global Opaque function.
     
     Parameter restricted_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_restricted_function :
-      M.IsFunction "visibility::my_mod::private_nested::restricted_function" restricted_function.
-    Smpl Add apply Function_restricted_function : is_function.
+    Global Instance Instance_IsFunction_restricted_function :
+      M.IsFunction.Trait
+        "visibility::my_mod::private_nested::restricted_function"
+        restricted_function.
+    Admitted.
+    Global Opaque restricted_function.
   End private_nested.
 End my_mod.
 
 Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_function : M.IsFunction "visibility::function" function.
-Smpl Add apply Function_function : is_function.
+Global Instance Instance_IsFunction_function : M.IsFunction.Trait "visibility::function" function.
+Admitted.
+Global Opaque function.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "visibility::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "visibility::main" main.
+Admitted.
+Global Opaque main.

@@ -1712,9 +1712,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_already_borrowed :
-    M.IsFunction "core::cell::panic_already_borrowed" panic_already_borrowed.
-  Smpl Add apply Function_panic_already_borrowed : is_function.
+  Global Instance Instance_IsFunction_panic_already_borrowed :
+    M.IsFunction.Trait "core::cell::panic_already_borrowed" panic_already_borrowed.
+  Admitted.
+  Global Opaque panic_already_borrowed.
   
   (*
   fn panic_already_mutably_borrowed(err: BorrowError) -> ! {
@@ -1789,9 +1790,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_already_mutably_borrowed :
-    M.IsFunction "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
-  Smpl Add apply Function_panic_already_mutably_borrowed : is_function.
+  Global Instance Instance_IsFunction_panic_already_mutably_borrowed :
+    M.IsFunction.Trait "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
+  Admitted.
+  Global Opaque panic_already_mutably_borrowed.
   
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
@@ -1815,8 +1817,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_writing : M.IsFunction "core::cell::is_writing" is_writing.
-  Smpl Add apply Function_is_writing : is_function.
+  Global Instance Instance_IsFunction_is_writing :
+    M.IsFunction.Trait "core::cell::is_writing" is_writing.
+  Admitted.
+  Global Opaque is_writing.
   
   (*
   fn is_reading(x: BorrowFlag) -> bool {
@@ -1832,8 +1836,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_reading : M.IsFunction "core::cell::is_reading" is_reading.
-  Smpl Add apply Function_is_reading : is_function.
+  Global Instance Instance_IsFunction_is_reading :
+    M.IsFunction.Trait "core::cell::is_reading" is_reading.
+  Admitted.
+  Global Opaque is_reading.
   
   Module Impl_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [] [ T ].
@@ -6719,9 +6725,10 @@ Module cell.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assert_coerce_unsized :
-    M.IsFunction "core::cell::assert_coerce_unsized" assert_coerce_unsized.
-  Smpl Add apply Function_assert_coerce_unsized : is_function.
+  Global Instance Instance_IsFunction_assert_coerce_unsized :
+    M.IsFunction.Trait "core::cell::assert_coerce_unsized" assert_coerce_unsized.
+  Admitted.
+  Global Opaque assert_coerce_unsized.
   
   Module Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ T ].

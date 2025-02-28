@@ -19637,8 +19637,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_simd_contains : M.IsFunction "core::str::pattern::simd_contains" simd_contains.
-    Smpl Add apply Function_simd_contains : is_function.
+    Global Instance Instance_IsFunction_simd_contains :
+      M.IsFunction.Trait "core::str::pattern::simd_contains" simd_contains.
+    Admitted.
+    Global Opaque simd_contains.
     
     Module simd_contains.
       Definition value_UNROLL : Value.t :=
@@ -20447,8 +20449,9 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_small_slice_eq :
-      M.IsFunction "core::str::pattern::small_slice_eq" small_slice_eq.
-    Smpl Add apply Function_small_slice_eq : is_function.
+    Global Instance Instance_IsFunction_small_slice_eq :
+      M.IsFunction.Trait "core::str::pattern::small_slice_eq" small_slice_eq.
+    Admitted.
+    Global Opaque small_slice_eq.
   End pattern.
 End str.

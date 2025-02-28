@@ -453,8 +453,10 @@ Module constant.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_sig_to_ty : M.IsFunction "move_binary_format::constant::sig_to_ty" sig_to_ty.
-  Smpl Add apply Function_sig_to_ty : is_function.
+  Global Instance Instance_IsFunction_sig_to_ty :
+    M.IsFunction.Trait "move_binary_format::constant::sig_to_ty" sig_to_ty.
+  Admitted.
+  Global Opaque sig_to_ty.
   
   (*
   fn ty_to_sig(ty: &MoveTypeLayout) -> Option<SignatureToken> {
@@ -848,8 +850,10 @@ Module constant.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ty_to_sig : M.IsFunction "move_binary_format::constant::ty_to_sig" ty_to_sig.
-  Smpl Add apply Function_ty_to_sig : is_function.
+  Global Instance Instance_IsFunction_ty_to_sig :
+    M.IsFunction.Trait "move_binary_format::constant::ty_to_sig" ty_to_sig.
+  Admitted.
+  Global Opaque ty_to_sig.
   
   Module Impl_move_binary_format_file_format_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Constant".

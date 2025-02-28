@@ -83,6 +83,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "contains" (contains K V).
   Smpl Add apply AssociatedFunction_contains : is_associated.
+  Global Opaque contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
@@ -95,6 +96,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "get" (get K V).
   Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
@@ -107,6 +109,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "insert" (insert K V).
   Smpl Add apply AssociatedFunction_insert : is_associated.
+  Global Opaque insert.
   
   (*
       fn new() -> Mapping<K, V> {
@@ -119,6 +122,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "new" (new K V).
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       fn remove(&self, _key: K) {
@@ -131,6 +135,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "remove" (remove K V).
   Smpl Add apply AssociatedFunction_remove : is_associated.
+  Global Opaque remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
@@ -143,6 +148,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "size" (size K V).
   Smpl Add apply AssociatedFunction_size : is_associated.
+  Global Opaque size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
@@ -155,6 +161,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     forall (K V : Ty.t),
     M.IsAssociatedFunction (Self K V) "take" (take K V).
   Smpl Add apply AssociatedFunction_take : is_associated.
+  Global Opaque take.
 End Impl_mapping_integration_tests_Mapping_K_V.
 
 (* StructTuple
@@ -276,6 +283,7 @@ Module Impl_mapping_integration_tests_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
 End Impl_mapping_integration_tests_Env.
 
 (* StructRecord
@@ -349,6 +357,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env() -> Env {
@@ -359,6 +368,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -408,6 +418,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn get_balance(&self) -> Option<Balance> {
@@ -484,6 +495,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
   Smpl Add apply AssociatedFunction_get_balance : is_associated.
+  Global Opaque get_balance.
   
   (*
       pub fn insert_balance(&mut self, value: Balance) -> Option<u32> {
@@ -560,6 +572,7 @@ Module Impl_mapping_integration_tests_Mappings.
   Axiom AssociatedFunction_insert_balance :
     M.IsAssociatedFunction Self "insert_balance" insert_balance.
   Smpl Add apply AssociatedFunction_insert_balance : is_associated.
+  Global Opaque insert_balance.
   
   (*
       pub fn size_balance(&mut self) -> Option<u32> {
@@ -633,6 +646,7 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Axiom AssociatedFunction_size_balance : M.IsAssociatedFunction Self "size_balance" size_balance.
   Smpl Add apply AssociatedFunction_size_balance : is_associated.
+  Global Opaque size_balance.
   
   (*
       pub fn contains_balance(&self) -> bool {
@@ -710,6 +724,7 @@ Module Impl_mapping_integration_tests_Mappings.
   Axiom AssociatedFunction_contains_balance :
     M.IsAssociatedFunction Self "contains_balance" contains_balance.
   Smpl Add apply AssociatedFunction_contains_balance : is_associated.
+  Global Opaque contains_balance.
   
   (*
       pub fn remove_balance(&mut self) {
@@ -786,6 +801,7 @@ Module Impl_mapping_integration_tests_Mappings.
   Axiom AssociatedFunction_remove_balance :
     M.IsAssociatedFunction Self "remove_balance" remove_balance.
   Smpl Add apply AssociatedFunction_remove_balance : is_associated.
+  Global Opaque remove_balance.
   
   (*
       pub fn take_balance(&mut self) -> Option<Balance> {
@@ -859,4 +875,5 @@ Module Impl_mapping_integration_tests_Mappings.
   
   Axiom AssociatedFunction_take_balance : M.IsAssociatedFunction Self "take_balance" take_balance.
   Smpl Add apply AssociatedFunction_take_balance : is_associated.
+  Global Opaque take_balance.
 End Impl_mapping_integration_tests_Mappings.

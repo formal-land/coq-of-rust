@@ -4592,9 +4592,10 @@ Module runtime_value.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_values :
-    M.IsFunction "move_core_types::runtime_value::serialize_values" serialize_values.
-  Smpl Add apply Function_serialize_values : is_function.
+  Global Instance Instance_IsFunction_serialize_values :
+    M.IsFunction.Trait "move_core_types::runtime_value::serialize_values" serialize_values.
+  Admitted.
+  Global Opaque serialize_values.
   
   Module Impl_move_core_types_runtime_value_MoveStruct.
     Definition Self : Ty.t := Ty.path "move_core_types::runtime_value::MoveStruct".

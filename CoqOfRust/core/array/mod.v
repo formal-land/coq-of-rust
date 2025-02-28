@@ -30,8 +30,9 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_repeat : M.IsFunction "core::array::repeat" repeat.
-  Smpl Add apply Function_repeat : is_function.
+  Global Instance Instance_IsFunction_repeat : M.IsFunction.Trait "core::array::repeat" repeat.
+  Admitted.
+  Global Opaque repeat.
   
   (*
   pub fn from_fn<T, const N: usize, F>(cb: F) -> [T; N]
@@ -83,8 +84,9 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_fn : M.IsFunction "core::array::from_fn" from_fn.
-  Smpl Add apply Function_from_fn : is_function.
+  Global Instance Instance_IsFunction_from_fn : M.IsFunction.Trait "core::array::from_fn" from_fn.
+  Admitted.
+  Global Opaque from_fn.
   
   (*
   pub fn try_from_fn<R, const N: usize, F>(cb: F) -> ChangeOutputType<R, [R::Output; N]>
@@ -161,7 +163,12 @@ Module array.
                       Ty.associated_in_trait
                         "core::ops::try_trait::Residual"
                         []
-                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ N ]
+                            [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                        ]
                         (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                         "TryType",
                       M.get_trait_method (|
@@ -169,7 +176,13 @@ Module array.
                         Ty.associated_in_trait
                           "core::ops::try_trait::Residual"
                           []
-                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                              ]
+                          ]
                           (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                           "TryType",
                         [],
@@ -194,7 +207,12 @@ Module array.
                       Ty.associated_in_trait
                         "core::ops::try_trait::Residual"
                         []
-                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ N ]
+                            [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                        ]
                         (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                         "TryType",
                       M.get_trait_method (|
@@ -202,7 +220,13 @@ Module array.
                         Ty.associated_in_trait
                           "core::ops::try_trait::Residual"
                           []
-                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                              ]
+                          ]
                           (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                           "TryType",
                         [],
@@ -238,8 +262,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_try_from_fn : M.IsFunction "core::array::try_from_fn" try_from_fn.
-  Smpl Add apply Function_try_from_fn : is_function.
+  Global Instance Instance_IsFunction_try_from_fn :
+    M.IsFunction.Trait "core::array::try_from_fn" try_from_fn.
+  Admitted.
+  Global Opaque try_from_fn.
   
   (*
   pub const fn from_ref<T>(s: &T) -> &[T; 1] {
@@ -285,8 +311,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_ref : M.IsFunction "core::array::from_ref" from_ref.
-  Smpl Add apply Function_from_ref : is_function.
+  Global Instance Instance_IsFunction_from_ref :
+    M.IsFunction.Trait "core::array::from_ref" from_ref.
+  Admitted.
+  Global Opaque from_ref.
   
   (*
   pub const fn from_mut<T>(s: &mut T) -> &mut [T; 1] {
@@ -347,8 +375,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_mut : M.IsFunction "core::array::from_mut" from_mut.
-  Smpl Add apply Function_from_mut : is_function.
+  Global Instance Instance_IsFunction_from_mut :
+    M.IsFunction.Trait "core::array::from_mut" from_mut.
+  Admitted.
+  Global Opaque from_mut.
   
   (* StructTuple
     {
@@ -1388,7 +1418,7 @@ Module array.
       Ty.associated_in_trait
         "core::ops::index::Index"
         []
-        []
+        [ I ]
         (Ty.apply (Ty.path "slice") [] [ T ])
         "Output".
     
@@ -1421,7 +1451,7 @@ Module array.
                     Ty.associated_in_trait
                       "core::ops::index::Index"
                       []
-                      []
+                      [ I ]
                       (Ty.apply (Ty.path "slice") [] [ T ])
                       "Output"
                   ],
@@ -1503,7 +1533,7 @@ Module array.
                         Ty.associated_in_trait
                           "core::ops::index::Index"
                           []
-                          []
+                          [ I ]
                           (Ty.apply (Ty.path "slice") [] [ T ])
                           "Output"
                       ],
@@ -5930,7 +5960,12 @@ Module array.
             Ty.associated_in_trait
               "core::ops::try_trait::Residual"
               []
-              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ N ]
+                  [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+              ]
               (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
               "TryType",
             M.get_function (|
@@ -5941,7 +5976,12 @@ Module array.
                 Ty.associated_in_trait
                   "core::ops::try_trait::Residual"
                   []
-                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                  ]
                   (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                   "TryType";
                 Ty.function
@@ -5949,7 +5989,12 @@ Module array.
                   (Ty.associated_in_trait
                     "core::ops::try_trait::Residual"
                     []
-                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ N ]
+                        [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                    ]
                     (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                     "TryType")
               ]
@@ -5972,7 +6017,19 @@ Module array.
                                   Ty.associated_in_trait
                                     "core::ops::try_trait::Residual"
                                     []
-                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ N ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::ops::try_trait::Try"
+                                            []
+                                            []
+                                            R
+                                            "Output"
+                                        ]
+                                    ]
                                     (Ty.associated_in_trait
                                       "core::ops::try_trait::Try"
                                       []
@@ -6638,9 +6695,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_trusted_iterator :
-    M.IsFunction "core::array::from_trusted_iterator" from_trusted_iterator.
-  Smpl Add apply Function_from_trusted_iterator : is_function.
+  Global Instance Instance_IsFunction_from_trusted_iterator :
+    M.IsFunction.Trait "core::array::from_trusted_iterator" from_trusted_iterator.
+  Admitted.
+  Global Opaque from_trusted_iterator.
   
   (*
   fn try_from_trusted_iterator<T, R, const N: usize>(
@@ -6730,7 +6788,7 @@ Module array.
               Ty.associated_in_trait
                 "core::ops::try_trait::Residual"
                 []
-                []
+                [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
                 (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                 "TryType",
               M.get_function (| "core::array::try_from_fn", [ N ], [ R; Ty.associated_unknown ] |),
@@ -6747,9 +6805,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_try_from_trusted_iterator :
-    M.IsFunction "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
-  Smpl Add apply Function_try_from_trusted_iterator : is_function.
+  Global Instance Instance_IsFunction_try_from_trusted_iterator :
+    M.IsFunction.Trait "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
+  Admitted.
+  Global Opaque try_from_trusted_iterator.
   
   Module try_from_trusted_iterator.
     (*
@@ -6797,8 +6856,10 @@ Module array.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_next : M.IsFunction "core::array::try_from_trusted_iterator::next" next.
-    Smpl Add apply Function_next : is_function.
+    Global Instance Instance_IsFunction_next :
+      M.IsFunction.Trait "core::array::try_from_trusted_iterator::next" next.
+    Admitted.
+    Global Opaque next.
     
     Module next.
       (* Error OpaqueTy *)
@@ -7128,9 +7189,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_try_from_fn_erased :
-    M.IsFunction "core::array::try_from_fn_erased" try_from_fn_erased.
-  Smpl Add apply Function_try_from_fn_erased : is_function.
+  Global Instance Instance_IsFunction_try_from_fn_erased :
+    M.IsFunction.Trait "core::array::try_from_fn_erased" try_from_fn_erased.
+  Admitted.
+  Global Opaque try_from_fn_erased.
   
   (* StructRecord
     {
@@ -7601,8 +7663,10 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_iter_next_chunk : M.IsFunction "core::array::iter_next_chunk" iter_next_chunk.
-  Smpl Add apply Function_iter_next_chunk : is_function.
+  Global Instance Instance_IsFunction_iter_next_chunk :
+    M.IsFunction.Trait "core::array::iter_next_chunk" iter_next_chunk.
+  Admitted.
+  Global Opaque iter_next_chunk.
   
   (*
   fn iter_next_chunk_erased<T>(
@@ -7774,7 +7838,8 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_iter_next_chunk_erased :
-    M.IsFunction "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
-  Smpl Add apply Function_iter_next_chunk_erased : is_function.
+  Global Instance Instance_IsFunction_iter_next_chunk_erased :
+    M.IsFunction.Trait "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
+  Admitted.
+  Global Opaque iter_next_chunk_erased.
 End array.

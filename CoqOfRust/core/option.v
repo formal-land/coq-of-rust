@@ -3343,8 +3343,10 @@ Module option.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unwrap_failed : M.IsFunction "core::option::unwrap_failed" unwrap_failed.
-  Smpl Add apply Function_unwrap_failed : is_function.
+  Global Instance Instance_IsFunction_unwrap_failed :
+    M.IsFunction.Trait "core::option::unwrap_failed" unwrap_failed.
+  Admitted.
+  Global Opaque unwrap_failed.
   
   (*
   const fn expect_failed(msg: &str) -> ! {
@@ -3368,8 +3370,10 @@ Module option.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_expect_failed : M.IsFunction "core::option::expect_failed" expect_failed.
-  Smpl Add apply Function_expect_failed : is_function.
+  Global Instance Instance_IsFunction_expect_failed :
+    M.IsFunction.Trait "core::option::expect_failed" expect_failed.
+  Admitted.
+  Global Opaque expect_failed.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].

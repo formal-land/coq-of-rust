@@ -170,6 +170,7 @@ Module Impl_conditional_compilation_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -180,6 +181,7 @@ Module Impl_conditional_compilation_Env.
   
   Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
   Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Opaque emit_event.
   
   (*
       fn block_number(&self) -> BlockNumber {
@@ -190,6 +192,7 @@ Module Impl_conditional_compilation_Env.
   
   Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
   Smpl Add apply AssociatedFunction_block_number : is_associated.
+  Global Opaque block_number.
 End Impl_conditional_compilation_Env.
 
 (* StructRecord
@@ -212,6 +215,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -238,6 +242,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -273,6 +278,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn new_foo(value: bool) -> Self {
@@ -292,6 +298,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Axiom AssociatedFunction_new_foo : M.IsAssociatedFunction Self "new_foo" new_foo.
   Smpl Add apply AssociatedFunction_new_foo : is_associated.
+  Global Opaque new_foo.
   
   (*
       pub fn new_bar(value: bool) -> Self {
@@ -311,6 +318,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Axiom AssociatedFunction_new_bar : M.IsAssociatedFunction Self "new_bar" new_bar.
   Smpl Add apply AssociatedFunction_new_bar : is_associated.
+  Global Opaque new_bar.
   
   (*
       pub fn new_foo_bar(value: bool) -> Self {
@@ -330,6 +338,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   
   Axiom AssociatedFunction_new_foo_bar : M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
   Smpl Add apply AssociatedFunction_new_foo_bar : is_associated.
+  Global Opaque new_foo_bar.
   
   (*
       pub fn inherent_flip_foo(&mut self) {
@@ -449,6 +458,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   Axiom AssociatedFunction_inherent_flip_foo :
     M.IsAssociatedFunction Self "inherent_flip_foo" inherent_flip_foo.
   Smpl Add apply AssociatedFunction_inherent_flip_foo : is_associated.
+  Global Opaque inherent_flip_foo.
   
   (*
       pub fn inherent_flip_bar(&mut self) {
@@ -600,6 +610,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   Axiom AssociatedFunction_inherent_flip_bar :
     M.IsAssociatedFunction Self "inherent_flip_bar" inherent_flip_bar.
   Smpl Add apply AssociatedFunction_inherent_flip_bar : is_associated.
+  Global Opaque inherent_flip_bar.
 End Impl_conditional_compilation_ConditionalCompilation.
 
 Module Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

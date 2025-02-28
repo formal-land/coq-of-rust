@@ -47,9 +47,12 @@ Module identifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_valid_identifier_char :
-    M.IsFunction "move_core_types::identifier::is_valid_identifier_char" is_valid_identifier_char.
-  Smpl Add apply Function_is_valid_identifier_char : is_function.
+  Global Instance Instance_IsFunction_is_valid_identifier_char :
+    M.IsFunction.Trait
+      "move_core_types::identifier::is_valid_identifier_char"
+      is_valid_identifier_char.
+  Admitted.
+  Global Opaque is_valid_identifier_char.
   
   (*
   const fn all_bytes_valid(b: &[u8], start_offset: usize) -> bool {
@@ -182,9 +185,10 @@ Module identifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_all_bytes_valid :
-    M.IsFunction "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
-  Smpl Add apply Function_all_bytes_valid : is_function.
+  Global Instance Instance_IsFunction_all_bytes_valid :
+    M.IsFunction.Trait "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
+  Admitted.
+  Global Opaque all_bytes_valid.
   
   (*
   pub const fn is_valid(s: &str) -> bool {
@@ -341,8 +345,10 @@ Module identifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_valid : M.IsFunction "move_core_types::identifier::is_valid" is_valid.
-  Smpl Add apply Function_is_valid : is_function.
+  Global Instance Instance_IsFunction_is_valid :
+    M.IsFunction.Trait "move_core_types::identifier::is_valid" is_valid.
+  Admitted.
+  Global Opaque is_valid.
   
   (* StructTuple
     {

@@ -6935,9 +6935,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_and_then_or_clear :
-        M.IsFunction "core::iter::adapters::flatten::and_then_or_clear" and_then_or_clear.
-      Smpl Add apply Function_and_then_or_clear : is_function.
+      Global Instance Instance_IsFunction_and_then_or_clear :
+        M.IsFunction.Trait "core::iter::adapters::flatten::and_then_or_clear" and_then_or_clear.
+      Admitted.
+      Global Opaque and_then_or_clear.
       
       (* Trait *)
       (* Empty module 'OneShot' *)
@@ -7241,8 +7242,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_into_item : M.IsFunction "core::iter::adapters::flatten::into_item" into_item.
-      Smpl Add apply Function_into_item : is_function.
+      Global Instance Instance_IsFunction_into_item :
+        M.IsFunction.Trait "core::iter::adapters::flatten::into_item" into_item.
+      Admitted.
+      Global Opaque into_item.
       
       (*
       fn flatten_one<I: IntoIterator<IntoIter: OneShot>, Acc>(
@@ -7393,9 +7396,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_flatten_one :
-        M.IsFunction "core::iter::adapters::flatten::flatten_one" flatten_one.
-      Smpl Add apply Function_flatten_one : is_function.
+      Global Instance Instance_IsFunction_flatten_one :
+        M.IsFunction.Trait "core::iter::adapters::flatten::flatten_one" flatten_one.
+      Admitted.
+      Global Opaque flatten_one.
       
       Module flatten_one.
         (* Error OpaqueTy *)
@@ -7564,9 +7568,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_try_flatten_one :
-        M.IsFunction "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
-      Smpl Add apply Function_try_flatten_one : is_function.
+      Global Instance Instance_IsFunction_try_flatten_one :
+        M.IsFunction.Trait "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
+      Admitted.
+      Global Opaque try_flatten_one.
       
       Module try_flatten_one.
         (* Error OpaqueTy *)
@@ -7703,9 +7708,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_advance_by_one :
-        M.IsFunction "core::iter::adapters::flatten::advance_by_one" advance_by_one.
-      Smpl Add apply Function_advance_by_one : is_function.
+      Global Instance Instance_IsFunction_advance_by_one :
+        M.IsFunction.Trait "core::iter::adapters::flatten::advance_by_one" advance_by_one.
+      Admitted.
+      Global Opaque advance_by_one.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_iterator_Iterator_U_where_core_iter_adapters_flatten_OneShot_U_for_core_iter_adapters_flatten_FlattenCompat_I_U.
         Definition Self (I U : Ty.t) : Ty.t :=

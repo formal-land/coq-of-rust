@@ -120,6 +120,7 @@ Module Impl_contract_transfer_Env.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
   Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Opaque caller.
   
   (*
       fn balance(&self) -> Balance {
@@ -130,6 +131,7 @@ Module Impl_contract_transfer_Env.
   
   Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
   Smpl Add apply AssociatedFunction_balance : is_associated.
+  Global Opaque balance.
   
   (*
       fn transfer(&mut self, _to: AccountId, _value: Balance) -> Result<(), ()> {
@@ -140,6 +142,7 @@ Module Impl_contract_transfer_Env.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
   Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Opaque transfer.
   
   (*
       fn transferred_value(&self) -> Balance {
@@ -151,6 +154,7 @@ Module Impl_contract_transfer_Env.
   Axiom AssociatedFunction_transferred_value :
     M.IsAssociatedFunction Self "transferred_value" transferred_value.
   Smpl Add apply AssociatedFunction_transferred_value : is_associated.
+  Global Opaque transferred_value.
 End Impl_contract_transfer_Env.
 
 (* StructTuple
@@ -173,6 +177,7 @@ Module Impl_contract_transfer_GiveMe.
   
   Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
   Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -194,6 +199,7 @@ Module Impl_contract_transfer_GiveMe.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
   Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -208,6 +214,7 @@ Module Impl_contract_transfer_GiveMe.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
   Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Opaque new.
   
   (*
       pub fn give_me(&mut self, value: Balance) {
@@ -586,6 +593,7 @@ Module Impl_contract_transfer_GiveMe.
   
   Axiom AssociatedFunction_give_me : M.IsAssociatedFunction Self "give_me" give_me.
   Smpl Add apply AssociatedFunction_give_me : is_associated.
+  Global Opaque give_me.
   
   (*
       pub fn was_it_ten(&self) {
@@ -772,4 +780,5 @@ Module Impl_contract_transfer_GiveMe.
   
   Axiom AssociatedFunction_was_it_ten : M.IsAssociatedFunction Self "was_it_ten" was_it_ten.
   Smpl Add apply AssociatedFunction_was_it_ten : is_associated.
+  Global Opaque was_it_ten.
 End Impl_contract_transfer_GiveMe.

@@ -185,11 +185,12 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function__alignment_can_be_structurally_matched :
-      M.IsFunction
+    Global Instance Instance_IsFunction__alignment_can_be_structurally_matched :
+      M.IsFunction.Trait
         "core::ptr::alignment::_alignment_can_be_structurally_matched"
         _alignment_can_be_structurally_matched.
-    Smpl Add apply Function__alignment_can_be_structurally_matched : is_function.
+    Admitted.
+    Global Opaque _alignment_can_be_structurally_matched.
     
     Module Impl_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".

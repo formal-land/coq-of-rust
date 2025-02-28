@@ -20,7 +20,7 @@ pub(crate) enum TopLevelItem {
     Hint {
         kind: String,
         name: String,
-        database: String,
+        database: Option<String>,
     },
     Line,
     Module(Rc<Module>),
@@ -43,6 +43,10 @@ pub(crate) struct Definition {
 #[derive(Clone)]
 /// the kind of a coq definition
 pub(crate) enum DefinitionKind {
+    AdmittedInstance {
+        locality: String,
+        ty: Rc<Expression>,
+    },
     /// an alias for an expression
     /// (using `Definition`)
     Alias {
@@ -357,14 +361,18 @@ impl TopLevelItem {
             } => nest(
                 ψ,
                 [
-                    ψ.text(kind.to_owned()),
-                    ψ.text(" "),
-                    ψ.text(name.to_owned()),
-                    ψ.text(" :"),
-                    ψ.line(),
-                    ψ.text(database.to_owned()),
-                    ψ.text("."),
-                ],
+                    vec![
+                        ψ.text(kind.to_owned()),
+                        ψ.text(" "),
+                        ψ.text(name.to_owned()),
+                    ],
+                    match database {
+                        None => vec![],
+                        Some(database) => vec![ψ.text(" :"), ψ.line(), ψ.text(database.to_owned())],
+                    },
+                    vec![ψ.text(".")],
+                ]
+                .concat(),
             ),
             TopLevelItem::Line => ψ.nil(),
             TopLevelItem::Module(module) => module.to_doc(ψ),
@@ -409,6 +417,22 @@ impl Definition {
         D::Doc: Clone,
     {
         match self.kind.as_ref() {
+            DefinitionKind::AdmittedInstance { locality, ty } => ψ.concat([
+                nest(
+                    ψ,
+                    [
+                        ψ.text(locality.clone()),
+                        ψ.text(" Instance "),
+                        ψ.text(self.name.clone()),
+                        ψ.text(" :"),
+                        ψ.line(),
+                        ty.to_doc(ψ, false),
+                        ψ.text("."),
+                    ],
+                ),
+                ψ.hardline(),
+                ψ.text("Admitted."),
+            ]),
             DefinitionKind::Alias { args, ty, body } => nest(
                 ψ,
                 [

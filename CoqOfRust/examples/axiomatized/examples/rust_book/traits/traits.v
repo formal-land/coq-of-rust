@@ -23,10 +23,12 @@ Module Impl_traits_Sheep.
   
   Axiom AssociatedFunction_is_naked : M.IsAssociatedFunction Self "is_naked" is_naked.
   Smpl Add apply AssociatedFunction_is_naked : is_associated.
+  Global Opaque is_naked.
   Parameter shear : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
   Smpl Add apply AssociatedFunction_shear : is_associated.
+  Global Opaque shear.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
@@ -58,5 +60,6 @@ End Impl_traits_Animal_for_traits_Sheep.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "traits::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "traits::main" main.
+Admitted.
+Global Opaque main.

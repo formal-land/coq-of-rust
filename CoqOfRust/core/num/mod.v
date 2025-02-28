@@ -89899,8 +89899,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_can_not_overflow : M.IsFunction "core::num::can_not_overflow" can_not_overflow.
-  Smpl Add apply Function_can_not_overflow : is_function.
+  Global Instance Instance_IsFunction_can_not_overflow :
+    M.IsFunction.Trait "core::num::can_not_overflow" can_not_overflow.
+  Admitted.
+  Global Opaque can_not_overflow.
   
   (*
   const fn from_str_radix_panic_ct(_radix: u32) -> ! {
@@ -89948,9 +89950,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_str_radix_panic_ct :
-    M.IsFunction "core::num::from_str_radix_panic_ct" from_str_radix_panic_ct.
-  Smpl Add apply Function_from_str_radix_panic_ct : is_function.
+  Global Instance Instance_IsFunction_from_str_radix_panic_ct :
+    M.IsFunction.Trait "core::num::from_str_radix_panic_ct" from_str_radix_panic_ct.
+  Admitted.
+  Global Opaque from_str_radix_panic_ct.
   
   (*
   fn from_str_radix_panic_rt(radix: u32) -> ! {
@@ -90027,9 +90030,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_str_radix_panic_rt :
-    M.IsFunction "core::num::from_str_radix_panic_rt" from_str_radix_panic_rt.
-  Smpl Add apply Function_from_str_radix_panic_rt : is_function.
+  Global Instance Instance_IsFunction_from_str_radix_panic_rt :
+    M.IsFunction.Trait "core::num::from_str_radix_panic_rt" from_str_radix_panic_rt.
+  Admitted.
+  Global Opaque from_str_radix_panic_rt.
   
   (*
   const fn from_str_radix_panic(radix: u32) {
@@ -90065,9 +90069,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_str_radix_panic :
-    M.IsFunction "core::num::from_str_radix_panic" from_str_radix_panic.
-  Smpl Add apply Function_from_str_radix_panic : is_function.
+  Global Instance Instance_IsFunction_from_str_radix_panic :
+    M.IsFunction.Trait "core::num::from_str_radix_panic" from_str_radix_panic.
+  Admitted.
+  Global Opaque from_str_radix_panic.
   
   
   

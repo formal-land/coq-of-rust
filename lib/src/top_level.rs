@@ -1771,7 +1771,7 @@ impl TopLevelItem {
                 Rc::new(coq::TopLevelItem::Hint {
                     kind: "Global Hint Rewrite".to_string(),
                     name: format!("Constant_{name}"),
-                    database: "constant_rewrites".to_string(),
+                    database: Some("constant_rewrites".to_string()),
                 }),
             ],
             TopLevelItem::Definition {
@@ -1784,18 +1784,19 @@ impl TopLevelItem {
                 vec![
                     Rc::new(coq::TopLevelItem::Line),
                     Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
-                        &format!("Function_{name}"),
-                        Rc::new(coq::DefinitionKind::Axiom {
-                            ty: coq::Expression::just_name("M.IsFunction").apply_many(&[
+                        &format!("Instance_IsFunction_{name}"),
+                        Rc::new(coq::DefinitionKind::AdmittedInstance {
+                            locality: "Global".to_string(),
+                            ty: coq::Expression::just_name("M.IsFunction.Trait").apply_many(&[
                                 Rc::new(coq::Expression::String(path.to_string())),
                                 coq::Expression::just_name(name),
                             ]),
                         }),
                     ))),
                     Rc::new(coq::TopLevelItem::Hint {
-                        kind: "Smpl Add".to_string(),
-                        name: format!("apply Function_{name}"),
-                        database: "is_function".to_string(),
+                        kind: "Global Opaque".to_string(),
+                        name: name.to_string(),
+                        database: None,
                     }),
                 ],
             ]
@@ -2045,7 +2046,7 @@ impl TopLevelItem {
                                 Rc::new(coq::TopLevelItem::Hint {
                                     kind: "Smpl Add".to_string(),
                                     name: format!("apply {axiom_name}"),
-                                    database: "is_associated".to_string(),
+                                    database: Some("is_associated".to_string()),
                                 }),
                             ],
                         ]

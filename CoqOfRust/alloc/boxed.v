@@ -6688,9 +6688,12 @@ Module boxed.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_boxed_slice_as_array_unchecked :
-    M.IsFunction "alloc::boxed::boxed_slice_as_array_unchecked" boxed_slice_as_array_unchecked.
-  Smpl Add apply Function_boxed_slice_as_array_unchecked : is_function.
+  Global Instance Instance_IsFunction_boxed_slice_as_array_unchecked :
+    M.IsFunction.Trait
+      "alloc::boxed::boxed_slice_as_array_unchecked"
+      boxed_slice_as_array_unchecked.
+  Admitted.
+  Global Opaque boxed_slice_as_array_unchecked.
   
   Module Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_N_T_alloc_alloc_Global.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
@@ -8365,7 +8368,7 @@ Module boxed.
     
     (*     type Output = <F as FnOnce<Args>>::Output; *)
     Definition _Output (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
+      Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output".
     
     (*
         extern "rust-call" fn call_once(self, args: Args) -> Self::Output {
@@ -8385,7 +8388,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
             M.get_trait_method (|
               "core::ops::function::FnOnce",
               F,
@@ -8435,7 +8438,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
             M.get_trait_method (|
               "core::ops::function::FnMut",
               F,
@@ -8482,7 +8485,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
             M.get_trait_method (| "core::ops::function::Fn", F, [], [ Args ], "call", [], [] |),
             [
               M.borrow (|
@@ -8510,11 +8513,16 @@ Module boxed.
     
     (*     type Output = F::Output; *)
     Definition _Output (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [ Args ] F "Output".
     
     (*     type CallOnceFuture = F::CallOnceFuture; *)
     Definition _CallOnceFuture (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "CallOnceFuture".
+      Ty.associated_in_trait
+        "core::ops::async_function::AsyncFnOnce"
+        []
+        [ Args ]
+        F
+        "CallOnceFuture".
     
     (*
         extern "rust-call" fn async_call_once(self, args: Args) -> Self::CallOnceFuture {
@@ -8537,7 +8545,7 @@ Module boxed.
             Ty.associated_in_trait
               "core::ops::async_function::AsyncFnOnce"
               []
-              []
+              [ Args ]
               F
               "CallOnceFuture",
             M.get_trait_method (|
@@ -8579,7 +8587,7 @@ Module boxed.
             Self: 'a;
     *)
     Definition _CallRefFuture (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [ Args ] F "CallRefFuture".
     
     (*
         extern "rust-call" fn async_call_mut(&mut self, args: Args) -> Self::CallRefFuture<'_> {
@@ -8599,7 +8607,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture",
+            Ty.associated_in_trait
+              "core::ops::async_function::AsyncFnMut"
+              []
+              [ Args ]
+              F
+              "CallRefFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFnMut",
               F,
@@ -8655,7 +8668,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture",
+            Ty.associated_in_trait
+              "core::ops::async_function::AsyncFnMut"
+              []
+              [ Args ]
+              F
+              "CallRefFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFn",
               F,
@@ -9726,11 +9744,11 @@ Module boxed.
     
     (*     type Yield = G::Yield; *)
     Definition _Yield (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
     
     (*     type Return = G::Return; *)
     Definition _Return (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
     
     (*
         fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -9749,8 +9767,8 @@ Module boxed.
               (Ty.path "core::ops::coroutine::CoroutineState")
               []
               [
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
               ],
             M.get_trait_method (|
               "core::ops::coroutine::Coroutine",
@@ -9838,11 +9856,11 @@ Module boxed.
     
     (*     type Yield = G::Yield; *)
     Definition _Yield (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
     
     (*     type Return = G::Return; *)
     Definition _Return (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
     
     (*
         fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -9861,8 +9879,8 @@ Module boxed.
               (Ty.path "core::ops::coroutine::CoroutineState")
               []
               [
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
               ],
             M.get_trait_method (|
               "core::ops::coroutine::Coroutine",

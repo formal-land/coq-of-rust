@@ -1010,11 +1010,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_small_sort_fallback :
-          M.IsFunction
+        Global Instance Instance_IsFunction_small_sort_fallback :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::small_sort_fallback"
             small_sort_fallback.
-        Smpl Add apply Function_small_sort_fallback : is_function.
+        Admitted.
+        Global Opaque small_sort_fallback.
         
         (*
         fn small_sort_general<T: FreezeMarker, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) {
@@ -1156,11 +1157,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_small_sort_general :
-          M.IsFunction
+        Global Instance Instance_IsFunction_small_sort_general :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::small_sort_general"
             small_sort_general.
-        Smpl Add apply Function_small_sort_general : is_function.
+        Admitted.
+        Global Opaque small_sort_general.
         
         (*
         fn small_sort_general_with_scratch<T: FreezeMarker, F: FnMut(&T, &T) -> bool>(
@@ -2091,11 +2093,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_small_sort_general_with_scratch :
-          M.IsFunction
+        Global Instance Instance_IsFunction_small_sort_general_with_scratch :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::small_sort_general_with_scratch"
             small_sort_general_with_scratch.
-        Smpl Add apply Function_small_sort_general_with_scratch : is_function.
+        Admitted.
+        Global Opaque small_sort_general_with_scratch.
         
         (* StructRecord
           {
@@ -2759,11 +2762,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_small_sort_network :
-          M.IsFunction
+        Global Instance Instance_IsFunction_small_sort_network :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::small_sort_network"
             small_sort_network.
-        Smpl Add apply Function_small_sort_network : is_function.
+        Admitted.
+        Global Opaque small_sort_network.
         
         (*
         unsafe fn swap_if_less<T, F>(v_base: *mut T, a_pos: usize, b_pos: usize, is_less: &mut F)
@@ -2975,9 +2979,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_swap_if_less :
-          M.IsFunction "core::slice::sort::shared::smallsort::swap_if_less" swap_if_less.
-        Smpl Add apply Function_swap_if_less : is_function.
+        Global Instance Instance_IsFunction_swap_if_less :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::swap_if_less" swap_if_less.
+        Admitted.
+        Global Opaque swap_if_less.
         
         (*
         fn sort9_optimal<T, F>(v: &mut [T], is_less: &mut F)
@@ -3511,9 +3516,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sort9_optimal :
-          M.IsFunction "core::slice::sort::shared::smallsort::sort9_optimal" sort9_optimal.
-        Smpl Add apply Function_sort9_optimal : is_function.
+        Global Instance Instance_IsFunction_sort9_optimal :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::sort9_optimal" sort9_optimal.
+        Admitted.
+        Global Opaque sort9_optimal.
         
         (*
         fn sort13_optimal<T, F>(v: &mut [T], is_less: &mut F)
@@ -4407,9 +4413,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sort13_optimal :
-          M.IsFunction "core::slice::sort::shared::smallsort::sort13_optimal" sort13_optimal.
-        Smpl Add apply Function_sort13_optimal : is_function.
+        Global Instance Instance_IsFunction_sort13_optimal :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::sort13_optimal" sort13_optimal.
+        Admitted.
+        Global Opaque sort13_optimal.
         
         (*
         unsafe fn insert_tail<T, F: FnMut(&T, &T) -> bool>(begin: *mut T, tail: *mut T, is_less: &mut F) {
@@ -4768,9 +4775,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_insert_tail :
-          M.IsFunction "core::slice::sort::shared::smallsort::insert_tail" insert_tail.
-        Smpl Add apply Function_insert_tail : is_function.
+        Global Instance Instance_IsFunction_insert_tail :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::insert_tail" insert_tail.
+        Admitted.
+        Global Opaque insert_tail.
         
         (*
         pub fn insertion_sort_shift_left<T, F: FnMut(&T, &T) -> bool>(
@@ -4968,11 +4976,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_insertion_sort_shift_left :
-          M.IsFunction
+        Global Instance Instance_IsFunction_insertion_sort_shift_left :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::insertion_sort_shift_left"
             insertion_sort_shift_left.
-        Smpl Add apply Function_insertion_sort_shift_left : is_function.
+        Admitted.
+        Global Opaque insertion_sort_shift_left.
         
         (*
         pub unsafe fn sort4_stable<T, F: FnMut(&T, &T) -> bool>(
@@ -5505,9 +5514,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sort4_stable :
-          M.IsFunction "core::slice::sort::shared::smallsort::sort4_stable" sort4_stable.
-        Smpl Add apply Function_sort4_stable : is_function.
+        Global Instance Instance_IsFunction_sort4_stable :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::sort4_stable" sort4_stable.
+        Admitted.
+        Global Opaque sort4_stable.
         
         Module sort4_stable.
           (*
@@ -5539,9 +5549,10 @@ Module slice.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Axiom Function_select :
-            M.IsFunction "core::slice::sort::shared::smallsort::sort4_stable::select" select.
-          Smpl Add apply Function_select : is_function.
+          Global Instance Instance_IsFunction_select :
+            M.IsFunction.Trait "core::slice::sort::shared::smallsort::sort4_stable::select" select.
+          Admitted.
+          Global Opaque select.
         End sort4_stable.
         
         (*
@@ -5669,9 +5680,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sort8_stable :
-          M.IsFunction "core::slice::sort::shared::smallsort::sort8_stable" sort8_stable.
-        Smpl Add apply Function_sort8_stable : is_function.
+        Global Instance Instance_IsFunction_sort8_stable :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::sort8_stable" sort8_stable.
+        Admitted.
+        Global Opaque sort8_stable.
         
         (*
         unsafe fn merge_up<T, F: FnMut(&T, &T) -> bool>(
@@ -5845,9 +5857,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge_up :
-          M.IsFunction "core::slice::sort::shared::smallsort::merge_up" merge_up.
-        Smpl Add apply Function_merge_up : is_function.
+        Global Instance Instance_IsFunction_merge_up :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::merge_up" merge_up.
+        Admitted.
+        Global Opaque merge_up.
         
         (*
         unsafe fn merge_down<T, F: FnMut(&T, &T) -> bool>(
@@ -6021,9 +6034,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_merge_down :
-          M.IsFunction "core::slice::sort::shared::smallsort::merge_down" merge_down.
-        Smpl Add apply Function_merge_down : is_function.
+        Global Instance Instance_IsFunction_merge_down :
+          M.IsFunction.Trait "core::slice::sort::shared::smallsort::merge_down" merge_down.
+        Admitted.
+        Global Opaque merge_down.
         
         (*
         unsafe fn bidirectional_merge<T: FreezeMarker, F: FnMut(&T, &T) -> bool>(
@@ -6576,11 +6590,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_bidirectional_merge :
-          M.IsFunction
+        Global Instance Instance_IsFunction_bidirectional_merge :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::bidirectional_merge"
             bidirectional_merge.
-        Smpl Add apply Function_bidirectional_merge : is_function.
+        Admitted.
+        Global Opaque bidirectional_merge.
         
         (*
         fn panic_on_ord_violation() -> ! {
@@ -6646,11 +6661,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_panic_on_ord_violation :
-          M.IsFunction
+        Global Instance Instance_IsFunction_panic_on_ord_violation :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::panic_on_ord_violation"
             panic_on_ord_violation.
-        Smpl Add apply Function_panic_on_ord_violation : is_function.
+        Admitted.
+        Global Opaque panic_on_ord_violation.
         
         (*
         pub(crate) const fn has_efficient_in_place_swap<T>() -> bool {
@@ -6677,11 +6693,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_has_efficient_in_place_swap :
-          M.IsFunction
+        Global Instance Instance_IsFunction_has_efficient_in_place_swap :
+          M.IsFunction.Trait
             "core::slice::sort::shared::smallsort::has_efficient_in_place_swap"
             has_efficient_in_place_swap.
-        Smpl Add apply Function_has_efficient_in_place_swap : is_function.
+        Admitted.
+        Global Opaque has_efficient_in_place_swap.
       End smallsort.
     End shared.
   End sort.

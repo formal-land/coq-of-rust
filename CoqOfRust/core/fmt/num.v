@@ -7551,8 +7551,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_fmt_u64 : M.IsFunction "core::fmt::num::imp::fmt_u64" fmt_u64.
-      Smpl Add apply Function_fmt_u64 : is_function.
+      Global Instance Instance_IsFunction_fmt_u64 :
+        M.IsFunction.Trait "core::fmt::num::imp::fmt_u64" fmt_u64.
+      Admitted.
+      Global Opaque fmt_u64.
       
       Module Impl_core_fmt_Display_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
@@ -10218,8 +10220,10 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_exp_u64 : M.IsFunction "core::fmt::num::imp::exp_u64" exp_u64.
-      Smpl Add apply Function_exp_u64 : is_function.
+      Global Instance Instance_IsFunction_exp_u64 :
+        M.IsFunction.Trait "core::fmt::num::imp::exp_u64" exp_u64.
+      Admitted.
+      Global Opaque exp_u64.
       
       Module Impl_core_fmt_LowerExp_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
@@ -14092,8 +14096,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_exp_u128 : M.IsFunction "core::fmt::num::exp_u128" exp_u128.
-    Smpl Add apply Function_exp_u128 : is_function.
+    Global Instance Instance_IsFunction_exp_u128 :
+      M.IsFunction.Trait "core::fmt::num::exp_u128" exp_u128.
+    Admitted.
+    Global Opaque exp_u128.
     
     Module Impl_core_fmt_LowerExp_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
@@ -15781,8 +15787,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_parse_u64_into : M.IsFunction "core::fmt::num::parse_u64_into" parse_u64_into.
-    Smpl Add apply Function_parse_u64_into : is_function.
+    Global Instance Instance_IsFunction_parse_u64_into :
+      M.IsFunction.Trait "core::fmt::num::parse_u64_into" parse_u64_into.
+    Admitted.
+    Global Opaque parse_u64_into.
     
     Module Impl_core_fmt_Display_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
@@ -16473,8 +16481,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fmt_u128 : M.IsFunction "core::fmt::num::fmt_u128" fmt_u128.
-    Smpl Add apply Function_fmt_u128 : is_function.
+    Global Instance Instance_IsFunction_fmt_u128 :
+      M.IsFunction.Trait "core::fmt::num::fmt_u128" fmt_u128.
+    Admitted.
+    Global Opaque fmt_u128.
     
     (*
     fn udiv_1e19(n: u128) -> (u128, u64) {
@@ -16570,8 +16580,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_udiv_1e19 : M.IsFunction "core::fmt::num::udiv_1e19" udiv_1e19.
-    Smpl Add apply Function_udiv_1e19 : is_function.
+    Global Instance Instance_IsFunction_udiv_1e19 :
+      M.IsFunction.Trait "core::fmt::num::udiv_1e19" udiv_1e19.
+    Admitted.
+    Global Opaque udiv_1e19.
     
     Module udiv_1e19.
       Definition value_DIV : Value.t :=
@@ -16682,7 +16694,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u128_mulhi : M.IsFunction "core::fmt::num::u128_mulhi" u128_mulhi.
-    Smpl Add apply Function_u128_mulhi : is_function.
+    Global Instance Instance_IsFunction_u128_mulhi :
+      M.IsFunction.Trait "core::fmt::num::u128_mulhi" u128_mulhi.
+    Admitted.
+    Global Opaque u128_mulhi.
   End num.
 End fmt.

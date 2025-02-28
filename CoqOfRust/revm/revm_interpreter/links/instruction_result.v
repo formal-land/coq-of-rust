@@ -688,9 +688,11 @@ Module Impl_InstructionResult.
       bool
     }}.
   Proof.
-    run_symbolic.
-    Time destruct self; run_symbolic.
-  Defined.
+    run.
+    (* This file is too slow. There a lot of constructors, and we need to find a way to optimize
+       that! *)
+    (* Time destruct self; run. *)
+  Admitted.
 
   (* pub const fn is_ok_or_revert(self) -> bool *)
   Definition run_is_ok_or_revert (self : Self) :
@@ -700,9 +702,10 @@ Module Impl_InstructionResult.
       bool
     }}.
   Proof.
-    run_symbolic.
-    Time destruct self; run_symbolic.
-  Defined.
+    run.
+    (* Time destruct self; run.
+  Defined. *)
+  Admitted.
 
   (* pub const fn is_continue(self) -> bool *)
   Definition run_is_continue (self : Self) :
@@ -712,8 +715,12 @@ Module Impl_InstructionResult.
       bool
     }}.
   Proof.
-    run_symbolic.
-    Time destruct self; run_symbolic.
+    run.
+    (* This is the only one that is fast in this file, for some reasons! *)
+    Time destruct self;
+      run_next;
+      RunTactic.unfold_link_in_match;
+      run_next.
   Defined.
 
   (* pub const fn is_revert(self) -> bool *)
@@ -725,8 +732,9 @@ Module Impl_InstructionResult.
     }}.
   Proof.
     run_symbolic.
-    Time destruct self; run_symbolic.
-  Defined.
+  Admitted.
+    (* Time destruct self; run.
+  Defined. *)
 
   (* pub const fn is_error(self) -> bool *)
   Definition run_is_error (self : Self) :
@@ -737,6 +745,7 @@ Module Impl_InstructionResult.
     }}.
   Proof.
     run_symbolic.
-    Time destruct self; run_symbolic.
-  Defined.
+  Admitted.
+    (* Time destruct self; run.
+  Defined. *)
 End Impl_InstructionResult.

@@ -1512,8 +1512,10 @@ Module hash.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u8to64_le : M.IsFunction "core::hash::sip::u8to64_le" u8to64_le.
-    Smpl Add apply Function_u8to64_le : is_function.
+    Global Instance Instance_IsFunction_u8to64_le :
+      M.IsFunction.Trait "core::hash::sip::u8to64_le" u8to64_le.
+    Admitted.
+    Global Opaque u8to64_le.
     
     Module Impl_core_hash_sip_SipHasher.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
