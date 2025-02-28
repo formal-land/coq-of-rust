@@ -1,5 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
+Require core.links.clone.
+Require core.links.default.
+Require core.ops.links.deref.
 
 Import Run.
 
@@ -54,3 +57,18 @@ Module Impl_Default_for_Vec.
     }
   Defined.
 End Impl_Default_for_Vec.
+
+Module Impl_Deref_for_Vec.
+  Definition run_deref {T A : Set} `{Link T} `{Link A} : 
+    deref.Deref.Run_deref (Vec.t T A) (Target := list T).
+  Admitted.
+
+  Definition run {T A : Set} `{Link T} `{Link A} : 
+    deref.Deref.Run (Vec.t T A) (Target := list T).
+  Proof.
+    constructor.
+    { (* clone *)
+      exact run_deref.
+    }
+  Defined.
+End Impl_Deref_for_Vec.

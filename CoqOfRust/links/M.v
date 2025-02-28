@@ -337,6 +337,25 @@ Module Unit.
   Proof. eapply OfValue.Make with (A := unit); smpl of_value. Defined.
   Smpl Add apply of_value : of_value.
 End Unit.
+
+Module Slice.
+  Global Instance IsLink (A : Set) `{Link A} : Link (list A) := {
+    Φ :=
+      Ty.apply (Ty.path "slice") [] [ Φ A ];
+    φ x :=
+      Value.Array (List.map φ x);
+  }.
+
+  Definition of_ty {A' : Ty.t} (of_ty : OfTy.t A') :
+    OfTy.t (Ty.apply (Ty.path "slice") [] [ A' ]).
+  Proof. 
+    destruct of_ty as [A].
+    eapply OfTy.Make with (A := list A). 
+    subst.
+    reflexivity. 
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+End Slice.
  
 (** A general type for references. Can be used for mutable or non-mutable references, as well as
     for unsafe pointers (we assume that the `unsafe` code is safe). *)

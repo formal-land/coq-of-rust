@@ -8,6 +8,7 @@ Require Import core.links.option.
 Require Import revm.links.dependencies.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
+Require Import core.slice.mod.
 
 Import Run.
 
@@ -254,6 +255,12 @@ Module Impl_EofBody.
       }
     }
     intros [|[]]; run_symbolic.
-
+    destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
+    destruct deref as [deref [H_deref run_deref]].
+    run_symbolic.
+    run_symbolic_closure. {
+      apply 
+    }
+    
   Defined.
 End Impl_EofBody.
