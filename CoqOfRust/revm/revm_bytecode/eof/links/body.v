@@ -8,6 +8,7 @@ Require Import core.links.option.
 Require Import revm.links.dependencies.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
+Require Import core.slice.mod.
 
 Import Run.
 
