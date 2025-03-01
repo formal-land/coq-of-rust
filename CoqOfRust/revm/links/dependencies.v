@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import core.links.clone.
 Require Import core.convert.links.mod.
 
 Import Run.
@@ -159,12 +160,7 @@ Module alloy_primitives.
           Φ := Ty.path "alloy_primitives::bytes_::Bytes";
           φ := to_value;
         }.
-
-        Definition of_ty : OfTy.t (Ty.path "alloy_primitives::bytes_::Bytes").
-        Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-        Smpl Add apply of_ty : of_ty.
       End Bytes.
-      
       Module Impl_Clone_for_Bytes.
         Definition Self : Ty.t := Ty.path "alloy_primitives::bytes_::Bytes".
 
@@ -173,20 +169,31 @@ Module alloy_primitives.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
 
-        Definition run_clone : clone.Clone.Run_clone Bytes.t.
-        Admitted.
-      
-        Definition run : clone.Clone.Run Bytes.t.
-        Proof.
-          constructor.
-          { (* clone *)
-            exact run_clone.
-          }
+           Definition run_clone : clone.Clone.Run_clone Bytes.t.
+           Admitted.
+
+          Definition run : clone.Clone.Run Bytes.t.
+          Proof.
+            constructor.
+            { (* clone *)
+              exact run_clone.
+            }
         Defined.
+        Definition getMethod :
+          IsTraitMethod.t "core::clone::Clone" [] []
+          Self 
+          "clone"
+          clone.
+        Proof.
+          eapply IsTraitMethod.Defined.
+          - apply Implements. 
+          - reflexivity.       
+        Qed.
       End Impl_Clone_for_Bytes.
     End bytes_.
   End links.

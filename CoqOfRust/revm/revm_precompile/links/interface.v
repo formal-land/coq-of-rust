@@ -130,7 +130,25 @@ Module Impl_Clone_for_PrecompileOutput.
          destruct clone.
          destruct Impl_Clone_for_Bytes.run.
          destruct clone.
-         run_symbolic.
+         run_symbolic. 
+         run_symbolic_closure.
+         { apply p with (self := Ref.cast_to Pointer.Kind.Ref sub_ref). }
+         {
+          intros []; run_symbolic.
+          run_symbolic_closure.
+          {
+            eapply OfTy.Make with (A := Bytes.t).
+            reflexivity.
+          }
+          {
+            run_symbolic.
+            destruct p0 as [pProof pMeth].
+            apply pMeth.
+          }
+          {
+            intros []; run_symbolic.
+          }
+         }
   Defined.
 End Impl_Clone_for_PrecompileOutput.
 
@@ -381,6 +399,7 @@ Module Impl_PrecompileError.
     }}.
   Proof.
     run_symbolic.
-    destruct_all Self; run_symbolic.
+    destruct_all Self. 
+    run_symbolic.
   Defined.
 End Impl_PrecompileError.
