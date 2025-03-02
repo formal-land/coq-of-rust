@@ -714,9 +714,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_compute_float :
-        M.IsFunction "core::num::dec2flt::lemire::compute_float" compute_float.
-      Smpl Add apply Function_compute_float : is_function.
+      Global Instance Instance_IsFunction_compute_float :
+        M.IsFunction.Trait "core::num::dec2flt::lemire::compute_float" compute_float.
+      Admitted.
+      Global Typeclasses Opaque compute_float.
       
       (*
       fn power(q: i32) -> i32 {
@@ -748,8 +749,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_power : M.IsFunction "core::num::dec2flt::lemire::power" power.
-      Smpl Add apply Function_power : is_function.
+      Global Instance Instance_IsFunction_power :
+        M.IsFunction.Trait "core::num::dec2flt::lemire::power" power.
+      Admitted.
+      Global Typeclasses Opaque power.
       
       (*
       fn full_multiplication(a: u64, b: u64) -> (u64, u64) {
@@ -784,9 +787,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_full_multiplication :
-        M.IsFunction "core::num::dec2flt::lemire::full_multiplication" full_multiplication.
-      Smpl Add apply Function_full_multiplication : is_function.
+      Global Instance Instance_IsFunction_full_multiplication :
+        M.IsFunction.Trait "core::num::dec2flt::lemire::full_multiplication" full_multiplication.
+      Admitted.
+      Global Typeclasses Opaque full_multiplication.
       
       (*
       fn compute_product_approx(q: i64, w: u64, precision: usize) -> (u64, u64) {
@@ -1180,9 +1184,12 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_compute_product_approx :
-        M.IsFunction "core::num::dec2flt::lemire::compute_product_approx" compute_product_approx.
-      Smpl Add apply Function_compute_product_approx : is_function.
+      Global Instance Instance_IsFunction_compute_product_approx :
+        M.IsFunction.Trait
+          "core::num::dec2flt::lemire::compute_product_approx"
+          compute_product_approx.
+      Admitted.
+      Global Typeclasses Opaque compute_product_approx.
     End lemire.
   End dec2flt.
 End num.

@@ -99,8 +99,9 @@ Module reference_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn push(&mut self, v: AbstractValue) -> PartialVMResult<()> {
@@ -440,8 +441,9 @@ Module reference_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
-    Smpl Add apply AssociatedFunction_push : is_associated.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Admitted.
+    Global Typeclasses Opaque push.
     
     (*
         fn push_n(&mut self, v: AbstractValue, n: u64) -> PartialVMResult<()> {
@@ -783,8 +785,9 @@ Module reference_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_push_n : M.IsAssociatedFunction Self "push_n" push_n.
-    Smpl Add apply AssociatedFunction_push_n : is_associated.
+    Global Instance AssociatedFunction_push_n : M.IsAssociatedFunction.Trait Self "push_n" push_n.
+    Admitted.
+    Global Typeclasses Opaque push_n.
   End Impl_move_bytecode_verifier_reference_safety_ReferenceSafetyAnalysis.
   
   (*
@@ -868,8 +871,10 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify : M.IsFunction "move_bytecode_verifier::reference_safety::verify" verify.
-  Smpl Add apply Function_verify : is_function.
+  Global Instance Instance_IsFunction_verify :
+    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::verify" verify.
+  Admitted.
+  Global Typeclasses Opaque verify.
   
   (*
   fn call(
@@ -1908,6 +1913,7 @@ Module reference_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2101,8 +2107,10 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_call : M.IsFunction "move_bytecode_verifier::reference_safety::call" call.
-  Smpl Add apply Function_call : is_function.
+  Global Instance Instance_IsFunction_call :
+    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::call" call.
+  Admitted.
+  Global Typeclasses Opaque call.
   
   (*
   fn num_fields(struct_def: &StructDefinition) -> usize {
@@ -2173,9 +2181,10 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_num_fields :
-    M.IsFunction "move_bytecode_verifier::reference_safety::num_fields" num_fields.
-  Smpl Add apply Function_num_fields : is_function.
+  Global Instance Instance_IsFunction_num_fields :
+    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::num_fields" num_fields.
+  Admitted.
+  Global Typeclasses Opaque num_fields.
   
   (*
   fn pack(
@@ -2243,6 +2252,7 @@ Module reference_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3069,8 +3079,10 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_pack : M.IsFunction "move_bytecode_verifier::reference_safety::pack" pack.
-  Smpl Add apply Function_pack : is_function.
+  Global Instance Instance_IsFunction_pack :
+    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::pack" pack.
+  Admitted.
+  Global Typeclasses Opaque pack.
   
   (*
   fn unpack(
@@ -3813,8 +3825,10 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unpack : M.IsFunction "move_bytecode_verifier::reference_safety::unpack" unpack.
-  Smpl Add apply Function_unpack : is_function.
+  Global Instance Instance_IsFunction_unpack :
+    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::unpack" unpack.
+  Admitted.
+  Global Typeclasses Opaque unpack.
   
   (*
   fn vec_element_type(
@@ -3984,9 +3998,12 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_vec_element_type :
-    M.IsFunction "move_bytecode_verifier::reference_safety::vec_element_type" vec_element_type.
-  Smpl Add apply Function_vec_element_type : is_function.
+  Global Instance Instance_IsFunction_vec_element_type :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::reference_safety::vec_element_type"
+      vec_element_type.
+  Admitted.
+  Global Typeclasses Opaque vec_element_type.
   
   (*
   fn execute_inner(
@@ -20275,6 +20292,7 @@ Module reference_safety.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -35013,9 +35031,10 @@ Module reference_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_execute_inner :
-    M.IsFunction "move_bytecode_verifier::reference_safety::execute_inner" execute_inner.
-  Smpl Add apply Function_execute_inner : is_function.
+  Global Instance Instance_IsFunction_execute_inner :
+    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::execute_inner" execute_inner.
+  Admitted.
+  Global Typeclasses Opaque execute_inner.
   
   Module Impl_move_bytecode_verifier_absint_TransferFunctions_for_move_bytecode_verifier_reference_safety_ReferenceSafetyAnalysis.
     Definition Self : Ty.t :=

@@ -33,45 +33,45 @@ Module Impl_erc1155_Mapping_K_V.
   
   Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_contains :
+  Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "contains" (contains K V).
-  Smpl Add apply AssociatedFunction_contains : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+  Admitted.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
   
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_remove :
+  Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "remove" (remove K V).
-  Smpl Add apply AssociatedFunction_remove : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+  Admitted.
   
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_size :
+  Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "size" (size K V).
-  Smpl Add apply AssociatedFunction_size : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+  Admitted.
   
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_take :
+  Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "take" (take K V).
-  Smpl Add apply AssociatedFunction_take : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+  Admitted.
 End Impl_erc1155_Mapping_K_V.
 
 (* StructTuple
@@ -175,8 +175,9 @@ Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 
 Parameter zero_address : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_zero_address : M.IsFunction "erc1155::zero_address" zero_address.
-Smpl Add apply Function_zero_address : is_function.
+Global Instance Instance_IsFunction_zero_address :
+  M.IsFunction.Trait "erc1155::zero_address" zero_address.
+Admitted.
 
 Parameter value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t.
 
@@ -362,13 +363,14 @@ Module Impl_erc1155_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_erc1155_Env.
 
 (* StructRecord
@@ -412,40 +414,41 @@ Module Impl_erc1155_Contract.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter create : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_create : M.IsAssociatedFunction Self "create" create.
-  Smpl Add apply AssociatedFunction_create : is_associated.
+  Global Instance AssociatedFunction_create : M.IsAssociatedFunction.Trait Self "create" create.
+  Admitted.
   
   Parameter mint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.
-  Smpl Add apply AssociatedFunction_mint : is_associated.
+  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.Trait Self "mint" mint.
+  Admitted.
   
   Parameter perform_transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_perform_transfer :
-    M.IsAssociatedFunction Self "perform_transfer" perform_transfer.
-  Smpl Add apply AssociatedFunction_perform_transfer : is_associated.
+  Global Instance AssociatedFunction_perform_transfer :
+    M.IsAssociatedFunction.Trait Self "perform_transfer" perform_transfer.
+  Admitted.
   
   Parameter transfer_acceptance_check : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer_acceptance_check :
-    M.IsAssociatedFunction Self "transfer_acceptance_check" transfer_acceptance_check.
-  Smpl Add apply AssociatedFunction_transfer_acceptance_check : is_associated.
+  Global Instance AssociatedFunction_transfer_acceptance_check :
+    M.IsAssociatedFunction.Trait Self "transfer_acceptance_check" transfer_acceptance_check.
+  Admitted.
 End Impl_erc1155_Contract.
 
 Module Impl_erc1155_Erc1155_for_erc1155_Contract.

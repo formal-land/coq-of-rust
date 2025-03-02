@@ -18,24 +18,20 @@ Module Impl_u64.
   Lemma run_saturating_add (self rhs: Self) :
     {{ num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
-    run_symbolic.
-    run_symbolic_closure. {
-      apply intrinsics.run_saturating_add.
-    }
-    intros []; run_symbolic.
+    run.
   Defined.
-  Smpl Add apply run_saturating_add : run_closure.
+  Smpl Add simple apply run_saturating_add : run_closure.
 
   Lemma run_saturating_mul (self rhs: Self) :
     {{ num.Impl_u64.saturating_mul [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
   Admitted.
-  Smpl Add apply run_saturating_mul : run_closure.
+  Smpl Add simple apply run_saturating_mul : run_closure.
 
   (* pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) *)
   Lemma run_overflowing_sub (self rhs: Self) :
     {{ num.Impl_u64.overflowing_sub [] [] [ φ self; φ rhs ] 🔽 (Self * bool) }}.
   Proof.
   Admitted.
-  Smpl Add apply run_overflowing_sub : run_closure.
+  Smpl Add simple apply run_overflowing_sub : run_closure.
 End Impl_u64.

@@ -92,8 +92,10 @@ Module ascii.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_escape_default : M.IsFunction "core::ascii::escape_default" escape_default.
-  Smpl Add apply Function_escape_default : is_function.
+  Global Instance Instance_IsFunction_escape_default :
+    M.IsFunction.Trait "core::ascii::escape_default" escape_default.
+  Admitted.
+  Global Typeclasses Opaque escape_default.
   
   Module Impl_core_ascii_EscapeDefault.
     Definition Self : Ty.t := Ty.path "core::ascii::EscapeDefault".
@@ -131,8 +133,9 @@ Module ascii.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub(crate) fn empty() -> Self {
@@ -166,8 +169,9 @@ Module ascii.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_empty : M.IsAssociatedFunction Self "empty" empty.
-    Smpl Add apply AssociatedFunction_empty : is_associated.
+    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+    Admitted.
+    Global Typeclasses Opaque empty.
     
     (*
         pub(crate) fn as_str(&self) -> &str {
@@ -209,8 +213,9 @@ Module ascii.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-    Smpl Add apply AssociatedFunction_as_str : is_associated.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Admitted.
+    Global Typeclasses Opaque as_str.
   End Impl_core_ascii_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_ascii_EscapeDefault.

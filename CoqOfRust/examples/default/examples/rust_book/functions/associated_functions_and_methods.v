@@ -27,8 +27,9 @@ Module Impl_associated_functions_and_methods_Point.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_origin : M.IsAssociatedFunction Self "origin" origin.
-  Smpl Add apply AssociatedFunction_origin : is_associated.
+  Global Instance AssociatedFunction_origin : M.IsAssociatedFunction.Trait Self "origin" origin.
+  Admitted.
+  Global Typeclasses Opaque origin.
   
   (*
       fn new(x: f64, y: f64) -> Point {
@@ -47,8 +48,9 @@ Module Impl_associated_functions_and_methods_Point.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
 End Impl_associated_functions_and_methods_Point.
 
 (* StructRecord
@@ -86,8 +88,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get_p1 : M.IsAssociatedFunction Self "get_p1" get_p1.
-  Smpl Add apply AssociatedFunction_get_p1 : is_associated.
+  Global Instance AssociatedFunction_get_p1 : M.IsAssociatedFunction.Trait Self "get_p1" get_p1.
+  Admitted.
+  Global Typeclasses Opaque get_p1.
   
   (*
       fn area(&self) -> f64 {
@@ -172,8 +175,9 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_area : M.IsAssociatedFunction Self "area" area.
-  Smpl Add apply AssociatedFunction_area : is_associated.
+  Global Instance AssociatedFunction_area : M.IsAssociatedFunction.Trait Self "area" area.
+  Admitted.
+  Global Typeclasses Opaque area.
   
   (*
       fn perimeter(&self) -> f64 {
@@ -260,8 +264,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_perimeter : M.IsAssociatedFunction Self "perimeter" perimeter.
-  Smpl Add apply AssociatedFunction_perimeter : is_associated.
+  Global Instance AssociatedFunction_perimeter :
+    M.IsAssociatedFunction.Trait Self "perimeter" perimeter.
+  Admitted.
+  Global Typeclasses Opaque perimeter.
   
   (*
       fn translate(&mut self, x: f64, y: f64) {
@@ -341,8 +347,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_translate : M.IsAssociatedFunction Self "translate" translate.
-  Smpl Add apply AssociatedFunction_translate : is_associated.
+  Global Instance AssociatedFunction_translate :
+    M.IsAssociatedFunction.Trait Self "translate" translate.
+  Admitted.
+  Global Typeclasses Opaque translate.
 End Impl_associated_functions_and_methods_Rectangle.
 
 (* StructTuple
@@ -503,8 +511,9 @@ Module Impl_associated_functions_and_methods_Pair.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_destroy : M.IsAssociatedFunction Self "destroy" destroy.
-  Smpl Add apply AssociatedFunction_destroy : is_associated.
+  Global Instance AssociatedFunction_destroy : M.IsAssociatedFunction.Trait Self "destroy" destroy.
+  Admitted.
+  Global Typeclasses Opaque destroy.
 End Impl_associated_functions_and_methods_Pair.
 
 (*
@@ -846,5 +855,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "associated_functions_and_methods::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "associated_functions_and_methods::main" main.
+Admitted.
+Global Typeclasses Opaque main.

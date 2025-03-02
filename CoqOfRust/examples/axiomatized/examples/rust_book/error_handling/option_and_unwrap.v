@@ -3,15 +3,16 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter give_adult : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_give_adult : M.IsFunction "option_and_unwrap::give_adult" give_adult.
-Smpl Add apply Function_give_adult : is_function.
+Global Instance Instance_IsFunction_give_adult :
+  M.IsFunction.Trait "option_and_unwrap::give_adult" give_adult.
+Admitted.
 
 Parameter drink : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_drink : M.IsFunction "option_and_unwrap::drink" drink.
-Smpl Add apply Function_drink : is_function.
+Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "option_and_unwrap::drink" drink.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "option_and_unwrap::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option_and_unwrap::main" main.
+Admitted.

@@ -71,6 +71,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.
-  Smpl Add apply AssociatedFunction_run : is_associated.
+  Global Instance AssociatedFunction_run : M.IsAssociatedFunction.Trait Self "run" run.
+  Admitted.
+  Global Typeclasses Opaque run.
 End Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.

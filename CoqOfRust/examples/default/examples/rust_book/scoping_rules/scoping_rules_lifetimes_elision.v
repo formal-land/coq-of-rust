@@ -83,9 +83,10 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_elided_input :
-  M.IsFunction "scoping_rules_lifetimes_elision::elided_input" elided_input.
-Smpl Add apply Function_elided_input : is_function.
+Global Instance Instance_IsFunction_elided_input :
+  M.IsFunction.Trait "scoping_rules_lifetimes_elision::elided_input" elided_input.
+Admitted.
+Global Typeclasses Opaque elided_input.
 
 (*
 fn annotated_input<'a>(x: &'a i32) {
@@ -169,9 +170,10 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_annotated_input :
-  M.IsFunction "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
-Smpl Add apply Function_annotated_input : is_function.
+Global Instance Instance_IsFunction_annotated_input :
+  M.IsFunction.Trait "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
+Admitted.
+Global Typeclasses Opaque annotated_input.
 
 (*
 fn elided_pass(x: &i32) -> &i32 {
@@ -187,9 +189,10 @@ Definition elided_pass (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_elided_pass :
-  M.IsFunction "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
-Smpl Add apply Function_elided_pass : is_function.
+Global Instance Instance_IsFunction_elided_pass :
+  M.IsFunction.Trait "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
+Admitted.
+Global Typeclasses Opaque elided_pass.
 
 (*
 fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
@@ -205,9 +208,10 @@ Definition annotated_pass (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_annotated_pass :
-  M.IsFunction "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
-Smpl Add apply Function_annotated_pass : is_function.
+Global Instance Instance_IsFunction_annotated_pass :
+  M.IsFunction.Trait "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
+Admitted.
+Global Typeclasses Opaque annotated_pass.
 
 (*
 fn main() {
@@ -419,5 +423,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_elision::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_elision::main" main.
+Admitted.
+Global Typeclasses Opaque main.

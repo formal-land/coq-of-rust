@@ -86,8 +86,10 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_decode_utf16 : M.IsFunction "core::char::decode_utf16" decode_utf16.
-  Smpl Add apply Function_decode_utf16 : is_function.
+  Global Instance Instance_IsFunction_decode_utf16 :
+    M.IsFunction.Trait "core::char::decode_utf16" decode_utf16.
+  Admitted.
+  Global Typeclasses Opaque decode_utf16.
   
   (*
   pub const fn from_u32(i: u32) -> Option<char> {
@@ -107,8 +109,9 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_u32 : M.IsFunction "core::char::from_u32" from_u32.
-  Smpl Add apply Function_from_u32 : is_function.
+  Global Instance Instance_IsFunction_from_u32 : M.IsFunction.Trait "core::char::from_u32" from_u32.
+  Admitted.
+  Global Typeclasses Opaque from_u32.
   
   (*
   pub const unsafe fn from_u32_unchecked(i: u32) -> char {
@@ -129,9 +132,10 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_u32_unchecked :
-    M.IsFunction "core::char::from_u32_unchecked" from_u32_unchecked.
-  Smpl Add apply Function_from_u32_unchecked : is_function.
+  Global Instance Instance_IsFunction_from_u32_unchecked :
+    M.IsFunction.Trait "core::char::from_u32_unchecked" from_u32_unchecked.
+  Admitted.
+  Global Typeclasses Opaque from_u32_unchecked.
   
   (*
   pub const fn from_digit(num: u32, radix: u32) -> Option<char> {
@@ -152,8 +156,10 @@ Module char.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_digit : M.IsFunction "core::char::from_digit" from_digit.
-  Smpl Add apply Function_from_digit : is_function.
+  Global Instance Instance_IsFunction_from_digit :
+    M.IsFunction.Trait "core::char::from_digit" from_digit.
+  Admitted.
+  Global Typeclasses Opaque from_digit.
   
   (* StructTuple
     {
@@ -322,8 +328,9 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_core_char_EscapeUnicode.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeUnicode.
@@ -873,8 +880,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
-    Smpl Add apply AssociatedFunction_printable : is_associated.
+    Global Instance AssociatedFunction_printable :
+      M.IsAssociatedFunction.Trait Self "printable" printable.
+    Admitted.
+    Global Typeclasses Opaque printable.
     
     (*
         const fn backslash(c: ascii::Char) -> Self {
@@ -909,8 +918,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
-    Smpl Add apply AssociatedFunction_backslash : is_associated.
+    Global Instance AssociatedFunction_backslash :
+      M.IsAssociatedFunction.Trait Self "backslash" backslash.
+    Admitted.
+    Global Typeclasses Opaque backslash.
     
     (*
         const fn unicode(c: char) -> Self {
@@ -945,8 +956,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
-    Smpl Add apply AssociatedFunction_unicode : is_associated.
+    Global Instance AssociatedFunction_unicode :
+      M.IsAssociatedFunction.Trait Self "unicode" unicode.
+    Admitted.
+    Global Typeclasses Opaque unicode.
   End Impl_core_char_EscapeDefault.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDefault.
@@ -1678,8 +1691,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_printable : M.IsAssociatedFunction Self "printable" printable.
-    Smpl Add apply AssociatedFunction_printable : is_associated.
+    Global Instance AssociatedFunction_printable :
+      M.IsAssociatedFunction.Trait Self "printable" printable.
+    Admitted.
+    Global Typeclasses Opaque printable.
     
     (*
         const fn backslash(c: ascii::Char) -> Self {
@@ -1718,8 +1733,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_backslash : M.IsAssociatedFunction Self "backslash" backslash.
-    Smpl Add apply AssociatedFunction_backslash : is_associated.
+    Global Instance AssociatedFunction_backslash :
+      M.IsAssociatedFunction.Trait Self "backslash" backslash.
+    Admitted.
+    Global Typeclasses Opaque backslash.
     
     (*
         const fn unicode(c: char) -> Self {
@@ -1758,8 +1775,10 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unicode : M.IsAssociatedFunction Self "unicode" unicode.
-    Smpl Add apply AssociatedFunction_unicode : is_associated.
+    Global Instance AssociatedFunction_unicode :
+      M.IsAssociatedFunction.Trait Self "unicode" unicode.
+    Admitted.
+    Global Typeclasses Opaque unicode.
     
     (*
         fn clear(&mut self) {
@@ -1807,8 +1826,9 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
-    Smpl Add apply AssociatedFunction_clear : is_associated.
+    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.Trait Self "clear" clear.
+    Admitted.
+    Global Typeclasses Opaque clear.
   End Impl_core_char_EscapeDebug.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_EscapeDebug.
@@ -3912,8 +3932,9 @@ Module char.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_core_char_CaseMappingIter.
   
   Module Impl_core_iter_traits_iterator_Iterator_for_core_char_CaseMappingIter.
@@ -4569,6 +4590,7 @@ Module char.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|

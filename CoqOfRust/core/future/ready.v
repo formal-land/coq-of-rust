@@ -268,10 +268,11 @@ Module future.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner :
+      Global Instance AssociatedFunction_into_inner :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      Admitted.
+      Global Typeclasses Opaque into_inner.
     End Impl_core_future_ready_Ready_T.
     
     (*
@@ -290,7 +291,9 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.
-    Smpl Add apply Function_ready : is_function.
+    Global Instance Instance_IsFunction_ready :
+      M.IsFunction.Trait "core::future::ready::ready" ready.
+    Admitted.
+    Global Typeclasses Opaque ready.
   End ready.
 End future.

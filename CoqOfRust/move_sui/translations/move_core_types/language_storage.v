@@ -3225,9 +3225,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
-    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
+    Global Instance AssociatedFunction_to_canonical_string :
+      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_string.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl std::fmt::Display + '_ {
@@ -3277,9 +3278,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
-    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
+    Global Instance AssociatedFunction_to_canonical_display :
+      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_display.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -3569,9 +3571,13 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
-    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
+    Global Instance AssociatedFunction_abstract_size_for_gas_metering :
+      M.IsAssociatedFunction.Trait
+        Self
+        "abstract_size_for_gas_metering"
+        abstract_size_for_gas_metering.
+    Admitted.
+    Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_language_storage_TypeTag.
   
   Module Impl_core_str_traits_FromStr_for_move_core_types_language_storage_TypeTag.
@@ -4910,9 +4916,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_access_vector :
-      M.IsAssociatedFunction Self "access_vector" access_vector.
-    Smpl Add apply AssociatedFunction_access_vector : is_associated.
+    Global Instance AssociatedFunction_access_vector :
+      M.IsAssociatedFunction.Trait Self "access_vector" access_vector.
+    Admitted.
+    Global Typeclasses Opaque access_vector.
     
     (*
         pub fn is_ascii_string(&self, move_std_addr: &AccountAddress) -> bool {
@@ -5081,9 +5088,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_string :
-      M.IsAssociatedFunction Self "is_ascii_string" is_ascii_string.
-    Smpl Add apply AssociatedFunction_is_ascii_string : is_associated.
+    Global Instance AssociatedFunction_is_ascii_string :
+      M.IsAssociatedFunction.Trait Self "is_ascii_string" is_ascii_string.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_string.
     
     (*
         pub fn is_std_string(&self, move_std_addr: &AccountAddress) -> bool {
@@ -5255,9 +5263,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_std_string :
-      M.IsAssociatedFunction Self "is_std_string" is_std_string.
-    Smpl Add apply AssociatedFunction_is_std_string : is_associated.
+    Global Instance AssociatedFunction_is_std_string :
+      M.IsAssociatedFunction.Trait Self "is_std_string" is_std_string.
+    Admitted.
+    Global Typeclasses Opaque is_std_string.
     
     (*
         pub fn module_id(&self) -> ModuleId {
@@ -5312,8 +5321,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
-    Smpl Add apply AssociatedFunction_module_id : is_associated.
+    Global Instance AssociatedFunction_module_id :
+      M.IsAssociatedFunction.Trait Self "module_id" module_id.
+    Admitted.
+    Global Typeclasses Opaque module_id.
     
     (*
         pub fn to_canonical_string(&self, with_prefix: bool) -> String {
@@ -5361,9 +5372,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
-    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
+    Global Instance AssociatedFunction_to_canonical_string :
+      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_string.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl std::fmt::Display + '_ {
@@ -5417,9 +5429,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
-    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
+    Global Instance AssociatedFunction_to_canonical_display :
+      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_display.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -5834,9 +5847,13 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
-    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
+    Global Instance AssociatedFunction_abstract_size_for_gas_metering :
+      M.IsAssociatedFunction.Trait
+        Self
+        "abstract_size_for_gas_metering"
+        abstract_size_for_gas_metering.
+    Admitted.
+    Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_language_storage_StructTag.
   
   Module Impl_core_str_traits_FromStr_for_move_core_types_language_storage_StructTag.
@@ -6536,8 +6553,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
-    Smpl Add apply AssociatedFunction_address : is_associated.
+    Global Instance AssociatedFunction_address :
+      M.IsAssociatedFunction.Trait Self "address" address.
+    Admitted.
+    Global Typeclasses Opaque address.
     
     (*
         pub fn type_(&self) -> &StructTag {
@@ -6565,8 +6584,9 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_type_ : M.IsAssociatedFunction Self "type_" type_.
-    Smpl Add apply AssociatedFunction_type_ : is_associated.
+    Global Instance AssociatedFunction_type_ : M.IsAssociatedFunction.Trait Self "type_" type_.
+    Admitted.
+    Global Typeclasses Opaque type_.
     (*
         pub fn new(address: AccountAddress, type_: StructTag) -> Self {
             ResourceKey { address, type_ }
@@ -6584,8 +6604,9 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_core_types_language_storage_ResourceKey.
   
   
@@ -7290,8 +7311,9 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn name(&self) -> &IdentStr {
@@ -7338,8 +7360,9 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub fn address(&self) -> &AccountAddress {
@@ -7367,8 +7390,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
-    Smpl Add apply AssociatedFunction_address : is_associated.
+    Global Instance AssociatedFunction_address :
+      M.IsAssociatedFunction.Trait Self "address" address.
+    Admitted.
+    Global Typeclasses Opaque address.
     
     (*
         pub fn access_vector(&self) -> Vec<u8> {
@@ -7518,9 +7543,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_access_vector :
-      M.IsAssociatedFunction Self "access_vector" access_vector.
-    Smpl Add apply AssociatedFunction_access_vector : is_associated.
+    Global Instance AssociatedFunction_access_vector :
+      M.IsAssociatedFunction.Trait Self "access_vector" access_vector.
+    Admitted.
+    Global Typeclasses Opaque access_vector.
     
     (*
         pub fn to_canonical_string(&self, with_prefix: bool) -> String {
@@ -7568,9 +7594,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
-    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
+    Global Instance AssociatedFunction_to_canonical_string :
+      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_string.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl Display + '_ {
@@ -7611,9 +7638,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
-    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
+    Global Instance AssociatedFunction_to_canonical_display :
+      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_display.
     (*
         pub fn short_str_lossless(&self) -> String {
             format!("0x{}::{}", self.address.short_str_lossless(), self.name)
@@ -7750,9 +7778,10 @@ Module language_storage.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_short_str_lossless :
-      M.IsAssociatedFunction Self "short_str_lossless" short_str_lossless.
-    Smpl Add apply AssociatedFunction_short_str_lossless : is_associated.
+    Global Instance AssociatedFunction_short_str_lossless :
+      M.IsAssociatedFunction.Trait Self "short_str_lossless" short_str_lossless.
+    Admitted.
+    Global Typeclasses Opaque short_str_lossless.
   End Impl_move_core_types_language_storage_ModuleId.
   
   Module Impl_core_fmt_Display_for_move_core_types_language_storage_ModuleId.
@@ -8652,6 +8681,7 @@ Module language_storage.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|

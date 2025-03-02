@@ -561,10 +561,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             pub fn nexts<Cmp: Fn(&I::Item, &I::Item) -> Ordering>(
@@ -1144,10 +1145,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_nexts :
+        Global Instance AssociatedFunction_nexts :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "nexts" (nexts I).
-        Smpl Add apply AssociatedFunction_nexts : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "nexts" (nexts I).
+        Admitted.
+        Global Typeclasses Opaque nexts.
         
         (*
             pub fn lens(&self) -> (usize, usize)
@@ -1364,10 +1366,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_lens :
+        Global Instance AssociatedFunction_lens :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "lens" (lens I).
-        Smpl Add apply AssociatedFunction_lens : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "lens" (lens I).
+        Admitted.
+        Global Typeclasses Opaque lens.
       End Impl_alloc_collections_btree_merge_iter_MergeIterInner_I.
     End merge_iter.
   End btree.

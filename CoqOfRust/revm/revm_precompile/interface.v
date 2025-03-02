@@ -403,8 +403,9 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_revm_precompile_interface_PrecompileOutput.
   
   Axiom PrecompileFn :
@@ -2111,8 +2112,9 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_other : M.IsAssociatedFunction Self "other" other.
-    Smpl Add apply AssociatedFunction_other : is_associated.
+    Global Instance AssociatedFunction_other : M.IsAssociatedFunction.Trait Self "other" other.
+    Admitted.
+    Global Typeclasses Opaque other.
     
     (*
         pub fn is_oog(&self) -> bool {
@@ -2144,8 +2146,9 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_oog : M.IsAssociatedFunction Self "is_oog" is_oog.
-    Smpl Add apply AssociatedFunction_is_oog : is_associated.
+    Global Instance AssociatedFunction_is_oog : M.IsAssociatedFunction.Trait Self "is_oog" is_oog.
+    Admitted.
+    Global Typeclasses Opaque is_oog.
   End Impl_revm_precompile_interface_PrecompileError.
   
   Module Impl_core_convert_From_revm_precompile_interface_PrecompileError_for_revm_precompile_interface_PrecompileErrors.

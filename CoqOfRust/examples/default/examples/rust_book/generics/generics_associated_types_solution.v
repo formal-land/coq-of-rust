@@ -213,9 +213,10 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_difference :
-  M.IsFunction "generics_associated_types_solution::difference" difference.
-Smpl Add apply Function_difference : is_function.
+Global Instance Instance_IsFunction_difference :
+  M.IsFunction.Trait "generics_associated_types_solution::difference" difference.
+Admitted.
+Global Typeclasses Opaque difference.
 
 (*
 fn get_a<C: Contains>(container: &C) -> C::A {
@@ -243,8 +244,95 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_get_a : M.IsFunction "generics_associated_types_solution::get_a" get_a.
-Smpl Add apply Function_get_a : is_function.
+Global Instance Instance_IsFunction_get_a :
+  M.IsFunction.Trait "generics_associated_types_solution::get_a" get_a.
+Admitted.
+Global Typeclasses Opaque get_a.
+
+(* Trait *)
+(* Empty module 'TraitWithParams' *)
+
+Module Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
+  Definition Self : Ty.t := Ty.path "generics_associated_types_solution::Container".
+  
+  (*     type Output = (i32, i32); *)
+  Definition _Output : Ty.t := Ty.tuple [ Ty.path "i32"; Ty.path "i32" ].
+  
+  (*
+      fn get_output(&self) -> (i32, i32) {
+          (self.0, self.1)
+      }
+  *)
+  Definition get_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        Value.Tuple
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "generics_associated_types_solution::Container",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "generics_associated_types_solution::Container",
+                1
+              |)
+            |)
+          ]))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Implements :
+    M.IsTraitInstance
+      "generics_associated_types_solution::TraitWithParams"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "i32"; Ty.path "i32" ]
+      Self
+      (* Instance *)
+      [ ("Output", InstanceField.Ty _Output); ("get_output", InstanceField.Method get_output) ].
+End Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
+
+(*
+fn get_output<C: TraitWithParams<i32, i32>>(container: &C) -> C::Output {
+    container.get_output()
+}
+*)
+Definition get_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ C ], [ container ] =>
+    ltac:(M.monadic
+      (let container := M.alloc (| container |) in
+      M.call_closure (|
+        Ty.associated_in_trait
+          "generics_associated_types_solution::TraitWithParams"
+          []
+          [ Ty.path "i32"; Ty.path "i32" ]
+          C
+          "Output",
+        M.get_trait_method (|
+          "generics_associated_types_solution::TraitWithParams",
+          C,
+          [],
+          [ Ty.path "i32"; Ty.path "i32" ],
+          "get_output",
+          [],
+          []
+        |),
+        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| container |) |) |) ]
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
+  end.
+
+Global Instance Instance_IsFunction_get_output :
+  M.IsFunction.Trait "generics_associated_types_solution::get_output" get_output.
+Admitted.
+Global Typeclasses Opaque get_output.
 
 (*
 fn main() {
@@ -263,6 +351,8 @@ fn main() {
     println!("Last number: {}", container.last());
 
     println!("The difference is: {}", difference(&container));
+
+    println!("Get output.0: {}", get_output(&container).0);
 }
 *)
 Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -683,10 +773,106 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_function (| "std::io::stdio::_print", [], [] |),
+                [
+                  M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Arguments",
+                      "new_v1",
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Get output.0: " |);
+                                  M.read (| Value.String "
+" |)
+                                ]
+                            |)
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [],
+                                      [ Ty.path "i32" ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_tuple_field (|
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  Ty.tuple [ Ty.path "i32"; Ty.path "i32" ],
+                                                  M.get_function (|
+                                                    "generics_associated_types_solution::get_output",
+                                                    [],
+                                                    [
+                                                      Ty.path
+                                                        "generics_associated_types_solution::Container"
+                                                    ]
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.Ref, container |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              0
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_associated_types_solution::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "generics_associated_types_solution::main" main.
+Admitted.
+Global Typeclasses Opaque main.

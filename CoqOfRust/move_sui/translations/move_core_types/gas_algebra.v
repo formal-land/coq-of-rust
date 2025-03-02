@@ -593,8 +593,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (U : Ty.t), M.IsAssociatedFunction (Self U) "new" (new U).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (U : Ty.t),
+      M.IsAssociatedFunction.Trait (Self U) "new" (new U).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn zero() -> Self {
@@ -619,10 +622,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_zero :
+    Global Instance AssociatedFunction_zero :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "zero" (zero U).
-    Smpl Add apply AssociatedFunction_zero : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "zero" (zero U).
+    Admitted.
+    Global Typeclasses Opaque zero.
     
     (*
         pub const fn one() -> Self {
@@ -647,8 +651,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one : forall (U : Ty.t), M.IsAssociatedFunction (Self U) "one" (one U).
-    Smpl Add apply AssociatedFunction_one : is_associated.
+    Global Instance AssociatedFunction_one :
+      forall (U : Ty.t),
+      M.IsAssociatedFunction.Trait (Self U) "one" (one U).
+    Admitted.
+    Global Typeclasses Opaque one.
     
     (*
         pub const fn is_zero(&self) -> bool {
@@ -674,10 +681,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_zero :
+    Global Instance AssociatedFunction_is_zero :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "is_zero" (is_zero U).
-    Smpl Add apply AssociatedFunction_is_zero : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "is_zero" (is_zero U).
+    Admitted.
+    Global Typeclasses Opaque is_zero.
     (*
         fn cmp_impl(&self, other: &Self) -> Ordering {
             self.val.cmp(&other.val)
@@ -720,10 +728,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cmp_impl :
+    Global Instance AssociatedFunction_cmp_impl :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "cmp_impl" (cmp_impl U).
-    Smpl Add apply AssociatedFunction_cmp_impl : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "cmp_impl" (cmp_impl U).
+    Admitted.
+    Global Typeclasses Opaque cmp_impl.
     (*
         pub fn checked_sub(self, other: Self) -> Option<Self> {
             self.val.checked_sub(other.val).map(Self::new)
@@ -784,10 +793,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub :
+    Global Instance AssociatedFunction_checked_sub :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "checked_sub" (checked_sub U).
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "checked_sub" (checked_sub U).
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
         pub fn saturating_sub(self, other: Self) -> Self {
@@ -843,10 +853,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
+    Global Instance AssociatedFunction_saturating_sub :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "saturating_sub" (saturating_sub U).
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "saturating_sub" (saturating_sub U).
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     (*
         pub fn to_unit<T>(self) -> GasQuantity<T>
         where
@@ -979,10 +990,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_unit :
+    Global Instance AssociatedFunction_to_unit :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "to_unit" (to_unit U).
-    Smpl Add apply AssociatedFunction_to_unit : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "to_unit" (to_unit U).
+    Admitted.
+    Global Typeclasses Opaque to_unit.
     
     (*
         pub fn to_unit_round_down<T>(self) -> GasQuantity<T>
@@ -1040,10 +1052,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_unit_round_down :
+    Global Instance AssociatedFunction_to_unit_round_down :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "to_unit_round_down" (to_unit_round_down U).
-    Smpl Add apply AssociatedFunction_to_unit_round_down : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "to_unit_round_down" (to_unit_round_down U).
+    Admitted.
+    Global Typeclasses Opaque to_unit_round_down.
     
     (*
         pub fn to_unit_round_up<T>(self) -> GasQuantity<T>
@@ -1097,10 +1110,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_unit_round_up :
+    Global Instance AssociatedFunction_to_unit_round_up :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "to_unit_round_up" (to_unit_round_up U).
-    Smpl Add apply AssociatedFunction_to_unit_round_up : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "to_unit_round_up" (to_unit_round_up U).
+    Admitted.
+    Global Typeclasses Opaque to_unit_round_up.
     (*
         pub fn to_unit_with_params<T>(
             self,
@@ -1255,10 +1269,11 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_unit_with_params :
+    Global Instance AssociatedFunction_to_unit_with_params :
       forall (U : Ty.t),
-      M.IsAssociatedFunction (Self U) "to_unit_with_params" (to_unit_with_params U).
-    Smpl Add apply AssociatedFunction_to_unit_with_params : is_associated.
+      M.IsAssociatedFunction.Trait (Self U) "to_unit_with_params" (to_unit_with_params U).
+    Admitted.
+    Global Typeclasses Opaque to_unit_with_params.
     
     (*
         pub fn to_unit_round_down_with_params<T>(
@@ -1346,13 +1361,14 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_unit_round_down_with_params :
+    Global Instance AssociatedFunction_to_unit_round_down_with_params :
       forall (U : Ty.t),
-      M.IsAssociatedFunction
+      M.IsAssociatedFunction.Trait
         (Self U)
         "to_unit_round_down_with_params"
         (to_unit_round_down_with_params U).
-    Smpl Add apply AssociatedFunction_to_unit_round_down_with_params : is_associated.
+    Admitted.
+    Global Typeclasses Opaque to_unit_round_down_with_params.
     
     (*
         pub fn to_unit_round_up_with_params<T>(
@@ -1440,13 +1456,14 @@ Module gas_algebra.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_unit_round_up_with_params :
+    Global Instance AssociatedFunction_to_unit_round_up_with_params :
       forall (U : Ty.t),
-      M.IsAssociatedFunction
+      M.IsAssociatedFunction.Trait
         (Self U)
         "to_unit_round_up_with_params"
         (to_unit_round_up_with_params U).
-    Smpl Add apply AssociatedFunction_to_unit_round_up_with_params : is_associated.
+    Admitted.
+    Global Typeclasses Opaque to_unit_round_up_with_params.
   End Impl_move_core_types_gas_algebra_GasQuantity_U.
   
   Module Impl_core_convert_From_u64_for_move_core_types_gas_algebra_GasQuantity_U.
@@ -2126,8 +2143,10 @@ Module gas_algebra.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_mul_impl : M.IsFunction "move_core_types::gas_algebra::mul_impl" mul_impl.
-  Smpl Add apply Function_mul_impl : is_function.
+  Global Instance Instance_IsFunction_mul_impl :
+    M.IsFunction.Trait "move_core_types::gas_algebra::mul_impl" mul_impl.
+  Admitted.
+  Global Typeclasses Opaque mul_impl.
   
   Module Impl_core_ops_arith_Mul_move_core_types_gas_algebra_GasQuantity_move_core_types_gas_algebra_UnitDiv_U1_U2_for_move_core_types_gas_algebra_GasQuantity_U2.
     Definition Self (U1 U2 : Ty.t) : Ty.t :=
@@ -2426,9 +2445,12 @@ Module gas_algebra.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_apply_ratio_round_down :
-    M.IsFunction "move_core_types::gas_algebra::apply_ratio_round_down" apply_ratio_round_down.
-  Smpl Add apply Function_apply_ratio_round_down : is_function.
+  Global Instance Instance_IsFunction_apply_ratio_round_down :
+    M.IsFunction.Trait
+      "move_core_types::gas_algebra::apply_ratio_round_down"
+      apply_ratio_round_down.
+  Admitted.
+  Global Typeclasses Opaque apply_ratio_round_down.
   
   (*
   fn apply_ratio_round_up(val: u64, nominator: u64, denominator: u64) -> u64 {
@@ -2668,9 +2690,10 @@ Module gas_algebra.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_apply_ratio_round_up :
-    M.IsFunction "move_core_types::gas_algebra::apply_ratio_round_up" apply_ratio_round_up.
-  Smpl Add apply Function_apply_ratio_round_up : is_function.
+  Global Instance Instance_IsFunction_apply_ratio_round_up :
+    M.IsFunction.Trait "move_core_types::gas_algebra::apply_ratio_round_up" apply_ratio_round_up.
+  Admitted.
+  Global Typeclasses Opaque apply_ratio_round_up.
   
   (* Trait *)
   (* Empty module 'ToUnit' *)

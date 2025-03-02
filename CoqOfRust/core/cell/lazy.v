@@ -84,10 +84,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "new" (new T F).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "new" (new T F).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn into_inner(this: Self) -> Result<T, F> {
@@ -177,10 +178,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner :
+      Global Instance AssociatedFunction_into_inner :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "into_inner" (into_inner T F).
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "into_inner" (into_inner T F).
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
           pub fn force(this: &LazyCell<T, F>) -> &T {
@@ -303,10 +305,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_force :
+      Global Instance AssociatedFunction_force :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "force" (force T F).
-      Smpl Add apply AssociatedFunction_force : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "force" (force T F).
+      Admitted.
+      Global Typeclasses Opaque force.
       
       (*
           pub fn force_mut(this: &mut LazyCell<T, F>) -> &mut T {
@@ -486,10 +489,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_force_mut :
+      Global Instance AssociatedFunction_force_mut :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "force_mut" (force_mut T F).
-      Smpl Add apply AssociatedFunction_force_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "force_mut" (force_mut T F).
+      Admitted.
+      Global Typeclasses Opaque force_mut.
       
       (*
           unsafe fn really_init(this: &LazyCell<T, F>) -> &T {
@@ -722,10 +726,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_really_init :
+      Global Instance AssociatedFunction_really_init :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "really_init" (really_init T F).
-      Smpl Add apply AssociatedFunction_really_init : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "really_init" (really_init T F).
+      Admitted.
+      Global Typeclasses Opaque really_init.
       (*
           pub fn get_mut(this: &mut LazyCell<T, F>) -> Option<&mut T> {
               let state = this.state.get_mut();
@@ -801,10 +806,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut :
+      Global Instance AssociatedFunction_get_mut :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "get_mut" (get_mut T F).
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "get_mut" (get_mut T F).
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
           pub fn get(this: &LazyCell<T, F>) -> Option<&T> {
@@ -890,10 +896,11 @@ Module cell.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get :
+      Global Instance AssociatedFunction_get :
         forall (T F : Ty.t),
-        M.IsAssociatedFunction (Self T F) "get" (get T F).
-      Smpl Add apply AssociatedFunction_get : is_associated.
+        M.IsAssociatedFunction.Trait (Self T F) "get" (get T F).
+      Admitted.
+      Global Typeclasses Opaque get.
     End Impl_core_cell_lazy_LazyCell_T_F.
     
     
@@ -1206,7 +1213,9 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_poisoned : M.IsFunction "core::cell::lazy::panic_poisoned" panic_poisoned.
-    Smpl Add apply Function_panic_poisoned : is_function.
+    Global Instance Instance_IsFunction_panic_poisoned :
+      M.IsFunction.Trait "core::cell::lazy::panic_poisoned" panic_poisoned.
+    Admitted.
+    Global Typeclasses Opaque panic_poisoned.
   End lazy.
 End cell.

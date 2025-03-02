@@ -601,8 +601,9 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn new_spent(limit: u64) -> Self {
@@ -640,8 +641,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_spent : M.IsAssociatedFunction Self "new_spent" new_spent.
-    Smpl Add apply AssociatedFunction_new_spent : is_associated.
+    Global Instance AssociatedFunction_new_spent :
+      M.IsAssociatedFunction.Trait Self "new_spent" new_spent.
+    Admitted.
+    Global Typeclasses Opaque new_spent.
     
     (*
         pub const fn limit(&self) -> u64 {
@@ -663,8 +666,9 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_limit : M.IsAssociatedFunction Self "limit" limit.
-    Smpl Add apply AssociatedFunction_limit : is_associated.
+    Global Instance AssociatedFunction_limit : M.IsAssociatedFunction.Trait Self "limit" limit.
+    Admitted.
+    Global Typeclasses Opaque limit.
     
     (*
         pub const fn memory(&self) -> u64 {
@@ -680,8 +684,9 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_memory : M.IsAssociatedFunction Self "memory" memory.
-    Smpl Add apply AssociatedFunction_memory : is_associated.
+    Global Instance AssociatedFunction_memory : M.IsAssociatedFunction.Trait Self "memory" memory.
+    Admitted.
+    Global Typeclasses Opaque memory.
     
     (*
         pub const fn refunded(&self) -> i64 {
@@ -703,8 +708,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_refunded : M.IsAssociatedFunction Self "refunded" refunded.
-    Smpl Add apply AssociatedFunction_refunded : is_associated.
+    Global Instance AssociatedFunction_refunded :
+      M.IsAssociatedFunction.Trait Self "refunded" refunded.
+    Admitted.
+    Global Typeclasses Opaque refunded.
     
     (*
         pub const fn spent(&self) -> u64 {
@@ -735,8 +742,9 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_spent : M.IsAssociatedFunction Self "spent" spent.
-    Smpl Add apply AssociatedFunction_spent : is_associated.
+    Global Instance AssociatedFunction_spent : M.IsAssociatedFunction.Trait Self "spent" spent.
+    Admitted.
+    Global Typeclasses Opaque spent.
     
     (*
         pub const fn remaining(&self) -> u64 {
@@ -758,8 +766,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_remaining : M.IsAssociatedFunction Self "remaining" remaining.
-    Smpl Add apply AssociatedFunction_remaining : is_associated.
+    Global Instance AssociatedFunction_remaining :
+      M.IsAssociatedFunction.Trait Self "remaining" remaining.
+    Admitted.
+    Global Typeclasses Opaque remaining.
     
     (*
         pub const fn remaining_63_of_64_parts(&self) -> u64 {
@@ -793,9 +803,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_remaining_63_of_64_parts :
-      M.IsAssociatedFunction Self "remaining_63_of_64_parts" remaining_63_of_64_parts.
-    Smpl Add apply AssociatedFunction_remaining_63_of_64_parts : is_associated.
+    Global Instance AssociatedFunction_remaining_63_of_64_parts :
+      M.IsAssociatedFunction.Trait Self "remaining_63_of_64_parts" remaining_63_of_64_parts.
+    Admitted.
+    Global Typeclasses Opaque remaining_63_of_64_parts.
     
     (*
         pub fn erase_cost(&mut self, returned: u64) {
@@ -824,8 +835,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_erase_cost : M.IsAssociatedFunction Self "erase_cost" erase_cost.
-    Smpl Add apply AssociatedFunction_erase_cost : is_associated.
+    Global Instance AssociatedFunction_erase_cost :
+      M.IsAssociatedFunction.Trait Self "erase_cost" erase_cost.
+    Admitted.
+    Global Typeclasses Opaque erase_cost.
     
     (*
         pub fn spend_all(&mut self) {
@@ -854,8 +867,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_spend_all : M.IsAssociatedFunction Self "spend_all" spend_all.
-    Smpl Add apply AssociatedFunction_spend_all : is_associated.
+    Global Instance AssociatedFunction_spend_all :
+      M.IsAssociatedFunction.Trait Self "spend_all" spend_all.
+    Admitted.
+    Global Typeclasses Opaque spend_all.
     
     (*
         pub fn record_refund(&mut self, refund: i64) {
@@ -884,9 +899,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_record_refund :
-      M.IsAssociatedFunction Self "record_refund" record_refund.
-    Smpl Add apply AssociatedFunction_record_refund : is_associated.
+    Global Instance AssociatedFunction_record_refund :
+      M.IsAssociatedFunction.Trait Self "record_refund" record_refund.
+    Admitted.
+    Global Typeclasses Opaque record_refund.
     
     (*
         pub fn set_final_refund(&mut self, is_london: bool) {
@@ -972,9 +988,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_set_final_refund :
-      M.IsAssociatedFunction Self "set_final_refund" set_final_refund.
-    Smpl Add apply AssociatedFunction_set_final_refund : is_associated.
+    Global Instance AssociatedFunction_set_final_refund :
+      M.IsAssociatedFunction.Trait Self "set_final_refund" set_final_refund.
+    Admitted.
+    Global Typeclasses Opaque set_final_refund.
     
     (*
         pub fn set_refund(&mut self, refund: i64) {
@@ -1004,8 +1021,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_set_refund : M.IsAssociatedFunction Self "set_refund" set_refund.
-    Smpl Add apply AssociatedFunction_set_refund : is_associated.
+    Global Instance AssociatedFunction_set_refund :
+      M.IsAssociatedFunction.Trait Self "set_refund" set_refund.
+    Admitted.
+    Global Typeclasses Opaque set_refund.
     
     (*
         pub fn record_cost(&mut self, cost: u64) -> bool {
@@ -1084,8 +1103,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_record_cost : M.IsAssociatedFunction Self "record_cost" record_cost.
-    Smpl Add apply AssociatedFunction_record_cost : is_associated.
+    Global Instance AssociatedFunction_record_cost :
+      M.IsAssociatedFunction.Trait Self "record_cost" record_cost.
+    Admitted.
+    Global Typeclasses Opaque record_cost.
     
     (*
         pub fn record_memory_expansion(&mut self, new_len: usize) -> MemoryExtensionResult {
@@ -1201,9 +1222,10 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_record_memory_expansion :
-      M.IsAssociatedFunction Self "record_memory_expansion" record_memory_expansion.
-    Smpl Add apply AssociatedFunction_record_memory_expansion : is_associated.
+    Global Instance AssociatedFunction_record_memory_expansion :
+      M.IsAssociatedFunction.Trait Self "record_memory_expansion" record_memory_expansion.
+    Admitted.
+    Global Typeclasses Opaque record_memory_expansion.
   End Impl_revm_interpreter_gas_Gas.
   
   (*
@@ -1633,8 +1655,9 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn record_new_len(&mut self, new_num: usize) -> Option<u64> {
@@ -1756,8 +1779,9 @@ Module gas.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_record_new_len :
-      M.IsAssociatedFunction Self "record_new_len" record_new_len.
-    Smpl Add apply AssociatedFunction_record_new_len : is_associated.
+    Global Instance AssociatedFunction_record_new_len :
+      M.IsAssociatedFunction.Trait Self "record_new_len" record_new_len.
+    Admitted.
+    Global Typeclasses Opaque record_new_len.
   End Impl_revm_interpreter_gas_MemoryGas.
 End gas.

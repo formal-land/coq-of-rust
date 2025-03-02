@@ -17,8 +17,8 @@ Module Impl_trait_flipper_Flipper.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
 End Impl_trait_flipper_Flipper.
 
 Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.

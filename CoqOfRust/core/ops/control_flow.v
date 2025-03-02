@@ -791,10 +791,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_break :
+      Global Instance AssociatedFunction_is_break :
         forall (B C : Ty.t),
-        M.IsAssociatedFunction (Self B C) "is_break" (is_break B C).
-      Smpl Add apply AssociatedFunction_is_break : is_associated.
+        M.IsAssociatedFunction.Trait (Self B C) "is_break" (is_break B C).
+      Admitted.
+      Global Typeclasses Opaque is_break.
       
       (*
           pub fn is_continue(&self) -> bool {
@@ -832,10 +833,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_continue :
+      Global Instance AssociatedFunction_is_continue :
         forall (B C : Ty.t),
-        M.IsAssociatedFunction (Self B C) "is_continue" (is_continue B C).
-      Smpl Add apply AssociatedFunction_is_continue : is_associated.
+        M.IsAssociatedFunction.Trait (Self B C) "is_continue" (is_continue B C).
+      Admitted.
+      Global Typeclasses Opaque is_continue.
       
       (*
           pub fn break_value(self) -> Option<B> {
@@ -886,10 +888,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_break_value :
+      Global Instance AssociatedFunction_break_value :
         forall (B C : Ty.t),
-        M.IsAssociatedFunction (Self B C) "break_value" (break_value B C).
-      Smpl Add apply AssociatedFunction_break_value : is_associated.
+        M.IsAssociatedFunction.Trait (Self B C) "break_value" (break_value B C).
+      Admitted.
+      Global Typeclasses Opaque break_value.
       
       (*
           pub fn map_break<T, F>(self, f: F) -> ControlFlow<T, C>
@@ -961,10 +964,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_break :
+      Global Instance AssociatedFunction_map_break :
         forall (B C : Ty.t),
-        M.IsAssociatedFunction (Self B C) "map_break" (map_break B C).
-      Smpl Add apply AssociatedFunction_map_break : is_associated.
+        M.IsAssociatedFunction.Trait (Self B C) "map_break" (map_break B C).
+      Admitted.
+      Global Typeclasses Opaque map_break.
       
       (*
           pub fn continue_value(self) -> Option<C> {
@@ -1012,10 +1016,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_continue_value :
+      Global Instance AssociatedFunction_continue_value :
         forall (B C : Ty.t),
-        M.IsAssociatedFunction (Self B C) "continue_value" (continue_value B C).
-      Smpl Add apply AssociatedFunction_continue_value : is_associated.
+        M.IsAssociatedFunction.Trait (Self B C) "continue_value" (continue_value B C).
+      Admitted.
+      Global Typeclasses Opaque continue_value.
       
       (*
           pub fn map_continue<T, F>(self, f: F) -> ControlFlow<B, T>
@@ -1092,10 +1097,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_map_continue :
+      Global Instance AssociatedFunction_map_continue :
         forall (B C : Ty.t),
-        M.IsAssociatedFunction (Self B C) "map_continue" (map_continue B C).
-      Smpl Add apply AssociatedFunction_map_continue : is_associated.
+        M.IsAssociatedFunction.Trait (Self B C) "map_continue" (map_continue B C).
+      Admitted.
+      Global Typeclasses Opaque map_continue.
     End Impl_core_ops_control_flow_ControlFlow_B_C.
     
     Module Impl_core_ops_control_flow_ControlFlow_R_associated_in_trait_core_ops_try_trait_Try___R_Output.
@@ -1198,10 +1204,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_try :
+      Global Instance AssociatedFunction_from_try :
         forall (R : Ty.t),
-        M.IsAssociatedFunction (Self R) "from_try" (from_try R).
-      Smpl Add apply AssociatedFunction_from_try : is_associated.
+        M.IsAssociatedFunction.Trait (Self R) "from_try" (from_try R).
+      Admitted.
+      Global Typeclasses Opaque from_try.
       
       (*
           pub(crate) fn into_try(self) -> R {
@@ -1261,10 +1268,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_try :
+      Global Instance AssociatedFunction_into_try :
         forall (R : Ty.t),
-        M.IsAssociatedFunction (Self R) "into_try" (into_try R).
-      Smpl Add apply AssociatedFunction_into_try : is_associated.
+        M.IsAssociatedFunction.Trait (Self R) "into_try" (into_try R).
+      Admitted.
+      Global Typeclasses Opaque into_try.
     End Impl_core_ops_control_flow_ControlFlow_R_associated_in_trait_core_ops_try_trait_Try___R_Output.
   End control_flow.
 End ops.

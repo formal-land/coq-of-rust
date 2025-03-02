@@ -44,8 +44,10 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_checked_division : M.IsFunction "option::checked_division" checked_division.
-Smpl Add apply Function_checked_division : is_function.
+Global Instance Instance_IsFunction_checked_division :
+  M.IsFunction.Trait "option::checked_division" checked_division.
+Admitted.
+Global Typeclasses Opaque checked_division.
 
 (*
 fn try_division(dividend: i32, divisor: i32) {
@@ -274,8 +276,10 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_try_division : M.IsFunction "option::try_division" try_division.
-Smpl Add apply Function_try_division : is_function.
+Global Instance Instance_IsFunction_try_division :
+  M.IsFunction.Trait "option::try_division" try_division.
+Admitted.
+Global Typeclasses Opaque try_division.
 
 (*
 fn main() {
@@ -547,5 +551,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "option::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option::main" main.
+Admitted.
+Global Typeclasses Opaque main.

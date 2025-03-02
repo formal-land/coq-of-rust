@@ -3,12 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "inline_assembly_inlateout_mul::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "inline_assembly_inlateout_mul::main" main.
+Admitted.
 
 Module main.
   Parameter mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_mul : M.IsFunction "inline_assembly_inlateout_mul::main::mul" mul.
-  Smpl Add apply Function_mul : is_function.
+  Global Instance Instance_IsFunction_mul :
+    M.IsFunction.Trait "inline_assembly_inlateout_mul::main::mul" mul.
+  Admitted.
 End main.

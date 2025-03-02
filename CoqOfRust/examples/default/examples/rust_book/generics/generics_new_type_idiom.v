@@ -47,8 +47,9 @@ Module Impl_generics_new_type_idiom_Years.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_to_days : M.IsAssociatedFunction Self "to_days" to_days.
-  Smpl Add apply AssociatedFunction_to_days : is_associated.
+  Global Instance AssociatedFunction_to_days : M.IsAssociatedFunction.Trait Self "to_days" to_days.
+  Admitted.
+  Global Typeclasses Opaque to_days.
 End Impl_generics_new_type_idiom_Years.
 
 Module Impl_generics_new_type_idiom_Days.
@@ -81,8 +82,10 @@ Module Impl_generics_new_type_idiom_Days.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_to_years : M.IsAssociatedFunction Self "to_years" to_years.
-  Smpl Add apply AssociatedFunction_to_years : is_associated.
+  Global Instance AssociatedFunction_to_years :
+    M.IsAssociatedFunction.Trait Self "to_years" to_years.
+  Admitted.
+  Global Typeclasses Opaque to_years.
 End Impl_generics_new_type_idiom_Days.
 
 (*
@@ -108,8 +111,10 @@ Definition old_enough (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_old_enough : M.IsFunction "generics_new_type_idiom::old_enough" old_enough.
-Smpl Add apply Function_old_enough : is_function.
+Global Instance Instance_IsFunction_old_enough :
+  M.IsFunction.Trait "generics_new_type_idiom::old_enough" old_enough.
+Admitted.
+Global Typeclasses Opaque old_enough.
 
 (*
 fn main() {
@@ -344,5 +349,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "generics_new_type_idiom::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_new_type_idiom::main" main.
+Admitted.
+Global Typeclasses Opaque main.

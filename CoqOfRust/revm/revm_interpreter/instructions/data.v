@@ -581,9 +581,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_data_load :
-      M.IsFunction "revm_interpreter::instructions::data::data_load" data_load.
-    Smpl Add apply Function_data_load : is_function.
+    Global Instance Instance_IsFunction_data_load :
+      M.IsFunction.Trait "revm_interpreter::instructions::data::data_load" data_load.
+    Admitted.
+    Global Typeclasses Opaque data_load.
     
     (*
     pub fn data_loadn<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1112,9 +1113,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_data_loadn :
-      M.IsFunction "revm_interpreter::instructions::data::data_loadn" data_loadn.
-    Smpl Add apply Function_data_loadn : is_function.
+    Global Instance Instance_IsFunction_data_loadn :
+      M.IsFunction.Trait "revm_interpreter::instructions::data::data_loadn" data_loadn.
+    Admitted.
+    Global Typeclasses Opaque data_loadn.
     
     (*
     pub fn data_size<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1466,9 +1468,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_data_size :
-      M.IsFunction "revm_interpreter::instructions::data::data_size" data_size.
-    Smpl Add apply Function_data_size : is_function.
+    Global Instance Instance_IsFunction_data_size :
+      M.IsFunction.Trait "revm_interpreter::instructions::data::data_size" data_size.
+    Admitted.
+    Global Typeclasses Opaque data_size.
     
     (*
     pub fn data_copy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2646,8 +2649,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_data_copy :
-      M.IsFunction "revm_interpreter::instructions::data::data_copy" data_copy.
-    Smpl Add apply Function_data_copy : is_function.
+    Global Instance Instance_IsFunction_data_copy :
+      M.IsFunction.Trait "revm_interpreter::instructions::data::data_copy" data_copy.
+    Admitted.
+    Global Typeclasses Opaque data_copy.
   End data.
 End instructions.

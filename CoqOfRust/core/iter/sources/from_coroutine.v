@@ -20,9 +20,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_from_coroutine :
-        M.IsFunction "core::iter::sources::from_coroutine::from_coroutine" from_coroutine.
-      Smpl Add apply Function_from_coroutine : is_function.
+      Global Instance Instance_IsFunction_from_coroutine :
+        M.IsFunction.Trait "core::iter::sources::from_coroutine::from_coroutine" from_coroutine.
+      Admitted.
+      Global Typeclasses Opaque from_coroutine.
       
       (* StructTuple
         {
@@ -85,7 +86,7 @@ Module iter.
         
         (*     type Item = G::Yield; *)
         Definition _Item (G : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+          Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ Ty.tuple [] ] G "Yield".
         
         (*
             fn next(&mut self) -> Option<Self::Item> {
@@ -109,7 +110,12 @@ Module iter.
                         (Ty.path "core::ops::coroutine::CoroutineState")
                         []
                         [
-                          Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                          Ty.associated_in_trait
+                            "core::ops::coroutine::Coroutine"
+                            []
+                            [ Ty.tuple [] ]
+                            G
+                            "Yield";
                           Ty.tuple []
                         ],
                       M.get_trait_method (|

@@ -513,8 +513,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const unsafe fn from_ptr<'a>(ptr: *mut bool) -> &'a AtomicBool {
@@ -550,8 +551,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
           pub fn get_mut(&mut self) -> &mut bool {
@@ -608,8 +611,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
           pub fn from_mut(v: &mut bool) -> &mut Self {
@@ -660,8 +665,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
           pub fn get_mut_slice(this: &mut [Self]) -> &mut [bool] {
@@ -711,9 +718,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
           pub fn from_mut_slice(v: &mut [bool]) -> &mut [Self] {
@@ -769,9 +777,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
           pub const fn into_inner(self) -> bool {
@@ -807,8 +816,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
           pub fn load(&self, order: Ordering) -> bool {
@@ -857,8 +868,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
           pub fn store(&self, val: bool, order: Ordering) {
@@ -912,8 +924,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
           pub fn swap(&self, val: bool, order: Ordering) -> bool {
@@ -1037,8 +1050,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
           pub fn compare_and_swap(&self, current: bool, new: bool, order: Ordering) -> bool {
@@ -1111,9 +1125,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
           pub fn compare_exchange(
@@ -1554,9 +1569,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
           pub fn compare_exchange_weak(
@@ -1706,9 +1722,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
           pub fn fetch_and(&self, val: bool, order: Ordering) -> bool {
@@ -1756,8 +1773,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
           pub fn fetch_nand(&self, val: bool, order: Ordering) -> bool {
@@ -1831,8 +1850,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
           pub fn fetch_or(&self, val: bool, order: Ordering) -> bool {
@@ -1880,8 +1901,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
           pub fn fetch_xor(&self, val: bool, order: Ordering) -> bool {
@@ -1929,8 +1952,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
           pub fn fetch_not(&self, order: Ordering) -> bool {
@@ -1960,8 +1985,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_not : M.IsAssociatedFunction Self "fetch_not" fetch_not.
-      Smpl Add apply AssociatedFunction_fetch_not : is_associated.
+      Global Instance AssociatedFunction_fetch_not :
+        M.IsAssociatedFunction.Trait Self "fetch_not" fetch_not.
+      Admitted.
+      Global Typeclasses Opaque fetch_not.
       
       (*
           pub const fn as_ptr(&self) -> *mut bool {
@@ -2006,8 +2033,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
       
       (*
           pub fn fetch_update<F>(
@@ -2058,6 +2086,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -2167,9 +2196,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
     End Impl_core_sync_atomic_AtomicBool.
     
     Module Impl_core_sync_atomic_AtomicPtr_T.
@@ -2211,10 +2241,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const unsafe fn from_ptr<'a>(ptr: *mut *mut T) -> &'a AtomicPtr<T> {
@@ -2254,10 +2285,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr :
+      Global Instance AssociatedFunction_from_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_ptr" (from_ptr T).
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_ptr" (from_ptr T).
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
           pub fn get_mut(&mut self) -> &mut *mut T {
@@ -2305,10 +2337,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut :
+      Global Instance AssociatedFunction_get_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "get_mut" (get_mut T).
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
           pub fn from_mut(v: &mut *mut T) -> &mut Self {
@@ -2379,10 +2412,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut :
+      Global Instance AssociatedFunction_from_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_mut" (from_mut T).
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
           pub fn get_mut_slice(this: &mut [Self]) -> &mut [*mut T] {
@@ -2443,10 +2477,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
+      Global Instance AssociatedFunction_get_mut_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "get_mut_slice" (get_mut_slice T).
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "get_mut_slice" (get_mut_slice T).
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
           pub fn from_mut_slice(v: &mut [*mut T]) -> &mut [Self] {
@@ -2510,10 +2545,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
+      Global Instance AssociatedFunction_from_mut_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_mut_slice" (from_mut_slice T).
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "from_mut_slice" (from_mut_slice T).
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
           pub const fn into_inner(self) -> *mut T {
@@ -2550,10 +2586,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner :
+      Global Instance AssociatedFunction_into_inner :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_inner" (into_inner T).
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
           pub fn load(&self, order: Ordering) -> *mut T {
@@ -2606,10 +2643,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load :
+      Global Instance AssociatedFunction_load :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "load" (load T).
-      Smpl Add apply AssociatedFunction_load : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "load" (load T).
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
           pub fn store(&self, ptr: *mut T, order: Ordering) {
@@ -2670,10 +2708,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store :
+      Global Instance AssociatedFunction_store :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "store" (store T).
-      Smpl Add apply AssociatedFunction_store : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "store" (store T).
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
           pub fn swap(&self, ptr: *mut T, order: Ordering) -> *mut T {
@@ -2726,10 +2765,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap :
+      Global Instance AssociatedFunction_swap :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "swap" (swap T).
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
           pub fn compare_and_swap(&self, current: *mut T, new: *mut T, order: Ordering) -> *mut T {
@@ -2811,10 +2851,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
+      Global Instance AssociatedFunction_compare_and_swap :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "compare_and_swap" (compare_and_swap T).
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "compare_and_swap" (compare_and_swap T).
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
           pub fn compare_exchange(
@@ -2885,10 +2926,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
+      Global Instance AssociatedFunction_compare_exchange :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "compare_exchange" (compare_exchange T).
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "compare_exchange" (compare_exchange T).
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
           pub fn compare_exchange_weak(
@@ -2962,10 +3004,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
+      Global Instance AssociatedFunction_compare_exchange_weak :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "compare_exchange_weak" (compare_exchange_weak T).
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "compare_exchange_weak" (compare_exchange_weak T).
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
           pub fn fetch_update<F>(
@@ -3022,6 +3065,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -3134,10 +3178,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
+      Global Instance AssociatedFunction_fetch_update :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_update" (fetch_update T).
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_update" (fetch_update T).
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
           pub fn fetch_ptr_add(&self, val: usize, order: Ordering) -> *mut T {
@@ -3185,10 +3230,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_ptr_add :
+      Global Instance AssociatedFunction_fetch_ptr_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_ptr_add" (fetch_ptr_add T).
-      Smpl Add apply AssociatedFunction_fetch_ptr_add : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_ptr_add" (fetch_ptr_add T).
+      Admitted.
+      Global Typeclasses Opaque fetch_ptr_add.
       
       (*
           pub fn fetch_ptr_sub(&self, val: usize, order: Ordering) -> *mut T {
@@ -3236,10 +3282,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_ptr_sub :
+      Global Instance AssociatedFunction_fetch_ptr_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_ptr_sub" (fetch_ptr_sub T).
-      Smpl Add apply AssociatedFunction_fetch_ptr_sub : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_ptr_sub" (fetch_ptr_sub T).
+      Admitted.
+      Global Typeclasses Opaque fetch_ptr_sub.
       
       (*
           pub fn fetch_byte_add(&self, val: usize, order: Ordering) -> *mut T {
@@ -3307,10 +3354,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_byte_add :
+      Global Instance AssociatedFunction_fetch_byte_add :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_byte_add" (fetch_byte_add T).
-      Smpl Add apply AssociatedFunction_fetch_byte_add : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_byte_add" (fetch_byte_add T).
+      Admitted.
+      Global Typeclasses Opaque fetch_byte_add.
       
       (*
           pub fn fetch_byte_sub(&self, val: usize, order: Ordering) -> *mut T {
@@ -3378,10 +3426,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_byte_sub :
+      Global Instance AssociatedFunction_fetch_byte_sub :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_byte_sub" (fetch_byte_sub T).
-      Smpl Add apply AssociatedFunction_fetch_byte_sub : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_byte_sub" (fetch_byte_sub T).
+      Admitted.
+      Global Typeclasses Opaque fetch_byte_sub.
       
       (*
           pub fn fetch_or(&self, val: usize, order: Ordering) -> *mut T {
@@ -3444,10 +3493,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or :
+      Global Instance AssociatedFunction_fetch_or :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_or" (fetch_or T).
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_or" (fetch_or T).
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
           pub fn fetch_and(&self, val: usize, order: Ordering) -> *mut T {
@@ -3510,10 +3560,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and :
+      Global Instance AssociatedFunction_fetch_and :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_and" (fetch_and T).
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_and" (fetch_and T).
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
           pub fn fetch_xor(&self, val: usize, order: Ordering) -> *mut T {
@@ -3576,10 +3627,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor :
+      Global Instance AssociatedFunction_fetch_xor :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "fetch_xor" (fetch_xor T).
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "fetch_xor" (fetch_xor T).
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
           pub const fn as_ptr(&self) -> *mut *mut T {
@@ -3617,10 +3669,11 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr :
+      Global Instance AssociatedFunction_as_ptr :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicPtr_T.
     
     Module Impl_core_convert_From_bool_for_core_sync_atomic_AtomicBool.
@@ -3875,8 +3928,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -3912,8 +3966,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -3957,8 +4013,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -4023,8 +4081,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -4074,9 +4134,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -4146,9 +4207,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -4181,8 +4243,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -4227,8 +4291,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -4279,8 +4344,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4325,8 +4391,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -4405,9 +4472,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -4464,9 +4532,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -4525,9 +4594,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4572,8 +4642,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4618,8 +4690,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4664,8 +4738,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4710,8 +4786,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4756,8 +4834,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -4802,8 +4882,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -4850,6 +4932,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -4956,9 +5039,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5003,8 +5087,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5049,8 +5135,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -5084,8 +5172,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI8.
     
     (* StructRecord
@@ -5267,8 +5356,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -5304,8 +5394,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -5349,8 +5441,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -5415,8 +5509,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -5466,9 +5562,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -5538,9 +5635,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -5573,8 +5671,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -5619,8 +5719,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -5671,8 +5772,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5717,8 +5819,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -5797,9 +5900,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -5856,9 +5960,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -5917,9 +6022,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -5964,8 +6070,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6010,8 +6118,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6056,8 +6166,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6102,8 +6214,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6148,8 +6262,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6194,8 +6310,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -6242,6 +6360,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -6348,9 +6467,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6395,8 +6515,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -6441,8 +6563,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -6476,8 +6600,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU8.
     
     (* StructRecord
@@ -6669,8 +6794,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -6706,8 +6832,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -6751,8 +6879,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -6817,8 +6947,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -6868,9 +7000,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -6940,9 +7073,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -6975,8 +7109,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -7021,8 +7157,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -7073,8 +7210,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7119,8 +7257,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -7199,9 +7338,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -7258,9 +7398,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -7319,9 +7460,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7366,8 +7508,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7412,8 +7556,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7458,8 +7604,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7504,8 +7652,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7550,8 +7700,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7596,8 +7748,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -7644,6 +7798,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -7753,9 +7908,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7800,8 +7956,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -7846,8 +8004,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -7881,8 +8041,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI16.
     
     (* StructRecord
@@ -8074,8 +8235,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -8111,8 +8273,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -8156,8 +8320,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -8222,8 +8388,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -8273,9 +8441,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -8345,9 +8514,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -8380,8 +8550,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -8426,8 +8598,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -8478,8 +8651,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8524,8 +8698,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -8604,9 +8779,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -8663,9 +8839,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -8724,9 +8901,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8771,8 +8949,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8817,8 +8997,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8863,8 +9045,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8909,8 +9093,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -8955,8 +9141,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9001,8 +9189,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -9049,6 +9239,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -9158,9 +9349,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9205,8 +9397,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9251,8 +9445,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -9286,8 +9482,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU16.
     
     (* StructRecord
@@ -9479,8 +9676,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -9516,8 +9714,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -9561,8 +9761,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -9627,8 +9829,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -9678,9 +9882,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -9750,9 +9955,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -9785,8 +9991,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -9831,8 +10039,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -9883,8 +10092,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -9929,8 +10139,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -10009,9 +10220,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -10068,9 +10280,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -10129,9 +10342,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10176,8 +10390,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10222,8 +10438,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10268,8 +10486,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10314,8 +10534,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10360,8 +10582,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10406,8 +10630,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -10454,6 +10680,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -10563,9 +10790,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10610,8 +10838,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -10656,8 +10886,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -10691,8 +10923,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI32.
     
     (* StructRecord
@@ -10884,8 +11117,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -10921,8 +11155,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -10966,8 +11202,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -11032,8 +11270,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -11083,9 +11323,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -11155,9 +11396,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -11190,8 +11432,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -11236,8 +11480,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -11288,8 +11533,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11334,8 +11580,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -11414,9 +11661,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -11473,9 +11721,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -11534,9 +11783,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11581,8 +11831,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11627,8 +11879,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11673,8 +11927,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11719,8 +11975,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11765,8 +12023,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -11811,8 +12071,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -11859,6 +12121,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -11968,9 +12231,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12015,8 +12279,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12061,8 +12327,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -12096,8 +12364,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU32.
     
     (* StructRecord
@@ -12289,8 +12558,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -12326,8 +12596,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -12371,8 +12643,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -12437,8 +12711,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -12488,9 +12764,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -12560,9 +12837,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -12595,8 +12873,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -12641,8 +12921,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -12693,8 +12974,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12739,8 +13021,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -12819,9 +13102,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -12878,9 +13162,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -12939,9 +13224,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -12986,8 +13272,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13032,8 +13320,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13078,8 +13368,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13124,8 +13416,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13170,8 +13464,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13216,8 +13512,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -13264,6 +13562,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -13373,9 +13672,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13420,8 +13720,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -13466,8 +13768,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -13501,8 +13805,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicI64.
     
     (* StructRecord
@@ -13694,8 +13999,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -13731,8 +14037,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -13776,8 +14084,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -13842,8 +14152,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -13893,9 +14205,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -13965,9 +14278,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -14000,8 +14314,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -14046,8 +14362,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -14098,8 +14415,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14144,8 +14462,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -14224,9 +14543,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -14283,9 +14603,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -14344,9 +14665,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14391,8 +14713,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14437,8 +14761,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14483,8 +14809,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14529,8 +14857,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14575,8 +14905,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14621,8 +14953,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -14669,6 +15003,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -14778,9 +15113,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14825,8 +15161,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -14871,8 +15209,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -14906,8 +15246,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicU64.
     
     (* StructRecord
@@ -15099,8 +15440,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -15136,8 +15478,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -15181,8 +15525,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -15247,8 +15593,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -15298,9 +15646,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -15370,9 +15719,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -15405,8 +15755,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -15451,8 +15803,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -15507,8 +15860,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15553,8 +15907,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -15636,9 +15991,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -15695,9 +16051,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -15756,9 +16113,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15803,8 +16161,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15849,8 +16209,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15895,8 +16257,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15941,8 +16305,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -15987,8 +16353,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16033,8 +16401,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -16081,6 +16451,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -16190,9 +16561,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16237,8 +16609,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16283,8 +16657,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -16318,8 +16694,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicIsize.
     
     (* StructRecord
@@ -16511,8 +16888,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
                   pub const unsafe fn from_ptr<'a>(ptr: *mut $int_type) -> &'a $atomic_type {
@@ -16548,8 +16926,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_ptr : M.IsAssociatedFunction Self "from_ptr" from_ptr.
-      Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      Global Instance AssociatedFunction_from_ptr :
+        M.IsAssociatedFunction.Trait Self "from_ptr" from_ptr.
+      Admitted.
+      Global Typeclasses Opaque from_ptr.
       
       (*
                   pub fn get_mut(&mut self) -> &mut $int_type {
@@ -16593,8 +16973,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut : M.IsAssociatedFunction Self "get_mut" get_mut.
-      Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      Global Instance AssociatedFunction_get_mut :
+        M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+      Admitted.
+      Global Typeclasses Opaque get_mut.
       
       (*
                   pub fn from_mut(v: &mut $int_type) -> &mut Self {
@@ -16659,8 +17041,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut : M.IsAssociatedFunction Self "from_mut" from_mut.
-      Smpl Add apply AssociatedFunction_from_mut : is_associated.
+      Global Instance AssociatedFunction_from_mut :
+        M.IsAssociatedFunction.Trait Self "from_mut" from_mut.
+      Admitted.
+      Global Typeclasses Opaque from_mut.
       
       (*
                   pub fn get_mut_slice(this: &mut [Self]) -> &mut [$int_type] {
@@ -16710,9 +17094,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_mut_slice :
-        M.IsAssociatedFunction Self "get_mut_slice" get_mut_slice.
-      Smpl Add apply AssociatedFunction_get_mut_slice : is_associated.
+      Global Instance AssociatedFunction_get_mut_slice :
+        M.IsAssociatedFunction.Trait Self "get_mut_slice" get_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque get_mut_slice.
       
       (*
                   pub fn from_mut_slice(v: &mut [$int_type]) -> &mut [Self] {
@@ -16782,9 +17167,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_mut_slice :
-        M.IsAssociatedFunction Self "from_mut_slice" from_mut_slice.
-      Smpl Add apply AssociatedFunction_from_mut_slice : is_associated.
+      Global Instance AssociatedFunction_from_mut_slice :
+        M.IsAssociatedFunction.Trait Self "from_mut_slice" from_mut_slice.
+      Admitted.
+      Global Typeclasses Opaque from_mut_slice.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
@@ -16817,8 +17203,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-      Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      Global Instance AssociatedFunction_into_inner :
+        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+      Admitted.
+      Global Typeclasses Opaque into_inner.
       
       (*
                   pub fn load(&self, order: Ordering) -> $int_type {
@@ -16863,8 +17251,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_load : M.IsAssociatedFunction Self "load" load.
-      Smpl Add apply AssociatedFunction_load : is_associated.
+      Global Instance AssociatedFunction_load : M.IsAssociatedFunction.Trait Self "load" load.
+      Admitted.
+      Global Typeclasses Opaque load.
       
       (*
                   pub fn store(&self, val: $int_type, order: Ordering) {
@@ -16919,8 +17308,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_store : M.IsAssociatedFunction Self "store" store.
-      Smpl Add apply AssociatedFunction_store : is_associated.
+      Global Instance AssociatedFunction_store : M.IsAssociatedFunction.Trait Self "store" store.
+      Admitted.
+      Global Typeclasses Opaque store.
       
       (*
                   pub fn swap(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -16965,8 +17355,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_swap : M.IsAssociatedFunction Self "swap" swap.
-      Smpl Add apply AssociatedFunction_swap : is_associated.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Admitted.
+      Global Typeclasses Opaque swap.
       
       (*
                   pub fn compare_and_swap(&self,
@@ -17048,9 +17439,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_and_swap :
-        M.IsAssociatedFunction Self "compare_and_swap" compare_and_swap.
-      Smpl Add apply AssociatedFunction_compare_and_swap : is_associated.
+      Global Instance AssociatedFunction_compare_and_swap :
+        M.IsAssociatedFunction.Trait Self "compare_and_swap" compare_and_swap.
+      Admitted.
+      Global Typeclasses Opaque compare_and_swap.
       
       (*
                   pub fn compare_exchange(&self,
@@ -17107,9 +17499,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange :
-        M.IsAssociatedFunction Self "compare_exchange" compare_exchange.
-      Smpl Add apply AssociatedFunction_compare_exchange : is_associated.
+      Global Instance AssociatedFunction_compare_exchange :
+        M.IsAssociatedFunction.Trait Self "compare_exchange" compare_exchange.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange.
       
       (*
                   pub fn compare_exchange_weak(&self,
@@ -17168,9 +17561,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_compare_exchange_weak :
-        M.IsAssociatedFunction Self "compare_exchange_weak" compare_exchange_weak.
-      Smpl Add apply AssociatedFunction_compare_exchange_weak : is_associated.
+      Global Instance AssociatedFunction_compare_exchange_weak :
+        M.IsAssociatedFunction.Trait Self "compare_exchange_weak" compare_exchange_weak.
+      Admitted.
+      Global Typeclasses Opaque compare_exchange_weak.
       
       (*
                   pub fn fetch_add(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17215,8 +17609,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_add : M.IsAssociatedFunction Self "fetch_add" fetch_add.
-      Smpl Add apply AssociatedFunction_fetch_add : is_associated.
+      Global Instance AssociatedFunction_fetch_add :
+        M.IsAssociatedFunction.Trait Self "fetch_add" fetch_add.
+      Admitted.
+      Global Typeclasses Opaque fetch_add.
       
       (*
                   pub fn fetch_sub(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17261,8 +17657,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_sub : M.IsAssociatedFunction Self "fetch_sub" fetch_sub.
-      Smpl Add apply AssociatedFunction_fetch_sub : is_associated.
+      Global Instance AssociatedFunction_fetch_sub :
+        M.IsAssociatedFunction.Trait Self "fetch_sub" fetch_sub.
+      Admitted.
+      Global Typeclasses Opaque fetch_sub.
       
       (*
                   pub fn fetch_and(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17307,8 +17705,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_and : M.IsAssociatedFunction Self "fetch_and" fetch_and.
-      Smpl Add apply AssociatedFunction_fetch_and : is_associated.
+      Global Instance AssociatedFunction_fetch_and :
+        M.IsAssociatedFunction.Trait Self "fetch_and" fetch_and.
+      Admitted.
+      Global Typeclasses Opaque fetch_and.
       
       (*
                   pub fn fetch_nand(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17353,8 +17753,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_nand : M.IsAssociatedFunction Self "fetch_nand" fetch_nand.
-      Smpl Add apply AssociatedFunction_fetch_nand : is_associated.
+      Global Instance AssociatedFunction_fetch_nand :
+        M.IsAssociatedFunction.Trait Self "fetch_nand" fetch_nand.
+      Admitted.
+      Global Typeclasses Opaque fetch_nand.
       
       (*
                   pub fn fetch_or(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17399,8 +17801,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_or : M.IsAssociatedFunction Self "fetch_or" fetch_or.
-      Smpl Add apply AssociatedFunction_fetch_or : is_associated.
+      Global Instance AssociatedFunction_fetch_or :
+        M.IsAssociatedFunction.Trait Self "fetch_or" fetch_or.
+      Admitted.
+      Global Typeclasses Opaque fetch_or.
       
       (*
                   pub fn fetch_xor(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17445,8 +17849,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_xor : M.IsAssociatedFunction Self "fetch_xor" fetch_xor.
-      Smpl Add apply AssociatedFunction_fetch_xor : is_associated.
+      Global Instance AssociatedFunction_fetch_xor :
+        M.IsAssociatedFunction.Trait Self "fetch_xor" fetch_xor.
+      Admitted.
+      Global Typeclasses Opaque fetch_xor.
       
       (*
                   pub fn fetch_update<F>(&self,
@@ -17493,6 +17899,7 @@ Module sync.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -17602,9 +18009,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_update :
-        M.IsAssociatedFunction Self "fetch_update" fetch_update.
-      Smpl Add apply AssociatedFunction_fetch_update : is_associated.
+      Global Instance AssociatedFunction_fetch_update :
+        M.IsAssociatedFunction.Trait Self "fetch_update" fetch_update.
+      Admitted.
+      Global Typeclasses Opaque fetch_update.
       
       (*
                   pub fn fetch_max(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17649,8 +18057,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_max : M.IsAssociatedFunction Self "fetch_max" fetch_max.
-      Smpl Add apply AssociatedFunction_fetch_max : is_associated.
+      Global Instance AssociatedFunction_fetch_max :
+        M.IsAssociatedFunction.Trait Self "fetch_max" fetch_max.
+      Admitted.
+      Global Typeclasses Opaque fetch_max.
       
       (*
                   pub fn fetch_min(&self, val: $int_type, order: Ordering) -> $int_type {
@@ -17695,8 +18105,10 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fetch_min : M.IsAssociatedFunction Self "fetch_min" fetch_min.
-      Smpl Add apply AssociatedFunction_fetch_min : is_associated.
+      Global Instance AssociatedFunction_fetch_min :
+        M.IsAssociatedFunction.Trait Self "fetch_min" fetch_min.
+      Admitted.
+      Global Typeclasses Opaque fetch_min.
       
       (*
                   pub const fn as_ptr(&self) -> *mut $int_type {
@@ -17730,8 +18142,9 @@ Module sync.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
-      Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      Global Instance AssociatedFunction_as_ptr : M.IsAssociatedFunction.Trait Self "as_ptr" as_ptr.
+      Admitted.
+      Global Typeclasses Opaque as_ptr.
     End Impl_core_sync_atomic_AtomicUsize.
     
     Definition value_ATOMIC_ISIZE_INIT : Value.t :=
@@ -17824,9 +18237,12 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_strongest_failure_ordering :
-      M.IsFunction "core::sync::atomic::strongest_failure_ordering" strongest_failure_ordering.
-    Smpl Add apply Function_strongest_failure_ordering : is_function.
+    Global Instance Instance_IsFunction_strongest_failure_ordering :
+      M.IsFunction.Trait
+        "core::sync::atomic::strongest_failure_ordering"
+        strongest_failure_ordering.
+    Admitted.
+    Global Typeclasses Opaque strongest_failure_ordering.
     
     (*
     unsafe fn atomic_store<T: Copy>(dst: *mut T, val: T, order: Ordering) {
@@ -17971,8 +18387,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_store : M.IsFunction "core::sync::atomic::atomic_store" atomic_store.
-    Smpl Add apply Function_atomic_store : is_function.
+    Global Instance Instance_IsFunction_atomic_store :
+      M.IsFunction.Trait "core::sync::atomic::atomic_store" atomic_store.
+    Admitted.
+    Global Typeclasses Opaque atomic_store.
     
     (*
     unsafe fn atomic_load<T: Copy>(dst: *const T, order: Ordering) -> T {
@@ -18116,8 +18534,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_load : M.IsFunction "core::sync::atomic::atomic_load" atomic_load.
-    Smpl Add apply Function_atomic_load : is_function.
+    Global Instance Instance_IsFunction_atomic_load :
+      M.IsFunction.Trait "core::sync::atomic::atomic_load" atomic_load.
+    Admitted.
+    Global Typeclasses Opaque atomic_load.
     
     (*
     unsafe fn atomic_swap<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18200,8 +18620,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_swap : M.IsFunction "core::sync::atomic::atomic_swap" atomic_swap.
-    Smpl Add apply Function_atomic_swap : is_function.
+    Global Instance Instance_IsFunction_atomic_swap :
+      M.IsFunction.Trait "core::sync::atomic::atomic_swap" atomic_swap.
+    Admitted.
+    Global Typeclasses Opaque atomic_swap.
     
     (*
     unsafe fn atomic_add<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18284,8 +18706,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_add : M.IsFunction "core::sync::atomic::atomic_add" atomic_add.
-    Smpl Add apply Function_atomic_add : is_function.
+    Global Instance Instance_IsFunction_atomic_add :
+      M.IsFunction.Trait "core::sync::atomic::atomic_add" atomic_add.
+    Admitted.
+    Global Typeclasses Opaque atomic_add.
     
     (*
     unsafe fn atomic_sub<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -18368,8 +18792,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_sub : M.IsFunction "core::sync::atomic::atomic_sub" atomic_sub.
-    Smpl Add apply Function_atomic_sub : is_function.
+    Global Instance Instance_IsFunction_atomic_sub :
+      M.IsFunction.Trait "core::sync::atomic::atomic_sub" atomic_sub.
+    Admitted.
+    Global Typeclasses Opaque atomic_sub.
     
     (*
     unsafe fn atomic_compare_exchange<T: Copy>(
@@ -18824,9 +19250,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_compare_exchange :
-      M.IsFunction "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
-    Smpl Add apply Function_atomic_compare_exchange : is_function.
+    Global Instance Instance_IsFunction_atomic_compare_exchange :
+      M.IsFunction.Trait "core::sync::atomic::atomic_compare_exchange" atomic_compare_exchange.
+    Admitted.
+    Global Typeclasses Opaque atomic_compare_exchange.
     
     (*
     unsafe fn atomic_compare_exchange_weak<T: Copy>(
@@ -19285,9 +19712,12 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_compare_exchange_weak :
-      M.IsFunction "core::sync::atomic::atomic_compare_exchange_weak" atomic_compare_exchange_weak.
-    Smpl Add apply Function_atomic_compare_exchange_weak : is_function.
+    Global Instance Instance_IsFunction_atomic_compare_exchange_weak :
+      M.IsFunction.Trait
+        "core::sync::atomic::atomic_compare_exchange_weak"
+        atomic_compare_exchange_weak.
+    Admitted.
+    Global Typeclasses Opaque atomic_compare_exchange_weak.
     
     (*
     unsafe fn atomic_and<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19370,8 +19800,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_and : M.IsFunction "core::sync::atomic::atomic_and" atomic_and.
-    Smpl Add apply Function_atomic_and : is_function.
+    Global Instance Instance_IsFunction_atomic_and :
+      M.IsFunction.Trait "core::sync::atomic::atomic_and" atomic_and.
+    Admitted.
+    Global Typeclasses Opaque atomic_and.
     
     (*
     unsafe fn atomic_nand<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19454,8 +19886,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_nand : M.IsFunction "core::sync::atomic::atomic_nand" atomic_nand.
-    Smpl Add apply Function_atomic_nand : is_function.
+    Global Instance Instance_IsFunction_atomic_nand :
+      M.IsFunction.Trait "core::sync::atomic::atomic_nand" atomic_nand.
+    Admitted.
+    Global Typeclasses Opaque atomic_nand.
     
     (*
     unsafe fn atomic_or<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19538,8 +19972,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_or : M.IsFunction "core::sync::atomic::atomic_or" atomic_or.
-    Smpl Add apply Function_atomic_or : is_function.
+    Global Instance Instance_IsFunction_atomic_or :
+      M.IsFunction.Trait "core::sync::atomic::atomic_or" atomic_or.
+    Admitted.
+    Global Typeclasses Opaque atomic_or.
     
     (*
     unsafe fn atomic_xor<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19622,8 +20058,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_xor : M.IsFunction "core::sync::atomic::atomic_xor" atomic_xor.
-    Smpl Add apply Function_atomic_xor : is_function.
+    Global Instance Instance_IsFunction_atomic_xor :
+      M.IsFunction.Trait "core::sync::atomic::atomic_xor" atomic_xor.
+    Admitted.
+    Global Typeclasses Opaque atomic_xor.
     
     (*
     unsafe fn atomic_max<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19706,8 +20144,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_max : M.IsFunction "core::sync::atomic::atomic_max" atomic_max.
-    Smpl Add apply Function_atomic_max : is_function.
+    Global Instance Instance_IsFunction_atomic_max :
+      M.IsFunction.Trait "core::sync::atomic::atomic_max" atomic_max.
+    Admitted.
+    Global Typeclasses Opaque atomic_max.
     
     (*
     unsafe fn atomic_min<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19790,8 +20230,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_min : M.IsFunction "core::sync::atomic::atomic_min" atomic_min.
-    Smpl Add apply Function_atomic_min : is_function.
+    Global Instance Instance_IsFunction_atomic_min :
+      M.IsFunction.Trait "core::sync::atomic::atomic_min" atomic_min.
+    Admitted.
+    Global Typeclasses Opaque atomic_min.
     
     (*
     unsafe fn atomic_umax<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19874,8 +20316,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_umax : M.IsFunction "core::sync::atomic::atomic_umax" atomic_umax.
-    Smpl Add apply Function_atomic_umax : is_function.
+    Global Instance Instance_IsFunction_atomic_umax :
+      M.IsFunction.Trait "core::sync::atomic::atomic_umax" atomic_umax.
+    Admitted.
+    Global Typeclasses Opaque atomic_umax.
     
     (*
     unsafe fn atomic_umin<T: Copy>(dst: *mut T, val: T, order: Ordering) -> T {
@@ -19958,8 +20402,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_atomic_umin : M.IsFunction "core::sync::atomic::atomic_umin" atomic_umin.
-    Smpl Add apply Function_atomic_umin : is_function.
+    Global Instance Instance_IsFunction_atomic_umin :
+      M.IsFunction.Trait "core::sync::atomic::atomic_umin" atomic_umin.
+    Admitted.
+    Global Typeclasses Opaque atomic_umin.
     
     (*
     pub fn fence(order: Ordering) {
@@ -20071,8 +20517,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fence : M.IsFunction "core::sync::atomic::fence" fence.
-    Smpl Add apply Function_fence : is_function.
+    Global Instance Instance_IsFunction_fence :
+      M.IsFunction.Trait "core::sync::atomic::fence" fence.
+    Admitted.
+    Global Typeclasses Opaque fence.
     
     (*
     pub fn compiler_fence(order: Ordering) {
@@ -20200,9 +20648,10 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_compiler_fence :
-      M.IsFunction "core::sync::atomic::compiler_fence" compiler_fence.
-    Smpl Add apply Function_compiler_fence : is_function.
+    Global Instance Instance_IsFunction_compiler_fence :
+      M.IsFunction.Trait "core::sync::atomic::compiler_fence" compiler_fence.
+    Admitted.
+    Global Typeclasses Opaque compiler_fence.
     
     Module Impl_core_fmt_Debug_for_core_sync_atomic_AtomicBool.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::AtomicBool".
@@ -20420,8 +20869,9 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_spin_loop_hint :
-      M.IsFunction "core::sync::atomic::spin_loop_hint" spin_loop_hint.
-    Smpl Add apply Function_spin_loop_hint : is_function.
+    Global Instance Instance_IsFunction_spin_loop_hint :
+      M.IsFunction.Trait "core::sync::atomic::spin_loop_hint" spin_loop_hint.
+    Admitted.
+    Global Typeclasses Opaque spin_loop_hint.
   End atomic.
 End sync.

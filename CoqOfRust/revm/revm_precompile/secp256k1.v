@@ -554,9 +554,10 @@ Module secp256k1.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_ecrecover :
-      M.IsFunction "revm_precompile::secp256k1::secp256k1::ecrecover" ecrecover.
-    Smpl Add apply Function_ecrecover : is_function.
+    Global Instance Instance_IsFunction_ecrecover :
+      M.IsFunction.Trait "revm_precompile::secp256k1::secp256k1::ecrecover" ecrecover.
+    Admitted.
+    Global Typeclasses Opaque ecrecover.
   End secp256k1.
   
   (*
@@ -1531,9 +1532,10 @@ Module secp256k1.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ec_recover_run :
-    M.IsFunction "revm_precompile::secp256k1::ec_recover_run" ec_recover_run.
-  Smpl Add apply Function_ec_recover_run : is_function.
+  Global Instance Instance_IsFunction_ec_recover_run :
+    M.IsFunction.Trait "revm_precompile::secp256k1::ec_recover_run" ec_recover_run.
+  Admitted.
+  Global Typeclasses Opaque ec_recover_run.
   
   Module ec_recover_run.
     Definition value_ECRECOVER_BASE : Value.t :=

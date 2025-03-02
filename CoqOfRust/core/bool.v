@@ -35,8 +35,10 @@ Module bool.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_then_some : M.IsAssociatedFunction Self "then_some" then_some.
-    Smpl Add apply AssociatedFunction_then_some : is_associated.
+    Global Instance AssociatedFunction_then_some :
+      M.IsAssociatedFunction.Trait Self "then_some" then_some.
+    Admitted.
+    Global Typeclasses Opaque then_some.
     
     (*
         pub fn then<T, F: FnOnce() -> T>(self, f: F) -> Option<T> {
@@ -84,7 +86,8 @@ Module bool.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_then_ : M.IsAssociatedFunction Self "then_" then_.
-    Smpl Add apply AssociatedFunction_then_ : is_associated.
+    Global Instance AssociatedFunction_then_ : M.IsAssociatedFunction.Trait Self "then_" then_.
+    Admitted.
+    Global Typeclasses Opaque then_.
   End Impl_bool.
 End bool.

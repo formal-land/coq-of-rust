@@ -987,6 +987,7 @@ Module loop_summary.
               |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -1987,8 +1988,9 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn is_descendant(&self, NodeId(ancestor): NodeId, NodeId(descendant): NodeId) -> bool {
@@ -2076,9 +2078,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_descendant :
-      M.IsAssociatedFunction Self "is_descendant" is_descendant.
-    Smpl Add apply AssociatedFunction_is_descendant : is_associated.
+    Global Instance AssociatedFunction_is_descendant :
+      M.IsAssociatedFunction.Trait Self "is_descendant" is_descendant.
+    Admitted.
+    Global Typeclasses Opaque is_descendant.
     
     (*
         pub fn preorder(&self) -> impl DoubleEndedIterator<Item = NodeId> {
@@ -2169,8 +2172,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_preorder : M.IsAssociatedFunction Self "preorder" preorder.
-    Smpl Add apply AssociatedFunction_preorder : is_associated.
+    Global Instance AssociatedFunction_preorder :
+      M.IsAssociatedFunction.Trait Self "preorder" preorder.
+    Admitted.
+    Global Typeclasses Opaque preorder.
     
     (*
         pub fn block(&self, l: NodeId) -> BlockId {
@@ -2228,8 +2233,9 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_block : M.IsAssociatedFunction Self "block" block.
-    Smpl Add apply AssociatedFunction_block : is_associated.
+    Global Instance AssociatedFunction_block : M.IsAssociatedFunction.Trait Self "block" block.
+    Admitted.
+    Global Typeclasses Opaque block.
     
     (*
         pub fn back_edges(&self, l: NodeId) -> &Vec<NodeId> {
@@ -2313,8 +2319,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_back_edges : M.IsAssociatedFunction Self "back_edges" back_edges.
-    Smpl Add apply AssociatedFunction_back_edges : is_associated.
+    Global Instance AssociatedFunction_back_edges :
+      M.IsAssociatedFunction.Trait Self "back_edges" back_edges.
+    Admitted.
+    Global Typeclasses Opaque back_edges.
     
     (*
         pub fn pred_edges(&self, l: NodeId) -> &Vec<NodeId> {
@@ -2398,8 +2406,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pred_edges : M.IsAssociatedFunction Self "pred_edges" pred_edges.
-    Smpl Add apply AssociatedFunction_pred_edges : is_associated.
+    Global Instance AssociatedFunction_pred_edges :
+      M.IsAssociatedFunction.Trait Self "pred_edges" pred_edges.
+    Admitted.
+    Global Typeclasses Opaque pred_edges.
   End Impl_move_bytecode_verifier_loop_summary_LoopSummary.
   
   Module Impl_move_bytecode_verifier_loop_summary_LoopPartition.
@@ -2553,8 +2563,9 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn containing_loop(&mut self, id: NodeId) -> NodeId {
@@ -2715,6 +2726,7 @@ Module loop_summary.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.alloc (|
@@ -2848,6 +2860,7 @@ Module loop_summary.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2946,9 +2959,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_containing_loop :
-      M.IsAssociatedFunction Self "containing_loop" containing_loop.
-    Smpl Add apply AssociatedFunction_containing_loop : is_associated.
+    Global Instance AssociatedFunction_containing_loop :
+      M.IsAssociatedFunction.Trait Self "containing_loop" containing_loop.
+    Admitted.
+    Global Typeclasses Opaque containing_loop.
     
     (*
         pub fn collapse_loop(&mut self, head: NodeId, body: &BTreeSet<NodeId>) -> u16 {
@@ -3174,6 +3188,7 @@ Module loop_summary.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -3526,9 +3541,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_collapse_loop :
-      M.IsAssociatedFunction Self "collapse_loop" collapse_loop.
-    Smpl Add apply AssociatedFunction_collapse_loop : is_associated.
+    Global Instance AssociatedFunction_collapse_loop :
+      M.IsAssociatedFunction.Trait Self "collapse_loop" collapse_loop.
+    Admitted.
+    Global Typeclasses Opaque collapse_loop.
     
     (*
         fn parent(&self, l: NodeId) -> NodeId {
@@ -3592,8 +3608,9 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parent : M.IsAssociatedFunction Self "parent" parent.
-    Smpl Add apply AssociatedFunction_parent : is_associated.
+    Global Instance AssociatedFunction_parent : M.IsAssociatedFunction.Trait Self "parent" parent.
+    Admitted.
+    Global Typeclasses Opaque parent.
     
     (*
         fn parent_mut(&mut self, l: NodeId) -> &mut NodeId {
@@ -3668,8 +3685,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parent_mut : M.IsAssociatedFunction Self "parent_mut" parent_mut.
-    Smpl Add apply AssociatedFunction_parent_mut : is_associated.
+    Global Instance AssociatedFunction_parent_mut :
+      M.IsAssociatedFunction.Trait Self "parent_mut" parent_mut.
+    Admitted.
+    Global Typeclasses Opaque parent_mut.
     
     (*
         fn depth(&self, l: NodeId) -> u16 {
@@ -3727,8 +3746,9 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_depth : M.IsAssociatedFunction Self "depth" depth.
-    Smpl Add apply AssociatedFunction_depth : is_associated.
+    Global Instance AssociatedFunction_depth : M.IsAssociatedFunction.Trait Self "depth" depth.
+    Admitted.
+    Global Typeclasses Opaque depth.
     
     (*
         fn depth_mut(&mut self, l: NodeId) -> &mut u16 {
@@ -3797,8 +3817,10 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_depth_mut : M.IsAssociatedFunction Self "depth_mut" depth_mut.
-    Smpl Add apply AssociatedFunction_depth_mut : is_associated.
+    Global Instance AssociatedFunction_depth_mut :
+      M.IsAssociatedFunction.Trait Self "depth_mut" depth_mut.
+    Admitted.
+    Global Typeclasses Opaque depth_mut.
   End Impl_move_bytecode_verifier_loop_summary_LoopPartition.
   
   Module Impl_move_bytecode_verifier_loop_summary_NodeId.
@@ -3837,8 +3859,9 @@ Module loop_summary.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_bump : M.IsAssociatedFunction Self "bump" bump.
-    Smpl Add apply AssociatedFunction_bump : is_associated.
+    Global Instance AssociatedFunction_bump : M.IsAssociatedFunction.Trait Self "bump" bump.
+    Admitted.
+    Global Typeclasses Opaque bump.
   End Impl_move_bytecode_verifier_loop_summary_NodeId.
   
   Module Impl_core_convert_From_move_bytecode_verifier_loop_summary_NodeId_for_usize.

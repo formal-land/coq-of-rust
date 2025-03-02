@@ -54,8 +54,9 @@ Module Impl_subtle_Choice.
   
   Parameter unwrap_u8 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_unwrap_u8 : M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
-  Smpl Add apply AssociatedFunction_unwrap_u8 : is_associated.
+  Global Instance AssociatedFunction_unwrap_u8 :
+    M.IsAssociatedFunction.Trait Self "unwrap_u8" unwrap_u8.
+  Admitted.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
@@ -183,8 +184,8 @@ End Impl_core_ops_bit_Not_for_subtle_Choice.
 
 Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
-Smpl Add apply Function_black_box : is_function.
+Global Instance Instance_IsFunction_black_box : M.IsFunction.Trait "subtle::black_box" black_box.
+Admitted.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
@@ -677,71 +678,75 @@ Module Impl_subtle_CtOption_T.
   
   Parameter new : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+  Admitted.
   
   Parameter expect : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_expect :
+  Global Instance AssociatedFunction_expect :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "expect" (expect T).
-  Smpl Add apply AssociatedFunction_expect : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "expect" (expect T).
+  Admitted.
   
   Parameter unwrap : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_unwrap :
+  Global Instance AssociatedFunction_unwrap :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap" (unwrap T).
-  Smpl Add apply AssociatedFunction_unwrap : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "unwrap" (unwrap T).
+  Admitted.
   
   Parameter unwrap_or : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_unwrap_or :
+  Global Instance AssociatedFunction_unwrap_or :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap_or" (unwrap_or T).
-  Smpl Add apply AssociatedFunction_unwrap_or : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "unwrap_or" (unwrap_or T).
+  Admitted.
   
   Parameter unwrap_or_else :
       forall (T : Ty.t),
       (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_unwrap_or_else :
+  Global Instance AssociatedFunction_unwrap_or_else :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap_or_else" (unwrap_or_else T).
-  Smpl Add apply AssociatedFunction_unwrap_or_else : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "unwrap_or_else" (unwrap_or_else T).
+  Admitted.
   
   Parameter is_some : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_is_some :
+  Global Instance AssociatedFunction_is_some :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_some" (is_some T).
-  Smpl Add apply AssociatedFunction_is_some : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "is_some" (is_some T).
+  Admitted.
   
   Parameter is_none : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_is_none :
+  Global Instance AssociatedFunction_is_none :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_none" (is_none T).
-  Smpl Add apply AssociatedFunction_is_none : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "is_none" (is_none T).
+  Admitted.
   
   Parameter map : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
-  Smpl Add apply AssociatedFunction_map : is_associated.
+  Global Instance AssociatedFunction_map :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+  Admitted.
   
   Parameter and_then : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_and_then :
+  Global Instance AssociatedFunction_and_then :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "and_then" (and_then T).
-  Smpl Add apply AssociatedFunction_and_then : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "and_then" (and_then T).
+  Admitted.
   
   Parameter or_else : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_or_else :
+  Global Instance AssociatedFunction_or_else :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "or_else" (or_else T).
-  Smpl Add apply AssociatedFunction_or_else : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "or_else" (or_else T).
+  Admitted.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.

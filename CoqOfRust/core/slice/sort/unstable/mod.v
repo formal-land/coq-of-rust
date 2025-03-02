@@ -179,8 +179,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_sort : M.IsFunction "core::slice::sort::unstable::sort" sort.
-      Smpl Add apply Function_sort : is_function.
+      Global Instance Instance_IsFunction_sort :
+        M.IsFunction.Trait "core::slice::sort::unstable::sort" sort.
+      Admitted.
+      Global Typeclasses Opaque sort.
       
       Module sort.
         Definition value_MAX_LEN_ALWAYS_INSERTION_SORT : Value.t :=
@@ -375,8 +377,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_ipnsort : M.IsFunction "core::slice::sort::unstable::ipnsort" ipnsort.
-      Smpl Add apply Function_ipnsort : is_function.
+      Global Instance Instance_IsFunction_ipnsort :
+        M.IsFunction.Trait "core::slice::sort::unstable::ipnsort" ipnsort.
+      Admitted.
+      Global Typeclasses Opaque ipnsort.
     End unstable.
   End sort.
 End slice.

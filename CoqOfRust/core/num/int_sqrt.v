@@ -21,6 +21,7 @@ Module num.
           let~ isqrt_n : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -173,8 +174,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u8 : M.IsFunction "core::num::int_sqrt::u8" u8.
-    Smpl Add apply Function_u8 : is_function.
+    Global Instance Instance_IsFunction_u8 : M.IsFunction.Trait "core::num::int_sqrt::u8" u8.
+    Admitted.
+    Global Typeclasses Opaque u8.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -275,8 +277,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i8 : M.IsFunction "core::num::int_sqrt::i8" i8.
-    Smpl Add apply Function_i8 : is_function.
+    Global Instance Instance_IsFunction_i8 : M.IsFunction.Trait "core::num::int_sqrt::i8" i8.
+    Admitted.
+    Global Typeclasses Opaque i8.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -377,8 +380,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i16 : M.IsFunction "core::num::int_sqrt::i16" i16.
-    Smpl Add apply Function_i16 : is_function.
+    Global Instance Instance_IsFunction_i16 : M.IsFunction.Trait "core::num::int_sqrt::i16" i16.
+    Admitted.
+    Global Typeclasses Opaque i16.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -479,8 +483,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i32 : M.IsFunction "core::num::int_sqrt::i32" i32.
-    Smpl Add apply Function_i32 : is_function.
+    Global Instance Instance_IsFunction_i32 : M.IsFunction.Trait "core::num::int_sqrt::i32" i32.
+    Admitted.
+    Global Typeclasses Opaque i32.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -581,8 +586,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i64 : M.IsFunction "core::num::int_sqrt::i64" i64.
-    Smpl Add apply Function_i64 : is_function.
+    Global Instance Instance_IsFunction_i64 : M.IsFunction.Trait "core::num::int_sqrt::i64" i64.
+    Admitted.
+    Global Typeclasses Opaque i64.
     
     (*
             pub const unsafe fn $SignedT(n: $SignedT) -> $SignedT {
@@ -683,8 +689,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i128 : M.IsFunction "core::num::int_sqrt::i128" i128.
-    Smpl Add apply Function_i128 : is_function.
+    Global Instance Instance_IsFunction_i128 : M.IsFunction.Trait "core::num::int_sqrt::i128" i128.
+    Admitted.
+    Global Typeclasses Opaque i128.
     
     (*
     const fn u16_stages(n: u16) -> u16 {
@@ -1004,8 +1011,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u16_stages : M.IsFunction "core::num::int_sqrt::u16_stages" u16_stages.
-    Smpl Add apply Function_u16_stages : is_function.
+    Global Instance Instance_IsFunction_u16_stages :
+      M.IsFunction.Trait "core::num::int_sqrt::u16_stages" u16_stages.
+    Admitted.
+    Global Typeclasses Opaque u16_stages.
     
     Module u16_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -1652,8 +1661,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u32_stages : M.IsFunction "core::num::int_sqrt::u32_stages" u32_stages.
-    Smpl Add apply Function_u32_stages : is_function.
+    Global Instance Instance_IsFunction_u32_stages :
+      M.IsFunction.Trait "core::num::int_sqrt::u32_stages" u32_stages.
+    Admitted.
+    Global Typeclasses Opaque u32_stages.
     
     Module u32_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -2661,8 +2672,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u64_stages : M.IsFunction "core::num::int_sqrt::u64_stages" u64_stages.
-    Smpl Add apply Function_u64_stages : is_function.
+    Global Instance Instance_IsFunction_u64_stages :
+      M.IsFunction.Trait "core::num::int_sqrt::u64_stages" u64_stages.
+    Admitted.
+    Global Typeclasses Opaque u64_stages.
     
     Module u64_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -4049,8 +4062,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u128_stages : M.IsFunction "core::num::int_sqrt::u128_stages" u128_stages.
-    Smpl Add apply Function_u128_stages : is_function.
+    Global Instance Instance_IsFunction_u128_stages :
+      M.IsFunction.Trait "core::num::int_sqrt::u128_stages" u128_stages.
+    Admitted.
+    Global Typeclasses Opaque u128_stages.
     
     Module u128_stages.
       Definition value_N_SHIFT : Value.t :=
@@ -4469,8 +4484,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u16 : M.IsFunction "core::num::int_sqrt::u16" u16.
-    Smpl Add apply Function_u16 : is_function.
+    Global Instance Instance_IsFunction_u16 : M.IsFunction.Trait "core::num::int_sqrt::u16" u16.
+    Admitted.
+    Global Typeclasses Opaque u16.
     
     Module u16.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4604,8 +4620,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u32 : M.IsFunction "core::num::int_sqrt::u32" u32.
-    Smpl Add apply Function_u32 : is_function.
+    Global Instance Instance_IsFunction_u32 : M.IsFunction.Trait "core::num::int_sqrt::u32" u32.
+    Admitted.
+    Global Typeclasses Opaque u32.
     
     Module u32.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4739,8 +4756,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u64 : M.IsFunction "core::num::int_sqrt::u64" u64.
-    Smpl Add apply Function_u64 : is_function.
+    Global Instance Instance_IsFunction_u64 : M.IsFunction.Trait "core::num::int_sqrt::u64" u64.
+    Admitted.
+    Global Typeclasses Opaque u64.
     
     Module u64.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4874,8 +4892,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u128 : M.IsFunction "core::num::int_sqrt::u128" u128.
-    Smpl Add apply Function_u128 : is_function.
+    Global Instance Instance_IsFunction_u128 : M.IsFunction.Trait "core::num::int_sqrt::u128" u128.
+    Admitted.
+    Global Typeclasses Opaque u128.
     
     Module u128.
       Definition value_EVEN_MAKING_BITMASK : Value.t :=
@@ -4937,8 +4956,11 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_for_negative_argument :
-      M.IsFunction "core::num::int_sqrt::panic_for_negative_argument" panic_for_negative_argument.
-    Smpl Add apply Function_panic_for_negative_argument : is_function.
+    Global Instance Instance_IsFunction_panic_for_negative_argument :
+      M.IsFunction.Trait
+        "core::num::int_sqrt::panic_for_negative_argument"
+        panic_for_negative_argument.
+    Admitted.
+    Global Typeclasses Opaque panic_for_negative_argument.
   End int_sqrt.
 End num.

@@ -22,20 +22,20 @@ Module Impl_functions_order_SomeType.
   
   Parameter meth1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_meth1 : M.IsAssociatedFunction Self "meth1" meth1.
-  Smpl Add apply AssociatedFunction_meth1 : is_associated.
+  Global Instance AssociatedFunction_meth1 : M.IsAssociatedFunction.Trait Self "meth1" meth1.
+  Admitted.
   
   Parameter meth2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_meth2 : M.IsAssociatedFunction Self "meth2" meth2.
-  Smpl Add apply AssociatedFunction_meth2 : is_associated.
+  Global Instance AssociatedFunction_meth2 : M.IsAssociatedFunction.Trait Self "meth2" meth2.
+  Admitted.
 End Impl_functions_order_SomeType.
 
 Parameter depends_on_trait_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_depends_on_trait_impl :
-  M.IsFunction "functions_order::depends_on_trait_impl" depends_on_trait_impl.
-Smpl Add apply Function_depends_on_trait_impl : is_function.
+Global Instance Instance_IsFunction_depends_on_trait_impl :
+  M.IsFunction.Trait "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+Admitted.
 
 (* Trait *)
 (* Empty module 'SomeTrait' *)
@@ -83,33 +83,37 @@ End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 Module inner_mod.
   Parameter bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_bar : M.IsFunction "functions_order::inner_mod::bar" bar.
-  Smpl Add apply Function_bar : is_function.
+  Global Instance Instance_IsFunction_bar :
+    M.IsFunction.Trait "functions_order::inner_mod::bar" bar.
+  Admitted.
   
   Parameter tar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_tar : M.IsFunction "functions_order::inner_mod::tar" tar.
-  Smpl Add apply Function_tar : is_function.
+  Global Instance Instance_IsFunction_tar :
+    M.IsFunction.Trait "functions_order::inner_mod::tar" tar.
+  Admitted.
   
   Module nested_mod.
     Parameter tick : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_tick : M.IsFunction "functions_order::inner_mod::nested_mod::tick" tick.
-    Smpl Add apply Function_tick : is_function.
+    Global Instance Instance_IsFunction_tick :
+      M.IsFunction.Trait "functions_order::inner_mod::nested_mod::tick" tick.
+    Admitted.
     
     Parameter tack : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_tack : M.IsFunction "functions_order::inner_mod::nested_mod::tack" tack.
-    Smpl Add apply Function_tack : is_function.
+    Global Instance Instance_IsFunction_tack :
+      M.IsFunction.Trait "functions_order::inner_mod::nested_mod::tack" tack.
+    Admitted.
   End nested_mod.
 End inner_mod.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "functions_order::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions_order::main" main.
+Admitted.
 
 Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_foo : M.IsFunction "functions_order::foo" foo.
-Smpl Add apply Function_foo : is_function.
+Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "functions_order::foo" foo.
+Admitted.

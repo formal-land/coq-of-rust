@@ -716,9 +716,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_cached_power :
-          M.IsFunction "core::num::flt2dec::strategy::grisu::cached_power" cached_power.
-        Smpl Add apply Function_cached_power : is_function.
+        Global Instance Instance_IsFunction_cached_power :
+          M.IsFunction.Trait "core::num::flt2dec::strategy::grisu::cached_power" cached_power.
+        Admitted.
+        Global Typeclasses Opaque cached_power.
         
         (*
         pub fn max_pow10_no_more_than(x: u32) -> (u8, u32) {
@@ -1130,11 +1131,12 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_max_pow10_no_more_than :
-          M.IsFunction
+        Global Instance Instance_IsFunction_max_pow10_no_more_than :
+          M.IsFunction.Trait
             "core::num::flt2dec::strategy::grisu::max_pow10_no_more_than"
             max_pow10_no_more_than.
-        Smpl Add apply Function_max_pow10_no_more_than : is_function.
+        Admitted.
+        Global Typeclasses Opaque max_pow10_no_more_than.
         
         Module max_pow10_no_more_than.
           Definition value_X9 : Value.t :=
@@ -2546,6 +2548,7 @@ Module num.
                                       let~ remainder : Ty.path "u32" := M.copy (| plus1int |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ q : Ty.path "u32" :=
                                               M.alloc (|
@@ -3110,6 +3113,7 @@ Module num.
                                           M.never_to_any (|
                                             M.read (|
                                               M.loop (|
+                                                Ty.path "never",
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
@@ -3501,11 +3505,12 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_format_shortest_opt :
-          M.IsFunction
+        Global Instance Instance_IsFunction_format_shortest_opt :
+          M.IsFunction.Trait
             "core::num::flt2dec::strategy::grisu::format_shortest_opt"
             format_shortest_opt.
-        Smpl Add apply Function_format_shortest_opt : is_function.
+        Admitted.
+        Global Typeclasses Opaque format_shortest_opt.
         
         Module format_shortest_opt.
           (*
@@ -3708,6 +3713,7 @@ Module num.
                             |)
                           |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -3989,11 +3995,12 @@ Module num.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Axiom Function_round_and_weed :
-            M.IsFunction
+          Global Instance Instance_IsFunction_round_and_weed :
+            M.IsFunction.Trait
               "core::num::flt2dec::strategy::grisu::format_shortest_opt::round_and_weed"
               round_and_weed.
-          Smpl Add apply Function_round_and_weed : is_function.
+          Admitted.
+          Global Typeclasses Opaque round_and_weed.
         End format_shortest_opt.
         
         (*
@@ -4109,9 +4116,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_format_shortest :
-          M.IsFunction "core::num::flt2dec::strategy::grisu::format_shortest" format_shortest.
-        Smpl Add apply Function_format_shortest : is_function.
+        Global Instance Instance_IsFunction_format_shortest :
+          M.IsFunction.Trait "core::num::flt2dec::strategy::grisu::format_shortest" format_shortest.
+        Admitted.
+        Global Typeclasses Opaque format_shortest.
         
         (*
         pub fn format_exact_opt<'a>(
@@ -5073,6 +5081,7 @@ Module num.
                                       let~ remainder : Ty.path "u32" := M.copy (| vint |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ q : Ty.path "u32" :=
                                               M.alloc (|
@@ -5712,6 +5721,7 @@ Module num.
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
@@ -6000,9 +6010,12 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_format_exact_opt :
-          M.IsFunction "core::num::flt2dec::strategy::grisu::format_exact_opt" format_exact_opt.
-        Smpl Add apply Function_format_exact_opt : is_function.
+        Global Instance Instance_IsFunction_format_exact_opt :
+          M.IsFunction.Trait
+            "core::num::flt2dec::strategy::grisu::format_exact_opt"
+            format_exact_opt.
+        Admitted.
+        Global Typeclasses Opaque format_exact_opt.
         
         Module format_exact_opt.
           Definition value_POW10_UP_TO_9 : Value.t :=
@@ -6811,11 +6824,12 @@ Module num.
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
-          Axiom Function_possibly_round :
-            M.IsFunction
+          Global Instance Instance_IsFunction_possibly_round :
+            M.IsFunction.Trait
               "core::num::flt2dec::strategy::grisu::format_exact_opt::possibly_round"
               possibly_round.
-          Smpl Add apply Function_possibly_round : is_function.
+          Admitted.
+          Global Typeclasses Opaque possibly_round.
         End format_exact_opt.
         
         (*
@@ -6935,9 +6949,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_format_exact :
-          M.IsFunction "core::num::flt2dec::strategy::grisu::format_exact" format_exact.
-        Smpl Add apply Function_format_exact : is_function.
+        Global Instance Instance_IsFunction_format_exact :
+          M.IsFunction.Trait "core::num::flt2dec::strategy::grisu::format_exact" format_exact.
+        Admitted.
+        Global Typeclasses Opaque format_exact.
       End grisu.
     End strategy.
   End flt2dec.

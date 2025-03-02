@@ -168,8 +168,9 @@ Module Impl_conditional_compilation_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -178,8 +179,9 @@ Module Impl_conditional_compilation_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
   
   (*
       fn block_number(&self) -> BlockNumber {
@@ -188,8 +190,9 @@ Module Impl_conditional_compilation_Env.
   *)
   Parameter block_number : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_block_number : M.IsAssociatedFunction Self "block_number" block_number.
-  Smpl Add apply AssociatedFunction_block_number : is_associated.
+  Global Instance AssociatedFunction_block_number :
+    M.IsAssociatedFunction.Trait Self "block_number" block_number.
+  Admitted.
 End Impl_conditional_compilation_Env.
 
 (* StructRecord
@@ -210,8 +213,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -236,8 +240,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -271,8 +276,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn new_foo(value: bool) -> Self {
@@ -290,8 +296,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new_foo : M.IsAssociatedFunction Self "new_foo" new_foo.
-  Smpl Add apply AssociatedFunction_new_foo : is_associated.
+  Global Instance AssociatedFunction_new_foo : M.IsAssociatedFunction.Trait Self "new_foo" new_foo.
+  Admitted.
+  Global Typeclasses Opaque new_foo.
   
   (*
       pub fn new_bar(value: bool) -> Self {
@@ -309,8 +316,9 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new_bar : M.IsAssociatedFunction Self "new_bar" new_bar.
-  Smpl Add apply AssociatedFunction_new_bar : is_associated.
+  Global Instance AssociatedFunction_new_bar : M.IsAssociatedFunction.Trait Self "new_bar" new_bar.
+  Admitted.
+  Global Typeclasses Opaque new_bar.
   
   (*
       pub fn new_foo_bar(value: bool) -> Self {
@@ -328,8 +336,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new_foo_bar : M.IsAssociatedFunction Self "new_foo_bar" new_foo_bar.
-  Smpl Add apply AssociatedFunction_new_foo_bar : is_associated.
+  Global Instance AssociatedFunction_new_foo_bar :
+    M.IsAssociatedFunction.Trait Self "new_foo_bar" new_foo_bar.
+  Admitted.
+  Global Typeclasses Opaque new_foo_bar.
   
   (*
       pub fn inherent_flip_foo(&mut self) {
@@ -446,9 +456,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_inherent_flip_foo :
-    M.IsAssociatedFunction Self "inherent_flip_foo" inherent_flip_foo.
-  Smpl Add apply AssociatedFunction_inherent_flip_foo : is_associated.
+  Global Instance AssociatedFunction_inherent_flip_foo :
+    M.IsAssociatedFunction.Trait Self "inherent_flip_foo" inherent_flip_foo.
+  Admitted.
+  Global Typeclasses Opaque inherent_flip_foo.
   
   (*
       pub fn inherent_flip_bar(&mut self) {
@@ -597,9 +608,10 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_inherent_flip_bar :
-    M.IsAssociatedFunction Self "inherent_flip_bar" inherent_flip_bar.
-  Smpl Add apply AssociatedFunction_inherent_flip_bar : is_associated.
+  Global Instance AssociatedFunction_inherent_flip_bar :
+    M.IsAssociatedFunction.Trait Self "inherent_flip_bar" inherent_flip_bar.
+  Admitted.
+  Global Typeclasses Opaque inherent_flip_bar.
 End Impl_conditional_compilation_ConditionalCompilation.
 
 Module Impl_conditional_compilation_Flip_for_conditional_compilation_ConditionalCompilation.

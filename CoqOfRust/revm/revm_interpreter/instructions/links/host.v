@@ -25,7 +25,7 @@ Definition run_balance
     unit
   }}.
 Proof.
-  run_symbolic.
+  run.
   eapply Run.Rewrite. {
     do 3 erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
     reflexivity.

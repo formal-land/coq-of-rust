@@ -850,8 +850,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn is_non_returning(&self) -> bool {
@@ -878,9 +879,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_non_returning :
-        M.IsAssociatedFunction Self "is_non_returning" is_non_returning.
-      Smpl Add apply AssociatedFunction_is_non_returning : is_associated.
+      Global Instance AssociatedFunction_is_non_returning :
+        M.IsAssociatedFunction.Trait Self "is_non_returning" is_non_returning.
+      Admitted.
+      Global Typeclasses Opaque is_non_returning.
       
       (*
           pub const fn io_diff(&self) -> i32 {
@@ -915,8 +917,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
-      Smpl Add apply AssociatedFunction_io_diff : is_associated.
+      Global Instance AssociatedFunction_io_diff :
+        M.IsAssociatedFunction.Trait Self "io_diff" io_diff.
+      Admitted.
+      Global Typeclasses Opaque io_diff.
       
       (*
           pub fn encode(&self, buffer: &mut Vec<u8>) {
@@ -1036,8 +1040,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
-      Smpl Add apply AssociatedFunction_encode : is_associated.
+      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.Trait Self "encode" encode.
+      Admitted.
+      Global Typeclasses Opaque encode.
       
       (*
           pub fn decode(input: &[u8]) -> Result<(Self, &[u8]), EofDecodeError> {
@@ -1764,8 +1769,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
-      Smpl Add apply AssociatedFunction_decode : is_associated.
+      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+      Admitted.
+      Global Typeclasses Opaque decode.
       
       (*
           pub fn validate(&self) -> Result<(), EofDecodeError> {
@@ -1906,8 +1912,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_validate : M.IsAssociatedFunction Self "validate" validate.
-      Smpl Add apply AssociatedFunction_validate : is_associated.
+      Global Instance AssociatedFunction_validate :
+        M.IsAssociatedFunction.Trait Self "validate" validate.
+      Admitted.
+      Global Typeclasses Opaque validate.
     End Impl_revm_bytecode_eof_types_section_TypesSection.
   End types_section.
 End eof.

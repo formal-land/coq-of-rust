@@ -26,8 +26,9 @@ Module Impl_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn new_default() -> Self {
@@ -60,8 +61,10 @@ Module Impl_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
-  Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Instance AssociatedFunction_new_default :
+    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+  Admitted.
+  Global Typeclasses Opaque new_default.
   
   (*
       pub fn inc(&mut self, by: i32) {
@@ -90,8 +93,9 @@ Module Impl_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
-  Smpl Add apply AssociatedFunction_inc : is_associated.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Admitted.
+  Global Typeclasses Opaque inc.
   
   (*
       pub fn get(&self) -> i32 {
@@ -113,6 +117,7 @@ Module Impl_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
+  Global Typeclasses Opaque get.
 End Impl_incrementer_Incrementer.

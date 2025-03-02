@@ -385,10 +385,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn as_slice(&self) -> &'a [T] {
@@ -419,10 +420,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_slice :
+      Global Instance AssociatedFunction_as_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_slice" (as_slice T).
-      Smpl Add apply AssociatedFunction_as_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_slice" (as_slice T).
+      Admitted.
+      Global Typeclasses Opaque as_slice.
     End Impl_core_slice_iter_Iter_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_Iter_T.
@@ -812,10 +814,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn into_slice(self) -> &'a mut [T] {
@@ -983,10 +986,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_slice :
+      Global Instance AssociatedFunction_into_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_slice" (into_slice T).
-      Smpl Add apply AssociatedFunction_into_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_slice" (into_slice T).
+      Admitted.
+      Global Typeclasses Opaque into_slice.
       
       (*
           pub fn as_slice(&self) -> &[T] {
@@ -1017,10 +1021,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_slice :
+      Global Instance AssociatedFunction_as_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_slice" (as_slice T).
-      Smpl Add apply AssociatedFunction_as_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_slice" (as_slice T).
+      Admitted.
+      Global Typeclasses Opaque as_slice.
       
       (*
           pub fn as_mut_slice(&mut self) -> &mut [T] {
@@ -1193,10 +1198,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_mut_slice :
+      Global Instance AssociatedFunction_as_mut_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "as_mut_slice" (as_mut_slice T).
-      Smpl Add apply AssociatedFunction_as_mut_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "as_mut_slice" (as_mut_slice T).
+      Admitted.
+      Global Typeclasses Opaque as_mut_slice.
     End Impl_core_slice_iter_IterMut_T.
     
     Module Impl_core_convert_AsRef_slice_T_for_core_slice_iter_IterMut_T.
@@ -1283,10 +1289,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn as_slice(&self) -> &'a [T] {
@@ -1348,10 +1355,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_slice :
+      Global Instance AssociatedFunction_as_slice :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "as_slice" (as_slice T P).
-      Smpl Add apply AssociatedFunction_as_slice : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "as_slice" (as_slice T P).
+      Admitted.
+      Global Typeclasses Opaque as_slice.
     End Impl_core_slice_iter_Split_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_Split_T_P.
@@ -2446,10 +2454,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitInclusive_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusive_T_P.
@@ -3667,10 +3676,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitMut_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitMut_T_P.
@@ -4779,10 +4789,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitInclusiveMut_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitInclusiveMut_T_P.
@@ -5905,10 +5916,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplit_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplit_T_P.
@@ -6378,10 +6390,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplitMut_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitMut_T_P.
@@ -7166,10 +7179,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitN_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitN_T_P.
@@ -7311,10 +7325,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplitN_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitN_T_P.
@@ -7456,10 +7471,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitNMut_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitNMut_T_P.
@@ -7601,10 +7617,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplitNMut_T_P.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitNMut_T_P.
@@ -7810,10 +7827,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_Windows_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_Windows_T.
@@ -9552,10 +9570,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_Chunks_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_Chunks_T.
@@ -11395,10 +11414,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ChunksMut_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_ChunksMut_T.
@@ -13294,10 +13314,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn remainder(&self) -> &'a [T] {
@@ -13320,10 +13341,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_remainder :
+      Global Instance AssociatedFunction_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "remainder" (remainder T).
-      Smpl Add apply AssociatedFunction_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "remainder" (remainder T).
+      Admitted.
+      Global Typeclasses Opaque remainder.
     End Impl_core_slice_iter_ChunksExact_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_ChunksExact_T.
@@ -14695,10 +14717,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn into_remainder(self) -> &'a mut [T] {
@@ -14736,10 +14759,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_remainder :
+      Global Instance AssociatedFunction_into_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_remainder" (into_remainder T).
-      Smpl Add apply AssociatedFunction_into_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_remainder" (into_remainder T).
+      Admitted.
+      Global Typeclasses Opaque into_remainder.
     End Impl_core_slice_iter_ChunksExactMut_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_ChunksExactMut_T.
@@ -16224,10 +16248,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction (Self N T) "new" (new N T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ArrayWindows_N_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_ArrayWindows_N_T.
@@ -17319,10 +17344,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction (Self N T) "new" (new N T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn remainder(&self) -> &'a [T] {
@@ -17351,10 +17377,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_remainder :
+      Global Instance AssociatedFunction_remainder :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction (Self N T) "remainder" (remainder N T).
-      Smpl Add apply AssociatedFunction_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self N T) "remainder" (remainder N T).
+      Admitted.
+      Global Typeclasses Opaque remainder.
     End Impl_core_slice_iter_ArrayChunks_N_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_ArrayChunks_N_T.
@@ -18174,10 +18201,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction (Self N T) "new" (new N T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn into_remainder(self) -> &'a mut [T] {
@@ -18216,10 +18244,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_remainder :
+      Global Instance AssociatedFunction_into_remainder :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction (Self N T) "into_remainder" (into_remainder N T).
-      Smpl Add apply AssociatedFunction_into_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self N T) "into_remainder" (into_remainder N T).
+      Admitted.
+      Global Typeclasses Opaque into_remainder.
     End Impl_core_slice_iter_ArrayChunksMut_N_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_ArrayChunksMut_N_T.
@@ -18897,10 +18926,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RChunks_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_RChunks_T.
@@ -20667,10 +20697,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RChunksMut_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_RChunksMut_T.
@@ -22503,10 +22534,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn remainder(&self) -> &'a [T] {
@@ -22529,10 +22561,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_remainder :
+      Global Instance AssociatedFunction_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "remainder" (remainder T).
-      Smpl Add apply AssociatedFunction_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "remainder" (remainder T).
+      Admitted.
+      Global Typeclasses Opaque remainder.
     End Impl_core_slice_iter_RChunksExact_T.
     
     Module Impl_core_clone_Clone_for_core_slice_iter_RChunksExact_T.
@@ -23957,10 +23990,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "new" (new T).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn into_remainder(self) -> &'a mut [T] {
@@ -23998,10 +24032,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_remainder :
+      Global Instance AssociatedFunction_into_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "into_remainder" (into_remainder T).
-      Smpl Add apply AssociatedFunction_into_remainder : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "into_remainder" (into_remainder T).
+      Admitted.
+      Global Typeclasses Opaque into_remainder.
     End Impl_core_slice_iter_RChunksExactMut_T.
     
     Module Impl_core_iter_traits_iterator_Iterator_for_core_slice_iter_RChunksExactMut_T.
@@ -25316,10 +25351,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ChunkBy_T_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
@@ -25420,6 +25456,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -25848,6 +25885,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -26224,10 +26262,11 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction (Self T P) "new" (new T P).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ChunkByMut_T_P.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
@@ -26329,6 +26368,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -26785,6 +26825,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.alloc (| Value.Tuple [] |),

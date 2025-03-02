@@ -92,6 +92,7 @@ Module unicode.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -264,6 +265,7 @@ Module unicode.
                                                             ltac:(M.monadic
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
+                                                                Ty.tuple [],
                                                                 ltac:(M.monadic
                                                                   (let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
@@ -466,6 +468,7 @@ Module unicode.
                 let~ current : Ty.path "bool" := M.alloc (| Value.Bool true |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -643,8 +646,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_check : M.IsFunction "core::unicode::printable::check" check.
-    Smpl Add apply Function_check : is_function.
+    Global Instance Instance_IsFunction_check :
+      M.IsFunction.Trait "core::unicode::printable::check" check.
+    Admitted.
+    Global Typeclasses Opaque check.
     
     (*
     pub(crate) fn is_printable(x: char) -> bool {
@@ -1297,9 +1302,10 @@ Module unicode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_is_printable :
-      M.IsFunction "core::unicode::printable::is_printable" is_printable.
-    Smpl Add apply Function_is_printable : is_function.
+    Global Instance Instance_IsFunction_is_printable :
+      M.IsFunction.Trait "core::unicode::printable::is_printable" is_printable.
+    Admitted.
+    Global Typeclasses Opaque is_printable.
     
     Definition value_SINGLETONS0U : Value.t :=
       M.run_constant

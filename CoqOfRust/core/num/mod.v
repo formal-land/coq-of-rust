@@ -12,8 +12,10 @@ Module num.
         ltac:(M.monadic
           (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = (<$UnsignedT>::MAX >> 1) as Self; *)
     (* Ty.path "i8" *)
@@ -29,15 +31,19 @@ Module num.
               |))
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
     Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*         pub const fn count_ones(self) -> u32 { (self as $UnsignedT).count_ones() } *)
     Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -53,8 +59,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -74,8 +82,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -95,9 +105,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -117,9 +128,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -139,8 +151,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -160,9 +174,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_unsigned(self) -> $UnsignedT {
@@ -178,9 +193,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_unsigned :
-      M.IsAssociatedFunction Self "cast_unsigned" cast_unsigned.
-    Smpl Add apply AssociatedFunction_cast_unsigned : is_associated.
+    Global Instance AssociatedFunction_cast_unsigned :
+      M.IsAssociatedFunction.Trait Self "cast_unsigned" cast_unsigned.
+    Admitted.
+    Global Typeclasses Opaque cast_unsigned.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -203,8 +219,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -227,8 +245,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -250,8 +270,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -273,8 +295,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -301,8 +325,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -325,8 +351,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -353,8 +381,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -377,8 +406,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -438,8 +468,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -495,8 +527,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -566,9 +600,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -628,9 +663,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_unsigned :
-      M.IsAssociatedFunction Self "checked_add_unsigned" checked_add_unsigned.
-    Smpl Add apply AssociatedFunction_checked_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_add_unsigned" checked_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_add_unsigned.
     
     (*
             pub const fn strict_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -686,9 +722,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_unsigned :
-      M.IsAssociatedFunction Self "strict_add_unsigned" strict_add_unsigned.
-    Smpl Add apply AssociatedFunction_strict_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_add_unsigned" strict_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_add_unsigned.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -748,8 +785,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -805,8 +844,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -876,9 +917,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_sub_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -938,9 +980,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub_unsigned :
-      M.IsAssociatedFunction Self "checked_sub_unsigned" checked_sub_unsigned.
-    Smpl Add apply AssociatedFunction_checked_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_sub_unsigned" checked_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_sub_unsigned.
     
     (*
             pub const fn strict_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -996,9 +1039,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub_unsigned :
-      M.IsAssociatedFunction Self "strict_sub_unsigned" strict_sub_unsigned.
-    Smpl Add apply AssociatedFunction_strict_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_sub_unsigned" strict_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_sub_unsigned.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -1058,8 +1102,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -1115,8 +1161,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -1186,9 +1234,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -1262,8 +1311,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -1319,8 +1370,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -1388,9 +1441,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -1446,9 +1500,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -1522,8 +1577,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -1579,8 +1636,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -1648,9 +1707,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -1706,9 +1766,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -1767,8 +1828,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const unsafe fn unchecked_neg(self) -> Self {
@@ -1836,9 +1899,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_neg :
-      M.IsAssociatedFunction Self "unchecked_neg" unchecked_neg.
-    Smpl Add apply AssociatedFunction_unchecked_neg : is_associated.
+    Global Instance AssociatedFunction_unchecked_neg :
+      M.IsAssociatedFunction.Trait Self "unchecked_neg" unchecked_neg.
+    Admitted.
+    Global Typeclasses Opaque unchecked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -1893,8 +1957,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -1947,8 +2013,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -2004,8 +2072,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -2078,9 +2148,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -2128,9 +2199,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -2183,8 +2255,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -2240,8 +2314,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -2314,9 +2390,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -2382,9 +2459,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -2434,8 +2512,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
-    Smpl Add apply AssociatedFunction_checked_abs : is_associated.
+    Global Instance AssociatedFunction_checked_abs :
+      M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+    Admitted.
+    Global Typeclasses Opaque checked_abs.
     
     (*
             pub const fn strict_abs(self) -> Self {
@@ -2481,8 +2561,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_abs : M.IsAssociatedFunction Self "strict_abs" strict_abs.
-    Smpl Add apply AssociatedFunction_strict_abs : is_associated.
+    Global Instance AssociatedFunction_strict_abs :
+      M.IsAssociatedFunction.Trait Self "strict_abs" strict_abs.
+    Admitted.
+    Global Typeclasses Opaque strict_abs.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -2547,6 +2629,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -2730,8 +2813,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -2790,6 +2875,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -2891,8 +2977,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn checked_isqrt(self) -> Option<Self> {
@@ -2992,9 +3080,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_isqrt :
-      M.IsAssociatedFunction Self "checked_isqrt" checked_isqrt.
-    Smpl Add apply AssociatedFunction_checked_isqrt : is_associated.
+    Global Instance AssociatedFunction_checked_isqrt :
+      M.IsAssociatedFunction.Trait Self "checked_isqrt" checked_isqrt.
+    Admitted.
+    Global Typeclasses Opaque checked_isqrt.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -3015,9 +3104,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -3065,9 +3155,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_unsigned :
-      M.IsAssociatedFunction Self "saturating_add_unsigned" saturating_add_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_add_unsigned" saturating_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_unsigned.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -3088,9 +3179,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -3138,9 +3230,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub_unsigned :
-      M.IsAssociatedFunction Self "saturating_sub_unsigned" saturating_sub_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_sub_unsigned" saturating_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub_unsigned.
     
     (*
             pub const fn saturating_neg(self) -> Self {
@@ -3160,9 +3253,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_neg :
-      M.IsAssociatedFunction Self "saturating_neg" saturating_neg.
-    Smpl Add apply AssociatedFunction_saturating_neg : is_associated.
+    Global Instance AssociatedFunction_saturating_neg :
+      M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+    Admitted.
+    Global Typeclasses Opaque saturating_neg.
     
     (*
             pub const fn saturating_abs(self) -> Self {
@@ -3208,9 +3302,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_abs :
-      M.IsAssociatedFunction Self "saturating_abs" saturating_abs.
-    Smpl Add apply AssociatedFunction_saturating_abs : is_associated.
+    Global Instance AssociatedFunction_saturating_abs :
+      M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+    Admitted.
+    Global Typeclasses Opaque saturating_abs.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -3281,9 +3376,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -3331,9 +3427,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -3397,9 +3494,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -3420,8 +3518,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -3442,9 +3542,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_unsigned :
-      M.IsAssociatedFunction Self "wrapping_add_unsigned" wrapping_add_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_unsigned" wrapping_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_unsigned.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -3465,8 +3566,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -3487,9 +3590,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub_unsigned :
-      M.IsAssociatedFunction Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub_unsigned.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -3510,8 +3614,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -3539,8 +3645,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -3568,9 +3676,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -3598,8 +3707,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -3627,9 +3738,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -3649,8 +3761,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -3683,8 +3797,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -3717,8 +3833,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_abs(self) -> Self {
@@ -3764,8 +3882,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_abs : M.IsAssociatedFunction Self "wrapping_abs" wrapping_abs.
-    Smpl Add apply AssociatedFunction_wrapping_abs : is_associated.
+    Global Instance AssociatedFunction_wrapping_abs :
+      M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+    Admitted.
+    Global Typeclasses Opaque wrapping_abs.
     
     (*
             pub const fn unsigned_abs(self) -> $UnsignedT {
@@ -3787,8 +3907,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unsigned_abs : M.IsAssociatedFunction Self "unsigned_abs" unsigned_abs.
-    Smpl Add apply AssociatedFunction_unsigned_abs : is_associated.
+    Global Instance AssociatedFunction_unsigned_abs :
+      M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+    Admitted.
+    Global Typeclasses Opaque unsigned_abs.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -3884,6 +4006,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -4001,6 +4124,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -4110,8 +4234,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -4148,9 +4274,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -4211,8 +4338,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -4259,9 +4388,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_unsigned :
-      M.IsAssociatedFunction Self "overflowing_add_unsigned" overflowing_add_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_unsigned" overflowing_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_unsigned.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -4298,9 +4428,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -4361,9 +4492,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn overflowing_sub_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -4410,9 +4542,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub_unsigned :
-      M.IsAssociatedFunction Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub_unsigned.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -4449,9 +4582,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -4506,9 +4640,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -4569,9 +4704,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -4627,9 +4763,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -4691,9 +4828,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -4744,9 +4882,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -4771,9 +4910,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -4798,9 +4938,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_abs(self) -> (Self, bool) {
@@ -4824,9 +4965,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_abs :
-      M.IsAssociatedFunction Self "overflowing_abs" overflowing_abs.
-    Smpl Add apply AssociatedFunction_overflowing_abs : is_associated.
+    Global Instance AssociatedFunction_overflowing_abs :
+      M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+    Admitted.
+    Global Typeclasses Opaque overflowing_abs.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -4899,6 +5041,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -5049,9 +5192,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -5148,6 +5292,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -5247,6 +5392,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -5341,8 +5487,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -5399,8 +5546,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -5491,8 +5639,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -5553,8 +5703,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -5615,8 +5767,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -5676,8 +5830,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -5798,9 +5954,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -5969,9 +6126,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn midpoint(self, rhs: Self) -> Self {
@@ -6023,8 +6181,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -6140,8 +6300,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -6200,8 +6361,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -6260,8 +6422,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -6315,8 +6478,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -6381,9 +6546,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -6430,9 +6596,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn abs(self) -> Self {
@@ -6475,8 +6642,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
-    Smpl Add apply AssociatedFunction_abs : is_associated.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
     
     (*
             pub const fn abs_diff(self, other: Self) -> $UnsignedT {
@@ -6543,8 +6711,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn signum(self) -> Self {
@@ -6601,8 +6771,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
-    Smpl Add apply AssociatedFunction_signum : is_associated.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
     
     (*         pub const fn is_positive(self) -> bool { self > 0 } *)
     Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -6614,8 +6785,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
-    Smpl Add apply AssociatedFunction_is_positive : is_associated.
+    Global Instance AssociatedFunction_is_positive :
+      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+    Admitted.
+    Global Typeclasses Opaque is_positive.
     
     (*         pub const fn is_negative(self) -> bool { self < 0 } *)
     Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -6627,8 +6800,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
-    Smpl Add apply AssociatedFunction_is_negative : is_associated.
+    Global Instance AssociatedFunction_is_negative :
+      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+    Admitted.
+    Global Typeclasses Opaque is_negative.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -6654,8 +6829,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -6681,8 +6858,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -6711,8 +6890,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -6738,9 +6919,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -6766,9 +6948,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -6796,9 +6979,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
             pub const fn min_value() -> Self {
@@ -6811,8 +6995,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*
             pub const fn max_value() -> Self {
@@ -6825,8 +7011,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -7166,6 +7354,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -7307,6 +7496,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -7463,6 +7653,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -7732,6 +7923,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -8013,9 +8205,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_i8.
   
   Module Impl_i16.
@@ -8028,8 +8221,10 @@ Module num.
         ltac:(M.monadic
           (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = (<$UnsignedT>::MAX >> 1) as Self; *)
     (* Ty.path "i16" *)
@@ -8045,15 +8240,19 @@ Module num.
               |))
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
     Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*         pub const fn count_ones(self) -> u32 { (self as $UnsignedT).count_ones() } *)
     Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8069,8 +8268,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -8090,8 +8291,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -8111,9 +8314,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -8133,9 +8337,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -8155,8 +8360,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -8176,9 +8383,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_unsigned(self) -> $UnsignedT {
@@ -8194,9 +8402,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_unsigned :
-      M.IsAssociatedFunction Self "cast_unsigned" cast_unsigned.
-    Smpl Add apply AssociatedFunction_cast_unsigned : is_associated.
+    Global Instance AssociatedFunction_cast_unsigned :
+      M.IsAssociatedFunction.Trait Self "cast_unsigned" cast_unsigned.
+    Admitted.
+    Global Typeclasses Opaque cast_unsigned.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -8219,8 +8428,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -8243,8 +8454,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -8266,8 +8479,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -8289,8 +8504,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -8317,8 +8534,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -8341,8 +8560,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -8369,8 +8590,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -8393,8 +8615,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -8454,8 +8677,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -8511,8 +8736,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -8582,9 +8809,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -8644,9 +8872,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_unsigned :
-      M.IsAssociatedFunction Self "checked_add_unsigned" checked_add_unsigned.
-    Smpl Add apply AssociatedFunction_checked_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_add_unsigned" checked_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_add_unsigned.
     
     (*
             pub const fn strict_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -8702,9 +8931,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_unsigned :
-      M.IsAssociatedFunction Self "strict_add_unsigned" strict_add_unsigned.
-    Smpl Add apply AssociatedFunction_strict_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_add_unsigned" strict_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_add_unsigned.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -8764,8 +8994,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -8821,8 +9053,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -8892,9 +9126,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_sub_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -8954,9 +9189,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub_unsigned :
-      M.IsAssociatedFunction Self "checked_sub_unsigned" checked_sub_unsigned.
-    Smpl Add apply AssociatedFunction_checked_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_sub_unsigned" checked_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_sub_unsigned.
     
     (*
             pub const fn strict_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -9012,9 +9248,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub_unsigned :
-      M.IsAssociatedFunction Self "strict_sub_unsigned" strict_sub_unsigned.
-    Smpl Add apply AssociatedFunction_strict_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_sub_unsigned" strict_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_sub_unsigned.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -9074,8 +9311,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -9131,8 +9370,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -9202,9 +9443,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -9278,8 +9520,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -9335,8 +9579,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -9404,9 +9650,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -9462,9 +9709,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -9538,8 +9786,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -9595,8 +9845,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -9664,9 +9916,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -9722,9 +9975,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -9783,8 +10037,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const unsafe fn unchecked_neg(self) -> Self {
@@ -9852,9 +10108,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_neg :
-      M.IsAssociatedFunction Self "unchecked_neg" unchecked_neg.
-    Smpl Add apply AssociatedFunction_unchecked_neg : is_associated.
+    Global Instance AssociatedFunction_unchecked_neg :
+      M.IsAssociatedFunction.Trait Self "unchecked_neg" unchecked_neg.
+    Admitted.
+    Global Typeclasses Opaque unchecked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -9909,8 +10166,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -9963,8 +10222,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -10020,8 +10281,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -10094,9 +10357,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -10144,9 +10408,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -10199,8 +10464,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -10256,8 +10523,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -10330,9 +10599,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -10398,9 +10668,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -10450,8 +10721,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
-    Smpl Add apply AssociatedFunction_checked_abs : is_associated.
+    Global Instance AssociatedFunction_checked_abs :
+      M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+    Admitted.
+    Global Typeclasses Opaque checked_abs.
     
     (*
             pub const fn strict_abs(self) -> Self {
@@ -10497,8 +10770,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_abs : M.IsAssociatedFunction Self "strict_abs" strict_abs.
-    Smpl Add apply AssociatedFunction_strict_abs : is_associated.
+    Global Instance AssociatedFunction_strict_abs :
+      M.IsAssociatedFunction.Trait Self "strict_abs" strict_abs.
+    Admitted.
+    Global Typeclasses Opaque strict_abs.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -10563,6 +10838,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -10746,8 +11022,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -10806,6 +11084,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -10907,8 +11186,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn checked_isqrt(self) -> Option<Self> {
@@ -11008,9 +11289,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_isqrt :
-      M.IsAssociatedFunction Self "checked_isqrt" checked_isqrt.
-    Smpl Add apply AssociatedFunction_checked_isqrt : is_associated.
+    Global Instance AssociatedFunction_checked_isqrt :
+      M.IsAssociatedFunction.Trait Self "checked_isqrt" checked_isqrt.
+    Admitted.
+    Global Typeclasses Opaque checked_isqrt.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -11031,9 +11313,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -11081,9 +11364,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_unsigned :
-      M.IsAssociatedFunction Self "saturating_add_unsigned" saturating_add_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_add_unsigned" saturating_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_unsigned.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -11104,9 +11388,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -11154,9 +11439,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub_unsigned :
-      M.IsAssociatedFunction Self "saturating_sub_unsigned" saturating_sub_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_sub_unsigned" saturating_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub_unsigned.
     
     (*
             pub const fn saturating_neg(self) -> Self {
@@ -11176,9 +11462,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_neg :
-      M.IsAssociatedFunction Self "saturating_neg" saturating_neg.
-    Smpl Add apply AssociatedFunction_saturating_neg : is_associated.
+    Global Instance AssociatedFunction_saturating_neg :
+      M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+    Admitted.
+    Global Typeclasses Opaque saturating_neg.
     
     (*
             pub const fn saturating_abs(self) -> Self {
@@ -11224,9 +11511,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_abs :
-      M.IsAssociatedFunction Self "saturating_abs" saturating_abs.
-    Smpl Add apply AssociatedFunction_saturating_abs : is_associated.
+    Global Instance AssociatedFunction_saturating_abs :
+      M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+    Admitted.
+    Global Typeclasses Opaque saturating_abs.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -11297,9 +11585,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -11347,9 +11636,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -11413,9 +11703,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -11436,8 +11727,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -11458,9 +11751,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_unsigned :
-      M.IsAssociatedFunction Self "wrapping_add_unsigned" wrapping_add_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_unsigned" wrapping_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_unsigned.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -11481,8 +11775,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -11503,9 +11799,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub_unsigned :
-      M.IsAssociatedFunction Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub_unsigned.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -11526,8 +11823,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -11555,8 +11854,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -11584,9 +11885,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -11614,8 +11916,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -11643,9 +11947,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -11666,8 +11971,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -11700,8 +12007,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -11734,8 +12043,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_abs(self) -> Self {
@@ -11781,8 +12092,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_abs : M.IsAssociatedFunction Self "wrapping_abs" wrapping_abs.
-    Smpl Add apply AssociatedFunction_wrapping_abs : is_associated.
+    Global Instance AssociatedFunction_wrapping_abs :
+      M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+    Admitted.
+    Global Typeclasses Opaque wrapping_abs.
     
     (*
             pub const fn unsigned_abs(self) -> $UnsignedT {
@@ -11804,8 +12117,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unsigned_abs : M.IsAssociatedFunction Self "unsigned_abs" unsigned_abs.
-    Smpl Add apply AssociatedFunction_unsigned_abs : is_associated.
+    Global Instance AssociatedFunction_unsigned_abs :
+      M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+    Admitted.
+    Global Typeclasses Opaque unsigned_abs.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -11901,6 +12216,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -12018,6 +12334,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -12127,8 +12444,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -12165,9 +12484,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -12228,8 +12548,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -12276,9 +12598,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_unsigned :
-      M.IsAssociatedFunction Self "overflowing_add_unsigned" overflowing_add_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_unsigned" overflowing_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_unsigned.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -12315,9 +12638,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -12378,9 +12702,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn overflowing_sub_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -12427,9 +12752,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub_unsigned :
-      M.IsAssociatedFunction Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub_unsigned.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -12466,9 +12792,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -12526,9 +12853,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -12592,9 +12920,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -12650,9 +12979,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -12714,9 +13044,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -12767,9 +13098,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -12794,9 +13126,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -12821,9 +13154,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_abs(self) -> (Self, bool) {
@@ -12847,9 +13181,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_abs :
-      M.IsAssociatedFunction Self "overflowing_abs" overflowing_abs.
-    Smpl Add apply AssociatedFunction_overflowing_abs : is_associated.
+    Global Instance AssociatedFunction_overflowing_abs :
+      M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+    Admitted.
+    Global Typeclasses Opaque overflowing_abs.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -12922,6 +13257,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -13072,9 +13408,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -13171,6 +13508,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -13270,6 +13608,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -13364,8 +13703,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -13422,8 +13762,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -13514,8 +13855,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -13576,8 +13919,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -13638,8 +13983,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -13699,8 +14046,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -13824,9 +14173,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -13998,9 +14348,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn midpoint(self, rhs: Self) -> Self {
@@ -14052,8 +14403,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -14169,8 +14522,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -14229,8 +14583,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -14289,8 +14644,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -14344,8 +14700,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -14410,9 +14768,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -14459,9 +14818,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn abs(self) -> Self {
@@ -14504,8 +14864,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
-    Smpl Add apply AssociatedFunction_abs : is_associated.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
     
     (*
             pub const fn abs_diff(self, other: Self) -> $UnsignedT {
@@ -14572,8 +14933,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn signum(self) -> Self {
@@ -14630,8 +14993,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
-    Smpl Add apply AssociatedFunction_signum : is_associated.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
     
     (*         pub const fn is_positive(self) -> bool { self > 0 } *)
     Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -14643,8 +15007,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
-    Smpl Add apply AssociatedFunction_is_positive : is_associated.
+    Global Instance AssociatedFunction_is_positive :
+      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+    Admitted.
+    Global Typeclasses Opaque is_positive.
     
     (*         pub const fn is_negative(self) -> bool { self < 0 } *)
     Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -14656,8 +15022,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
-    Smpl Add apply AssociatedFunction_is_negative : is_associated.
+    Global Instance AssociatedFunction_is_negative :
+      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+    Admitted.
+    Global Typeclasses Opaque is_negative.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -14683,8 +15051,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -14710,8 +15080,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -14740,8 +15112,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -14767,9 +15141,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -14795,9 +15170,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -14825,9 +15201,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
             pub const fn min_value() -> Self {
@@ -14840,8 +15217,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*
             pub const fn max_value() -> Self {
@@ -14854,8 +15233,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -15195,6 +15576,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -15336,6 +15718,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -15492,6 +15875,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -15761,6 +16145,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -16042,9 +16427,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_i16.
   
   Module Impl_i32.
@@ -16057,8 +16443,10 @@ Module num.
         ltac:(M.monadic
           (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = (<$UnsignedT>::MAX >> 1) as Self; *)
     (* Ty.path "i32" *)
@@ -16074,15 +16462,19 @@ Module num.
               |))
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
     Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*         pub const fn count_ones(self) -> u32 { (self as $UnsignedT).count_ones() } *)
     Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -16098,8 +16490,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -16119,8 +16513,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -16140,9 +16536,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -16162,9 +16559,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -16184,8 +16582,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -16205,9 +16605,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_unsigned(self) -> $UnsignedT {
@@ -16223,9 +16624,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_unsigned :
-      M.IsAssociatedFunction Self "cast_unsigned" cast_unsigned.
-    Smpl Add apply AssociatedFunction_cast_unsigned : is_associated.
+    Global Instance AssociatedFunction_cast_unsigned :
+      M.IsAssociatedFunction.Trait Self "cast_unsigned" cast_unsigned.
+    Admitted.
+    Global Typeclasses Opaque cast_unsigned.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -16248,8 +16650,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -16272,8 +16676,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -16295,8 +16701,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -16318,8 +16726,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -16346,8 +16756,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -16370,8 +16782,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -16398,8 +16812,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -16422,8 +16837,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -16483,8 +16899,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -16540,8 +16958,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -16611,9 +17031,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -16673,9 +17094,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_unsigned :
-      M.IsAssociatedFunction Self "checked_add_unsigned" checked_add_unsigned.
-    Smpl Add apply AssociatedFunction_checked_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_add_unsigned" checked_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_add_unsigned.
     
     (*
             pub const fn strict_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -16731,9 +17153,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_unsigned :
-      M.IsAssociatedFunction Self "strict_add_unsigned" strict_add_unsigned.
-    Smpl Add apply AssociatedFunction_strict_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_add_unsigned" strict_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_add_unsigned.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -16793,8 +17216,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -16850,8 +17275,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -16921,9 +17348,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_sub_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -16983,9 +17411,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub_unsigned :
-      M.IsAssociatedFunction Self "checked_sub_unsigned" checked_sub_unsigned.
-    Smpl Add apply AssociatedFunction_checked_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_sub_unsigned" checked_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_sub_unsigned.
     
     (*
             pub const fn strict_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -17041,9 +17470,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub_unsigned :
-      M.IsAssociatedFunction Self "strict_sub_unsigned" strict_sub_unsigned.
-    Smpl Add apply AssociatedFunction_strict_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_sub_unsigned" strict_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_sub_unsigned.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -17103,8 +17533,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -17160,8 +17592,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -17231,9 +17665,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -17307,8 +17742,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -17364,8 +17801,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -17433,9 +17872,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -17491,9 +17931,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -17567,8 +18008,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -17624,8 +18067,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -17693,9 +18138,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -17751,9 +18197,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -17812,8 +18259,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const unsafe fn unchecked_neg(self) -> Self {
@@ -17881,9 +18330,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_neg :
-      M.IsAssociatedFunction Self "unchecked_neg" unchecked_neg.
-    Smpl Add apply AssociatedFunction_unchecked_neg : is_associated.
+    Global Instance AssociatedFunction_unchecked_neg :
+      M.IsAssociatedFunction.Trait Self "unchecked_neg" unchecked_neg.
+    Admitted.
+    Global Typeclasses Opaque unchecked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -17938,8 +18388,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -17992,8 +18444,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -18049,8 +18503,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -18123,9 +18579,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -18173,9 +18630,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -18228,8 +18686,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -18285,8 +18745,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -18359,9 +18821,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -18427,9 +18890,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -18479,8 +18943,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
-    Smpl Add apply AssociatedFunction_checked_abs : is_associated.
+    Global Instance AssociatedFunction_checked_abs :
+      M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+    Admitted.
+    Global Typeclasses Opaque checked_abs.
     
     (*
             pub const fn strict_abs(self) -> Self {
@@ -18526,8 +18992,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_abs : M.IsAssociatedFunction Self "strict_abs" strict_abs.
-    Smpl Add apply AssociatedFunction_strict_abs : is_associated.
+    Global Instance AssociatedFunction_strict_abs :
+      M.IsAssociatedFunction.Trait Self "strict_abs" strict_abs.
+    Admitted.
+    Global Typeclasses Opaque strict_abs.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -18592,6 +19060,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -18775,8 +19244,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -18835,6 +19306,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -18936,8 +19408,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn checked_isqrt(self) -> Option<Self> {
@@ -19037,9 +19511,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_isqrt :
-      M.IsAssociatedFunction Self "checked_isqrt" checked_isqrt.
-    Smpl Add apply AssociatedFunction_checked_isqrt : is_associated.
+    Global Instance AssociatedFunction_checked_isqrt :
+      M.IsAssociatedFunction.Trait Self "checked_isqrt" checked_isqrt.
+    Admitted.
+    Global Typeclasses Opaque checked_isqrt.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -19060,9 +19535,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -19110,9 +19586,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_unsigned :
-      M.IsAssociatedFunction Self "saturating_add_unsigned" saturating_add_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_add_unsigned" saturating_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_unsigned.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -19133,9 +19610,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -19183,9 +19661,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub_unsigned :
-      M.IsAssociatedFunction Self "saturating_sub_unsigned" saturating_sub_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_sub_unsigned" saturating_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub_unsigned.
     
     (*
             pub const fn saturating_neg(self) -> Self {
@@ -19205,9 +19684,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_neg :
-      M.IsAssociatedFunction Self "saturating_neg" saturating_neg.
-    Smpl Add apply AssociatedFunction_saturating_neg : is_associated.
+    Global Instance AssociatedFunction_saturating_neg :
+      M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+    Admitted.
+    Global Typeclasses Opaque saturating_neg.
     
     (*
             pub const fn saturating_abs(self) -> Self {
@@ -19253,9 +19733,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_abs :
-      M.IsAssociatedFunction Self "saturating_abs" saturating_abs.
-    Smpl Add apply AssociatedFunction_saturating_abs : is_associated.
+    Global Instance AssociatedFunction_saturating_abs :
+      M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+    Admitted.
+    Global Typeclasses Opaque saturating_abs.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -19326,9 +19807,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -19376,9 +19858,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -19442,9 +19925,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -19465,8 +19949,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -19487,9 +19973,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_unsigned :
-      M.IsAssociatedFunction Self "wrapping_add_unsigned" wrapping_add_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_unsigned" wrapping_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_unsigned.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -19510,8 +19997,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -19532,9 +20021,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub_unsigned :
-      M.IsAssociatedFunction Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub_unsigned.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -19555,8 +20045,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -19584,8 +20076,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -19613,9 +20107,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -19643,8 +20138,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -19672,9 +20169,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -19695,8 +20193,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -19729,8 +20229,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -19763,8 +20265,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_abs(self) -> Self {
@@ -19810,8 +20314,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_abs : M.IsAssociatedFunction Self "wrapping_abs" wrapping_abs.
-    Smpl Add apply AssociatedFunction_wrapping_abs : is_associated.
+    Global Instance AssociatedFunction_wrapping_abs :
+      M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+    Admitted.
+    Global Typeclasses Opaque wrapping_abs.
     
     (*
             pub const fn unsigned_abs(self) -> $UnsignedT {
@@ -19833,8 +20339,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unsigned_abs : M.IsAssociatedFunction Self "unsigned_abs" unsigned_abs.
-    Smpl Add apply AssociatedFunction_unsigned_abs : is_associated.
+    Global Instance AssociatedFunction_unsigned_abs :
+      M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+    Admitted.
+    Global Typeclasses Opaque unsigned_abs.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -19930,6 +20438,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -20047,6 +20556,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -20156,8 +20666,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -20194,9 +20706,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -20257,8 +20770,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -20305,9 +20820,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_unsigned :
-      M.IsAssociatedFunction Self "overflowing_add_unsigned" overflowing_add_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_unsigned" overflowing_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_unsigned.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -20344,9 +20860,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -20407,9 +20924,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn overflowing_sub_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -20456,9 +20974,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub_unsigned :
-      M.IsAssociatedFunction Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub_unsigned.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -20495,9 +21014,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -20555,9 +21075,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -20621,9 +21142,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -20679,9 +21201,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -20743,9 +21266,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -20796,9 +21320,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -20823,9 +21348,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -20850,9 +21376,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_abs(self) -> (Self, bool) {
@@ -20876,9 +21403,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_abs :
-      M.IsAssociatedFunction Self "overflowing_abs" overflowing_abs.
-    Smpl Add apply AssociatedFunction_overflowing_abs : is_associated.
+    Global Instance AssociatedFunction_overflowing_abs :
+      M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+    Admitted.
+    Global Typeclasses Opaque overflowing_abs.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -20951,6 +21479,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -21101,9 +21630,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -21200,6 +21730,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -21299,6 +21830,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -21393,8 +21925,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -21451,8 +21984,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -21543,8 +22077,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -21605,8 +22141,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -21667,8 +22205,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -21728,8 +22268,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -21853,9 +22395,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -22027,9 +22570,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn midpoint(self, rhs: Self) -> Self {
@@ -22081,8 +22625,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -22198,8 +22744,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -22258,8 +22805,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -22318,8 +22866,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -22373,8 +22922,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -22439,9 +22990,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -22488,9 +23040,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn abs(self) -> Self {
@@ -22533,8 +23086,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
-    Smpl Add apply AssociatedFunction_abs : is_associated.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
     
     (*
             pub const fn abs_diff(self, other: Self) -> $UnsignedT {
@@ -22601,8 +23155,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn signum(self) -> Self {
@@ -22659,8 +23215,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
-    Smpl Add apply AssociatedFunction_signum : is_associated.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
     
     (*         pub const fn is_positive(self) -> bool { self > 0 } *)
     Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -22672,8 +23229,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
-    Smpl Add apply AssociatedFunction_is_positive : is_associated.
+    Global Instance AssociatedFunction_is_positive :
+      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+    Admitted.
+    Global Typeclasses Opaque is_positive.
     
     (*         pub const fn is_negative(self) -> bool { self < 0 } *)
     Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -22685,8 +23244,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
-    Smpl Add apply AssociatedFunction_is_negative : is_associated.
+    Global Instance AssociatedFunction_is_negative :
+      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+    Admitted.
+    Global Typeclasses Opaque is_negative.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -22712,8 +23273,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -22739,8 +23302,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -22769,8 +23334,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -22796,9 +23363,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -22824,9 +23392,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -22854,9 +23423,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
             pub const fn min_value() -> Self {
@@ -22869,8 +23439,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*
             pub const fn max_value() -> Self {
@@ -22883,8 +23455,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -23224,6 +23798,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -23365,6 +23940,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -23521,6 +24097,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -23790,6 +24367,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -24071,9 +24649,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_i32.
   
   Module Impl_i64.
@@ -24086,8 +24665,10 @@ Module num.
         ltac:(M.monadic
           (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = (<$UnsignedT>::MAX >> 1) as Self; *)
     (* Ty.path "i64" *)
@@ -24103,15 +24684,19 @@ Module num.
               |))
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
     Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*         pub const fn count_ones(self) -> u32 { (self as $UnsignedT).count_ones() } *)
     Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -24127,8 +24712,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -24148,8 +24735,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -24169,9 +24758,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -24191,9 +24781,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -24213,8 +24804,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -24234,9 +24827,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_unsigned(self) -> $UnsignedT {
@@ -24252,9 +24846,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_unsigned :
-      M.IsAssociatedFunction Self "cast_unsigned" cast_unsigned.
-    Smpl Add apply AssociatedFunction_cast_unsigned : is_associated.
+    Global Instance AssociatedFunction_cast_unsigned :
+      M.IsAssociatedFunction.Trait Self "cast_unsigned" cast_unsigned.
+    Admitted.
+    Global Typeclasses Opaque cast_unsigned.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -24277,8 +24872,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -24301,8 +24898,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -24324,8 +24923,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -24347,8 +24948,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -24375,8 +24978,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -24399,8 +25004,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -24427,8 +25034,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -24451,8 +25059,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -24512,8 +25121,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -24569,8 +25180,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -24640,9 +25253,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -24702,9 +25316,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_unsigned :
-      M.IsAssociatedFunction Self "checked_add_unsigned" checked_add_unsigned.
-    Smpl Add apply AssociatedFunction_checked_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_add_unsigned" checked_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_add_unsigned.
     
     (*
             pub const fn strict_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -24760,9 +25375,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_unsigned :
-      M.IsAssociatedFunction Self "strict_add_unsigned" strict_add_unsigned.
-    Smpl Add apply AssociatedFunction_strict_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_add_unsigned" strict_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_add_unsigned.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -24822,8 +25438,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -24879,8 +25497,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -24950,9 +25570,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_sub_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -25012,9 +25633,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub_unsigned :
-      M.IsAssociatedFunction Self "checked_sub_unsigned" checked_sub_unsigned.
-    Smpl Add apply AssociatedFunction_checked_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_sub_unsigned" checked_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_sub_unsigned.
     
     (*
             pub const fn strict_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -25070,9 +25692,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub_unsigned :
-      M.IsAssociatedFunction Self "strict_sub_unsigned" strict_sub_unsigned.
-    Smpl Add apply AssociatedFunction_strict_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_sub_unsigned" strict_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_sub_unsigned.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -25132,8 +25755,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -25189,8 +25814,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -25260,9 +25887,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -25336,8 +25964,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -25393,8 +26023,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -25462,9 +26094,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -25520,9 +26153,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -25596,8 +26230,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -25653,8 +26289,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -25722,9 +26360,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -25780,9 +26419,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -25841,8 +26481,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const unsafe fn unchecked_neg(self) -> Self {
@@ -25910,9 +26552,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_neg :
-      M.IsAssociatedFunction Self "unchecked_neg" unchecked_neg.
-    Smpl Add apply AssociatedFunction_unchecked_neg : is_associated.
+    Global Instance AssociatedFunction_unchecked_neg :
+      M.IsAssociatedFunction.Trait Self "unchecked_neg" unchecked_neg.
+    Admitted.
+    Global Typeclasses Opaque unchecked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -25967,8 +26610,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -26021,8 +26666,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -26078,8 +26725,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -26152,9 +26801,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -26202,9 +26852,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -26257,8 +26908,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -26314,8 +26967,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -26388,9 +27043,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -26456,9 +27112,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -26508,8 +27165,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
-    Smpl Add apply AssociatedFunction_checked_abs : is_associated.
+    Global Instance AssociatedFunction_checked_abs :
+      M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+    Admitted.
+    Global Typeclasses Opaque checked_abs.
     
     (*
             pub const fn strict_abs(self) -> Self {
@@ -26555,8 +27214,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_abs : M.IsAssociatedFunction Self "strict_abs" strict_abs.
-    Smpl Add apply AssociatedFunction_strict_abs : is_associated.
+    Global Instance AssociatedFunction_strict_abs :
+      M.IsAssociatedFunction.Trait Self "strict_abs" strict_abs.
+    Admitted.
+    Global Typeclasses Opaque strict_abs.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -26621,6 +27282,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -26804,8 +27466,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -26864,6 +27528,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -26965,8 +27630,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn checked_isqrt(self) -> Option<Self> {
@@ -27066,9 +27733,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_isqrt :
-      M.IsAssociatedFunction Self "checked_isqrt" checked_isqrt.
-    Smpl Add apply AssociatedFunction_checked_isqrt : is_associated.
+    Global Instance AssociatedFunction_checked_isqrt :
+      M.IsAssociatedFunction.Trait Self "checked_isqrt" checked_isqrt.
+    Admitted.
+    Global Typeclasses Opaque checked_isqrt.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -27089,9 +27757,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -27139,9 +27808,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_unsigned :
-      M.IsAssociatedFunction Self "saturating_add_unsigned" saturating_add_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_add_unsigned" saturating_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_unsigned.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -27162,9 +27832,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -27212,9 +27883,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub_unsigned :
-      M.IsAssociatedFunction Self "saturating_sub_unsigned" saturating_sub_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_sub_unsigned" saturating_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub_unsigned.
     
     (*
             pub const fn saturating_neg(self) -> Self {
@@ -27234,9 +27906,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_neg :
-      M.IsAssociatedFunction Self "saturating_neg" saturating_neg.
-    Smpl Add apply AssociatedFunction_saturating_neg : is_associated.
+    Global Instance AssociatedFunction_saturating_neg :
+      M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+    Admitted.
+    Global Typeclasses Opaque saturating_neg.
     
     (*
             pub const fn saturating_abs(self) -> Self {
@@ -27282,9 +27955,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_abs :
-      M.IsAssociatedFunction Self "saturating_abs" saturating_abs.
-    Smpl Add apply AssociatedFunction_saturating_abs : is_associated.
+    Global Instance AssociatedFunction_saturating_abs :
+      M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+    Admitted.
+    Global Typeclasses Opaque saturating_abs.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -27355,9 +28029,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -27405,9 +28080,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -27471,9 +28147,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -27494,8 +28171,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -27516,9 +28195,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_unsigned :
-      M.IsAssociatedFunction Self "wrapping_add_unsigned" wrapping_add_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_unsigned" wrapping_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_unsigned.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -27539,8 +28219,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -27561,9 +28243,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub_unsigned :
-      M.IsAssociatedFunction Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub_unsigned.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -27584,8 +28267,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -27613,8 +28298,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -27642,9 +28329,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -27672,8 +28360,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -27701,9 +28391,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -27724,8 +28415,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -27758,8 +28451,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -27792,8 +28487,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_abs(self) -> Self {
@@ -27839,8 +28536,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_abs : M.IsAssociatedFunction Self "wrapping_abs" wrapping_abs.
-    Smpl Add apply AssociatedFunction_wrapping_abs : is_associated.
+    Global Instance AssociatedFunction_wrapping_abs :
+      M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+    Admitted.
+    Global Typeclasses Opaque wrapping_abs.
     
     (*
             pub const fn unsigned_abs(self) -> $UnsignedT {
@@ -27862,8 +28561,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unsigned_abs : M.IsAssociatedFunction Self "unsigned_abs" unsigned_abs.
-    Smpl Add apply AssociatedFunction_unsigned_abs : is_associated.
+    Global Instance AssociatedFunction_unsigned_abs :
+      M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+    Admitted.
+    Global Typeclasses Opaque unsigned_abs.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -27959,6 +28660,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -28076,6 +28778,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -28185,8 +28888,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -28223,9 +28928,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -28286,8 +28992,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -28334,9 +29042,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_unsigned :
-      M.IsAssociatedFunction Self "overflowing_add_unsigned" overflowing_add_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_unsigned" overflowing_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_unsigned.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -28373,9 +29082,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -28436,9 +29146,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn overflowing_sub_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -28485,9 +29196,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub_unsigned :
-      M.IsAssociatedFunction Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub_unsigned.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -28524,9 +29236,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -28584,9 +29297,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -28650,9 +29364,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -28708,9 +29423,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -28772,9 +29488,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -28825,9 +29542,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -28852,9 +29570,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -28879,9 +29598,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_abs(self) -> (Self, bool) {
@@ -28905,9 +29625,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_abs :
-      M.IsAssociatedFunction Self "overflowing_abs" overflowing_abs.
-    Smpl Add apply AssociatedFunction_overflowing_abs : is_associated.
+    Global Instance AssociatedFunction_overflowing_abs :
+      M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+    Admitted.
+    Global Typeclasses Opaque overflowing_abs.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -28980,6 +29701,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -29130,9 +29852,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -29229,6 +29952,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -29328,6 +30052,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -29422,8 +30147,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -29480,8 +30206,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -29572,8 +30299,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -29634,8 +30363,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -29696,8 +30427,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -29757,8 +30490,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -29882,9 +30617,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -30056,9 +30792,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn midpoint(self, rhs: Self) -> Self {
@@ -30110,8 +30847,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -30227,8 +30966,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -30287,8 +31027,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -30347,8 +31088,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -30402,8 +31144,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -30468,9 +31212,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -30517,9 +31262,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn abs(self) -> Self {
@@ -30562,8 +31308,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
-    Smpl Add apply AssociatedFunction_abs : is_associated.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
     
     (*
             pub const fn abs_diff(self, other: Self) -> $UnsignedT {
@@ -30630,8 +31377,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn signum(self) -> Self {
@@ -30688,8 +31437,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
-    Smpl Add apply AssociatedFunction_signum : is_associated.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
     
     (*         pub const fn is_positive(self) -> bool { self > 0 } *)
     Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -30701,8 +31451,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
-    Smpl Add apply AssociatedFunction_is_positive : is_associated.
+    Global Instance AssociatedFunction_is_positive :
+      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+    Admitted.
+    Global Typeclasses Opaque is_positive.
     
     (*         pub const fn is_negative(self) -> bool { self < 0 } *)
     Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -30714,8 +31466,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
-    Smpl Add apply AssociatedFunction_is_negative : is_associated.
+    Global Instance AssociatedFunction_is_negative :
+      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+    Admitted.
+    Global Typeclasses Opaque is_negative.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -30741,8 +31495,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -30768,8 +31524,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -30798,8 +31556,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -30825,9 +31585,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -30853,9 +31614,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -30883,9 +31645,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
             pub const fn min_value() -> Self {
@@ -30898,8 +31661,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*
             pub const fn max_value() -> Self {
@@ -30912,8 +31677,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -31253,6 +32020,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -31394,6 +32162,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -31550,6 +32319,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -31819,6 +32589,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -32100,9 +32871,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_i64.
   
   Module Impl_i128.
@@ -32115,8 +32887,10 @@ Module num.
         ltac:(M.monadic
           (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = (<$UnsignedT>::MAX >> 1) as Self; *)
     (* Ty.path "i128" *)
@@ -32132,15 +32906,19 @@ Module num.
               |))
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
     Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*         pub const fn count_ones(self) -> u32 { (self as $UnsignedT).count_ones() } *)
     Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -32156,8 +32934,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -32177,8 +32957,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -32198,9 +32980,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -32220,9 +33003,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -32242,8 +33026,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -32263,9 +33049,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_unsigned(self) -> $UnsignedT {
@@ -32281,9 +33068,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_unsigned :
-      M.IsAssociatedFunction Self "cast_unsigned" cast_unsigned.
-    Smpl Add apply AssociatedFunction_cast_unsigned : is_associated.
+    Global Instance AssociatedFunction_cast_unsigned :
+      M.IsAssociatedFunction.Trait Self "cast_unsigned" cast_unsigned.
+    Admitted.
+    Global Typeclasses Opaque cast_unsigned.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -32306,8 +33094,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -32330,8 +33120,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -32353,8 +33145,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -32376,8 +33170,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -32404,8 +33200,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -32428,8 +33226,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -32456,8 +33256,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -32480,8 +33281,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -32541,8 +33343,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -32598,8 +33402,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -32669,9 +33475,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -32736,9 +33543,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_unsigned :
-      M.IsAssociatedFunction Self "checked_add_unsigned" checked_add_unsigned.
-    Smpl Add apply AssociatedFunction_checked_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_add_unsigned" checked_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_add_unsigned.
     
     (*
             pub const fn strict_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -32799,9 +33607,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_unsigned :
-      M.IsAssociatedFunction Self "strict_add_unsigned" strict_add_unsigned.
-    Smpl Add apply AssociatedFunction_strict_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_add_unsigned" strict_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_add_unsigned.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -32861,8 +33670,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -32918,8 +33729,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -32989,9 +33802,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_sub_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -33056,9 +33870,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub_unsigned :
-      M.IsAssociatedFunction Self "checked_sub_unsigned" checked_sub_unsigned.
-    Smpl Add apply AssociatedFunction_checked_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_sub_unsigned" checked_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_sub_unsigned.
     
     (*
             pub const fn strict_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -33119,9 +33934,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub_unsigned :
-      M.IsAssociatedFunction Self "strict_sub_unsigned" strict_sub_unsigned.
-    Smpl Add apply AssociatedFunction_strict_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_sub_unsigned" strict_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_sub_unsigned.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -33181,8 +33997,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -33238,8 +34056,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -33309,9 +34129,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -33385,8 +34206,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -33442,8 +34265,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -33511,9 +34336,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -33569,9 +34395,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -33645,8 +34472,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -33702,8 +34531,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -33771,9 +34602,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -33829,9 +34661,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -33890,8 +34723,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const unsafe fn unchecked_neg(self) -> Self {
@@ -33959,9 +34794,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_neg :
-      M.IsAssociatedFunction Self "unchecked_neg" unchecked_neg.
-    Smpl Add apply AssociatedFunction_unchecked_neg : is_associated.
+    Global Instance AssociatedFunction_unchecked_neg :
+      M.IsAssociatedFunction.Trait Self "unchecked_neg" unchecked_neg.
+    Admitted.
+    Global Typeclasses Opaque unchecked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -34016,8 +34852,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -34070,8 +34908,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -34127,8 +34967,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -34201,9 +35043,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -34251,9 +35094,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -34306,8 +35150,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -34363,8 +35209,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -34437,9 +35285,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -34505,9 +35354,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -34557,8 +35407,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
-    Smpl Add apply AssociatedFunction_checked_abs : is_associated.
+    Global Instance AssociatedFunction_checked_abs :
+      M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+    Admitted.
+    Global Typeclasses Opaque checked_abs.
     
     (*
             pub const fn strict_abs(self) -> Self {
@@ -34604,8 +35456,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_abs : M.IsAssociatedFunction Self "strict_abs" strict_abs.
-    Smpl Add apply AssociatedFunction_strict_abs : is_associated.
+    Global Instance AssociatedFunction_strict_abs :
+      M.IsAssociatedFunction.Trait Self "strict_abs" strict_abs.
+    Admitted.
+    Global Typeclasses Opaque strict_abs.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -34670,6 +35524,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -34853,8 +35708,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -34913,6 +35770,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -35014,8 +35872,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn checked_isqrt(self) -> Option<Self> {
@@ -35115,9 +35975,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_isqrt :
-      M.IsAssociatedFunction Self "checked_isqrt" checked_isqrt.
-    Smpl Add apply AssociatedFunction_checked_isqrt : is_associated.
+    Global Instance AssociatedFunction_checked_isqrt :
+      M.IsAssociatedFunction.Trait Self "checked_isqrt" checked_isqrt.
+    Admitted.
+    Global Typeclasses Opaque checked_isqrt.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -35138,9 +35999,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -35188,9 +36050,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_unsigned :
-      M.IsAssociatedFunction Self "saturating_add_unsigned" saturating_add_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_add_unsigned" saturating_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_unsigned.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -35211,9 +36074,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -35261,9 +36125,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub_unsigned :
-      M.IsAssociatedFunction Self "saturating_sub_unsigned" saturating_sub_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_sub_unsigned" saturating_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub_unsigned.
     
     (*
             pub const fn saturating_neg(self) -> Self {
@@ -35283,9 +36148,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_neg :
-      M.IsAssociatedFunction Self "saturating_neg" saturating_neg.
-    Smpl Add apply AssociatedFunction_saturating_neg : is_associated.
+    Global Instance AssociatedFunction_saturating_neg :
+      M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+    Admitted.
+    Global Typeclasses Opaque saturating_neg.
     
     (*
             pub const fn saturating_abs(self) -> Self {
@@ -35331,9 +36197,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_abs :
-      M.IsAssociatedFunction Self "saturating_abs" saturating_abs.
-    Smpl Add apply AssociatedFunction_saturating_abs : is_associated.
+    Global Instance AssociatedFunction_saturating_abs :
+      M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+    Admitted.
+    Global Typeclasses Opaque saturating_abs.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -35407,9 +36274,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -35457,9 +36325,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -35523,9 +36392,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -35546,8 +36416,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -35568,9 +36440,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_unsigned :
-      M.IsAssociatedFunction Self "wrapping_add_unsigned" wrapping_add_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_unsigned" wrapping_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_unsigned.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -35591,8 +36464,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -35613,9 +36488,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub_unsigned :
-      M.IsAssociatedFunction Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub_unsigned.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -35636,8 +36512,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -35665,8 +36543,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -35694,9 +36574,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -35724,8 +36605,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -35753,9 +36636,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -35776,8 +36660,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -35810,8 +36696,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -35844,8 +36732,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_abs(self) -> Self {
@@ -35891,8 +36781,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_abs : M.IsAssociatedFunction Self "wrapping_abs" wrapping_abs.
-    Smpl Add apply AssociatedFunction_wrapping_abs : is_associated.
+    Global Instance AssociatedFunction_wrapping_abs :
+      M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+    Admitted.
+    Global Typeclasses Opaque wrapping_abs.
     
     (*
             pub const fn unsigned_abs(self) -> $UnsignedT {
@@ -35914,8 +36806,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unsigned_abs : M.IsAssociatedFunction Self "unsigned_abs" unsigned_abs.
-    Smpl Add apply AssociatedFunction_unsigned_abs : is_associated.
+    Global Instance AssociatedFunction_unsigned_abs :
+      M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+    Admitted.
+    Global Typeclasses Opaque unsigned_abs.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -36011,6 +36905,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -36128,6 +37023,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -36237,8 +37133,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -36279,9 +37177,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -36342,8 +37241,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -36390,9 +37291,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_unsigned :
-      M.IsAssociatedFunction Self "overflowing_add_unsigned" overflowing_add_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_unsigned" overflowing_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_unsigned.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -36433,9 +37335,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -36496,9 +37399,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn overflowing_sub_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -36545,9 +37449,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub_unsigned :
-      M.IsAssociatedFunction Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub_unsigned.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -36588,9 +37493,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -36648,9 +37554,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -36714,9 +37621,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -36772,9 +37680,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -36836,9 +37745,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -36889,9 +37799,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -36916,9 +37827,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -36943,9 +37855,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_abs(self) -> (Self, bool) {
@@ -36969,9 +37882,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_abs :
-      M.IsAssociatedFunction Self "overflowing_abs" overflowing_abs.
-    Smpl Add apply AssociatedFunction_overflowing_abs : is_associated.
+    Global Instance AssociatedFunction_overflowing_abs :
+      M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+    Admitted.
+    Global Typeclasses Opaque overflowing_abs.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -37044,6 +37958,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -37194,9 +38109,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -37293,6 +38209,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -37392,6 +38309,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -37486,8 +38404,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -37544,8 +38463,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -37636,8 +38556,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -37698,8 +38620,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -37760,8 +38684,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -37821,8 +38747,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -37946,9 +38874,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -38120,9 +39049,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn midpoint(self, rhs: Self) -> Self {
@@ -38174,8 +39104,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -38291,8 +39223,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -38351,8 +39284,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -38411,8 +39345,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -38466,8 +39401,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -38532,9 +39469,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -38581,9 +39519,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn abs(self) -> Self {
@@ -38626,8 +39565,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
-    Smpl Add apply AssociatedFunction_abs : is_associated.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
     
     (*
             pub const fn abs_diff(self, other: Self) -> $UnsignedT {
@@ -38694,8 +39634,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn signum(self) -> Self {
@@ -38752,8 +39694,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
-    Smpl Add apply AssociatedFunction_signum : is_associated.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
     
     (*         pub const fn is_positive(self) -> bool { self > 0 } *)
     Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -38765,8 +39708,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
-    Smpl Add apply AssociatedFunction_is_positive : is_associated.
+    Global Instance AssociatedFunction_is_positive :
+      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+    Admitted.
+    Global Typeclasses Opaque is_positive.
     
     (*         pub const fn is_negative(self) -> bool { self < 0 } *)
     Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -38778,8 +39723,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
-    Smpl Add apply AssociatedFunction_is_negative : is_associated.
+    Global Instance AssociatedFunction_is_negative :
+      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+    Admitted.
+    Global Typeclasses Opaque is_negative.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -38805,8 +39752,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -38832,8 +39781,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -38862,8 +39813,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -38889,9 +39842,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -38917,9 +39871,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -38947,9 +39902,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
             pub const fn min_value() -> Self {
@@ -38962,8 +39918,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*
             pub const fn max_value() -> Self {
@@ -38976,8 +39934,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -39317,6 +40277,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -39458,6 +40419,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -39614,6 +40576,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -39883,6 +40846,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -40164,9 +41128,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_i128.
   
   Module Impl_isize.
@@ -40179,8 +41144,10 @@ Module num.
         ltac:(M.monadic
           (M.alloc (| UnOp.not (| M.read (| M.get_constant "core::num::MAX" |) |) |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = (<$UnsignedT>::MAX >> 1) as Self; *)
     (* Ty.path "isize" *)
@@ -40196,15 +41163,19 @@ Module num.
               |))
           |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = <$UnsignedT>::BITS; *)
     (* Ty.path "u32" *)
     Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*         pub const fn count_ones(self) -> u32 { (self as $UnsignedT).count_ones() } *)
     Definition count_ones (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -40220,8 +41191,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -40241,8 +41214,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -40262,9 +41237,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -40284,9 +41260,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -40306,8 +41283,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -40327,9 +41306,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_unsigned(self) -> $UnsignedT {
@@ -40345,9 +41325,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_unsigned :
-      M.IsAssociatedFunction Self "cast_unsigned" cast_unsigned.
-    Smpl Add apply AssociatedFunction_cast_unsigned : is_associated.
+    Global Instance AssociatedFunction_cast_unsigned :
+      M.IsAssociatedFunction.Trait Self "cast_unsigned" cast_unsigned.
+    Admitted.
+    Global Typeclasses Opaque cast_unsigned.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -40370,8 +41351,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -40394,8 +41377,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -40417,8 +41402,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -40440,8 +41427,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -40468,8 +41457,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -40492,8 +41483,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -40520,8 +41513,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -40544,8 +41538,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -40605,8 +41600,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -40662,8 +41659,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -40733,9 +41732,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -40800,9 +41800,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_unsigned :
-      M.IsAssociatedFunction Self "checked_add_unsigned" checked_add_unsigned.
-    Smpl Add apply AssociatedFunction_checked_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_add_unsigned" checked_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_add_unsigned.
     
     (*
             pub const fn strict_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -40863,9 +41864,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_unsigned :
-      M.IsAssociatedFunction Self "strict_add_unsigned" strict_add_unsigned.
-    Smpl Add apply AssociatedFunction_strict_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_add_unsigned" strict_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_add_unsigned.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -40925,8 +41927,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -40982,8 +41986,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -41053,9 +42059,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_sub_unsigned(self, rhs: $UnsignedT) -> Option<Self> {
@@ -41120,9 +42127,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub_unsigned :
-      M.IsAssociatedFunction Self "checked_sub_unsigned" checked_sub_unsigned.
-    Smpl Add apply AssociatedFunction_checked_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_checked_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "checked_sub_unsigned" checked_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque checked_sub_unsigned.
     
     (*
             pub const fn strict_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -41183,9 +42191,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub_unsigned :
-      M.IsAssociatedFunction Self "strict_sub_unsigned" strict_sub_unsigned.
-    Smpl Add apply AssociatedFunction_strict_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_strict_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "strict_sub_unsigned" strict_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque strict_sub_unsigned.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -41245,8 +42254,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -41302,8 +42313,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -41373,9 +42386,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -41449,8 +42463,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -41506,8 +42522,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -41575,9 +42593,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -41633,9 +42652,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -41709,8 +42729,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -41766,8 +42788,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -41835,9 +42859,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -41893,9 +42918,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -41954,8 +42980,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const unsafe fn unchecked_neg(self) -> Self {
@@ -42023,9 +43051,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_neg :
-      M.IsAssociatedFunction Self "unchecked_neg" unchecked_neg.
-    Smpl Add apply AssociatedFunction_unchecked_neg : is_associated.
+    Global Instance AssociatedFunction_unchecked_neg :
+      M.IsAssociatedFunction.Trait Self "unchecked_neg" unchecked_neg.
+    Admitted.
+    Global Typeclasses Opaque unchecked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -42080,8 +43109,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -42139,8 +43170,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -42196,8 +43229,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -42270,9 +43305,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -42320,9 +43356,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -42380,8 +43417,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -42437,8 +43476,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -42511,9 +43552,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -42579,9 +43621,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -42631,8 +43674,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_abs : M.IsAssociatedFunction Self "checked_abs" checked_abs.
-    Smpl Add apply AssociatedFunction_checked_abs : is_associated.
+    Global Instance AssociatedFunction_checked_abs :
+      M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+    Admitted.
+    Global Typeclasses Opaque checked_abs.
     
     (*
             pub const fn strict_abs(self) -> Self {
@@ -42678,8 +43723,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_abs : M.IsAssociatedFunction Self "strict_abs" strict_abs.
-    Smpl Add apply AssociatedFunction_strict_abs : is_associated.
+    Global Instance AssociatedFunction_strict_abs :
+      M.IsAssociatedFunction.Trait Self "strict_abs" strict_abs.
+    Admitted.
+    Global Typeclasses Opaque strict_abs.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -42744,6 +43791,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -42927,8 +43975,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -42987,6 +44037,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -43088,8 +44139,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn checked_isqrt(self) -> Option<Self> {
@@ -43189,9 +44242,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_isqrt :
-      M.IsAssociatedFunction Self "checked_isqrt" checked_isqrt.
-    Smpl Add apply AssociatedFunction_checked_isqrt : is_associated.
+    Global Instance AssociatedFunction_checked_isqrt :
+      M.IsAssociatedFunction.Trait Self "checked_isqrt" checked_isqrt.
+    Admitted.
+    Global Typeclasses Opaque checked_isqrt.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -43212,9 +44266,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -43262,9 +44317,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_unsigned :
-      M.IsAssociatedFunction Self "saturating_add_unsigned" saturating_add_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_add_unsigned" saturating_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_unsigned.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -43285,9 +44341,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -43335,9 +44392,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub_unsigned :
-      M.IsAssociatedFunction Self "saturating_sub_unsigned" saturating_sub_unsigned.
-    Smpl Add apply AssociatedFunction_saturating_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_saturating_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "saturating_sub_unsigned" saturating_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub_unsigned.
     
     (*
             pub const fn saturating_neg(self) -> Self {
@@ -43357,9 +44415,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_neg :
-      M.IsAssociatedFunction Self "saturating_neg" saturating_neg.
-    Smpl Add apply AssociatedFunction_saturating_neg : is_associated.
+    Global Instance AssociatedFunction_saturating_neg :
+      M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+    Admitted.
+    Global Typeclasses Opaque saturating_neg.
     
     (*
             pub const fn saturating_abs(self) -> Self {
@@ -43405,9 +44464,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_abs :
-      M.IsAssociatedFunction Self "saturating_abs" saturating_abs.
-    Smpl Add apply AssociatedFunction_saturating_abs : is_associated.
+    Global Instance AssociatedFunction_saturating_abs :
+      M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+    Admitted.
+    Global Typeclasses Opaque saturating_abs.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -43481,9 +44541,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -43531,9 +44592,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -43597,9 +44659,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -43620,8 +44683,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -43642,9 +44707,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_unsigned :
-      M.IsAssociatedFunction Self "wrapping_add_unsigned" wrapping_add_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_unsigned" wrapping_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_unsigned.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -43665,8 +44731,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_sub_unsigned(self, rhs: $UnsignedT) -> Self {
@@ -43687,9 +44755,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub_unsigned :
-      M.IsAssociatedFunction Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
-    Smpl Add apply AssociatedFunction_wrapping_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub_unsigned" wrapping_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub_unsigned.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -43710,8 +44779,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -43739,8 +44810,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -43768,9 +44841,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -43798,8 +44872,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -43827,9 +44903,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -43852,8 +44929,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -43886,8 +44965,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -43920,8 +45001,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_abs(self) -> Self {
@@ -43967,8 +45050,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_abs : M.IsAssociatedFunction Self "wrapping_abs" wrapping_abs.
-    Smpl Add apply AssociatedFunction_wrapping_abs : is_associated.
+    Global Instance AssociatedFunction_wrapping_abs :
+      M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+    Admitted.
+    Global Typeclasses Opaque wrapping_abs.
     
     (*
             pub const fn unsigned_abs(self) -> $UnsignedT {
@@ -43990,8 +45075,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unsigned_abs : M.IsAssociatedFunction Self "unsigned_abs" unsigned_abs.
-    Smpl Add apply AssociatedFunction_unsigned_abs : is_associated.
+    Global Instance AssociatedFunction_unsigned_abs :
+      M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+    Admitted.
+    Global Typeclasses Opaque unsigned_abs.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -44087,6 +45174,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -44204,6 +45292,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -44313,8 +45402,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -44356,9 +45447,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -44424,8 +45516,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -44473,9 +45567,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_unsigned :
-      M.IsAssociatedFunction Self "overflowing_add_unsigned" overflowing_add_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_add_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_unsigned" overflowing_add_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_unsigned.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -44517,9 +45612,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -44585,9 +45681,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn overflowing_sub_unsigned(self, rhs: $UnsignedT) -> (Self, bool) {
@@ -44635,9 +45732,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub_unsigned :
-      M.IsAssociatedFunction Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
-    Smpl Add apply AssociatedFunction_overflowing_sub_unsigned : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub_unsigned :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub_unsigned" overflowing_sub_unsigned.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub_unsigned.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -44679,9 +45777,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -44739,9 +45838,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -44805,9 +45905,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -44864,9 +45965,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -44929,9 +46031,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -44982,9 +46085,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -45009,9 +46113,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -45036,9 +46141,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_abs(self) -> (Self, bool) {
@@ -45062,9 +46168,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_abs :
-      M.IsAssociatedFunction Self "overflowing_abs" overflowing_abs.
-    Smpl Add apply AssociatedFunction_overflowing_abs : is_associated.
+    Global Instance AssociatedFunction_overflowing_abs :
+      M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+    Admitted.
+    Global Typeclasses Opaque overflowing_abs.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -45138,6 +46245,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -45288,9 +46396,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -45387,6 +46496,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -45486,6 +46596,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -45580,8 +46691,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -45638,8 +46750,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -45730,8 +46843,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -45792,8 +46907,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -45854,8 +46971,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -45915,8 +47034,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -46043,9 +47164,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -46220,9 +47342,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn midpoint(self, rhs: Self) -> Self {
@@ -46274,8 +47397,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -46391,8 +47516,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -46451,8 +47577,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -46511,8 +47638,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -46566,8 +47694,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -46632,9 +47762,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -46681,9 +47812,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn abs(self) -> Self {
@@ -46726,8 +47858,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs : M.IsAssociatedFunction Self "abs" abs.
-    Smpl Add apply AssociatedFunction_abs : is_associated.
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
     
     (*
             pub const fn abs_diff(self, other: Self) -> $UnsignedT {
@@ -46794,8 +47927,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn signum(self) -> Self {
@@ -46855,8 +47990,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_signum : M.IsAssociatedFunction Self "signum" signum.
-    Smpl Add apply AssociatedFunction_signum : is_associated.
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
     
     (*         pub const fn is_positive(self) -> bool { self > 0 } *)
     Definition is_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -46868,8 +48004,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_positive : M.IsAssociatedFunction Self "is_positive" is_positive.
-    Smpl Add apply AssociatedFunction_is_positive : is_associated.
+    Global Instance AssociatedFunction_is_positive :
+      M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+    Admitted.
+    Global Typeclasses Opaque is_positive.
     
     (*         pub const fn is_negative(self) -> bool { self < 0 } *)
     Definition is_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -46881,8 +48019,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_negative : M.IsAssociatedFunction Self "is_negative" is_negative.
-    Smpl Add apply AssociatedFunction_is_negative : is_associated.
+    Global Instance AssociatedFunction_is_negative :
+      M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+    Admitted.
+    Global Typeclasses Opaque is_negative.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -46908,8 +48048,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -46935,8 +48077,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -46965,8 +48109,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -46992,9 +48138,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -47020,9 +48167,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -47050,9 +48198,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*
             pub const fn min_value() -> Self {
@@ -47065,8 +48214,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*
             pub const fn max_value() -> Self {
@@ -47079,8 +48230,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     (*
             pub const fn from_str_radix(src: &str, radix: u32) -> Result<$size, ParseIntError> {
                 match <$t>::from_str_radix(src, radix) {
@@ -47133,9 +48286,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_isize.
   
   Definition value_ASCII_CASE_MASK : Value.t :=
@@ -47153,16 +48307,20 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = !0; *)
     (* Ty.path "u8" *)
     Definition value_MAX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U8 0 |) |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = Self::MAX.count_ones(); *)
     (* Ty.path "u32" *)
@@ -47177,8 +48335,10 @@ Module num.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*
             pub const fn count_ones(self) -> u32 {
@@ -47207,8 +48367,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -47228,8 +48390,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -47258,9 +48422,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -47289,9 +48454,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -47311,8 +48477,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -47332,9 +48500,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_signed(self) -> $SignedT {
@@ -47350,8 +48519,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_signed : M.IsAssociatedFunction Self "cast_signed" cast_signed.
-    Smpl Add apply AssociatedFunction_cast_signed : is_associated.
+    Global Instance AssociatedFunction_cast_signed :
+      M.IsAssociatedFunction.Trait Self "cast_signed" cast_signed.
+    Admitted.
+    Global Typeclasses Opaque cast_signed.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -47381,8 +48552,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -47412,8 +48585,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -47438,8 +48613,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -47464,8 +48641,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -47492,8 +48671,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -47516,8 +48697,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -47544,8 +48727,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -47568,8 +48752,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -47651,8 +48836,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -47708,8 +48895,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -47779,9 +48968,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_signed(self, rhs: $SignedT) -> Option<Self> {
@@ -47841,9 +49031,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_signed :
-      M.IsAssociatedFunction Self "checked_add_signed" checked_add_signed.
-    Smpl Add apply AssociatedFunction_checked_add_signed : is_associated.
+    Global Instance AssociatedFunction_checked_add_signed :
+      M.IsAssociatedFunction.Trait Self "checked_add_signed" checked_add_signed.
+    Admitted.
+    Global Typeclasses Opaque checked_add_signed.
     
     (*
             pub const fn strict_add_signed(self, rhs: $SignedT) -> Self {
@@ -47899,9 +49090,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_signed :
-      M.IsAssociatedFunction Self "strict_add_signed" strict_add_signed.
-    Smpl Add apply AssociatedFunction_strict_add_signed : is_associated.
+    Global Instance AssociatedFunction_strict_add_signed :
+      M.IsAssociatedFunction.Trait Self "strict_add_signed" strict_add_signed.
+    Admitted.
+    Global Typeclasses Opaque strict_add_signed.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -47957,8 +49149,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -48014,8 +49208,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -48085,9 +49281,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_signed_diff(self, rhs: Self) -> Option<$SignedT> {
@@ -48143,9 +49340,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_signed_diff :
-      M.IsAssociatedFunction Self "checked_signed_diff" checked_signed_diff.
-    Smpl Add apply AssociatedFunction_checked_signed_diff : is_associated.
+    Global Instance AssociatedFunction_checked_signed_diff :
+      M.IsAssociatedFunction.Trait Self "checked_signed_diff" checked_signed_diff.
+    Admitted.
+    Global Typeclasses Opaque checked_signed_diff.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -48205,8 +49403,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -48262,8 +49462,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -48333,9 +49535,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -48394,8 +49597,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -48412,8 +49617,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -48466,9 +49673,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -48485,9 +49693,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -48546,8 +49755,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -48564,8 +49775,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -48618,9 +49831,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -48637,9 +49851,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -48755,8 +49970,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -48815,8 +50031,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -48875,8 +50092,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -49030,6 +50248,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -49102,8 +50321,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -49171,9 +50392,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -49241,9 +50463,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -49302,8 +50525,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -49358,8 +50583,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -49412,8 +50639,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -49469,8 +50698,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -49543,9 +50774,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -49593,9 +50825,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -49648,8 +50881,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -49705,8 +50940,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -49779,9 +51016,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -49829,9 +51067,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -49896,6 +51135,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -50079,8 +51319,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -50139,6 +51381,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -50240,8 +51483,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -50262,9 +51507,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_signed(self, rhs: $SignedT) -> Self {
@@ -50342,9 +51588,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_signed :
-      M.IsAssociatedFunction Self "saturating_add_signed" saturating_add_signed.
-    Smpl Add apply AssociatedFunction_saturating_add_signed : is_associated.
+    Global Instance AssociatedFunction_saturating_add_signed :
+      M.IsAssociatedFunction.Trait Self "saturating_add_signed" saturating_add_signed.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_signed.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -50365,9 +51612,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -50413,9 +51661,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -50437,9 +51686,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -50485,9 +51735,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -50508,8 +51759,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_signed(self, rhs: $SignedT) -> Self {
@@ -50530,9 +51783,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_signed :
-      M.IsAssociatedFunction Self "wrapping_add_signed" wrapping_add_signed.
-    Smpl Add apply AssociatedFunction_wrapping_add_signed : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_signed :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_signed" wrapping_add_signed.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_signed.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -50553,8 +51807,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -50575,8 +51831,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -50593,8 +51851,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -50611,9 +51871,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -50630,8 +51891,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -50648,9 +51911,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -50670,8 +51934,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -50704,8 +51970,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -50738,8 +52006,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -50835,6 +52105,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -50952,6 +52223,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -51061,8 +52333,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -51099,9 +52373,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -51168,8 +52443,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_signed(self, rhs: $SignedT) -> (Self, bool) {
@@ -51214,9 +52491,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_signed :
-      M.IsAssociatedFunction Self "overflowing_add_signed" overflowing_add_signed.
-    Smpl Add apply AssociatedFunction_overflowing_add_signed : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_signed :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_signed" overflowing_add_signed.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_signed.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -51253,9 +52531,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -51322,9 +52601,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn abs_diff(self, other: Self) -> Self {
@@ -51414,8 +52694,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -51452,9 +52734,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -51472,9 +52755,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -51492,9 +52776,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -51512,9 +52797,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -51532,9 +52818,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -51558,9 +52845,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -51585,9 +52873,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -51612,9 +52901,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -51687,6 +52977,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -51837,9 +53128,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -51936,6 +53228,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -52035,6 +53328,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -52129,8 +53423,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -52191,8 +53486,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -52209,8 +53505,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -52227,8 +53525,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -52245,8 +53545,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -52291,8 +53593,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -52335,9 +53639,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -52420,9 +53725,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn is_multiple_of(self, rhs: Self) -> bool {
@@ -52466,9 +53772,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_multiple_of :
-      M.IsAssociatedFunction Self "is_multiple_of" is_multiple_of.
-    Smpl Add apply AssociatedFunction_is_multiple_of : is_associated.
+    Global Instance AssociatedFunction_is_multiple_of :
+      M.IsAssociatedFunction.Trait Self "is_multiple_of" is_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque is_multiple_of.
     
     (*
             pub const fn is_power_of_two(self) -> bool {
@@ -52491,9 +53798,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_power_of_two :
-      M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
-    Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
+    Global Instance AssociatedFunction_is_power_of_two :
+      M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque is_power_of_two.
     
     (*
             const fn one_less_than_next_power_of_two(self) -> Self {
@@ -52561,9 +53869,13 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one_less_than_next_power_of_two :
-      M.IsAssociatedFunction Self "one_less_than_next_power_of_two" one_less_than_next_power_of_two.
-    Smpl Add apply AssociatedFunction_one_less_than_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_one_less_than_next_power_of_two :
+      M.IsAssociatedFunction.Trait
+        Self
+        "one_less_than_next_power_of_two"
+        one_less_than_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque one_less_than_next_power_of_two.
     
     (*
             pub const fn next_power_of_two(self) -> Self {
@@ -52591,9 +53903,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_power_of_two :
-      M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
-    Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "next_power_of_two" next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque next_power_of_two.
     
     (*
             pub const fn checked_next_power_of_two(self) -> Option<Self> {
@@ -52629,9 +53942,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_power_of_two :
-      M.IsAssociatedFunction Self "checked_next_power_of_two" checked_next_power_of_two.
-    Smpl Add apply AssociatedFunction_checked_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_checked_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque checked_next_power_of_two.
     
     (*
             pub const fn wrapping_next_power_of_two(self) -> Self {
@@ -52667,9 +53981,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_next_power_of_two :
-      M.IsAssociatedFunction Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
-    Smpl Add apply AssociatedFunction_wrapping_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_wrapping_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque wrapping_next_power_of_two.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -52695,8 +54010,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -52722,8 +54039,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -52752,8 +54071,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -52779,9 +54100,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -52807,9 +54129,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -52837,9 +54160,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -52848,8 +54172,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -52858,8 +54184,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     
     (*
             pub const fn widening_mul(self, rhs: Self) -> (Self, Self) {
@@ -52901,8 +54229,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_widening_mul : M.IsAssociatedFunction Self "widening_mul" widening_mul.
-    Smpl Add apply AssociatedFunction_widening_mul : is_associated.
+    Global Instance AssociatedFunction_widening_mul :
+      M.IsAssociatedFunction.Trait Self "widening_mul" widening_mul.
+    Admitted.
+    Global Typeclasses Opaque widening_mul.
     
     (*
             pub const fn carrying_mul(self, rhs: Self, carry: Self) -> (Self, Self) {
@@ -52954,8 +54284,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_mul : M.IsAssociatedFunction Self "carrying_mul" carrying_mul.
-    Smpl Add apply AssociatedFunction_carrying_mul : is_associated.
+    Global Instance AssociatedFunction_carrying_mul :
+      M.IsAssociatedFunction.Trait Self "carrying_mul" carrying_mul.
+    Admitted.
+    Global Typeclasses Opaque carrying_mul.
     
     (*
             pub const fn midpoint(self, rhs: $SelfT) -> $SelfT {
@@ -52980,8 +54312,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
         pub const fn is_ascii(&self) -> bool {
@@ -53000,8 +54334,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
-    Smpl Add apply AssociatedFunction_is_ascii : is_associated.
+    Global Instance AssociatedFunction_is_ascii :
+      M.IsAssociatedFunction.Trait Self "is_ascii" is_ascii.
+    Admitted.
+    Global Typeclasses Opaque is_ascii.
     
     (*
         pub const fn as_ascii(&self) -> Option<ascii::Char> {
@@ -53029,8 +54365,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
-    Smpl Add apply AssociatedFunction_as_ascii : is_associated.
+    Global Instance AssociatedFunction_as_ascii :
+      M.IsAssociatedFunction.Trait Self "as_ascii" as_ascii.
+    Admitted.
+    Global Typeclasses Opaque as_ascii.
     
     (*
         pub const fn to_ascii_uppercase(&self) -> u8 {
@@ -53058,9 +54396,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ascii_uppercase :
-      M.IsAssociatedFunction Self "to_ascii_uppercase" to_ascii_uppercase.
-    Smpl Add apply AssociatedFunction_to_ascii_uppercase : is_associated.
+    Global Instance AssociatedFunction_to_ascii_uppercase :
+      M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+    Admitted.
+    Global Typeclasses Opaque to_ascii_uppercase.
     
     (*
         pub const fn to_ascii_lowercase(&self) -> u8 {
@@ -53088,9 +54427,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ascii_lowercase :
-      M.IsAssociatedFunction Self "to_ascii_lowercase" to_ascii_lowercase.
-    Smpl Add apply AssociatedFunction_to_ascii_lowercase : is_associated.
+    Global Instance AssociatedFunction_to_ascii_lowercase :
+      M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+    Admitted.
+    Global Typeclasses Opaque to_ascii_lowercase.
     
     (*
         pub(crate) const fn ascii_change_case_unchecked(&self) -> u8 {
@@ -53112,9 +54452,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ascii_change_case_unchecked :
-      M.IsAssociatedFunction Self "ascii_change_case_unchecked" ascii_change_case_unchecked.
-    Smpl Add apply AssociatedFunction_ascii_change_case_unchecked : is_associated.
+    Global Instance AssociatedFunction_ascii_change_case_unchecked :
+      M.IsAssociatedFunction.Trait Self "ascii_change_case_unchecked" ascii_change_case_unchecked.
+    Admitted.
+    Global Typeclasses Opaque ascii_change_case_unchecked.
     
     (*
         pub const fn eq_ignore_ascii_case(&self, other: &u8) -> bool {
@@ -53142,9 +54483,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_eq_ignore_ascii_case :
-      M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
-    Smpl Add apply AssociatedFunction_eq_ignore_ascii_case : is_associated.
+    Global Instance AssociatedFunction_eq_ignore_ascii_case :
+      M.IsAssociatedFunction.Trait Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+    Admitted.
+    Global Typeclasses Opaque eq_ignore_ascii_case.
     
     (*
         pub const fn make_ascii_uppercase(&mut self) {
@@ -53173,9 +54515,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_make_ascii_uppercase :
-      M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
-    Smpl Add apply AssociatedFunction_make_ascii_uppercase : is_associated.
+    Global Instance AssociatedFunction_make_ascii_uppercase :
+      M.IsAssociatedFunction.Trait Self "make_ascii_uppercase" make_ascii_uppercase.
+    Admitted.
+    Global Typeclasses Opaque make_ascii_uppercase.
     
     (*
         pub const fn make_ascii_lowercase(&mut self) {
@@ -53204,9 +54547,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_make_ascii_lowercase :
-      M.IsAssociatedFunction Self "make_ascii_lowercase" make_ascii_lowercase.
-    Smpl Add apply AssociatedFunction_make_ascii_lowercase : is_associated.
+    Global Instance AssociatedFunction_make_ascii_lowercase :
+      M.IsAssociatedFunction.Trait Self "make_ascii_lowercase" make_ascii_lowercase.
+    Admitted.
+    Global Typeclasses Opaque make_ascii_lowercase.
     
     (*
         pub const fn is_ascii_alphabetic(&self) -> bool {
@@ -53244,9 +54588,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_alphabetic :
-      M.IsAssociatedFunction Self "is_ascii_alphabetic" is_ascii_alphabetic.
-    Smpl Add apply AssociatedFunction_is_ascii_alphabetic : is_associated.
+    Global Instance AssociatedFunction_is_ascii_alphabetic :
+      M.IsAssociatedFunction.Trait Self "is_ascii_alphabetic" is_ascii_alphabetic.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_alphabetic.
     
     (*
         pub const fn is_ascii_uppercase(&self) -> bool {
@@ -53270,9 +54615,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_uppercase :
-      M.IsAssociatedFunction Self "is_ascii_uppercase" is_ascii_uppercase.
-    Smpl Add apply AssociatedFunction_is_ascii_uppercase : is_associated.
+    Global Instance AssociatedFunction_is_ascii_uppercase :
+      M.IsAssociatedFunction.Trait Self "is_ascii_uppercase" is_ascii_uppercase.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_uppercase.
     
     (*
         pub const fn is_ascii_lowercase(&self) -> bool {
@@ -53296,9 +54642,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_lowercase :
-      M.IsAssociatedFunction Self "is_ascii_lowercase" is_ascii_lowercase.
-    Smpl Add apply AssociatedFunction_is_ascii_lowercase : is_associated.
+    Global Instance AssociatedFunction_is_ascii_lowercase :
+      M.IsAssociatedFunction.Trait Self "is_ascii_lowercase" is_ascii_lowercase.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_lowercase.
     
     (*
         pub const fn is_ascii_alphanumeric(&self) -> bool {
@@ -53342,9 +54689,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_alphanumeric :
-      M.IsAssociatedFunction Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
-    Smpl Add apply AssociatedFunction_is_ascii_alphanumeric : is_associated.
+    Global Instance AssociatedFunction_is_ascii_alphanumeric :
+      M.IsAssociatedFunction.Trait Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_alphanumeric.
     
     (*
         pub const fn is_ascii_digit(&self) -> bool {
@@ -53368,9 +54716,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_digit :
-      M.IsAssociatedFunction Self "is_ascii_digit" is_ascii_digit.
-    Smpl Add apply AssociatedFunction_is_ascii_digit : is_associated.
+    Global Instance AssociatedFunction_is_ascii_digit :
+      M.IsAssociatedFunction.Trait Self "is_ascii_digit" is_ascii_digit.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_digit.
     
     (*
         pub const fn is_ascii_octdigit(&self) -> bool {
@@ -53394,9 +54743,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_octdigit :
-      M.IsAssociatedFunction Self "is_ascii_octdigit" is_ascii_octdigit.
-    Smpl Add apply AssociatedFunction_is_ascii_octdigit : is_associated.
+    Global Instance AssociatedFunction_is_ascii_octdigit :
+      M.IsAssociatedFunction.Trait Self "is_ascii_octdigit" is_ascii_octdigit.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_octdigit.
     
     (*
         pub const fn is_ascii_hexdigit(&self) -> bool {
@@ -53440,9 +54790,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_hexdigit :
-      M.IsAssociatedFunction Self "is_ascii_hexdigit" is_ascii_hexdigit.
-    Smpl Add apply AssociatedFunction_is_ascii_hexdigit : is_associated.
+    Global Instance AssociatedFunction_is_ascii_hexdigit :
+      M.IsAssociatedFunction.Trait Self "is_ascii_hexdigit" is_ascii_hexdigit.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_hexdigit.
     
     (*
         pub const fn is_ascii_punctuation(&self) -> bool {
@@ -53499,9 +54850,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_punctuation :
-      M.IsAssociatedFunction Self "is_ascii_punctuation" is_ascii_punctuation.
-    Smpl Add apply AssociatedFunction_is_ascii_punctuation : is_associated.
+    Global Instance AssociatedFunction_is_ascii_punctuation :
+      M.IsAssociatedFunction.Trait Self "is_ascii_punctuation" is_ascii_punctuation.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_punctuation.
     
     (*
         pub const fn is_ascii_graphic(&self) -> bool {
@@ -53525,9 +54877,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_graphic :
-      M.IsAssociatedFunction Self "is_ascii_graphic" is_ascii_graphic.
-    Smpl Add apply AssociatedFunction_is_ascii_graphic : is_associated.
+    Global Instance AssociatedFunction_is_ascii_graphic :
+      M.IsAssociatedFunction.Trait Self "is_ascii_graphic" is_ascii_graphic.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_graphic.
     
     (*
         pub const fn is_ascii_whitespace(&self) -> bool {
@@ -53603,9 +54956,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_whitespace :
-      M.IsAssociatedFunction Self "is_ascii_whitespace" is_ascii_whitespace.
-    Smpl Add apply AssociatedFunction_is_ascii_whitespace : is_associated.
+    Global Instance AssociatedFunction_is_ascii_whitespace :
+      M.IsAssociatedFunction.Trait Self "is_ascii_whitespace" is_ascii_whitespace.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_whitespace.
     
     (*
         pub const fn is_ascii_control(&self) -> bool {
@@ -53650,9 +55004,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ascii_control :
-      M.IsAssociatedFunction Self "is_ascii_control" is_ascii_control.
-    Smpl Add apply AssociatedFunction_is_ascii_control : is_associated.
+    Global Instance AssociatedFunction_is_ascii_control :
+      M.IsAssociatedFunction.Trait Self "is_ascii_control" is_ascii_control.
+    Admitted.
+    Global Typeclasses Opaque is_ascii_control.
     
     (*
         pub fn escape_ascii(self) -> ascii::EscapeDefault {
@@ -53672,8 +55027,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_escape_ascii : M.IsAssociatedFunction Self "escape_ascii" escape_ascii.
-    Smpl Add apply AssociatedFunction_escape_ascii : is_associated.
+    Global Instance AssociatedFunction_escape_ascii :
+      M.IsAssociatedFunction.Trait Self "escape_ascii" escape_ascii.
+    Admitted.
+    Global Typeclasses Opaque escape_ascii.
     
     (*
         pub(crate) const fn is_utf8_char_boundary(self) -> bool {
@@ -53693,9 +55050,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_utf8_char_boundary :
-      M.IsAssociatedFunction Self "is_utf8_char_boundary" is_utf8_char_boundary.
-    Smpl Add apply AssociatedFunction_is_utf8_char_boundary : is_associated.
+    Global Instance AssociatedFunction_is_utf8_char_boundary :
+      M.IsAssociatedFunction.Trait Self "is_utf8_char_boundary" is_utf8_char_boundary.
+    Admitted.
+    Global Typeclasses Opaque is_utf8_char_boundary.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -54035,6 +55393,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -54176,6 +55535,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -54332,6 +55692,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -54601,6 +55962,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -54882,9 +56244,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_u8.
   
   Module Impl_u16.
@@ -54895,16 +56258,20 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = !0; *)
     (* Ty.path "u16" *)
     Definition value_MAX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U16 0 |) |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = Self::MAX.count_ones(); *)
     (* Ty.path "u32" *)
@@ -54919,8 +56286,10 @@ Module num.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*
             pub const fn count_ones(self) -> u32 {
@@ -54949,8 +56318,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -54970,8 +56341,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -55000,9 +56373,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -55031,9 +56405,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -55053,8 +56428,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -55074,9 +56451,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_signed(self) -> $SignedT {
@@ -55092,8 +56470,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_signed : M.IsAssociatedFunction Self "cast_signed" cast_signed.
-    Smpl Add apply AssociatedFunction_cast_signed : is_associated.
+    Global Instance AssociatedFunction_cast_signed :
+      M.IsAssociatedFunction.Trait Self "cast_signed" cast_signed.
+    Admitted.
+    Global Typeclasses Opaque cast_signed.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -55123,8 +56503,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -55154,8 +56536,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -55180,8 +56564,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -55206,8 +56592,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -55234,8 +56622,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -55258,8 +56648,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -55286,8 +56678,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -55310,8 +56703,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -55393,8 +56787,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -55450,8 +56846,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -55521,9 +56919,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_signed(self, rhs: $SignedT) -> Option<Self> {
@@ -55583,9 +56982,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_signed :
-      M.IsAssociatedFunction Self "checked_add_signed" checked_add_signed.
-    Smpl Add apply AssociatedFunction_checked_add_signed : is_associated.
+    Global Instance AssociatedFunction_checked_add_signed :
+      M.IsAssociatedFunction.Trait Self "checked_add_signed" checked_add_signed.
+    Admitted.
+    Global Typeclasses Opaque checked_add_signed.
     
     (*
             pub const fn strict_add_signed(self, rhs: $SignedT) -> Self {
@@ -55641,9 +57041,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_signed :
-      M.IsAssociatedFunction Self "strict_add_signed" strict_add_signed.
-    Smpl Add apply AssociatedFunction_strict_add_signed : is_associated.
+    Global Instance AssociatedFunction_strict_add_signed :
+      M.IsAssociatedFunction.Trait Self "strict_add_signed" strict_add_signed.
+    Admitted.
+    Global Typeclasses Opaque strict_add_signed.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -55699,8 +57100,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -55756,8 +57159,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -55827,9 +57232,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_signed_diff(self, rhs: Self) -> Option<$SignedT> {
@@ -55885,9 +57291,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_signed_diff :
-      M.IsAssociatedFunction Self "checked_signed_diff" checked_signed_diff.
-    Smpl Add apply AssociatedFunction_checked_signed_diff : is_associated.
+    Global Instance AssociatedFunction_checked_signed_diff :
+      M.IsAssociatedFunction.Trait Self "checked_signed_diff" checked_signed_diff.
+    Admitted.
+    Global Typeclasses Opaque checked_signed_diff.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -55947,8 +57354,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -56004,8 +57413,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -56075,9 +57486,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -56136,8 +57548,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -56154,8 +57568,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -56208,9 +57624,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -56227,9 +57644,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -56288,8 +57706,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -56306,8 +57726,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -56360,9 +57782,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -56379,9 +57802,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -56497,8 +57921,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -56557,8 +57982,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -56617,8 +58043,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -56772,6 +58199,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -56844,8 +58272,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -56913,9 +58343,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -56983,9 +58414,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -57044,8 +58476,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -57100,8 +58534,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -57154,8 +58590,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -57211,8 +58649,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -57285,9 +58725,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -57335,9 +58776,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -57390,8 +58832,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -57447,8 +58891,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -57521,9 +58967,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -57571,9 +59018,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -57638,6 +59086,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -57821,8 +59270,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -57881,6 +59332,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -57982,8 +59434,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -58004,9 +59458,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_signed(self, rhs: $SignedT) -> Self {
@@ -58084,9 +59539,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_signed :
-      M.IsAssociatedFunction Self "saturating_add_signed" saturating_add_signed.
-    Smpl Add apply AssociatedFunction_saturating_add_signed : is_associated.
+    Global Instance AssociatedFunction_saturating_add_signed :
+      M.IsAssociatedFunction.Trait Self "saturating_add_signed" saturating_add_signed.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_signed.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -58107,9 +59563,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -58155,9 +59612,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -58179,9 +59637,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -58227,9 +59686,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -58250,8 +59710,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_signed(self, rhs: $SignedT) -> Self {
@@ -58272,9 +59734,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_signed :
-      M.IsAssociatedFunction Self "wrapping_add_signed" wrapping_add_signed.
-    Smpl Add apply AssociatedFunction_wrapping_add_signed : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_signed :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_signed" wrapping_add_signed.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_signed.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -58295,8 +59758,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -58317,8 +59782,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -58335,8 +59802,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -58353,9 +59822,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -58372,8 +59842,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -58390,9 +59862,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -58413,8 +59886,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -58447,8 +59922,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -58481,8 +59958,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -58578,6 +60057,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -58695,6 +60175,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -58804,8 +60285,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -58842,9 +60325,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -58911,8 +60395,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_signed(self, rhs: $SignedT) -> (Self, bool) {
@@ -58957,9 +60443,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_signed :
-      M.IsAssociatedFunction Self "overflowing_add_signed" overflowing_add_signed.
-    Smpl Add apply AssociatedFunction_overflowing_add_signed : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_signed :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_signed" overflowing_add_signed.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_signed.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -58996,9 +60483,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -59065,9 +60553,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn abs_diff(self, other: Self) -> Self {
@@ -59157,8 +60646,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -59195,9 +60686,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -59215,9 +60707,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -59235,9 +60728,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -59255,9 +60749,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -59275,9 +60770,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -59301,9 +60797,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -59328,9 +60825,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -59355,9 +60853,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -59430,6 +60929,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -59580,9 +61080,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -59679,6 +61180,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -59778,6 +61280,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -59872,8 +61375,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -59934,8 +61438,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -59952,8 +61457,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -59970,8 +61477,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -59988,8 +61497,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -60034,8 +61545,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -60078,9 +61591,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -60163,9 +61677,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn is_multiple_of(self, rhs: Self) -> bool {
@@ -60209,9 +61724,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_multiple_of :
-      M.IsAssociatedFunction Self "is_multiple_of" is_multiple_of.
-    Smpl Add apply AssociatedFunction_is_multiple_of : is_associated.
+    Global Instance AssociatedFunction_is_multiple_of :
+      M.IsAssociatedFunction.Trait Self "is_multiple_of" is_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque is_multiple_of.
     
     (*
             pub const fn is_power_of_two(self) -> bool {
@@ -60234,9 +61750,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_power_of_two :
-      M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
-    Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
+    Global Instance AssociatedFunction_is_power_of_two :
+      M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque is_power_of_two.
     
     (*
             const fn one_less_than_next_power_of_two(self) -> Self {
@@ -60304,9 +61821,13 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one_less_than_next_power_of_two :
-      M.IsAssociatedFunction Self "one_less_than_next_power_of_two" one_less_than_next_power_of_two.
-    Smpl Add apply AssociatedFunction_one_less_than_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_one_less_than_next_power_of_two :
+      M.IsAssociatedFunction.Trait
+        Self
+        "one_less_than_next_power_of_two"
+        one_less_than_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque one_less_than_next_power_of_two.
     
     (*
             pub const fn next_power_of_two(self) -> Self {
@@ -60334,9 +61855,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_power_of_two :
-      M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
-    Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "next_power_of_two" next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque next_power_of_two.
     
     (*
             pub const fn checked_next_power_of_two(self) -> Option<Self> {
@@ -60372,9 +61894,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_power_of_two :
-      M.IsAssociatedFunction Self "checked_next_power_of_two" checked_next_power_of_two.
-    Smpl Add apply AssociatedFunction_checked_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_checked_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque checked_next_power_of_two.
     
     (*
             pub const fn wrapping_next_power_of_two(self) -> Self {
@@ -60410,9 +61933,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_next_power_of_two :
-      M.IsAssociatedFunction Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
-    Smpl Add apply AssociatedFunction_wrapping_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_wrapping_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque wrapping_next_power_of_two.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -60438,8 +61962,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -60465,8 +61991,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -60495,8 +62023,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -60522,9 +62052,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -60550,9 +62081,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -60580,9 +62112,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -60591,8 +62124,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -60601,8 +62136,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     
     (*
             pub const fn widening_mul(self, rhs: Self) -> (Self, Self) {
@@ -60644,8 +62181,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_widening_mul : M.IsAssociatedFunction Self "widening_mul" widening_mul.
-    Smpl Add apply AssociatedFunction_widening_mul : is_associated.
+    Global Instance AssociatedFunction_widening_mul :
+      M.IsAssociatedFunction.Trait Self "widening_mul" widening_mul.
+    Admitted.
+    Global Typeclasses Opaque widening_mul.
     
     (*
             pub const fn carrying_mul(self, rhs: Self, carry: Self) -> (Self, Self) {
@@ -60697,8 +62236,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_mul : M.IsAssociatedFunction Self "carrying_mul" carrying_mul.
-    Smpl Add apply AssociatedFunction_carrying_mul : is_associated.
+    Global Instance AssociatedFunction_carrying_mul :
+      M.IsAssociatedFunction.Trait Self "carrying_mul" carrying_mul.
+    Admitted.
+    Global Typeclasses Opaque carrying_mul.
     
     (*
             pub const fn midpoint(self, rhs: $SelfT) -> $SelfT {
@@ -60723,8 +62264,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     
     (*
         pub const fn is_utf16_surrogate(self) -> bool {
@@ -60748,9 +62291,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_utf16_surrogate :
-      M.IsAssociatedFunction Self "is_utf16_surrogate" is_utf16_surrogate.
-    Smpl Add apply AssociatedFunction_is_utf16_surrogate : is_associated.
+    Global Instance AssociatedFunction_is_utf16_surrogate :
+      M.IsAssociatedFunction.Trait Self "is_utf16_surrogate" is_utf16_surrogate.
+    Admitted.
+    Global Typeclasses Opaque is_utf16_surrogate.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -61090,6 +62634,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -61231,6 +62776,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -61387,6 +62933,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -61656,6 +63203,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -61937,9 +63485,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_u16.
   
   Module Impl_u32.
@@ -61950,16 +63499,20 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = !0; *)
     (* Ty.path "u32" *)
     Definition value_MAX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U32 0 |) |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = Self::MAX.count_ones(); *)
     (* Ty.path "u32" *)
@@ -61974,8 +63527,10 @@ Module num.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*
             pub const fn count_ones(self) -> u32 {
@@ -62004,8 +63559,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -62025,8 +63582,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -62055,9 +63614,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -62086,9 +63646,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -62108,8 +63669,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -62129,9 +63692,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_signed(self) -> $SignedT {
@@ -62147,8 +63711,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_signed : M.IsAssociatedFunction Self "cast_signed" cast_signed.
-    Smpl Add apply AssociatedFunction_cast_signed : is_associated.
+    Global Instance AssociatedFunction_cast_signed :
+      M.IsAssociatedFunction.Trait Self "cast_signed" cast_signed.
+    Admitted.
+    Global Typeclasses Opaque cast_signed.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -62178,8 +63744,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -62209,8 +63777,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -62235,8 +63805,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -62261,8 +63833,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -62289,8 +63863,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -62313,8 +63889,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -62341,8 +63919,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -62365,8 +63944,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -62448,8 +64028,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -62505,8 +64087,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -62576,9 +64160,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_signed(self, rhs: $SignedT) -> Option<Self> {
@@ -62638,9 +64223,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_signed :
-      M.IsAssociatedFunction Self "checked_add_signed" checked_add_signed.
-    Smpl Add apply AssociatedFunction_checked_add_signed : is_associated.
+    Global Instance AssociatedFunction_checked_add_signed :
+      M.IsAssociatedFunction.Trait Self "checked_add_signed" checked_add_signed.
+    Admitted.
+    Global Typeclasses Opaque checked_add_signed.
     
     (*
             pub const fn strict_add_signed(self, rhs: $SignedT) -> Self {
@@ -62696,9 +64282,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_signed :
-      M.IsAssociatedFunction Self "strict_add_signed" strict_add_signed.
-    Smpl Add apply AssociatedFunction_strict_add_signed : is_associated.
+    Global Instance AssociatedFunction_strict_add_signed :
+      M.IsAssociatedFunction.Trait Self "strict_add_signed" strict_add_signed.
+    Admitted.
+    Global Typeclasses Opaque strict_add_signed.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -62754,8 +64341,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -62811,8 +64400,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -62882,9 +64473,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_signed_diff(self, rhs: Self) -> Option<$SignedT> {
@@ -62940,9 +64532,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_signed_diff :
-      M.IsAssociatedFunction Self "checked_signed_diff" checked_signed_diff.
-    Smpl Add apply AssociatedFunction_checked_signed_diff : is_associated.
+    Global Instance AssociatedFunction_checked_signed_diff :
+      M.IsAssociatedFunction.Trait Self "checked_signed_diff" checked_signed_diff.
+    Admitted.
+    Global Typeclasses Opaque checked_signed_diff.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -63002,8 +64595,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -63059,8 +64654,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -63130,9 +64727,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -63191,8 +64789,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -63209,8 +64809,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -63263,9 +64865,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -63282,9 +64885,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -63343,8 +64947,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -63361,8 +64967,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -63415,9 +65023,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -63434,9 +65043,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -63552,8 +65162,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -63612,8 +65223,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -63672,8 +65284,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -63827,6 +65440,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -63899,8 +65513,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -63968,9 +65584,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -64038,9 +65655,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -64099,8 +65717,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -64155,8 +65775,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -64209,8 +65831,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -64266,8 +65890,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -64340,9 +65966,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -64390,9 +66017,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -64445,8 +66073,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -64502,8 +66132,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -64576,9 +66208,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -64626,9 +66259,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -64693,6 +66327,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -64876,8 +66511,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -64936,6 +66573,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -65037,8 +66675,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -65059,9 +66699,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_signed(self, rhs: $SignedT) -> Self {
@@ -65139,9 +66780,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_signed :
-      M.IsAssociatedFunction Self "saturating_add_signed" saturating_add_signed.
-    Smpl Add apply AssociatedFunction_saturating_add_signed : is_associated.
+    Global Instance AssociatedFunction_saturating_add_signed :
+      M.IsAssociatedFunction.Trait Self "saturating_add_signed" saturating_add_signed.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_signed.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -65162,9 +66804,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -65210,9 +66853,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -65234,9 +66878,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -65282,9 +66927,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -65305,8 +66951,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_signed(self, rhs: $SignedT) -> Self {
@@ -65327,9 +66975,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_signed :
-      M.IsAssociatedFunction Self "wrapping_add_signed" wrapping_add_signed.
-    Smpl Add apply AssociatedFunction_wrapping_add_signed : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_signed :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_signed" wrapping_add_signed.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_signed.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -65350,8 +66999,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -65372,8 +67023,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -65390,8 +67043,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -65408,9 +67063,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -65427,8 +67083,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -65445,9 +67103,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -65468,8 +67127,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -65502,8 +67163,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -65536,8 +67199,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -65633,6 +67298,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -65750,6 +67416,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -65859,8 +67526,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -65897,9 +67566,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -65966,8 +67636,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_signed(self, rhs: $SignedT) -> (Self, bool) {
@@ -66012,9 +67684,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_signed :
-      M.IsAssociatedFunction Self "overflowing_add_signed" overflowing_add_signed.
-    Smpl Add apply AssociatedFunction_overflowing_add_signed : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_signed :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_signed" overflowing_add_signed.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_signed.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -66051,9 +67724,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -66120,9 +67794,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn abs_diff(self, other: Self) -> Self {
@@ -66212,8 +67887,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -66250,9 +67927,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -66270,9 +67948,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -66290,9 +67969,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -66310,9 +67990,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -66330,9 +68011,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -66356,9 +68038,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -66383,9 +68066,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -66410,9 +68094,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -66485,6 +68170,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -66635,9 +68321,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -66734,6 +68421,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -66833,6 +68521,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -66927,8 +68616,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -66989,8 +68679,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -67007,8 +68698,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -67025,8 +68718,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -67043,8 +68738,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -67089,8 +68786,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -67133,9 +68832,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -67218,9 +68918,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn is_multiple_of(self, rhs: Self) -> bool {
@@ -67264,9 +68965,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_multiple_of :
-      M.IsAssociatedFunction Self "is_multiple_of" is_multiple_of.
-    Smpl Add apply AssociatedFunction_is_multiple_of : is_associated.
+    Global Instance AssociatedFunction_is_multiple_of :
+      M.IsAssociatedFunction.Trait Self "is_multiple_of" is_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque is_multiple_of.
     
     (*
             pub const fn is_power_of_two(self) -> bool {
@@ -67289,9 +68991,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_power_of_two :
-      M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
-    Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
+    Global Instance AssociatedFunction_is_power_of_two :
+      M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque is_power_of_two.
     
     (*
             const fn one_less_than_next_power_of_two(self) -> Self {
@@ -67359,9 +69062,13 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one_less_than_next_power_of_two :
-      M.IsAssociatedFunction Self "one_less_than_next_power_of_two" one_less_than_next_power_of_two.
-    Smpl Add apply AssociatedFunction_one_less_than_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_one_less_than_next_power_of_two :
+      M.IsAssociatedFunction.Trait
+        Self
+        "one_less_than_next_power_of_two"
+        one_less_than_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque one_less_than_next_power_of_two.
     
     (*
             pub const fn next_power_of_two(self) -> Self {
@@ -67389,9 +69096,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_power_of_two :
-      M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
-    Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "next_power_of_two" next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque next_power_of_two.
     
     (*
             pub const fn checked_next_power_of_two(self) -> Option<Self> {
@@ -67427,9 +69135,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_power_of_two :
-      M.IsAssociatedFunction Self "checked_next_power_of_two" checked_next_power_of_two.
-    Smpl Add apply AssociatedFunction_checked_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_checked_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque checked_next_power_of_two.
     
     (*
             pub const fn wrapping_next_power_of_two(self) -> Self {
@@ -67465,9 +69174,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_next_power_of_two :
-      M.IsAssociatedFunction Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
-    Smpl Add apply AssociatedFunction_wrapping_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_wrapping_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque wrapping_next_power_of_two.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -67493,8 +69203,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -67520,8 +69232,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -67550,8 +69264,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -67577,9 +69293,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -67605,9 +69322,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -67635,9 +69353,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -67646,8 +69365,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -67656,8 +69377,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     
     (*
             pub const fn widening_mul(self, rhs: Self) -> (Self, Self) {
@@ -67699,8 +69422,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_widening_mul : M.IsAssociatedFunction Self "widening_mul" widening_mul.
-    Smpl Add apply AssociatedFunction_widening_mul : is_associated.
+    Global Instance AssociatedFunction_widening_mul :
+      M.IsAssociatedFunction.Trait Self "widening_mul" widening_mul.
+    Admitted.
+    Global Typeclasses Opaque widening_mul.
     
     (*
             pub const fn carrying_mul(self, rhs: Self, carry: Self) -> (Self, Self) {
@@ -67752,8 +69477,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_mul : M.IsAssociatedFunction Self "carrying_mul" carrying_mul.
-    Smpl Add apply AssociatedFunction_carrying_mul : is_associated.
+    Global Instance AssociatedFunction_carrying_mul :
+      M.IsAssociatedFunction.Trait Self "carrying_mul" carrying_mul.
+    Admitted.
+    Global Typeclasses Opaque carrying_mul.
     
     (*
             pub const fn midpoint(self, rhs: $SelfT) -> $SelfT {
@@ -67778,8 +69505,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -68119,6 +69848,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -68256,6 +69986,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -68408,6 +70139,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -68672,6 +70404,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -68948,9 +70681,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_u32.
   
   Module Impl_u64.
@@ -68961,16 +70695,20 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = !0; *)
     (* Ty.path "u64" *)
     Definition value_MAX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U64 0 |) |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = Self::MAX.count_ones(); *)
     (* Ty.path "u32" *)
@@ -68985,8 +70723,10 @@ Module num.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*
             pub const fn count_ones(self) -> u32 {
@@ -69015,8 +70755,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -69036,8 +70778,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -69066,9 +70810,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -69097,9 +70842,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -69119,8 +70865,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -69140,9 +70888,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_signed(self) -> $SignedT {
@@ -69158,8 +70907,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_signed : M.IsAssociatedFunction Self "cast_signed" cast_signed.
-    Smpl Add apply AssociatedFunction_cast_signed : is_associated.
+    Global Instance AssociatedFunction_cast_signed :
+      M.IsAssociatedFunction.Trait Self "cast_signed" cast_signed.
+    Admitted.
+    Global Typeclasses Opaque cast_signed.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -69189,8 +70940,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -69220,8 +70973,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -69246,8 +71001,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -69272,8 +71029,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -69300,8 +71059,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -69324,8 +71085,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -69352,8 +71115,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -69376,8 +71140,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -69459,8 +71224,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -69516,8 +71283,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -69587,9 +71356,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_signed(self, rhs: $SignedT) -> Option<Self> {
@@ -69649,9 +71419,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_signed :
-      M.IsAssociatedFunction Self "checked_add_signed" checked_add_signed.
-    Smpl Add apply AssociatedFunction_checked_add_signed : is_associated.
+    Global Instance AssociatedFunction_checked_add_signed :
+      M.IsAssociatedFunction.Trait Self "checked_add_signed" checked_add_signed.
+    Admitted.
+    Global Typeclasses Opaque checked_add_signed.
     
     (*
             pub const fn strict_add_signed(self, rhs: $SignedT) -> Self {
@@ -69707,9 +71478,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_signed :
-      M.IsAssociatedFunction Self "strict_add_signed" strict_add_signed.
-    Smpl Add apply AssociatedFunction_strict_add_signed : is_associated.
+    Global Instance AssociatedFunction_strict_add_signed :
+      M.IsAssociatedFunction.Trait Self "strict_add_signed" strict_add_signed.
+    Admitted.
+    Global Typeclasses Opaque strict_add_signed.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -69765,8 +71537,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -69822,8 +71596,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -69893,9 +71669,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_signed_diff(self, rhs: Self) -> Option<$SignedT> {
@@ -69951,9 +71728,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_signed_diff :
-      M.IsAssociatedFunction Self "checked_signed_diff" checked_signed_diff.
-    Smpl Add apply AssociatedFunction_checked_signed_diff : is_associated.
+    Global Instance AssociatedFunction_checked_signed_diff :
+      M.IsAssociatedFunction.Trait Self "checked_signed_diff" checked_signed_diff.
+    Admitted.
+    Global Typeclasses Opaque checked_signed_diff.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -70013,8 +71791,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -70070,8 +71850,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -70141,9 +71923,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -70202,8 +71985,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -70220,8 +72005,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -70274,9 +72061,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -70293,9 +72081,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -70354,8 +72143,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -70372,8 +72163,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -70426,9 +72219,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -70445,9 +72239,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -70563,8 +72358,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -70623,8 +72419,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -70683,8 +72480,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -70838,6 +72636,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -70910,8 +72709,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -70979,9 +72780,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -71049,9 +72851,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -71110,8 +72913,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -71166,8 +72971,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -71220,8 +73027,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -71277,8 +73086,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -71351,9 +73162,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -71401,9 +73213,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -71456,8 +73269,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -71513,8 +73328,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -71587,9 +73404,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -71637,9 +73455,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -71704,6 +73523,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -71887,8 +73707,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -71947,6 +73769,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -72048,8 +73871,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -72070,9 +73895,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_signed(self, rhs: $SignedT) -> Self {
@@ -72150,9 +73976,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_signed :
-      M.IsAssociatedFunction Self "saturating_add_signed" saturating_add_signed.
-    Smpl Add apply AssociatedFunction_saturating_add_signed : is_associated.
+    Global Instance AssociatedFunction_saturating_add_signed :
+      M.IsAssociatedFunction.Trait Self "saturating_add_signed" saturating_add_signed.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_signed.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -72173,9 +74000,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -72221,9 +74049,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -72245,9 +74074,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -72293,9 +74123,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -72316,8 +74147,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_signed(self, rhs: $SignedT) -> Self {
@@ -72338,9 +74171,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_signed :
-      M.IsAssociatedFunction Self "wrapping_add_signed" wrapping_add_signed.
-    Smpl Add apply AssociatedFunction_wrapping_add_signed : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_signed :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_signed" wrapping_add_signed.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_signed.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -72361,8 +74195,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -72383,8 +74219,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -72401,8 +74239,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -72419,9 +74259,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -72438,8 +74279,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -72456,9 +74299,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -72479,8 +74323,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -72513,8 +74359,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -72547,8 +74395,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -72644,6 +74494,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -72761,6 +74612,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -72870,8 +74722,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -72908,9 +74762,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -72977,8 +74832,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_signed(self, rhs: $SignedT) -> (Self, bool) {
@@ -73023,9 +74880,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_signed :
-      M.IsAssociatedFunction Self "overflowing_add_signed" overflowing_add_signed.
-    Smpl Add apply AssociatedFunction_overflowing_add_signed : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_signed :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_signed" overflowing_add_signed.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_signed.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -73062,9 +74920,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -73131,9 +74990,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn abs_diff(self, other: Self) -> Self {
@@ -73223,8 +75083,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -73261,9 +75123,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -73281,9 +75144,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -73301,9 +75165,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -73321,9 +75186,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -73341,9 +75207,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -73367,9 +75234,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -73394,9 +75262,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -73421,9 +75290,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -73496,6 +75366,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -73646,9 +75517,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -73745,6 +75617,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -73844,6 +75717,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -73938,8 +75812,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -74000,8 +75875,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -74018,8 +75894,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -74036,8 +75914,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -74054,8 +75934,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -74100,8 +75982,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -74144,9 +76028,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -74229,9 +76114,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn is_multiple_of(self, rhs: Self) -> bool {
@@ -74275,9 +76161,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_multiple_of :
-      M.IsAssociatedFunction Self "is_multiple_of" is_multiple_of.
-    Smpl Add apply AssociatedFunction_is_multiple_of : is_associated.
+    Global Instance AssociatedFunction_is_multiple_of :
+      M.IsAssociatedFunction.Trait Self "is_multiple_of" is_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque is_multiple_of.
     
     (*
             pub const fn is_power_of_two(self) -> bool {
@@ -74300,9 +76187,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_power_of_two :
-      M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
-    Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
+    Global Instance AssociatedFunction_is_power_of_two :
+      M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque is_power_of_two.
     
     (*
             const fn one_less_than_next_power_of_two(self) -> Self {
@@ -74370,9 +76258,13 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one_less_than_next_power_of_two :
-      M.IsAssociatedFunction Self "one_less_than_next_power_of_two" one_less_than_next_power_of_two.
-    Smpl Add apply AssociatedFunction_one_less_than_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_one_less_than_next_power_of_two :
+      M.IsAssociatedFunction.Trait
+        Self
+        "one_less_than_next_power_of_two"
+        one_less_than_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque one_less_than_next_power_of_two.
     
     (*
             pub const fn next_power_of_two(self) -> Self {
@@ -74400,9 +76292,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_power_of_two :
-      M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
-    Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "next_power_of_two" next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque next_power_of_two.
     
     (*
             pub const fn checked_next_power_of_two(self) -> Option<Self> {
@@ -74438,9 +76331,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_power_of_two :
-      M.IsAssociatedFunction Self "checked_next_power_of_two" checked_next_power_of_two.
-    Smpl Add apply AssociatedFunction_checked_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_checked_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque checked_next_power_of_two.
     
     (*
             pub const fn wrapping_next_power_of_two(self) -> Self {
@@ -74476,9 +76370,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_next_power_of_two :
-      M.IsAssociatedFunction Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
-    Smpl Add apply AssociatedFunction_wrapping_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_wrapping_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque wrapping_next_power_of_two.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -74504,8 +76399,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -74531,8 +76428,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -74561,8 +76460,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -74588,9 +76489,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -74616,9 +76518,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -74646,9 +76549,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -74657,8 +76561,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -74667,8 +76573,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     
     (*
             pub const fn widening_mul(self, rhs: Self) -> (Self, Self) {
@@ -74710,8 +76618,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_widening_mul : M.IsAssociatedFunction Self "widening_mul" widening_mul.
-    Smpl Add apply AssociatedFunction_widening_mul : is_associated.
+    Global Instance AssociatedFunction_widening_mul :
+      M.IsAssociatedFunction.Trait Self "widening_mul" widening_mul.
+    Admitted.
+    Global Typeclasses Opaque widening_mul.
     
     (*
             pub const fn carrying_mul(self, rhs: Self, carry: Self) -> (Self, Self) {
@@ -74763,8 +76673,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_mul : M.IsAssociatedFunction Self "carrying_mul" carrying_mul.
-    Smpl Add apply AssociatedFunction_carrying_mul : is_associated.
+    Global Instance AssociatedFunction_carrying_mul :
+      M.IsAssociatedFunction.Trait Self "carrying_mul" carrying_mul.
+    Admitted.
+    Global Typeclasses Opaque carrying_mul.
     
     (*
             pub const fn midpoint(self, rhs: $SelfT) -> $SelfT {
@@ -74789,8 +76701,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -75130,6 +77044,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -75271,6 +77186,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -75427,6 +77343,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -75696,6 +77613,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -75977,9 +77895,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_u64.
   
   Module Impl_u128.
@@ -75990,16 +77909,20 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 0 |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = !0; *)
     (* Ty.path "u128" *)
     Definition value_MAX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.U128 0 |) |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = Self::MAX.count_ones(); *)
     (* Ty.path "u32" *)
@@ -76014,8 +77937,10 @@ Module num.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*
             pub const fn count_ones(self) -> u32 {
@@ -76044,8 +77969,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -76065,8 +77992,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -76095,9 +78024,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -76126,9 +78056,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -76148,8 +78079,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -76169,9 +78102,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_signed(self) -> $SignedT {
@@ -76187,8 +78121,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_signed : M.IsAssociatedFunction Self "cast_signed" cast_signed.
-    Smpl Add apply AssociatedFunction_cast_signed : is_associated.
+    Global Instance AssociatedFunction_cast_signed :
+      M.IsAssociatedFunction.Trait Self "cast_signed" cast_signed.
+    Admitted.
+    Global Typeclasses Opaque cast_signed.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -76218,8 +78154,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -76249,8 +78187,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -76275,8 +78215,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -76301,8 +78243,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -76329,8 +78273,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -76353,8 +78299,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -76381,8 +78329,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -76405,8 +78354,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -76488,8 +78438,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -76545,8 +78497,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -76616,9 +78570,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_signed(self, rhs: $SignedT) -> Option<Self> {
@@ -76678,9 +78633,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_signed :
-      M.IsAssociatedFunction Self "checked_add_signed" checked_add_signed.
-    Smpl Add apply AssociatedFunction_checked_add_signed : is_associated.
+    Global Instance AssociatedFunction_checked_add_signed :
+      M.IsAssociatedFunction.Trait Self "checked_add_signed" checked_add_signed.
+    Admitted.
+    Global Typeclasses Opaque checked_add_signed.
     
     (*
             pub const fn strict_add_signed(self, rhs: $SignedT) -> Self {
@@ -76736,9 +78692,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_signed :
-      M.IsAssociatedFunction Self "strict_add_signed" strict_add_signed.
-    Smpl Add apply AssociatedFunction_strict_add_signed : is_associated.
+    Global Instance AssociatedFunction_strict_add_signed :
+      M.IsAssociatedFunction.Trait Self "strict_add_signed" strict_add_signed.
+    Admitted.
+    Global Typeclasses Opaque strict_add_signed.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -76794,8 +78751,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -76851,8 +78810,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -76922,9 +78883,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_signed_diff(self, rhs: Self) -> Option<$SignedT> {
@@ -76980,9 +78942,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_signed_diff :
-      M.IsAssociatedFunction Self "checked_signed_diff" checked_signed_diff.
-    Smpl Add apply AssociatedFunction_checked_signed_diff : is_associated.
+    Global Instance AssociatedFunction_checked_signed_diff :
+      M.IsAssociatedFunction.Trait Self "checked_signed_diff" checked_signed_diff.
+    Admitted.
+    Global Typeclasses Opaque checked_signed_diff.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -77042,8 +79005,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -77099,8 +79064,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -77170,9 +79137,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -77231,8 +79199,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -77249,8 +79219,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -77303,9 +79275,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -77322,9 +79295,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -77383,8 +79357,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -77401,8 +79377,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -77455,9 +79433,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -77474,9 +79453,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -77592,8 +79572,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -77652,8 +79633,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -77712,8 +79694,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -77867,6 +79850,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -77939,8 +79923,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -78011,9 +79997,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -78084,9 +80071,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -78145,8 +80133,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -78201,8 +80191,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -78255,8 +80247,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -78312,8 +80306,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -78386,9 +80382,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -78436,9 +80433,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -78491,8 +80489,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -78548,8 +80548,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -78622,9 +80624,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -78672,9 +80675,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -78739,6 +80743,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -78922,8 +80927,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -78982,6 +80989,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -79083,8 +81091,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -79105,9 +81115,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_signed(self, rhs: $SignedT) -> Self {
@@ -79188,9 +81199,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_signed :
-      M.IsAssociatedFunction Self "saturating_add_signed" saturating_add_signed.
-    Smpl Add apply AssociatedFunction_saturating_add_signed : is_associated.
+    Global Instance AssociatedFunction_saturating_add_signed :
+      M.IsAssociatedFunction.Trait Self "saturating_add_signed" saturating_add_signed.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_signed.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -79211,9 +81223,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -79259,9 +81272,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -79283,9 +81297,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -79331,9 +81346,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -79354,8 +81370,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_signed(self, rhs: $SignedT) -> Self {
@@ -79376,9 +81394,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_signed :
-      M.IsAssociatedFunction Self "wrapping_add_signed" wrapping_add_signed.
-    Smpl Add apply AssociatedFunction_wrapping_add_signed : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_signed :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_signed" wrapping_add_signed.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_signed.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -79399,8 +81418,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -79421,8 +81442,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -79439,8 +81462,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -79457,9 +81482,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -79476,8 +81502,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -79494,9 +81522,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -79517,8 +81546,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -79551,8 +81582,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -79585,8 +81618,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -79682,6 +81717,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -79799,6 +81835,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -79908,8 +81945,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -79950,9 +81989,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -80019,8 +82059,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_signed(self, rhs: $SignedT) -> (Self, bool) {
@@ -80065,9 +82107,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_signed :
-      M.IsAssociatedFunction Self "overflowing_add_signed" overflowing_add_signed.
-    Smpl Add apply AssociatedFunction_overflowing_add_signed : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_signed :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_signed" overflowing_add_signed.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_signed.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -80108,9 +82151,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -80177,9 +82221,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn abs_diff(self, other: Self) -> Self {
@@ -80269,8 +82314,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -80311,9 +82358,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -80331,9 +82379,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -80351,9 +82400,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -80371,9 +82421,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -80391,9 +82442,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -80417,9 +82469,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -80444,9 +82497,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -80471,9 +82525,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -80546,6 +82601,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -80696,9 +82752,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -80795,6 +82852,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -80894,6 +82952,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -80988,8 +83047,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -81050,8 +83110,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -81068,8 +83129,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -81086,8 +83149,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -81104,8 +83169,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -81150,8 +83217,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -81194,9 +83263,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -81279,9 +83349,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn is_multiple_of(self, rhs: Self) -> bool {
@@ -81325,9 +83396,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_multiple_of :
-      M.IsAssociatedFunction Self "is_multiple_of" is_multiple_of.
-    Smpl Add apply AssociatedFunction_is_multiple_of : is_associated.
+    Global Instance AssociatedFunction_is_multiple_of :
+      M.IsAssociatedFunction.Trait Self "is_multiple_of" is_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque is_multiple_of.
     
     (*
             pub const fn is_power_of_two(self) -> bool {
@@ -81350,9 +83422,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_power_of_two :
-      M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
-    Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
+    Global Instance AssociatedFunction_is_power_of_two :
+      M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque is_power_of_two.
     
     (*
             const fn one_less_than_next_power_of_two(self) -> Self {
@@ -81420,9 +83493,13 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one_less_than_next_power_of_two :
-      M.IsAssociatedFunction Self "one_less_than_next_power_of_two" one_less_than_next_power_of_two.
-    Smpl Add apply AssociatedFunction_one_less_than_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_one_less_than_next_power_of_two :
+      M.IsAssociatedFunction.Trait
+        Self
+        "one_less_than_next_power_of_two"
+        one_less_than_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque one_less_than_next_power_of_two.
     
     (*
             pub const fn next_power_of_two(self) -> Self {
@@ -81450,9 +83527,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_power_of_two :
-      M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
-    Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "next_power_of_two" next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque next_power_of_two.
     
     (*
             pub const fn checked_next_power_of_two(self) -> Option<Self> {
@@ -81488,9 +83566,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_power_of_two :
-      M.IsAssociatedFunction Self "checked_next_power_of_two" checked_next_power_of_two.
-    Smpl Add apply AssociatedFunction_checked_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_checked_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque checked_next_power_of_two.
     
     (*
             pub const fn wrapping_next_power_of_two(self) -> Self {
@@ -81526,9 +83605,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_next_power_of_two :
-      M.IsAssociatedFunction Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
-    Smpl Add apply AssociatedFunction_wrapping_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_wrapping_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque wrapping_next_power_of_two.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -81554,8 +83634,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -81581,8 +83663,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -81611,8 +83695,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -81638,9 +83724,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -81666,9 +83753,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -81696,9 +83784,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -81707,8 +83796,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -81717,8 +83808,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     
     (*
             pub const fn midpoint(self, rhs: $SelfT) -> $SelfT {
@@ -81743,8 +83836,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     (*
                 pub const fn from_str_radix(src: &str, radix: u32) -> Result<$int_ty, ParseIntError> {
                     use self::IntErrorKind::*;
@@ -82084,6 +84179,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -82225,6 +84321,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -82381,6 +84478,7 @@ Module num.
                                                 Value.Bool true
                                               |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -82650,6 +84748,7 @@ Module num.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
@@ -82931,9 +85030,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_u128.
   
   Module Impl_usize.
@@ -82944,16 +85044,20 @@ Module num.
     Definition value_MIN : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |))).
     
-    Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-    Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+    Global Instance AssociatedConstant_value_MIN :
+      M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+    Admitted.
+    Global Typeclasses Opaque value_MIN.
     
     (*         pub const MAX: Self = !0; *)
     (* Ty.path "usize" *)
     Definition value_MAX : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| UnOp.not (| Value.Integer IntegerKind.Usize 0 |) |))).
     
-    Axiom AssociatedConstant_value_MAX : M.IsAssociatedConstant Self "value_MAX" value_MAX.
-    Smpl Add apply AssociatedConstant_value_MAX : is_associated.
+    Global Instance AssociatedConstant_value_MAX :
+      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Admitted.
+    Global Typeclasses Opaque value_MAX.
     
     (*         pub const BITS: u32 = Self::MAX.count_ones(); *)
     (* Ty.path "u32" *)
@@ -82968,8 +85072,10 @@ Module num.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_BITS : M.IsAssociatedConstant Self "value_BITS" value_BITS.
-    Smpl Add apply AssociatedConstant_value_BITS : is_associated.
+    Global Instance AssociatedConstant_value_BITS :
+      M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+    Admitted.
+    Global Typeclasses Opaque value_BITS.
     
     (*
             pub const fn count_ones(self) -> u32 {
@@ -82998,8 +85104,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_ones : M.IsAssociatedFunction Self "count_ones" count_ones.
-    Smpl Add apply AssociatedFunction_count_ones : is_associated.
+    Global Instance AssociatedFunction_count_ones :
+      M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+    Admitted.
+    Global Typeclasses Opaque count_ones.
     
     (*
             pub const fn count_zeros(self) -> u32 {
@@ -83019,8 +85127,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_count_zeros : M.IsAssociatedFunction Self "count_zeros" count_zeros.
-    Smpl Add apply AssociatedFunction_count_zeros : is_associated.
+    Global Instance AssociatedFunction_count_zeros :
+      M.IsAssociatedFunction.Trait Self "count_zeros" count_zeros.
+    Admitted.
+    Global Typeclasses Opaque count_zeros.
     
     (*
             pub const fn leading_zeros(self) -> u32 {
@@ -83049,9 +85159,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction Self "leading_zeros" leading_zeros.
-    Smpl Add apply AssociatedFunction_leading_zeros : is_associated.
+    Global Instance AssociatedFunction_leading_zeros :
+      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+    Admitted.
+    Global Typeclasses Opaque leading_zeros.
     
     (*
             pub const fn trailing_zeros(self) -> u32 {
@@ -83080,9 +85191,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_zeros :
-      M.IsAssociatedFunction Self "trailing_zeros" trailing_zeros.
-    Smpl Add apply AssociatedFunction_trailing_zeros : is_associated.
+    Global Instance AssociatedFunction_trailing_zeros :
+      M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+    Admitted.
+    Global Typeclasses Opaque trailing_zeros.
     
     (*
             pub const fn leading_ones(self) -> u32 {
@@ -83102,8 +85214,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leading_ones : M.IsAssociatedFunction Self "leading_ones" leading_ones.
-    Smpl Add apply AssociatedFunction_leading_ones : is_associated.
+    Global Instance AssociatedFunction_leading_ones :
+      M.IsAssociatedFunction.Trait Self "leading_ones" leading_ones.
+    Admitted.
+    Global Typeclasses Opaque leading_ones.
     
     (*
             pub const fn trailing_ones(self) -> u32 {
@@ -83123,9 +85237,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_trailing_ones :
-      M.IsAssociatedFunction Self "trailing_ones" trailing_ones.
-    Smpl Add apply AssociatedFunction_trailing_ones : is_associated.
+    Global Instance AssociatedFunction_trailing_ones :
+      M.IsAssociatedFunction.Trait Self "trailing_ones" trailing_ones.
+    Admitted.
+    Global Typeclasses Opaque trailing_ones.
     
     (*
             pub const fn cast_signed(self) -> $SignedT {
@@ -83141,8 +85256,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cast_signed : M.IsAssociatedFunction Self "cast_signed" cast_signed.
-    Smpl Add apply AssociatedFunction_cast_signed : is_associated.
+    Global Instance AssociatedFunction_cast_signed :
+      M.IsAssociatedFunction.Trait Self "cast_signed" cast_signed.
+    Admitted.
+    Global Typeclasses Opaque cast_signed.
     
     (*
             pub const fn rotate_left(self, n: u32) -> Self {
@@ -83172,8 +85289,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_left : M.IsAssociatedFunction Self "rotate_left" rotate_left.
-    Smpl Add apply AssociatedFunction_rotate_left : is_associated.
+    Global Instance AssociatedFunction_rotate_left :
+      M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+    Admitted.
+    Global Typeclasses Opaque rotate_left.
     
     (*
             pub const fn rotate_right(self, n: u32) -> Self {
@@ -83207,8 +85326,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rotate_right : M.IsAssociatedFunction Self "rotate_right" rotate_right.
-    Smpl Add apply AssociatedFunction_rotate_right : is_associated.
+    Global Instance AssociatedFunction_rotate_right :
+      M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+    Admitted.
+    Global Typeclasses Opaque rotate_right.
     
     (*
             pub const fn swap_bytes(self) -> Self {
@@ -83230,8 +85351,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_swap_bytes : M.IsAssociatedFunction Self "swap_bytes" swap_bytes.
-    Smpl Add apply AssociatedFunction_swap_bytes : is_associated.
+    Global Instance AssociatedFunction_swap_bytes :
+      M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+    Admitted.
+    Global Typeclasses Opaque swap_bytes.
     
     (*
             pub const fn reverse_bits(self) -> Self {
@@ -83253,8 +85376,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reverse_bits : M.IsAssociatedFunction Self "reverse_bits" reverse_bits.
-    Smpl Add apply AssociatedFunction_reverse_bits : is_associated.
+    Global Instance AssociatedFunction_reverse_bits :
+      M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+    Admitted.
+    Global Typeclasses Opaque reverse_bits.
     
     (*
             pub const fn from_be(x: Self) -> Self {
@@ -83281,8 +85406,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be : M.IsAssociatedFunction Self "from_be" from_be.
-    Smpl Add apply AssociatedFunction_from_be : is_associated.
+    Global Instance AssociatedFunction_from_be :
+      M.IsAssociatedFunction.Trait Self "from_be" from_be.
+    Admitted.
+    Global Typeclasses Opaque from_be.
     
     (*
             pub const fn from_le(x: Self) -> Self {
@@ -83305,8 +85432,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le : M.IsAssociatedFunction Self "from_le" from_le.
-    Smpl Add apply AssociatedFunction_from_le : is_associated.
+    Global Instance AssociatedFunction_from_le :
+      M.IsAssociatedFunction.Trait Self "from_le" from_le.
+    Admitted.
+    Global Typeclasses Opaque from_le.
     
     (*
             pub const fn to_be(self) -> Self { // or not to be?
@@ -83333,8 +85462,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be : M.IsAssociatedFunction Self "to_be" to_be.
-    Smpl Add apply AssociatedFunction_to_be : is_associated.
+    Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+    Admitted.
+    Global Typeclasses Opaque to_be.
     
     (*
             pub const fn to_le(self) -> Self {
@@ -83357,8 +85487,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le : M.IsAssociatedFunction Self "to_le" to_le.
-    Smpl Add apply AssociatedFunction_to_le : is_associated.
+    Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+    Admitted.
+    Global Typeclasses Opaque to_le.
     
     (*
             pub const fn checked_add(self, rhs: Self) -> Option<Self> {
@@ -83440,8 +85571,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
-    Smpl Add apply AssociatedFunction_checked_add : is_associated.
+    Global Instance AssociatedFunction_checked_add :
+      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+    Admitted.
+    Global Typeclasses Opaque checked_add.
     
     (*
             pub const fn strict_add(self, rhs: Self) -> Self {
@@ -83497,8 +85630,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add : M.IsAssociatedFunction Self "strict_add" strict_add.
-    Smpl Add apply AssociatedFunction_strict_add : is_associated.
+    Global Instance AssociatedFunction_strict_add :
+      M.IsAssociatedFunction.Trait Self "strict_add" strict_add.
+    Admitted.
+    Global Typeclasses Opaque strict_add.
     
     (*
             pub const unsafe fn unchecked_add(self, rhs: Self) -> Self {
@@ -83568,9 +85703,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_add :
-      M.IsAssociatedFunction Self "unchecked_add" unchecked_add.
-    Smpl Add apply AssociatedFunction_unchecked_add : is_associated.
+    Global Instance AssociatedFunction_unchecked_add :
+      M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+    Admitted.
+    Global Typeclasses Opaque unchecked_add.
     
     (*
             pub const fn checked_add_signed(self, rhs: $SignedT) -> Option<Self> {
@@ -83630,9 +85766,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_add_signed :
-      M.IsAssociatedFunction Self "checked_add_signed" checked_add_signed.
-    Smpl Add apply AssociatedFunction_checked_add_signed : is_associated.
+    Global Instance AssociatedFunction_checked_add_signed :
+      M.IsAssociatedFunction.Trait Self "checked_add_signed" checked_add_signed.
+    Admitted.
+    Global Typeclasses Opaque checked_add_signed.
     
     (*
             pub const fn strict_add_signed(self, rhs: $SignedT) -> Self {
@@ -83688,9 +85825,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_add_signed :
-      M.IsAssociatedFunction Self "strict_add_signed" strict_add_signed.
-    Smpl Add apply AssociatedFunction_strict_add_signed : is_associated.
+    Global Instance AssociatedFunction_strict_add_signed :
+      M.IsAssociatedFunction.Trait Self "strict_add_signed" strict_add_signed.
+    Admitted.
+    Global Typeclasses Opaque strict_add_signed.
     
     (*
             pub const fn checked_sub(self, rhs: Self) -> Option<Self> {
@@ -83746,8 +85884,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
-    Smpl Add apply AssociatedFunction_checked_sub : is_associated.
+    Global Instance AssociatedFunction_checked_sub :
+      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+    Admitted.
+    Global Typeclasses Opaque checked_sub.
     
     (*
             pub const fn strict_sub(self, rhs: Self) -> Self {
@@ -83803,8 +85943,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_sub : M.IsAssociatedFunction Self "strict_sub" strict_sub.
-    Smpl Add apply AssociatedFunction_strict_sub : is_associated.
+    Global Instance AssociatedFunction_strict_sub :
+      M.IsAssociatedFunction.Trait Self "strict_sub" strict_sub.
+    Admitted.
+    Global Typeclasses Opaque strict_sub.
     
     (*
             pub const unsafe fn unchecked_sub(self, rhs: Self) -> Self {
@@ -83874,9 +86016,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_sub :
-      M.IsAssociatedFunction Self "unchecked_sub" unchecked_sub.
-    Smpl Add apply AssociatedFunction_unchecked_sub : is_associated.
+    Global Instance AssociatedFunction_unchecked_sub :
+      M.IsAssociatedFunction.Trait Self "unchecked_sub" unchecked_sub.
+    Admitted.
+    Global Typeclasses Opaque unchecked_sub.
     
     (*
             pub const fn checked_signed_diff(self, rhs: Self) -> Option<$SignedT> {
@@ -83932,9 +86075,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_signed_diff :
-      M.IsAssociatedFunction Self "checked_signed_diff" checked_signed_diff.
-    Smpl Add apply AssociatedFunction_checked_signed_diff : is_associated.
+    Global Instance AssociatedFunction_checked_signed_diff :
+      M.IsAssociatedFunction.Trait Self "checked_signed_diff" checked_signed_diff.
+    Admitted.
+    Global Typeclasses Opaque checked_signed_diff.
     
     (*
             pub const fn checked_mul(self, rhs: Self) -> Option<Self> {
@@ -83994,8 +86138,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
-    Smpl Add apply AssociatedFunction_checked_mul : is_associated.
+    Global Instance AssociatedFunction_checked_mul :
+      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+    Admitted.
+    Global Typeclasses Opaque checked_mul.
     
     (*
             pub const fn strict_mul(self, rhs: Self) -> Self {
@@ -84051,8 +86197,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_mul : M.IsAssociatedFunction Self "strict_mul" strict_mul.
-    Smpl Add apply AssociatedFunction_strict_mul : is_associated.
+    Global Instance AssociatedFunction_strict_mul :
+      M.IsAssociatedFunction.Trait Self "strict_mul" strict_mul.
+    Admitted.
+    Global Typeclasses Opaque strict_mul.
     
     (*
             pub const unsafe fn unchecked_mul(self, rhs: Self) -> Self {
@@ -84122,9 +86270,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_mul :
-      M.IsAssociatedFunction Self "unchecked_mul" unchecked_mul.
-    Smpl Add apply AssociatedFunction_unchecked_mul : is_associated.
+    Global Instance AssociatedFunction_unchecked_mul :
+      M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+    Admitted.
+    Global Typeclasses Opaque unchecked_mul.
     
     (*
             pub const fn checked_div(self, rhs: Self) -> Option<Self> {
@@ -84183,8 +86332,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
-    Smpl Add apply AssociatedFunction_checked_div : is_associated.
+    Global Instance AssociatedFunction_checked_div :
+      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+    Admitted.
+    Global Typeclasses Opaque checked_div.
     
     (*
             pub const fn strict_div(self, rhs: Self) -> Self {
@@ -84201,8 +86352,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div : M.IsAssociatedFunction Self "strict_div" strict_div.
-    Smpl Add apply AssociatedFunction_strict_div : is_associated.
+    Global Instance AssociatedFunction_strict_div :
+      M.IsAssociatedFunction.Trait Self "strict_div" strict_div.
+    Admitted.
+    Global Typeclasses Opaque strict_div.
     
     (*
             pub const fn checked_div_euclid(self, rhs: Self) -> Option<Self> {
@@ -84255,9 +86408,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_div_euclid :
-      M.IsAssociatedFunction Self "checked_div_euclid" checked_div_euclid.
-    Smpl Add apply AssociatedFunction_checked_div_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_div_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_div_euclid" checked_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_div_euclid.
     
     (*
             pub const fn strict_div_euclid(self, rhs: Self) -> Self {
@@ -84274,9 +86428,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_div_euclid :
-      M.IsAssociatedFunction Self "strict_div_euclid" strict_div_euclid.
-    Smpl Add apply AssociatedFunction_strict_div_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_div_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_div_euclid" strict_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_div_euclid.
     
     (*
             pub const fn checked_rem(self, rhs: Self) -> Option<Self> {
@@ -84335,8 +86490,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
-    Smpl Add apply AssociatedFunction_checked_rem : is_associated.
+    Global Instance AssociatedFunction_checked_rem :
+      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+    Admitted.
+    Global Typeclasses Opaque checked_rem.
     
     (*
             pub const fn strict_rem(self, rhs: Self) -> Self {
@@ -84353,8 +86510,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem : M.IsAssociatedFunction Self "strict_rem" strict_rem.
-    Smpl Add apply AssociatedFunction_strict_rem : is_associated.
+    Global Instance AssociatedFunction_strict_rem :
+      M.IsAssociatedFunction.Trait Self "strict_rem" strict_rem.
+    Admitted.
+    Global Typeclasses Opaque strict_rem.
     
     (*
             pub const fn checked_rem_euclid(self, rhs: Self) -> Option<Self> {
@@ -84407,9 +86566,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_rem_euclid :
-      M.IsAssociatedFunction Self "checked_rem_euclid" checked_rem_euclid.
-    Smpl Add apply AssociatedFunction_checked_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_checked_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "checked_rem_euclid" checked_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque checked_rem_euclid.
     
     (*
             pub const fn strict_rem_euclid(self, rhs: Self) -> Self {
@@ -84426,9 +86586,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_rem_euclid :
-      M.IsAssociatedFunction Self "strict_rem_euclid" strict_rem_euclid.
-    Smpl Add apply AssociatedFunction_strict_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_strict_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "strict_rem_euclid" strict_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque strict_rem_euclid.
     
     (*
             pub const fn ilog(self, base: Self) -> u32 {
@@ -84544,8 +86705,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog : M.IsAssociatedFunction Self "ilog" ilog.
-    Smpl Add apply AssociatedFunction_ilog : is_associated.
+    Global Instance AssociatedFunction_ilog : M.IsAssociatedFunction.Trait Self "ilog" ilog.
+    Admitted.
+    Global Typeclasses Opaque ilog.
     
     (*
             pub const fn ilog2(self) -> u32 {
@@ -84604,8 +86766,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog2 : M.IsAssociatedFunction Self "ilog2" ilog2.
-    Smpl Add apply AssociatedFunction_ilog2 : is_associated.
+    Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+    Admitted.
+    Global Typeclasses Opaque ilog2.
     
     (*
             pub const fn ilog10(self) -> u32 {
@@ -84664,8 +86827,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ilog10 : M.IsAssociatedFunction Self "ilog10" ilog10.
-    Smpl Add apply AssociatedFunction_ilog10 : is_associated.
+    Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+    Admitted.
+    Global Typeclasses Opaque ilog10.
     
     (*
             pub const fn checked_ilog(self, base: Self) -> Option<u32> {
@@ -84819,6 +86983,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -84891,8 +87056,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog : M.IsAssociatedFunction Self "checked_ilog" checked_ilog.
-    Smpl Add apply AssociatedFunction_checked_ilog : is_associated.
+    Global Instance AssociatedFunction_checked_ilog :
+      M.IsAssociatedFunction.Trait Self "checked_ilog" checked_ilog.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog.
     
     (*
             pub const fn checked_ilog2(self) -> Option<u32> {
@@ -84963,9 +87130,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog2 :
-      M.IsAssociatedFunction Self "checked_ilog2" checked_ilog2.
-    Smpl Add apply AssociatedFunction_checked_ilog2 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog2 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog2" checked_ilog2.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog2.
     
     (*
             pub const fn checked_ilog10(self) -> Option<u32> {
@@ -85036,9 +87204,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_ilog10 :
-      M.IsAssociatedFunction Self "checked_ilog10" checked_ilog10.
-    Smpl Add apply AssociatedFunction_checked_ilog10 : is_associated.
+    Global Instance AssociatedFunction_checked_ilog10 :
+      M.IsAssociatedFunction.Trait Self "checked_ilog10" checked_ilog10.
+    Admitted.
+    Global Typeclasses Opaque checked_ilog10.
     
     (*
             pub const fn checked_neg(self) -> Option<Self> {
@@ -85097,8 +87266,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_neg : M.IsAssociatedFunction Self "checked_neg" checked_neg.
-    Smpl Add apply AssociatedFunction_checked_neg : is_associated.
+    Global Instance AssociatedFunction_checked_neg :
+      M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+    Admitted.
+    Global Typeclasses Opaque checked_neg.
     
     (*
             pub const fn strict_neg(self) -> Self {
@@ -85153,8 +87324,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_neg : M.IsAssociatedFunction Self "strict_neg" strict_neg.
-    Smpl Add apply AssociatedFunction_strict_neg : is_associated.
+    Global Instance AssociatedFunction_strict_neg :
+      M.IsAssociatedFunction.Trait Self "strict_neg" strict_neg.
+    Admitted.
+    Global Typeclasses Opaque strict_neg.
     
     (*
             pub const fn checked_shl(self, rhs: u32) -> Option<Self> {
@@ -85212,8 +87385,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
-    Smpl Add apply AssociatedFunction_checked_shl : is_associated.
+    Global Instance AssociatedFunction_checked_shl :
+      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+    Admitted.
+    Global Typeclasses Opaque checked_shl.
     
     (*
             pub const fn strict_shl(self, rhs: u32) -> Self {
@@ -85269,8 +87444,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shl : M.IsAssociatedFunction Self "strict_shl" strict_shl.
-    Smpl Add apply AssociatedFunction_strict_shl : is_associated.
+    Global Instance AssociatedFunction_strict_shl :
+      M.IsAssociatedFunction.Trait Self "strict_shl" strict_shl.
+    Admitted.
+    Global Typeclasses Opaque strict_shl.
     
     (*
             pub const unsafe fn unchecked_shl(self, rhs: u32) -> Self {
@@ -85343,9 +87520,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shl :
-      M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
-    Smpl Add apply AssociatedFunction_unchecked_shl : is_associated.
+    Global Instance AssociatedFunction_unchecked_shl :
+      M.IsAssociatedFunction.Trait Self "unchecked_shl" unchecked_shl.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shl.
     
     (*
             pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
@@ -85393,9 +87571,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shl :
-      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
-    Smpl Add apply AssociatedFunction_unbounded_shl : is_associated.
+    Global Instance AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction.Trait Self "unbounded_shl" unbounded_shl.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shl.
     
     (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
@@ -85453,8 +87632,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
-    Smpl Add apply AssociatedFunction_checked_shr : is_associated.
+    Global Instance AssociatedFunction_checked_shr :
+      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+    Admitted.
+    Global Typeclasses Opaque checked_shr.
     
     (*
             pub const fn strict_shr(self, rhs: u32) -> Self {
@@ -85510,8 +87691,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_shr : M.IsAssociatedFunction Self "strict_shr" strict_shr.
-    Smpl Add apply AssociatedFunction_strict_shr : is_associated.
+    Global Instance AssociatedFunction_strict_shr :
+      M.IsAssociatedFunction.Trait Self "strict_shr" strict_shr.
+    Admitted.
+    Global Typeclasses Opaque strict_shr.
     
     (*
             pub const unsafe fn unchecked_shr(self, rhs: u32) -> Self {
@@ -85584,9 +87767,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unchecked_shr :
-      M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
-    Smpl Add apply AssociatedFunction_unchecked_shr : is_associated.
+    Global Instance AssociatedFunction_unchecked_shr :
+      M.IsAssociatedFunction.Trait Self "unchecked_shr" unchecked_shr.
+    Admitted.
+    Global Typeclasses Opaque unchecked_shr.
     
     (*
             pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
@@ -85634,9 +87818,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unbounded_shr :
-      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
-    Smpl Add apply AssociatedFunction_unbounded_shr : is_associated.
+    Global Instance AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction.Trait Self "unbounded_shr" unbounded_shr.
+    Admitted.
+    Global Typeclasses Opaque unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -85701,6 +87886,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -85884,8 +88070,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_pow : M.IsAssociatedFunction Self "checked_pow" checked_pow.
-    Smpl Add apply AssociatedFunction_checked_pow : is_associated.
+    Global Instance AssociatedFunction_checked_pow :
+      M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+    Admitted.
+    Global Typeclasses Opaque checked_pow.
     
     (*
             pub const fn strict_pow(self, mut exp: u32) -> Self {
@@ -85944,6 +88132,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -86045,8 +88234,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strict_pow : M.IsAssociatedFunction Self "strict_pow" strict_pow.
-    Smpl Add apply AssociatedFunction_strict_pow : is_associated.
+    Global Instance AssociatedFunction_strict_pow :
+      M.IsAssociatedFunction.Trait Self "strict_pow" strict_pow.
+    Admitted.
+    Global Typeclasses Opaque strict_pow.
     
     (*
             pub const fn saturating_add(self, rhs: Self) -> Self {
@@ -86067,9 +88258,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction Self "saturating_add" saturating_add.
-    Smpl Add apply AssociatedFunction_saturating_add : is_associated.
+    Global Instance AssociatedFunction_saturating_add :
+      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+    Admitted.
+    Global Typeclasses Opaque saturating_add.
     
     (*
             pub const fn saturating_add_signed(self, rhs: $SignedT) -> Self {
@@ -86150,9 +88342,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_add_signed :
-      M.IsAssociatedFunction Self "saturating_add_signed" saturating_add_signed.
-    Smpl Add apply AssociatedFunction_saturating_add_signed : is_associated.
+    Global Instance AssociatedFunction_saturating_add_signed :
+      M.IsAssociatedFunction.Trait Self "saturating_add_signed" saturating_add_signed.
+    Admitted.
+    Global Typeclasses Opaque saturating_add_signed.
     
     (*
             pub const fn saturating_sub(self, rhs: Self) -> Self {
@@ -86173,9 +88366,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction Self "saturating_sub" saturating_sub.
-    Smpl Add apply AssociatedFunction_saturating_sub : is_associated.
+    Global Instance AssociatedFunction_saturating_sub :
+      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+    Admitted.
+    Global Typeclasses Opaque saturating_sub.
     
     (*
             pub const fn saturating_mul(self, rhs: Self) -> Self {
@@ -86221,9 +88415,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction Self "saturating_mul" saturating_mul.
-    Smpl Add apply AssociatedFunction_saturating_mul : is_associated.
+    Global Instance AssociatedFunction_saturating_mul :
+      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+    Admitted.
+    Global Typeclasses Opaque saturating_mul.
     
     (*
             pub const fn saturating_div(self, rhs: Self) -> Self {
@@ -86245,9 +88440,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_div :
-      M.IsAssociatedFunction Self "saturating_div" saturating_div.
-    Smpl Add apply AssociatedFunction_saturating_div : is_associated.
+    Global Instance AssociatedFunction_saturating_div :
+      M.IsAssociatedFunction.Trait Self "saturating_div" saturating_div.
+    Admitted.
+    Global Typeclasses Opaque saturating_div.
     
     (*
             pub const fn saturating_pow(self, exp: u32) -> Self {
@@ -86293,9 +88489,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_saturating_pow :
-      M.IsAssociatedFunction Self "saturating_pow" saturating_pow.
-    Smpl Add apply AssociatedFunction_saturating_pow : is_associated.
+    Global Instance AssociatedFunction_saturating_pow :
+      M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+    Admitted.
+    Global Typeclasses Opaque saturating_pow.
     
     (*
             pub const fn wrapping_add(self, rhs: Self) -> Self {
@@ -86316,8 +88513,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
-    Smpl Add apply AssociatedFunction_wrapping_add : is_associated.
+    Global Instance AssociatedFunction_wrapping_add :
+      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add.
     
     (*
             pub const fn wrapping_add_signed(self, rhs: $SignedT) -> Self {
@@ -86338,9 +88537,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_add_signed :
-      M.IsAssociatedFunction Self "wrapping_add_signed" wrapping_add_signed.
-    Smpl Add apply AssociatedFunction_wrapping_add_signed : is_associated.
+    Global Instance AssociatedFunction_wrapping_add_signed :
+      M.IsAssociatedFunction.Trait Self "wrapping_add_signed" wrapping_add_signed.
+    Admitted.
+    Global Typeclasses Opaque wrapping_add_signed.
     
     (*
             pub const fn wrapping_sub(self, rhs: Self) -> Self {
@@ -86361,8 +88561,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
-    Smpl Add apply AssociatedFunction_wrapping_sub : is_associated.
+    Global Instance AssociatedFunction_wrapping_sub :
+      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+    Admitted.
+    Global Typeclasses Opaque wrapping_sub.
     
     (*
             pub const fn wrapping_mul(self, rhs: Self) -> Self {
@@ -86383,8 +88585,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
-    Smpl Add apply AssociatedFunction_wrapping_mul : is_associated.
+    Global Instance AssociatedFunction_wrapping_mul :
+      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+    Admitted.
+    Global Typeclasses Opaque wrapping_mul.
     
     (*
             pub const fn wrapping_div(self, rhs: Self) -> Self {
@@ -86401,8 +88605,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div : M.IsAssociatedFunction Self "wrapping_div" wrapping_div.
-    Smpl Add apply AssociatedFunction_wrapping_div : is_associated.
+    Global Instance AssociatedFunction_wrapping_div :
+      M.IsAssociatedFunction.Trait Self "wrapping_div" wrapping_div.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div.
     
     (*
             pub const fn wrapping_div_euclid(self, rhs: Self) -> Self {
@@ -86419,9 +88625,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_div_euclid :
-      M.IsAssociatedFunction Self "wrapping_div_euclid" wrapping_div_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_div_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_div_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_div_euclid" wrapping_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_div_euclid.
     
     (*
             pub const fn wrapping_rem(self, rhs: Self) -> Self {
@@ -86438,8 +88645,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem : M.IsAssociatedFunction Self "wrapping_rem" wrapping_rem.
-    Smpl Add apply AssociatedFunction_wrapping_rem : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem" wrapping_rem.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem.
     
     (*
             pub const fn wrapping_rem_euclid(self, rhs: Self) -> Self {
@@ -86456,9 +88665,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_rem_euclid :
-      M.IsAssociatedFunction Self "wrapping_rem_euclid" wrapping_rem_euclid.
-    Smpl Add apply AssociatedFunction_wrapping_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_wrapping_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "wrapping_rem_euclid" wrapping_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque wrapping_rem_euclid.
     
     (*
             pub const fn wrapping_neg(self) -> Self {
@@ -86481,8 +88691,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_neg : M.IsAssociatedFunction Self "wrapping_neg" wrapping_neg.
-    Smpl Add apply AssociatedFunction_wrapping_neg : is_associated.
+    Global Instance AssociatedFunction_wrapping_neg :
+      M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+    Admitted.
+    Global Typeclasses Opaque wrapping_neg.
     
     (*
             pub const fn wrapping_shl(self, rhs: u32) -> Self {
@@ -86515,8 +88727,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shl : M.IsAssociatedFunction Self "wrapping_shl" wrapping_shl.
-    Smpl Add apply AssociatedFunction_wrapping_shl : is_associated.
+    Global Instance AssociatedFunction_wrapping_shl :
+      M.IsAssociatedFunction.Trait Self "wrapping_shl" wrapping_shl.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shl.
     
     (*
             pub const fn wrapping_shr(self, rhs: u32) -> Self {
@@ -86549,8 +88763,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_shr : M.IsAssociatedFunction Self "wrapping_shr" wrapping_shr.
-    Smpl Add apply AssociatedFunction_wrapping_shr : is_associated.
+    Global Instance AssociatedFunction_wrapping_shr :
+      M.IsAssociatedFunction.Trait Self "wrapping_shr" wrapping_shr.
+    Admitted.
+    Global Typeclasses Opaque wrapping_shr.
     
     (*
             pub const fn wrapping_pow(self, mut exp: u32) -> Self {
@@ -86646,6 +88862,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -86763,6 +88980,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -86872,8 +89090,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_pow : M.IsAssociatedFunction Self "wrapping_pow" wrapping_pow.
-    Smpl Add apply AssociatedFunction_wrapping_pow : is_associated.
+    Global Instance AssociatedFunction_wrapping_pow :
+      M.IsAssociatedFunction.Trait Self "wrapping_pow" wrapping_pow.
+    Admitted.
+    Global Typeclasses Opaque wrapping_pow.
     
     (*
             pub const fn overflowing_add(self, rhs: Self) -> (Self, bool) {
@@ -86915,9 +89135,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add :
-      M.IsAssociatedFunction Self "overflowing_add" overflowing_add.
-    Smpl Add apply AssociatedFunction_overflowing_add : is_associated.
+    Global Instance AssociatedFunction_overflowing_add :
+      M.IsAssociatedFunction.Trait Self "overflowing_add" overflowing_add.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add.
     
     (*
             pub const fn carrying_add(self, rhs: Self, carry: bool) -> (Self, bool) {
@@ -86989,8 +89210,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_add : M.IsAssociatedFunction Self "carrying_add" carrying_add.
-    Smpl Add apply AssociatedFunction_carrying_add : is_associated.
+    Global Instance AssociatedFunction_carrying_add :
+      M.IsAssociatedFunction.Trait Self "carrying_add" carrying_add.
+    Admitted.
+    Global Typeclasses Opaque carrying_add.
     
     (*
             pub const fn overflowing_add_signed(self, rhs: $SignedT) -> (Self, bool) {
@@ -87035,9 +89258,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_add_signed :
-      M.IsAssociatedFunction Self "overflowing_add_signed" overflowing_add_signed.
-    Smpl Add apply AssociatedFunction_overflowing_add_signed : is_associated.
+    Global Instance AssociatedFunction_overflowing_add_signed :
+      M.IsAssociatedFunction.Trait Self "overflowing_add_signed" overflowing_add_signed.
+    Admitted.
+    Global Typeclasses Opaque overflowing_add_signed.
     
     (*
             pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) {
@@ -87079,9 +89303,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_sub :
-      M.IsAssociatedFunction Self "overflowing_sub" overflowing_sub.
-    Smpl Add apply AssociatedFunction_overflowing_sub : is_associated.
+    Global Instance AssociatedFunction_overflowing_sub :
+      M.IsAssociatedFunction.Trait Self "overflowing_sub" overflowing_sub.
+    Admitted.
+    Global Typeclasses Opaque overflowing_sub.
     
     (*
             pub const fn borrowing_sub(self, rhs: Self, borrow: bool) -> (Self, bool) {
@@ -87153,9 +89378,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_borrowing_sub :
-      M.IsAssociatedFunction Self "borrowing_sub" borrowing_sub.
-    Smpl Add apply AssociatedFunction_borrowing_sub : is_associated.
+    Global Instance AssociatedFunction_borrowing_sub :
+      M.IsAssociatedFunction.Trait Self "borrowing_sub" borrowing_sub.
+    Admitted.
+    Global Typeclasses Opaque borrowing_sub.
     
     (*
             pub const fn abs_diff(self, other: Self) -> Self {
@@ -87245,8 +89471,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abs_diff : M.IsAssociatedFunction Self "abs_diff" abs_diff.
-    Smpl Add apply AssociatedFunction_abs_diff : is_associated.
+    Global Instance AssociatedFunction_abs_diff :
+      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Admitted.
+    Global Typeclasses Opaque abs_diff.
     
     (*
             pub const fn overflowing_mul(self, rhs: Self) -> (Self, bool) {
@@ -87288,9 +89516,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_mul :
-      M.IsAssociatedFunction Self "overflowing_mul" overflowing_mul.
-    Smpl Add apply AssociatedFunction_overflowing_mul : is_associated.
+    Global Instance AssociatedFunction_overflowing_mul :
+      M.IsAssociatedFunction.Trait Self "overflowing_mul" overflowing_mul.
+    Admitted.
+    Global Typeclasses Opaque overflowing_mul.
     
     (*
             pub const fn overflowing_div(self, rhs: Self) -> (Self, bool) {
@@ -87308,9 +89537,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div :
-      M.IsAssociatedFunction Self "overflowing_div" overflowing_div.
-    Smpl Add apply AssociatedFunction_overflowing_div : is_associated.
+    Global Instance AssociatedFunction_overflowing_div :
+      M.IsAssociatedFunction.Trait Self "overflowing_div" overflowing_div.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div.
     
     (*
             pub const fn overflowing_div_euclid(self, rhs: Self) -> (Self, bool) {
@@ -87328,9 +89558,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_div_euclid :
-      M.IsAssociatedFunction Self "overflowing_div_euclid" overflowing_div_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_div_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_div_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_div_euclid" overflowing_div_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_div_euclid.
     
     (*
             pub const fn overflowing_rem(self, rhs: Self) -> (Self, bool) {
@@ -87348,9 +89579,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem :
-      M.IsAssociatedFunction Self "overflowing_rem" overflowing_rem.
-    Smpl Add apply AssociatedFunction_overflowing_rem : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem" overflowing_rem.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem.
     
     (*
             pub const fn overflowing_rem_euclid(self, rhs: Self) -> (Self, bool) {
@@ -87368,9 +89600,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_rem_euclid :
-      M.IsAssociatedFunction Self "overflowing_rem_euclid" overflowing_rem_euclid.
-    Smpl Add apply AssociatedFunction_overflowing_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_overflowing_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "overflowing_rem_euclid" overflowing_rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque overflowing_rem_euclid.
     
     (*
             pub const fn overflowing_neg(self) -> (Self, bool) {
@@ -87394,9 +89627,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_neg :
-      M.IsAssociatedFunction Self "overflowing_neg" overflowing_neg.
-    Smpl Add apply AssociatedFunction_overflowing_neg : is_associated.
+    Global Instance AssociatedFunction_overflowing_neg :
+      M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+    Admitted.
+    Global Typeclasses Opaque overflowing_neg.
     
     (*
             pub const fn overflowing_shl(self, rhs: u32) -> (Self, bool) {
@@ -87421,9 +89655,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shl :
-      M.IsAssociatedFunction Self "overflowing_shl" overflowing_shl.
-    Smpl Add apply AssociatedFunction_overflowing_shl : is_associated.
+    Global Instance AssociatedFunction_overflowing_shl :
+      M.IsAssociatedFunction.Trait Self "overflowing_shl" overflowing_shl.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shl.
     
     (*
             pub const fn overflowing_shr(self, rhs: u32) -> (Self, bool) {
@@ -87448,9 +89683,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_shr :
-      M.IsAssociatedFunction Self "overflowing_shr" overflowing_shr.
-    Smpl Add apply AssociatedFunction_overflowing_shr : is_associated.
+    Global Instance AssociatedFunction_overflowing_shr :
+      M.IsAssociatedFunction.Trait Self "overflowing_shr" overflowing_shr.
+    Admitted.
+    Global Typeclasses Opaque overflowing_shr.
     
     (*
             pub const fn overflowing_pow(self, mut exp: u32) -> (Self, bool) {
@@ -87524,6 +89760,7 @@ Module num.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -87674,9 +89911,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_overflowing_pow :
-      M.IsAssociatedFunction Self "overflowing_pow" overflowing_pow.
-    Smpl Add apply AssociatedFunction_overflowing_pow : is_associated.
+    Global Instance AssociatedFunction_overflowing_pow :
+      M.IsAssociatedFunction.Trait Self "overflowing_pow" overflowing_pow.
+    Admitted.
+    Global Typeclasses Opaque overflowing_pow.
     
     (*
             pub const fn pow(self, mut exp: u32) -> Self {
@@ -87773,6 +90011,7 @@ Module num.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -87872,6 +90111,7 @@ Module num.
                           M.never_to_any (|
                             M.read (|
                               M.loop (|
+                                Ty.path "never",
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -87966,8 +90206,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pow : M.IsAssociatedFunction Self "pow" pow.
-    Smpl Add apply AssociatedFunction_pow : is_associated.
+    Global Instance AssociatedFunction_pow : M.IsAssociatedFunction.Trait Self "pow" pow.
+    Admitted.
+    Global Typeclasses Opaque pow.
     
     (*
             pub const fn isqrt(self) -> Self {
@@ -88027,8 +90268,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_isqrt : M.IsAssociatedFunction Self "isqrt" isqrt.
-    Smpl Add apply AssociatedFunction_isqrt : is_associated.
+    Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+    Admitted.
+    Global Typeclasses Opaque isqrt.
     
     (*
             pub const fn div_euclid(self, rhs: Self) -> Self {
@@ -88045,8 +90287,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_euclid : M.IsAssociatedFunction Self "div_euclid" div_euclid.
-    Smpl Add apply AssociatedFunction_div_euclid : is_associated.
+    Global Instance AssociatedFunction_div_euclid :
+      M.IsAssociatedFunction.Trait Self "div_euclid" div_euclid.
+    Admitted.
+    Global Typeclasses Opaque div_euclid.
     
     (*
             pub const fn rem_euclid(self, rhs: Self) -> Self {
@@ -88063,8 +90307,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_rem_euclid : M.IsAssociatedFunction Self "rem_euclid" rem_euclid.
-    Smpl Add apply AssociatedFunction_rem_euclid : is_associated.
+    Global Instance AssociatedFunction_rem_euclid :
+      M.IsAssociatedFunction.Trait Self "rem_euclid" rem_euclid.
+    Admitted.
+    Global Typeclasses Opaque rem_euclid.
     
     (*
             pub const fn div_floor(self, rhs: Self) -> Self {
@@ -88081,8 +90327,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_floor : M.IsAssociatedFunction Self "div_floor" div_floor.
-    Smpl Add apply AssociatedFunction_div_floor : is_associated.
+    Global Instance AssociatedFunction_div_floor :
+      M.IsAssociatedFunction.Trait Self "div_floor" div_floor.
+    Admitted.
+    Global Typeclasses Opaque div_floor.
     
     (*
             pub const fn div_ceil(self, rhs: Self) -> Self {
@@ -88127,8 +90375,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_div_ceil : M.IsAssociatedFunction Self "div_ceil" div_ceil.
-    Smpl Add apply AssociatedFunction_div_ceil : is_associated.
+    Global Instance AssociatedFunction_div_ceil :
+      M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+    Admitted.
+    Global Typeclasses Opaque div_ceil.
     
     (*
             pub const fn next_multiple_of(self, rhs: Self) -> Self {
@@ -88171,9 +90421,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_multiple_of :
-      M.IsAssociatedFunction Self "next_multiple_of" next_multiple_of.
-    Smpl Add apply AssociatedFunction_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "next_multiple_of" next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque next_multiple_of.
     
     (*
             pub const fn checked_next_multiple_of(self, rhs: Self) -> Option<Self> {
@@ -88256,9 +90507,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_multiple_of :
-      M.IsAssociatedFunction Self "checked_next_multiple_of" checked_next_multiple_of.
-    Smpl Add apply AssociatedFunction_checked_next_multiple_of : is_associated.
+    Global Instance AssociatedFunction_checked_next_multiple_of :
+      M.IsAssociatedFunction.Trait Self "checked_next_multiple_of" checked_next_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque checked_next_multiple_of.
     
     (*
             pub const fn is_multiple_of(self, rhs: Self) -> bool {
@@ -88302,9 +90554,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_multiple_of :
-      M.IsAssociatedFunction Self "is_multiple_of" is_multiple_of.
-    Smpl Add apply AssociatedFunction_is_multiple_of : is_associated.
+    Global Instance AssociatedFunction_is_multiple_of :
+      M.IsAssociatedFunction.Trait Self "is_multiple_of" is_multiple_of.
+    Admitted.
+    Global Typeclasses Opaque is_multiple_of.
     
     (*
             pub const fn is_power_of_two(self) -> bool {
@@ -88327,9 +90580,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_power_of_two :
-      M.IsAssociatedFunction Self "is_power_of_two" is_power_of_two.
-    Smpl Add apply AssociatedFunction_is_power_of_two : is_associated.
+    Global Instance AssociatedFunction_is_power_of_two :
+      M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque is_power_of_two.
     
     (*
             const fn one_less_than_next_power_of_two(self) -> Self {
@@ -88401,9 +90655,13 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_one_less_than_next_power_of_two :
-      M.IsAssociatedFunction Self "one_less_than_next_power_of_two" one_less_than_next_power_of_two.
-    Smpl Add apply AssociatedFunction_one_less_than_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_one_less_than_next_power_of_two :
+      M.IsAssociatedFunction.Trait
+        Self
+        "one_less_than_next_power_of_two"
+        one_less_than_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque one_less_than_next_power_of_two.
     
     (*
             pub const fn next_power_of_two(self) -> Self {
@@ -88431,9 +90689,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next_power_of_two :
-      M.IsAssociatedFunction Self "next_power_of_two" next_power_of_two.
-    Smpl Add apply AssociatedFunction_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "next_power_of_two" next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque next_power_of_two.
     
     (*
             pub const fn checked_next_power_of_two(self) -> Option<Self> {
@@ -88469,9 +90728,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_checked_next_power_of_two :
-      M.IsAssociatedFunction Self "checked_next_power_of_two" checked_next_power_of_two.
-    Smpl Add apply AssociatedFunction_checked_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_checked_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque checked_next_power_of_two.
     
     (*
             pub const fn wrapping_next_power_of_two(self) -> Self {
@@ -88507,9 +90767,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrapping_next_power_of_two :
-      M.IsAssociatedFunction Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
-    Smpl Add apply AssociatedFunction_wrapping_next_power_of_two : is_associated.
+    Global Instance AssociatedFunction_wrapping_next_power_of_two :
+      M.IsAssociatedFunction.Trait Self "wrapping_next_power_of_two" wrapping_next_power_of_two.
+    Admitted.
+    Global Typeclasses Opaque wrapping_next_power_of_two.
     
     (*
             pub const fn to_be_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -88535,8 +90796,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
-    Smpl Add apply AssociatedFunction_to_be_bytes : is_associated.
+    Global Instance AssociatedFunction_to_be_bytes :
+      M.IsAssociatedFunction.Trait Self "to_be_bytes" to_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_be_bytes.
     
     (*
             pub const fn to_le_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -88562,8 +90825,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
-    Smpl Add apply AssociatedFunction_to_le_bytes : is_associated.
+    Global Instance AssociatedFunction_to_le_bytes :
+      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_le_bytes.
     
     (*
             pub const fn to_ne_bytes(self) -> [u8; mem::size_of::<Self>()] {
@@ -88592,8 +90857,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
-    Smpl Add apply AssociatedFunction_to_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_to_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "to_ne_bytes" to_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque to_ne_bytes.
     
     (*
             pub const fn from_be_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -88619,9 +90886,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_be_bytes :
-      M.IsAssociatedFunction Self "from_be_bytes" from_be_bytes.
-    Smpl Add apply AssociatedFunction_from_be_bytes : is_associated.
+    Global Instance AssociatedFunction_from_be_bytes :
+      M.IsAssociatedFunction.Trait Self "from_be_bytes" from_be_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_be_bytes.
     
     (*
             pub const fn from_le_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -88647,9 +90915,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction Self "from_le_bytes" from_le_bytes.
-    Smpl Add apply AssociatedFunction_from_le_bytes : is_associated.
+    Global Instance AssociatedFunction_from_le_bytes :
+      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_le_bytes.
     
     (*
             pub const fn from_ne_bytes(bytes: [u8; mem::size_of::<Self>()]) -> Self {
@@ -88677,9 +90946,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ne_bytes :
-      M.IsAssociatedFunction Self "from_ne_bytes" from_ne_bytes.
-    Smpl Add apply AssociatedFunction_from_ne_bytes : is_associated.
+    Global Instance AssociatedFunction_from_ne_bytes :
+      M.IsAssociatedFunction.Trait Self "from_ne_bytes" from_ne_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_ne_bytes.
     
     (*         pub const fn min_value() -> Self { Self::MIN } *)
     Definition min_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -88688,8 +90958,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_min_value : M.IsAssociatedFunction Self "min_value" min_value.
-    Smpl Add apply AssociatedFunction_min_value : is_associated.
+    Global Instance AssociatedFunction_min_value :
+      M.IsAssociatedFunction.Trait Self "min_value" min_value.
+    Admitted.
+    Global Typeclasses Opaque min_value.
     
     (*         pub const fn max_value() -> Self { Self::MAX } *)
     Definition max_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -88698,8 +90970,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
-    Smpl Add apply AssociatedFunction_max_value : is_associated.
+    Global Instance AssociatedFunction_max_value :
+      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+    Admitted.
+    Global Typeclasses Opaque max_value.
     
     (*
             pub const fn widening_mul(self, rhs: Self) -> (Self, Self) {
@@ -88741,8 +91015,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_widening_mul : M.IsAssociatedFunction Self "widening_mul" widening_mul.
-    Smpl Add apply AssociatedFunction_widening_mul : is_associated.
+    Global Instance AssociatedFunction_widening_mul :
+      M.IsAssociatedFunction.Trait Self "widening_mul" widening_mul.
+    Admitted.
+    Global Typeclasses Opaque widening_mul.
     
     (*
             pub const fn carrying_mul(self, rhs: Self, carry: Self) -> (Self, Self) {
@@ -88794,8 +91070,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_carrying_mul : M.IsAssociatedFunction Self "carrying_mul" carrying_mul.
-    Smpl Add apply AssociatedFunction_carrying_mul : is_associated.
+    Global Instance AssociatedFunction_carrying_mul :
+      M.IsAssociatedFunction.Trait Self "carrying_mul" carrying_mul.
+    Admitted.
+    Global Typeclasses Opaque carrying_mul.
     
     (*
             pub const fn midpoint(self, rhs: $SelfT) -> $SelfT {
@@ -88820,8 +91098,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
-    Smpl Add apply AssociatedFunction_midpoint : is_associated.
+    Global Instance AssociatedFunction_midpoint :
+      M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+    Admitted.
+    Global Typeclasses Opaque midpoint.
     (*
         pub(crate) const fn repeat_u8(x: u8) -> usize {
             usize::from_ne_bytes([x; mem::size_of::<usize>()])
@@ -88840,8 +91120,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_repeat_u8 : M.IsAssociatedFunction Self "repeat_u8" repeat_u8.
-    Smpl Add apply AssociatedFunction_repeat_u8 : is_associated.
+    Global Instance AssociatedFunction_repeat_u8 :
+      M.IsAssociatedFunction.Trait Self "repeat_u8" repeat_u8.
+    Admitted.
+    Global Typeclasses Opaque repeat_u8.
     
     (*
         pub(crate) const fn repeat_u16(x: u16) -> usize {
@@ -88865,6 +91147,7 @@ Module num.
             let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -88938,8 +91221,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_repeat_u16 : M.IsAssociatedFunction Self "repeat_u16" repeat_u16.
-    Smpl Add apply AssociatedFunction_repeat_u16 : is_associated.
+    Global Instance AssociatedFunction_repeat_u16 :
+      M.IsAssociatedFunction.Trait Self "repeat_u16" repeat_u16.
+    Admitted.
+    Global Typeclasses Opaque repeat_u16.
     (*
             pub const fn from_str_radix(src: &str, radix: u32) -> Result<$size, ParseIntError> {
                 match <$t>::from_str_radix(src, radix) {
@@ -88992,9 +91277,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction Self "from_str_radix" from_str_radix.
-    Smpl Add apply AssociatedFunction_from_str_radix : is_associated.
+    Global Instance AssociatedFunction_from_str_radix :
+      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+    Admitted.
+    Global Typeclasses Opaque from_str_radix.
   End Impl_usize.
   
   
@@ -89768,8 +92054,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_can_not_overflow : M.IsFunction "core::num::can_not_overflow" can_not_overflow.
-  Smpl Add apply Function_can_not_overflow : is_function.
+  Global Instance Instance_IsFunction_can_not_overflow :
+    M.IsFunction.Trait "core::num::can_not_overflow" can_not_overflow.
+  Admitted.
+  Global Typeclasses Opaque can_not_overflow.
   
   (*
   const fn from_str_radix_panic_ct(_radix: u32) -> ! {
@@ -89817,9 +92105,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_str_radix_panic_ct :
-    M.IsFunction "core::num::from_str_radix_panic_ct" from_str_radix_panic_ct.
-  Smpl Add apply Function_from_str_radix_panic_ct : is_function.
+  Global Instance Instance_IsFunction_from_str_radix_panic_ct :
+    M.IsFunction.Trait "core::num::from_str_radix_panic_ct" from_str_radix_panic_ct.
+  Admitted.
+  Global Typeclasses Opaque from_str_radix_panic_ct.
   
   (*
   fn from_str_radix_panic_rt(radix: u32) -> ! {
@@ -89896,9 +92185,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_str_radix_panic_rt :
-    M.IsFunction "core::num::from_str_radix_panic_rt" from_str_radix_panic_rt.
-  Smpl Add apply Function_from_str_radix_panic_rt : is_function.
+  Global Instance Instance_IsFunction_from_str_radix_panic_rt :
+    M.IsFunction.Trait "core::num::from_str_radix_panic_rt" from_str_radix_panic_rt.
+  Admitted.
+  Global Typeclasses Opaque from_str_radix_panic_rt.
   
   (*
   const fn from_str_radix_panic(radix: u32) {
@@ -89934,9 +92224,10 @@ Module num.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_str_radix_panic :
-    M.IsFunction "core::num::from_str_radix_panic" from_str_radix_panic.
-  Smpl Add apply Function_from_str_radix_panic : is_function.
+  Global Instance Instance_IsFunction_from_str_radix_panic :
+    M.IsFunction.Trait "core::num::from_str_radix_panic" from_str_radix_panic.
+  Admitted.
+  Global Typeclasses Opaque from_str_radix_panic.
   
   
   

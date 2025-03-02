@@ -139,10 +139,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "new" (new T).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_rev_Rev_T.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_for_core_iter_adapters_rev_Rev_I.

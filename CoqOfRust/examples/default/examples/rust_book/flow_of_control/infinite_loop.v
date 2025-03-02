@@ -71,6 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         M.loop (|
+          Ty.tuple [],
           ltac:(M.monadic
             (let~ _ : Ty.tuple [] :=
               M.alloc (|
@@ -260,5 +261,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "infinite_loop::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "infinite_loop::main" main.
+Admitted.
+Global Typeclasses Opaque main.

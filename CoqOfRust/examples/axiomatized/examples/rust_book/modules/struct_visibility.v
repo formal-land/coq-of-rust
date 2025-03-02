@@ -24,12 +24,14 @@ Module my.
     
     Parameter new : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
   End Impl_struct_visibility_my_ClosedBox_T.
 End my.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "struct_visibility::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "struct_visibility::main" main.
+Admitted.

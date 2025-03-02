@@ -969,8 +969,10 @@ Module bn128.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_fq : M.IsFunction "revm_precompile::bn128::read_fq" read_fq.
-  Smpl Add apply Function_read_fq : is_function.
+  Global Instance Instance_IsFunction_read_fq :
+    M.IsFunction.Trait "revm_precompile::bn128::read_fq" read_fq.
+  Admitted.
+  Global Typeclasses Opaque read_fq.
   
   (*
   pub fn read_point(input: &[u8]) -> Result<G1, PrecompileError> {
@@ -1315,8 +1317,10 @@ Module bn128.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_point : M.IsFunction "revm_precompile::bn128::read_point" read_point.
-  Smpl Add apply Function_read_point : is_function.
+  Global Instance Instance_IsFunction_read_point :
+    M.IsFunction.Trait "revm_precompile::bn128::read_point" read_point.
+  Admitted.
+  Global Typeclasses Opaque read_point.
   
   (*
   pub fn new_g1_point(px: Fq, py: Fq) -> Result<G1, PrecompileError> {
@@ -1531,8 +1535,10 @@ Module bn128.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_new_g1_point : M.IsFunction "revm_precompile::bn128::new_g1_point" new_g1_point.
-  Smpl Add apply Function_new_g1_point : is_function.
+  Global Instance Instance_IsFunction_new_g1_point :
+    M.IsFunction.Trait "revm_precompile::bn128::new_g1_point" new_g1_point.
+  Admitted.
+  Global Typeclasses Opaque new_g1_point.
   
   (*
   pub fn run_add(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
@@ -2271,8 +2277,10 @@ Module bn128.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run_add : M.IsFunction "revm_precompile::bn128::run_add" run_add.
-  Smpl Add apply Function_run_add : is_function.
+  Global Instance Instance_IsFunction_run_add :
+    M.IsFunction.Trait "revm_precompile::bn128::run_add" run_add.
+  Admitted.
+  Global Typeclasses Opaque run_add.
   
   (*
   pub fn run_mul(input: &[u8], gas_cost: u64, gas_limit: u64) -> PrecompileResult {
@@ -2934,8 +2942,10 @@ Module bn128.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run_mul : M.IsFunction "revm_precompile::bn128::run_mul" run_mul.
-  Smpl Add apply Function_run_mul : is_function.
+  Global Instance Instance_IsFunction_run_mul :
+    M.IsFunction.Trait "revm_precompile::bn128::run_mul" run_mul.
+  Admitted.
+  Global Typeclasses Opaque run_mul.
   
   (*
   pub fn run_pair(
@@ -3274,6 +3284,7 @@ Module bn128.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -5230,6 +5241,8 @@ Module bn128.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run_pair : M.IsFunction "revm_precompile::bn128::run_pair" run_pair.
-  Smpl Add apply Function_run_pair : is_function.
+  Global Instance Instance_IsFunction_run_pair :
+    M.IsFunction.Trait "revm_precompile::bn128::run_pair" run_pair.
+  Admitted.
+  Global Typeclasses Opaque run_pair.
 End bn128.

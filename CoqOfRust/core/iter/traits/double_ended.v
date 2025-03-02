@@ -50,6 +50,7 @@ Module iter.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -375,6 +376,7 @@ Module iter.
                     let~ accum : B := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -586,6 +588,7 @@ Module iter.
                 let~ accum : B := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1021,6 +1024,7 @@ Module iter.
                 let~ accum : B := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1152,6 +1156,7 @@ Module iter.
                     let~ accum : B := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),

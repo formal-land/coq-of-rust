@@ -325,10 +325,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction (Self N I) "new" (new N I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self N I) "new" (new N I).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             pub fn into_remainder(mut self) -> Option<array::IntoIter<I::Item, N>> {
@@ -398,6 +399,7 @@ Module iter.
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -474,10 +476,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_into_remainder :
+        Global Instance AssociatedFunction_into_remainder :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction (Self N I) "into_remainder" (into_remainder N I).
-        Smpl Add apply AssociatedFunction_into_remainder : is_associated.
+          M.IsAssociatedFunction.Trait (Self N I) "into_remainder" (into_remainder N I).
+        Admitted.
+        Global Typeclasses Opaque into_remainder.
         (*
             fn next_back_remainder(&mut self) {
                 // Make sure to not override `self.remainder` with an empty array
@@ -863,10 +866,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_remainder :
+        Global Instance AssociatedFunction_next_back_remainder :
           forall (N : Value.t) (I : Ty.t),
-          M.IsAssociatedFunction (Self N I) "next_back_remainder" (next_back_remainder N I).
-        Smpl Add apply AssociatedFunction_next_back_remainder : is_associated.
+          M.IsAssociatedFunction.Trait (Self N I) "next_back_remainder" (next_back_remainder N I).
+        Admitted.
+        Global Typeclasses Opaque next_back_remainder.
       End Impl_core_iter_adapters_array_chunks_ArrayChunks_N_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_array_chunks_ArrayChunks_N_I.
@@ -1220,6 +1224,7 @@ Module iter.
                   (M.read (|
                     let~ acc : B := M.copy (| init |) in
                     M.loop (|
+                      R,
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -1847,6 +1852,7 @@ Module iter.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -2497,6 +2503,7 @@ Module iter.
                 let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),

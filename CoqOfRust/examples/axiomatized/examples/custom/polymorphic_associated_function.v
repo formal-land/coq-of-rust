@@ -15,13 +15,14 @@ Module Impl_polymorphic_associated_function_Foo_A.
   
   Parameter convert : forall (A : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_convert :
+  Global Instance AssociatedFunction_convert :
     forall (A : Ty.t),
-    M.IsAssociatedFunction (Self A) "convert" (convert A).
-  Smpl Add apply AssociatedFunction_convert : is_associated.
+    M.IsAssociatedFunction.Trait (Self A) "convert" (convert A).
+  Admitted.
 End Impl_polymorphic_associated_function_Foo_A.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "polymorphic_associated_function::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "polymorphic_associated_function::main" main.
+Admitted.

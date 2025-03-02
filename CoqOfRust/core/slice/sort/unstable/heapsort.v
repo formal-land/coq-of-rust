@@ -109,6 +109,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -297,9 +298,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_heapsort :
-          M.IsFunction "core::slice::sort::unstable::heapsort::heapsort" heapsort.
-        Smpl Add apply Function_heapsort : is_function.
+        Global Instance Instance_IsFunction_heapsort :
+          M.IsFunction.Trait "core::slice::sort::unstable::heapsort::heapsort" heapsort.
+        Admitted.
+        Global Typeclasses Opaque heapsort.
         
         (*
         unsafe fn sift_down<T, F>(v: &mut [T], mut node: usize, is_less: &mut F)
@@ -403,6 +405,7 @@ Module slice.
                     |)
                   |) in
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (let~ child : Ty.path "usize" :=
                       M.alloc (|
@@ -673,9 +676,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_sift_down :
-          M.IsFunction "core::slice::sort::unstable::heapsort::sift_down" sift_down.
-        Smpl Add apply Function_sift_down : is_function.
+        Global Instance Instance_IsFunction_sift_down :
+          M.IsFunction.Trait "core::slice::sort::unstable::heapsort::sift_down" sift_down.
+        Admitted.
+        Global Typeclasses Opaque sift_down.
       End heapsort.
     End unstable.
   End sort.

@@ -77,3 +77,29 @@ Proof.
   }
   intros []; run_symbolic.
 Defined.
+
+(*
+pub const fn instruction<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    opcode: u8,
+)
+*)
+Definition run_instruction
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (opcode : U8.t) :
+  {{
+    instructions.instruction [] [ Φ WIRE; Φ H ] [ φ opcode ] 🔽
+    Instruction.t WIRE H WIRE_types
+  }}.
+Proof.
+  run_symbolic.
+  run_symbolic_let. {
+    run_symbolic.
+    run_symbolic_closure. {
+      apply (run_instruction_table run_InterpreterTypes_for_WIRE).
+    }
+    intros []; run_symbolic.
+  }
+  intros []; run_symbolic.
+Defined.

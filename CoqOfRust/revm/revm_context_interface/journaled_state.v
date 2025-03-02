@@ -958,8 +958,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn map<B, F>(self, f: F) -> StateLoad<B>
@@ -1022,8 +1025,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
-    Smpl Add apply AssociatedFunction_map : is_associated.
+    Global Instance AssociatedFunction_map :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+    Admitted.
+    Global Typeclasses Opaque map.
   End Impl_revm_context_interface_journaled_state_StateLoad_T.
   
   (* StructRecord
@@ -1989,10 +1995,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_state_load :
+    Global Instance AssociatedFunction_new_state_load :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_state_load" (new_state_load T).
-    Smpl Add apply AssociatedFunction_new_state_load : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_state_load" (new_state_load T).
+    Admitted.
+    Global Typeclasses Opaque new_state_load.
     
     (*
         pub fn new_not_delegated(data: T, is_cold: bool) -> Self {
@@ -2036,10 +2043,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_not_delegated :
+    Global Instance AssociatedFunction_new_not_delegated :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_not_delegated" (new_not_delegated T).
-    Smpl Add apply AssociatedFunction_new_not_delegated : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_not_delegated" (new_not_delegated T).
+    Admitted.
+    Global Typeclasses Opaque new_not_delegated.
     
     (*
         pub fn into_components(self) -> (T, Eip7702CodeLoad<()>) {
@@ -2147,10 +2155,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_components :
+    Global Instance AssociatedFunction_into_components :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "into_components" (into_components T).
-    Smpl Add apply AssociatedFunction_into_components : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "into_components" (into_components T).
+    Admitted.
+    Global Typeclasses Opaque into_components.
     
     (*
         pub fn set_delegate_load(&mut self, is_delegate_account_cold: bool) {
@@ -2188,10 +2197,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_set_delegate_load :
+    Global Instance AssociatedFunction_set_delegate_load :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "set_delegate_load" (set_delegate_load T).
-    Smpl Add apply AssociatedFunction_set_delegate_load : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "set_delegate_load" (set_delegate_load T).
+    Admitted.
+    Global Typeclasses Opaque set_delegate_load.
     
     (*
         pub fn new(state_load: StateLoad<T>, is_delegate_account_cold: bool) -> Self {
@@ -2220,8 +2230,11 @@ Module journaled_state.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
   Axiom JournalDBError :

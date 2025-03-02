@@ -185,11 +185,12 @@ Module ptr.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function__alignment_can_be_structurally_matched :
-      M.IsFunction
+    Global Instance Instance_IsFunction__alignment_can_be_structurally_matched :
+      M.IsFunction.Trait
         "core::ptr::alignment::_alignment_can_be_structurally_matched"
         _alignment_can_be_structurally_matched.
-    Smpl Add apply Function__alignment_can_be_structurally_matched : is_function.
+    Admitted.
+    Global Typeclasses Opaque _alignment_can_be_structurally_matched.
     
     Module Impl_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
@@ -205,8 +206,10 @@ Module ptr.
                 [ Value.StructTuple "core::ptr::alignment::AlignmentEnum::_Align1Shl0" [] ]
             |))).
       
-      Axiom AssociatedConstant_value_MIN : M.IsAssociatedConstant Self "value_MIN" value_MIN.
-      Smpl Add apply AssociatedConstant_value_MIN : is_associated.
+      Global Instance AssociatedConstant_value_MIN :
+        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Admitted.
+      Global Typeclasses Opaque value_MIN.
       
       (*
           pub const fn of<T>() -> Self {
@@ -237,8 +240,9 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_of : M.IsAssociatedFunction Self "of" of.
-      Smpl Add apply AssociatedFunction_of : is_associated.
+      Global Instance AssociatedFunction_of : M.IsAssociatedFunction.Trait Self "of" of.
+      Admitted.
+      Global Typeclasses Opaque of.
       
       (*
           pub const fn new(align: usize) -> Option<Self> {
@@ -301,8 +305,9 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const unsafe fn new_unchecked(align: usize) -> Self {
@@ -372,9 +377,10 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
-      Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+      Global Instance AssociatedFunction_new_unchecked :
+        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+      Admitted.
+      Global Typeclasses Opaque new_unchecked.
       
       (*
           pub const fn as_usize(self) -> usize {
@@ -394,8 +400,10 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
-      Smpl Add apply AssociatedFunction_as_usize : is_associated.
+      Global Instance AssociatedFunction_as_usize :
+        M.IsAssociatedFunction.Trait Self "as_usize" as_usize.
+      Admitted.
+      Global Typeclasses Opaque as_usize.
       
       (*
           pub const fn as_nonzero(self) -> NonZero<usize> {
@@ -432,8 +440,10 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_nonzero : M.IsAssociatedFunction Self "as_nonzero" as_nonzero.
-      Smpl Add apply AssociatedFunction_as_nonzero : is_associated.
+      Global Instance AssociatedFunction_as_nonzero :
+        M.IsAssociatedFunction.Trait Self "as_nonzero" as_nonzero.
+      Admitted.
+      Global Typeclasses Opaque as_nonzero.
       
       (*
           pub const fn log2(self) -> u32 {
@@ -469,8 +479,9 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_log2 : M.IsAssociatedFunction Self "log2" log2.
-      Smpl Add apply AssociatedFunction_log2 : is_associated.
+      Global Instance AssociatedFunction_log2 : M.IsAssociatedFunction.Trait Self "log2" log2.
+      Admitted.
+      Global Typeclasses Opaque log2.
       
       (*
           pub const fn mask(self) -> usize {
@@ -505,8 +516,9 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_mask : M.IsAssociatedFunction Self "mask" mask.
-      Smpl Add apply AssociatedFunction_mask : is_associated.
+      Global Instance AssociatedFunction_mask : M.IsAssociatedFunction.Trait Self "mask" mask.
+      Admitted.
+      Global Typeclasses Opaque mask.
       
       (*
           pub(crate) const fn max(a: Self, b: Self) -> Self {
@@ -560,8 +572,9 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
-      Smpl Add apply AssociatedFunction_max : is_associated.
+      Global Instance AssociatedFunction_max : M.IsAssociatedFunction.Trait Self "max" max.
+      Admitted.
+      Global Typeclasses Opaque max.
     End Impl_core_ptr_alignment_Alignment.
     
     Module Impl_core_fmt_Debug_for_core_ptr_alignment_Alignment.

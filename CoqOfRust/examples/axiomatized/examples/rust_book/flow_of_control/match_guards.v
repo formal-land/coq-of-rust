@@ -26,5 +26,5 @@ Axiom IsDiscriminant_Temperature_Fahrenheit :
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "match_guards::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "match_guards::main" main.
+Admitted.

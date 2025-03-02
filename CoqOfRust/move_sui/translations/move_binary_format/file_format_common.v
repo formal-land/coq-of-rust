@@ -20,9 +20,10 @@ Module file_format_common.
     Definition value_MOVE_MAGIC_SIZE : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     
-    Axiom AssociatedConstant_value_MOVE_MAGIC_SIZE :
-      M.IsAssociatedConstant Self "value_MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
-    Smpl Add apply AssociatedConstant_value_MOVE_MAGIC_SIZE : is_associated.
+    Global Instance AssociatedConstant_value_MOVE_MAGIC_SIZE :
+      M.IsAssociatedConstant.Trait Self "value_MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
+    Admitted.
+    Global Typeclasses Opaque value_MOVE_MAGIC_SIZE.
     
     (*     pub const MOVE_MAGIC: [u8; BinaryConstants::MOVE_MAGIC_SIZE] = [0xA1, 0x1C, 0xEB, 0x0B]; *)
     (* Ty.apply
@@ -45,9 +46,10 @@ Module file_format_common.
               ]
           |))).
     
-    Axiom AssociatedConstant_value_MOVE_MAGIC :
-      M.IsAssociatedConstant Self "value_MOVE_MAGIC" value_MOVE_MAGIC.
-    Smpl Add apply AssociatedConstant_value_MOVE_MAGIC : is_associated.
+    Global Instance AssociatedConstant_value_MOVE_MAGIC :
+      M.IsAssociatedConstant.Trait Self "value_MOVE_MAGIC" value_MOVE_MAGIC.
+    Admitted.
+    Global Typeclasses Opaque value_MOVE_MAGIC.
     
     (*     pub const HEADER_SIZE: usize = BinaryConstants::MOVE_MAGIC_SIZE + 5; *)
     (* Ty.path "usize" *)
@@ -61,9 +63,10 @@ Module file_format_common.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_HEADER_SIZE :
-      M.IsAssociatedConstant Self "value_HEADER_SIZE" value_HEADER_SIZE.
-    Smpl Add apply AssociatedConstant_value_HEADER_SIZE : is_associated.
+    Global Instance AssociatedConstant_value_HEADER_SIZE :
+      M.IsAssociatedConstant.Trait Self "value_HEADER_SIZE" value_HEADER_SIZE.
+    Admitted.
+    Global Typeclasses Opaque value_HEADER_SIZE.
     
     (*     pub const TABLE_HEADER_SIZE: u8 = size_of::<u32>() as u8 * 2 + 1; *)
     (* Ty.path "u8" *)
@@ -86,9 +89,10 @@ Module file_format_common.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_TABLE_HEADER_SIZE :
-      M.IsAssociatedConstant Self "value_TABLE_HEADER_SIZE" value_TABLE_HEADER_SIZE.
-    Smpl Add apply AssociatedConstant_value_TABLE_HEADER_SIZE : is_associated.
+    Global Instance AssociatedConstant_value_TABLE_HEADER_SIZE :
+      M.IsAssociatedConstant.Trait Self "value_TABLE_HEADER_SIZE" value_TABLE_HEADER_SIZE.
+    Admitted.
+    Global Typeclasses Opaque value_TABLE_HEADER_SIZE.
   End Impl_move_binary_format_file_format_common_BinaryConstants.
   
   Definition value_TABLE_COUNT_MAX : Value.t :=
@@ -3209,8 +3213,9 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn as_inner(&self) -> &[u8] {
@@ -3260,8 +3265,10 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_inner : M.IsAssociatedFunction Self "as_inner" as_inner.
-    Smpl Add apply AssociatedFunction_as_inner : is_associated.
+    Global Instance AssociatedFunction_as_inner :
+      M.IsAssociatedFunction.Trait Self "as_inner" as_inner.
+    Admitted.
+    Global Typeclasses Opaque as_inner.
     
     (*
         pub fn into_inner(self) -> Vec<u8> {
@@ -3283,8 +3290,10 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+    Global Instance AssociatedFunction_into_inner :
+      M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     
     (*
         pub fn push(&mut self, item: u8) -> Result<()> {
@@ -3575,8 +3584,9 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
-    Smpl Add apply AssociatedFunction_push : is_associated.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Admitted.
+    Global Typeclasses Opaque push.
     
     (*
         pub fn extend(&mut self, vec: &[u8]) -> Result<()> {
@@ -3943,8 +3953,9 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
-    Smpl Add apply AssociatedFunction_extend : is_associated.
+    Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.Trait Self "extend" extend.
+    Admitted.
+    Global Typeclasses Opaque extend.
     
     (*
         pub fn len(&self) -> usize {
@@ -3981,8 +3992,9 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-    Smpl Add apply AssociatedFunction_len : is_associated.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Admitted.
+    Global Typeclasses Opaque len.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -4019,8 +4031,10 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-    Smpl Add apply AssociatedFunction_is_empty : is_associated.
+    Global Instance AssociatedFunction_is_empty :
+      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Admitted.
+    Global Typeclasses Opaque is_empty.
     
     (*
         pub fn clear(&mut self) {
@@ -4063,8 +4077,9 @@ Module file_format_common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
-    Smpl Add apply AssociatedFunction_clear : is_associated.
+    Global Instance AssociatedFunction_clear : M.IsAssociatedFunction.Trait Self "clear" clear.
+    Admitted.
+    Global Typeclasses Opaque clear.
   End Impl_move_binary_format_file_format_common_BinaryData.
   
   Module Impl_core_convert_From_alloc_vec_Vec_u8_alloc_alloc_Global_for_move_binary_format_file_format_common_BinaryData.
@@ -4122,6 +4137,7 @@ Module file_format_common.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (let~ cur : Ty.path "u64" :=
                       M.alloc (|
@@ -4391,11 +4407,12 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u64_as_uleb128 :
-    M.IsFunction
+  Global Instance Instance_IsFunction_write_u64_as_uleb128 :
+    M.IsFunction.Trait
       "move_binary_format::file_format_common::write_u64_as_uleb128"
       write_u64_as_uleb128.
-  Smpl Add apply Function_write_u64_as_uleb128 : is_function.
+  Admitted.
+  Global Typeclasses Opaque write_u64_as_uleb128.
   
   (*
   pub(crate) fn write_u16(binary: &mut BinaryData, value: u16) -> Result<()> {
@@ -4441,9 +4458,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u16 :
-    M.IsFunction "move_binary_format::file_format_common::write_u16" write_u16.
-  Smpl Add apply Function_write_u16 : is_function.
+  Global Instance Instance_IsFunction_write_u16 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u16" write_u16.
+  Admitted.
+  Global Typeclasses Opaque write_u16.
   
   (*
   pub(crate) fn write_u32(binary: &mut BinaryData, value: u32) -> Result<()> {
@@ -4489,9 +4507,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u32 :
-    M.IsFunction "move_binary_format::file_format_common::write_u32" write_u32.
-  Smpl Add apply Function_write_u32 : is_function.
+  Global Instance Instance_IsFunction_write_u32 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u32" write_u32.
+  Admitted.
+  Global Typeclasses Opaque write_u32.
   
   (*
   pub(crate) fn write_u64(binary: &mut BinaryData, value: u64) -> Result<()> {
@@ -4537,9 +4556,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u64 :
-    M.IsFunction "move_binary_format::file_format_common::write_u64" write_u64.
-  Smpl Add apply Function_write_u64 : is_function.
+  Global Instance Instance_IsFunction_write_u64 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u64" write_u64.
+  Admitted.
+  Global Typeclasses Opaque write_u64.
   
   (*
   pub(crate) fn write_u128(binary: &mut BinaryData, value: u128) -> Result<()> {
@@ -4585,9 +4605,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u128 :
-    M.IsFunction "move_binary_format::file_format_common::write_u128" write_u128.
-  Smpl Add apply Function_write_u128 : is_function.
+  Global Instance Instance_IsFunction_write_u128 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u128" write_u128.
+  Admitted.
+  Global Typeclasses Opaque write_u128.
   
   (*
   pub(crate) fn write_u256(
@@ -4641,9 +4662,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write_u256 :
-    M.IsFunction "move_binary_format::file_format_common::write_u256" write_u256.
-  Smpl Add apply Function_write_u256 : is_function.
+  Global Instance Instance_IsFunction_write_u256 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::write_u256" write_u256.
+  Admitted.
+  Global Typeclasses Opaque write_u256.
   
   (*
   pub fn read_u8(cursor: &mut Cursor<&[u8]>) -> Result<u8> {
@@ -4800,8 +4822,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_u8 : M.IsFunction "move_binary_format::file_format_common::read_u8" read_u8.
-  Smpl Add apply Function_read_u8 : is_function.
+  Global Instance Instance_IsFunction_read_u8 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::read_u8" read_u8.
+  Admitted.
+  Global Typeclasses Opaque read_u8.
   
   (*
   pub fn read_u32(cursor: &mut Cursor<&[u8]>) -> Result<u32> {
@@ -4960,9 +4984,10 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_u32 :
-    M.IsFunction "move_binary_format::file_format_common::read_u32" read_u32.
-  Smpl Add apply Function_read_u32 : is_function.
+  Global Instance Instance_IsFunction_read_u32 :
+    M.IsFunction.Trait "move_binary_format::file_format_common::read_u32" read_u32.
+  Admitted.
+  Global Typeclasses Opaque read_u32.
   
   (*
   pub fn read_uleb128_as_u64(cursor: &mut Cursor<&[u8]>) -> Result<u64> {
@@ -5003,6 +5028,7 @@ Module file_format_common.
                 let~ shift : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -5373,9 +5399,12 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_uleb128_as_u64 :
-    M.IsFunction "move_binary_format::file_format_common::read_uleb128_as_u64" read_uleb128_as_u64.
-  Smpl Add apply Function_read_uleb128_as_u64 : is_function.
+  Global Instance Instance_IsFunction_read_uleb128_as_u64 :
+    M.IsFunction.Trait
+      "move_binary_format::file_format_common::read_uleb128_as_u64"
+      read_uleb128_as_u64.
+  Admitted.
+  Global Typeclasses Opaque read_uleb128_as_u64.
   
   Definition value_VERSION_1 : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
@@ -6538,7 +6567,8 @@ Module file_format_common.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_instruction_key :
-    M.IsFunction "move_binary_format::file_format_common::instruction_key" instruction_key.
-  Smpl Add apply Function_instruction_key : is_function.
+  Global Instance Instance_IsFunction_instruction_key :
+    M.IsFunction.Trait "move_binary_format::file_format_common::instruction_key" instruction_key.
+  Admitted.
+  Global Typeclasses Opaque instruction_key.
 End file_format_common.

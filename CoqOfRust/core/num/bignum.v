@@ -531,8 +531,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_small : M.IsAssociatedFunction Self "from_small" from_small.
-      Smpl Add apply AssociatedFunction_from_small : is_associated.
+      Global Instance AssociatedFunction_from_small :
+        M.IsAssociatedFunction.Trait Self "from_small" from_small.
+      Admitted.
+      Global Typeclasses Opaque from_small.
       
       (*
                   pub fn from_u64(mut v: u64) -> $name {
@@ -563,6 +565,7 @@ Module num.
               let~ sz : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -629,8 +632,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_u64 : M.IsAssociatedFunction Self "from_u64" from_u64.
-      Smpl Add apply AssociatedFunction_from_u64 : is_associated.
+      Global Instance AssociatedFunction_from_u64 :
+        M.IsAssociatedFunction.Trait Self "from_u64" from_u64.
+      Admitted.
+      Global Typeclasses Opaque from_u64.
       
       (*
                   pub fn digits(&self) -> &[$ty] {
@@ -692,8 +697,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_digits : M.IsAssociatedFunction Self "digits" digits.
-      Smpl Add apply AssociatedFunction_digits : is_associated.
+      Global Instance AssociatedFunction_digits : M.IsAssociatedFunction.Trait Self "digits" digits.
+      Admitted.
+      Global Typeclasses Opaque digits.
       
       (*
                   pub fn get_bit(&self, i: usize) -> u8 {
@@ -741,8 +747,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_get_bit : M.IsAssociatedFunction Self "get_bit" get_bit.
-      Smpl Add apply AssociatedFunction_get_bit : is_associated.
+      Global Instance AssociatedFunction_get_bit :
+        M.IsAssociatedFunction.Trait Self "get_bit" get_bit.
+      Admitted.
+      Global Typeclasses Opaque get_bit.
       
       (*
                   pub fn is_zero(&self) -> bool {
@@ -827,8 +835,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
-      Smpl Add apply AssociatedFunction_is_zero : is_associated.
+      Global Instance AssociatedFunction_is_zero :
+        M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+      Admitted.
+      Global Typeclasses Opaque is_zero.
       
       (*
                   pub fn bit_length(&self) -> usize {
@@ -965,8 +975,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_bit_length : M.IsAssociatedFunction Self "bit_length" bit_length.
-      Smpl Add apply AssociatedFunction_bit_length : is_associated.
+      Global Instance AssociatedFunction_bit_length :
+        M.IsAssociatedFunction.Trait Self "bit_length" bit_length.
+      Admitted.
+      Global Typeclasses Opaque bit_length.
       
       (*
                   pub fn add<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -1176,6 +1188,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -1347,8 +1360,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
-      Smpl Add apply AssociatedFunction_add : is_associated.
+      Global Instance AssociatedFunction_add : M.IsAssociatedFunction.Trait Self "add" add.
+      Admitted.
+      Global Typeclasses Opaque add.
       
       (*
                   pub fn add_small(&mut self, other: $ty) -> &mut $name {
@@ -1423,6 +1437,7 @@ Module num.
                             M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                           let~ _ : Ty.tuple [] :=
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -1569,8 +1584,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_add_small : M.IsAssociatedFunction Self "add_small" add_small.
-      Smpl Add apply AssociatedFunction_add_small : is_associated.
+      Global Instance AssociatedFunction_add_small :
+        M.IsAssociatedFunction.Trait Self "add_small" add_small.
+      Admitted.
+      Global Typeclasses Opaque add_small.
       
       (*
                   pub fn sub<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -1777,6 +1794,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -1933,8 +1951,9 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_sub : M.IsAssociatedFunction Self "sub" sub.
-      Smpl Add apply AssociatedFunction_sub : is_associated.
+      Global Instance AssociatedFunction_sub : M.IsAssociatedFunction.Trait Self "sub" sub.
+      Admitted.
+      Global Typeclasses Opaque sub.
       
       (*
                   pub fn mul_small(&mut self, other: $ty) -> &mut $name {
@@ -2040,6 +2059,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -2195,8 +2215,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_mul_small : M.IsAssociatedFunction Self "mul_small" mul_small.
-      Smpl Add apply AssociatedFunction_mul_small : is_associated.
+      Global Instance AssociatedFunction_mul_small :
+        M.IsAssociatedFunction.Trait Self "mul_small" mul_small.
+      Admitted.
+      Global Typeclasses Opaque mul_small.
       
       (*
                   pub fn mul_pow2(&mut self, bits: usize) -> &mut $name {
@@ -2621,6 +2643,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -2738,6 +2761,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -2980,6 +3004,7 @@ Module num.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -3135,8 +3160,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_mul_pow2 : M.IsAssociatedFunction Self "mul_pow2" mul_pow2.
-      Smpl Add apply AssociatedFunction_mul_pow2 : is_associated.
+      Global Instance AssociatedFunction_mul_pow2 :
+        M.IsAssociatedFunction.Trait Self "mul_pow2" mul_pow2.
+      Admitted.
+      Global Typeclasses Opaque mul_pow2.
       
       (*
                   pub fn mul_pow5(&mut self, mut e: usize) -> &mut $name {
@@ -3207,6 +3234,7 @@ Module num.
                             M.alloc (| M.cast (Ty.path "u32") (M.read (| small_power |)) |) in
                           let~ _ : Ty.tuple [] :=
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -3315,6 +3343,7 @@ Module num.
                                     ltac:(M.monadic
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
+                                        Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
@@ -3420,8 +3449,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_mul_pow5 : M.IsAssociatedFunction Self "mul_pow5" mul_pow5.
-      Smpl Add apply AssociatedFunction_mul_pow5 : is_associated.
+      Global Instance AssociatedFunction_mul_pow5 :
+        M.IsAssociatedFunction.Trait Self "mul_pow5" mul_pow5.
+      Admitted.
+      Global Typeclasses Opaque mul_pow5.
       
       (*
                   pub fn mul_digits<'a>(&'a mut self, other: &[$ty]) -> &'a mut $name {
@@ -3674,8 +3705,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_mul_digits : M.IsAssociatedFunction Self "mul_digits" mul_digits.
-      Smpl Add apply AssociatedFunction_mul_digits : is_associated.
+      Global Instance AssociatedFunction_mul_digits :
+        M.IsAssociatedFunction.Trait Self "mul_digits" mul_digits.
+      Admitted.
+      Global Typeclasses Opaque mul_digits.
       
       (*
                   pub fn div_rem_small(&mut self, other: $ty) -> (&mut $name, $ty) {
@@ -3840,6 +3873,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3951,9 +3985,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_div_rem_small :
-        M.IsAssociatedFunction Self "div_rem_small" div_rem_small.
-      Smpl Add apply AssociatedFunction_div_rem_small : is_associated.
+      Global Instance AssociatedFunction_div_rem_small :
+        M.IsAssociatedFunction.Trait Self "div_rem_small" div_rem_small.
+      Admitted.
+      Global Typeclasses Opaque div_rem_small.
       
       (*
                   pub fn div_rem(&self, d: &$name, q: &mut $name, r: &mut $name) {
@@ -4104,6 +4139,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -4225,6 +4261,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -4381,6 +4418,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -5017,8 +5055,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_div_rem : M.IsAssociatedFunction Self "div_rem" div_rem.
-      Smpl Add apply AssociatedFunction_div_rem : is_associated.
+      Global Instance AssociatedFunction_div_rem :
+        M.IsAssociatedFunction.Trait Self "div_rem" div_rem.
+      Admitted.
+      Global Typeclasses Opaque div_rem.
     End Impl_core_num_bignum_Big32x40.
     
     Module Impl_core_cmp_PartialEq_for_core_num_bignum_Big32x40.
@@ -5919,6 +5959,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -6309,8 +6350,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_from_small : M.IsAssociatedFunction Self "from_small" from_small.
-        Smpl Add apply AssociatedFunction_from_small : is_associated.
+        Global Instance AssociatedFunction_from_small :
+          M.IsAssociatedFunction.Trait Self "from_small" from_small.
+        Admitted.
+        Global Typeclasses Opaque from_small.
         
         (*
                     pub fn from_u64(mut v: u64) -> $name {
@@ -6341,6 +6384,7 @@ Module num.
                 let~ sz : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -6412,8 +6456,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_from_u64 : M.IsAssociatedFunction Self "from_u64" from_u64.
-        Smpl Add apply AssociatedFunction_from_u64 : is_associated.
+        Global Instance AssociatedFunction_from_u64 :
+          M.IsAssociatedFunction.Trait Self "from_u64" from_u64.
+        Admitted.
+        Global Typeclasses Opaque from_u64.
         
         (*
                     pub fn digits(&self) -> &[$ty] {
@@ -6478,8 +6524,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_digits : M.IsAssociatedFunction Self "digits" digits.
-        Smpl Add apply AssociatedFunction_digits : is_associated.
+        Global Instance AssociatedFunction_digits :
+          M.IsAssociatedFunction.Trait Self "digits" digits.
+        Admitted.
+        Global Typeclasses Opaque digits.
         
         (*
                     pub fn get_bit(&self, i: usize) -> u8 {
@@ -6526,8 +6574,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_get_bit : M.IsAssociatedFunction Self "get_bit" get_bit.
-        Smpl Add apply AssociatedFunction_get_bit : is_associated.
+        Global Instance AssociatedFunction_get_bit :
+          M.IsAssociatedFunction.Trait Self "get_bit" get_bit.
+        Admitted.
+        Global Typeclasses Opaque get_bit.
         
         (*
                     pub fn is_zero(&self) -> bool {
@@ -6612,8 +6662,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_is_zero : M.IsAssociatedFunction Self "is_zero" is_zero.
-        Smpl Add apply AssociatedFunction_is_zero : is_associated.
+        Global Instance AssociatedFunction_is_zero :
+          M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+        Admitted.
+        Global Typeclasses Opaque is_zero.
         
         (*
                     pub fn bit_length(&self) -> usize {
@@ -6750,8 +6802,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_bit_length : M.IsAssociatedFunction Self "bit_length" bit_length.
-        Smpl Add apply AssociatedFunction_bit_length : is_associated.
+        Global Instance AssociatedFunction_bit_length :
+          M.IsAssociatedFunction.Trait Self "bit_length" bit_length.
+        Admitted.
+        Global Typeclasses Opaque bit_length.
         
         (*
                     pub fn add<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -6961,6 +7015,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -7139,8 +7194,9 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
-        Smpl Add apply AssociatedFunction_add : is_associated.
+        Global Instance AssociatedFunction_add : M.IsAssociatedFunction.Trait Self "add" add.
+        Admitted.
+        Global Typeclasses Opaque add.
         
         (*
                     pub fn add_small(&mut self, other: $ty) -> &mut $name {
@@ -7215,6 +7271,7 @@ Module num.
                               M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -7361,8 +7418,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_add_small : M.IsAssociatedFunction Self "add_small" add_small.
-        Smpl Add apply AssociatedFunction_add_small : is_associated.
+        Global Instance AssociatedFunction_add_small :
+          M.IsAssociatedFunction.Trait Self "add_small" add_small.
+        Admitted.
+        Global Typeclasses Opaque add_small.
         
         (*
                     pub fn sub<'a>(&'a mut self, other: &$name) -> &'a mut $name {
@@ -7569,6 +7628,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -7733,8 +7793,9 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_sub : M.IsAssociatedFunction Self "sub" sub.
-        Smpl Add apply AssociatedFunction_sub : is_associated.
+        Global Instance AssociatedFunction_sub : M.IsAssociatedFunction.Trait Self "sub" sub.
+        Admitted.
+        Global Typeclasses Opaque sub.
         
         (*
                     pub fn mul_small(&mut self, other: $ty) -> &mut $name {
@@ -7840,6 +7901,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -8005,8 +8067,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_mul_small : M.IsAssociatedFunction Self "mul_small" mul_small.
-        Smpl Add apply AssociatedFunction_mul_small : is_associated.
+        Global Instance AssociatedFunction_mul_small :
+          M.IsAssociatedFunction.Trait Self "mul_small" mul_small.
+        Admitted.
+        Global Typeclasses Opaque mul_small.
         
         (*
                     pub fn mul_pow2(&mut self, bits: usize) -> &mut $name {
@@ -8448,6 +8512,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -8567,6 +8632,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -8814,6 +8880,7 @@ Module num.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -8971,8 +9038,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_mul_pow2 : M.IsAssociatedFunction Self "mul_pow2" mul_pow2.
-        Smpl Add apply AssociatedFunction_mul_pow2 : is_associated.
+        Global Instance AssociatedFunction_mul_pow2 :
+          M.IsAssociatedFunction.Trait Self "mul_pow2" mul_pow2.
+        Admitted.
+        Global Typeclasses Opaque mul_pow2.
         
         (*
                     pub fn mul_pow5(&mut self, mut e: usize) -> &mut $name {
@@ -9048,6 +9117,7 @@ Module num.
                               M.alloc (| M.cast (Ty.path "u8") (M.read (| small_power |)) |) in
                             let~ _ : Ty.tuple [] :=
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -9156,6 +9226,7 @@ Module num.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -9263,8 +9334,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_mul_pow5 : M.IsAssociatedFunction Self "mul_pow5" mul_pow5.
-        Smpl Add apply AssociatedFunction_mul_pow5 : is_associated.
+        Global Instance AssociatedFunction_mul_pow5 :
+          M.IsAssociatedFunction.Trait Self "mul_pow5" mul_pow5.
+        Admitted.
+        Global Typeclasses Opaque mul_pow5.
         
         (*
                     pub fn mul_digits<'a>(&'a mut self, other: &[$ty]) -> &'a mut $name {
@@ -9519,8 +9592,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_mul_digits : M.IsAssociatedFunction Self "mul_digits" mul_digits.
-        Smpl Add apply AssociatedFunction_mul_digits : is_associated.
+        Global Instance AssociatedFunction_mul_digits :
+          M.IsAssociatedFunction.Trait Self "mul_digits" mul_digits.
+        Admitted.
+        Global Typeclasses Opaque mul_digits.
         
         (*
                     pub fn div_rem_small(&mut self, other: $ty) -> (&mut $name, $ty) {
@@ -9689,6 +9764,7 @@ Module num.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -9803,9 +9879,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_div_rem_small :
-          M.IsAssociatedFunction Self "div_rem_small" div_rem_small.
-        Smpl Add apply AssociatedFunction_div_rem_small : is_associated.
+        Global Instance AssociatedFunction_div_rem_small :
+          M.IsAssociatedFunction.Trait Self "div_rem_small" div_rem_small.
+        Admitted.
+        Global Typeclasses Opaque div_rem_small.
         
         (*
                     pub fn div_rem(&self, d: &$name, q: &mut $name, r: &mut $name) {
@@ -9960,6 +10037,7 @@ Module num.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -10084,6 +10162,7 @@ Module num.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -10248,6 +10327,7 @@ Module num.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -10909,8 +10989,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_div_rem : M.IsAssociatedFunction Self "div_rem" div_rem.
-        Smpl Add apply AssociatedFunction_div_rem : is_associated.
+        Global Instance AssociatedFunction_div_rem :
+          M.IsAssociatedFunction.Trait Self "div_rem" div_rem.
+        Admitted.
+        Global Typeclasses Opaque div_rem.
       End Impl_core_num_bignum_tests_Big8x3.
       
       Module Impl_core_cmp_PartialEq_for_core_num_bignum_tests_Big8x3.
@@ -11824,6 +11906,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|

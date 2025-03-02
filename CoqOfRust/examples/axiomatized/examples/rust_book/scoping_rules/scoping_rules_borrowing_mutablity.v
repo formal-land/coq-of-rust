@@ -42,17 +42,18 @@ End Impl_core_marker_Copy_for_scoping_rules_borrowing_mutablity_Book.
 
 Parameter borrow_book : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_borrow_book :
-  M.IsFunction "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
-Smpl Add apply Function_borrow_book : is_function.
+Global Instance Instance_IsFunction_borrow_book :
+  M.IsFunction.Trait "scoping_rules_borrowing_mutablity::borrow_book" borrow_book.
+Admitted.
 
 Parameter new_edition : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_new_edition :
-  M.IsFunction "scoping_rules_borrowing_mutablity::new_edition" new_edition.
-Smpl Add apply Function_new_edition : is_function.
+Global Instance Instance_IsFunction_new_edition :
+  M.IsFunction.Trait "scoping_rules_borrowing_mutablity::new_edition" new_edition.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_borrowing_mutablity::main" main.
+Admitted.

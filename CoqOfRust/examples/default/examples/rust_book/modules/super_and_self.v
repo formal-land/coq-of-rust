@@ -50,8 +50,10 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_function : M.IsFunction "super_and_self::function" function.
-Smpl Add apply Function_function : is_function.
+Global Instance Instance_IsFunction_function :
+  M.IsFunction.Trait "super_and_self::function" function.
+Admitted.
+Global Typeclasses Opaque function.
 
 Module cool.
   (*
@@ -104,8 +106,10 @@ Module cool.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_function : M.IsFunction "super_and_self::cool::function" function.
-  Smpl Add apply Function_function : is_function.
+  Global Instance Instance_IsFunction_function :
+    M.IsFunction.Trait "super_and_self::cool::function" function.
+  Admitted.
+  Global Typeclasses Opaque function.
 End cool.
 
 Module my.
@@ -158,8 +162,10 @@ Module my.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_function : M.IsFunction "super_and_self::my::function" function.
-  Smpl Add apply Function_function : is_function.
+  Global Instance Instance_IsFunction_function :
+    M.IsFunction.Trait "super_and_self::my::function" function.
+  Admitted.
+  Global Typeclasses Opaque function.
   
   Module cool.
     (*
@@ -212,8 +218,10 @@ Module my.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_function : M.IsFunction "super_and_self::my::cool::function" function.
-    Smpl Add apply Function_function : is_function.
+    Global Instance Instance_IsFunction_function :
+      M.IsFunction.Trait "super_and_self::my::cool::function" function.
+    Admitted.
+    Global Typeclasses Opaque function.
   End cool.
   
   (*
@@ -330,8 +338,10 @@ Module my.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_indirect_call : M.IsFunction "super_and_self::my::indirect_call" indirect_call.
-  Smpl Add apply Function_indirect_call : is_function.
+  Global Instance Instance_IsFunction_indirect_call :
+    M.IsFunction.Trait "super_and_self::my::indirect_call" indirect_call.
+  Admitted.
+  Global Typeclasses Opaque indirect_call.
 End my.
 
 (*
@@ -357,5 +367,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "super_and_self::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "super_and_self::main" main.
+Admitted.
+Global Typeclasses Opaque main.

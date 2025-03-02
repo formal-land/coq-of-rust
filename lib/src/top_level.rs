@@ -1478,6 +1478,14 @@ impl ImplItemKind {
         }
     }
 
+    fn is_definition(&self) -> bool {
+        match self {
+            ImplItemKind::Const { body, .. } => body.is_some(),
+            ImplItemKind::Definition { definition } => definition.signature_and_body.body.is_some(),
+            ImplItemKind::Type { .. } => true,
+        }
+    }
+
     fn to_coq<'a>(
         &'a self,
         name: &'a str,
@@ -1771,7 +1779,7 @@ impl TopLevelItem {
                 Rc::new(coq::TopLevelItem::Hint {
                     kind: "Global Hint Rewrite".to_string(),
                     name: format!("Constant_{name}"),
-                    database: "constant_rewrites".to_string(),
+                    database: Some("constant_rewrites".to_string()),
                 }),
             ],
             TopLevelItem::Definition {
@@ -1784,19 +1792,24 @@ impl TopLevelItem {
                 vec![
                     Rc::new(coq::TopLevelItem::Line),
                     Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
-                        &format!("Function_{name}"),
-                        Rc::new(coq::DefinitionKind::Axiom {
-                            ty: coq::Expression::just_name("M.IsFunction").apply_many(&[
+                        &format!("Instance_IsFunction_{name}"),
+                        Rc::new(coq::DefinitionKind::AdmittedInstance {
+                            locality: "Global".to_string(),
+                            ty: coq::Expression::just_name("M.IsFunction.Trait").apply_many(&[
                                 Rc::new(coq::Expression::String(path.to_string())),
                                 coq::Expression::just_name(name),
                             ]),
                         }),
                     ))),
-                    Rc::new(coq::TopLevelItem::Hint {
-                        kind: "Smpl Add".to_string(),
-                        name: format!("apply Function_{name}"),
-                        database: "is_function".to_string(),
-                    }),
+                    if definition.signature_and_body.body.is_some() {
+                        Rc::new(coq::TopLevelItem::Hint {
+                            kind: "Global Typeclasses Opaque".to_string(),
+                            name: name.to_string(),
+                            database: None,
+                        })
+                    } else {
+                        Rc::new(coq::TopLevelItem::Empty)
+                    },
                 ],
             ]
             .concat(),
@@ -2000,7 +2013,8 @@ impl TopLevelItem {
                                 Rc::new(coq::TopLevelItem::Line),
                                 Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
                                     &axiom_name,
-                                    Rc::new(coq::DefinitionKind::Axiom {
+                                    Rc::new(coq::DefinitionKind::AdmittedInstance {
+                                        locality: "Global".to_string(),
                                         ty: Rc::new(coq::Expression::PiType {
                                             args: coq::ArgDecl::of_const_ty_params(
                                                 generic_consts,
@@ -2010,13 +2024,13 @@ impl TopLevelItem {
                                             image: coq::Expression::just_name(
                                                 match kind.as_ref() {
                                                     ImplItemKind::Const { .. } => {
-                                                        "M.IsAssociatedConstant"
+                                                        "M.IsAssociatedConstant.Trait"
                                                     }
                                                     ImplItemKind::Definition { .. } => {
-                                                        "M.IsAssociatedFunction"
+                                                        "M.IsAssociatedFunction.Trait"
                                                     }
                                                     ImplItemKind::Type { .. } => {
-                                                        "M.IsAssociatedType"
+                                                        "M.IsAssociatedType.Trait"
                                                     }
                                                 },
                                             )
@@ -2042,11 +2056,15 @@ impl TopLevelItem {
                                         }),
                                     }),
                                 ))),
-                                Rc::new(coq::TopLevelItem::Hint {
-                                    kind: "Smpl Add".to_string(),
-                                    name: format!("apply {axiom_name}"),
-                                    database: "is_associated".to_string(),
-                                }),
+                                if kind.is_definition() {
+                                    Rc::new(coq::TopLevelItem::Hint {
+                                        kind: "Global Typeclasses Opaque".to_string(),
+                                        name: name.clone(),
+                                        database: None,
+                                    })
+                                } else {
+                                    Rc::new(coq::TopLevelItem::Empty)
+                                },
                             ],
                         ]
                         .concat()

@@ -105,8 +105,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_count_chars : M.IsFunction "core::str::count::count_chars" count_chars.
-    Smpl Add apply Function_count_chars : is_function.
+    Global Instance Instance_IsFunction_count_chars :
+      M.IsFunction.Trait "core::str::count::count_chars" count_chars.
+    Admitted.
+    Global Typeclasses Opaque count_chars.
     
     (*
     fn do_count_chars(s: &str) -> usize {
@@ -453,6 +455,7 @@ Module str.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -637,6 +640,7 @@ Module str.
                                                                     ltac:(M.monadic
                                                                       (let iter := M.copy (| γ |) in
                                                                       M.loop (|
+                                                                        Ty.tuple [],
                                                                         ltac:(M.monadic
                                                                           (let~ _ : Ty.tuple [] :=
                                                                             M.match_operator (|
@@ -786,6 +790,8 @@ Module str.
                                                                                                   γ
                                                                                                 |) in
                                                                                               M.loop (|
+                                                                                                Ty.tuple
+                                                                                                  [],
                                                                                                 ltac:(M.monadic
                                                                                                   (let~
                                                                                                         _ :
@@ -1042,6 +1048,7 @@ Module str.
                                                                                         γ
                                                                                       |) in
                                                                                     M.loop (|
+                                                                                      Ty.tuple [],
                                                                                       ltac:(M.monadic
                                                                                         (let~ _ :
                                                                                             Ty.tuple
@@ -1221,8 +1228,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_do_count_chars : M.IsFunction "core::str::count::do_count_chars" do_count_chars.
-    Smpl Add apply Function_do_count_chars : is_function.
+    Global Instance Instance_IsFunction_do_count_chars :
+      M.IsFunction.Trait "core::str::count::do_count_chars" do_count_chars.
+    Admitted.
+    Global Typeclasses Opaque do_count_chars.
     
     Module do_count_chars.
       Definition value_CHUNK_SIZE : Value.t :=
@@ -1256,11 +1265,12 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_contains_non_continuation_byte :
-      M.IsFunction
+    Global Instance Instance_IsFunction_contains_non_continuation_byte :
+      M.IsFunction.Trait
         "core::str::count::contains_non_continuation_byte"
         contains_non_continuation_byte.
-    Smpl Add apply Function_contains_non_continuation_byte : is_function.
+    Admitted.
+    Global Typeclasses Opaque contains_non_continuation_byte.
     
     Module contains_non_continuation_byte.
       Definition value_LSB : Value.t :=
@@ -1330,9 +1340,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sum_bytes_in_usize :
-      M.IsFunction "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
-    Smpl Add apply Function_sum_bytes_in_usize : is_function.
+    Global Instance Instance_IsFunction_sum_bytes_in_usize :
+      M.IsFunction.Trait "core::str::count::sum_bytes_in_usize" sum_bytes_in_usize.
+    Admitted.
+    Global Typeclasses Opaque sum_bytes_in_usize.
     
     Module sum_bytes_in_usize.
       Definition value_LSB_SHORTS : Value.t :=
@@ -1477,8 +1488,9 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_char_count_general_case :
-      M.IsFunction "core::str::count::char_count_general_case" char_count_general_case.
-    Smpl Add apply Function_char_count_general_case : is_function.
+    Global Instance Instance_IsFunction_char_count_general_case :
+      M.IsFunction.Trait "core::str::count::char_count_general_case" char_count_general_case.
+    Admitted.
+    Global Typeclasses Opaque char_count_general_case.
   End count.
 End str.

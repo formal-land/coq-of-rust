@@ -280,10 +280,11 @@ Module asserting.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new :
+    Global Instance AssociatedFunction_new :
       forall (M_ T : Ty.t),
-      M.IsAssociatedFunction (Self M_ T) "new" (new M_ T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+      M.IsAssociatedFunction.Trait (Self M_ T) "new" (new M_ T).
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_core_asserting_Capture_M__T.
   
   (* StructTuple

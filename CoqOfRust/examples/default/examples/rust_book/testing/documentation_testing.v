@@ -16,8 +16,9 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_add : M.IsFunction "documentation_testing::add" add.
-Smpl Add apply Function_add : is_function.
+Global Instance Instance_IsFunction_add : M.IsFunction.Trait "documentation_testing::add" add.
+Admitted.
+Global Typeclasses Opaque add.
 
 (*
 pub fn div(a: i32, b: i32) -> i32 {
@@ -68,5 +69,6 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_div : M.IsFunction "documentation_testing::div" div.
-Smpl Add apply Function_div : is_function.
+Global Instance Instance_IsFunction_div : M.IsFunction.Trait "documentation_testing::div" div.
+Admitted.
+Global Typeclasses Opaque div.

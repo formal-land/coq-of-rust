@@ -178,7 +178,7 @@ Module str.
       
       (*     type Output = I::Output; *)
       Definition _Output (I : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
+        Ty.associated_in_trait "core::slice::index::SliceIndex" [] [ Ty.path "str" ] I "Output".
       
       (*
           fn index(&self, index: I) -> &I::Output {
@@ -199,7 +199,14 @@ Module str.
                   Ty.apply
                     (Ty.path "&")
                     []
-                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                    [
+                      Ty.associated_in_trait
+                        "core::slice::index::SliceIndex"
+                        []
+                        [ Ty.path "str" ]
+                        I
+                        "Output"
+                    ],
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     I,
@@ -255,7 +262,13 @@ Module str.
                       Ty.apply
                         (Ty.path "&mut")
                         []
-                        [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output"
+                        [
+                          Ty.associated_in_trait
+                            "core::slice::index::SliceIndex"
+                            []
+                            [ Ty.path "str" ]
+                            I
+                            "Output"
                         ],
                       M.get_trait_method (|
                         "core::slice::index::SliceIndex",
@@ -330,9 +343,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_str_index_overflow_fail :
-      M.IsFunction "core::str::traits::str_index_overflow_fail" str_index_overflow_fail.
-    Smpl Add apply Function_str_index_overflow_fail : is_function.
+    Global Instance Instance_IsFunction_str_index_overflow_fail :
+      M.IsFunction.Trait "core::str::traits::str_index_overflow_fail" str_index_overflow_fail.
+    Admitted.
+    Global Typeclasses Opaque str_index_overflow_fail.
     
     Module Impl_core_slice_index_SliceIndex_str_for_core_ops_range_RangeFull.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".

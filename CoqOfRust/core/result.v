@@ -793,10 +793,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ok :
+    Global Instance AssociatedFunction_is_ok :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "is_ok" (is_ok T E).
-    Smpl Add apply AssociatedFunction_is_ok : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "is_ok" (is_ok T E).
+    Admitted.
+    Global Typeclasses Opaque is_ok.
     
     (*
         pub fn is_ok_and(self, f: impl FnOnce(T) -> bool) -> bool {
@@ -848,10 +849,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ok_and :
+    Global Instance AssociatedFunction_is_ok_and :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "is_ok_and" (is_ok_and T E).
-    Smpl Add apply AssociatedFunction_is_ok_and : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "is_ok_and" (is_ok_and T E).
+    Admitted.
+    Global Typeclasses Opaque is_ok_and.
     
     (*
         pub const fn is_err(&self) -> bool {
@@ -879,10 +881,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_err :
+    Global Instance AssociatedFunction_is_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "is_err" (is_err T E).
-    Smpl Add apply AssociatedFunction_is_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "is_err" (is_err T E).
+    Admitted.
+    Global Typeclasses Opaque is_err.
     
     (*
         pub fn is_err_and(self, f: impl FnOnce(E) -> bool) -> bool {
@@ -934,10 +937,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_err_and :
+    Global Instance AssociatedFunction_is_err_and :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "is_err_and" (is_err_and T E).
-    Smpl Add apply AssociatedFunction_is_err_and : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "is_err_and" (is_err_and T E).
+    Admitted.
+    Global Typeclasses Opaque is_err_and.
     
     (*
         pub fn ok(self) -> Option<T> {
@@ -976,10 +980,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ok :
+    Global Instance AssociatedFunction_ok :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "ok" (ok T E).
-    Smpl Add apply AssociatedFunction_ok : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "ok" (ok T E).
+    Admitted.
+    Global Typeclasses Opaque ok.
     
     (*
         pub fn err(self) -> Option<E> {
@@ -1018,10 +1023,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_err :
+    Global Instance AssociatedFunction_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "err" (err T E).
-    Smpl Add apply AssociatedFunction_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "err" (err T E).
+    Admitted.
+    Global Typeclasses Opaque err.
     
     (*
         pub const fn as_ref(&self) -> Result<&T, &E> {
@@ -1067,10 +1073,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ref :
+    Global Instance AssociatedFunction_as_ref :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "as_ref" (as_ref T E).
-    Smpl Add apply AssociatedFunction_as_ref : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "as_ref" (as_ref T E).
+    Admitted.
+    Global Typeclasses Opaque as_ref.
     
     (*
         pub const fn as_mut(&mut self) -> Result<&mut T, &mut E> {
@@ -1116,10 +1123,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_mut :
+    Global Instance AssociatedFunction_as_mut :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "as_mut" (as_mut T E).
-    Smpl Add apply AssociatedFunction_as_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "as_mut" (as_mut T E).
+    Admitted.
+    Global Typeclasses Opaque as_mut.
     
     (*
         pub fn map<U, F: FnOnce(T) -> U>(self, op: F) -> Result<U, E> {
@@ -1176,10 +1184,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map :
+    Global Instance AssociatedFunction_map :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "map" (map T E).
-    Smpl Add apply AssociatedFunction_map : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "map" (map T E).
+    Admitted.
+    Global Typeclasses Opaque map.
     
     (*
         pub fn map_or<U, F: FnOnce(T) -> U>(self, default: U, f: F) -> U {
@@ -1232,10 +1241,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_or :
+    Global Instance AssociatedFunction_map_or :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "map_or" (map_or T E).
-    Smpl Add apply AssociatedFunction_map_or : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "map_or" (map_or T E).
+    Admitted.
+    Global Typeclasses Opaque map_or.
     
     (*
         pub fn map_or_else<U, D: FnOnce(E) -> U, F: FnOnce(T) -> U>(self, default: D, f: F) -> U {
@@ -1303,10 +1313,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_or_else :
+    Global Instance AssociatedFunction_map_or_else :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "map_or_else" (map_or_else T E).
-    Smpl Add apply AssociatedFunction_map_or_else : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "map_or_else" (map_or_else T E).
+    Admitted.
+    Global Typeclasses Opaque map_or_else.
     
     (*
         pub fn map_err<F, O: FnOnce(E) -> F>(self, op: O) -> Result<T, F> {
@@ -1363,10 +1374,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_err :
+    Global Instance AssociatedFunction_map_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "map_err" (map_err T E).
-    Smpl Add apply AssociatedFunction_map_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "map_err" (map_err T E).
+    Admitted.
+    Global Typeclasses Opaque map_err.
     
     (*
         pub fn inspect<F: FnOnce(&T)>(self, f: F) -> Self {
@@ -1428,10 +1440,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_inspect :
+    Global Instance AssociatedFunction_inspect :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "inspect" (inspect T E).
-    Smpl Add apply AssociatedFunction_inspect : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "inspect" (inspect T E).
+    Admitted.
+    Global Typeclasses Opaque inspect.
     
     (*
         pub fn inspect_err<F: FnOnce(&E)>(self, f: F) -> Self {
@@ -1493,10 +1506,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_inspect_err :
+    Global Instance AssociatedFunction_inspect_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "inspect_err" (inspect_err T E).
-    Smpl Add apply AssociatedFunction_inspect_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "inspect_err" (inspect_err T E).
+    Admitted.
+    Global Typeclasses Opaque inspect_err.
     
     (*
         pub fn as_deref(&self) -> Result<&T::Target, &E>
@@ -1601,10 +1615,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_deref :
+    Global Instance AssociatedFunction_as_deref :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "as_deref" (as_deref T E).
-    Smpl Add apply AssociatedFunction_as_deref : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "as_deref" (as_deref T E).
+    Admitted.
+    Global Typeclasses Opaque as_deref.
     
     (*
         pub fn as_deref_mut(&mut self) -> Result<&mut T::Target, &mut E>
@@ -1715,10 +1730,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_deref_mut :
+    Global Instance AssociatedFunction_as_deref_mut :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "as_deref_mut" (as_deref_mut T E).
-    Smpl Add apply AssociatedFunction_as_deref_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "as_deref_mut" (as_deref_mut T E).
+    Admitted.
+    Global Typeclasses Opaque as_deref_mut.
     
     (*
         pub fn iter(&self) -> Iter<'_, T> {
@@ -1766,10 +1782,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_iter :
+    Global Instance AssociatedFunction_iter :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "iter" (iter T E).
-    Smpl Add apply AssociatedFunction_iter : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "iter" (iter T E).
+    Admitted.
+    Global Typeclasses Opaque iter.
     
     (*
         pub fn iter_mut(&mut self) -> IterMut<'_, T> {
@@ -1820,10 +1837,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_iter_mut :
+    Global Instance AssociatedFunction_iter_mut :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "iter_mut" (iter_mut T E).
-    Smpl Add apply AssociatedFunction_iter_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "iter_mut" (iter_mut T E).
+    Admitted.
+    Global Typeclasses Opaque iter_mut.
     
     (*
         pub fn expect(self, msg: &str) -> T
@@ -1879,10 +1897,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_expect :
+    Global Instance AssociatedFunction_expect :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "expect" (expect T E).
-    Smpl Add apply AssociatedFunction_expect : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "expect" (expect T E).
+    Admitted.
+    Global Typeclasses Opaque expect.
     
     (*
         pub fn unwrap(self) -> T
@@ -1944,10 +1963,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap :
+    Global Instance AssociatedFunction_unwrap :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap" (unwrap T E).
-    Smpl Add apply AssociatedFunction_unwrap : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap" (unwrap T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap.
     
     (*
         pub fn unwrap_or_default(self) -> T
@@ -2006,10 +2026,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_or_default :
+    Global Instance AssociatedFunction_unwrap_or_default :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap_or_default" (unwrap_or_default T E).
-    Smpl Add apply AssociatedFunction_unwrap_or_default : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap_or_default" (unwrap_or_default T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap_or_default.
     
     (*
         pub fn expect_err(self, msg: &str) -> E
@@ -2065,10 +2086,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_expect_err :
+    Global Instance AssociatedFunction_expect_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "expect_err" (expect_err T E).
-    Smpl Add apply AssociatedFunction_expect_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "expect_err" (expect_err T E).
+    Admitted.
+    Global Typeclasses Opaque expect_err.
     
     (*
         pub fn unwrap_err(self) -> E
@@ -2130,10 +2152,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_err :
+    Global Instance AssociatedFunction_unwrap_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap_err" (unwrap_err T E).
-    Smpl Add apply AssociatedFunction_unwrap_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap_err" (unwrap_err T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap_err.
     
     (*
         pub fn into_ok(self) -> T
@@ -2190,10 +2213,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_ok :
+    Global Instance AssociatedFunction_into_ok :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "into_ok" (into_ok T E).
-    Smpl Add apply AssociatedFunction_into_ok : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "into_ok" (into_ok T E).
+    Admitted.
+    Global Typeclasses Opaque into_ok.
     
     (*
         pub fn into_err(self) -> E
@@ -2250,10 +2274,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_err :
+    Global Instance AssociatedFunction_into_err :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "into_err" (into_err T E).
-    Smpl Add apply AssociatedFunction_into_err : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "into_err" (into_err T E).
+    Admitted.
+    Global Typeclasses Opaque into_err.
     
     (*
         pub fn and<U>(self, res: Result<U, E>) -> Result<U, E> {
@@ -2291,10 +2316,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_and :
+    Global Instance AssociatedFunction_and :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "and" (and T E).
-    Smpl Add apply AssociatedFunction_and : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "and" (and T E).
+    Admitted.
+    Global Typeclasses Opaque and.
     
     (*
         pub fn and_then<U, F: FnOnce(T) -> Result<U, E>>(self, op: F) -> Result<U, E> {
@@ -2347,10 +2373,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_and_then :
+    Global Instance AssociatedFunction_and_then :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "and_then" (and_then T E).
-    Smpl Add apply AssociatedFunction_and_then : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "and_then" (and_then T E).
+    Admitted.
+    Global Typeclasses Opaque and_then.
     
     (*
         pub fn or<F>(self, res: Result<T, F>) -> Result<T, F> {
@@ -2388,10 +2415,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_or :
+    Global Instance AssociatedFunction_or :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "or" (or T E).
-    Smpl Add apply AssociatedFunction_or : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "or" (or T E).
+    Admitted.
+    Global Typeclasses Opaque or.
     
     (*
         pub fn or_else<F, O: FnOnce(E) -> Result<T, F>>(self, op: O) -> Result<T, F> {
@@ -2444,10 +2472,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_or_else :
+    Global Instance AssociatedFunction_or_else :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "or_else" (or_else T E).
-    Smpl Add apply AssociatedFunction_or_else : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "or_else" (or_else T E).
+    Admitted.
+    Global Typeclasses Opaque or_else.
     
     (*
         pub fn unwrap_or(self, default: T) -> T {
@@ -2485,10 +2514,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_or :
+    Global Instance AssociatedFunction_unwrap_or :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap_or" (unwrap_or T E).
-    Smpl Add apply AssociatedFunction_unwrap_or : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap_or" (unwrap_or T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap_or.
     
     (*
         pub fn unwrap_or_else<F: FnOnce(E) -> T>(self, op: F) -> T {
@@ -2546,10 +2576,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_or_else :
+    Global Instance AssociatedFunction_unwrap_or_else :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap_or_else" (unwrap_or_else T E).
-    Smpl Add apply AssociatedFunction_unwrap_or_else : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap_or_else" (unwrap_or_else T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap_or_else.
     
     (*
         pub unsafe fn unwrap_unchecked(self) -> T {
@@ -2600,10 +2631,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_unchecked :
+    Global Instance AssociatedFunction_unwrap_unchecked :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap_unchecked" (unwrap_unchecked T E).
-    Smpl Add apply AssociatedFunction_unwrap_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap_unchecked" (unwrap_unchecked T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap_unchecked.
     
     (*
         pub unsafe fn unwrap_err_unchecked(self) -> E {
@@ -2654,10 +2686,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_err_unchecked :
+    Global Instance AssociatedFunction_unwrap_err_unchecked :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "unwrap_err_unchecked" (unwrap_err_unchecked T E).
-    Smpl Add apply AssociatedFunction_unwrap_err_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "unwrap_err_unchecked" (unwrap_err_unchecked T E).
+    Admitted.
+    Global Typeclasses Opaque unwrap_err_unchecked.
   End Impl_core_result_Result_T_E.
   
   Module Impl_core_result_Result_ref__T_E.
@@ -2706,10 +2739,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_copied :
+    Global Instance AssociatedFunction_copied :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "copied" (copied T E).
-    Smpl Add apply AssociatedFunction_copied : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "copied" (copied T E).
+    Admitted.
+    Global Typeclasses Opaque copied.
     
     (*
         pub fn cloned(self) -> Result<T, E>
@@ -2769,10 +2803,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cloned :
+    Global Instance AssociatedFunction_cloned :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "cloned" (cloned T E).
-    Smpl Add apply AssociatedFunction_cloned : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "cloned" (cloned T E).
+    Admitted.
+    Global Typeclasses Opaque cloned.
   End Impl_core_result_Result_ref__T_E.
   
   Module Impl_core_result_Result_ref_mut_T_E.
@@ -2821,10 +2856,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_copied :
+    Global Instance AssociatedFunction_copied :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "copied" (copied T E).
-    Smpl Add apply AssociatedFunction_copied : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "copied" (copied T E).
+    Admitted.
+    Global Typeclasses Opaque copied.
     
     (*
         pub fn cloned(self) -> Result<T, E>
@@ -2887,10 +2923,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cloned :
+    Global Instance AssociatedFunction_cloned :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "cloned" (cloned T E).
-    Smpl Add apply AssociatedFunction_cloned : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "cloned" (cloned T E).
+    Admitted.
+    Global Typeclasses Opaque cloned.
   End Impl_core_result_Result_ref_mut_T_E.
   
   Module Impl_core_result_Result_core_option_Option_T_E.
@@ -2957,10 +2994,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_transpose :
+    Global Instance AssociatedFunction_transpose :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "transpose" (transpose T E).
-    Smpl Add apply AssociatedFunction_transpose : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "transpose" (transpose T E).
+    Admitted.
+    Global Typeclasses Opaque transpose.
   End Impl_core_result_Result_core_option_Option_T_E.
   
   Module Impl_core_result_Result_core_result_Result_T_E_E.
@@ -3007,10 +3045,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_flatten :
+    Global Instance AssociatedFunction_flatten :
       forall (T E : Ty.t),
-      M.IsAssociatedFunction (Self T E) "flatten" (flatten T E).
-    Smpl Add apply AssociatedFunction_flatten : is_associated.
+      M.IsAssociatedFunction.Trait (Self T E) "flatten" (flatten T E).
+    Admitted.
+    Global Typeclasses Opaque flatten.
   End Impl_core_result_Result_core_result_Result_T_E_E.
   
   (*
@@ -3103,8 +3142,10 @@ Module result.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unwrap_failed : M.IsFunction "core::result::unwrap_failed" unwrap_failed.
-  Smpl Add apply Function_unwrap_failed : is_function.
+  Global Instance Instance_IsFunction_unwrap_failed :
+    M.IsFunction.Trait "core::result::unwrap_failed" unwrap_failed.
+  Admitted.
+  Global Typeclasses Opaque unwrap_failed.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].

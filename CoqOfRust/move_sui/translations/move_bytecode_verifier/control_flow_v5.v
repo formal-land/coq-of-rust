@@ -256,8 +256,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify : M.IsFunction "move_bytecode_verifier::control_flow_v5::verify" verify.
-  Smpl Add apply Function_verify : is_function.
+  Global Instance Instance_IsFunction_verify :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::verify" verify.
+  Admitted.
+  Global Typeclasses Opaque verify.
   
   (*
   fn verify_fallthrough(
@@ -449,9 +451,12 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_fallthrough :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::verify_fallthrough" verify_fallthrough.
-  Smpl Add apply Function_verify_fallthrough : is_function.
+  Global Instance Instance_IsFunction_verify_fallthrough :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::control_flow_v5::verify_fallthrough"
+      verify_fallthrough.
+  Admitted.
+  Global Typeclasses Opaque verify_fallthrough.
   
   (*
   Enum Label
@@ -794,8 +799,9 @@ Module control_flow_v5.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
-    Smpl Add apply AssociatedFunction_code : is_associated.
+    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+    Admitted.
+    Global Typeclasses Opaque code.
     
     (*
         fn labeled_code<'b: 'a>(
@@ -1000,8 +1006,10 @@ Module control_flow_v5.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_labeled_code : M.IsAssociatedFunction Self "labeled_code" labeled_code.
-    Smpl Add apply AssociatedFunction_labeled_code : is_associated.
+    Global Instance AssociatedFunction_labeled_code :
+      M.IsAssociatedFunction.Trait Self "labeled_code" labeled_code.
+    Admitted.
+    Global Typeclasses Opaque labeled_code.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -1047,8 +1055,9 @@ Module control_flow_v5.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
-    Smpl Add apply AssociatedFunction_error : is_associated.
+    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+    Admitted.
+    Global Typeclasses Opaque error.
   End Impl_move_bytecode_verifier_control_flow_v5_ControlFlowVerifier.
   
   (*
@@ -1301,6 +1310,7 @@ Module control_flow_v5.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -1475,9 +1485,12 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_instruction_labels :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::instruction_labels" instruction_labels.
-  Smpl Add apply Function_instruction_labels : is_function.
+  Global Instance Instance_IsFunction_instruction_labels :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::control_flow_v5::instruction_labels"
+      instruction_labels.
+  Admitted.
+  Global Typeclasses Opaque instruction_labels.
   
   (*
   fn check_jumps(
@@ -2123,9 +2136,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_jumps :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::check_jumps" check_jumps.
-  Smpl Add apply Function_check_jumps : is_function.
+  Global Instance Instance_IsFunction_check_jumps :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::check_jumps" check_jumps.
+  Admitted.
+  Global Typeclasses Opaque check_jumps.
   
   (*
   fn check_code<
@@ -2233,6 +2247,7 @@ Module control_flow_v5.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3091,9 +3106,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_code :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::check_code" check_code.
-  Smpl Add apply Function_check_code : is_function.
+  Global Instance Instance_IsFunction_check_code :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::check_code" check_code.
+  Admitted.
+  Global Typeclasses Opaque check_code.
   
   (*
   fn is_back_edge(cur_instr: CodeOffset, target_instr: CodeOffset) -> bool {
@@ -3110,9 +3126,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_back_edge :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::is_back_edge" is_back_edge.
-  Smpl Add apply Function_is_back_edge : is_function.
+  Global Instance Instance_IsFunction_is_back_edge :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::is_back_edge" is_back_edge.
+  Admitted.
+  Global Typeclasses Opaque is_back_edge.
   
   (*
   fn check_continues(context: &ControlFlowVerifier, labels: &[Label]) -> PartialVMResult<()> {
@@ -3814,9 +3831,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_continues :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::check_continues" check_continues.
-  Smpl Add apply Function_check_continues : is_function.
+  Global Instance Instance_IsFunction_check_continues :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::check_continues" check_continues.
+  Admitted.
+  Global Typeclasses Opaque check_continues.
   
   (*
   fn check_breaks(context: &ControlFlowVerifier, labels: &[Label]) -> PartialVMResult<()> {
@@ -4273,9 +4291,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_breaks :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::check_breaks" check_breaks.
-  Smpl Add apply Function_check_breaks : is_function.
+  Global Instance Instance_IsFunction_check_breaks :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::check_breaks" check_breaks.
+  Admitted.
+  Global Typeclasses Opaque check_breaks.
   
   (*
   fn check_no_loop_splits(
@@ -4898,11 +4917,12 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_no_loop_splits :
-    M.IsFunction
+  Global Instance Instance_IsFunction_check_no_loop_splits :
+    M.IsFunction.Trait
       "move_bytecode_verifier::control_flow_v5::check_no_loop_splits"
       check_no_loop_splits.
-  Smpl Add apply Function_check_no_loop_splits : is_function.
+  Admitted.
+  Global Typeclasses Opaque check_no_loop_splits.
   
   (*
   fn check_loop_depth(
@@ -5129,9 +5149,10 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_check_loop_depth :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::check_loop_depth" check_loop_depth.
-  Smpl Add apply Function_check_loop_depth : is_function.
+  Global Instance Instance_IsFunction_check_loop_depth :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::check_loop_depth" check_loop_depth.
+  Admitted.
+  Global Typeclasses Opaque check_loop_depth.
   
   (*
   fn count_loop_depth(labels: &[Label]) -> Vec<usize> {
@@ -5435,6 +5456,7 @@ Module control_flow_v5.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -5656,7 +5678,8 @@ Module control_flow_v5.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_count_loop_depth :
-    M.IsFunction "move_bytecode_verifier::control_flow_v5::count_loop_depth" count_loop_depth.
-  Smpl Add apply Function_count_loop_depth : is_function.
+  Global Instance Instance_IsFunction_count_loop_depth :
+    M.IsFunction.Trait "move_bytecode_verifier::control_flow_v5::count_loop_depth" count_loop_depth.
+  Admitted.
+  Global Typeclasses Opaque count_loop_depth.
 End control_flow_v5.

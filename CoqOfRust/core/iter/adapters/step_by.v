@@ -290,10 +290,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             fn original_step(&self) -> NonZero<usize> {
@@ -341,10 +342,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_original_step :
+        Global Instance AssociatedFunction_original_step :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "original_step" (original_step I).
-        Smpl Add apply AssociatedFunction_original_step : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "original_step" (original_step I).
+        Admitted.
+        Global Typeclasses Opaque original_step.
         (*
             fn next_back_index(&self) -> usize {
                 let rem = self.iter.len() % self.original_step();
@@ -466,10 +468,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_back_index :
+        Global Instance AssociatedFunction_next_back_index :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "next_back_index" (next_back_index I).
-        Smpl Add apply AssociatedFunction_next_back_index : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "next_back_index" (next_back_index I).
+        Admitted.
+        Global Typeclasses Opaque next_back_index.
       End Impl_core_iter_adapters_step_by_StepBy_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_step_by_StepBy_I.
@@ -1516,6 +1519,7 @@ Module iter.
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
+                            Ty.path "never",
                             ltac:(M.monadic
                               (let~ mul :
                                   Ty.apply
@@ -3533,6 +3537,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -3871,6 +3876,7 @@ Module iter.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4499,6 +4505,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -4837,6 +4844,7 @@ Module iter.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -5465,6 +5473,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -5803,6 +5812,7 @@ Module iter.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -6431,6 +6441,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -6769,6 +6780,7 @@ Module iter.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -7398,6 +7410,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -7736,6 +7749,7 @@ Module iter.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -8141,6 +8155,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -8349,6 +8364,7 @@ Module iter.
                 let~ accum : Acc := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -8735,6 +8751,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -8943,6 +8960,7 @@ Module iter.
                 let~ accum : Acc := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -9329,6 +9347,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -9537,6 +9556,7 @@ Module iter.
                 let~ accum : Acc := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -9934,6 +9954,7 @@ Module iter.
                     let~ accum : Acc := M.copy (| init |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -10142,6 +10163,7 @@ Module iter.
                 let~ accum : Acc := M.copy (| init |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),

@@ -643,8 +643,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn is_jumpdest(&self) -> bool {
@@ -660,8 +661,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_jumpdest : M.IsAssociatedFunction Self "is_jumpdest" is_jumpdest.
-    Smpl Add apply AssociatedFunction_is_jumpdest : is_associated.
+    Global Instance AssociatedFunction_is_jumpdest :
+      M.IsAssociatedFunction.Trait Self "is_jumpdest" is_jumpdest.
+    Admitted.
+    Global Typeclasses Opaque is_jumpdest.
     
     (*
         pub const fn is_jumpdest_by_op(opcode: u8) -> bool {
@@ -725,9 +728,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_jumpdest_by_op :
-      M.IsAssociatedFunction Self "is_jumpdest_by_op" is_jumpdest_by_op.
-    Smpl Add apply AssociatedFunction_is_jumpdest_by_op : is_associated.
+    Global Instance AssociatedFunction_is_jumpdest_by_op :
+      M.IsAssociatedFunction.Trait Self "is_jumpdest_by_op" is_jumpdest_by_op.
+    Admitted.
+    Global Typeclasses Opaque is_jumpdest_by_op.
     
     (*
         pub const fn is_jump(self) -> bool {
@@ -743,8 +747,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_jump : M.IsAssociatedFunction Self "is_jump" is_jump.
-    Smpl Add apply AssociatedFunction_is_jump : is_associated.
+    Global Instance AssociatedFunction_is_jump :
+      M.IsAssociatedFunction.Trait Self "is_jump" is_jump.
+    Admitted.
+    Global Typeclasses Opaque is_jump.
     
     (*
         pub const fn is_jump_by_op(opcode: u8) -> bool {
@@ -808,9 +814,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_jump_by_op :
-      M.IsAssociatedFunction Self "is_jump_by_op" is_jump_by_op.
-    Smpl Add apply AssociatedFunction_is_jump_by_op : is_associated.
+    Global Instance AssociatedFunction_is_jump_by_op :
+      M.IsAssociatedFunction.Trait Self "is_jump_by_op" is_jump_by_op.
+    Admitted.
+    Global Typeclasses Opaque is_jump_by_op.
     
     (*
         pub const fn is_push(self) -> bool {
@@ -826,8 +833,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_push : M.IsAssociatedFunction Self "is_push" is_push.
-    Smpl Add apply AssociatedFunction_is_push : is_associated.
+    Global Instance AssociatedFunction_is_push :
+      M.IsAssociatedFunction.Trait Self "is_push" is_push.
+    Admitted.
+    Global Typeclasses Opaque is_push.
     
     (*
         pub fn is_push_by_op(opcode: u8) -> bool {
@@ -891,9 +900,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_push_by_op :
-      M.IsAssociatedFunction Self "is_push_by_op" is_push_by_op.
-    Smpl Add apply AssociatedFunction_is_push_by_op : is_associated.
+    Global Instance AssociatedFunction_is_push_by_op :
+      M.IsAssociatedFunction.Trait Self "is_push_by_op" is_push_by_op.
+    Admitted.
+    Global Typeclasses Opaque is_push_by_op.
     
     (*
         pub unsafe fn new_unchecked(opcode: u8) -> Self {
@@ -909,9 +919,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_unchecked :
-      M.IsAssociatedFunction Self "new_unchecked" new_unchecked.
-    Smpl Add apply AssociatedFunction_new_unchecked : is_associated.
+    Global Instance AssociatedFunction_new_unchecked :
+      M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+    Admitted.
+    Global Typeclasses Opaque new_unchecked.
     
     (*
         pub const fn as_str(self) -> &'static str {
@@ -952,8 +963,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-    Smpl Add apply AssociatedFunction_as_str : is_associated.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Admitted.
+    Global Typeclasses Opaque as_str.
     
     (*
         pub const fn name_by_op(opcode: u8) -> &'static str {
@@ -1017,8 +1029,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name_by_op : M.IsAssociatedFunction Self "name_by_op" name_by_op.
-    Smpl Add apply AssociatedFunction_name_by_op : is_associated.
+    Global Instance AssociatedFunction_name_by_op :
+      M.IsAssociatedFunction.Trait Self "name_by_op" name_by_op.
+    Admitted.
+    Global Typeclasses Opaque name_by_op.
     
     (*
         pub const fn inputs(&self) -> u8 {
@@ -1059,8 +1073,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_inputs : M.IsAssociatedFunction Self "inputs" inputs.
-    Smpl Add apply AssociatedFunction_inputs : is_associated.
+    Global Instance AssociatedFunction_inputs : M.IsAssociatedFunction.Trait Self "inputs" inputs.
+    Admitted.
+    Global Typeclasses Opaque inputs.
     
     (*
         pub const fn outputs(&self) -> u8 {
@@ -1101,8 +1116,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_outputs : M.IsAssociatedFunction Self "outputs" outputs.
-    Smpl Add apply AssociatedFunction_outputs : is_associated.
+    Global Instance AssociatedFunction_outputs :
+      M.IsAssociatedFunction.Trait Self "outputs" outputs.
+    Admitted.
+    Global Typeclasses Opaque outputs.
     
     (*
         pub const fn io_diff(&self) -> i16 {
@@ -1143,8 +1160,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
-    Smpl Add apply AssociatedFunction_io_diff : is_associated.
+    Global Instance AssociatedFunction_io_diff :
+      M.IsAssociatedFunction.Trait Self "io_diff" io_diff.
+    Admitted.
+    Global Typeclasses Opaque io_diff.
     
     (*
         pub const fn info_by_op(opcode: u8) -> Option<OpCodeInfo> {
@@ -1213,8 +1232,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_info_by_op : M.IsAssociatedFunction Self "info_by_op" info_by_op.
-    Smpl Add apply AssociatedFunction_info_by_op : is_associated.
+    Global Instance AssociatedFunction_info_by_op :
+      M.IsAssociatedFunction.Trait Self "info_by_op" info_by_op.
+    Admitted.
+    Global Typeclasses Opaque info_by_op.
     
     (*
         pub const fn as_usize(&self) -> usize {
@@ -1238,8 +1259,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
-    Smpl Add apply AssociatedFunction_as_usize : is_associated.
+    Global Instance AssociatedFunction_as_usize :
+      M.IsAssociatedFunction.Trait Self "as_usize" as_usize.
+    Admitted.
+    Global Typeclasses Opaque as_usize.
     
     (*
         pub const fn info(&self) -> OpCodeInfo {
@@ -1322,8 +1345,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_info : M.IsAssociatedFunction Self "info" info.
-    Smpl Add apply AssociatedFunction_info : is_associated.
+    Global Instance AssociatedFunction_info : M.IsAssociatedFunction.Trait Self "info" info.
+    Admitted.
+    Global Typeclasses Opaque info.
     
     (*
         pub const fn input_output(&self) -> (u8, u8) {
@@ -1373,8 +1397,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_input_output : M.IsAssociatedFunction Self "input_output" input_output.
-    Smpl Add apply AssociatedFunction_input_output : is_associated.
+    Global Instance AssociatedFunction_input_output :
+      M.IsAssociatedFunction.Trait Self "input_output" input_output.
+    Admitted.
+    Global Typeclasses Opaque input_output.
     
     (*
         pub const fn get(self) -> u8 {
@@ -1392,8 +1418,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-    Smpl Add apply AssociatedFunction_get : is_associated.
+    Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+    Admitted.
+    Global Typeclasses Opaque get.
     
     (*
         pub const fn modifies_memory(&self) -> bool {
@@ -1409,9 +1436,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_modifies_memory :
-      M.IsAssociatedFunction Self "modifies_memory" modifies_memory.
-    Smpl Add apply AssociatedFunction_modifies_memory : is_associated.
+    Global Instance AssociatedFunction_modifies_memory :
+      M.IsAssociatedFunction.Trait Self "modifies_memory" modifies_memory.
+    Admitted.
+    Global Typeclasses Opaque modifies_memory.
     (*             pub const $name: Self = Self($val); *)
     (* Ty.path "revm_bytecode::opcode::OpCode" *)
     Definition value_STOP : Value.t :=
@@ -1421,8 +1449,10 @@ Module opcode.
             Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 0 ]
           |))).
     
-    Axiom AssociatedConstant_value_STOP : M.IsAssociatedConstant Self "value_STOP" value_STOP.
-    Smpl Add apply AssociatedConstant_value_STOP : is_associated.
+    Global Instance AssociatedConstant_value_STOP :
+      M.IsAssociatedConstant.Trait Self "value_STOP" value_STOP.
+    Admitted.
+    Global Typeclasses Opaque value_STOP.
     
     (*             pub const $name: Self = Self($val); *)
     (* Ty.path "revm_bytecode::opcode::OpCode" *)
@@ -1433,8 +1463,10 @@ Module opcode.
             Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 1 ]
           |))).
     
-    Axiom AssociatedConstant_value_ADD : M.IsAssociatedConstant Self "value_ADD" value_ADD.
-    Smpl Add apply AssociatedConstant_value_ADD : is_associated.
+    Global Instance AssociatedConstant_value_ADD :
+      M.IsAssociatedConstant.Trait Self "value_ADD" value_ADD.
+    Admitted.
+    Global Typeclasses Opaque value_ADD.
     
     (*             pub const $name: Self = Self($val); *)
     (* Ty.path "revm_bytecode::opcode::OpCode" *)
@@ -1445,9 +1477,10 @@ Module opcode.
             Value.StructTuple "revm_bytecode::opcode::OpCode" [ Value.Integer IntegerKind.U8 49 ]
           |))).
     
-    Axiom AssociatedConstant_value_BALANCE :
-      M.IsAssociatedConstant Self "value_BALANCE" value_BALANCE.
-    Smpl Add apply AssociatedConstant_value_BALANCE : is_associated.
+    Global Instance AssociatedConstant_value_BALANCE :
+      M.IsAssociatedConstant.Trait Self "value_BALANCE" value_BALANCE.
+    Admitted.
+    Global Typeclasses Opaque value_BALANCE.
   End Impl_revm_bytecode_opcode_OpCode.
   
   (* StructRecord
@@ -3351,8 +3384,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub const fn name(&self) -> &'static str {
@@ -3425,8 +3459,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
-    Smpl Add apply AssociatedFunction_name : is_associated.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Admitted.
+    Global Typeclasses Opaque name.
     
     (*
         pub const fn io_diff(&self) -> i16 {
@@ -3461,8 +3496,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
-    Smpl Add apply AssociatedFunction_io_diff : is_associated.
+    Global Instance AssociatedFunction_io_diff :
+      M.IsAssociatedFunction.Trait Self "io_diff" io_diff.
+    Admitted.
+    Global Typeclasses Opaque io_diff.
     
     (*
         pub const fn inputs(&self) -> u8 {
@@ -3484,8 +3521,9 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_inputs : M.IsAssociatedFunction Self "inputs" inputs.
-    Smpl Add apply AssociatedFunction_inputs : is_associated.
+    Global Instance AssociatedFunction_inputs : M.IsAssociatedFunction.Trait Self "inputs" inputs.
+    Admitted.
+    Global Typeclasses Opaque inputs.
     
     (*
         pub const fn outputs(&self) -> u8 {
@@ -3507,8 +3545,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_outputs : M.IsAssociatedFunction Self "outputs" outputs.
-    Smpl Add apply AssociatedFunction_outputs : is_associated.
+    Global Instance AssociatedFunction_outputs :
+      M.IsAssociatedFunction.Trait Self "outputs" outputs.
+    Admitted.
+    Global Typeclasses Opaque outputs.
     
     (*
         pub const fn is_disabled_in_eof(&self) -> bool {
@@ -3530,9 +3570,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_disabled_in_eof :
-      M.IsAssociatedFunction Self "is_disabled_in_eof" is_disabled_in_eof.
-    Smpl Add apply AssociatedFunction_is_disabled_in_eof : is_associated.
+    Global Instance AssociatedFunction_is_disabled_in_eof :
+      M.IsAssociatedFunction.Trait Self "is_disabled_in_eof" is_disabled_in_eof.
+    Admitted.
+    Global Typeclasses Opaque is_disabled_in_eof.
     
     (*
         pub const fn is_terminating(&self) -> bool {
@@ -3554,9 +3595,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_terminating :
-      M.IsAssociatedFunction Self "is_terminating" is_terminating.
-    Smpl Add apply AssociatedFunction_is_terminating : is_associated.
+    Global Instance AssociatedFunction_is_terminating :
+      M.IsAssociatedFunction.Trait Self "is_terminating" is_terminating.
+    Admitted.
+    Global Typeclasses Opaque is_terminating.
     
     (*
         pub const fn immediate_size(&self) -> u8 {
@@ -3578,9 +3620,10 @@ Module opcode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_immediate_size :
-      M.IsAssociatedFunction Self "immediate_size" immediate_size.
-    Smpl Add apply AssociatedFunction_immediate_size : is_associated.
+    Global Instance AssociatedFunction_immediate_size :
+      M.IsAssociatedFunction.Trait Self "immediate_size" immediate_size.
+    Admitted.
+    Global Typeclasses Opaque immediate_size.
   End Impl_revm_bytecode_opcode_OpCodeInfo.
   
   (*
@@ -3611,8 +3654,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_not_eof : M.IsFunction "revm_bytecode::opcode::not_eof" not_eof.
-  Smpl Add apply Function_not_eof : is_function.
+  Global Instance Instance_IsFunction_not_eof :
+    M.IsFunction.Trait "revm_bytecode::opcode::not_eof" not_eof.
+  Admitted.
+  Global Typeclasses Opaque not_eof.
   
   (*
   pub const fn immediate_size(mut op: OpCodeInfo, n: u8) -> OpCodeInfo {
@@ -3643,9 +3688,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_immediate_size :
-    M.IsFunction "revm_bytecode::opcode::immediate_size" immediate_size.
-  Smpl Add apply Function_immediate_size : is_function.
+  Global Instance Instance_IsFunction_immediate_size :
+    M.IsFunction.Trait "revm_bytecode::opcode::immediate_size" immediate_size.
+  Admitted.
+  Global Typeclasses Opaque immediate_size.
   
   (*
   pub const fn terminating(mut op: OpCodeInfo) -> OpCodeInfo {
@@ -3675,8 +3721,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_terminating : M.IsFunction "revm_bytecode::opcode::terminating" terminating.
-  Smpl Add apply Function_terminating : is_function.
+  Global Instance Instance_IsFunction_terminating :
+    M.IsFunction.Trait "revm_bytecode::opcode::terminating" terminating.
+  Admitted.
+  Global Typeclasses Opaque terminating.
   
   (*
   pub const fn stack_io(mut op: OpCodeInfo, inputs: u8, outputs: u8) -> OpCodeInfo {
@@ -3720,8 +3768,10 @@ Module opcode.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_stack_io : M.IsFunction "revm_bytecode::opcode::stack_io" stack_io.
-  Smpl Add apply Function_stack_io : is_function.
+  Global Instance Instance_IsFunction_stack_io :
+    M.IsFunction.Trait "revm_bytecode::opcode::stack_io" stack_io.
+  Admitted.
+  Global Typeclasses Opaque stack_io.
   
   Definition value_STOP : Value.t :=
     M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).

@@ -42,8 +42,10 @@ Definition create_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_create_box : M.IsFunction "scoping_rules_raii::create_box" create_box.
-Smpl Add apply Function_create_box : is_function.
+Global Instance Instance_IsFunction_create_box :
+  M.IsFunction.Trait "scoping_rules_raii::create_box" create_box.
+Admitted.
+Global Typeclasses Opaque create_box.
 
 (*
 fn main() {
@@ -149,6 +151,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let iter := M.copy (| γ |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
@@ -204,5 +207,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "scoping_rules_raii::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "scoping_rules_raii::main" main.
+Admitted.
+Global Typeclasses Opaque main.

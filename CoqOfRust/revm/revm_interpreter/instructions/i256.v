@@ -597,9 +597,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i256_sign :
-      M.IsFunction "revm_interpreter::instructions::i256::i256_sign" i256_sign.
-    Smpl Add apply Function_i256_sign : is_function.
+    Global Instance Instance_IsFunction_i256_sign :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_sign" i256_sign.
+    Admitted.
+    Global Typeclasses Opaque i256_sign.
     
     (*
     pub fn i256_sign_compl(val: &mut U256) -> Sign {
@@ -679,9 +680,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i256_sign_compl :
-      M.IsFunction "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
-    Smpl Add apply Function_i256_sign_compl : is_function.
+    Global Instance Instance_IsFunction_i256_sign_compl :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_sign_compl" i256_sign_compl.
+    Admitted.
+    Global Typeclasses Opaque i256_sign_compl.
     
     (*
     fn u256_remove_sign(val: &mut U256) {
@@ -741,9 +743,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u256_remove_sign :
-      M.IsFunction "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
-    Smpl Add apply Function_u256_remove_sign : is_function.
+    Global Instance Instance_IsFunction_u256_remove_sign :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::u256_remove_sign" u256_remove_sign.
+    Admitted.
+    Global Typeclasses Opaque u256_remove_sign.
     
     (*
     pub fn two_compl_mut(op: &mut U256) {
@@ -775,9 +778,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_two_compl_mut :
-      M.IsFunction "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
-    Smpl Add apply Function_two_compl_mut : is_function.
+    Global Instance Instance_IsFunction_two_compl_mut :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::two_compl_mut" two_compl_mut.
+    Admitted.
+    Global Typeclasses Opaque two_compl_mut.
     
     (*
     pub fn two_compl(op: U256) -> U256 {
@@ -808,9 +812,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_two_compl :
-      M.IsFunction "revm_interpreter::instructions::i256::two_compl" two_compl.
-    Smpl Add apply Function_two_compl : is_function.
+    Global Instance Instance_IsFunction_two_compl :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::two_compl" two_compl.
+    Admitted.
+    Global Typeclasses Opaque two_compl.
     
     (*
     pub fn i256_cmp(first: &U256, second: &U256) -> Ordering {
@@ -905,9 +910,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i256_cmp :
-      M.IsFunction "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
-    Smpl Add apply Function_i256_cmp : is_function.
+    Global Instance Instance_IsFunction_i256_cmp :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
+    Admitted.
+    Global Typeclasses Opaque i256_cmp.
     
     (*
     pub fn i256_div(mut first: U256, mut second: U256) -> U256 {
@@ -1346,9 +1352,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i256_div :
-      M.IsFunction "revm_interpreter::instructions::i256::i256_div" i256_div.
-    Smpl Add apply Function_i256_div : is_function.
+    Global Instance Instance_IsFunction_i256_div :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_div" i256_div.
+    Admitted.
+    Global Typeclasses Opaque i256_div.
     
     (*
     pub fn i256_mod(mut first: U256, mut second: U256) -> U256 {
@@ -1611,8 +1618,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i256_mod :
-      M.IsFunction "revm_interpreter::instructions::i256::i256_mod" i256_mod.
-    Smpl Add apply Function_i256_mod : is_function.
+    Global Instance Instance_IsFunction_i256_mod :
+      M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_mod" i256_mod.
+    Admitted.
+    Global Typeclasses Opaque i256_mod.
   End i256.
 End instructions.

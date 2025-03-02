@@ -384,8 +384,9 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_inspect : M.IsFunction "enums::inspect" inspect.
-Smpl Add apply Function_inspect : is_function.
+Global Instance Instance_IsFunction_inspect : M.IsFunction.Trait "enums::inspect" inspect.
+Admitted.
+Global Typeclasses Opaque inspect.
 
 (*
 fn main() {
@@ -490,5 +491,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "enums::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums::main" main.
+Admitted.
+Global Typeclasses Opaque main.

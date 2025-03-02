@@ -21,21 +21,21 @@ Module Impl_custom_allocator_CustomAllocator.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_default : M.IsAssociatedFunction Self "default" default.
-  Smpl Add apply AssociatedFunction_default : is_associated.
+  Global Instance AssociatedFunction_default : M.IsAssociatedFunction.Trait Self "default" default.
+  Admitted.
   
   Parameter flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
-  Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Admitted.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
 End Impl_custom_allocator_CustomAllocator.

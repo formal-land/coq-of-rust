@@ -3,19 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
+Admitted.
 
 Module main.
   Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_foo :
-    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
-  Smpl Add apply Function_foo : is_function.
+  Global Instance Instance_IsFunction_foo :
+    M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
+  Admitted.
   
   Parameter call_foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom Function_call_foo :
-    M.IsFunction "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
-  Smpl Add apply Function_call_foo : is_function.
+  Global Instance Instance_IsFunction_call_foo :
+    M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
+  Admitted.
 End main.

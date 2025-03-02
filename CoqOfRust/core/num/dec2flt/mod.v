@@ -648,8 +648,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_pfe_empty : M.IsFunction "core::num::dec2flt::pfe_empty" pfe_empty.
-    Smpl Add apply Function_pfe_empty : is_function.
+    Global Instance Instance_IsFunction_pfe_empty :
+      M.IsFunction.Trait "core::num::dec2flt::pfe_empty" pfe_empty.
+    Admitted.
+    Global Typeclasses Opaque pfe_empty.
     
     (*
     pub fn pfe_invalid() -> ParseFloatError {
@@ -666,8 +668,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_pfe_invalid : M.IsFunction "core::num::dec2flt::pfe_invalid" pfe_invalid.
-    Smpl Add apply Function_pfe_invalid : is_function.
+    Global Instance Instance_IsFunction_pfe_invalid :
+      M.IsFunction.Trait "core::num::dec2flt::pfe_invalid" pfe_invalid.
+    Admitted.
+    Global Typeclasses Opaque pfe_invalid.
     
     (*
     fn biased_fp_to_float<T: RawFloat>(x: BiasedFp) -> T {
@@ -732,9 +736,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_biased_fp_to_float :
-      M.IsFunction "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
-    Smpl Add apply Function_biased_fp_to_float : is_function.
+    Global Instance Instance_IsFunction_biased_fp_to_float :
+      M.IsFunction.Trait "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
+    Admitted.
+    Global Typeclasses Opaque biased_fp_to_float.
     
     (*
     pub fn dec2flt<F: RawFloat>(s: &str) -> Result<F, ParseFloatError> {
@@ -1339,7 +1344,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_dec2flt : M.IsFunction "core::num::dec2flt::dec2flt" dec2flt.
-    Smpl Add apply Function_dec2flt : is_function.
+    Global Instance Instance_IsFunction_dec2flt :
+      M.IsFunction.Trait "core::num::dec2flt::dec2flt" dec2flt.
+    Admitted.
+    Global Typeclasses Opaque dec2flt.
   End dec2flt.
 End num.

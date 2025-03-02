@@ -550,6 +550,7 @@ Module absint.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1039,6 +1040,7 @@ Module absint.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -2298,6 +2300,7 @@ Module absint.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2836,8 +2839,9 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn index(&self) -> Option<FunctionDefinitionIndex> {
@@ -2859,8 +2863,9 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_index : M.IsAssociatedFunction Self "index" index.
-    Smpl Add apply AssociatedFunction_index : is_associated.
+    Global Instance AssociatedFunction_index : M.IsAssociatedFunction.Trait Self "index" index.
+    Admitted.
+    Global Typeclasses Opaque index.
     
     (*
         pub fn code(&self) -> &CodeUnit {
@@ -2887,8 +2892,9 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
-    Smpl Add apply AssociatedFunction_code : is_associated.
+    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+    Admitted.
+    Global Typeclasses Opaque code.
     
     (*
         pub fn parameters(&self) -> &Signature {
@@ -2915,8 +2921,10 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parameters : M.IsAssociatedFunction Self "parameters" parameters.
-    Smpl Add apply AssociatedFunction_parameters : is_associated.
+    Global Instance AssociatedFunction_parameters :
+      M.IsAssociatedFunction.Trait Self "parameters" parameters.
+    Admitted.
+    Global Typeclasses Opaque parameters.
     
     (*
         pub fn return_(&self) -> &Signature {
@@ -2943,8 +2951,10 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_return_ : M.IsAssociatedFunction Self "return_" return_.
-    Smpl Add apply AssociatedFunction_return_ : is_associated.
+    Global Instance AssociatedFunction_return_ :
+      M.IsAssociatedFunction.Trait Self "return_" return_.
+    Admitted.
+    Global Typeclasses Opaque return_.
     
     (*
         pub fn locals(&self) -> &Signature {
@@ -2971,8 +2981,9 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_locals : M.IsAssociatedFunction Self "locals" locals.
-    Smpl Add apply AssociatedFunction_locals : is_associated.
+    Global Instance AssociatedFunction_locals : M.IsAssociatedFunction.Trait Self "locals" locals.
+    Admitted.
+    Global Typeclasses Opaque locals.
     
     (*
         pub fn type_parameters(&self) -> &[AbilitySet] {
@@ -2999,9 +3010,10 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_type_parameters :
-      M.IsAssociatedFunction Self "type_parameters" type_parameters.
-    Smpl Add apply AssociatedFunction_type_parameters : is_associated.
+    Global Instance AssociatedFunction_type_parameters :
+      M.IsAssociatedFunction.Trait Self "type_parameters" type_parameters.
+    Admitted.
+    Global Typeclasses Opaque type_parameters.
     
     (*
         pub fn cfg(&self) -> &VMControlFlowGraph {
@@ -3029,7 +3041,8 @@ Module absint.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_cfg : M.IsAssociatedFunction Self "cfg" cfg.
-    Smpl Add apply AssociatedFunction_cfg : is_associated.
+    Global Instance AssociatedFunction_cfg : M.IsAssociatedFunction.Trait Self "cfg" cfg.
+    Admitted.
+    Global Typeclasses Opaque cfg.
   End Impl_move_bytecode_verifier_absint_FunctionContext.
 End absint.

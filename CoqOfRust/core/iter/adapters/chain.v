@@ -199,10 +199,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (A B : Ty.t),
-          M.IsAssociatedFunction (Self A B) "new" (new A B).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self A B) "new" (new A B).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_chain_Chain_A_B.
       
       (*
@@ -302,8 +303,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_chain : M.IsFunction "core::iter::adapters::chain::chain" chain.
-      Smpl Add apply Function_chain : is_function.
+      Global Instance Instance_IsFunction_chain :
+        M.IsFunction.Trait "core::iter::adapters::chain::chain" chain.
+      Admitted.
+      Global Typeclasses Opaque chain.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_A_where_core_iter_traits_iterator_Iterator_B_for_core_iter_adapters_chain_Chain_A_B.
         Definition Self (A B : Ty.t) : Ty.t :=
@@ -4662,9 +4665,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_and_then_or_clear :
-        M.IsFunction "core::iter::adapters::chain::and_then_or_clear" and_then_or_clear.
-      Smpl Add apply Function_and_then_or_clear : is_function.
+      Global Instance Instance_IsFunction_and_then_or_clear :
+        M.IsFunction.Trait "core::iter::adapters::chain::and_then_or_clear" and_then_or_clear.
+      Admitted.
+      Global Typeclasses Opaque and_then_or_clear.
     End chain.
   End adapters.
 End iter.

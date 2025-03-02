@@ -167,6 +167,7 @@ Module slice.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -300,6 +301,7 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -442,9 +444,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_find_existing_run :
-        M.IsFunction "core::slice::sort::shared::find_existing_run" find_existing_run.
-      Smpl Add apply Function_find_existing_run : is_function.
+      Global Instance Instance_IsFunction_find_existing_run :
+        M.IsFunction.Trait "core::slice::sort::shared::find_existing_run" find_existing_run.
+      Admitted.
+      Global Typeclasses Opaque find_existing_run.
     End shared.
   End sort.
 End slice.

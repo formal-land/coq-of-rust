@@ -563,11 +563,12 @@ Module instructions.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_get_memory_input_and_out_ranges :
-        M.IsFunction
+      Global Instance Instance_IsFunction_get_memory_input_and_out_ranges :
+        M.IsFunction.Trait
           "revm_interpreter::instructions::contract::call_helpers::get_memory_input_and_out_ranges"
           get_memory_input_and_out_ranges.
-      Smpl Add apply Function_get_memory_input_and_out_ranges : is_function.
+      Admitted.
+      Global Typeclasses Opaque get_memory_input_and_out_ranges.
       
       (*
       pub fn resize_memory(
@@ -1124,11 +1125,12 @@ Module instructions.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_resize_memory :
-        M.IsFunction
+      Global Instance Instance_IsFunction_resize_memory :
+        M.IsFunction.Trait
           "revm_interpreter::instructions::contract::call_helpers::resize_memory"
           resize_memory.
-      Smpl Add apply Function_resize_memory : is_function.
+      Admitted.
+      Global Typeclasses Opaque resize_memory.
       
       (*
       pub fn calc_call_gas(
@@ -1437,11 +1439,12 @@ Module instructions.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_calc_call_gas :
-        M.IsFunction
+      Global Instance Instance_IsFunction_calc_call_gas :
+        M.IsFunction.Trait
           "revm_interpreter::instructions::contract::call_helpers::calc_call_gas"
           calc_call_gas.
-      Smpl Add apply Function_calc_call_gas : is_function.
+      Admitted.
+      Global Typeclasses Opaque calc_call_gas.
     End call_helpers.
   End contract.
 End instructions.

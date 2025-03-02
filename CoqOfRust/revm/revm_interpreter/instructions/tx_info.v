@@ -347,9 +347,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_gasprice :
-      M.IsFunction "revm_interpreter::instructions::tx_info::gasprice" gasprice.
-    Smpl Add apply Function_gasprice : is_function.
+    Global Instance Instance_IsFunction_gasprice :
+      M.IsFunction.Trait "revm_interpreter::instructions::tx_info::gasprice" gasprice.
+    Admitted.
+    Global Typeclasses Opaque gasprice.
     
     (*
     pub fn origin<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -705,8 +706,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_origin : M.IsFunction "revm_interpreter::instructions::tx_info::origin" origin.
-    Smpl Add apply Function_origin : is_function.
+    Global Instance Instance_IsFunction_origin :
+      M.IsFunction.Trait "revm_interpreter::instructions::tx_info::origin" origin.
+    Admitted.
+    Global Typeclasses Opaque origin.
     
     (*
     pub fn blob_hash<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1683,8 +1686,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_blob_hash :
-      M.IsFunction "revm_interpreter::instructions::tx_info::blob_hash" blob_hash.
-    Smpl Add apply Function_blob_hash : is_function.
+    Global Instance Instance_IsFunction_blob_hash :
+      M.IsFunction.Trait "revm_interpreter::instructions::tx_info::blob_hash" blob_hash.
+    Admitted.
+    Global Typeclasses Opaque blob_hash.
   End tx_info.
 End instructions.

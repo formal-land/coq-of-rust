@@ -387,6 +387,7 @@ Module script_signature.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -622,9 +623,10 @@ Module script_signature.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module :
-    M.IsFunction "move_bytecode_verifier::script_signature::verify_module" verify_module.
-  Smpl Add apply Function_verify_module : is_function.
+  Global Instance Instance_IsFunction_verify_module :
+    M.IsFunction.Trait "move_bytecode_verifier::script_signature::verify_module" verify_module.
+  Admitted.
+  Global Typeclasses Opaque verify_module.
   
   (*
   pub fn verify_module_function_signature_by_name(
@@ -1214,11 +1216,12 @@ Module script_signature.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_function_signature_by_name :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_module_function_signature_by_name :
+    M.IsFunction.Trait
       "move_bytecode_verifier::script_signature::verify_module_function_signature_by_name"
       verify_module_function_signature_by_name.
-  Smpl Add apply Function_verify_module_function_signature_by_name : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_module_function_signature_by_name.
   
   (*
   fn verify_module_function_signature(
@@ -1445,11 +1448,12 @@ Module script_signature.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_module_function_signature :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_module_function_signature :
+    M.IsFunction.Trait
       "move_bytecode_verifier::script_signature::verify_module_function_signature"
       verify_module_function_signature.
-  Smpl Add apply Function_verify_module_function_signature : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_module_function_signature.
   
   (*
   fn verify_main_signature_impl(
@@ -1657,11 +1661,12 @@ Module script_signature.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_main_signature_impl :
-    M.IsFunction
+  Global Instance Instance_IsFunction_verify_main_signature_impl :
+    M.IsFunction.Trait
       "move_bytecode_verifier::script_signature::verify_main_signature_impl"
       verify_main_signature_impl.
-  Smpl Add apply Function_verify_main_signature_impl : is_function.
+  Admitted.
+  Global Typeclasses Opaque verify_main_signature_impl.
   
   (*
   pub fn no_additional_script_signature_checks(
@@ -1689,11 +1694,12 @@ Module script_signature.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_no_additional_script_signature_checks :
-    M.IsFunction
+  Global Instance Instance_IsFunction_no_additional_script_signature_checks :
+    M.IsFunction.Trait
       "move_bytecode_verifier::script_signature::no_additional_script_signature_checks"
       no_additional_script_signature_checks.
-  Smpl Add apply Function_no_additional_script_signature_checks : is_function.
+  Admitted.
+  Global Typeclasses Opaque no_additional_script_signature_checks.
   
   (*
   pub fn legacy_script_signature_checks(
@@ -2635,9 +2641,10 @@ Module script_signature.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_legacy_script_signature_checks :
-    M.IsFunction
+  Global Instance Instance_IsFunction_legacy_script_signature_checks :
+    M.IsFunction.Trait
       "move_bytecode_verifier::script_signature::legacy_script_signature_checks"
       legacy_script_signature_checks.
-  Smpl Add apply Function_legacy_script_signature_checks : is_function.
+  Admitted.
+  Global Typeclasses Opaque legacy_script_signature_checks.
 End script_signature.

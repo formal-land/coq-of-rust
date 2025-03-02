@@ -169,8 +169,10 @@ Module async_iter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_iter : M.IsFunction "core::async_iter::from_iter::from_iter" from_iter.
-    Smpl Add apply Function_from_iter : is_function.
+    Global Instance Instance_IsFunction_from_iter :
+      M.IsFunction.Trait "core::async_iter::from_iter::from_iter" from_iter.
+    Admitted.
+    Global Typeclasses Opaque from_iter.
     
     Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_iter_traits_iterator_Iterator_I_for_core_async_iter_from_iter_FromIter_I.
       Definition Self (I : Ty.t) : Ty.t :=

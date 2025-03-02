@@ -608,8 +608,9 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add : M.IsAssociatedFunction Self "add" add.
-    Smpl Add apply AssociatedFunction_add : is_associated.
+    Global Instance AssociatedFunction_add : M.IsAssociatedFunction.Trait Self "add" add.
+    Admitted.
+    Global Typeclasses Opaque add.
   End Impl_move_bytecode_verifier_meter_bound_Bounds.
   
   Module Impl_move_bytecode_verifier_meter_bound_BoundMeter.
@@ -747,8 +748,9 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn get_bounds_mut(&mut self, scope: Scope) -> &mut Bounds {
@@ -896,9 +898,10 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_bounds_mut :
-      M.IsAssociatedFunction Self "get_bounds_mut" get_bounds_mut.
-    Smpl Add apply AssociatedFunction_get_bounds_mut : is_associated.
+    Global Instance AssociatedFunction_get_bounds_mut :
+      M.IsAssociatedFunction.Trait Self "get_bounds_mut" get_bounds_mut.
+    Admitted.
+    Global Typeclasses Opaque get_bounds_mut.
     
     (*
         fn get_bounds(&self, scope: Scope) -> &Bounds {
@@ -1041,8 +1044,10 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_bounds : M.IsAssociatedFunction Self "get_bounds" get_bounds.
-    Smpl Add apply AssociatedFunction_get_bounds : is_associated.
+    Global Instance AssociatedFunction_get_bounds :
+      M.IsAssociatedFunction.Trait Self "get_bounds" get_bounds.
+    Admitted.
+    Global Typeclasses Opaque get_bounds.
     
     (*
         pub fn get_usage(&self, scope: Scope) -> u128 {
@@ -1082,8 +1087,10 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_usage : M.IsAssociatedFunction Self "get_usage" get_usage.
-    Smpl Add apply AssociatedFunction_get_usage : is_associated.
+    Global Instance AssociatedFunction_get_usage :
+      M.IsAssociatedFunction.Trait Self "get_usage" get_usage.
+    Admitted.
+    Global Typeclasses Opaque get_usage.
     
     (*
         pub fn get_limit(&self, scope: Scope) -> Option<u128> {
@@ -1123,7 +1130,9 @@ Module bound.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_limit : M.IsAssociatedFunction Self "get_limit" get_limit.
-    Smpl Add apply AssociatedFunction_get_limit : is_associated.
+    Global Instance AssociatedFunction_get_limit :
+      M.IsAssociatedFunction.Trait Self "get_limit" get_limit.
+    Admitted.
+    Global Typeclasses Opaque get_limit.
   End Impl_move_bytecode_verifier_meter_bound_BoundMeter.
 End bound.

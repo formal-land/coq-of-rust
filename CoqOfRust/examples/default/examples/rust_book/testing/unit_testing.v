@@ -16,8 +16,9 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_add : M.IsFunction "unit_testing::add" add.
-Smpl Add apply Function_add : is_function.
+Global Instance Instance_IsFunction_add : M.IsFunction.Trait "unit_testing::add" add.
+Admitted.
+Global Typeclasses Opaque add.
 
 (*
 fn bad_add(a: i32, b: i32) -> i32 {
@@ -34,8 +35,9 @@ Definition bad_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_bad_add : M.IsFunction "unit_testing::bad_add" bad_add.
-Smpl Add apply Function_bad_add : is_function.
+Global Instance Instance_IsFunction_bad_add : M.IsFunction.Trait "unit_testing::bad_add" bad_add.
+Admitted.
+Global Typeclasses Opaque bad_add.
 
 Module tests.
   (*
@@ -142,8 +144,10 @@ Module tests.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_test_add : M.IsFunction "unit_testing::tests::test_add'1" test_add.
-  Smpl Add apply Function_test_add : is_function.
+  Global Instance Instance_IsFunction_test_add :
+    M.IsFunction.Trait "unit_testing::tests::test_add'1" test_add.
+  Admitted.
+  Global Typeclasses Opaque test_add.
   
   (*
       fn test_bad_add() {
@@ -251,6 +255,8 @@ Module tests.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_test_bad_add : M.IsFunction "unit_testing::tests::test_bad_add'1" test_bad_add.
-  Smpl Add apply Function_test_bad_add : is_function.
+  Global Instance Instance_IsFunction_test_bad_add :
+    M.IsFunction.Trait "unit_testing::tests::test_bad_add'1" test_bad_add.
+  Admitted.
+  Global Typeclasses Opaque test_bad_add.
 End tests.

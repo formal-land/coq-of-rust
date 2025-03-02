@@ -20,13 +20,13 @@ Module Impl_trait_incrementer_Incrementer.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter inc_by : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_inc_by : M.IsAssociatedFunction Self "inc_by" inc_by.
-  Smpl Add apply AssociatedFunction_inc_by : is_associated.
+  Global Instance AssociatedFunction_inc_by : M.IsAssociatedFunction.Trait Self "inc_by" inc_by.
+  Admitted.
 End Impl_trait_incrementer_Incrementer.
 
 Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.

@@ -20,9 +20,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_repeat_with :
-        M.IsFunction "core::iter::sources::repeat_with::repeat_with" repeat_with.
-      Smpl Add apply Function_repeat_with : is_function.
+      Global Instance Instance_IsFunction_repeat_with :
+        M.IsFunction.Trait "core::iter::sources::repeat_with::repeat_with" repeat_with.
+      Admitted.
+      Global Typeclasses Opaque repeat_with.
       
       (* StructRecord
         {
@@ -264,6 +265,7 @@ Module iter.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ item : A :=
                             M.alloc (|

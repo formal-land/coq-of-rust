@@ -35,8 +35,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_once : M.IsFunction "core::iter::sources::once::once" once.
-      Smpl Add apply Function_once : is_function.
+      Global Instance Instance_IsFunction_once :
+        M.IsFunction.Trait "core::iter::sources::once::once" once.
+      Admitted.
+      Global Typeclasses Opaque once.
       
       (* StructRecord
         {

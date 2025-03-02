@@ -234,6 +234,7 @@ Module num.
                   M.copy (| self |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -424,8 +425,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_is_8digits : M.IsFunction "core::num::dec2flt::common::is_8digits" is_8digits.
-      Smpl Add apply Function_is_8digits : is_function.
+      Global Instance Instance_IsFunction_is_8digits :
+        M.IsFunction.Trait "core::num::dec2flt::common::is_8digits" is_8digits.
+      Admitted.
+      Global Typeclasses Opaque is_8digits.
       
       (* StructRecord
         {
@@ -734,8 +737,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_zero_pow2 : M.IsAssociatedFunction Self "zero_pow2" zero_pow2.
-        Smpl Add apply AssociatedFunction_zero_pow2 : is_associated.
+        Global Instance AssociatedFunction_zero_pow2 :
+          M.IsAssociatedFunction.Trait Self "zero_pow2" zero_pow2.
+        Admitted.
+        Global Typeclasses Opaque zero_pow2.
       End Impl_core_num_dec2flt_common_BiasedFp.
     End common.
   End dec2flt.

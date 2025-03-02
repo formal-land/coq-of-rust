@@ -81,8 +81,9 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_format : M.IsFunction "alloc::fmt::format" format.
-  Smpl Add apply Function_format : is_function.
+  Global Instance Instance_IsFunction_format : M.IsFunction.Trait "alloc::fmt::format" format.
+  Admitted.
+  Global Typeclasses Opaque format.
   
   Module format.
     (*
@@ -174,7 +175,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_format_inner : M.IsFunction "alloc::fmt::format::format_inner" format_inner.
-    Smpl Add apply Function_format_inner : is_function.
+    Global Instance Instance_IsFunction_format_inner :
+      M.IsFunction.Trait "alloc::fmt::format::format_inner" format_inner.
+    Admitted.
+    Global Typeclasses Opaque format_inner.
   End format.
 End fmt.

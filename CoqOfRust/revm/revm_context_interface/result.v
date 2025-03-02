@@ -1870,10 +1870,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_success :
+    Global Instance AssociatedFunction_is_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "is_success" (is_success HaltReasonT).
-    Smpl Add apply AssociatedFunction_is_success : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_success" (is_success HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque is_success.
     
     (*
         pub fn created_address(&self) -> Option<Address> {
@@ -1958,10 +1959,14 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_created_address :
+    Global Instance AssociatedFunction_created_address :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "created_address" (created_address HaltReasonT).
-    Smpl Add apply AssociatedFunction_created_address : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self HaltReasonT)
+        "created_address"
+        (created_address HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque created_address.
     
     (*
         pub fn is_halt(&self) -> bool {
@@ -1999,10 +2004,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_halt :
+    Global Instance AssociatedFunction_is_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
-    Smpl Add apply AssociatedFunction_is_halt : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque is_halt.
     
     (*
         pub fn output(&self) -> Option<&Bytes> {
@@ -2086,10 +2092,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_output :
+    Global Instance AssociatedFunction_output :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "output" (output HaltReasonT).
-    Smpl Add apply AssociatedFunction_output : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "output" (output HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque output.
     
     (*
         pub fn into_output(self) -> Option<Bytes> {
@@ -2160,10 +2167,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_output :
+    Global Instance AssociatedFunction_into_output :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "into_output" (into_output HaltReasonT).
-    Smpl Add apply AssociatedFunction_into_output : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "into_output" (into_output HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque into_output.
     
     (*
         pub fn logs(&self) -> &[Log] {
@@ -2258,10 +2266,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_logs :
+    Global Instance AssociatedFunction_logs :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "logs" (logs HaltReasonT).
-    Smpl Add apply AssociatedFunction_logs : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "logs" (logs HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque logs.
     
     (*
         pub fn into_logs(self) -> Vec<Log> {
@@ -2334,10 +2343,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_logs :
+    Global Instance AssociatedFunction_into_logs :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "into_logs" (into_logs HaltReasonT).
-    Smpl Add apply AssociatedFunction_into_logs : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "into_logs" (into_logs HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque into_logs.
     
     (*
         pub fn gas_used(&self) -> u64 {
@@ -2412,10 +2422,11 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_gas_used :
+    Global Instance AssociatedFunction_gas_used :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "gas_used" (gas_used HaltReasonT).
-    Smpl Add apply AssociatedFunction_gas_used : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "gas_used" (gas_used HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque gas_used.
   End Impl_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
   (*
@@ -3135,8 +3146,10 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_data : M.IsAssociatedFunction Self "into_data" into_data.
-    Smpl Add apply AssociatedFunction_into_data : is_associated.
+    Global Instance AssociatedFunction_into_data :
+      M.IsAssociatedFunction.Trait Self "into_data" into_data.
+    Admitted.
+    Global Typeclasses Opaque into_data.
     
     (*
         pub fn data(&self) -> &Bytes {
@@ -3198,8 +3211,9 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
-    Smpl Add apply AssociatedFunction_data : is_associated.
+    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+    Admitted.
+    Global Typeclasses Opaque data.
     
     (*
         pub fn address(&self) -> Option<&Address> {
@@ -3273,8 +3287,10 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
-    Smpl Add apply AssociatedFunction_address : is_associated.
+    Global Instance AssociatedFunction_address :
+      M.IsAssociatedFunction.Trait Self "address" address.
+    Admitted.
+    Global Typeclasses Opaque address.
   End Impl_revm_context_interface_result_Output.
   
   (*
@@ -4321,13 +4337,14 @@ Module result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_map_db_err :
+    Global Instance AssociatedFunction_map_db_err :
       forall (DBError TransactionValidationErrorT : Ty.t),
-      M.IsAssociatedFunction
+      M.IsAssociatedFunction.Trait
         (Self DBError TransactionValidationErrorT)
         "map_db_err"
         (map_db_err DBError TransactionValidationErrorT).
-    Smpl Add apply AssociatedFunction_map_db_err : is_associated.
+    Admitted.
+    Global Typeclasses Opaque map_db_err.
   End Impl_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
   
   Module Impl_core_error_Error_where_core_error_Error_DBError_where_core_error_Error_TransactionValidationErrorT_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.

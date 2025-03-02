@@ -2211,8 +2211,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn ip(&self) -> IpAddr {
@@ -2301,8 +2302,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
-      Smpl Add apply AssociatedFunction_ip : is_associated.
+      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.Trait Self "ip" ip.
+      Admitted.
+      Global Typeclasses Opaque ip.
       
       (*
           pub fn set_ip(&mut self, new_ip: IpAddr) {
@@ -2432,8 +2434,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
-      Smpl Add apply AssociatedFunction_set_ip : is_associated.
+      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.Trait Self "set_ip" set_ip.
+      Admitted.
+      Global Typeclasses Opaque set_ip.
       
       (*
           pub const fn port(&self) -> u16 {
@@ -2500,8 +2503,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
-      Smpl Add apply AssociatedFunction_port : is_associated.
+      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.Trait Self "port" port.
+      Admitted.
+      Global Typeclasses Opaque port.
       
       (*
           pub fn set_port(&mut self, new_port: u16) {
@@ -2575,8 +2579,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
-      Smpl Add apply AssociatedFunction_set_port : is_associated.
+      Global Instance AssociatedFunction_set_port :
+        M.IsAssociatedFunction.Trait Self "set_port" set_port.
+      Admitted.
+      Global Typeclasses Opaque set_port.
       
       (*
           pub const fn is_ipv4(&self) -> bool {
@@ -2608,8 +2614,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ipv4 : M.IsAssociatedFunction Self "is_ipv4" is_ipv4.
-      Smpl Add apply AssociatedFunction_is_ipv4 : is_associated.
+      Global Instance AssociatedFunction_is_ipv4 :
+        M.IsAssociatedFunction.Trait Self "is_ipv4" is_ipv4.
+      Admitted.
+      Global Typeclasses Opaque is_ipv4.
       
       (*
           pub const fn is_ipv6(&self) -> bool {
@@ -2641,8 +2649,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_ipv6 : M.IsAssociatedFunction Self "is_ipv6" is_ipv6.
-      Smpl Add apply AssociatedFunction_is_ipv6 : is_associated.
+      Global Instance AssociatedFunction_is_ipv6 :
+        M.IsAssociatedFunction.Trait Self "is_ipv6" is_ipv6.
+      Admitted.
+      Global Typeclasses Opaque is_ipv6.
     End Impl_core_net_socket_addr_SocketAddr.
     
     Module Impl_core_net_socket_addr_SocketAddrV4.
@@ -2665,8 +2675,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn ip(&self) -> &Ipv4Addr {
@@ -2694,8 +2705,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
-      Smpl Add apply AssociatedFunction_ip : is_associated.
+      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.Trait Self "ip" ip.
+      Admitted.
+      Global Typeclasses Opaque ip.
       
       (*
           pub fn set_ip(&mut self, new_ip: Ipv4Addr) {
@@ -2725,8 +2737,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
-      Smpl Add apply AssociatedFunction_set_ip : is_associated.
+      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.Trait Self "set_ip" set_ip.
+      Admitted.
+      Global Typeclasses Opaque set_ip.
       
       (*
           pub const fn port(&self) -> u16 {
@@ -2748,8 +2761,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
-      Smpl Add apply AssociatedFunction_port : is_associated.
+      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.Trait Self "port" port.
+      Admitted.
+      Global Typeclasses Opaque port.
       
       (*
           pub fn set_port(&mut self, new_port: u16) {
@@ -2779,8 +2793,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
-      Smpl Add apply AssociatedFunction_set_port : is_associated.
+      Global Instance AssociatedFunction_set_port :
+        M.IsAssociatedFunction.Trait Self "set_port" set_port.
+      Admitted.
+      Global Typeclasses Opaque set_port.
     End Impl_core_net_socket_addr_SocketAddrV4.
     
     Module Impl_core_net_socket_addr_SocketAddrV6.
@@ -2810,8 +2826,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub const fn ip(&self) -> &Ipv6Addr {
@@ -2839,8 +2856,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_ip : M.IsAssociatedFunction Self "ip" ip.
-      Smpl Add apply AssociatedFunction_ip : is_associated.
+      Global Instance AssociatedFunction_ip : M.IsAssociatedFunction.Trait Self "ip" ip.
+      Admitted.
+      Global Typeclasses Opaque ip.
       
       (*
           pub fn set_ip(&mut self, new_ip: Ipv6Addr) {
@@ -2870,8 +2888,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_ip : M.IsAssociatedFunction Self "set_ip" set_ip.
-      Smpl Add apply AssociatedFunction_set_ip : is_associated.
+      Global Instance AssociatedFunction_set_ip : M.IsAssociatedFunction.Trait Self "set_ip" set_ip.
+      Admitted.
+      Global Typeclasses Opaque set_ip.
       
       (*
           pub const fn port(&self) -> u16 {
@@ -2893,8 +2912,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_port : M.IsAssociatedFunction Self "port" port.
-      Smpl Add apply AssociatedFunction_port : is_associated.
+      Global Instance AssociatedFunction_port : M.IsAssociatedFunction.Trait Self "port" port.
+      Admitted.
+      Global Typeclasses Opaque port.
       
       (*
           pub fn set_port(&mut self, new_port: u16) {
@@ -2924,8 +2944,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_port : M.IsAssociatedFunction Self "set_port" set_port.
-      Smpl Add apply AssociatedFunction_set_port : is_associated.
+      Global Instance AssociatedFunction_set_port :
+        M.IsAssociatedFunction.Trait Self "set_port" set_port.
+      Admitted.
+      Global Typeclasses Opaque set_port.
       
       (*
           pub const fn flowinfo(&self) -> u32 {
@@ -2947,8 +2969,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_flowinfo : M.IsAssociatedFunction Self "flowinfo" flowinfo.
-      Smpl Add apply AssociatedFunction_flowinfo : is_associated.
+      Global Instance AssociatedFunction_flowinfo :
+        M.IsAssociatedFunction.Trait Self "flowinfo" flowinfo.
+      Admitted.
+      Global Typeclasses Opaque flowinfo.
       
       (*
           pub fn set_flowinfo(&mut self, new_flowinfo: u32) {
@@ -2978,9 +3002,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_flowinfo :
-        M.IsAssociatedFunction Self "set_flowinfo" set_flowinfo.
-      Smpl Add apply AssociatedFunction_set_flowinfo : is_associated.
+      Global Instance AssociatedFunction_set_flowinfo :
+        M.IsAssociatedFunction.Trait Self "set_flowinfo" set_flowinfo.
+      Admitted.
+      Global Typeclasses Opaque set_flowinfo.
       
       (*
           pub const fn scope_id(&self) -> u32 {
@@ -3002,8 +3027,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_scope_id : M.IsAssociatedFunction Self "scope_id" scope_id.
-      Smpl Add apply AssociatedFunction_scope_id : is_associated.
+      Global Instance AssociatedFunction_scope_id :
+        M.IsAssociatedFunction.Trait Self "scope_id" scope_id.
+      Admitted.
+      Global Typeclasses Opaque scope_id.
       
       (*
           pub fn set_scope_id(&mut self, new_scope_id: u32) {
@@ -3033,9 +3060,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_scope_id :
-        M.IsAssociatedFunction Self "set_scope_id" set_scope_id.
-      Smpl Add apply AssociatedFunction_set_scope_id : is_associated.
+      Global Instance AssociatedFunction_set_scope_id :
+        M.IsAssociatedFunction.Trait Self "set_scope_id" set_scope_id.
+      Admitted.
+      Global Typeclasses Opaque set_scope_id.
     End Impl_core_net_socket_addr_SocketAddrV6.
     
     Module Impl_core_convert_From_core_net_socket_addr_SocketAddrV4_for_core_net_socket_addr_SocketAddr.

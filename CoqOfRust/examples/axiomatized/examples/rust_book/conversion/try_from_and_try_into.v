@@ -68,5 +68,5 @@ End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "try_from_and_try_into::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "try_from_and_try_into::main" main.
+Admitted.

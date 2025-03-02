@@ -25,5 +25,5 @@ End Impl_core_ops_drop_Drop_for_drop_Droppable.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "drop::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "drop::main" main.
+Admitted.

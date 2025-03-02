@@ -47,9 +47,12 @@ Module identifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_valid_identifier_char :
-    M.IsFunction "move_core_types::identifier::is_valid_identifier_char" is_valid_identifier_char.
-  Smpl Add apply Function_is_valid_identifier_char : is_function.
+  Global Instance Instance_IsFunction_is_valid_identifier_char :
+    M.IsFunction.Trait
+      "move_core_types::identifier::is_valid_identifier_char"
+      is_valid_identifier_char.
+  Admitted.
+  Global Typeclasses Opaque is_valid_identifier_char.
   
   (*
   const fn all_bytes_valid(b: &[u8], start_offset: usize) -> bool {
@@ -76,6 +79,7 @@ Module identifier.
               let~ i : Ty.path "usize" := M.copy (| start_offset |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -181,9 +185,10 @@ Module identifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_all_bytes_valid :
-    M.IsFunction "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
-  Smpl Add apply Function_all_bytes_valid : is_function.
+  Global Instance Instance_IsFunction_all_bytes_valid :
+    M.IsFunction.Trait "move_core_types::identifier::all_bytes_valid" all_bytes_valid.
+  Admitted.
+  Global Typeclasses Opaque all_bytes_valid.
   
   (*
   pub const fn is_valid(s: &str) -> bool {
@@ -340,8 +345,10 @@ Module identifier.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_is_valid : M.IsFunction "move_core_types::identifier::is_valid" is_valid.
-  Smpl Add apply Function_is_valid : is_function.
+  Global Instance Instance_IsFunction_is_valid :
+    M.IsFunction.Trait "move_core_types::identifier::is_valid" is_valid.
+  Admitted.
+  Global Typeclasses Opaque is_valid.
   
   (* StructTuple
     {
@@ -1100,8 +1107,9 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn is_valid(s: impl AsRef<str>) -> bool {
@@ -1140,8 +1148,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
-    Smpl Add apply AssociatedFunction_is_valid : is_associated.
+    Global Instance AssociatedFunction_is_valid :
+      M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+    Admitted.
+    Global Typeclasses Opaque is_valid.
     
     (*
         pub fn is_self(&self) -> bool {
@@ -1188,8 +1198,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_self : M.IsAssociatedFunction Self "is_self" is_self.
-    Smpl Add apply AssociatedFunction_is_self : is_associated.
+    Global Instance AssociatedFunction_is_self :
+      M.IsAssociatedFunction.Trait Self "is_self" is_self.
+    Admitted.
+    Global Typeclasses Opaque is_self.
     
     (*
         pub fn from_utf8(vec: Vec<u8>) -> Result<Self> {
@@ -1343,8 +1355,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_utf8 : M.IsAssociatedFunction Self "from_utf8" from_utf8.
-    Smpl Add apply AssociatedFunction_from_utf8 : is_associated.
+    Global Instance AssociatedFunction_from_utf8 :
+      M.IsAssociatedFunction.Trait Self "from_utf8" from_utf8.
+    Admitted.
+    Global Typeclasses Opaque from_utf8.
     
     (*
         pub fn as_ident_str(&self) -> &IdentStr {
@@ -1377,8 +1391,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ident_str : M.IsAssociatedFunction Self "as_ident_str" as_ident_str.
-    Smpl Add apply AssociatedFunction_as_ident_str : is_associated.
+    Global Instance AssociatedFunction_as_ident_str :
+      M.IsAssociatedFunction.Trait Self "as_ident_str" as_ident_str.
+    Admitted.
+    Global Typeclasses Opaque as_ident_str.
     
     (*
         pub fn into_string(self) -> String {
@@ -1417,8 +1433,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
-    Smpl Add apply AssociatedFunction_into_string : is_associated.
+    Global Instance AssociatedFunction_into_string :
+      M.IsAssociatedFunction.Trait Self "into_string" into_string.
+    Admitted.
+    Global Typeclasses Opaque into_string.
     
     (*
         pub fn into_bytes(self) -> Vec<u8> {
@@ -1452,8 +1470,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
-    Smpl Add apply AssociatedFunction_into_bytes : is_associated.
+    Global Instance AssociatedFunction_into_bytes :
+      M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+    Admitted.
+    Global Typeclasses Opaque into_bytes.
   End Impl_move_core_types_identifier_Identifier.
   
   Module Impl_core_str_traits_FromStr_for_move_core_types_identifier_Identifier.
@@ -2416,8 +2436,9 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn is_valid(s: impl AsRef<str>) -> bool {
@@ -2456,8 +2477,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
-    Smpl Add apply AssociatedFunction_is_valid : is_associated.
+    Global Instance AssociatedFunction_is_valid :
+      M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+    Admitted.
+    Global Typeclasses Opaque is_valid.
     
     (*
         pub fn len(&self) -> usize {
@@ -2486,8 +2509,9 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
-    Smpl Add apply AssociatedFunction_len : is_associated.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Admitted.
+    Global Typeclasses Opaque len.
     
     (*
         pub fn is_empty(&self) -> bool {
@@ -2516,8 +2540,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
-    Smpl Add apply AssociatedFunction_is_empty : is_associated.
+    Global Instance AssociatedFunction_is_empty :
+      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Admitted.
+    Global Typeclasses Opaque is_empty.
     
     (*
         pub fn as_str(&self) -> &str {
@@ -2545,8 +2571,9 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-    Smpl Add apply AssociatedFunction_as_str : is_associated.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Admitted.
+    Global Typeclasses Opaque as_str.
     
     (*
         pub fn as_bytes(&self) -> &[u8] {
@@ -2580,8 +2607,10 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
-    Smpl Add apply AssociatedFunction_as_bytes : is_associated.
+    Global Instance AssociatedFunction_as_bytes :
+      M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+    Admitted.
+    Global Typeclasses Opaque as_bytes.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -2629,9 +2658,13 @@ Module identifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
-    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
+    Global Instance AssociatedFunction_abstract_size_for_gas_metering :
+      M.IsAssociatedFunction.Trait
+        Self
+        "abstract_size_for_gas_metering"
+        abstract_size_for_gas_metering.
+    Admitted.
+    Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_identifier_IdentStr.
   
   Module Impl_core_borrow_Borrow_move_core_types_identifier_IdentStr_for_move_core_types_identifier_Identifier.

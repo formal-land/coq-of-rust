@@ -94,8 +94,9 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_foo : M.IsFunction "concurrent_tests::foo" foo.
-Smpl Add apply Function_foo : is_function.
+Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "concurrent_tests::foo" foo.
+Admitted.
+Global Typeclasses Opaque foo.
 
 Module tests.
   (*
@@ -233,6 +234,7 @@ Module tests.
                   ltac:(M.monadic
                     (let iter := M.copy (| γ |) in
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
@@ -355,8 +357,10 @@ Module tests.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_test_file : M.IsFunction "concurrent_tests::tests::test_file'1" test_file.
-  Smpl Add apply Function_test_file : is_function.
+  Global Instance Instance_IsFunction_test_file :
+    M.IsFunction.Trait "concurrent_tests::tests::test_file'1" test_file.
+  Admitted.
+  Global Typeclasses Opaque test_file.
   
   (*
       fn test_file_also() {
@@ -493,6 +497,7 @@ Module tests.
                   ltac:(M.monadic
                     (let iter := M.copy (| γ |) in
                     M.loop (|
+                      Ty.tuple [],
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
@@ -615,7 +620,8 @@ Module tests.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_test_file_also :
-    M.IsFunction "concurrent_tests::tests::test_file_also'1" test_file_also.
-  Smpl Add apply Function_test_file_also : is_function.
+  Global Instance Instance_IsFunction_test_file_also :
+    M.IsFunction.Trait "concurrent_tests::tests::test_file_also'1" test_file_also.
+  Admitted.
+  Global Typeclasses Opaque test_file_also.
 End tests.

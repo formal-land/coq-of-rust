@@ -380,8 +380,9 @@ Module block.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
     End Impl_revm_context_interface_block_blob_BlobExcessGasAndPrice.
     
     (*
@@ -409,9 +410,12 @@ Module block.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_calc_excess_blob_gas :
-      M.IsFunction "revm_context_interface::block::blob::calc_excess_blob_gas" calc_excess_blob_gas.
-    Smpl Add apply Function_calc_excess_blob_gas : is_function.
+    Global Instance Instance_IsFunction_calc_excess_blob_gas :
+      M.IsFunction.Trait
+        "revm_context_interface::block::blob::calc_excess_blob_gas"
+        calc_excess_blob_gas.
+    Admitted.
+    Global Typeclasses Opaque calc_excess_blob_gas.
     
     (*
     pub fn calc_blob_gasprice(excess_blob_gas: u64) -> u128 {
@@ -441,9 +445,12 @@ Module block.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_calc_blob_gasprice :
-      M.IsFunction "revm_context_interface::block::blob::calc_blob_gasprice" calc_blob_gasprice.
-    Smpl Add apply Function_calc_blob_gasprice : is_function.
+    Global Instance Instance_IsFunction_calc_blob_gasprice :
+      M.IsFunction.Trait
+        "revm_context_interface::block::blob::calc_blob_gasprice"
+        calc_blob_gasprice.
+    Admitted.
+    Global Typeclasses Opaque calc_blob_gasprice.
     
     (*
     pub fn fake_exponential(factor: u64, numerator: u64, denominator: u64) -> u128 {
@@ -597,6 +604,7 @@ Module block.
               M.alloc (| BinOp.Wrap.mul (| M.read (| factor |), M.read (| denominator |) |) |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -665,8 +673,9 @@ Module block.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fake_exponential :
-      M.IsFunction "revm_context_interface::block::blob::fake_exponential" fake_exponential.
-    Smpl Add apply Function_fake_exponential : is_function.
+    Global Instance Instance_IsFunction_fake_exponential :
+      M.IsFunction.Trait "revm_context_interface::block::blob::fake_exponential" fake_exponential.
+    Admitted.
+    Global Typeclasses Opaque fake_exponential.
   End blob.
 End block.

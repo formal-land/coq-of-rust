@@ -919,8 +919,9 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           fn read_atomically<T, F>(&mut self, inner: F) -> Option<T>
@@ -1016,9 +1017,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_atomically :
-        M.IsAssociatedFunction Self "read_atomically" read_atomically.
-      Smpl Add apply AssociatedFunction_read_atomically : is_associated.
+      Global Instance AssociatedFunction_read_atomically :
+        M.IsAssociatedFunction.Trait Self "read_atomically" read_atomically.
+      Admitted.
+      Global Typeclasses Opaque read_atomically.
       
       (*
           fn parse_with<T, F>(&mut self, inner: F, kind: AddrKind) -> Result<T, AddrParseError>
@@ -1126,8 +1128,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_with : M.IsAssociatedFunction Self "parse_with" parse_with.
-      Smpl Add apply AssociatedFunction_parse_with : is_associated.
+      Global Instance AssociatedFunction_parse_with :
+        M.IsAssociatedFunction.Trait Self "parse_with" parse_with.
+      Admitted.
+      Global Typeclasses Opaque parse_with.
       
       (*
           fn peek_char(&self) -> Option<char> {
@@ -1217,8 +1221,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_peek_char : M.IsAssociatedFunction Self "peek_char" peek_char.
-      Smpl Add apply AssociatedFunction_peek_char : is_associated.
+      Global Instance AssociatedFunction_peek_char :
+        M.IsAssociatedFunction.Trait Self "peek_char" peek_char.
+      Admitted.
+      Global Typeclasses Opaque peek_char.
       
       (*
           fn read_char(&mut self) -> Option<char> {
@@ -1359,8 +1365,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_char : M.IsAssociatedFunction Self "read_char" read_char.
-      Smpl Add apply AssociatedFunction_read_char : is_associated.
+      Global Instance AssociatedFunction_read_char :
+        M.IsAssociatedFunction.Trait Self "read_char" read_char.
+      Admitted.
+      Global Typeclasses Opaque read_char.
       
       (*
           fn read_given_char(&mut self, target: char) -> Option<()> {
@@ -1504,9 +1512,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_given_char :
-        M.IsAssociatedFunction Self "read_given_char" read_given_char.
-      Smpl Add apply AssociatedFunction_read_given_char : is_associated.
+      Global Instance AssociatedFunction_read_given_char :
+        M.IsAssociatedFunction.Trait Self "read_given_char" read_given_char.
+      Admitted.
+      Global Typeclasses Opaque read_given_char.
       
       (*
           fn read_separator<T, F>(&mut self, sep: char, index: usize, inner: F) -> Option<T>
@@ -1734,9 +1743,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_separator :
-        M.IsAssociatedFunction Self "read_separator" read_separator.
-      Smpl Add apply AssociatedFunction_read_separator : is_associated.
+      Global Instance AssociatedFunction_read_separator :
+        M.IsAssociatedFunction.Trait Self "read_separator" read_separator.
+      Admitted.
+      Global Typeclasses Opaque read_separator.
       
       (*
           fn read_number<T: ReadNumberHelper + TryFrom<u32>>(
@@ -1974,6 +1984,7 @@ Module net.
                                                   M.alloc (| Value.Integer IntegerKind.U32 0 |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
                                                         M.alloc (| Value.Tuple [] |),
@@ -2331,7 +2342,7 @@ Module net.
                                                           Ty.associated_in_trait
                                                             "core::convert::TryFrom"
                                                             []
-                                                            []
+                                                            [ Ty.path "u32" ]
                                                             T
                                                             "Error"
                                                         ],
@@ -2349,7 +2360,7 @@ Module net.
                                                             Ty.associated_in_trait
                                                               "core::convert::TryFrom"
                                                               []
-                                                              []
+                                                              [ Ty.path "u32" ]
                                                               T
                                                               "Error"
                                                           ],
@@ -2376,6 +2387,7 @@ Module net.
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
                                                         M.alloc (| Value.Tuple [] |),
@@ -3000,8 +3012,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_number : M.IsAssociatedFunction Self "read_number" read_number.
-      Smpl Add apply AssociatedFunction_read_number : is_associated.
+      Global Instance AssociatedFunction_read_number :
+        M.IsAssociatedFunction.Trait Self "read_number" read_number.
+      Admitted.
+      Global Typeclasses Opaque read_number.
       
       (*
           fn read_ipv4_addr(&mut self) -> Option<Ipv4Addr> {
@@ -3157,6 +3171,7 @@ Module net.
                                               ltac:(M.monadic
                                                 (let iter := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
@@ -3510,9 +3525,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_ipv4_addr :
-        M.IsAssociatedFunction Self "read_ipv4_addr" read_ipv4_addr.
-      Smpl Add apply AssociatedFunction_read_ipv4_addr : is_associated.
+      Global Instance AssociatedFunction_read_ipv4_addr :
+        M.IsAssociatedFunction.Trait Self "read_ipv4_addr" read_ipv4_addr.
+      Admitted.
+      Global Typeclasses Opaque read_ipv4_addr.
       
       (*
           fn read_ipv6_addr(&mut self) -> Option<Ipv6Addr> {
@@ -4249,9 +4265,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_ipv6_addr :
-        M.IsAssociatedFunction Self "read_ipv6_addr" read_ipv6_addr.
-      Smpl Add apply AssociatedFunction_read_ipv6_addr : is_associated.
+      Global Instance AssociatedFunction_read_ipv6_addr :
+        M.IsAssociatedFunction.Trait Self "read_ipv6_addr" read_ipv6_addr.
+      Admitted.
+      Global Typeclasses Opaque read_ipv6_addr.
       
       (*
           fn read_ip_addr(&mut self) -> Option<IpAddr> {
@@ -4379,9 +4396,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_ip_addr :
-        M.IsAssociatedFunction Self "read_ip_addr" read_ip_addr.
-      Smpl Add apply AssociatedFunction_read_ip_addr : is_associated.
+      Global Instance AssociatedFunction_read_ip_addr :
+        M.IsAssociatedFunction.Trait Self "read_ip_addr" read_ip_addr.
+      Admitted.
+      Global Typeclasses Opaque read_ip_addr.
       
       (*
           fn read_port(&mut self) -> Option<u16> {
@@ -4564,8 +4582,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_port : M.IsAssociatedFunction Self "read_port" read_port.
-      Smpl Add apply AssociatedFunction_read_port : is_associated.
+      Global Instance AssociatedFunction_read_port :
+        M.IsAssociatedFunction.Trait Self "read_port" read_port.
+      Admitted.
+      Global Typeclasses Opaque read_port.
       
       (*
           fn read_scope_id(&mut self) -> Option<u32> {
@@ -4748,9 +4768,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_scope_id :
-        M.IsAssociatedFunction Self "read_scope_id" read_scope_id.
-      Smpl Add apply AssociatedFunction_read_scope_id : is_associated.
+      Global Instance AssociatedFunction_read_scope_id :
+        M.IsAssociatedFunction.Trait Self "read_scope_id" read_scope_id.
+      Admitted.
+      Global Typeclasses Opaque read_scope_id.
       
       (*
           fn read_socket_addr_v4(&mut self) -> Option<SocketAddrV4> {
@@ -5055,9 +5076,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_socket_addr_v4 :
-        M.IsAssociatedFunction Self "read_socket_addr_v4" read_socket_addr_v4.
-      Smpl Add apply AssociatedFunction_read_socket_addr_v4 : is_associated.
+      Global Instance AssociatedFunction_read_socket_addr_v4 :
+        M.IsAssociatedFunction.Trait Self "read_socket_addr_v4" read_socket_addr_v4.
+      Admitted.
+      Global Typeclasses Opaque read_socket_addr_v4.
       
       (*
           fn read_socket_addr_v6(&mut self) -> Option<SocketAddrV6> {
@@ -5627,9 +5649,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_socket_addr_v6 :
-        M.IsAssociatedFunction Self "read_socket_addr_v6" read_socket_addr_v6.
-      Smpl Add apply AssociatedFunction_read_socket_addr_v6 : is_associated.
+      Global Instance AssociatedFunction_read_socket_addr_v6 :
+        M.IsAssociatedFunction.Trait Self "read_socket_addr_v6" read_socket_addr_v6.
+      Admitted.
+      Global Typeclasses Opaque read_socket_addr_v6.
       
       (*
           fn read_socket_addr(&mut self) -> Option<SocketAddr> {
@@ -5763,9 +5786,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_read_socket_addr :
-        M.IsAssociatedFunction Self "read_socket_addr" read_socket_addr.
-      Smpl Add apply AssociatedFunction_read_socket_addr : is_associated.
+      Global Instance AssociatedFunction_read_socket_addr :
+        M.IsAssociatedFunction.Trait Self "read_socket_addr" read_socket_addr.
+      Admitted.
+      Global Typeclasses Opaque read_socket_addr.
     End Impl_core_net_parser_Parser.
     
     Module Impl_core_net_ip_addr_IpAddr.
@@ -5860,8 +5884,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
-      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
+      Global Instance AssociatedFunction_parse_ascii :
+        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+      Admitted.
+      Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_ip_addr_IpAddr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_ip_addr_IpAddr.
@@ -6062,8 +6088,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
-      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
+      Global Instance AssociatedFunction_parse_ascii :
+        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+      Admitted.
+      Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_ip_addr_Ipv4Addr.
@@ -6216,8 +6244,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
-      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
+      Global Instance AssociatedFunction_parse_ascii :
+        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+      Admitted.
+      Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_ip_addr_Ipv6Addr.
@@ -6370,8 +6400,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
-      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
+      Global Instance AssociatedFunction_parse_ascii :
+        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+      Admitted.
+      Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_socket_addr_SocketAddrV4.
     
     Module Impl_core_str_traits_FromStr_for_core_net_socket_addr_SocketAddrV4.
@@ -6524,8 +6556,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
-      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
+      Global Instance AssociatedFunction_parse_ascii :
+        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+      Admitted.
+      Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_socket_addr_SocketAddrV6.
     
     Module Impl_core_str_traits_FromStr_for_core_net_socket_addr_SocketAddrV6.
@@ -6678,8 +6712,10 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_parse_ascii : M.IsAssociatedFunction Self "parse_ascii" parse_ascii.
-      Smpl Add apply AssociatedFunction_parse_ascii : is_associated.
+      Global Instance AssociatedFunction_parse_ascii :
+        M.IsAssociatedFunction.Trait Self "parse_ascii" parse_ascii.
+      Admitted.
+      Global Typeclasses Opaque parse_ascii.
     End Impl_core_net_socket_addr_SocketAddr.
     
     Module Impl_core_str_traits_FromStr_for_core_net_socket_addr_SocketAddr.

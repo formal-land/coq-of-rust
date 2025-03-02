@@ -27,10 +27,10 @@ End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 
 Parameter fibonacci : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_fibonacci : M.IsFunction "iterators::fibonacci" fibonacci.
-Smpl Add apply Function_fibonacci : is_function.
+Global Instance Instance_IsFunction_fibonacci : M.IsFunction.Trait "iterators::fibonacci" fibonacci.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "iterators::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "iterators::main" main.
+Admitted.

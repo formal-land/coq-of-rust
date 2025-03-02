@@ -3,5 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "strings_byte_strings_as_non_utf8::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "strings_byte_strings_as_non_utf8::main" main.
+Admitted.

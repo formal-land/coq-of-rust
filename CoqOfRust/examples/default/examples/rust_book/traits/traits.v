@@ -178,8 +178,10 @@ Module Impl_traits_Sheep.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_is_naked : M.IsAssociatedFunction Self "is_naked" is_naked.
-  Smpl Add apply AssociatedFunction_is_naked : is_associated.
+  Global Instance AssociatedFunction_is_naked :
+    M.IsAssociatedFunction.Trait Self "is_naked" is_naked.
+  Admitted.
+  Global Typeclasses Opaque is_naked.
   (*
       fn shear(&mut self) {
           if self.is_naked() {
@@ -413,8 +415,9 @@ Module Impl_traits_Sheep.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_shear : M.IsAssociatedFunction Self "shear" shear.
-  Smpl Add apply AssociatedFunction_shear : is_associated.
+  Global Instance AssociatedFunction_shear : M.IsAssociatedFunction.Trait Self "shear" shear.
+  Admitted.
+  Global Typeclasses Opaque shear.
 End Impl_traits_Sheep.
 
 Module Impl_traits_Animal_for_traits_Sheep.
@@ -727,5 +730,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "traits::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "traits::main" main.
+Admitted.
+Global Typeclasses Opaque main.

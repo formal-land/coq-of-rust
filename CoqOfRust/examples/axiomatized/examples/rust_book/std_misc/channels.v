@@ -8,5 +8,5 @@ Global Hint Rewrite Constant_value_NTHREADS : constant_rewrites.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "channels::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "channels::main" main.
+Admitted.

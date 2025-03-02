@@ -41,8 +41,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn new_uninit() -> Box<mem::MaybeUninit<T>> {
@@ -73,10 +76,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit :
+    Global Instance AssociatedFunction_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_uninit" (new_uninit T).
-    Smpl Add apply AssociatedFunction_new_uninit : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_uninit" (new_uninit T).
+    Admitted.
+    Global Typeclasses Opaque new_uninit.
     
     (*
         pub fn new_zeroed() -> Box<mem::MaybeUninit<T>> {
@@ -107,10 +111,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed :
+    Global Instance AssociatedFunction_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_zeroed" (new_zeroed T).
-    Smpl Add apply AssociatedFunction_new_zeroed : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_zeroed" (new_zeroed T).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed.
     
     (*
         pub fn pin(x: T) -> Pin<Box<T>> {
@@ -159,8 +164,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
-    Smpl Add apply AssociatedFunction_pin : is_associated.
+    Global Instance AssociatedFunction_pin :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "pin" (pin T).
+    Admitted.
+    Global Typeclasses Opaque pin.
     
     (*
         pub fn try_new(x: T) -> Result<Self, AllocError> {
@@ -192,10 +200,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new :
+    Global Instance AssociatedFunction_try_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new" (try_new T).
-    Smpl Add apply AssociatedFunction_try_new : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new" (try_new T).
+    Admitted.
+    Global Typeclasses Opaque try_new.
     
     (*
         pub fn try_new_uninit() -> Result<Box<mem::MaybeUninit<T>>, AllocError> {
@@ -237,10 +246,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_uninit :
+    Global Instance AssociatedFunction_try_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new_uninit" (try_new_uninit T).
-    Smpl Add apply AssociatedFunction_try_new_uninit : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new_uninit" (try_new_uninit T).
+    Admitted.
+    Global Typeclasses Opaque try_new_uninit.
     
     (*
         pub fn try_new_zeroed() -> Result<Box<mem::MaybeUninit<T>>, AllocError> {
@@ -282,10 +292,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_zeroed :
+    Global Instance AssociatedFunction_try_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new_zeroed" (try_new_zeroed T).
-    Smpl Add apply AssociatedFunction_try_new_zeroed : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new_zeroed" (try_new_zeroed T).
+    Admitted.
+    Global Typeclasses Opaque try_new_zeroed.
     (*
         pub unsafe fn from_raw(raw: *mut T) -> Self {
             unsafe { Self::from_raw_in(raw, Global) }
@@ -310,10 +321,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_raw :
+    Global Instance AssociatedFunction_from_raw :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
-    Smpl Add apply AssociatedFunction_from_raw : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_raw" (from_raw T).
+    Admitted.
+    Global Typeclasses Opaque from_raw.
     
     (*
         pub unsafe fn from_non_null(ptr: NonNull<T>) -> Self {
@@ -350,10 +362,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_non_null :
+    Global Instance AssociatedFunction_from_non_null :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_non_null" (from_non_null T).
-    Smpl Add apply AssociatedFunction_from_non_null : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_non_null" (from_non_null T).
+    Admitted.
+    Global Typeclasses Opaque from_non_null.
   End Impl_alloc_boxed_Box_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_T_A.
@@ -443,10 +456,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_in :
+    Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
-    Smpl Add apply AssociatedFunction_new_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_in.
     
     (*
         pub fn try_new_in(x: T, alloc: A) -> Result<Self, AllocError>
@@ -668,10 +682,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_in :
+    Global Instance AssociatedFunction_try_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_in" (try_new_in T A).
-    Smpl Add apply AssociatedFunction_try_new_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_new_in" (try_new_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_in.
     
     (*
         pub fn new_uninit_in(alloc: A) -> Box<mem::MaybeUninit<T>, A>
@@ -760,10 +775,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit_in :
+    Global Instance AssociatedFunction_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_uninit_in" (new_uninit_in T A).
-    Smpl Add apply AssociatedFunction_new_uninit_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_in" (new_uninit_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_uninit_in.
     
     (*
         pub fn try_new_uninit_in(alloc: A) -> Result<Box<mem::MaybeUninit<T>, A>, AllocError>
@@ -1089,10 +1105,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_uninit_in :
+    Global Instance AssociatedFunction_try_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
-    Smpl Add apply AssociatedFunction_try_new_uninit_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_uninit_in.
     
     (*
         pub fn new_zeroed_in(alloc: A) -> Box<mem::MaybeUninit<T>, A>
@@ -1181,10 +1198,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed_in :
+    Global Instance AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_zeroed_in" (new_zeroed_in T A).
-    Smpl Add apply AssociatedFunction_new_zeroed_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed_in.
     
     (*
         pub fn try_new_zeroed_in(alloc: A) -> Result<Box<mem::MaybeUninit<T>, A>, AllocError>
@@ -1510,10 +1528,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_zeroed_in :
+    Global Instance AssociatedFunction_try_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
-    Smpl Add apply AssociatedFunction_try_new_zeroed_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_zeroed_in.
     
     (*
         pub fn pin_in(x: T, alloc: A) -> Pin<Self>
@@ -1557,10 +1576,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pin_in :
+    Global Instance AssociatedFunction_pin_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "pin_in" (pin_in T A).
-    Smpl Add apply AssociatedFunction_pin_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "pin_in" (pin_in T A).
+    Admitted.
+    Global Typeclasses Opaque pin_in.
     
     (*
         pub fn into_boxed_slice(boxed: Self) -> Box<[T], A> {
@@ -1637,10 +1657,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_boxed_slice :
+    Global Instance AssociatedFunction_into_boxed_slice :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_boxed_slice" (into_boxed_slice T A).
-    Smpl Add apply AssociatedFunction_into_boxed_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_boxed_slice" (into_boxed_slice T A).
+    Admitted.
+    Global Typeclasses Opaque into_boxed_slice.
     
     (*
         pub fn into_inner(boxed: Self) -> T {
@@ -1657,10 +1678,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_inner" (into_inner T A).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_inner" (into_inner T A).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     (*
         pub const unsafe fn from_raw_in(raw: *mut T, alloc: A) -> Self {
             Box(unsafe { Unique::new_unchecked(raw) }, alloc)
@@ -1691,10 +1713,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_raw_in :
+    Global Instance AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
-    Smpl Add apply AssociatedFunction_from_raw_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_raw_in" (from_raw_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_raw_in.
     
     (*
         pub const unsafe fn from_non_null_in(raw: NonNull<T>, alloc: A) -> Self {
@@ -1739,10 +1762,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_non_null_in :
+    Global Instance AssociatedFunction_from_non_null_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_non_null_in" (from_non_null_in T A).
-    Smpl Add apply AssociatedFunction_from_non_null_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_non_null_in" (from_non_null_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_non_null_in.
     
     (*
         pub fn into_raw(b: Self) -> *mut T {
@@ -1786,10 +1810,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_raw :
+    Global Instance AssociatedFunction_into_raw :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
-    Smpl Add apply AssociatedFunction_into_raw : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_raw" (into_raw T A).
+    Admitted.
+    Global Typeclasses Opaque into_raw.
     
     (*
         pub fn into_non_null(b: Self) -> NonNull<T> {
@@ -1832,10 +1857,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_non_null :
+    Global Instance AssociatedFunction_into_non_null :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_non_null" (into_non_null T A).
-    Smpl Add apply AssociatedFunction_into_non_null : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_non_null" (into_non_null T A).
+    Admitted.
+    Global Typeclasses Opaque into_non_null.
     
     (*
         pub fn into_raw_with_allocator(b: Self) -> ( *mut T, A) {
@@ -1963,10 +1989,14 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_raw_with_allocator :
+    Global Instance AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
-    Smpl Add apply AssociatedFunction_into_raw_with_allocator : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "into_raw_with_allocator"
+        (into_raw_with_allocator T A).
+    Admitted.
+    Global Typeclasses Opaque into_raw_with_allocator.
     
     (*
         pub fn into_non_null_with_allocator(b: Self) -> (NonNull<T>, A) {
@@ -2029,13 +2059,14 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_non_null_with_allocator :
+    Global Instance AssociatedFunction_into_non_null_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction
+      M.IsAssociatedFunction.Trait
         (Self T A)
         "into_non_null_with_allocator"
         (into_non_null_with_allocator T A).
-    Smpl Add apply AssociatedFunction_into_non_null_with_allocator : is_associated.
+    Admitted.
+    Global Typeclasses Opaque into_non_null_with_allocator.
     
     (*
         pub fn into_unique(b: Self) -> (Unique<T>, A) {
@@ -2095,10 +2126,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_unique :
+    Global Instance AssociatedFunction_into_unique :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_unique" (into_unique T A).
-    Smpl Add apply AssociatedFunction_into_unique : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_unique" (into_unique T A).
+    Admitted.
+    Global Typeclasses Opaque into_unique.
     
     (*
         pub fn as_mut_ptr(b: &mut Self) -> *mut T {
@@ -2120,10 +2152,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_mut_ptr :
+    Global Instance AssociatedFunction_as_mut_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "as_mut_ptr" (as_mut_ptr T A).
-    Smpl Add apply AssociatedFunction_as_mut_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "as_mut_ptr" (as_mut_ptr T A).
+    Admitted.
+    Global Typeclasses Opaque as_mut_ptr.
     
     (*
         pub fn as_ptr(b: &Self) -> *const T {
@@ -2145,10 +2178,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ptr :
+    Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
-    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+    Admitted.
+    Global Typeclasses Opaque as_ptr.
     
     (*
         pub const fn allocator(b: &Self) -> &A {
@@ -2177,10 +2211,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocator :
+    Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
-    Smpl Add apply AssociatedFunction_allocator : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+    Admitted.
+    Global Typeclasses Opaque allocator.
     
     (*
         pub fn leak<'a>(b: Self) -> &'a mut T
@@ -2229,10 +2264,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_leak :
+    Global Instance AssociatedFunction_leak :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "leak" (leak T A).
-    Smpl Add apply AssociatedFunction_leak : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "leak" (leak T A).
+    Admitted.
+    Global Typeclasses Opaque leak.
     
     (*
         pub const fn into_pin(boxed: Self) -> Pin<Self>
@@ -2270,10 +2306,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_pin :
+    Global Instance AssociatedFunction_into_pin :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_pin" (into_pin T A).
-    Smpl Add apply AssociatedFunction_into_pin : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_pin" (into_pin T A).
+    Admitted.
+    Global Typeclasses Opaque into_pin.
   End Impl_alloc_boxed_Box_T_A.
   
   Module Impl_alloc_boxed_Box_slice_T_alloc_alloc_Global.
@@ -2339,10 +2376,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit_slice :
+    Global Instance AssociatedFunction_new_uninit_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_uninit_slice" (new_uninit_slice T).
-    Smpl Add apply AssociatedFunction_new_uninit_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_uninit_slice" (new_uninit_slice T).
+    Admitted.
+    Global Typeclasses Opaque new_uninit_slice.
     
     (*
         pub fn new_zeroed_slice(len: usize) -> Box<[mem::MaybeUninit<T>]> {
@@ -2400,10 +2438,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed_slice :
+    Global Instance AssociatedFunction_new_zeroed_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_zeroed_slice" (new_zeroed_slice T).
-    Smpl Add apply AssociatedFunction_new_zeroed_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_zeroed_slice" (new_zeroed_slice T).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed_slice.
     
     (*
         pub fn try_new_uninit_slice(len: usize) -> Result<Box<[mem::MaybeUninit<T>]>, AllocError> {
@@ -2781,10 +2820,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_uninit_slice :
+    Global Instance AssociatedFunction_try_new_uninit_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new_uninit_slice" (try_new_uninit_slice T).
-    Smpl Add apply AssociatedFunction_try_new_uninit_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new_uninit_slice" (try_new_uninit_slice T).
+    Admitted.
+    Global Typeclasses Opaque try_new_uninit_slice.
     
     (*
         pub fn try_new_zeroed_slice(len: usize) -> Result<Box<[mem::MaybeUninit<T>]>, AllocError> {
@@ -3162,10 +3202,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_zeroed_slice :
+    Global Instance AssociatedFunction_try_new_zeroed_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new_zeroed_slice" (try_new_zeroed_slice T).
-    Smpl Add apply AssociatedFunction_try_new_zeroed_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new_zeroed_slice" (try_new_zeroed_slice T).
+    Admitted.
+    Global Typeclasses Opaque try_new_zeroed_slice.
   End Impl_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_slice_T_A.
@@ -3223,10 +3264,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit_slice_in :
+    Global Instance AssociatedFunction_new_uninit_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
-    Smpl Add apply AssociatedFunction_new_uninit_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_uninit_slice_in.
     
     (*
         pub fn new_zeroed_slice_in(len: usize, alloc: A) -> Box<[mem::MaybeUninit<T>], A> {
@@ -3279,10 +3321,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed_slice_in :
+    Global Instance AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
-    Smpl Add apply AssociatedFunction_new_zeroed_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed_slice_in.
     
     (*
         pub fn try_new_uninit_slice_in(
@@ -3650,10 +3693,14 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_uninit_slice_in :
+    Global Instance AssociatedFunction_try_new_uninit_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_uninit_slice_in" (try_new_uninit_slice_in T A).
-    Smpl Add apply AssociatedFunction_try_new_uninit_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "try_new_uninit_slice_in"
+        (try_new_uninit_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_uninit_slice_in.
     
     (*
         pub fn try_new_zeroed_slice_in(
@@ -4021,10 +4068,14 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_zeroed_slice_in :
+    Global Instance AssociatedFunction_try_new_zeroed_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_zeroed_slice_in" (try_new_zeroed_slice_in T A).
-    Smpl Add apply AssociatedFunction_try_new_zeroed_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "try_new_zeroed_slice_in"
+        (try_new_zeroed_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_zeroed_slice_in.
   End Impl_alloc_boxed_Box_slice_T_A.
   
   Module Impl_alloc_boxed_Box_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -4098,10 +4149,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_assume_init :
+    Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
-    Smpl Add apply AssociatedFunction_assume_init : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+    Admitted.
+    Global Typeclasses Opaque assume_init.
     
     (*
         pub fn write(mut boxed: Self, value: T) -> Box<T, A> {
@@ -4154,10 +4206,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_write :
+    Global Instance AssociatedFunction_write :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "write" (write T A).
-    Smpl Add apply AssociatedFunction_write : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "write" (write T A).
+    Admitted.
+    Global Typeclasses Opaque write.
   End Impl_alloc_boxed_Box_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   Module Impl_alloc_boxed_Box_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -4256,10 +4309,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_assume_init :
+    Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
-    Smpl Add apply AssociatedFunction_assume_init : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+    Admitted.
+    Global Typeclasses Opaque assume_init.
   End Impl_alloc_boxed_Box_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   
@@ -6688,9 +6742,12 @@ Module boxed.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_boxed_slice_as_array_unchecked :
-    M.IsFunction "alloc::boxed::boxed_slice_as_array_unchecked" boxed_slice_as_array_unchecked.
-  Smpl Add apply Function_boxed_slice_as_array_unchecked : is_function.
+  Global Instance Instance_IsFunction_boxed_slice_as_array_unchecked :
+    M.IsFunction.Trait
+      "alloc::boxed::boxed_slice_as_array_unchecked"
+      boxed_slice_as_array_unchecked.
+  Admitted.
+  Global Typeclasses Opaque boxed_slice_as_array_unchecked.
   
   Module Impl_core_convert_TryFrom_alloc_boxed_Box_slice_T_alloc_alloc_Global_for_alloc_boxed_Box_array_N_T_alloc_alloc_Global.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
@@ -7004,10 +7061,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast :
+    Global Instance AssociatedFunction_downcast :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast" (downcast A).
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+    Admitted.
+    Global Typeclasses Opaque downcast.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Box<T, A> {
@@ -7133,10 +7191,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_unchecked :
+    Global Instance AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Admitted.
+    Global Typeclasses Opaque downcast_unchecked.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_A.
   
   Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
@@ -7219,10 +7278,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast :
+    Global Instance AssociatedFunction_downcast :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast" (downcast A).
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+    Admitted.
+    Global Typeclasses Opaque downcast.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Box<T, A> {
@@ -7364,10 +7424,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_unchecked :
+    Global Instance AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Admitted.
+    Global Typeclasses Opaque downcast_unchecked.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
   
   Module Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
@@ -7460,10 +7521,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast :
+    Global Instance AssociatedFunction_downcast :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast" (downcast A).
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+    Admitted.
+    Global Typeclasses Opaque downcast.
     
     (*
         pub unsafe fn downcast_unchecked<T: Any>(self) -> Box<T, A> {
@@ -7615,10 +7677,11 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_unchecked :
+    Global Instance AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Admitted.
+    Global Typeclasses Opaque downcast_unchecked.
   End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
   
   Module Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
@@ -8365,7 +8428,7 @@ Module boxed.
     
     (*     type Output = <F as FnOnce<Args>>::Output; *)
     Definition _Output (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
+      Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output".
     
     (*
         extern "rust-call" fn call_once(self, args: Args) -> Self::Output {
@@ -8385,7 +8448,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
             M.get_trait_method (|
               "core::ops::function::FnOnce",
               F,
@@ -8435,7 +8498,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
             M.get_trait_method (|
               "core::ops::function::FnMut",
               F,
@@ -8482,7 +8545,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
             M.get_trait_method (| "core::ops::function::Fn", F, [], [ Args ], "call", [], [] |),
             [
               M.borrow (|
@@ -8510,11 +8573,16 @@ Module boxed.
     
     (*     type Output = F::Output; *)
     Definition _Output (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [ Args ] F "Output".
     
     (*     type CallOnceFuture = F::CallOnceFuture; *)
     Definition _CallOnceFuture (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "CallOnceFuture".
+      Ty.associated_in_trait
+        "core::ops::async_function::AsyncFnOnce"
+        []
+        [ Args ]
+        F
+        "CallOnceFuture".
     
     (*
         extern "rust-call" fn async_call_once(self, args: Args) -> Self::CallOnceFuture {
@@ -8537,7 +8605,7 @@ Module boxed.
             Ty.associated_in_trait
               "core::ops::async_function::AsyncFnOnce"
               []
-              []
+              [ Args ]
               F
               "CallOnceFuture",
             M.get_trait_method (|
@@ -8579,7 +8647,7 @@ Module boxed.
             Self: 'a;
     *)
     Definition _CallRefFuture (Args F A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [ Args ] F "CallRefFuture".
     
     (*
         extern "rust-call" fn async_call_mut(&mut self, args: Args) -> Self::CallRefFuture<'_> {
@@ -8599,7 +8667,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture",
+            Ty.associated_in_trait
+              "core::ops::async_function::AsyncFnMut"
+              []
+              [ Args ]
+              F
+              "CallRefFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFnMut",
               F,
@@ -8655,7 +8728,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture",
+            Ty.associated_in_trait
+              "core::ops::async_function::AsyncFnMut"
+              []
+              [ Args ]
+              F
+              "CallRefFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFn",
               F,
@@ -9726,11 +9804,11 @@ Module boxed.
     
     (*     type Yield = G::Yield; *)
     Definition _Yield (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
     
     (*     type Return = G::Return; *)
     Definition _Return (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
     
     (*
         fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -9749,8 +9827,8 @@ Module boxed.
               (Ty.path "core::ops::coroutine::CoroutineState")
               []
               [
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
               ],
             M.get_trait_method (|
               "core::ops::coroutine::Coroutine",
@@ -9838,11 +9916,11 @@ Module boxed.
     
     (*     type Yield = G::Yield; *)
     Definition _Yield (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield".
     
     (*     type Return = G::Return; *)
     Definition _Return (G R A : Ty.t) : Ty.t :=
-      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return".
     
     (*
         fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -9861,8 +9939,8 @@ Module boxed.
               (Ty.path "core::ops::coroutine::CoroutineState")
               []
               [
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
-                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Yield";
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [ R ] G "Return"
               ],
             M.get_trait_method (|
               "core::ops::coroutine::Coroutine",
@@ -10295,8 +10373,10 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+    Global Instance AssociatedFunction_downcast :
+      M.IsAssociatedFunction.Trait Self "downcast" downcast.
+    Admitted.
+    Global Typeclasses Opaque downcast.
   End Impl_Dyn_core_error_Error_Trait.
   
   Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
@@ -10484,8 +10564,10 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+    Global Instance AssociatedFunction_downcast :
+      M.IsAssociatedFunction.Trait Self "downcast" downcast.
+    Admitted.
+    Global Typeclasses Opaque downcast.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
@@ -10687,8 +10769,10 @@ Module boxed.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+    Global Instance AssociatedFunction_downcast :
+      M.IsAssociatedFunction.Trait Self "downcast" downcast.
+    Admitted.
+    Global Typeclasses Opaque downcast.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   Module Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.

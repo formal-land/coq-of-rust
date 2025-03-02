@@ -90,8 +90,10 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
-Smpl Add apply Function_increase : is_function.
+Global Instance Instance_IsFunction_increase :
+  M.IsFunction.Trait "program_arguments_parsing::increase" increase.
+Admitted.
+Global Typeclasses Opaque increase.
 
 (*
 fn decrease(number: i32) {
@@ -182,8 +184,10 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
-Smpl Add apply Function_decrease : is_function.
+Global Instance Instance_IsFunction_decrease :
+  M.IsFunction.Trait "program_arguments_parsing::decrease" decrease.
+Admitted.
+Global Typeclasses Opaque decrease.
 
 (*
 fn help() {
@@ -250,8 +254,10 @@ match_args {increase|decrease} <integer>
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
-Smpl Add apply Function_help : is_function.
+Global Instance Instance_IsFunction_help :
+  M.IsFunction.Trait "program_arguments_parsing::help" help.
+Admitted.
+Global Typeclasses Opaque help.
 
 (*
 fn main() {
@@ -881,5 +887,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "program_arguments_parsing::main" main.
+Admitted.
+Global Typeclasses Opaque main.

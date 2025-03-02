@@ -14,21 +14,22 @@ Module Impl_incrementer_Incrementer.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter new_default : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
-  Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Instance AssociatedFunction_new_default :
+    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+  Admitted.
   
   Parameter inc : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
-  Smpl Add apply AssociatedFunction_inc : is_associated.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Admitted.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
 End Impl_incrementer_Incrementer.

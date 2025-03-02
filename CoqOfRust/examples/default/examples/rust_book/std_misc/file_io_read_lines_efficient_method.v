@@ -195,9 +195,10 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_read_lines :
-  M.IsFunction "file_io_read_lines_efficient_method::read_lines" read_lines.
-Smpl Add apply Function_read_lines : is_function.
+Global Instance Instance_IsFunction_read_lines :
+  M.IsFunction.Trait "file_io_read_lines_efficient_method::read_lines" read_lines.
+Admitted.
+Global Typeclasses Opaque read_lines.
 
 (*
 fn main() {
@@ -289,6 +290,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -465,5 +467,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "file_io_read_lines_efficient_method::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "file_io_read_lines_efficient_method::main" main.
+Admitted.
+Global Typeclasses Opaque main.

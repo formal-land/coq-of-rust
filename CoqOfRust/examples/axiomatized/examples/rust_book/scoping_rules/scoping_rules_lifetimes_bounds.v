@@ -27,15 +27,18 @@ End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bound
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print : M.IsFunction "scoping_rules_lifetimes_bounds::print" print.
-Smpl Add apply Function_print : is_function.
+Global Instance Instance_IsFunction_print :
+  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::print" print.
+Admitted.
 
 Parameter print_ref : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print_ref : M.IsFunction "scoping_rules_lifetimes_bounds::print_ref" print_ref.
-Smpl Add apply Function_print_ref : is_function.
+Global Instance Instance_IsFunction_print_ref :
+  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::print_ref" print_ref.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_bounds::main" main.
+Admitted.

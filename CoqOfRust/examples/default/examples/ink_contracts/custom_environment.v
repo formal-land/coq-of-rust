@@ -272,8 +272,9 @@ Module Impl_custom_environment_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -282,8 +283,9 @@ Module Impl_custom_environment_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_custom_environment_Env.
 
 Module Impl_custom_environment_Topics.
@@ -296,8 +298,9 @@ Module Impl_custom_environment_Topics.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -317,8 +320,9 @@ Module Impl_custom_environment_Topics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new() -> Self {
@@ -345,8 +349,9 @@ Module Impl_custom_environment_Topics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn trigger(&mut self) {
@@ -411,6 +416,7 @@ Module Impl_custom_environment_Topics.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_trigger : M.IsAssociatedFunction Self "trigger" trigger.
-  Smpl Add apply AssociatedFunction_trigger : is_associated.
+  Global Instance AssociatedFunction_trigger : M.IsAssociatedFunction.Trait Self "trigger" trigger.
+  Admitted.
+  Global Typeclasses Opaque trigger.
 End Impl_custom_environment_Topics.

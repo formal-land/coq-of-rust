@@ -77,10 +77,10 @@ Module Impl_trait_erc20_Mapping_K_V.
   *)
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -89,10 +89,10 @@ Module Impl_trait_erc20_Mapping_K_V.
   *)
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
 End Impl_trait_erc20_Mapping_K_V.
 
 (* StructTuple
@@ -547,8 +547,9 @@ Module Impl_trait_erc20_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -557,8 +558,9 @@ Module Impl_trait_erc20_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_trait_erc20_Env.
 
 Module Impl_trait_erc20_Erc20.
@@ -571,8 +573,9 @@ Module Impl_trait_erc20_Erc20.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -592,8 +595,9 @@ Module Impl_trait_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new(total_supply: Balance) -> Self {
@@ -764,8 +768,9 @@ Module Impl_trait_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       fn balance_of_impl(&self, owner: &AccountId) -> Balance {
@@ -815,9 +820,10 @@ Module Impl_trait_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_balance_of_impl :
-    M.IsAssociatedFunction Self "balance_of_impl" balance_of_impl.
-  Smpl Add apply AssociatedFunction_balance_of_impl : is_associated.
+  Global Instance AssociatedFunction_balance_of_impl :
+    M.IsAssociatedFunction.Trait Self "balance_of_impl" balance_of_impl.
+  Admitted.
+  Global Typeclasses Opaque balance_of_impl.
   
   (*
       fn allowance_impl(&self, owner: &AccountId, spender: &AccountId) -> Balance {
@@ -885,9 +891,10 @@ Module Impl_trait_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_allowance_impl :
-    M.IsAssociatedFunction Self "allowance_impl" allowance_impl.
-  Smpl Add apply AssociatedFunction_allowance_impl : is_associated.
+  Global Instance AssociatedFunction_allowance_impl :
+    M.IsAssociatedFunction.Trait Self "allowance_impl" allowance_impl.
+  Admitted.
+  Global Typeclasses Opaque allowance_impl.
   
   (*
       fn transfer_from_to(&mut self, from: &AccountId, to: &AccountId, value: Balance) -> Result<()> {
@@ -1083,9 +1090,10 @@ Module Impl_trait_erc20_Erc20.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_transfer_from_to :
-    M.IsAssociatedFunction Self "transfer_from_to" transfer_from_to.
-  Smpl Add apply AssociatedFunction_transfer_from_to : is_associated.
+  Global Instance AssociatedFunction_transfer_from_to :
+    M.IsAssociatedFunction.Trait Self "transfer_from_to" transfer_from_to.
+  Admitted.
+  Global Typeclasses Opaque transfer_from_to.
 End Impl_trait_erc20_Erc20.
 
 Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.

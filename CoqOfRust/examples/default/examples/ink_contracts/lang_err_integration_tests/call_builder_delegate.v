@@ -88,8 +88,9 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn delegate(&mut self, code_hash: Hash, selector: [u8; 4]) -> Option<LangError> {
@@ -121,8 +122,10 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_delegate : M.IsAssociatedFunction Self "delegate" delegate.
-  Smpl Add apply AssociatedFunction_delegate : is_associated.
+  Global Instance AssociatedFunction_delegate :
+    M.IsAssociatedFunction.Trait Self "delegate" delegate.
+  Admitted.
+  Global Typeclasses Opaque delegate.
   
   (*
       pub fn invoke(&mut self, code_hash: Hash, selector: [u8; 4]) -> i32 {
@@ -147,6 +150,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_invoke : M.IsAssociatedFunction Self "invoke" invoke.
-  Smpl Add apply AssociatedFunction_invoke : is_associated.
+  Global Instance AssociatedFunction_invoke : M.IsAssociatedFunction.Trait Self "invoke" invoke.
+  Admitted.
+  Global Typeclasses Opaque invoke.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

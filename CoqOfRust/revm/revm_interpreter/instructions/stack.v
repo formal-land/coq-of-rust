@@ -193,8 +193,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_pop : M.IsFunction "revm_interpreter::instructions::stack::pop" pop.
-    Smpl Add apply Function_pop : is_function.
+    Global Instance Instance_IsFunction_pop :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::pop" pop.
+    Admitted.
+    Global Typeclasses Opaque pop.
     
     (*
     pub fn push0<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -510,8 +512,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_push0 : M.IsFunction "revm_interpreter::instructions::stack::push0" push0.
-    Smpl Add apply Function_push0 : is_function.
+    Global Instance Instance_IsFunction_push0 :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::push0" push0.
+    Admitted.
+    Global Typeclasses Opaque push0.
     
     (*
     pub fn push<const N: usize, WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -901,8 +905,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_push : M.IsFunction "revm_interpreter::instructions::stack::push" push.
-    Smpl Add apply Function_push : is_function.
+    Global Instance Instance_IsFunction_push :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::push" push.
+    Admitted.
+    Global Typeclasses Opaque push.
     
     (*
     pub fn dup<const N: usize, WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1117,8 +1123,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_dup : M.IsFunction "revm_interpreter::instructions::stack::dup" dup.
-    Smpl Add apply Function_dup : is_function.
+    Global Instance Instance_IsFunction_dup :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::dup" dup.
+    Admitted.
+    Global Typeclasses Opaque dup.
     
     (*
     pub fn swap<const N: usize, WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1369,8 +1377,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_swap : M.IsFunction "revm_interpreter::instructions::stack::swap" swap.
-    Smpl Add apply Function_swap : is_function.
+    Global Instance Instance_IsFunction_swap :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::swap" swap.
+    Admitted.
+    Global Typeclasses Opaque swap.
     
     (*
     pub fn dupn<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1736,8 +1746,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_dupn : M.IsFunction "revm_interpreter::instructions::stack::dupn" dupn.
-    Smpl Add apply Function_dupn : is_function.
+    Global Instance Instance_IsFunction_dupn :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::dupn" dupn.
+    Admitted.
+    Global Typeclasses Opaque dupn.
     
     (*
     pub fn swapn<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2104,8 +2116,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_swapn : M.IsFunction "revm_interpreter::instructions::stack::swapn" swapn.
-    Smpl Add apply Function_swapn : is_function.
+    Global Instance Instance_IsFunction_swapn :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::swapn" swapn.
+    Admitted.
+    Global Typeclasses Opaque swapn.
     
     (*
     pub fn exchange<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2485,8 +2499,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_exchange :
-      M.IsFunction "revm_interpreter::instructions::stack::exchange" exchange.
-    Smpl Add apply Function_exchange : is_function.
+    Global Instance Instance_IsFunction_exchange :
+      M.IsFunction.Trait "revm_interpreter::instructions::stack::exchange" exchange.
+    Admitted.
+    Global Typeclasses Opaque exchange.
   End stack.
 End instructions.

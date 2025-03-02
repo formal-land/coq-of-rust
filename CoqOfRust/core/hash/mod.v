@@ -33,6 +33,7 @@ Module hash.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -1068,8 +1069,11 @@ Module hash.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (H : Ty.t), M.IsAssociatedFunction (Self H) "new" (new H).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (H : Ty.t),
+      M.IsAssociatedFunction.Trait (Self H) "new" (new H).
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_fmt_Debug_for_core_hash_BuildHasherDefault_H.

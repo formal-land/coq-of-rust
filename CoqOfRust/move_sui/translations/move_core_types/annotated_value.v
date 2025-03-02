@@ -3217,8 +3217,9 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
   End Impl_move_core_types_annotated_value_MoveFieldLayout.
   
   (* StructRecord
@@ -4205,9 +4206,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction Self "simple_deserialize" simple_deserialize.
-    Smpl Add apply AssociatedFunction_simple_deserialize : is_associated.
+    Global Instance AssociatedFunction_simple_deserialize :
+      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+    Admitted.
+    Global Typeclasses Opaque simple_deserialize.
     
     (*
         pub fn visit_deserialize<V: Visitor>(
@@ -4485,9 +4487,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_visit_deserialize :
-      M.IsAssociatedFunction Self "visit_deserialize" visit_deserialize.
-    Smpl Add apply AssociatedFunction_visit_deserialize : is_associated.
+    Global Instance AssociatedFunction_visit_deserialize :
+      M.IsAssociatedFunction.Trait Self "visit_deserialize" visit_deserialize.
+    Admitted.
+    Global Typeclasses Opaque visit_deserialize.
     
     (*
         pub fn simple_serialize(&self) -> Option<Vec<u8>> {
@@ -4548,9 +4551,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_simple_serialize :
-      M.IsAssociatedFunction Self "simple_serialize" simple_serialize.
-    Smpl Add apply AssociatedFunction_simple_serialize : is_associated.
+    Global Instance AssociatedFunction_simple_serialize :
+      M.IsAssociatedFunction.Trait Self "simple_serialize" simple_serialize.
+    Admitted.
+    Global Typeclasses Opaque simple_serialize.
     
     (*
         pub fn undecorate(self) -> R::MoveValue {
@@ -4864,8 +4868,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_undecorate : M.IsAssociatedFunction Self "undecorate" undecorate.
-    Smpl Add apply AssociatedFunction_undecorate : is_associated.
+    Global Instance AssociatedFunction_undecorate :
+      M.IsAssociatedFunction.Trait Self "undecorate" undecorate.
+    Admitted.
+    Global Typeclasses Opaque undecorate.
   End Impl_move_core_types_annotated_value_MoveValue.
   
   (*
@@ -5094,9 +5100,10 @@ Module annotated_value.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_serialize_values :
-    M.IsFunction "move_core_types::annotated_value::serialize_values" serialize_values.
-  Smpl Add apply Function_serialize_values : is_function.
+  Global Instance Instance_IsFunction_serialize_values :
+    M.IsFunction.Trait "move_core_types::annotated_value::serialize_values" serialize_values.
+  Admitted.
+  Global Typeclasses Opaque serialize_values.
   
   Module Impl_move_core_types_annotated_value_MoveStruct.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveStruct".
@@ -5118,8 +5125,9 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn simple_deserialize(blob: &[u8], ty: &MoveStructLayout) -> AResult<Self> {
@@ -5263,9 +5271,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction Self "simple_deserialize" simple_deserialize.
-    Smpl Add apply AssociatedFunction_simple_deserialize : is_associated.
+    Global Instance AssociatedFunction_simple_deserialize :
+      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+    Admitted.
+    Global Typeclasses Opaque simple_deserialize.
     
     (*
         pub fn visit_deserialize<V: Visitor>(
@@ -5543,9 +5552,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_visit_deserialize :
-      M.IsAssociatedFunction Self "visit_deserialize" visit_deserialize.
-    Smpl Add apply AssociatedFunction_visit_deserialize : is_associated.
+    Global Instance AssociatedFunction_visit_deserialize :
+      M.IsAssociatedFunction.Trait Self "visit_deserialize" visit_deserialize.
+    Admitted.
+    Global Typeclasses Opaque visit_deserialize.
     
     (*
         pub fn into_fields(self) -> Vec<MoveValue> {
@@ -5740,8 +5750,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
-    Smpl Add apply AssociatedFunction_into_fields : is_associated.
+    Global Instance AssociatedFunction_into_fields :
+      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+    Admitted.
+    Global Typeclasses Opaque into_fields.
     
     (*
         pub fn undecorate(self) -> R::MoveStruct {
@@ -5894,8 +5906,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_undecorate : M.IsAssociatedFunction Self "undecorate" undecorate.
-    Smpl Add apply AssociatedFunction_undecorate : is_associated.
+    Global Instance AssociatedFunction_undecorate :
+      M.IsAssociatedFunction.Trait Self "undecorate" undecorate.
+    Admitted.
+    Global Typeclasses Opaque undecorate.
   End Impl_move_core_types_annotated_value_MoveStruct.
   
   Module Impl_move_core_types_annotated_value_MoveStructLayout.
@@ -5918,8 +5932,9 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn into_fields(self) -> Vec<MoveTypeLayout> {
@@ -6071,8 +6086,10 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
-    Smpl Add apply AssociatedFunction_into_fields : is_associated.
+    Global Instance AssociatedFunction_into_fields :
+      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+    Admitted.
+    Global Typeclasses Opaque into_fields.
   End Impl_move_core_types_annotated_value_MoveStructLayout.
   
   Module Impl_serde_de_DeserializeSeed_for_ref__move_core_types_annotated_value_MoveTypeLayout.
@@ -7162,6 +7179,7 @@ Module annotated_value.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -7649,6 +7667,7 @@ Module annotated_value.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -9251,6 +9270,7 @@ Module annotated_value.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -9866,6 +9886,7 @@ Module annotated_value.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -12363,6 +12384,7 @@ Module annotated_value.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -13908,6 +13930,7 @@ Module annotated_value.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -14416,6 +14439,7 @@ Module annotated_value.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|

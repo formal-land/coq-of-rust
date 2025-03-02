@@ -52,8 +52,10 @@ Module foo.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_f_foo_gre : M.IsFunction "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
-    Smpl Add apply Function_f_foo_gre : is_function.
+    Global Instance Instance_IsFunction_f_foo_gre :
+      M.IsFunction.Trait "module_duplicate::foo::gre::f_foo_gre" f_foo_gre.
+    Admitted.
+    Global Typeclasses Opaque f_foo_gre.
   End gre.
   
   (*
@@ -112,8 +114,10 @@ Module foo.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_f_foo : M.IsFunction "module_duplicate::foo::f_foo" f_foo.
-  Smpl Add apply Function_f_foo : is_function.
+  Global Instance Instance_IsFunction_f_foo :
+    M.IsFunction.Trait "module_duplicate::foo::f_foo" f_foo.
+  Admitted.
+  Global Typeclasses Opaque f_foo.
 End foo.
 
 (*
@@ -139,5 +143,6 @@ Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_f : M.IsFunction "module_duplicate::f" f.
-Smpl Add apply Function_f : is_function.
+Global Instance Instance_IsFunction_f : M.IsFunction.Trait "module_duplicate::f" f.
+Admitted.
+Global Typeclasses Opaque f.

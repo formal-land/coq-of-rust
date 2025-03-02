@@ -1258,8 +1258,9 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
-    Smpl Add apply AssociatedFunction_is_ok : is_associated.
+    Global Instance AssociatedFunction_is_ok : M.IsAssociatedFunction.Trait Self "is_ok" is_ok.
+    Admitted.
+    Global Typeclasses Opaque is_ok.
     
     (*
         pub const fn is_ok_or_revert(self) -> bool {
@@ -1409,9 +1410,10 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_ok_or_revert :
-      M.IsAssociatedFunction Self "is_ok_or_revert" is_ok_or_revert.
-    Smpl Add apply AssociatedFunction_is_ok_or_revert : is_associated.
+    Global Instance AssociatedFunction_is_ok_or_revert :
+      M.IsAssociatedFunction.Trait Self "is_ok_or_revert" is_ok_or_revert.
+    Admitted.
+    Global Typeclasses Opaque is_ok_or_revert.
     
     (*
         pub const fn is_continue(self) -> bool {
@@ -1442,8 +1444,10 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_continue : M.IsAssociatedFunction Self "is_continue" is_continue.
-    Smpl Add apply AssociatedFunction_is_continue : is_associated.
+    Global Instance AssociatedFunction_is_continue :
+      M.IsAssociatedFunction.Trait Self "is_continue" is_continue.
+    Admitted.
+    Global Typeclasses Opaque is_continue.
     
     (*
         pub const fn is_revert(self) -> bool {
@@ -1527,8 +1531,10 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
-    Smpl Add apply AssociatedFunction_is_revert : is_associated.
+    Global Instance AssociatedFunction_is_revert :
+      M.IsAssociatedFunction.Trait Self "is_revert" is_revert.
+    Admitted.
+    Global Typeclasses Opaque is_revert.
     
     (*
         pub const fn is_error(self) -> bool {
@@ -1796,8 +1802,10 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
-    Smpl Add apply AssociatedFunction_is_error : is_associated.
+    Global Instance AssociatedFunction_is_error :
+      M.IsAssociatedFunction.Trait Self "is_error" is_error.
+    Admitted.
+    Global Typeclasses Opaque is_error.
   End Impl_revm_interpreter_instruction_result_InstructionResult.
   
   Module Impl_core_convert_From_revm_context_interface_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
@@ -3490,10 +3498,11 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_success :
+    Global Instance AssociatedFunction_is_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "is_success" (is_success HaltReasonT).
-    Smpl Add apply AssociatedFunction_is_success : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_success" (is_success HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque is_success.
     
     (*
         pub fn to_success(self) -> Option<SuccessReason> {
@@ -3538,10 +3547,11 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_success :
+    Global Instance AssociatedFunction_to_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "to_success" (to_success HaltReasonT).
-    Smpl Add apply AssociatedFunction_to_success : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "to_success" (to_success HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque to_success.
     
     (*
         pub fn is_revert(self) -> bool {
@@ -3578,10 +3588,11 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_revert :
+    Global Instance AssociatedFunction_is_revert :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "is_revert" (is_revert HaltReasonT).
-    Smpl Add apply AssociatedFunction_is_revert : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_revert" (is_revert HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque is_revert.
     
     (*
         pub fn is_halt(self) -> bool {
@@ -3619,10 +3630,11 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_halt :
+    Global Instance AssociatedFunction_is_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
-    Smpl Add apply AssociatedFunction_is_halt : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque is_halt.
     
     (*
         pub fn to_halt(self) -> Option<HaltReasonT> {
@@ -3667,10 +3679,11 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_halt :
+    Global Instance AssociatedFunction_to_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction (Self HaltReasonT) "to_halt" (to_halt HaltReasonT).
-    Smpl Add apply AssociatedFunction_to_halt : is_associated.
+      M.IsAssociatedFunction.Trait (Self HaltReasonT) "to_halt" (to_halt HaltReasonT).
+    Admitted.
+    Global Typeclasses Opaque to_halt.
   End Impl_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
   Module Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HALT_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_SuccessOrHalt_HALT.

@@ -19,7 +19,7 @@ End Mapping.
 Module Impl_Mapping_t_K_V.
   Definition Self (K V : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "erc20::Mapping") [] [ K; V ].
-  
+
   (** fn get(&self, key: &K) -> Option<V> *)
   Definition get (K V : Ty.t) (ε : list Value.t) (𝜏 : list Ty.t) (α : list Value.t) : M :=
     let Self : Ty.t := Self K V in
@@ -31,9 +31,10 @@ Module Impl_Mapping_t_K_V.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
 
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
 
   (** fn insert(&mut self, key: K, value: V) *)
   Definition insert
@@ -48,7 +49,8 @@ Module Impl_Mapping_t_K_V.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
 
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
 End Impl_Mapping_t_K_V.

@@ -212,30 +212,33 @@ Module num.
         Definition value_MAX_DIGITS : Value.t :=
           M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 768 |))).
         
-        Axiom AssociatedConstant_value_MAX_DIGITS :
-          M.IsAssociatedConstant Self "value_MAX_DIGITS" value_MAX_DIGITS.
-        Smpl Add apply AssociatedConstant_value_MAX_DIGITS : is_associated.
+        Global Instance AssociatedConstant_value_MAX_DIGITS :
+          M.IsAssociatedConstant.Trait Self "value_MAX_DIGITS" value_MAX_DIGITS.
+        Admitted.
+        Global Typeclasses Opaque value_MAX_DIGITS.
         
         (*     pub const MAX_DIGITS_WITHOUT_OVERFLOW: usize = 19; *)
         (* Ty.path "usize" *)
         Definition value_MAX_DIGITS_WITHOUT_OVERFLOW : Value.t :=
           M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 19 |))).
         
-        Axiom AssociatedConstant_value_MAX_DIGITS_WITHOUT_OVERFLOW :
-          M.IsAssociatedConstant
+        Global Instance AssociatedConstant_value_MAX_DIGITS_WITHOUT_OVERFLOW :
+          M.IsAssociatedConstant.Trait
             Self
             "value_MAX_DIGITS_WITHOUT_OVERFLOW"
             value_MAX_DIGITS_WITHOUT_OVERFLOW.
-        Smpl Add apply AssociatedConstant_value_MAX_DIGITS_WITHOUT_OVERFLOW : is_associated.
+        Admitted.
+        Global Typeclasses Opaque value_MAX_DIGITS_WITHOUT_OVERFLOW.
         
         (*     pub const DECIMAL_POINT_RANGE: i32 = 2047; *)
         (* Ty.path "i32" *)
         Definition value_DECIMAL_POINT_RANGE : Value.t :=
           M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 2047 |))).
         
-        Axiom AssociatedConstant_value_DECIMAL_POINT_RANGE :
-          M.IsAssociatedConstant Self "value_DECIMAL_POINT_RANGE" value_DECIMAL_POINT_RANGE.
-        Smpl Add apply AssociatedConstant_value_DECIMAL_POINT_RANGE : is_associated.
+        Global Instance AssociatedConstant_value_DECIMAL_POINT_RANGE :
+          M.IsAssociatedConstant.Trait Self "value_DECIMAL_POINT_RANGE" value_DECIMAL_POINT_RANGE.
+        Admitted.
+        Global Typeclasses Opaque value_DECIMAL_POINT_RANGE.
         
         (*
             pub fn try_add_digit(&mut self, digit: u8) {
@@ -318,9 +321,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_try_add_digit :
-          M.IsAssociatedFunction Self "try_add_digit" try_add_digit.
-        Smpl Add apply AssociatedFunction_try_add_digit : is_associated.
+        Global Instance AssociatedFunction_try_add_digit :
+          M.IsAssociatedFunction.Trait Self "try_add_digit" try_add_digit.
+        Admitted.
+        Global Typeclasses Opaque try_add_digit.
         
         (*
             pub fn trim(&mut self) {
@@ -404,6 +408,7 @@ Module num.
                     ]
                   |) in
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -486,8 +491,9 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_trim : M.IsAssociatedFunction Self "trim" trim.
-        Smpl Add apply AssociatedFunction_trim : is_associated.
+        Global Instance AssociatedFunction_trim : M.IsAssociatedFunction.Trait Self "trim" trim.
+        Admitted.
+        Global Typeclasses Opaque trim.
         
         (*
             pub fn round(&self) -> u64 {
@@ -651,6 +657,7 @@ Module num.
                               ltac:(M.monadic
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
+                                  Ty.tuple [],
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -939,8 +946,9 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_round : M.IsAssociatedFunction Self "round" round.
-        Smpl Add apply AssociatedFunction_round : is_associated.
+        Global Instance AssociatedFunction_round : M.IsAssociatedFunction.Trait Self "round" round.
+        Admitted.
+        Global Typeclasses Opaque round.
         
         (*
             pub fn left_shift(&mut self, shift: usize) {
@@ -1062,6 +1070,7 @@ Module num.
                     let~ n : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1241,6 +1250,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1474,8 +1484,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_left_shift : M.IsAssociatedFunction Self "left_shift" left_shift.
-        Smpl Add apply AssociatedFunction_left_shift : is_associated.
+        Global Instance AssociatedFunction_left_shift :
+          M.IsAssociatedFunction.Trait Self "left_shift" left_shift.
+        Admitted.
+        Global Typeclasses Opaque left_shift.
         
         (*
             pub fn right_shift(&mut self, shift: usize) {
@@ -1542,6 +1554,7 @@ Module num.
                     let~ n : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1653,6 +1666,7 @@ Module num.
                                                       M.read (|
                                                         let~ _ : Ty.tuple [] :=
                                                           M.loop (|
+                                                            Ty.tuple [],
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
                                                                 M.alloc (| Value.Tuple [] |),
@@ -1853,6 +1867,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -1963,6 +1978,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -2129,9 +2145,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_right_shift :
-          M.IsAssociatedFunction Self "right_shift" right_shift.
-        Smpl Add apply AssociatedFunction_right_shift : is_associated.
+        Global Instance AssociatedFunction_right_shift :
+          M.IsAssociatedFunction.Trait Self "right_shift" right_shift.
+        Admitted.
+        Global Typeclasses Opaque right_shift.
       End Impl_core_num_dec2flt_decimal_Decimal.
       
       (*
@@ -2238,6 +2255,7 @@ Module num.
                 M.copy (| s |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2449,6 +2467,7 @@ Module num.
                                       Value.Bool true
                                     |) in
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
@@ -2547,6 +2566,7 @@ Module num.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
@@ -3100,6 +3120,7 @@ Module num.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -3693,6 +3714,7 @@ Module num.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3765,9 +3787,10 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_parse_decimal :
-        M.IsFunction "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
-      Smpl Add apply Function_parse_decimal : is_function.
+      Global Instance Instance_IsFunction_parse_decimal :
+        M.IsFunction.Trait "core::num::dec2flt::decimal::parse_decimal" parse_decimal.
+      Admitted.
+      Global Typeclasses Opaque parse_decimal.
       
       (*
       fn number_of_digits_decimal_left_shift(d: &Decimal, mut shift: usize) -> usize {
@@ -4074,6 +4097,7 @@ Module num.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -4296,11 +4320,12 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_number_of_digits_decimal_left_shift :
-        M.IsFunction
+      Global Instance Instance_IsFunction_number_of_digits_decimal_left_shift :
+        M.IsFunction.Trait
           "core::num::dec2flt::decimal::number_of_digits_decimal_left_shift"
           number_of_digits_decimal_left_shift.
-      Smpl Add apply Function_number_of_digits_decimal_left_shift : is_function.
+      Admitted.
+      Global Typeclasses Opaque number_of_digits_decimal_left_shift.
       
       Module number_of_digits_decimal_left_shift.
         Definition value_TABLE : Value.t :=

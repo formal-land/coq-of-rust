@@ -228,8 +228,10 @@ Module task.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_raw_waker : M.IsFunction "alloc::task::raw_waker" raw_waker.
-  Smpl Add apply Function_raw_waker : is_function.
+  Global Instance Instance_IsFunction_raw_waker :
+    M.IsFunction.Trait "alloc::task::raw_waker" raw_waker.
+  Admitted.
+  Global Typeclasses Opaque raw_waker.
   
   Module raw_waker.
     (*
@@ -306,8 +308,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_clone_waker : M.IsFunction "alloc::task::raw_waker::clone_waker" clone_waker.
-    Smpl Add apply Function_clone_waker : is_function.
+    Global Instance Instance_IsFunction_clone_waker :
+      M.IsFunction.Trait "alloc::task::raw_waker::clone_waker" clone_waker.
+    Admitted.
+    Global Typeclasses Opaque clone_waker.
     
     (*
         unsafe fn wake<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -348,8 +352,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_wake : M.IsFunction "alloc::task::raw_waker::wake" wake.
-    Smpl Add apply Function_wake : is_function.
+    Global Instance Instance_IsFunction_wake :
+      M.IsFunction.Trait "alloc::task::raw_waker::wake" wake.
+    Admitted.
+    Global Typeclasses Opaque wake.
     
     (*
         unsafe fn wake_by_ref<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -463,8 +469,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_wake_by_ref : M.IsFunction "alloc::task::raw_waker::wake_by_ref" wake_by_ref.
-    Smpl Add apply Function_wake_by_ref : is_function.
+    Global Instance Instance_IsFunction_wake_by_ref :
+      M.IsFunction.Trait "alloc::task::raw_waker::wake_by_ref" wake_by_ref.
+    Admitted.
+    Global Typeclasses Opaque wake_by_ref.
     
     (*
         unsafe fn drop_waker<W: Wake + Send + Sync + 'static>(waker: *const ()) {
@@ -495,8 +503,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_drop_waker : M.IsFunction "alloc::task::raw_waker::drop_waker" drop_waker.
-    Smpl Add apply Function_drop_waker : is_function.
+    Global Instance Instance_IsFunction_drop_waker :
+      M.IsFunction.Trait "alloc::task::raw_waker::drop_waker" drop_waker.
+    Admitted.
+    Global Typeclasses Opaque drop_waker.
   End raw_waker.
   
   (* Trait *)
@@ -725,8 +735,10 @@ Module task.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_local_raw_waker : M.IsFunction "alloc::task::local_raw_waker" local_raw_waker.
-  Smpl Add apply Function_local_raw_waker : is_function.
+  Global Instance Instance_IsFunction_local_raw_waker :
+    M.IsFunction.Trait "alloc::task::local_raw_waker" local_raw_waker.
+  Admitted.
+  Global Typeclasses Opaque local_raw_waker.
   
   Module local_raw_waker.
     (*
@@ -815,9 +827,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_clone_waker :
-      M.IsFunction "alloc::task::local_raw_waker::clone_waker" clone_waker.
-    Smpl Add apply Function_clone_waker : is_function.
+    Global Instance Instance_IsFunction_clone_waker :
+      M.IsFunction.Trait "alloc::task::local_raw_waker::clone_waker" clone_waker.
+    Admitted.
+    Global Typeclasses Opaque clone_waker.
     
     (*
         unsafe fn wake<W: LocalWake + 'static>(waker: *const ()) {
@@ -858,8 +871,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_wake : M.IsFunction "alloc::task::local_raw_waker::wake" wake.
-    Smpl Add apply Function_wake : is_function.
+    Global Instance Instance_IsFunction_wake :
+      M.IsFunction.Trait "alloc::task::local_raw_waker::wake" wake.
+    Admitted.
+    Global Typeclasses Opaque wake.
     
     (*
         unsafe fn wake_by_ref<W: LocalWake + 'static>(waker: *const ()) {
@@ -969,9 +984,10 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_wake_by_ref :
-      M.IsFunction "alloc::task::local_raw_waker::wake_by_ref" wake_by_ref.
-    Smpl Add apply Function_wake_by_ref : is_function.
+    Global Instance Instance_IsFunction_wake_by_ref :
+      M.IsFunction.Trait "alloc::task::local_raw_waker::wake_by_ref" wake_by_ref.
+    Admitted.
+    Global Typeclasses Opaque wake_by_ref.
     
     (*
         unsafe fn drop_waker<W: LocalWake + 'static>(waker: *const ()) {
@@ -1002,7 +1018,9 @@ Module task.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_drop_waker : M.IsFunction "alloc::task::local_raw_waker::drop_waker" drop_waker.
-    Smpl Add apply Function_drop_waker : is_function.
+    Global Instance Instance_IsFunction_drop_waker :
+      M.IsFunction.Trait "alloc::task::local_raw_waker::drop_waker" drop_waker.
+    Admitted.
+    Global Typeclasses Opaque drop_waker.
   End local_raw_waker.
 End task.

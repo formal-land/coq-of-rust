@@ -453,8 +453,10 @@ Module constant.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_sig_to_ty : M.IsFunction "move_binary_format::constant::sig_to_ty" sig_to_ty.
-  Smpl Add apply Function_sig_to_ty : is_function.
+  Global Instance Instance_IsFunction_sig_to_ty :
+    M.IsFunction.Trait "move_binary_format::constant::sig_to_ty" sig_to_ty.
+  Admitted.
+  Global Typeclasses Opaque sig_to_ty.
   
   (*
   fn ty_to_sig(ty: &MoveTypeLayout) -> Option<SignatureToken> {
@@ -848,8 +850,10 @@ Module constant.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_ty_to_sig : M.IsFunction "move_binary_format::constant::ty_to_sig" ty_to_sig.
-  Smpl Add apply Function_ty_to_sig : is_function.
+  Global Instance Instance_IsFunction_ty_to_sig :
+    M.IsFunction.Trait "move_binary_format::constant::ty_to_sig" ty_to_sig.
+  Admitted.
+  Global Typeclasses Opaque ty_to_sig.
   
   Module Impl_move_binary_format_file_format_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Constant".
@@ -1102,9 +1106,10 @@ Module constant.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_serialize_constant :
-      M.IsAssociatedFunction Self "serialize_constant" serialize_constant.
-    Smpl Add apply AssociatedFunction_serialize_constant : is_associated.
+    Global Instance AssociatedFunction_serialize_constant :
+      M.IsAssociatedFunction.Trait Self "serialize_constant" serialize_constant.
+    Admitted.
+    Global Typeclasses Opaque serialize_constant.
     
     (*
         pub fn deserialize_constant(&self) -> Option<MoveValue> {
@@ -1318,8 +1323,9 @@ Module constant.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_deserialize_constant :
-      M.IsAssociatedFunction Self "deserialize_constant" deserialize_constant.
-    Smpl Add apply AssociatedFunction_deserialize_constant : is_associated.
+    Global Instance AssociatedFunction_deserialize_constant :
+      M.IsAssociatedFunction.Trait Self "deserialize_constant" deserialize_constant.
+    Admitted.
+    Global Typeclasses Opaque deserialize_constant.
   End Impl_move_binary_format_file_format_Constant.
 End constant.

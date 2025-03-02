@@ -9,11 +9,14 @@ Global Hint Rewrite Constant_value_NUM : constant_rewrites.
 
 Parameter coerce_static : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_coerce_static :
-  M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::coerce_static" coerce_static.
-Smpl Add apply Function_coerce_static : is_function.
+Global Instance Instance_IsFunction_coerce_static :
+  M.IsFunction.Trait
+    "scoping_rules_lifetimes_reference_lifetime_static::coerce_static"
+    coerce_static.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_reference_lifetime_static::main" main.
+Admitted.

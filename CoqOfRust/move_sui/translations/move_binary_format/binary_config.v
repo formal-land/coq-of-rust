@@ -828,8 +828,9 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_legacy : M.IsAssociatedFunction Self "legacy" legacy.
-    Smpl Add apply AssociatedFunction_legacy : is_associated.
+    Global Instance AssociatedFunction_legacy : M.IsAssociatedFunction.Trait Self "legacy" legacy.
+    Admitted.
+    Global Typeclasses Opaque legacy.
   End Impl_move_binary_format_binary_config_TableConfig.
   
   (* StructRecord
@@ -1084,8 +1085,9 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn legacy(max_binary_format_version: u32, check_no_extraneous_bytes: bool) -> Self {
@@ -1122,8 +1124,9 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_legacy : M.IsAssociatedFunction Self "legacy" legacy.
-    Smpl Add apply AssociatedFunction_legacy : is_associated.
+    Global Instance AssociatedFunction_legacy : M.IsAssociatedFunction.Trait Self "legacy" legacy.
+    Admitted.
+    Global Typeclasses Opaque legacy.
     
     (*
         pub fn with_extraneous_bytes_check(check_no_extraneous_bytes: bool) -> Self {
@@ -1164,9 +1167,10 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_with_extraneous_bytes_check :
-      M.IsAssociatedFunction Self "with_extraneous_bytes_check" with_extraneous_bytes_check.
-    Smpl Add apply AssociatedFunction_with_extraneous_bytes_check : is_associated.
+    Global Instance AssociatedFunction_with_extraneous_bytes_check :
+      M.IsAssociatedFunction.Trait Self "with_extraneous_bytes_check" with_extraneous_bytes_check.
+    Admitted.
+    Global Typeclasses Opaque with_extraneous_bytes_check.
     
     (*
         pub fn standard() -> Self {
@@ -1202,7 +1206,9 @@ Module binary_config.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_standard : M.IsAssociatedFunction Self "standard" standard.
-    Smpl Add apply AssociatedFunction_standard : is_associated.
+    Global Instance AssociatedFunction_standard :
+      M.IsAssociatedFunction.Trait Self "standard" standard.
+    Admitted.
+    Global Typeclasses Opaque standard.
   End Impl_move_binary_format_binary_config_BinaryConfig.
 End binary_config.

@@ -6,11 +6,11 @@ Require Import revm.links.dependencies.
 Module Bytecode.
   Inductive t : Set :=
   | LegacyAnalyzed
-    (_ : revm_bytecode.legacy.links.analyzed.LegacyAnalyzedBytecode.t)
+    (_ : analyzed.LegacyAnalyzedBytecode.t)
   | Eof
-    (_ : alloc.links.sync.Arc.t revm_bytecode.links.eof.Eof.t alloc.links.alloc.Global.t)
+    (_ : sync.Arc.t eof.Eof.t alloc.Global.t)
   | Eip7702
-    (_ : revm_bytecode.links.eip7702.Eip7702Bytecode.t)
+    (_ : eip7702.Eip7702Bytecode.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -37,7 +37,7 @@ Module Bytecode.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_LegacyAnalyzed
-    (γ0 : revm_bytecode.legacy.links.analyzed.LegacyAnalyzedBytecode.t) (γ0' : Value.t) :
+    (γ0 : analyzed.LegacyAnalyzedBytecode.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed" [
       γ0
@@ -47,7 +47,7 @@ Module Bytecode.
   Smpl Add simple apply of_value_with_LegacyAnalyzed : of_value.
 
   Lemma of_value_with_Eof
-    (γ0 : alloc.links.sync.Arc.t revm_bytecode.links.eof.Eof.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : sync.Arc.t eof.Eof.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::bytecode::Bytecode::Eof" [
       γ0
@@ -57,7 +57,7 @@ Module Bytecode.
   Smpl Add simple apply of_value_with_Eof : of_value.
 
   Lemma of_value_with_Eip7702
-    (γ0 : revm_bytecode.links.eip7702.Eip7702Bytecode.t) (γ0' : Value.t) :
+    (γ0 : eip7702.Eip7702Bytecode.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::bytecode::Bytecode::Eip7702" [
       γ0
@@ -67,7 +67,7 @@ Module Bytecode.
   Smpl Add simple apply of_value_with_Eip7702 : of_value.
 
   Definition of_value_LegacyAnalyzed
-    (γ0 : revm_bytecode.legacy.links.analyzed.LegacyAnalyzedBytecode.t) (γ0' : Value.t) :
+    (γ0 : analyzed.LegacyAnalyzedBytecode.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed" [
@@ -78,7 +78,7 @@ Module Bytecode.
   Smpl Add simple apply of_value_LegacyAnalyzed : of_value.
 
   Definition of_value_Eof
-    (γ0 : alloc.links.sync.Arc.t revm_bytecode.links.eof.Eof.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : sync.Arc.t eof.Eof.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::bytecode::Bytecode::Eof" [
@@ -89,7 +89,7 @@ Module Bytecode.
   Smpl Add simple apply of_value_Eof : of_value.
 
   Definition of_value_Eip7702
-    (γ0 : revm_bytecode.links.eip7702.Eip7702Bytecode.t) (γ0' : Value.t) :
+    (γ0 : eip7702.Eip7702Bytecode.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::bytecode::Bytecode::Eip7702" [
@@ -98,14 +98,73 @@ Module Bytecode.
     ).
   Proof. econstructor; apply of_value_with_Eip7702; eassumption. Defined.
   Smpl Add simple apply of_value_Eip7702 : of_value.
+
+  Module SubPointer.
+    Definition get_LegacyAnalyzed_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | LegacyAnalyzed γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : analyzed.LegacyAnalyzedBytecode.t) :=
+        match γ with
+        | LegacyAnalyzed _ => Some (LegacyAnalyzed γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_LegacyAnalyzed_0_is_valid : SubPointer.Runner.Valid.t get_LegacyAnalyzed_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_LegacyAnalyzed_0_is_valid : run_sub_pointer.
+
+    Definition get_Eof_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::bytecode::Bytecode::Eof" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Eof γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : sync.Arc.t eof.Eof.t alloc.Global.t) :=
+        match γ with
+        | Eof _ => Some (Eof γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Eof_0_is_valid : SubPointer.Runner.Valid.t get_Eof_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Eof_0_is_valid : run_sub_pointer.
+
+    Definition get_Eip7702_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::bytecode::Bytecode::Eip7702" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Eip7702 γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : eip7702.Eip7702Bytecode.t) :=
+        match γ with
+        | Eip7702 _ => Some (Eip7702 γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Eip7702_0_is_valid : SubPointer.Runner.Valid.t get_Eip7702_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Eip7702_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End Bytecode.
 
 Module BytecodeDecodeError.
   Inductive t : Set :=
   | Eof
-    (_ : revm_bytecode.links.eof.EofDecodeError.t)
+    (_ : eof.EofDecodeError.t)
   | Eip7702
-    (_ : revm_bytecode.links.eip7702.Eip7702DecodeError.t)
+    (_ : eip7702.Eip7702DecodeError.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -128,7 +187,7 @@ Module BytecodeDecodeError.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Eof
-    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
+    (γ0 : eof.EofDecodeError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
       γ0
@@ -138,7 +197,7 @@ Module BytecodeDecodeError.
   Smpl Add simple apply of_value_with_Eof : of_value.
 
   Lemma of_value_with_Eip7702
-    (γ0 : revm_bytecode.links.eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
+    (γ0 : eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
       γ0
@@ -148,7 +207,7 @@ Module BytecodeDecodeError.
   Smpl Add simple apply of_value_with_Eip7702 : of_value.
 
   Definition of_value_Eof
-    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
+    (γ0 : eof.EofDecodeError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
@@ -159,7 +218,7 @@ Module BytecodeDecodeError.
   Smpl Add simple apply of_value_Eof : of_value.
 
   Definition of_value_Eip7702
-    (γ0 : revm_bytecode.links.eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
+    (γ0 : eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
@@ -168,13 +227,53 @@ Module BytecodeDecodeError.
     ).
   Proof. econstructor; apply of_value_with_Eip7702; eassumption. Defined.
   Smpl Add simple apply of_value_Eip7702 : of_value.
+
+  Module SubPointer.
+    Definition get_Eof_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Eof γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : eof.EofDecodeError.t) :=
+        match γ with
+        | Eof _ => Some (Eof γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Eof_0_is_valid : SubPointer.Runner.Valid.t get_Eof_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Eof_0_is_valid : run_sub_pointer.
+
+    Definition get_Eip7702_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Eip7702 γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : eip7702.Eip7702DecodeError.t) :=
+        match γ with
+        | Eip7702 _ => Some (Eip7702 γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Eip7702_0_is_valid : SubPointer.Runner.Valid.t get_Eip7702_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Eip7702_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End BytecodeDecodeError.
 
 Module Eip7702Bytecode.
   Record t : Set := {
-    delegated_address: alloy_primitives.bits.links.address.Address.t;
+    delegated_address: address.Address.t;
     version: U8.t;
-    raw: alloy_primitives.links.bytes_.Bytes.t;
+    raw: bytes_.Bytes.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -250,13 +349,17 @@ Module Eip7702DecodeError.
     ).
   Proof. econstructor; apply of_value_with_UnsupportedVersion; eassumption. Defined.
   Smpl Add simple apply of_value_UnsupportedVersion : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End Eip7702DecodeError.
 
 Module Eof.
   Record t : Set := {
-    header: revm_bytecode.eof.links.header.EofHeader.t;
-    body: revm_bytecode.eof.links.body.EofBody.t;
-    raw: alloy_primitives.links.bytes_.Bytes.t;
+    header: header.EofHeader.t;
+    body: body.EofBody.t;
+    raw: bytes_.Bytes.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -604,15 +707,19 @@ Module EofDecodeError.
     ).
   Proof. econstructor; apply of_value_with_InvalidEOFSize; eassumption. Defined.
   Smpl Add simple apply of_value_InvalidEOFSize : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End EofDecodeError.
 
 Module EofBody.
   Record t : Set := {
-    types_section: alloc.links.vec.Vec.t revm_bytecode.eof.links.types_section.TypesSection.t alloc.links.alloc.Global.t;
-    code_section: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
-    code: alloy_primitives.links.bytes_.Bytes.t;
-    container_section: alloc.links.vec.Vec.t alloy_primitives.links.bytes_.Bytes.t alloc.links.alloc.Global.t;
-    data_section: alloy_primitives.links.bytes_.Bytes.t;
+    types_section: vec.Vec.t types_section.TypesSection.t alloc.Global.t;
+    code_section: vec.Vec.t Usize.t alloc.Global.t;
+    code: bytes_.Bytes.t;
+    container_section: vec.Vec.t bytes_.Bytes.t alloc.Global.t;
+    data_section: bytes_.Bytes.t;
     is_data_filled: bool;
   }.
 
@@ -633,8 +740,8 @@ End EofBody.
 Module EofHeader.
   Record t : Set := {
     types_size: U16.t;
-    code_sizes: alloc.links.vec.Vec.t U16.t alloc.links.alloc.Global.t;
-    container_sizes: alloc.links.vec.Vec.t U16.t alloc.links.alloc.Global.t;
+    code_sizes: vec.Vec.t U16.t alloc.Global.t;
+    container_sizes: vec.Vec.t U16.t alloc.Global.t;
     data_size: U16.t;
     sum_code_sizes: Usize.t;
     sum_container_sizes: Usize.t;
@@ -675,9 +782,9 @@ End TypesSection.
 Module EofError.
   Inductive t : Set :=
   | Decode
-    (_ : revm_bytecode.links.eof.EofDecodeError.t)
+    (_ : eof.EofDecodeError.t)
   | Validation
-    (_ : revm_bytecode.eof.links.verification.EofValidationError.t)
+    (_ : verification.EofValidationError.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -700,7 +807,7 @@ Module EofError.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Decode
-    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
+    (γ0 : eof.EofDecodeError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::eof::verification::EofError::Decode" [
       γ0
@@ -710,7 +817,7 @@ Module EofError.
   Smpl Add simple apply of_value_with_Decode : of_value.
 
   Lemma of_value_with_Validation
-    (γ0 : revm_bytecode.eof.links.verification.EofValidationError.t) (γ0' : Value.t) :
+    (γ0 : verification.EofValidationError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_bytecode::eof::verification::EofError::Validation" [
       γ0
@@ -720,7 +827,7 @@ Module EofError.
   Smpl Add simple apply of_value_with_Validation : of_value.
 
   Definition of_value_Decode
-    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
+    (γ0 : eof.EofDecodeError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::eof::verification::EofError::Decode" [
@@ -731,7 +838,7 @@ Module EofError.
   Smpl Add simple apply of_value_Decode : of_value.
 
   Definition of_value_Validation
-    (γ0 : revm_bytecode.eof.links.verification.EofValidationError.t) (γ0' : Value.t) :
+    (γ0 : verification.EofValidationError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_bytecode::eof::verification::EofError::Validation" [
@@ -740,6 +847,46 @@ Module EofError.
     ).
   Proof. econstructor; apply of_value_with_Validation; eassumption. Defined.
   Smpl Add simple apply of_value_Validation : of_value.
+
+  Module SubPointer.
+    Definition get_Decode_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::eof::verification::EofError::Decode" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Decode γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : eof.EofDecodeError.t) :=
+        match γ with
+        | Decode _ => Some (Decode γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Decode_0_is_valid : SubPointer.Runner.Valid.t get_Decode_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Decode_0_is_valid : run_sub_pointer.
+
+    Definition get_Validation_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_bytecode::eof::verification::EofError::Validation" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Validation γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : verification.EofValidationError.t) :=
+        match γ with
+        | Validation _ => Some (Validation γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Validation_0_is_valid : SubPointer.Runner.Valid.t get_Validation_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Validation_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End EofError.
 
 Module EofValidationError.
@@ -1300,14 +1447,18 @@ Module EofValidationError.
     ).
   Proof. econstructor; apply of_value_with_NonReturningSectionIsReturning; eassumption. Defined.
   Smpl Add simple apply of_value_NonReturningSectionIsReturning : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End EofValidationError.
 
 Module AccessTracker.
   Record t : Set := {
-    this_container_code_type: core.links.option.Option.t revm_bytecode.eof.links.verification.CodeType.t;
-    codes: alloc.links.vec.Vec.t bool alloc.links.alloc.Global.t;
-    processing_stack: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
-    subcontainers: alloc.links.vec.Vec.t (core.links.option.Option.t revm_bytecode.eof.links.verification.CodeType.t) alloc.links.alloc.Global.t;
+    this_container_code_type: option.Option.t verification.CodeType.t;
+    codes: vec.Vec.t bool alloc.Global.t;
+    processing_stack: vec.Vec.t Usize.t alloc.Global.t;
+    subcontainers: vec.Vec.t (option.Option.t verification.CodeType.t) alloc.Global.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -1368,6 +1519,10 @@ Module CodeType.
     ).
   Proof. econstructor; apply of_value_with_ReturnOrStop; eassumption. Defined.
   Smpl Add simple apply of_value_ReturnOrStop : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End CodeType.
 
 Module InstructionInfo.
@@ -1392,9 +1547,9 @@ End InstructionInfo.
 
 Module LegacyAnalyzedBytecode.
   Record t : Set := {
-    bytecode: alloy_primitives.links.bytes_.Bytes.t;
+    bytecode: bytes_.Bytes.t;
     original_len: Usize.t;
-    jump_table: revm_bytecode.legacy.links.jump_map.JumpTable.t;
+    jump_table: jump_map.JumpTable.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -1454,6 +1609,10 @@ Module AnalysisKind.
     ).
   Proof. econstructor; apply of_value_with_Analyse; eassumption. Defined.
   Smpl Add simple apply of_value_Analyse : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End AnalysisKind.
 
 Module CreateScheme.
@@ -1513,6 +1672,27 @@ Module CreateScheme.
     ).
   Proof. econstructor; apply of_value_with_Create2; eassumption. Defined.
   Smpl Add simple apply of_value_Create2 : of_value.
+
+  Module SubPointer.
+    Definition get_Create2_salt : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::cfg::CreateScheme::Create2" "salt") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Create2 γ_salt => Some γ_salt
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_salt : ruint.Uint.t 256 4) :=
+        match γ with
+        | Create2 _ => Some (Create2 γ_salt)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Create2_salt_is_valid : SubPointer.Runner.Valid.t get_Create2_salt.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Create2_salt_is_valid : run_sub_pointer.
+  End SubPointer.
 End CreateScheme.
 
 Module SStoreResult.
@@ -1613,6 +1793,10 @@ Module TransferError.
     ).
   Proof. econstructor; apply of_value_with_CreateCollision; eassumption. Defined.
   Smpl Add simple apply of_value_CreateCollision : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End TransferError.
 
 Module JournalCheckpoint.
@@ -1651,7 +1835,7 @@ End StateLoad.
 
 Module AccountLoad.
   Record t : Set := {
-    load: revm_context_interface.links.journaled_state.Eip7702CodeLoad.t ();
+    load: journaled_state.Eip7702CodeLoad.t ();
     is_empty: bool;
   }.
 
@@ -1667,8 +1851,8 @@ End AccountLoad.
 
 Module Eip7702CodeLoad.
   Record t {T: Set} : Set := {
-    state_load: revm_context_interface.links.journaled_state.StateLoad.t T;
-    is_delegate_account_cold: core.links.option.Option.t bool;
+    state_load: journaled_state.StateLoad.t T;
+    is_delegate_account_cold: option.Option.t bool;
   }.
   Arguments Build_t {_}.
   Arguments t : clear implicits.
@@ -1685,8 +1869,8 @@ End Eip7702CodeLoad.
 
 Module ResultAndState.
   Record t {HaltReasonT: Set} : Set := {
-    result: revm_context_interface.links.result.ExecutionResult.t HaltReasonT;
-    state: hashbrown.links.map.HashMap.t alloy_primitives.bits.links.address.Address.t revm_state.Account.t foldhash.seed.links.fast.RandomState.t hashbrown.raw.alloc.links.inner.Global.t;
+    result: result.ExecutionResult.t HaltReasonT;
+    state: map.HashMap.t address.Address.t revm_state.Account.t fast.RandomState.t inner.Global.t;
   }.
   Arguments Build_t {_}.
   Arguments t : clear implicits.
@@ -1704,14 +1888,14 @@ End ResultAndState.
 Module ExecutionResult.
   Inductive t (HaltReasonT: Set) : Set :=
   | Success
-    (reason : revm_context_interface.links.result.SuccessReason.t)
+    (reason : result.SuccessReason.t)
     (gas_used : U64.t)
     (gas_refunded : U64.t)
-    (logs : alloc.links.vec.Vec.t (alloy_primitives.links.log.Log.t alloy_primitives.links.log.LogData.t) alloc.links.alloc.Global.t)
-    (output : revm_context_interface.links.result.Output.t)
+    (logs : vec.Vec.t (log.Log.t log.LogData.t) alloc.Global.t)
+    (output : result.Output.t)
   | Revert
     (gas_used : U64.t)
-    (output : alloy_primitives.links.bytes_.Bytes.t)
+    (output : bytes_.Bytes.t)
   | Halt
     (reason : HaltReasonT)
     (gas_used : U64.t)
@@ -1748,11 +1932,11 @@ Module ExecutionResult.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Success
-    (reason : revm_context_interface.links.result.SuccessReason.t) (reason' : Value.t)
+    (reason : result.SuccessReason.t) (reason' : Value.t)
     (gas_used : U64.t) (gas_used' : Value.t)
     (gas_refunded : U64.t) (gas_refunded' : Value.t)
-    (logs : alloc.links.vec.Vec.t (alloy_primitives.links.log.Log.t alloy_primitives.links.log.LogData.t) alloc.links.alloc.Global.t) (logs' : Value.t)
-    (output : revm_context_interface.links.result.Output.t) (output' : Value.t) :
+    (logs : vec.Vec.t (log.Log.t log.LogData.t) alloc.Global.t) (logs' : Value.t)
+    (output : result.Output.t) (output' : Value.t) :
     reason' = φ reason ->
     gas_used' = φ gas_used ->
     gas_refunded' = φ gas_refunded ->
@@ -1771,7 +1955,7 @@ Module ExecutionResult.
 
   Lemma of_value_with_Revert
     (gas_used : U64.t) (gas_used' : Value.t)
-    (output : alloy_primitives.links.bytes_.Bytes.t) (output' : Value.t) :
+    (output : bytes_.Bytes.t) (output' : Value.t) :
     gas_used' = φ gas_used ->
     output' = φ output ->
     Value.StructRecord "revm_context_interface::result::ExecutionResult::Revert" [
@@ -1796,11 +1980,11 @@ Module ExecutionResult.
   Smpl Add simple apply of_value_with_Halt : of_value.
 
   Definition of_value_Success
-    (reason : revm_context_interface.links.result.SuccessReason.t) (reason' : Value.t)
+    (reason : result.SuccessReason.t) (reason' : Value.t)
     (gas_used : U64.t) (gas_used' : Value.t)
     (gas_refunded : U64.t) (gas_refunded' : Value.t)
-    (logs : alloc.links.vec.Vec.t (alloy_primitives.links.log.Log.t alloy_primitives.links.log.LogData.t) alloc.links.alloc.Global.t) (logs' : Value.t)
-    (output : revm_context_interface.links.result.Output.t) (output' : Value.t) :
+    (logs : vec.Vec.t (log.Log.t log.LogData.t) alloc.Global.t) (logs' : Value.t)
+    (output : result.Output.t) (output' : Value.t) :
     reason' = φ reason ->
     gas_used' = φ gas_used ->
     gas_refunded' = φ gas_refunded ->
@@ -1820,7 +2004,7 @@ Module ExecutionResult.
 
   Definition of_value_Revert
     (gas_used : U64.t) (gas_used' : Value.t)
-    (output : alloy_primitives.links.bytes_.Bytes.t) (output' : Value.t) :
+    (output : bytes_.Bytes.t) (output' : Value.t) :
     gas_used' = φ gas_used ->
     output' = φ output ->
     OfValue.t (
@@ -1845,15 +2029,188 @@ Module ExecutionResult.
     ).
   Proof. econstructor; apply of_value_with_Halt; eassumption. Defined.
   Smpl Add simple apply of_value_Halt : of_value.
+
+  Module SubPointer.
+    Definition get_Success_reason : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Success" "reason") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Success γ_reason _ _ _ _ => Some γ_reason
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_reason : result.SuccessReason.t) :=
+        match γ with
+        | Success _ γ_gas_used γ_gas_refunded γ_logs γ_output => Some (Success γ_reason γ_gas_used γ_gas_refunded γ_logs γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Success_reason_is_valid : SubPointer.Runner.Valid.t get_Success_reason.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Success_reason_is_valid : run_sub_pointer.
+
+    Definition get_Success_gas_used : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Success" "gas_used") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Success _ γ_gas_used _ _ _ => Some γ_gas_used
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_gas_used : U64.t) :=
+        match γ with
+        | Success γ_reason _ γ_gas_refunded γ_logs γ_output => Some (Success γ_reason γ_gas_used γ_gas_refunded γ_logs γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Success_gas_used_is_valid : SubPointer.Runner.Valid.t get_Success_gas_used.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Success_gas_used_is_valid : run_sub_pointer.
+
+    Definition get_Success_gas_refunded : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Success" "gas_refunded") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Success _ _ γ_gas_refunded _ _ => Some γ_gas_refunded
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_gas_refunded : U64.t) :=
+        match γ with
+        | Success γ_reason γ_gas_used _ γ_logs γ_output => Some (Success γ_reason γ_gas_used γ_gas_refunded γ_logs γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Success_gas_refunded_is_valid : SubPointer.Runner.Valid.t get_Success_gas_refunded.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Success_gas_refunded_is_valid : run_sub_pointer.
+
+    Definition get_Success_logs : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Success" "logs") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Success _ _ _ γ_logs _ => Some γ_logs
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_logs : vec.Vec.t (log.Log.t log.LogData.t) alloc.Global.t) :=
+        match γ with
+        | Success γ_reason γ_gas_used γ_gas_refunded _ γ_output => Some (Success γ_reason γ_gas_used γ_gas_refunded γ_logs γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Success_logs_is_valid : SubPointer.Runner.Valid.t get_Success_logs.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Success_logs_is_valid : run_sub_pointer.
+
+    Definition get_Success_output : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Success" "output") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Success _ _ _ _ γ_output => Some γ_output
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_output : result.Output.t) :=
+        match γ with
+        | Success γ_reason γ_gas_used γ_gas_refunded γ_logs _ => Some (Success γ_reason γ_gas_used γ_gas_refunded γ_logs γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Success_output_is_valid : SubPointer.Runner.Valid.t get_Success_output.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Success_output_is_valid : run_sub_pointer.
+
+    Definition get_Revert_gas_used : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Revert" "gas_used") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Revert γ_gas_used _ => Some γ_gas_used
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_gas_used : U64.t) :=
+        match γ with
+        | Revert _ γ_output => Some (Revert γ_gas_used γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Revert_gas_used_is_valid : SubPointer.Runner.Valid.t get_Revert_gas_used.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Revert_gas_used_is_valid : run_sub_pointer.
+
+    Definition get_Revert_output : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Revert" "output") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Revert _ γ_output => Some γ_output
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_output : bytes_.Bytes.t) :=
+        match γ with
+        | Revert γ_gas_used _ => Some (Revert γ_gas_used γ_output)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Revert_output_is_valid : SubPointer.Runner.Valid.t get_Revert_output.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Revert_output_is_valid : run_sub_pointer.
+
+    Definition get_Halt_reason : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Halt" "reason") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Halt γ_reason _ => Some γ_reason
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_reason : HaltReasonT) :=
+        match γ with
+        | Halt _ γ_gas_used => Some (Halt γ_reason γ_gas_used)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Halt_reason_is_valid : SubPointer.Runner.Valid.t get_Halt_reason.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Halt_reason_is_valid : run_sub_pointer.
+
+    Definition get_Halt_gas_used : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::ExecutionResult::Halt" "gas_used") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Halt _ γ_gas_used => Some γ_gas_used
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_gas_used : U64.t) :=
+        match γ with
+        | Halt γ_reason _ => Some (Halt γ_reason γ_gas_used)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Halt_gas_used_is_valid : SubPointer.Runner.Valid.t get_Halt_gas_used.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Halt_gas_used_is_valid : run_sub_pointer.
+  End SubPointer.
 End ExecutionResult.
 
 Module Output.
   Inductive t : Set :=
   | Call
-    (_ : alloy_primitives.links.bytes_.Bytes.t)
+    (_ : bytes_.Bytes.t)
   | Create
-    (_ : alloy_primitives.links.bytes_.Bytes.t)
-    (_ : core.links.option.Option.t alloy_primitives.bits.links.address.Address.t)
+    (_ : bytes_.Bytes.t)
+    (_ : option.Option.t address.Address.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -1877,7 +2234,7 @@ Module Output.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Call
-    (γ0 : alloy_primitives.links.bytes_.Bytes.t) (γ0' : Value.t) :
+    (γ0 : bytes_.Bytes.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_context_interface::result::Output::Call" [
       γ0
@@ -1887,8 +2244,8 @@ Module Output.
   Smpl Add simple apply of_value_with_Call : of_value.
 
   Lemma of_value_with_Create
-    (γ0 : alloy_primitives.links.bytes_.Bytes.t) (γ0' : Value.t)
-    (γ1 : core.links.option.Option.t alloy_primitives.bits.links.address.Address.t) (γ1' : Value.t) :
+    (γ0 : bytes_.Bytes.t) (γ0' : Value.t)
+    (γ1 : option.Option.t address.Address.t) (γ1' : Value.t) :
     γ0' = φ γ0 ->
     γ1' = φ γ1 ->
     Value.StructTuple "revm_context_interface::result::Output::Create" [
@@ -1900,7 +2257,7 @@ Module Output.
   Smpl Add simple apply of_value_with_Create : of_value.
 
   Definition of_value_Call
-    (γ0 : alloy_primitives.links.bytes_.Bytes.t) (γ0' : Value.t) :
+    (γ0 : bytes_.Bytes.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_context_interface::result::Output::Call" [
@@ -1911,8 +2268,8 @@ Module Output.
   Smpl Add simple apply of_value_Call : of_value.
 
   Definition of_value_Create
-    (γ0 : alloy_primitives.links.bytes_.Bytes.t) (γ0' : Value.t)
-    (γ1 : core.links.option.Option.t alloy_primitives.bits.links.address.Address.t) (γ1' : Value.t) :
+    (γ0 : bytes_.Bytes.t) (γ0' : Value.t)
+    (γ1 : option.Option.t address.Address.t) (γ1' : Value.t) :
     γ0' = φ γ0 ->
     γ1' = φ γ1 ->
     OfValue.t (
@@ -1923,6 +2280,65 @@ Module Output.
     ).
   Proof. econstructor; apply of_value_with_Create; eassumption. Defined.
   Smpl Add simple apply of_value_Create : of_value.
+
+  Module SubPointer.
+    Definition get_Call_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::Output::Call" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Call γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : bytes_.Bytes.t) :=
+        match γ with
+        | Call _ => Some (Call γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Call_0_is_valid : SubPointer.Runner.Valid.t get_Call_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Call_0_is_valid : run_sub_pointer.
+
+    Definition get_Create_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::Output::Create" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Create γ_0 _ => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : bytes_.Bytes.t) :=
+        match γ with
+        | Create _ γ_1 => Some (Create γ_0 γ_1)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Create_0_is_valid : SubPointer.Runner.Valid.t get_Create_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Create_0_is_valid : run_sub_pointer.
+
+    Definition get_Create_1 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::Output::Create" 1) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Create _ γ_1 => Some γ_1
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_1 : option.Option.t address.Address.t) :=
+        match γ with
+        | Create γ_0 _ => Some (Create γ_0 γ_1)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Create_1_is_valid : SubPointer.Runner.Valid.t get_Create_1.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Create_1_is_valid : run_sub_pointer.
+  End SubPointer.
 End Output.
 
 Module EVMError.
@@ -1930,13 +2346,13 @@ Module EVMError.
   | Transaction
     (_ : TransactionError)
   | Header
-    (_ : revm_context_interface.links.result.InvalidHeader.t)
+    (_ : result.InvalidHeader.t)
   | Database
     (_ : DBError)
   | Custom
-    (_ : alloc.links.string.String.t)
+    (_ : string.String.t)
   | Precompile
-    (_ : alloc.links.string.String.t)
+    (_ : string.String.t)
   .
   Arguments Transaction Header Database Custom Precompile {_ _}.
 
@@ -1982,7 +2398,7 @@ Module EVMError.
   Smpl Add simple apply of_value_with_Transaction : of_value.
 
   Lemma of_value_with_Header
-    (γ0 : revm_context_interface.links.result.InvalidHeader.t) (γ0' : Value.t) :
+    (γ0 : result.InvalidHeader.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_context_interface::result::EVMError::Header" [
       γ0
@@ -2002,7 +2418,7 @@ Module EVMError.
   Smpl Add simple apply of_value_with_Database : of_value.
 
   Lemma of_value_with_Custom
-    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    (γ0 : string.String.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_context_interface::result::EVMError::Custom" [
       γ0
@@ -2012,7 +2428,7 @@ Module EVMError.
   Smpl Add simple apply of_value_with_Custom : of_value.
 
   Lemma of_value_with_Precompile
-    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    (γ0 : string.String.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_context_interface::result::EVMError::Precompile" [
       γ0
@@ -2033,7 +2449,7 @@ Module EVMError.
   Smpl Add simple apply of_value_Transaction : of_value.
 
   Definition of_value_Header
-    (γ0 : revm_context_interface.links.result.InvalidHeader.t) (γ0' : Value.t) :
+    (γ0 : result.InvalidHeader.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_context_interface::result::EVMError::Header" [
@@ -2055,7 +2471,7 @@ Module EVMError.
   Smpl Add simple apply of_value_Database : of_value.
 
   Definition of_value_Custom
-    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    (γ0 : string.String.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_context_interface::result::EVMError::Custom" [
@@ -2066,7 +2482,7 @@ Module EVMError.
   Smpl Add simple apply of_value_Custom : of_value.
 
   Definition of_value_Precompile
-    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    (γ0 : string.String.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_context_interface::result::EVMError::Precompile" [
@@ -2075,6 +2491,103 @@ Module EVMError.
     ).
   Proof. econstructor; apply of_value_with_Precompile; eassumption. Defined.
   Smpl Add simple apply of_value_Precompile : of_value.
+
+  Module SubPointer.
+    Definition get_Transaction_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::EVMError::Transaction" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Transaction γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : TransactionError) :=
+        match γ with
+        | Transaction _ => Some (Transaction γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Transaction_0_is_valid : SubPointer.Runner.Valid.t get_Transaction_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Transaction_0_is_valid : run_sub_pointer.
+
+    Definition get_Header_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::EVMError::Header" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Header γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : result.InvalidHeader.t) :=
+        match γ with
+        | Header _ => Some (Header γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Header_0_is_valid : SubPointer.Runner.Valid.t get_Header_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Header_0_is_valid : run_sub_pointer.
+
+    Definition get_Database_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::EVMError::Database" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Database γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : DBError) :=
+        match γ with
+        | Database _ => Some (Database γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Database_0_is_valid : SubPointer.Runner.Valid.t get_Database_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Database_0_is_valid : run_sub_pointer.
+
+    Definition get_Custom_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::EVMError::Custom" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Custom γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : string.String.t) :=
+        match γ with
+        | Custom _ => Some (Custom γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Custom_0_is_valid : SubPointer.Runner.Valid.t get_Custom_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Custom_0_is_valid : run_sub_pointer.
+
+    Definition get_Precompile_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::EVMError::Precompile" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Precompile γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : string.String.t) :=
+        match γ with
+        | Precompile _ => Some (Precompile γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Precompile_0_is_valid : SubPointer.Runner.Valid.t get_Precompile_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Precompile_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End EVMError.
 
 Module InvalidTransaction.
@@ -2085,8 +2598,8 @@ Module InvalidTransaction.
   | CallGasCostMoreThanGasLimit
   | RejectCallerWithCode
   | LackOfFundForMaxFee
-    (fee : alloc.links.boxed.Box.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t)
-    (balance : alloc.links.boxed.Box.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t)
+    (fee : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t)
+    (balance : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t)
   | OverflowPaymentInTransaction
   | NonceOverflowInTransaction
   | NonceTooHigh
@@ -2112,7 +2625,7 @@ Module InvalidTransaction.
   | AuthorizationListInvalidFields
   | EmptyAuthorizationList
   | InvalidAuthorizationList
-    (_ : revm_specification.eip7702.links.authorization_list.InvalidAuthorization.t)
+    (_ : authorization_list.InvalidAuthorization.t)
   | Eip2930NotSupported
   | Eip1559NotSupported
   | Eip4844NotSupported
@@ -2233,8 +2746,8 @@ Module InvalidTransaction.
   Smpl Add simple apply of_value_with_RejectCallerWithCode : of_value.
 
   Lemma of_value_with_LackOfFundForMaxFee
-    (fee : alloc.links.boxed.Box.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t) (fee' : Value.t)
-    (balance : alloc.links.boxed.Box.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t) (balance' : Value.t) :
+    (fee : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t) (fee' : Value.t)
+    (balance : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t) (balance' : Value.t) :
     fee' = φ fee ->
     balance' = φ balance ->
     Value.StructRecord "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee" [
@@ -2375,7 +2888,7 @@ Module InvalidTransaction.
   Smpl Add simple apply of_value_with_EmptyAuthorizationList : of_value.
 
   Lemma of_value_with_InvalidAuthorizationList
-    (γ0 : revm_specification.eip7702.links.authorization_list.InvalidAuthorization.t) (γ0' : Value.t) :
+    (γ0 : authorization_list.InvalidAuthorization.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList" [
       γ0
@@ -2444,8 +2957,8 @@ Module InvalidTransaction.
   Smpl Add simple apply of_value_RejectCallerWithCode : of_value.
 
   Definition of_value_LackOfFundForMaxFee
-    (fee : alloc.links.boxed.Box.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t) (fee' : Value.t)
-    (balance : alloc.links.boxed.Box.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t) (balance' : Value.t) :
+    (fee : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t) (fee' : Value.t)
+    (balance : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t) (balance' : Value.t) :
     fee' = φ fee ->
     balance' = φ balance ->
     OfValue.t (
@@ -2605,7 +3118,7 @@ Module InvalidTransaction.
   Smpl Add simple apply of_value_EmptyAuthorizationList : of_value.
 
   Definition of_value_InvalidAuthorizationList
-    (γ0 : revm_specification.eip7702.links.authorization_list.InvalidAuthorization.t) (γ0' : Value.t) :
+    (γ0 : authorization_list.InvalidAuthorization.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList" [
@@ -2642,6 +3155,179 @@ Module InvalidTransaction.
     ).
   Proof. econstructor; apply of_value_with_Eip7702NotSupported; eassumption. Defined.
   Smpl Add simple apply of_value_Eip7702NotSupported : of_value.
+
+  Module SubPointer.
+    Definition get_LackOfFundForMaxFee_fee : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee" "fee") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | LackOfFundForMaxFee γ_fee _ => Some γ_fee
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_fee : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t) :=
+        match γ with
+        | LackOfFundForMaxFee _ γ_balance => Some (LackOfFundForMaxFee γ_fee γ_balance)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_LackOfFundForMaxFee_fee_is_valid : SubPointer.Runner.Valid.t get_LackOfFundForMaxFee_fee.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_LackOfFundForMaxFee_fee_is_valid : run_sub_pointer.
+
+    Definition get_LackOfFundForMaxFee_balance : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee" "balance") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | LackOfFundForMaxFee _ γ_balance => Some γ_balance
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_balance : boxed.Box.t (ruint.Uint.t 256 4) alloc.Global.t) :=
+        match γ with
+        | LackOfFundForMaxFee γ_fee _ => Some (LackOfFundForMaxFee γ_fee γ_balance)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_LackOfFundForMaxFee_balance_is_valid : SubPointer.Runner.Valid.t get_LackOfFundForMaxFee_balance.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_LackOfFundForMaxFee_balance_is_valid : run_sub_pointer.
+
+    Definition get_NonceTooHigh_tx : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::NonceTooHigh" "tx") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | NonceTooHigh γ_tx _ => Some γ_tx
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_tx : U64.t) :=
+        match γ with
+        | NonceTooHigh _ γ_state => Some (NonceTooHigh γ_tx γ_state)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_NonceTooHigh_tx_is_valid : SubPointer.Runner.Valid.t get_NonceTooHigh_tx.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_NonceTooHigh_tx_is_valid : run_sub_pointer.
+
+    Definition get_NonceTooHigh_state : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::NonceTooHigh" "state") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | NonceTooHigh _ γ_state => Some γ_state
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_state : U64.t) :=
+        match γ with
+        | NonceTooHigh γ_tx _ => Some (NonceTooHigh γ_tx γ_state)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_NonceTooHigh_state_is_valid : SubPointer.Runner.Valid.t get_NonceTooHigh_state.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_NonceTooHigh_state_is_valid : run_sub_pointer.
+
+    Definition get_NonceTooLow_tx : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::NonceTooLow" "tx") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | NonceTooLow γ_tx _ => Some γ_tx
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_tx : U64.t) :=
+        match γ with
+        | NonceTooLow _ γ_state => Some (NonceTooLow γ_tx γ_state)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_NonceTooLow_tx_is_valid : SubPointer.Runner.Valid.t get_NonceTooLow_tx.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_NonceTooLow_tx_is_valid : run_sub_pointer.
+
+    Definition get_NonceTooLow_state : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::NonceTooLow" "state") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | NonceTooLow _ γ_state => Some γ_state
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_state : U64.t) :=
+        match γ with
+        | NonceTooLow γ_tx _ => Some (NonceTooLow γ_tx γ_state)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_NonceTooLow_state_is_valid : SubPointer.Runner.Valid.t get_NonceTooLow_state.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_NonceTooLow_state_is_valid : run_sub_pointer.
+
+    Definition get_TooManyBlobs_max : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::TooManyBlobs" "max") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | TooManyBlobs γ_max _ => Some γ_max
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_max : Usize.t) :=
+        match γ with
+        | TooManyBlobs _ γ_have => Some (TooManyBlobs γ_max γ_have)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_TooManyBlobs_max_is_valid : SubPointer.Runner.Valid.t get_TooManyBlobs_max.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_TooManyBlobs_max_is_valid : run_sub_pointer.
+
+    Definition get_TooManyBlobs_have : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::result::InvalidTransaction::TooManyBlobs" "have") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | TooManyBlobs _ γ_have => Some γ_have
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_have : Usize.t) :=
+        match γ with
+        | TooManyBlobs γ_max _ => Some (TooManyBlobs γ_max γ_have)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_TooManyBlobs_have_is_valid : SubPointer.Runner.Valid.t get_TooManyBlobs_have.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_TooManyBlobs_have_is_valid : run_sub_pointer.
+
+    Definition get_InvalidAuthorizationList_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | InvalidAuthorizationList γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : authorization_list.InvalidAuthorization.t) :=
+        match γ with
+        | InvalidAuthorizationList _ => Some (InvalidAuthorizationList γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_InvalidAuthorizationList_0_is_valid : SubPointer.Runner.Valid.t get_InvalidAuthorizationList_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_InvalidAuthorizationList_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End InvalidTransaction.
 
 Module InvalidHeader.
@@ -2690,6 +3376,10 @@ Module InvalidHeader.
     ).
   Proof. econstructor; apply of_value_with_ExcessBlobGasNotSet; eassumption. Defined.
   Smpl Add simple apply of_value_ExcessBlobGasNotSet : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End InvalidHeader.
 
 Module SuccessReason.
@@ -2770,12 +3460,16 @@ Module SuccessReason.
     ).
   Proof. econstructor; apply of_value_with_EofReturnContract; eassumption. Defined.
   Smpl Add simple apply of_value_EofReturnContract : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End SuccessReason.
 
 Module HaltReason.
   Inductive t : Set :=
   | OutOfGas
-    (_ : revm_context_interface.links.result.OutOfGasError.t)
+    (_ : result.OutOfGasError.t)
   | OpcodeNotFound
   | InvalidFEOpcode
   | InvalidJump
@@ -2860,7 +3554,7 @@ Module HaltReason.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_OutOfGas
-    (γ0 : revm_context_interface.links.result.OutOfGasError.t) (γ0' : Value.t) :
+    (γ0 : result.OutOfGasError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_context_interface::result::HaltReason::OutOfGas" [
       γ0
@@ -3002,7 +3696,7 @@ Module HaltReason.
   Smpl Add simple apply of_value_with_InvalidEXTCALLTarget : of_value.
 
   Definition of_value_OutOfGas
-    (γ0 : revm_context_interface.links.result.OutOfGasError.t) (γ0' : Value.t) :
+    (γ0 : result.OutOfGasError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_context_interface::result::HaltReason::OutOfGas" [
@@ -3165,6 +3859,27 @@ Module HaltReason.
     ).
   Proof. econstructor; apply of_value_with_InvalidEXTCALLTarget; eassumption. Defined.
   Smpl Add simple apply of_value_InvalidEXTCALLTarget : of_value.
+
+  Module SubPointer.
+    Definition get_OutOfGas_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_context_interface::result::HaltReason::OutOfGas" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | OutOfGas γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : result.OutOfGasError.t) :=
+        match γ with
+        | OutOfGas _ => Some (OutOfGas γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_OutOfGas_0_is_valid : SubPointer.Runner.Valid.t get_OutOfGas_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_OutOfGas_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End HaltReason.
 
 Module OutOfGasError.
@@ -3277,6 +3992,10 @@ Module OutOfGasError.
     ).
   Proof. econstructor; apply of_value_with_ReentrancySentry; eassumption. Defined.
   Smpl Add simple apply of_value_ReentrancySentry : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End OutOfGasError.
 
 Module BlobExcessGasAndPrice.
@@ -3300,9 +4019,9 @@ Module DummyHost.
     tx: TX;
     block: BLOCK;
     cfg: CFG;
-    storage: hashbrown.links.map.HashMap.t (ruint.Uint.t 256 4) (ruint.Uint.t 256 4) foldhash.seed.links.fast.RandomState.t hashbrown.raw.alloc.links.inner.Global.t;
-    transient_storage: hashbrown.links.map.HashMap.t (ruint.Uint.t 256 4) (ruint.Uint.t 256 4) foldhash.seed.links.fast.RandomState.t hashbrown.raw.alloc.links.inner.Global.t;
-    log: alloc.links.vec.Vec.t (alloy_primitives.links.log.Log.t alloy_primitives.links.log.LogData.t) alloc.links.alloc.Global.t;
+    storage: map.HashMap.t (ruint.Uint.t 256 4) (ruint.Uint.t 256 4) fast.RandomState.t inner.Global.t;
+    transient_storage: map.HashMap.t (ruint.Uint.t 256 4) (ruint.Uint.t 256 4) fast.RandomState.t inner.Global.t;
+    log: vec.Vec.t (log.Log.t log.LogData.t) alloc.Global.t;
   }.
   Arguments Build_t {_ _ _}.
   Arguments t : clear implicits.
@@ -3431,6 +4150,10 @@ Module TransactionType.
     ).
   Proof. econstructor; apply of_value_with_Custom; eassumption. Defined.
   Smpl Add simple apply of_value_Custom : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End TransactionType.
 
 Module Gas.
@@ -3438,7 +4161,7 @@ Module Gas.
     limit: U64.t;
     remaining: U64.t;
     refunded: I64.t;
-    memory: revm_interpreter.links.gas.MemoryGas.t;
+    memory: gas.MemoryGas.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -3515,6 +4238,10 @@ Module MemoryExtensionResult.
     ).
   Proof. econstructor; apply of_value_with_OutOfGas; eassumption. Defined.
   Smpl Add simple apply of_value_OutOfGas : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End MemoryExtensionResult.
 
 Module MemoryGas.
@@ -4203,6 +4930,10 @@ Module InstructionResult.
     ).
   Proof. econstructor; apply of_value_with_InvalidEXTCALLTarget; eassumption. Defined.
   Smpl Add simple apply of_value_InvalidEXTCALLTarget : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End InstructionResult.
 
 Module InternalResult.
@@ -4283,18 +5014,22 @@ Module InternalResult.
     ).
   Proof. econstructor; apply of_value_with_InvalidExtDelegateCallTarget; eassumption. Defined.
   Smpl Add simple apply of_value_InvalidExtDelegateCallTarget : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End InternalResult.
 
 Module SuccessOrHalt.
   Inductive t (HaltReasonT: Set) : Set :=
   | Success
-    (_ : revm_context_interface.links.result.SuccessReason.t)
+    (_ : result.SuccessReason.t)
   | Revert
   | Halt
     (_ : HaltReasonT)
   | FatalExternalError
   | Internal
-    (_ : revm_interpreter.links.instruction_result.InternalResult.t)
+    (_ : instruction_result.InternalResult.t)
   .
   Arguments Success Revert Halt FatalExternalError Internal {_}.
 
@@ -4326,7 +5061,7 @@ Module SuccessOrHalt.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Success
-    (γ0 : revm_context_interface.links.result.SuccessReason.t) (γ0' : Value.t) :
+    (γ0 : result.SuccessReason.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Success" [
       γ0
@@ -4358,7 +5093,7 @@ Module SuccessOrHalt.
   Smpl Add simple apply of_value_with_FatalExternalError : of_value.
 
   Lemma of_value_with_Internal
-    (γ0 : revm_interpreter.links.instruction_result.InternalResult.t) (γ0' : Value.t) :
+    (γ0 : instruction_result.InternalResult.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Internal" [
       γ0
@@ -4368,7 +5103,7 @@ Module SuccessOrHalt.
   Smpl Add simple apply of_value_with_Internal : of_value.
 
   Definition of_value_Success
-    (γ0 : revm_context_interface.links.result.SuccessReason.t) (γ0' : Value.t) :
+    (γ0 : result.SuccessReason.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Success" [
@@ -4404,7 +5139,7 @@ Module SuccessOrHalt.
   Smpl Add simple apply of_value_FatalExternalError : of_value.
 
   Definition of_value_Internal
-    (γ0 : revm_interpreter.links.instruction_result.InternalResult.t) (γ0' : Value.t) :
+    (γ0 : instruction_result.InternalResult.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Internal" [
@@ -4413,6 +5148,65 @@ Module SuccessOrHalt.
     ).
   Proof. econstructor; apply of_value_with_Internal; eassumption. Defined.
   Smpl Add simple apply of_value_Internal : of_value.
+
+  Module SubPointer.
+    Definition get_Success_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Success" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Success γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : result.SuccessReason.t) :=
+        match γ with
+        | Success _ => Some (Success γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Success_0_is_valid : SubPointer.Runner.Valid.t get_Success_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Success_0_is_valid : run_sub_pointer.
+
+    Definition get_Halt_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Halt" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Halt γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : HaltReasonT) :=
+        match γ with
+        | Halt _ => Some (Halt γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Halt_0_is_valid : SubPointer.Runner.Valid.t get_Halt_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Halt_0_is_valid : run_sub_pointer.
+
+    Definition get_Internal_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::instruction_result::SuccessOrHalt::Internal" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Internal γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : instruction_result.InternalResult.t) :=
+        match γ with
+        | Internal _ => Some (Internal γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Internal_0_is_valid : SubPointer.Runner.Valid.t get_Internal_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Internal_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End SuccessOrHalt.
 
 Module Interpreter.
@@ -4449,7 +5243,7 @@ End Interpreter.
 
 Module EthInterpreter.
   Record t {EXT MG: Set} : Set := {
-    _phantom: core.links.marker.PhantomData.t (Function0.t (EXT * MG));
+    _phantom: marker.PhantomData.t (Function0.t (EXT * MG));
   }.
   Arguments Build_t {_ _}.
   Arguments t : clear implicits.
@@ -4465,7 +5259,7 @@ End EthInterpreter.
 
 Module EthInstructionProvider.
   Record t {WIRE HOST: Set} : Set := {
-    instruction_table: alloc.links.rc.Rc.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t WIRE)) (Ref.t Pointer.Kind.MutRef HOST) ())) alloc.links.alloc.Global.t;
+    instruction_table: rc.Rc.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (interpreter.Interpreter.t WIRE)) (Ref.t Pointer.Kind.MutRef HOST) ())) alloc.Global.t;
   }.
   Arguments Build_t {_ _}.
   Arguments t : clear implicits.
@@ -4481,9 +5275,9 @@ End EthInstructionProvider.
 
 Module InterpreterResult.
   Record t : Set := {
-    result: revm_interpreter.links.instruction_result.InstructionResult.t;
-    output: alloy_primitives.links.bytes_.Bytes.t;
-    gas: revm_interpreter.links.gas.Gas.t;
+    result: instruction_result.InstructionResult.t;
+    output: bytes_.Bytes.t;
+    gas: gas.Gas.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -4500,11 +5294,11 @@ End InterpreterResult.
 Module FrameInput.
   Inductive t : Set :=
   | Call
-    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t)
+    (_ : boxed.Box.t call_inputs.CallInputs.t alloc.Global.t)
   | Create
-    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t)
+    (_ : boxed.Box.t create_inputs.CreateInputs.t alloc.Global.t)
   | EOFCreate
-    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t)
+    (_ : boxed.Box.t eof_create_inputs.EOFCreateInputs.t alloc.Global.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -4531,7 +5325,7 @@ Module FrameInput.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Call
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t call_inputs.CallInputs.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
       γ0
@@ -4541,7 +5335,7 @@ Module FrameInput.
   Smpl Add simple apply of_value_with_Call : of_value.
 
   Lemma of_value_with_Create
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t create_inputs.CreateInputs.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
       γ0
@@ -4551,7 +5345,7 @@ Module FrameInput.
   Smpl Add simple apply of_value_with_Create : of_value.
 
   Lemma of_value_with_EOFCreate
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t eof_create_inputs.EOFCreateInputs.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
       γ0
@@ -4561,7 +5355,7 @@ Module FrameInput.
   Smpl Add simple apply of_value_with_EOFCreate : of_value.
 
   Definition of_value_Call
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t call_inputs.CallInputs.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
@@ -4572,7 +5366,7 @@ Module FrameInput.
   Smpl Add simple apply of_value_Call : of_value.
 
   Definition of_value_Create
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t create_inputs.CreateInputs.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
@@ -4583,7 +5377,7 @@ Module FrameInput.
   Smpl Add simple apply of_value_Create : of_value.
 
   Definition of_value_EOFCreate
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t eof_create_inputs.EOFCreateInputs.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
@@ -4592,14 +5386,73 @@ Module FrameInput.
     ).
   Proof. econstructor; apply of_value_with_EOFCreate; eassumption. Defined.
   Smpl Add simple apply of_value_EOFCreate : of_value.
+
+  Module SubPointer.
+    Definition get_Call_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Call γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : boxed.Box.t call_inputs.CallInputs.t alloc.Global.t) :=
+        match γ with
+        | Call _ => Some (Call γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Call_0_is_valid : SubPointer.Runner.Valid.t get_Call_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Call_0_is_valid : run_sub_pointer.
+
+    Definition get_Create_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Create γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : boxed.Box.t create_inputs.CreateInputs.t alloc.Global.t) :=
+        match γ with
+        | Create _ => Some (Create γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Create_0_is_valid : SubPointer.Runner.Valid.t get_Create_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Create_0_is_valid : run_sub_pointer.
+
+    Definition get_EOFCreate_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | EOFCreate γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : boxed.Box.t eof_create_inputs.EOFCreateInputs.t alloc.Global.t) :=
+        match γ with
+        | EOFCreate _ => Some (EOFCreate γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_EOFCreate_0_is_valid : SubPointer.Runner.Valid.t get_EOFCreate_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_EOFCreate_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End FrameInput.
 
 Module InterpreterAction.
   Inductive t : Set :=
   | NewFrame
-    (_ : revm_interpreter.links.interpreter_action.FrameInput.t)
+    (_ : interpreter_action.FrameInput.t)
   | Return
-    (result : revm_interpreter.links.interpreter.InterpreterResult.t)
+    (result : interpreter.InterpreterResult.t)
   | None
   .
 
@@ -4625,7 +5478,7 @@ Module InterpreterAction.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_NewFrame
-    (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
+    (γ0 : interpreter_action.FrameInput.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
       γ0
@@ -4635,7 +5488,7 @@ Module InterpreterAction.
   Smpl Add simple apply of_value_with_NewFrame : of_value.
 
   Lemma of_value_with_Return
-    (result : revm_interpreter.links.interpreter.InterpreterResult.t) (result' : Value.t) :
+    (result : interpreter.InterpreterResult.t) (result' : Value.t) :
     result' = φ result ->
     Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
       ("result", result')
@@ -4651,7 +5504,7 @@ Module InterpreterAction.
   Smpl Add simple apply of_value_with_None : of_value.
 
   Definition of_value_NewFrame
-    (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
+    (γ0 : interpreter_action.FrameInput.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
@@ -4662,7 +5515,7 @@ Module InterpreterAction.
   Smpl Add simple apply of_value_NewFrame : of_value.
 
   Definition of_value_Return
-    (result : revm_interpreter.links.interpreter.InterpreterResult.t) (result' : Value.t) :
+    (result : interpreter.InterpreterResult.t) (result' : Value.t) :
     result' = φ result ->
     OfValue.t (
       Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
@@ -4678,14 +5531,54 @@ Module InterpreterAction.
     ).
   Proof. econstructor; apply of_value_with_None; eassumption. Defined.
   Smpl Add simple apply of_value_None : of_value.
+
+  Module SubPointer.
+    Definition get_NewFrame_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | NewFrame γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : interpreter_action.FrameInput.t) :=
+        match γ with
+        | NewFrame _ => Some (NewFrame γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_NewFrame_0_is_valid : SubPointer.Runner.Valid.t get_NewFrame_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_NewFrame_0_is_valid : run_sub_pointer.
+
+    Definition get_Return_result : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" "result") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Return γ_result => Some γ_result
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_result : interpreter.InterpreterResult.t) :=
+        match γ with
+        | Return _ => Some (Return γ_result)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Return_result_is_valid : SubPointer.Runner.Valid.t get_Return_result.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Return_result_is_valid : run_sub_pointer.
+  End SubPointer.
 End InterpreterAction.
 
 Module InstructionTables.
   Inductive t (W H CI: Set) : Set :=
   | Plain
-    (_ : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t)
+    (_ : boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.Global.t)
   | Custom
-    (_ : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t)
+    (_ : boxed.Box.t (array.t 256 CI) alloc.Global.t)
   .
   Arguments Plain Custom {_ _ _}.
 
@@ -4709,7 +5602,7 @@ Module InstructionTables.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Plain
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
       γ0
@@ -4719,7 +5612,7 @@ Module InstructionTables.
   Smpl Add simple apply of_value_with_Plain : of_value.
 
   Lemma of_value_with_Custom
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t (array.t 256 CI) alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
       γ0
@@ -4729,7 +5622,7 @@ Module InstructionTables.
   Smpl Add simple apply of_value_with_Custom : of_value.
 
   Definition of_value_Plain
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
@@ -4740,7 +5633,7 @@ Module InstructionTables.
   Smpl Add simple apply of_value_Plain : of_value.
 
   Definition of_value_Custom
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : boxed.Box.t (array.t 256 CI) alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
@@ -4749,6 +5642,46 @@ Module InstructionTables.
     ).
   Proof. econstructor; apply of_value_with_Custom; eassumption. Defined.
   Smpl Add simple apply of_value_Custom : of_value.
+
+  Module SubPointer.
+    Definition get_Plain_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::table::InstructionTables::Plain" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Plain γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.Global.t) :=
+        match γ with
+        | Plain _ => Some (Plain γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Plain_0_is_valid : SubPointer.Runner.Valid.t get_Plain_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Plain_0_is_valid : run_sub_pointer.
+
+    Definition get_Custom_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::table::InstructionTables::Custom" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Custom γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : boxed.Box.t (array.t 256 CI) alloc.Global.t) :=
+        match γ with
+        | Custom _ => Some (Custom γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Custom_0_is_valid : SubPointer.Runner.Valid.t get_Custom_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Custom_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End InstructionTables.
 
 Module Sign.
@@ -4813,11 +5746,15 @@ Module Sign.
     ).
   Proof. econstructor; apply of_value_with_Plus; eassumption. Defined.
   Smpl Add simple apply of_value_Plus : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End Sign.
 
 Module ExtBytecode.
   Record t : Set := {
-    base: revm_bytecode.links.bytecode.Bytecode.t;
+    base: bytecode.Bytecode.t;
     instruction_pointer: Ref.t Pointer.Kind.ConstPointer U8.t;
   }.
 
@@ -4833,9 +5770,9 @@ End ExtBytecode.
 
 Module InputsImpl.
   Record t : Set := {
-    target_address: alloy_primitives.bits.links.address.Address.t;
-    caller_address: alloy_primitives.bits.links.address.Address.t;
-    input: alloy_primitives.links.bytes_.Bytes.t;
+    target_address: address.Address.t;
+    caller_address: address.Address.t;
+    input: bytes_.Bytes.t;
     call_value: ruint.Uint.t 256 4;
   }.
 
@@ -4853,9 +5790,9 @@ End InputsImpl.
 
 Module LoopControl.
   Record t : Set := {
-    instruction_result: revm_interpreter.links.instruction_result.InstructionResult.t;
-    next_action: revm_interpreter.links.interpreter_action.InterpreterAction.t;
-    gas: revm_interpreter.links.gas.Gas.t;
+    instruction_result: instruction_result.InstructionResult.t;
+    next_action: interpreter_action.InterpreterAction.t;
+    gas: gas.Gas.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -4874,7 +5811,7 @@ Module RuntimeFlags.
     is_static: bool;
     is_eof_init: bool;
     is_eof: bool;
-    spec_id: revm_specification.links.hardfork.SpecId.t;
+    spec_id: hardfork.SpecId.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -4891,8 +5828,8 @@ End RuntimeFlags.
 
 Module SharedMemory.
   Record t : Set := {
-    buffer: alloc.links.vec.Vec.t U8.t alloc.links.alloc.Global.t;
-    checkpoints: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
+    buffer: vec.Vec.t U8.t alloc.Global.t;
+    checkpoints: vec.Vec.t Usize.t alloc.Global.t;
     last_checkpoint: Usize.t;
   }.
 
@@ -4909,7 +5846,7 @@ End SharedMemory.
 
 Module Stack.
   Record t : Set := {
-    data: alloc.links.vec.Vec.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t;
+    data: vec.Vec.t (ruint.Uint.t 256 4) alloc.Global.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -4939,7 +5876,7 @@ End SubRoutineReturnFrame.
 
 Module SubRoutineImpl.
   Record t : Set := {
-    return_stack: alloc.links.vec.Vec.t revm_interpreter.interpreter.links.subroutine_stack.SubRoutineReturnFrame.t alloc.links.alloc.Global.t;
+    return_stack: vec.Vec.t subroutine_stack.SubRoutineReturnFrame.t alloc.Global.t;
     current_code_idx: Usize.t;
   }.
 
@@ -4955,14 +5892,14 @@ End SubRoutineImpl.
 
 Module CallInputs.
   Record t : Set := {
-    input: alloy_primitives.links.bytes_.Bytes.t;
-    return_memory_offset: core.ops.links.range.Range.t Usize.t;
+    input: bytes_.Bytes.t;
+    return_memory_offset: range.Range.t Usize.t;
     gas_limit: U64.t;
-    bytecode_address: alloy_primitives.bits.links.address.Address.t;
-    target_address: alloy_primitives.bits.links.address.Address.t;
-    caller: alloy_primitives.bits.links.address.Address.t;
-    value: revm_interpreter.interpreter_action.links.call_inputs.CallValue.t;
-    scheme: revm_interpreter.interpreter_action.links.call_inputs.CallScheme.t;
+    bytecode_address: address.Address.t;
+    target_address: address.Address.t;
+    caller: address.Address.t;
+    value: call_inputs.CallValue.t;
+    scheme: call_inputs.CallScheme.t;
     is_static: bool;
     is_eof: bool;
   }.
@@ -5111,6 +6048,10 @@ Module CallScheme.
     ).
   Proof. econstructor; apply of_value_with_ExtDelegateCall; eassumption. Defined.
   Smpl Add simple apply of_value_ExtDelegateCall : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End CallScheme.
 
 Module CallValue.
@@ -5181,12 +6122,52 @@ Module CallValue.
     ).
   Proof. econstructor; apply of_value_with_Apparent; eassumption. Defined.
   Smpl Add simple apply of_value_Apparent : of_value.
+
+  Module SubPointer.
+    Definition get_Transfer_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Transfer γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : ruint.Uint.t 256 4) :=
+        match γ with
+        | Transfer _ => Some (Transfer γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Transfer_0_is_valid : SubPointer.Runner.Valid.t get_Transfer_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Transfer_0_is_valid : run_sub_pointer.
+
+    Definition get_Apparent_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Apparent γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : ruint.Uint.t 256 4) :=
+        match γ with
+        | Apparent _ => Some (Apparent γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Apparent_0_is_valid : SubPointer.Runner.Valid.t get_Apparent_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Apparent_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End CallValue.
 
 Module CallOutcome.
   Record t : Set := {
-    result: revm_interpreter.links.interpreter.InterpreterResult.t;
-    memory_offset: core.ops.links.range.Range.t Usize.t;
+    result: interpreter.InterpreterResult.t;
+    memory_offset: range.Range.t Usize.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -5201,10 +6182,10 @@ End CallOutcome.
 
 Module CreateInputs.
   Record t : Set := {
-    caller: alloy_primitives.bits.links.address.Address.t;
-    scheme: revm_context_interface.links.cfg.CreateScheme.t;
+    caller: address.Address.t;
+    scheme: cfg.CreateScheme.t;
     value: ruint.Uint.t 256 4;
-    init_code: alloy_primitives.links.bytes_.Bytes.t;
+    init_code: bytes_.Bytes.t;
     gas_limit: U64.t;
   }.
 
@@ -5223,8 +6204,8 @@ End CreateInputs.
 
 Module CreateOutcome.
   Record t : Set := {
-    result: revm_interpreter.links.interpreter.InterpreterResult.t;
-    address: core.links.option.Option.t alloy_primitives.bits.links.address.Address.t;
+    result: interpreter.InterpreterResult.t;
+    address: option.Option.t address.Address.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -5240,11 +6221,11 @@ End CreateOutcome.
 Module EOFCreateKind.
   Inductive t : Set :=
   | Tx
-    (initdata : alloy_primitives.links.bytes_.Bytes.t)
+    (initdata : bytes_.Bytes.t)
   | Opcode
-    (initcode : revm_bytecode.links.eof.Eof.t)
-    (input : alloy_primitives.links.bytes_.Bytes.t)
-    (created_address : alloy_primitives.bits.links.address.Address.t)
+    (initcode : eof.Eof.t)
+    (input : bytes_.Bytes.t)
+    (created_address : address.Address.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -5269,7 +6250,7 @@ Module EOFCreateKind.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Tx
-    (initdata : alloy_primitives.links.bytes_.Bytes.t) (initdata' : Value.t) :
+    (initdata : bytes_.Bytes.t) (initdata' : Value.t) :
     initdata' = φ initdata ->
     Value.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx" [
       ("initdata", initdata')
@@ -5279,9 +6260,9 @@ Module EOFCreateKind.
   Smpl Add simple apply of_value_with_Tx : of_value.
 
   Lemma of_value_with_Opcode
-    (initcode : revm_bytecode.links.eof.Eof.t) (initcode' : Value.t)
-    (input : alloy_primitives.links.bytes_.Bytes.t) (input' : Value.t)
-    (created_address : alloy_primitives.bits.links.address.Address.t) (created_address' : Value.t) :
+    (initcode : eof.Eof.t) (initcode' : Value.t)
+    (input : bytes_.Bytes.t) (input' : Value.t)
+    (created_address : address.Address.t) (created_address' : Value.t) :
     initcode' = φ initcode ->
     input' = φ input ->
     created_address' = φ created_address ->
@@ -5295,7 +6276,7 @@ Module EOFCreateKind.
   Smpl Add simple apply of_value_with_Opcode : of_value.
 
   Definition of_value_Tx
-    (initdata : alloy_primitives.links.bytes_.Bytes.t) (initdata' : Value.t) :
+    (initdata : bytes_.Bytes.t) (initdata' : Value.t) :
     initdata' = φ initdata ->
     OfValue.t (
       Value.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx" [
@@ -5306,9 +6287,9 @@ Module EOFCreateKind.
   Smpl Add simple apply of_value_Tx : of_value.
 
   Definition of_value_Opcode
-    (initcode : revm_bytecode.links.eof.Eof.t) (initcode' : Value.t)
-    (input : alloy_primitives.links.bytes_.Bytes.t) (input' : Value.t)
-    (created_address : alloy_primitives.bits.links.address.Address.t) (created_address' : Value.t) :
+    (initcode : eof.Eof.t) (initcode' : Value.t)
+    (input : bytes_.Bytes.t) (input' : Value.t)
+    (created_address : address.Address.t) (created_address' : Value.t) :
     initcode' = φ initcode ->
     input' = φ input ->
     created_address' = φ created_address ->
@@ -5321,14 +6302,92 @@ Module EOFCreateKind.
     ).
   Proof. econstructor; apply of_value_with_Opcode; eassumption. Defined.
   Smpl Add simple apply of_value_Opcode : of_value.
+
+  Module SubPointer.
+    Definition get_Tx_initdata : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx" "initdata") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Tx γ_initdata => Some γ_initdata
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_initdata : bytes_.Bytes.t) :=
+        match γ with
+        | Tx _ => Some (Tx γ_initdata)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Tx_initdata_is_valid : SubPointer.Runner.Valid.t get_Tx_initdata.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Tx_initdata_is_valid : run_sub_pointer.
+
+    Definition get_Opcode_initcode : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode" "initcode") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Opcode γ_initcode _ _ => Some γ_initcode
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_initcode : eof.Eof.t) :=
+        match γ with
+        | Opcode _ γ_input γ_created_address => Some (Opcode γ_initcode γ_input γ_created_address)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Opcode_initcode_is_valid : SubPointer.Runner.Valid.t get_Opcode_initcode.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Opcode_initcode_is_valid : run_sub_pointer.
+
+    Definition get_Opcode_input : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode" "input") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Opcode _ γ_input _ => Some γ_input
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_input : bytes_.Bytes.t) :=
+        match γ with
+        | Opcode γ_initcode _ γ_created_address => Some (Opcode γ_initcode γ_input γ_created_address)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Opcode_input_is_valid : SubPointer.Runner.Valid.t get_Opcode_input.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Opcode_input_is_valid : run_sub_pointer.
+
+    Definition get_Opcode_created_address : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode" "created_address") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Opcode _ _ γ_created_address => Some γ_created_address
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_created_address : address.Address.t) :=
+        match γ with
+        | Opcode γ_initcode γ_input _ => Some (Opcode γ_initcode γ_input γ_created_address)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Opcode_created_address_is_valid : SubPointer.Runner.Valid.t get_Opcode_created_address.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Opcode_created_address_is_valid : run_sub_pointer.
+  End SubPointer.
 End EOFCreateKind.
 
 Module EOFCreateInputs.
   Record t : Set := {
-    caller: alloy_primitives.bits.links.address.Address.t;
+    caller: address.Address.t;
     value: ruint.Uint.t 256 4;
     gas_limit: U64.t;
-    kind: revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateKind.t;
+    kind: eof_create_inputs.EOFCreateKind.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -5346,7 +6405,7 @@ End EOFCreateInputs.
 Module PrecompileOutput.
   Record t : Set := {
     gas_used: U64.t;
-    bytes: alloy_primitives.links.bytes_.Bytes.t;
+    bytes: bytes_.Bytes.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -5362,9 +6421,9 @@ End PrecompileOutput.
 Module PrecompileErrors.
   Inductive t : Set :=
   | Error
-    (_ : revm_precompile.links.interface.PrecompileError.t)
+    (_ : interface.PrecompileError.t)
   | Fatal
-    (msg : alloc.links.string.String.t)
+    (msg : string.String.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -5387,7 +6446,7 @@ Module PrecompileErrors.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Error
-    (γ0 : revm_precompile.links.interface.PrecompileError.t) (γ0' : Value.t) :
+    (γ0 : interface.PrecompileError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [
       γ0
@@ -5397,7 +6456,7 @@ Module PrecompileErrors.
   Smpl Add simple apply of_value_with_Error : of_value.
 
   Lemma of_value_with_Fatal
-    (msg : alloc.links.string.String.t) (msg' : Value.t) :
+    (msg : string.String.t) (msg' : Value.t) :
     msg' = φ msg ->
     Value.StructRecord "revm_precompile::interface::PrecompileErrors::Fatal" [
       ("msg", msg')
@@ -5407,7 +6466,7 @@ Module PrecompileErrors.
   Smpl Add simple apply of_value_with_Fatal : of_value.
 
   Definition of_value_Error
-    (γ0 : revm_precompile.links.interface.PrecompileError.t) (γ0' : Value.t) :
+    (γ0 : interface.PrecompileError.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [
@@ -5418,7 +6477,7 @@ Module PrecompileErrors.
   Smpl Add simple apply of_value_Error : of_value.
 
   Definition of_value_Fatal
-    (msg : alloc.links.string.String.t) (msg' : Value.t) :
+    (msg : string.String.t) (msg' : Value.t) :
     msg' = φ msg ->
     OfValue.t (
       Value.StructRecord "revm_precompile::interface::PrecompileErrors::Fatal" [
@@ -5427,6 +6486,46 @@ Module PrecompileErrors.
     ).
   Proof. econstructor; apply of_value_with_Fatal; eassumption. Defined.
   Smpl Add simple apply of_value_Fatal : of_value.
+
+  Module SubPointer.
+    Definition get_Error_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_precompile::interface::PrecompileErrors::Error" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Error γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : interface.PrecompileError.t) :=
+        match γ with
+        | Error _ => Some (Error γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Error_0_is_valid : SubPointer.Runner.Valid.t get_Error_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Error_0_is_valid : run_sub_pointer.
+
+    Definition get_Fatal_msg : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_precompile::interface::PrecompileErrors::Fatal" "msg") :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Fatal γ_msg => Some γ_msg
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_msg : string.String.t) :=
+        match γ with
+        | Fatal _ => Some (Fatal γ_msg)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Fatal_msg_is_valid : SubPointer.Runner.Valid.t get_Fatal_msg.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Fatal_msg_is_valid : run_sub_pointer.
+  End SubPointer.
 End PrecompileErrors.
 
 Module PrecompileError.
@@ -5444,7 +6543,7 @@ Module PrecompileError.
   | BlobMismatchedVersion
   | BlobVerifyKzgProofFailed
   | Other
-    (_ : alloc.links.string.String.t)
+    (_ : string.String.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -5559,7 +6658,7 @@ Module PrecompileError.
   Smpl Add simple apply of_value_with_BlobVerifyKzgProofFailed : of_value.
 
   Lemma of_value_with_Other
-    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    (γ0 : string.String.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_precompile::interface::PrecompileError::Other" [
       γ0
@@ -5653,7 +6752,7 @@ Module PrecompileError.
   Smpl Add simple apply of_value_BlobVerifyKzgProofFailed : of_value.
 
   Definition of_value_Other
-    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    (γ0 : string.String.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_precompile::interface::PrecompileError::Other" [
@@ -5662,12 +6761,33 @@ Module PrecompileError.
     ).
   Proof. econstructor; apply of_value_with_Other; eassumption. Defined.
   Smpl Add simple apply of_value_Other : of_value.
+
+  Module SubPointer.
+    Definition get_Other_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_precompile::interface::PrecompileError::Other" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Other γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : string.String.t) :=
+        match γ with
+        | Other _ => Some (Other γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Other_0_is_valid : SubPointer.Runner.Valid.t get_Other_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Other_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End PrecompileError.
 
 Module Precompiles.
   Record t : Set := {
-    inner: std.collections.hash.links.map.HashMap.t alloy_primitives.bits.links.address.Address.t (Function2.t (Ref.t Pointer.Kind.Ref alloy_primitives.links.bytes_.Bytes.t) U64.t (core.links.result.Result.t revm_precompile.links.interface.PrecompileOutput.t revm_precompile.links.interface.PrecompileErrors.t)) std.hash.links.random.RandomState.t;
-    addresses: std.collections.hash.links.set.HashSet.t alloy_primitives.bits.links.address.Address.t std.hash.links.random.RandomState.t;
+    inner: map.HashMap.t address.Address.t (Function2.t (Ref.t Pointer.Kind.Ref bytes_.Bytes.t) U64.t (result.Result.t interface.PrecompileOutput.t interface.PrecompileErrors.t)) random.RandomState.t;
+    addresses: set.HashSet.t address.Address.t random.RandomState.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -5806,6 +6926,10 @@ Module PrecompileSpecId.
     ).
   Proof. econstructor; apply of_value_with_LATEST; eassumption. Defined.
   Smpl Add simple apply of_value_LATEST : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End PrecompileSpecId.
 
 Module SpecId.
@@ -6158,14 +7282,18 @@ Module SpecId.
     ).
   Proof. econstructor; apply of_value_with_LATEST; eassumption. Defined.
   Smpl Add simple apply of_value_LATEST : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End SpecId.
 
 Module AuthorizationList.
   Inductive t : Set :=
   | Signed
-    (_ : alloc.links.vec.Vec.t alloy_eip7702.links.auth_list.SignedAuthorization.t alloc.links.alloc.Global.t)
+    (_ : vec.Vec.t auth_list.SignedAuthorization.t alloc.Global.t)
   | Recovered
-    (_ : alloc.links.vec.Vec.t revm_specification.eip7702.links.recovered_authorization.RecoveredAuthorization.t alloc.links.alloc.Global.t)
+    (_ : vec.Vec.t recovered_authorization.RecoveredAuthorization.t alloc.Global.t)
   .
 
   Global Instance IsLink : Link t := {
@@ -6188,7 +7316,7 @@ Module AuthorizationList.
   Smpl Add simple apply of_ty : of_ty.
 
   Lemma of_value_with_Signed
-    (γ0 : alloc.links.vec.Vec.t alloy_eip7702.links.auth_list.SignedAuthorization.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : vec.Vec.t auth_list.SignedAuthorization.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_specification::eip7702::authorization_list::AuthorizationList::Signed" [
       γ0
@@ -6198,7 +7326,7 @@ Module AuthorizationList.
   Smpl Add simple apply of_value_with_Signed : of_value.
 
   Lemma of_value_with_Recovered
-    (γ0 : alloc.links.vec.Vec.t revm_specification.eip7702.links.recovered_authorization.RecoveredAuthorization.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : vec.Vec.t recovered_authorization.RecoveredAuthorization.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     Value.StructTuple "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered" [
       γ0
@@ -6208,7 +7336,7 @@ Module AuthorizationList.
   Smpl Add simple apply of_value_with_Recovered : of_value.
 
   Definition of_value_Signed
-    (γ0 : alloc.links.vec.Vec.t alloy_eip7702.links.auth_list.SignedAuthorization.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : vec.Vec.t auth_list.SignedAuthorization.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_specification::eip7702::authorization_list::AuthorizationList::Signed" [
@@ -6219,7 +7347,7 @@ Module AuthorizationList.
   Smpl Add simple apply of_value_Signed : of_value.
 
   Definition of_value_Recovered
-    (γ0 : alloc.links.vec.Vec.t revm_specification.eip7702.links.recovered_authorization.RecoveredAuthorization.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    (γ0 : vec.Vec.t recovered_authorization.RecoveredAuthorization.t alloc.Global.t) (γ0' : Value.t) :
     γ0' = φ γ0 ->
     OfValue.t (
       Value.StructTuple "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered" [
@@ -6228,6 +7356,46 @@ Module AuthorizationList.
     ).
   Proof. econstructor; apply of_value_with_Recovered; eassumption. Defined.
   Smpl Add simple apply of_value_Recovered : of_value.
+
+  Module SubPointer.
+    Definition get_Signed_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_specification::eip7702::authorization_list::AuthorizationList::Signed" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Signed γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : vec.Vec.t auth_list.SignedAuthorization.t alloc.Global.t) :=
+        match γ with
+        | Signed _ => Some (Signed γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Signed_0_is_valid : SubPointer.Runner.Valid.t get_Signed_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Signed_0_is_valid : run_sub_pointer.
+
+    Definition get_Recovered_0 : SubPointer.Runner.t t
+      (Pointer.Index.StructTuple "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered" 0) :=
+    {|
+      SubPointer.Runner.projection (γ : t) :=
+        match γ with
+        | Recovered γ_0 => Some γ_0
+        | _ => None
+        end;
+      SubPointer.Runner.injection (γ : t) (γ_0 : vec.Vec.t recovered_authorization.RecoveredAuthorization.t alloc.Global.t) :=
+        match γ with
+        | Recovered _ => Some (Recovered γ_0)
+        | _ => None
+        end;
+    |}.
+
+    Lemma get_Recovered_0_is_valid : SubPointer.Runner.Valid.t get_Recovered_0.
+    Proof. sauto lq: on. Qed.
+    Smpl Add apply get_Recovered_0_is_valid : run_sub_pointer.
+  End SubPointer.
 End AuthorizationList.
 
 Module InvalidAuthorization.
@@ -6292,12 +7460,16 @@ Module InvalidAuthorization.
     ).
   Proof. econstructor; apply of_value_with_Eip2InvalidSValue; eassumption. Defined.
   Smpl Add simple apply of_value_Eip2InvalidSValue : of_value.
+
+  Module SubPointer.
+
+  End SubPointer.
 End InvalidAuthorization.
 
 Module RecoveredAuthorization.
   Record t : Set := {
-    inner: alloy_eip7702.links.auth_list.SignedAuthorization.t;
-    authority: core.links.option.Option.t alloy_primitives.bits.links.address.Address.t;
+    inner: auth_list.SignedAuthorization.t;
+    authority: option.Option.t address.Address.t;
   }.
 
   Global Instance IsLink : Link t := {

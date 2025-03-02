@@ -123,10 +123,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "new" (new T).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             pub unsafe fn awaken(self) -> &'a mut T {
@@ -181,10 +182,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_awaken :
+        Global Instance AssociatedFunction_awaken :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "awaken" (awaken T).
-        Smpl Add apply AssociatedFunction_awaken : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "awaken" (awaken T).
+        Admitted.
+        Global Typeclasses Opaque awaken.
         
         (*
             pub unsafe fn reborrow(&mut self) -> &'a mut T {
@@ -239,10 +241,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_reborrow :
+        Global Instance AssociatedFunction_reborrow :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "reborrow" (reborrow T).
-        Smpl Add apply AssociatedFunction_reborrow : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "reborrow" (reborrow T).
+        Admitted.
+        Global Typeclasses Opaque reborrow.
         
         (*
             pub unsafe fn reborrow_shared(&self) -> &'a T {
@@ -292,10 +295,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_reborrow_shared :
+        Global Instance AssociatedFunction_reborrow_shared :
           forall (T : Ty.t),
-          M.IsAssociatedFunction (Self T) "reborrow_shared" (reborrow_shared T).
-        Smpl Add apply AssociatedFunction_reborrow_shared : is_associated.
+          M.IsAssociatedFunction.Trait (Self T) "reborrow_shared" (reborrow_shared T).
+        Admitted.
+        Global Typeclasses Opaque reborrow_shared.
       End Impl_alloc_collections_btree_borrow_DormantMutRef_T.
     End borrow.
   End btree.

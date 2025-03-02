@@ -85,8 +85,9 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_foo : M.IsFunction "macro_rules_designators::foo" foo.
-Smpl Add apply Function_foo : is_function.
+Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "macro_rules_designators::foo" foo.
+Admitted.
+Global Typeclasses Opaque foo.
 
 (*
         fn $func_name() {
@@ -172,8 +173,9 @@ Definition bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_bar : M.IsFunction "macro_rules_designators::bar" bar.
-Smpl Add apply Function_bar : is_function.
+Global Instance Instance_IsFunction_bar : M.IsFunction.Trait "macro_rules_designators::bar" bar.
+Admitted.
+Global Typeclasses Opaque bar.
 
 (*
 fn main() {
@@ -418,5 +420,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "macro_rules_designators::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "macro_rules_designators::main" main.
+Admitted.
+Global Typeclasses Opaque main.

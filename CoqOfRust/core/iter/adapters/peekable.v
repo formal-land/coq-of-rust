@@ -239,10 +239,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+        Admitted.
+        Global Typeclasses Opaque new.
         (*
             pub fn peek(&mut self) -> Option<&I::Item> {
                 let iter = &mut self.iter;
@@ -420,10 +421,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek :
+        Global Instance AssociatedFunction_peek :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "peek" (peek I).
-        Smpl Add apply AssociatedFunction_peek : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "peek" (peek I).
+        Admitted.
+        Global Typeclasses Opaque peek.
         
         (*
             pub fn peek_mut(&mut self) -> Option<&mut I::Item> {
@@ -602,10 +604,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_peek_mut :
+        Global Instance AssociatedFunction_peek_mut :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "peek_mut" (peek_mut I).
-        Smpl Add apply AssociatedFunction_peek_mut : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "peek_mut" (peek_mut I).
+        Admitted.
+        Global Typeclasses Opaque peek_mut.
         
         (*
             pub fn next_if(&mut self, func: impl FnOnce(&I::Item) -> bool) -> Option<I::Item> {
@@ -797,10 +800,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_if :
+        Global Instance AssociatedFunction_next_if :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "next_if" (next_if I).
-        Smpl Add apply AssociatedFunction_next_if : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "next_if" (next_if I).
+        Admitted.
+        Global Typeclasses Opaque next_if.
         
         (*
             pub fn next_if_eq<T>(&mut self, expected: &T) -> Option<I::Item>
@@ -903,10 +907,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_if_eq :
+        Global Instance AssociatedFunction_next_if_eq :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "next_if_eq" (next_if_eq I).
-        Smpl Add apply AssociatedFunction_next_if_eq : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "next_if_eq" (next_if_eq I).
+        Admitted.
+        Global Typeclasses Opaque next_if_eq.
       End Impl_core_iter_adapters_peekable_Peekable_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_peekable_Peekable_I.

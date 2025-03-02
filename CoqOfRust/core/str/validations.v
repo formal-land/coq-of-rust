@@ -22,9 +22,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_utf8_first_byte :
-      M.IsFunction "core::str::validations::utf8_first_byte" utf8_first_byte.
-    Smpl Add apply Function_utf8_first_byte : is_function.
+    Global Instance Instance_IsFunction_utf8_first_byte :
+      M.IsFunction.Trait "core::str::validations::utf8_first_byte" utf8_first_byte.
+    Admitted.
+    Global Typeclasses Opaque utf8_first_byte.
     
     (*
     const fn utf8_acc_cont_byte(ch: u32, byte: u8) -> u32 {
@@ -47,9 +48,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_utf8_acc_cont_byte :
-      M.IsFunction "core::str::validations::utf8_acc_cont_byte" utf8_acc_cont_byte.
-    Smpl Add apply Function_utf8_acc_cont_byte : is_function.
+    Global Instance Instance_IsFunction_utf8_acc_cont_byte :
+      M.IsFunction.Trait "core::str::validations::utf8_acc_cont_byte" utf8_acc_cont_byte.
+    Admitted.
+    Global Typeclasses Opaque utf8_acc_cont_byte.
     
     (*
     pub(super) const fn utf8_is_cont_byte(byte: u8) -> bool {
@@ -68,9 +70,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_utf8_is_cont_byte :
-      M.IsFunction "core::str::validations::utf8_is_cont_byte" utf8_is_cont_byte.
-    Smpl Add apply Function_utf8_is_cont_byte : is_function.
+    Global Instance Instance_IsFunction_utf8_is_cont_byte :
+      M.IsFunction.Trait "core::str::validations::utf8_is_cont_byte" utf8_is_cont_byte.
+    Admitted.
+    Global Typeclasses Opaque utf8_is_cont_byte.
     
     (*
     pub unsafe fn next_code_point<'a, I: Iterator<Item = &'a u8>>(bytes: &mut I) -> Option<u32> {
@@ -485,9 +488,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_next_code_point :
-      M.IsFunction "core::str::validations::next_code_point" next_code_point.
-    Smpl Add apply Function_next_code_point : is_function.
+    Global Instance Instance_IsFunction_next_code_point :
+      M.IsFunction.Trait "core::str::validations::next_code_point" next_code_point.
+    Admitted.
+    Global Typeclasses Opaque next_code_point.
     
     (*
     pub(super) unsafe fn next_code_point_reverse<'a, I>(bytes: &mut I) -> Option<u32>
@@ -933,9 +937,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_next_code_point_reverse :
-      M.IsFunction "core::str::validations::next_code_point_reverse" next_code_point_reverse.
-    Smpl Add apply Function_next_code_point_reverse : is_function.
+    Global Instance Instance_IsFunction_next_code_point_reverse :
+      M.IsFunction.Trait "core::str::validations::next_code_point_reverse" next_code_point_reverse.
+    Admitted.
+    Global Typeclasses Opaque next_code_point_reverse.
     
     Definition value_NONASCII_MASK : Value.t :=
       M.run_constant
@@ -971,9 +976,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_contains_nonascii :
-      M.IsFunction "core::str::validations::contains_nonascii" contains_nonascii.
-    Smpl Add apply Function_contains_nonascii : is_function.
+    Global Instance Instance_IsFunction_contains_nonascii :
+      M.IsFunction.Trait "core::str::validations::contains_nonascii" contains_nonascii.
+    Admitted.
+    Global Typeclasses Opaque contains_nonascii.
     
     (*
     pub(super) const fn run_utf8_validation(v: &[u8]) -> Result<(), Utf8Error> {
@@ -1181,6 +1187,7 @@ Module str.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2243,6 +2250,7 @@ Module str.
                                                 |) in
                                               let~ _ : Ty.tuple [] :=
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
@@ -2412,6 +2420,7 @@ Module str.
                                                     |)))
                                                 |) in
                                               M.loop (|
+                                                Ty.tuple [],
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
@@ -2517,9 +2526,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_run_utf8_validation :
-      M.IsFunction "core::str::validations::run_utf8_validation" run_utf8_validation.
-    Smpl Add apply Function_run_utf8_validation : is_function.
+    Global Instance Instance_IsFunction_run_utf8_validation :
+      M.IsFunction.Trait "core::str::validations::run_utf8_validation" run_utf8_validation.
+    Admitted.
+    Global Typeclasses Opaque run_utf8_validation.
     
     Definition value_UTF8_CHAR_WIDTH : Value.t :=
       M.run_constant
@@ -2821,9 +2831,10 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_utf8_char_width :
-      M.IsFunction "core::str::validations::utf8_char_width" utf8_char_width.
-    Smpl Add apply Function_utf8_char_width : is_function.
+    Global Instance Instance_IsFunction_utf8_char_width :
+      M.IsFunction.Trait "core::str::validations::utf8_char_width" utf8_char_width.
+    Admitted.
+    Global Typeclasses Opaque utf8_char_width.
     
     Definition value_CONT_MASK : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).

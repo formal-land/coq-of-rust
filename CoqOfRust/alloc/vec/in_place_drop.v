@@ -55,10 +55,11 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_len :
+      Global Instance AssociatedFunction_len :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "len" (len T).
-      Smpl Add apply AssociatedFunction_len : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+      Admitted.
+      Global Typeclasses Opaque len.
     End Impl_alloc_vec_in_place_drop_InPlaceDrop_T.
     
     Module Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDrop_T.

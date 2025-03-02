@@ -273,8 +273,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_lt : M.IsFunction "revm_interpreter::instructions::bitwise::lt" lt.
-    Smpl Add apply Function_lt : is_function.
+    Global Instance Instance_IsFunction_lt :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::lt" lt.
+    Admitted.
+    Global Typeclasses Opaque lt.
     
     (*
     pub fn gt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -547,8 +549,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_gt : M.IsFunction "revm_interpreter::instructions::bitwise::gt" gt.
-    Smpl Add apply Function_gt : is_function.
+    Global Instance Instance_IsFunction_gt :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::gt" gt.
+    Admitted.
+    Global Typeclasses Opaque gt.
     
     (*
     pub fn slt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -831,8 +835,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slt : M.IsFunction "revm_interpreter::instructions::bitwise::slt" slt.
-    Smpl Add apply Function_slt : is_function.
+    Global Instance Instance_IsFunction_slt :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::slt" slt.
+    Admitted.
+    Global Typeclasses Opaque slt.
     
     (*
     pub fn sgt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1115,8 +1121,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sgt : M.IsFunction "revm_interpreter::instructions::bitwise::sgt" sgt.
-    Smpl Add apply Function_sgt : is_function.
+    Global Instance Instance_IsFunction_sgt :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::sgt" sgt.
+    Admitted.
+    Global Typeclasses Opaque sgt.
     
     (*
     pub fn eq<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1389,8 +1397,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_eq : M.IsFunction "revm_interpreter::instructions::bitwise::eq" eq.
-    Smpl Add apply Function_eq : is_function.
+    Global Instance Instance_IsFunction_eq :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::eq" eq.
+    Admitted.
+    Global Typeclasses Opaque eq.
     
     (*
     pub fn iszero<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1648,8 +1658,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_iszero : M.IsFunction "revm_interpreter::instructions::bitwise::iszero" iszero.
-    Smpl Add apply Function_iszero : is_function.
+    Global Instance Instance_IsFunction_iszero :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::iszero" iszero.
+    Admitted.
+    Global Typeclasses Opaque iszero.
     
     (*
     pub fn bitand<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1898,8 +1910,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_bitand : M.IsFunction "revm_interpreter::instructions::bitwise::bitand" bitand.
-    Smpl Add apply Function_bitand : is_function.
+    Global Instance Instance_IsFunction_bitand :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::bitand" bitand.
+    Admitted.
+    Global Typeclasses Opaque bitand.
     
     (*
     pub fn bitor<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2149,8 +2163,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_bitor : M.IsFunction "revm_interpreter::instructions::bitwise::bitor" bitor.
-    Smpl Add apply Function_bitor : is_function.
+    Global Instance Instance_IsFunction_bitor :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::bitor" bitor.
+    Admitted.
+    Global Typeclasses Opaque bitor.
     
     (*
     pub fn bitxor<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2400,8 +2416,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_bitxor : M.IsFunction "revm_interpreter::instructions::bitwise::bitxor" bitxor.
-    Smpl Add apply Function_bitxor : is_function.
+    Global Instance Instance_IsFunction_bitxor :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::bitxor" bitxor.
+    Admitted.
+    Global Typeclasses Opaque bitxor.
     
     (*
     pub fn not<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2641,8 +2659,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_not : M.IsFunction "revm_interpreter::instructions::bitwise::not" not.
-    Smpl Add apply Function_not : is_function.
+    Global Instance Instance_IsFunction_not :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::not" not.
+    Admitted.
+    Global Typeclasses Opaque not.
     
     (*
     pub fn byte<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3067,8 +3087,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_byte : M.IsFunction "revm_interpreter::instructions::bitwise::byte" byte.
-    Smpl Add apply Function_byte : is_function.
+    Global Instance Instance_IsFunction_byte :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::byte" byte.
+    Admitted.
+    Global Typeclasses Opaque byte.
     
     (*
     pub fn shl<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3569,8 +3591,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_shl : M.IsFunction "revm_interpreter::instructions::bitwise::shl" shl.
-    Smpl Add apply Function_shl : is_function.
+    Global Instance Instance_IsFunction_shl :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::shl" shl.
+    Admitted.
+    Global Typeclasses Opaque shl.
     
     (*
     pub fn shr<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4071,8 +4095,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_shr : M.IsFunction "revm_interpreter::instructions::bitwise::shr" shr.
-    Smpl Add apply Function_shr : is_function.
+    Global Instance Instance_IsFunction_shr :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::shr" shr.
+    Admitted.
+    Global Typeclasses Opaque shr.
     
     (*
     pub fn sar<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4615,7 +4641,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_sar : M.IsFunction "revm_interpreter::instructions::bitwise::sar" sar.
-    Smpl Add apply Function_sar : is_function.
+    Global Instance Instance_IsFunction_sar :
+      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::sar" sar.
+    Admitted.
+    Global Typeclasses Opaque sar.
   End bitwise.
 End instructions.

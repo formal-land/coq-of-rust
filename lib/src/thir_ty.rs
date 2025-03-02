@@ -149,20 +149,30 @@ pub(crate) fn compile_type<'a>(
         TyKind::Alias(alias_kind, alias_ty) => match alias_kind {
             rustc_middle::ty::AliasTyKind::Projection => {
                 let self_ty = compile_type(env, span, generics, &alias_ty.self_ty());
-                let (trait_ref, own_args) = alias_ty.trait_ref_and_own_args(env.tcx);
+                let (trait_ref, _own_args) = alias_ty.trait_ref_and_own_args(env.tcx);
                 let trait_name = compile_def_id(env, trait_ref.def_id);
-                let const_args = own_args
+                let const_args = alias_ty
+                    .args
                     .iter()
-                    .filter_map(|arg| match &arg.unpack() {
-                        GenericArgKind::Const(constant) => Some(compile_const(env, span, constant)),
-                        _ => None,
+                    // We skip the first argument because it is the Self type
+                    .skip(1)
+                    .filter_map(|generic_arg| {
+                        generic_arg
+                            .as_const()
+                            .as_ref()
+                            .map(|constant| compile_const(env, span, constant))
                     })
                     .collect();
-                let ty_args = own_args
+                let ty_args = alias_ty
+                    .args
                     .iter()
-                    .filter_map(|arg| match &arg.unpack() {
-                        GenericArgKind::Type(ty) => Some(compile_type(env, span, generics, ty)),
-                        _ => None,
+                    // We skip the first argument because it is the Self type
+                    .skip(1)
+                    .filter_map(|generic_arg| {
+                        generic_arg
+                            .as_type()
+                            .as_ref()
+                            .map(|ty| compile_type(env, span, generics, ty))
                     })
                     .collect();
                 let path = compile_def_id(env, alias_ty.def_id);

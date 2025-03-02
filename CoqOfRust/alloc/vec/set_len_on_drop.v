@@ -37,8 +37,9 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub(super) fn increment_len(&mut self, increment: usize) {
@@ -67,9 +68,10 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_increment_len :
-        M.IsAssociatedFunction Self "increment_len" increment_len.
-      Smpl Add apply AssociatedFunction_increment_len : is_associated.
+      Global Instance AssociatedFunction_increment_len :
+        M.IsAssociatedFunction.Trait Self "increment_len" increment_len.
+      Admitted.
+      Global Typeclasses Opaque increment_len.
       
       (*
           pub(super) fn current_len(&self) -> usize {
@@ -91,8 +93,10 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_current_len : M.IsAssociatedFunction Self "current_len" current_len.
-      Smpl Add apply AssociatedFunction_current_len : is_associated.
+      Global Instance AssociatedFunction_current_len :
+        M.IsAssociatedFunction.Trait Self "current_len" current_len.
+      Admitted.
+      Global Typeclasses Opaque current_len.
     End Impl_alloc_vec_set_len_on_drop_SetLenOnDrop.
     
     Module Impl_core_ops_drop_Drop_for_alloc_vec_set_len_on_drop_SetLenOnDrop.

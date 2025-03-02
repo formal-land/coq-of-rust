@@ -3,20 +3,22 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter is_divisible_by : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
-Smpl Add apply Function_is_divisible_by : is_function.
+Global Instance Instance_IsFunction_is_divisible_by :
+  M.IsFunction.Trait "functions::is_divisible_by" is_divisible_by.
+Admitted.
 
 Parameter fizzbuzz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
-Smpl Add apply Function_fizzbuzz : is_function.
+Global Instance Instance_IsFunction_fizzbuzz : M.IsFunction.Trait "functions::fizzbuzz" fizzbuzz.
+Admitted.
 
 Parameter fizzbuzz_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
-Smpl Add apply Function_fizzbuzz_to : is_function.
+Global Instance Instance_IsFunction_fizzbuzz_to :
+  M.IsFunction.Trait "functions::fizzbuzz_to" fizzbuzz_to.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions::main" main.
+Admitted.

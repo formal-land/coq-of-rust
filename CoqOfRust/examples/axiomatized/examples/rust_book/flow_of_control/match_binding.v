@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter age : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_age : M.IsFunction "match_binding::age" age.
-Smpl Add apply Function_age : is_function.
+Global Instance Instance_IsFunction_age : M.IsFunction.Trait "match_binding::age" age.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "match_binding::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "match_binding::main" main.
+Admitted.

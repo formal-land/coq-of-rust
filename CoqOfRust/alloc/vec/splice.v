@@ -1537,6 +1537,7 @@ Module vec.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -1682,10 +1683,11 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_fill :
+      Global Instance AssociatedFunction_fill :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction (Self T A) "fill" (fill T A).
-      Smpl Add apply AssociatedFunction_fill : is_associated.
+        M.IsAssociatedFunction.Trait (Self T A) "fill" (fill T A).
+      Admitted.
+      Global Typeclasses Opaque fill.
       
       (*
           unsafe fn move_tail(&mut self, additional: usize) {
@@ -1895,10 +1897,11 @@ Module vec.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_move_tail :
+      Global Instance AssociatedFunction_move_tail :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction (Self T A) "move_tail" (move_tail T A).
-      Smpl Add apply AssociatedFunction_move_tail : is_associated.
+        M.IsAssociatedFunction.Trait (Self T A) "move_tail" (move_tail T A).
+      Admitted.
+      Global Typeclasses Opaque move_tail.
     End Impl_alloc_vec_drain_Drain_T_A.
   End splice.
 End vec.

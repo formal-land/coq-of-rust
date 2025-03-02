@@ -343,6 +343,7 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -950,6 +951,7 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1200,6 +1202,7 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1816,8 +1819,9 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify : M.IsAssociatedFunction Self "verify" verify.
-    Smpl Add apply AssociatedFunction_verify : is_associated.
+    Global Instance AssociatedFunction_verify : M.IsAssociatedFunction.Trait Self "verify" verify.
+    Admitted.
+    Global Typeclasses Opaque verify.
     
     (*
         fn verify_instruction(
@@ -2893,9 +2897,10 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_instruction :
-      M.IsAssociatedFunction Self "verify_instruction" verify_instruction.
-    Smpl Add apply AssociatedFunction_verify_instruction : is_associated.
+    Global Instance AssociatedFunction_verify_instruction :
+      M.IsAssociatedFunction.Trait Self "verify_instruction" verify_instruction.
+    Admitted.
+    Global Typeclasses Opaque verify_instruction.
     
     (*
         fn call_acquire(
@@ -3028,6 +3033,7 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -3223,8 +3229,10 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_call_acquire : M.IsAssociatedFunction Self "call_acquire" call_acquire.
-    Smpl Add apply AssociatedFunction_call_acquire : is_associated.
+    Global Instance AssociatedFunction_call_acquire :
+      M.IsAssociatedFunction.Trait Self "call_acquire" call_acquire.
+    Admitted.
+    Global Typeclasses Opaque call_acquire.
     
     (*
         fn struct_acquire(
@@ -3348,9 +3356,10 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_struct_acquire :
-      M.IsAssociatedFunction Self "struct_acquire" struct_acquire.
-    Smpl Add apply AssociatedFunction_struct_acquire : is_associated.
+    Global Instance AssociatedFunction_struct_acquire :
+      M.IsAssociatedFunction.Trait Self "struct_acquire" struct_acquire.
+    Admitted.
+    Global Typeclasses Opaque struct_acquire.
     
     (*
         fn function_acquired_resources(
@@ -3718,9 +3727,10 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_function_acquired_resources :
-      M.IsAssociatedFunction Self "function_acquired_resources" function_acquired_resources.
-    Smpl Add apply AssociatedFunction_function_acquired_resources : is_associated.
+    Global Instance AssociatedFunction_function_acquired_resources :
+      M.IsAssociatedFunction.Trait Self "function_acquired_resources" function_acquired_resources.
+    Admitted.
+    Global Typeclasses Opaque function_acquired_resources.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -3766,7 +3776,8 @@ Module acquires_list_verifier.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
-    Smpl Add apply AssociatedFunction_error : is_associated.
+    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+    Admitted.
+    Global Typeclasses Opaque error.
   End Impl_move_bytecode_verifier_acquires_list_verifier_AcquiresVerifier.
 End acquires_list_verifier.

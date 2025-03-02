@@ -27,9 +27,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_successors :
-        M.IsFunction "core::iter::sources::successors::successors" successors.
-      Smpl Add apply Function_successors : is_function.
+      Global Instance Instance_IsFunction_successors :
+        M.IsFunction.Trait "core::iter::sources::successors::successors" successors.
+      Admitted.
+      Global Typeclasses Opaque successors.
       
       (* StructRecord
         {

@@ -177,6 +177,8 @@ Module identity.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_identity_run : M.IsFunction "revm_precompile::identity::identity_run" identity_run.
-  Smpl Add apply Function_identity_run : is_function.
+  Global Instance Instance_IsFunction_identity_run :
+    M.IsFunction.Trait "revm_precompile::identity::identity_run" identity_run.
+  Admitted.
+  Global Typeclasses Opaque identity_run.
 End identity.

@@ -691,9 +691,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_created_address :
-        M.IsAssociatedFunction Self "created_address" created_address.
-      Smpl Add apply AssociatedFunction_created_address : is_associated.
+      Global Instance AssociatedFunction_created_address :
+        M.IsAssociatedFunction.Trait Self "created_address" created_address.
+      Admitted.
+      Global Typeclasses Opaque created_address.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
     
     Module Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
@@ -1383,8 +1384,9 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn new_opcode(
@@ -1441,8 +1443,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new_opcode : M.IsAssociatedFunction Self "new_opcode" new_opcode.
-      Smpl Add apply AssociatedFunction_new_opcode : is_associated.
+      Global Instance AssociatedFunction_new_opcode :
+        M.IsAssociatedFunction.Trait Self "new_opcode" new_opcode.
+      Admitted.
+      Global Typeclasses Opaque new_opcode.
     End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
   End eof_create_inputs.
 End interpreter_action.

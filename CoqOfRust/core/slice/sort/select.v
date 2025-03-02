@@ -474,9 +474,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_partition_at_index :
-        M.IsFunction "core::slice::sort::select::partition_at_index" partition_at_index.
-      Smpl Add apply Function_partition_at_index : is_function.
+      Global Instance Instance_IsFunction_partition_at_index :
+        M.IsFunction.Trait "core::slice::sort::select::partition_at_index" partition_at_index.
+      Admitted.
+      Global Typeclasses Opaque partition_at_index.
       
       Definition value_INSERTION_SORT_THRESHOLD : Value.t :=
         M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
@@ -588,6 +589,7 @@ Module slice.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -1348,9 +1350,12 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_partition_at_index_loop :
-        M.IsFunction "core::slice::sort::select::partition_at_index_loop" partition_at_index_loop.
-      Smpl Add apply Function_partition_at_index_loop : is_function.
+      Global Instance Instance_IsFunction_partition_at_index_loop :
+        M.IsFunction.Trait
+          "core::slice::sort::select::partition_at_index_loop"
+          partition_at_index_loop.
+      Admitted.
+      Global Typeclasses Opaque partition_at_index_loop.
       
       (*
       fn min_index<T, F: FnMut(&T, &T) -> bool>(slice: &[T], is_less: &mut F) -> Option<usize> {
@@ -1566,8 +1571,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_min_index : M.IsFunction "core::slice::sort::select::min_index" min_index.
-      Smpl Add apply Function_min_index : is_function.
+      Global Instance Instance_IsFunction_min_index :
+        M.IsFunction.Trait "core::slice::sort::select::min_index" min_index.
+      Admitted.
+      Global Typeclasses Opaque min_index.
       
       (*
       fn max_index<T, F: FnMut(&T, &T) -> bool>(slice: &[T], is_less: &mut F) -> Option<usize> {
@@ -1783,8 +1790,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_max_index : M.IsFunction "core::slice::sort::select::max_index" max_index.
-      Smpl Add apply Function_max_index : is_function.
+      Global Instance Instance_IsFunction_max_index :
+        M.IsFunction.Trait "core::slice::sort::select::max_index" max_index.
+      Admitted.
+      Global Typeclasses Opaque max_index.
       
       (*
       fn median_of_medians<T, F: FnMut(&T, &T) -> bool>(mut v: &mut [T], is_less: &mut F, mut k: usize) {
@@ -1965,6 +1974,7 @@ Module slice.
                     M.never_to_any (|
                       M.read (|
                         M.loop (|
+                          Ty.path "never",
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -2457,9 +2467,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_median_of_medians :
-        M.IsFunction "core::slice::sort::select::median_of_medians" median_of_medians.
-      Smpl Add apply Function_median_of_medians : is_function.
+      Global Instance Instance_IsFunction_median_of_medians :
+        M.IsFunction.Trait "core::slice::sort::select::median_of_medians" median_of_medians.
+      Admitted.
+      Global Typeclasses Opaque median_of_medians.
       
       (*
       fn median_of_ninthers<T, F: FnMut(&T, &T) -> bool>(v: &mut [T], is_less: &mut F) -> usize {
@@ -2714,6 +2725,7 @@ Module slice.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2911,9 +2923,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_median_of_ninthers :
-        M.IsFunction "core::slice::sort::select::median_of_ninthers" median_of_ninthers.
-      Smpl Add apply Function_median_of_ninthers : is_function.
+      Global Instance Instance_IsFunction_median_of_ninthers :
+        M.IsFunction.Trait "core::slice::sort::select::median_of_ninthers" median_of_ninthers.
+      Admitted.
+      Global Typeclasses Opaque median_of_ninthers.
       
       (*
       fn ninther<T, F: FnMut(&T, &T) -> bool>(
@@ -3697,8 +3710,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_ninther : M.IsFunction "core::slice::sort::select::ninther" ninther.
-      Smpl Add apply Function_ninther : is_function.
+      Global Instance Instance_IsFunction_ninther :
+        M.IsFunction.Trait "core::slice::sort::select::ninther" ninther.
+      Admitted.
+      Global Typeclasses Opaque ninther.
       
       (*
       fn median_idx<T, F: FnMut(&T, &T) -> bool>(
@@ -3960,8 +3975,10 @@ Module slice.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_median_idx : M.IsFunction "core::slice::sort::select::median_idx" median_idx.
-      Smpl Add apply Function_median_idx : is_function.
+      Global Instance Instance_IsFunction_median_idx :
+        M.IsFunction.Trait "core::slice::sort::select::median_idx" median_idx.
+      Admitted.
+      Global Typeclasses Opaque median_idx.
     End select.
   End sort.
 End slice.

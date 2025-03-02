@@ -102,10 +102,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction (Self I F) "new" (new I F).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I F) "new" (new I F).
+        Admitted.
+        Global Typeclasses Opaque new.
         
         (*
             pub(crate) fn into_inner(self) -> I {
@@ -133,10 +134,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_into_inner :
+        Global Instance AssociatedFunction_into_inner :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction (Self I F) "into_inner" (into_inner I F).
-        Smpl Add apply AssociatedFunction_into_inner : is_associated.
+          M.IsAssociatedFunction.Trait (Self I F) "into_inner" (into_inner I F).
+        Admitted.
+        Global Typeclasses Opaque into_inner.
       End Impl_core_iter_adapters_map_Map_I_F.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_map_Map_I_F.
@@ -312,8 +314,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_map_fold : M.IsFunction "core::iter::adapters::map::map_fold" map_fold.
-      Smpl Add apply Function_map_fold : is_function.
+      Global Instance Instance_IsFunction_map_fold :
+        M.IsFunction.Trait "core::iter::adapters::map::map_fold" map_fold.
+      Admitted.
+      Global Typeclasses Opaque map_fold.
       
       Module map_fold.
         (* Error OpaqueTy *)
@@ -400,9 +404,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_map_try_fold :
-        M.IsFunction "core::iter::adapters::map::map_try_fold" map_try_fold.
-      Smpl Add apply Function_map_try_fold : is_function.
+      Global Instance Instance_IsFunction_map_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::map::map_try_fold" map_try_fold.
+      Admitted.
+      Global Typeclasses Opaque map_try_fold.
       
       Module map_try_fold.
         (* Error OpaqueTy *)

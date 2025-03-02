@@ -977,9 +977,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_keccak256 :
-      M.IsFunction "revm_interpreter::instructions::system::keccak256" keccak256.
-    Smpl Add apply Function_keccak256 : is_function.
+    Global Instance Instance_IsFunction_keccak256 :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::keccak256" keccak256.
+    Admitted.
+    Global Typeclasses Opaque keccak256.
     
     (*
     pub fn address<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1276,8 +1277,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_address : M.IsFunction "revm_interpreter::instructions::system::address" address.
-    Smpl Add apply Function_address : is_function.
+    Global Instance Instance_IsFunction_address :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::address" address.
+    Admitted.
+    Global Typeclasses Opaque address.
     
     (*
     pub fn caller<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1574,8 +1577,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_caller : M.IsFunction "revm_interpreter::instructions::system::caller" caller.
-    Smpl Add apply Function_caller : is_function.
+    Global Instance Instance_IsFunction_caller :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::caller" caller.
+    Admitted.
+    Global Typeclasses Opaque caller.
     
     (*
     pub fn codesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1841,9 +1846,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_codesize :
-      M.IsFunction "revm_interpreter::instructions::system::codesize" codesize.
-    Smpl Add apply Function_codesize : is_function.
+    Global Instance Instance_IsFunction_codesize :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::codesize" codesize.
+    Admitted.
+    Global Typeclasses Opaque codesize.
     
     (*
     pub fn codecopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2338,9 +2344,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_codecopy :
-      M.IsFunction "revm_interpreter::instructions::system::codecopy" codecopy.
-    Smpl Add apply Function_codecopy : is_function.
+    Global Instance Instance_IsFunction_codecopy :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::codecopy" codecopy.
+    Admitted.
+    Global Typeclasses Opaque codecopy.
     
     (*
     pub fn calldataload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2981,9 +2988,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_calldataload :
-      M.IsFunction "revm_interpreter::instructions::system::calldataload" calldataload.
-    Smpl Add apply Function_calldataload : is_function.
+    Global Instance Instance_IsFunction_calldataload :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::calldataload" calldataload.
+    Admitted.
+    Global Typeclasses Opaque calldataload.
     
     (*
     pub fn calldatasize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3273,9 +3281,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_calldatasize :
-      M.IsFunction "revm_interpreter::instructions::system::calldatasize" calldatasize.
-    Smpl Add apply Function_calldatasize : is_function.
+    Global Instance Instance_IsFunction_calldatasize :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::calldatasize" calldatasize.
+    Admitted.
+    Global Typeclasses Opaque calldatasize.
     
     (*
     pub fn callvalue<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -3524,9 +3533,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_callvalue :
-      M.IsFunction "revm_interpreter::instructions::system::callvalue" callvalue.
-    Smpl Add apply Function_callvalue : is_function.
+    Global Instance Instance_IsFunction_callvalue :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::callvalue" callvalue.
+    Admitted.
+    Global Typeclasses Opaque callvalue.
     
     (*
     pub fn calldatacopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4018,9 +4028,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_calldatacopy :
-      M.IsFunction "revm_interpreter::instructions::system::calldatacopy" calldatacopy.
-    Smpl Add apply Function_calldatacopy : is_function.
+    Global Instance Instance_IsFunction_calldatacopy :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::calldatacopy" calldatacopy.
+    Admitted.
+    Global Typeclasses Opaque calldatacopy.
     
     (*
     pub fn returndatasize<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -4412,9 +4423,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_returndatasize :
-      M.IsFunction "revm_interpreter::instructions::system::returndatasize" returndatasize.
-    Smpl Add apply Function_returndatasize : is_function.
+    Global Instance Instance_IsFunction_returndatasize :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::returndatasize" returndatasize.
+    Admitted.
+    Global Typeclasses Opaque returndatasize.
     
     (*
     pub fn returndatacopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5160,9 +5172,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_returndatacopy :
-      M.IsFunction "revm_interpreter::instructions::system::returndatacopy" returndatacopy.
-    Smpl Add apply Function_returndatacopy : is_function.
+    Global Instance Instance_IsFunction_returndatacopy :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::returndatacopy" returndatacopy.
+    Admitted.
+    Global Typeclasses Opaque returndatacopy.
     
     (*
     pub fn returndataload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -5920,9 +5933,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_returndataload :
-      M.IsFunction "revm_interpreter::instructions::system::returndataload" returndataload.
-    Smpl Add apply Function_returndataload : is_function.
+    Global Instance Instance_IsFunction_returndataload :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::returndataload" returndataload.
+    Admitted.
+    Global Typeclasses Opaque returndataload.
     
     (*
     pub fn gas<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -6210,8 +6224,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_gas : M.IsFunction "revm_interpreter::instructions::system::gas" gas.
-    Smpl Add apply Function_gas : is_function.
+    Global Instance Instance_IsFunction_gas :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::gas" gas.
+    Admitted.
+    Global Typeclasses Opaque gas.
     
     (*
     pub fn memory_resize(
@@ -6763,8 +6779,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_memory_resize :
-      M.IsFunction "revm_interpreter::instructions::system::memory_resize" memory_resize.
-    Smpl Add apply Function_memory_resize : is_function.
+    Global Instance Instance_IsFunction_memory_resize :
+      M.IsFunction.Trait "revm_interpreter::instructions::system::memory_resize" memory_resize.
+    Admitted.
+    Global Typeclasses Opaque memory_resize.
   End system.
 End instructions.

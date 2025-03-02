@@ -535,8 +535,10 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_full_check : M.IsAssociatedFunction Self "full_check" full_check.
-    Smpl Add apply AssociatedFunction_full_check : is_associated.
+    Global Instance AssociatedFunction_full_check :
+      M.IsAssociatedFunction.Trait Self "full_check" full_check.
+    Admitted.
+    Global Typeclasses Opaque full_check.
     
     (*
         pub fn no_check() -> Self {
@@ -568,8 +570,10 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_no_check : M.IsAssociatedFunction Self "no_check" no_check.
-    Smpl Add apply AssociatedFunction_no_check : is_associated.
+    Global Instance AssociatedFunction_no_check :
+      M.IsAssociatedFunction.Trait Self "no_check" no_check.
+    Admitted.
+    Global Typeclasses Opaque no_check.
     
     (*
         pub fn need_check_compat(&self) -> bool {
@@ -627,9 +631,10 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_need_check_compat :
-      M.IsAssociatedFunction Self "need_check_compat" need_check_compat.
-    Smpl Add apply AssociatedFunction_need_check_compat : is_associated.
+    Global Instance AssociatedFunction_need_check_compat :
+      M.IsAssociatedFunction.Trait Self "need_check_compat" need_check_compat.
+    Admitted.
+    Global Typeclasses Opaque need_check_compat.
     
     (*
         pub fn check(&self, old_module: &Module, new_module: &Module) -> PartialVMResult<()> {
@@ -928,6 +933,7 @@ Module compatibility.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1403,6 +1409,7 @@ Module compatibility.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2686,8 +2693,9 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
-    Smpl Add apply AssociatedFunction_check : is_associated.
+    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.Trait Self "check" check.
+    Admitted.
+    Global Typeclasses Opaque check.
   End Impl_move_binary_format_compatibility_Compatibility.
   
   (*
@@ -2807,11 +2815,12 @@ Module compatibility.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_struct_abilities_compatible :
-    M.IsFunction
+  Global Instance Instance_IsFunction_struct_abilities_compatible :
+    M.IsFunction.Trait
       "move_binary_format::compatibility::struct_abilities_compatible"
       struct_abilities_compatible.
-  Smpl Add apply Function_struct_abilities_compatible : is_function.
+  Admitted.
+  Global Typeclasses Opaque struct_abilities_compatible.
   
   (*
   fn fun_type_parameters_compatible(
@@ -3021,11 +3030,12 @@ Module compatibility.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_fun_type_parameters_compatible :
-    M.IsFunction
+  Global Instance Instance_IsFunction_fun_type_parameters_compatible :
+    M.IsFunction.Trait
       "move_binary_format::compatibility::fun_type_parameters_compatible"
       fun_type_parameters_compatible.
-  Smpl Add apply Function_fun_type_parameters_compatible : is_function.
+  Admitted.
+  Global Typeclasses Opaque fun_type_parameters_compatible.
   
   (*
   fn struct_type_parameters_compatible(
@@ -3272,11 +3282,12 @@ Module compatibility.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_struct_type_parameters_compatible :
-    M.IsFunction
+  Global Instance Instance_IsFunction_struct_type_parameters_compatible :
+    M.IsFunction.Trait
       "move_binary_format::compatibility::struct_type_parameters_compatible"
       struct_type_parameters_compatible.
-  Smpl Add apply Function_struct_type_parameters_compatible : is_function.
+  Admitted.
+  Global Typeclasses Opaque struct_type_parameters_compatible.
   
   (*
   fn type_parameter_constraints_compatible(
@@ -3349,11 +3360,12 @@ Module compatibility.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_parameter_constraints_compatible :
-    M.IsFunction
+  Global Instance Instance_IsFunction_type_parameter_constraints_compatible :
+    M.IsFunction.Trait
       "move_binary_format::compatibility::type_parameter_constraints_compatible"
       type_parameter_constraints_compatible.
-  Smpl Add apply Function_type_parameter_constraints_compatible : is_function.
+  Admitted.
+  Global Typeclasses Opaque type_parameter_constraints_compatible.
   
   (*
   fn type_parameter_phantom_decl_compatible(
@@ -3437,11 +3449,12 @@ Module compatibility.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_parameter_phantom_decl_compatible :
-    M.IsFunction
+  Global Instance Instance_IsFunction_type_parameter_phantom_decl_compatible :
+    M.IsFunction.Trait
       "move_binary_format::compatibility::type_parameter_phantom_decl_compatible"
       type_parameter_phantom_decl_compatible.
-  Smpl Add apply Function_type_parameter_phantom_decl_compatible : is_function.
+  Admitted.
+  Global Typeclasses Opaque type_parameter_phantom_decl_compatible.
   
   (*
   Enum InclusionCheck
@@ -4289,6 +4302,7 @@ Module compatibility.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4534,6 +4548,7 @@ Module compatibility.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4846,7 +4861,8 @@ Module compatibility.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
-    Smpl Add apply AssociatedFunction_check : is_associated.
+    Global Instance AssociatedFunction_check : M.IsAssociatedFunction.Trait Self "check" check.
+    Admitted.
+    Global Typeclasses Opaque check.
   End Impl_move_binary_format_compatibility_InclusionCheck.
 End compatibility.

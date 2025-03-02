@@ -141,10 +141,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_cloned_Cloned_I.
       
       (*
@@ -221,9 +222,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_clone_try_fold :
-        M.IsFunction "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
-      Smpl Add apply Function_clone_try_fold : is_function.
+      Global Instance Instance_IsFunction_clone_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::cloned::clone_try_fold" clone_try_fold.
+      Admitted.
+      Global Typeclasses Opaque clone_try_fold.
       
       Module clone_try_fold.
         (* Error OpaqueTy *)

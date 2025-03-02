@@ -8,7 +8,12 @@ Module slice.
       
       (*     type Output = I::Output; *)
       Definition _Output (T I : Ty.t) : Ty.t :=
-        Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
+        Ty.associated_in_trait
+          "core::slice::index::SliceIndex"
+          []
+          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+          I
+          "Output".
       
       (*
           fn index(&self, index: I) -> &I::Output {
@@ -29,7 +34,14 @@ Module slice.
                   Ty.apply
                     (Ty.path "&")
                     []
-                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
+                    [
+                      Ty.associated_in_trait
+                        "core::slice::index::SliceIndex"
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                        I
+                        "Output"
+                    ],
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     I,
@@ -86,7 +98,13 @@ Module slice.
                       Ty.apply
                         (Ty.path "&mut")
                         []
-                        [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output"
+                        [
+                          Ty.associated_in_trait
+                            "core::slice::index::SliceIndex"
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            I
+                            "Output"
                         ],
                       M.get_trait_method (|
                         "core::slice::index::SliceIndex",
@@ -157,9 +175,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_start_index_len_fail :
-      M.IsFunction "core::slice::index::slice_start_index_len_fail" slice_start_index_len_fail.
-    Smpl Add apply Function_slice_start_index_len_fail : is_function.
+    Global Instance Instance_IsFunction_slice_start_index_len_fail :
+      M.IsFunction.Trait
+        "core::slice::index::slice_start_index_len_fail"
+        slice_start_index_len_fail.
+    Admitted.
+    Global Typeclasses Opaque slice_start_index_len_fail.
     
     (*
     fn slice_start_index_len_fail_rt(index: usize, len: usize) -> ! {
@@ -254,11 +275,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_start_index_len_fail_rt :
-      M.IsFunction
+    Global Instance Instance_IsFunction_slice_start_index_len_fail_rt :
+      M.IsFunction.Trait
         "core::slice::index::slice_start_index_len_fail_rt"
         slice_start_index_len_fail_rt.
-    Smpl Add apply Function_slice_start_index_len_fail_rt : is_function.
+    Admitted.
+    Global Typeclasses Opaque slice_start_index_len_fail_rt.
     
     (*
     const fn slice_start_index_len_fail_ct(_: usize, _: usize) -> ! {
@@ -326,11 +348,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_start_index_len_fail_ct :
-      M.IsFunction
+    Global Instance Instance_IsFunction_slice_start_index_len_fail_ct :
+      M.IsFunction.Trait
         "core::slice::index::slice_start_index_len_fail_ct"
         slice_start_index_len_fail_ct.
-    Smpl Add apply Function_slice_start_index_len_fail_ct : is_function.
+    Admitted.
+    Global Typeclasses Opaque slice_start_index_len_fail_ct.
     
     (*
     const fn slice_end_index_len_fail(index: usize, len: usize) -> ! {
@@ -366,9 +389,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_end_index_len_fail :
-      M.IsFunction "core::slice::index::slice_end_index_len_fail" slice_end_index_len_fail.
-    Smpl Add apply Function_slice_end_index_len_fail : is_function.
+    Global Instance Instance_IsFunction_slice_end_index_len_fail :
+      M.IsFunction.Trait "core::slice::index::slice_end_index_len_fail" slice_end_index_len_fail.
+    Admitted.
+    Global Typeclasses Opaque slice_end_index_len_fail.
     
     (*
     fn slice_end_index_len_fail_rt(index: usize, len: usize) -> ! {
@@ -463,9 +487,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_end_index_len_fail_rt :
-      M.IsFunction "core::slice::index::slice_end_index_len_fail_rt" slice_end_index_len_fail_rt.
-    Smpl Add apply Function_slice_end_index_len_fail_rt : is_function.
+    Global Instance Instance_IsFunction_slice_end_index_len_fail_rt :
+      M.IsFunction.Trait
+        "core::slice::index::slice_end_index_len_fail_rt"
+        slice_end_index_len_fail_rt.
+    Admitted.
+    Global Typeclasses Opaque slice_end_index_len_fail_rt.
     
     (*
     const fn slice_end_index_len_fail_ct(_: usize, _: usize) -> ! {
@@ -533,9 +560,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_end_index_len_fail_ct :
-      M.IsFunction "core::slice::index::slice_end_index_len_fail_ct" slice_end_index_len_fail_ct.
-    Smpl Add apply Function_slice_end_index_len_fail_ct : is_function.
+    Global Instance Instance_IsFunction_slice_end_index_len_fail_ct :
+      M.IsFunction.Trait
+        "core::slice::index::slice_end_index_len_fail_ct"
+        slice_end_index_len_fail_ct.
+    Admitted.
+    Global Typeclasses Opaque slice_end_index_len_fail_ct.
     
     (*
     const fn slice_index_order_fail(index: usize, end: usize) -> ! {
@@ -571,9 +601,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_index_order_fail :
-      M.IsFunction "core::slice::index::slice_index_order_fail" slice_index_order_fail.
-    Smpl Add apply Function_slice_index_order_fail : is_function.
+    Global Instance Instance_IsFunction_slice_index_order_fail :
+      M.IsFunction.Trait "core::slice::index::slice_index_order_fail" slice_index_order_fail.
+    Admitted.
+    Global Typeclasses Opaque slice_index_order_fail.
     
     (*
     fn slice_index_order_fail_rt(index: usize, end: usize) -> ! {
@@ -668,9 +699,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_index_order_fail_rt :
-      M.IsFunction "core::slice::index::slice_index_order_fail_rt" slice_index_order_fail_rt.
-    Smpl Add apply Function_slice_index_order_fail_rt : is_function.
+    Global Instance Instance_IsFunction_slice_index_order_fail_rt :
+      M.IsFunction.Trait "core::slice::index::slice_index_order_fail_rt" slice_index_order_fail_rt.
+    Admitted.
+    Global Typeclasses Opaque slice_index_order_fail_rt.
     
     (*
     const fn slice_index_order_fail_ct(_: usize, _: usize) -> ! {
@@ -737,9 +769,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_index_order_fail_ct :
-      M.IsFunction "core::slice::index::slice_index_order_fail_ct" slice_index_order_fail_ct.
-    Smpl Add apply Function_slice_index_order_fail_ct : is_function.
+    Global Instance Instance_IsFunction_slice_index_order_fail_ct :
+      M.IsFunction.Trait "core::slice::index::slice_index_order_fail_ct" slice_index_order_fail_ct.
+    Admitted.
+    Global Typeclasses Opaque slice_index_order_fail_ct.
     
     (*
     const fn slice_start_index_overflow_fail() -> ! {
@@ -790,11 +823,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_start_index_overflow_fail :
-      M.IsFunction
+    Global Instance Instance_IsFunction_slice_start_index_overflow_fail :
+      M.IsFunction.Trait
         "core::slice::index::slice_start_index_overflow_fail"
         slice_start_index_overflow_fail.
-    Smpl Add apply Function_slice_start_index_overflow_fail : is_function.
+    Admitted.
+    Global Typeclasses Opaque slice_start_index_overflow_fail.
     
     (*
     const fn slice_end_index_overflow_fail() -> ! {
@@ -845,11 +879,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice_end_index_overflow_fail :
-      M.IsFunction
+    Global Instance Instance_IsFunction_slice_end_index_overflow_fail :
+      M.IsFunction.Trait
         "core::slice::index::slice_end_index_overflow_fail"
         slice_end_index_overflow_fail.
-    Smpl Add apply Function_slice_end_index_overflow_fail : is_function.
+    Admitted.
+    Global Typeclasses Opaque slice_end_index_overflow_fail.
     
     (*
     const unsafe fn get_noubcheck<T>(ptr: *const [T], index: usize) -> *const T {
@@ -882,8 +917,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_get_noubcheck : M.IsFunction "core::slice::index::get_noubcheck" get_noubcheck.
-    Smpl Add apply Function_get_noubcheck : is_function.
+    Global Instance Instance_IsFunction_get_noubcheck :
+      M.IsFunction.Trait "core::slice::index::get_noubcheck" get_noubcheck.
+    Admitted.
+    Global Typeclasses Opaque get_noubcheck.
     
     (*
     const unsafe fn get_mut_noubcheck<T>(ptr: *mut [T], index: usize) -> *mut T {
@@ -916,9 +953,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_get_mut_noubcheck :
-      M.IsFunction "core::slice::index::get_mut_noubcheck" get_mut_noubcheck.
-    Smpl Add apply Function_get_mut_noubcheck : is_function.
+    Global Instance Instance_IsFunction_get_mut_noubcheck :
+      M.IsFunction.Trait "core::slice::index::get_mut_noubcheck" get_mut_noubcheck.
+    Admitted.
+    Global Typeclasses Opaque get_mut_noubcheck.
     
     (*
     const unsafe fn get_offset_len_noubcheck<T>(
@@ -966,9 +1004,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_get_offset_len_noubcheck :
-      M.IsFunction "core::slice::index::get_offset_len_noubcheck" get_offset_len_noubcheck.
-    Smpl Add apply Function_get_offset_len_noubcheck : is_function.
+    Global Instance Instance_IsFunction_get_offset_len_noubcheck :
+      M.IsFunction.Trait "core::slice::index::get_offset_len_noubcheck" get_offset_len_noubcheck.
+    Admitted.
+    Global Typeclasses Opaque get_offset_len_noubcheck.
     
     (*
     const unsafe fn get_offset_len_mut_noubcheck<T>(
@@ -1020,9 +1059,12 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_get_offset_len_mut_noubcheck :
-      M.IsFunction "core::slice::index::get_offset_len_mut_noubcheck" get_offset_len_mut_noubcheck.
-    Smpl Add apply Function_get_offset_len_mut_noubcheck : is_function.
+    Global Instance Instance_IsFunction_get_offset_len_mut_noubcheck :
+      M.IsFunction.Trait
+        "core::slice::index::get_offset_len_mut_noubcheck"
+        get_offset_len_mut_noubcheck.
+    Admitted.
+    Global Typeclasses Opaque get_offset_len_mut_noubcheck.
     
     Module private_slice_index.
       (* Trait *)
@@ -6495,8 +6537,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_range : M.IsFunction "core::slice::index::range" range.
-    Smpl Add apply Function_range : is_function.
+    Global Instance Instance_IsFunction_range :
+      M.IsFunction.Trait "core::slice::index::range" range.
+    Admitted.
+    Global Typeclasses Opaque range.
     
     (*
     pub fn try_range<R>(range: R, bounds: ops::RangeTo<usize>) -> Option<ops::Range<usize>>
@@ -6890,8 +6934,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_try_range : M.IsFunction "core::slice::index::try_range" try_range.
-    Smpl Add apply Function_try_range : is_function.
+    Global Instance Instance_IsFunction_try_range :
+      M.IsFunction.Trait "core::slice::index::try_range" try_range.
+    Admitted.
+    Global Typeclasses Opaque try_range.
     
     (*
     pub(crate) fn into_range_unchecked(
@@ -7015,9 +7061,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_into_range_unchecked :
-      M.IsFunction "core::slice::index::into_range_unchecked" into_range_unchecked.
-    Smpl Add apply Function_into_range_unchecked : is_function.
+    Global Instance Instance_IsFunction_into_range_unchecked :
+      M.IsFunction.Trait "core::slice::index::into_range_unchecked" into_range_unchecked.
+    Admitted.
+    Global Typeclasses Opaque into_range_unchecked.
     
     (*
     pub(crate) fn into_range(
@@ -7363,8 +7410,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_into_range : M.IsFunction "core::slice::index::into_range" into_range.
-    Smpl Add apply Function_into_range : is_function.
+    Global Instance Instance_IsFunction_into_range :
+      M.IsFunction.Trait "core::slice::index::into_range" into_range.
+    Admitted.
+    Global Typeclasses Opaque into_range.
     
     (*
     pub(crate) fn into_slice_range(
@@ -7595,9 +7644,10 @@ Module slice.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_into_slice_range :
-      M.IsFunction "core::slice::index::into_slice_range" into_slice_range.
-    Smpl Add apply Function_into_slice_range : is_function.
+    Global Instance Instance_IsFunction_into_slice_range :
+      M.IsFunction.Trait "core::slice::index::into_slice_range" into_slice_range.
+    Admitted.
+    Global Typeclasses Opaque into_slice_range.
     
     Module Impl_core_slice_index_SliceIndex_slice_T_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
       Definition Self (T : Ty.t) : Ty.t :=

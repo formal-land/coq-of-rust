@@ -52,6 +52,7 @@ Module eof.
           M.read (|
             let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -931,7 +932,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_print : M.IsFunction "revm_bytecode::eof::printer::print" print.
-    Smpl Add apply Function_print : is_function.
+    Global Instance Instance_IsFunction_print :
+      M.IsFunction.Trait "revm_bytecode::eof::printer::print" print.
+    Admitted.
+    Global Typeclasses Opaque print.
   End printer.
 End eof.

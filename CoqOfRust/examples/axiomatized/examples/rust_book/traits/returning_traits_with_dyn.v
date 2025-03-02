@@ -50,11 +50,12 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 
 Parameter random_animal : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_random_animal :
-  M.IsFunction "returning_traits_with_dyn::random_animal" random_animal.
-Smpl Add apply Function_random_animal : is_function.
+Global Instance Instance_IsFunction_random_animal :
+  M.IsFunction.Trait "returning_traits_with_dyn::random_animal" random_animal.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "returning_traits_with_dyn::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "returning_traits_with_dyn::main" main.
+Admitted.

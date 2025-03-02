@@ -114,9 +114,10 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -453,9 +454,10 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
-    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
+    Global Instance AssociatedFunction_verify_module_impl :
+      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_module_impl.
   End Impl_move_bytecode_verifier_struct_defs_RecursiveStructDefChecker.
   
   (* StructRecord
@@ -655,6 +657,7 @@ Module struct_defs.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -791,8 +794,9 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn build(self) -> PartialVMResult<DiGraphMap<StructDefinitionIndex, ()>> {
@@ -956,6 +960,7 @@ Module struct_defs.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1775,8 +1780,9 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_build : M.IsAssociatedFunction Self "build" build.
-    Smpl Add apply AssociatedFunction_build : is_associated.
+    Global Instance AssociatedFunction_build : M.IsAssociatedFunction.Trait Self "build" build.
+    Admitted.
+    Global Typeclasses Opaque build.
     
     (*
         fn add_struct_defs(
@@ -2029,6 +2035,7 @@ Module struct_defs.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2265,9 +2272,10 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_struct_defs :
-      M.IsAssociatedFunction Self "add_struct_defs" add_struct_defs.
-    Smpl Add apply AssociatedFunction_add_struct_defs : is_associated.
+    Global Instance AssociatedFunction_add_struct_defs :
+      M.IsAssociatedFunction.Trait Self "add_struct_defs" add_struct_defs.
+    Admitted.
+    Global Typeclasses Opaque add_struct_defs.
     
     (*
         fn add_signature_token(
@@ -3126,6 +3134,7 @@ Module struct_defs.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -3358,8 +3367,9 @@ Module struct_defs.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_add_signature_token :
-      M.IsAssociatedFunction Self "add_signature_token" add_signature_token.
-    Smpl Add apply AssociatedFunction_add_signature_token : is_associated.
+    Global Instance AssociatedFunction_add_signature_token :
+      M.IsAssociatedFunction.Trait Self "add_signature_token" add_signature_token.
+    Admitted.
+    Global Typeclasses Opaque add_signature_token.
   End Impl_move_bytecode_verifier_struct_defs_StructDefGraphBuilder.
 End struct_defs.

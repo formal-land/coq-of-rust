@@ -462,8 +462,10 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_display : M.IsAssociatedFunction Self "display" display.
-    Smpl Add apply AssociatedFunction_display : is_associated.
+    Global Instance AssociatedFunction_display :
+      M.IsAssociatedFunction.Trait Self "display" display.
+    Admitted.
+    Global Typeclasses Opaque display.
   End Impl_move_binary_format_control_flow_graph_BasicBlock.
   
   Definition value_ENTRY_BLOCK_ID : Value.t :=
@@ -732,6 +734,7 @@ Module control_flow_graph.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -913,6 +916,7 @@ Module control_flow_graph.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -1414,6 +1418,7 @@ Module control_flow_graph.
               |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -1624,6 +1629,7 @@ Module control_flow_graph.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -2369,8 +2375,9 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn display(&self) {
@@ -2436,6 +2443,7 @@ Module control_flow_graph.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -2657,8 +2665,10 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_display : M.IsAssociatedFunction Self "display" display.
-    Smpl Add apply AssociatedFunction_display : is_associated.
+    Global Instance AssociatedFunction_display :
+      M.IsAssociatedFunction.Trait Self "display" display.
+    Admitted.
+    Global Typeclasses Opaque display.
     
     (*
         fn is_end_of_block(pc: CodeOffset, code: &[Bytecode], block_ids: &Set<BlockId>) -> bool {
@@ -2722,9 +2732,10 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_end_of_block :
-      M.IsAssociatedFunction Self "is_end_of_block" is_end_of_block.
-    Smpl Add apply AssociatedFunction_is_end_of_block : is_associated.
+    Global Instance AssociatedFunction_is_end_of_block :
+      M.IsAssociatedFunction.Trait Self "is_end_of_block" is_end_of_block.
+    Admitted.
+    Global Typeclasses Opaque is_end_of_block.
     
     (*
         fn record_block_ids(pc: CodeOffset, code: &[Bytecode], block_ids: &mut Set<BlockId>) {
@@ -2893,9 +2904,10 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_record_block_ids :
-      M.IsAssociatedFunction Self "record_block_ids" record_block_ids.
-    Smpl Add apply AssociatedFunction_record_block_ids : is_associated.
+    Global Instance AssociatedFunction_record_block_ids :
+      M.IsAssociatedFunction.Trait Self "record_block_ids" record_block_ids.
+    Admitted.
+    Global Typeclasses Opaque record_block_ids.
     
     (*
         fn traverse_by(&self, block_id: BlockId) -> Vec<BlockId> {
@@ -3016,6 +3028,7 @@ Module control_flow_graph.
               |) in
             let~ _ : Ty.tuple [] :=
               M.loop (|
+                Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -3182,6 +3195,7 @@ Module control_flow_graph.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -3383,8 +3397,10 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_traverse_by : M.IsAssociatedFunction Self "traverse_by" traverse_by.
-    Smpl Add apply AssociatedFunction_traverse_by : is_associated.
+    Global Instance AssociatedFunction_traverse_by :
+      M.IsAssociatedFunction.Trait Self "traverse_by" traverse_by.
+    Admitted.
+    Global Typeclasses Opaque traverse_by.
     
     (*
         pub fn reachable_from(&self, block_id: BlockId) -> Vec<BlockId> {
@@ -3416,9 +3432,10 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_reachable_from :
-      M.IsAssociatedFunction Self "reachable_from" reachable_from.
-    Smpl Add apply AssociatedFunction_reachable_from : is_associated.
+    Global Instance AssociatedFunction_reachable_from :
+      M.IsAssociatedFunction.Trait Self "reachable_from" reachable_from.
+    Admitted.
+    Global Typeclasses Opaque reachable_from.
   End Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
   
   Module Impl_move_binary_format_control_flow_graph_ControlFlowGraph_for_move_binary_format_control_flow_graph_VMControlFlowGraph.

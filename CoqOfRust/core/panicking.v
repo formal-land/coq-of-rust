@@ -98,14 +98,17 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_fmt : M.IsFunction "core::panicking::panic_fmt" panic_fmt.
-  Smpl Add apply Function_panic_fmt : is_function.
+  Global Instance Instance_IsFunction_panic_fmt :
+    M.IsFunction.Trait "core::panicking::panic_fmt" panic_fmt.
+  Admitted.
+  Global Typeclasses Opaque panic_fmt.
   
   Module panic_fmt.
     Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
-    Axiom Function_panic_impl : M.IsFunction "core::panicking::panic_fmt::panic_impl" panic_impl.
-    Smpl Add apply Function_panic_impl : is_function.
+    Global Instance Instance_IsFunction_panic_impl :
+      M.IsFunction.Trait "core::panicking::panic_fmt::panic_impl" panic_impl.
+    Admitted.
   End panic_fmt.
   
   (*
@@ -173,9 +176,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_nounwind_fmt :
-    M.IsFunction "core::panicking::panic_nounwind_fmt" panic_nounwind_fmt.
-  Smpl Add apply Function_panic_nounwind_fmt : is_function.
+  Global Instance Instance_IsFunction_panic_nounwind_fmt :
+    M.IsFunction.Trait "core::panicking::panic_nounwind_fmt" panic_nounwind_fmt.
+  Admitted.
+  Global Typeclasses Opaque panic_nounwind_fmt.
   
   Module panic_nounwind_fmt.
     (*
@@ -281,15 +285,17 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_runtime : M.IsFunction "core::panicking::panic_nounwind_fmt::runtime" runtime.
-    Smpl Add apply Function_runtime : is_function.
+    Global Instance Instance_IsFunction_runtime :
+      M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::runtime" runtime.
+    Admitted.
+    Global Typeclasses Opaque runtime.
     
     Module runtime.
       Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
       
-      Axiom Function_panic_impl :
-        M.IsFunction "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
-      Smpl Add apply Function_panic_impl : is_function.
+      Global Instance Instance_IsFunction_panic_impl :
+        M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
+      Admitted.
     End runtime.
     
     (*
@@ -312,8 +318,10 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_comptime : M.IsFunction "core::panicking::panic_nounwind_fmt::comptime" comptime.
-    Smpl Add apply Function_comptime : is_function.
+    Global Instance Instance_IsFunction_comptime :
+      M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::comptime" comptime.
+    Admitted.
+    Global Typeclasses Opaque comptime.
   End panic_nounwind_fmt.
   
   (*
@@ -363,8 +371,9 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic : M.IsFunction "core::panicking::panic" panic.
-  Smpl Add apply Function_panic : is_function.
+  Global Instance Instance_IsFunction_panic : M.IsFunction.Trait "core::panicking::panic" panic.
+  Admitted.
+  Global Typeclasses Opaque panic.
   
   Module panic_const.
     (*
@@ -413,11 +422,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_add_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_add_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_add_overflow"
         panic_const_add_overflow.
-    Smpl Add apply Function_panic_const_add_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_add_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -466,11 +476,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_sub_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_sub_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_sub_overflow"
         panic_const_sub_overflow.
-    Smpl Add apply Function_panic_const_sub_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_sub_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -519,11 +530,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_mul_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_mul_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_mul_overflow"
         panic_const_mul_overflow.
-    Smpl Add apply Function_panic_const_mul_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_mul_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -572,11 +584,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_div_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_div_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_div_overflow"
         panic_const_div_overflow.
-    Smpl Add apply Function_panic_const_div_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_div_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -629,11 +642,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_rem_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_rem_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_rem_overflow"
         panic_const_rem_overflow.
-    Smpl Add apply Function_panic_const_rem_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_rem_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -682,11 +696,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_neg_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_neg_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_neg_overflow"
         panic_const_neg_overflow.
-    Smpl Add apply Function_panic_const_neg_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_neg_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -735,11 +750,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_shr_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_shr_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_shr_overflow"
         panic_const_shr_overflow.
-    Smpl Add apply Function_panic_const_shr_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_shr_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -788,11 +804,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_shl_overflow :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_shl_overflow :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_shl_overflow"
         panic_const_shl_overflow.
-    Smpl Add apply Function_panic_const_shl_overflow : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_shl_overflow.
     
     (*
                     pub const fn $lang() -> ! {
@@ -840,9 +857,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_div_by_zero :
-      M.IsFunction "core::panicking::panic_const::panic_const_div_by_zero" panic_const_div_by_zero.
-    Smpl Add apply Function_panic_const_div_by_zero : is_function.
+    Global Instance Instance_IsFunction_panic_const_div_by_zero :
+      M.IsFunction.Trait
+        "core::panicking::panic_const::panic_const_div_by_zero"
+        panic_const_div_by_zero.
+    Admitted.
+    Global Typeclasses Opaque panic_const_div_by_zero.
     
     (*
                     pub const fn $lang() -> ! {
@@ -896,9 +916,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_rem_by_zero :
-      M.IsFunction "core::panicking::panic_const::panic_const_rem_by_zero" panic_const_rem_by_zero.
-    Smpl Add apply Function_panic_const_rem_by_zero : is_function.
+    Global Instance Instance_IsFunction_panic_const_rem_by_zero :
+      M.IsFunction.Trait
+        "core::panicking::panic_const::panic_const_rem_by_zero"
+        panic_const_rem_by_zero.
+    Admitted.
+    Global Typeclasses Opaque panic_const_rem_by_zero.
     
     (*
                     pub const fn $lang() -> ! {
@@ -951,11 +974,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_coroutine_resumed :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_coroutine_resumed :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_coroutine_resumed"
         panic_const_coroutine_resumed.
-    Smpl Add apply Function_panic_const_coroutine_resumed : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_coroutine_resumed.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1008,11 +1032,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_async_fn_resumed :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_async_fn_resumed :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_async_fn_resumed"
         panic_const_async_fn_resumed.
-    Smpl Add apply Function_panic_const_async_fn_resumed : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_async_fn_resumed.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1065,11 +1090,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_async_gen_fn_resumed :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_async_gen_fn_resumed :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_async_gen_fn_resumed"
         panic_const_async_gen_fn_resumed.
-    Smpl Add apply Function_panic_const_async_gen_fn_resumed : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_async_gen_fn_resumed.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1123,9 +1149,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_gen_fn_none :
-      M.IsFunction "core::panicking::panic_const::panic_const_gen_fn_none" panic_const_gen_fn_none.
-    Smpl Add apply Function_panic_const_gen_fn_none : is_function.
+    Global Instance Instance_IsFunction_panic_const_gen_fn_none :
+      M.IsFunction.Trait
+        "core::panicking::panic_const::panic_const_gen_fn_none"
+        panic_const_gen_fn_none.
+    Admitted.
+    Global Typeclasses Opaque panic_const_gen_fn_none.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1178,11 +1207,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_coroutine_resumed_panic :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_coroutine_resumed_panic :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_coroutine_resumed_panic"
         panic_const_coroutine_resumed_panic.
-    Smpl Add apply Function_panic_const_coroutine_resumed_panic : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_coroutine_resumed_panic.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1235,11 +1265,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_async_fn_resumed_panic :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_async_fn_resumed_panic :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_async_fn_resumed_panic"
         panic_const_async_fn_resumed_panic.
-    Smpl Add apply Function_panic_const_async_fn_resumed_panic : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_async_fn_resumed_panic.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1292,11 +1323,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_async_gen_fn_resumed_panic :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_async_gen_fn_resumed_panic :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_async_gen_fn_resumed_panic"
         panic_const_async_gen_fn_resumed_panic.
-    Smpl Add apply Function_panic_const_async_gen_fn_resumed_panic : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_async_gen_fn_resumed_panic.
     
     (*
                     pub const fn $lang() -> ! {
@@ -1354,11 +1386,12 @@ Module panicking.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_const_gen_fn_none_panic :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_const_gen_fn_none_panic :
+      M.IsFunction.Trait
         "core::panicking::panic_const::panic_const_gen_fn_none_panic"
         panic_const_gen_fn_none_panic.
-    Smpl Add apply Function_panic_const_gen_fn_none_panic : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_const_gen_fn_none_panic.
   End panic_const.
   
   (*
@@ -1398,8 +1431,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_nounwind : M.IsFunction "core::panicking::panic_nounwind" panic_nounwind.
-  Smpl Add apply Function_panic_nounwind : is_function.
+  Global Instance Instance_IsFunction_panic_nounwind :
+    M.IsFunction.Trait "core::panicking::panic_nounwind" panic_nounwind.
+  Admitted.
+  Global Typeclasses Opaque panic_nounwind.
   
   (*
   pub fn panic_nounwind_nobacktrace(expr: &'static str) -> ! {
@@ -1438,9 +1473,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_nounwind_nobacktrace :
-    M.IsFunction "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
-  Smpl Add apply Function_panic_nounwind_nobacktrace : is_function.
+  Global Instance Instance_IsFunction_panic_nounwind_nobacktrace :
+    M.IsFunction.Trait "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
+  Admitted.
+  Global Typeclasses Opaque panic_nounwind_nobacktrace.
   
   (*
   pub const fn panic_explicit() -> ! {
@@ -1468,8 +1504,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_explicit : M.IsFunction "core::panicking::panic_explicit" panic_explicit.
-  Smpl Add apply Function_panic_explicit : is_function.
+  Global Instance Instance_IsFunction_panic_explicit :
+    M.IsFunction.Trait "core::panicking::panic_explicit" panic_explicit.
+  Admitted.
+  Global Typeclasses Opaque panic_explicit.
   
   (*
   pub fn unreachable_display<T: fmt::Display>(x: &T) -> ! {
@@ -1543,9 +1581,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unreachable_display :
-    M.IsFunction "core::panicking::unreachable_display" unreachable_display.
-  Smpl Add apply Function_unreachable_display : is_function.
+  Global Instance Instance_IsFunction_unreachable_display :
+    M.IsFunction.Trait "core::panicking::unreachable_display" unreachable_display.
+  Admitted.
+  Global Typeclasses Opaque unreachable_display.
   
   (*
   pub const fn panic_str_2015(expr: &str) -> ! {
@@ -1569,8 +1608,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_str_2015 : M.IsFunction "core::panicking::panic_str_2015" panic_str_2015.
-  Smpl Add apply Function_panic_str_2015 : is_function.
+  Global Instance Instance_IsFunction_panic_str_2015 :
+    M.IsFunction.Trait "core::panicking::panic_str_2015" panic_str_2015.
+  Admitted.
+  Global Typeclasses Opaque panic_str_2015.
   
   (*
   pub const fn panic_display<T: fmt::Display>(x: &T) -> ! {
@@ -1641,8 +1682,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_display : M.IsFunction "core::panicking::panic_display" panic_display.
-  Smpl Add apply Function_panic_display : is_function.
+  Global Instance Instance_IsFunction_panic_display :
+    M.IsFunction.Trait "core::panicking::panic_display" panic_display.
+  Admitted.
+  Global Typeclasses Opaque panic_display.
   
   (*
   fn panic_bounds_check(index: usize, len: usize) -> ! {
@@ -1761,9 +1804,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_bounds_check :
-    M.IsFunction "core::panicking::panic_bounds_check" panic_bounds_check.
-  Smpl Add apply Function_panic_bounds_check : is_function.
+  Global Instance Instance_IsFunction_panic_bounds_check :
+    M.IsFunction.Trait "core::panicking::panic_bounds_check" panic_bounds_check.
+  Admitted.
+  Global Typeclasses Opaque panic_bounds_check.
   
   (*
   fn panic_misaligned_pointer_dereference(required: usize, found: usize) -> ! {
@@ -1952,11 +1996,12 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_misaligned_pointer_dereference :
-    M.IsFunction
+  Global Instance Instance_IsFunction_panic_misaligned_pointer_dereference :
+    M.IsFunction.Trait
       "core::panicking::panic_misaligned_pointer_dereference"
       panic_misaligned_pointer_dereference.
-  Smpl Add apply Function_panic_misaligned_pointer_dereference : is_function.
+  Admitted.
+  Global Typeclasses Opaque panic_misaligned_pointer_dereference.
   
   (*
   fn panic_cannot_unwind() -> ! {
@@ -1976,9 +2021,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_cannot_unwind :
-    M.IsFunction "core::panicking::panic_cannot_unwind" panic_cannot_unwind.
-  Smpl Add apply Function_panic_cannot_unwind : is_function.
+  Global Instance Instance_IsFunction_panic_cannot_unwind :
+    M.IsFunction.Trait "core::panicking::panic_cannot_unwind" panic_cannot_unwind.
+  Admitted.
+  Global Typeclasses Opaque panic_cannot_unwind.
   
   (*
   fn panic_in_cleanup() -> ! {
@@ -1998,9 +2044,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_panic_in_cleanup :
-    M.IsFunction "core::panicking::panic_in_cleanup" panic_in_cleanup.
-  Smpl Add apply Function_panic_in_cleanup : is_function.
+  Global Instance Instance_IsFunction_panic_in_cleanup :
+    M.IsFunction.Trait "core::panicking::panic_in_cleanup" panic_in_cleanup.
+  Admitted.
+  Global Typeclasses Opaque panic_in_cleanup.
   
   (*
   pub const fn const_panic_fmt(fmt: fmt::Arguments<'_>) -> ! {
@@ -2080,8 +2127,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_const_panic_fmt : M.IsFunction "core::panicking::const_panic_fmt" const_panic_fmt.
-  Smpl Add apply Function_const_panic_fmt : is_function.
+  Global Instance Instance_IsFunction_const_panic_fmt :
+    M.IsFunction.Trait "core::panicking::const_panic_fmt" const_panic_fmt.
+  Admitted.
+  Global Typeclasses Opaque const_panic_fmt.
   
   (*
   Enum AssertKind
@@ -2214,8 +2263,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assert_failed : M.IsFunction "core::panicking::assert_failed" assert_failed.
-  Smpl Add apply Function_assert_failed : is_function.
+  Global Instance Instance_IsFunction_assert_failed :
+    M.IsFunction.Trait "core::panicking::assert_failed" assert_failed.
+  Admitted.
+  Global Typeclasses Opaque assert_failed.
   
   (*
   pub fn assert_matches_failed<T: fmt::Debug + ?Sized>(
@@ -2265,9 +2316,10 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assert_matches_failed :
-    M.IsFunction "core::panicking::assert_matches_failed" assert_matches_failed.
-  Smpl Add apply Function_assert_matches_failed : is_function.
+  Global Instance Instance_IsFunction_assert_matches_failed :
+    M.IsFunction.Trait "core::panicking::assert_matches_failed" assert_matches_failed.
+  Admitted.
+  Global Typeclasses Opaque assert_matches_failed.
   
   Module assert_matches_failed.
     (* StructTuple
@@ -2638,7 +2690,8 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_assert_failed_inner :
-    M.IsFunction "core::panicking::assert_failed_inner" assert_failed_inner.
-  Smpl Add apply Function_assert_failed_inner : is_function.
+  Global Instance Instance_IsFunction_assert_failed_inner :
+    M.IsFunction.Trait "core::panicking::assert_failed_inner" assert_failed_inner.
+  Admitted.
+  Global Typeclasses Opaque assert_failed_inner.
 End panicking.

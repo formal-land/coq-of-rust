@@ -78,9 +78,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_UnwindContinue :
-      M.IsFunction "core::intrinsics::mir::UnwindContinue" value_UnwindContinue.
-    Smpl Add apply Function_value_UnwindContinue : is_function.
+    Global Instance Instance_IsFunction_value_UnwindContinue :
+      M.IsFunction.Trait "core::intrinsics::mir::UnwindContinue" value_UnwindContinue.
+    Admitted.
+    Global Typeclasses Opaque value_UnwindContinue.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindUnreachable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -101,9 +102,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_UnwindUnreachable :
-      M.IsFunction "core::intrinsics::mir::UnwindUnreachable" value_UnwindUnreachable.
-    Smpl Add apply Function_value_UnwindUnreachable : is_function.
+    Global Instance Instance_IsFunction_value_UnwindUnreachable :
+      M.IsFunction.Trait "core::intrinsics::mir::UnwindUnreachable" value_UnwindUnreachable.
+    Admitted.
+    Global Typeclasses Opaque value_UnwindUnreachable.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindTerminate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -125,9 +127,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_UnwindTerminate :
-      M.IsFunction "core::intrinsics::mir::UnwindTerminate" value_UnwindTerminate.
-    Smpl Add apply Function_value_UnwindTerminate : is_function.
+    Global Instance Instance_IsFunction_value_UnwindTerminate :
+      M.IsFunction.Trait "core::intrinsics::mir::UnwindTerminate" value_UnwindTerminate.
+    Admitted.
+    Global Typeclasses Opaque value_UnwindTerminate.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindCleanup (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -149,9 +152,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_UnwindCleanup :
-      M.IsFunction "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
-    Smpl Add apply Function_value_UnwindCleanup : is_function.
+    Global Instance Instance_IsFunction_value_UnwindCleanup :
+      M.IsFunction.Trait "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
+    Admitted.
+    Global Typeclasses Opaque value_UnwindCleanup.
     
     (* StructTuple
       {
@@ -177,8 +181,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_ReturnTo : M.IsFunction "core::intrinsics::mir::ReturnTo" value_ReturnTo.
-    Smpl Add apply Function_value_ReturnTo : is_function.
+    Global Instance Instance_IsFunction_value_ReturnTo :
+      M.IsFunction.Trait "core::intrinsics::mir::ReturnTo" value_ReturnTo.
+    Admitted.
+    Global Typeclasses Opaque value_ReturnTo.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Return (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -195,8 +201,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Return : M.IsFunction "core::intrinsics::mir::Return" value_Return.
-    Smpl Add apply Function_value_Return : is_function.
+    Global Instance Instance_IsFunction_value_Return :
+      M.IsFunction.Trait "core::intrinsics::mir::Return" value_Return.
+    Admitted.
+    Global Typeclasses Opaque value_Return.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Goto (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -214,8 +222,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Goto : M.IsFunction "core::intrinsics::mir::Goto" value_Goto.
-    Smpl Add apply Function_value_Goto : is_function.
+    Global Instance Instance_IsFunction_value_Goto :
+      M.IsFunction.Trait "core::intrinsics::mir::Goto" value_Goto.
+    Admitted.
+    Global Typeclasses Opaque value_Goto.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Unreachable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -232,9 +242,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Unreachable :
-      M.IsFunction "core::intrinsics::mir::Unreachable" value_Unreachable.
-    Smpl Add apply Function_value_Unreachable : is_function.
+    Global Instance Instance_IsFunction_value_Unreachable :
+      M.IsFunction.Trait "core::intrinsics::mir::Unreachable" value_Unreachable.
+    Admitted.
+    Global Typeclasses Opaque value_Unreachable.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -254,8 +265,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Drop : M.IsFunction "core::intrinsics::mir::Drop" value_Drop.
-    Smpl Add apply Function_value_Drop : is_function.
+    Global Instance Instance_IsFunction_value_Drop :
+      M.IsFunction.Trait "core::intrinsics::mir::Drop" value_Drop.
+    Admitted.
+    Global Typeclasses Opaque value_Drop.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -275,8 +288,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Call : M.IsFunction "core::intrinsics::mir::Call" value_Call.
-    Smpl Add apply Function_value_Call : is_function.
+    Global Instance Instance_IsFunction_value_Call :
+      M.IsFunction.Trait "core::intrinsics::mir::Call" value_Call.
+    Admitted.
+    Global Typeclasses Opaque value_Call.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_TailCall (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -294,8 +309,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_TailCall : M.IsFunction "core::intrinsics::mir::TailCall" value_TailCall.
-    Smpl Add apply Function_value_TailCall : is_function.
+    Global Instance Instance_IsFunction_value_TailCall :
+      M.IsFunction.Trait "core::intrinsics::mir::TailCall" value_TailCall.
+    Admitted.
+    Global Typeclasses Opaque value_TailCall.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_UnwindResume (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -316,9 +333,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_UnwindResume :
-      M.IsFunction "core::intrinsics::mir::UnwindResume" value_UnwindResume.
-    Smpl Add apply Function_value_UnwindResume : is_function.
+    Global Instance Instance_IsFunction_value_UnwindResume :
+      M.IsFunction.Trait "core::intrinsics::mir::UnwindResume" value_UnwindResume.
+    Admitted.
+    Global Typeclasses Opaque value_UnwindResume.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StorageLive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -336,9 +354,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_StorageLive :
-      M.IsFunction "core::intrinsics::mir::StorageLive" value_StorageLive.
-    Smpl Add apply Function_value_StorageLive : is_function.
+    Global Instance Instance_IsFunction_value_StorageLive :
+      M.IsFunction.Trait "core::intrinsics::mir::StorageLive" value_StorageLive.
+    Admitted.
+    Global Typeclasses Opaque value_StorageLive.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StorageDead (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -356,9 +375,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_StorageDead :
-      M.IsFunction "core::intrinsics::mir::StorageDead" value_StorageDead.
-    Smpl Add apply Function_value_StorageDead : is_function.
+    Global Instance Instance_IsFunction_value_StorageDead :
+      M.IsFunction.Trait "core::intrinsics::mir::StorageDead" value_StorageDead.
+    Admitted.
+    Global Typeclasses Opaque value_StorageDead.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Assume (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -376,8 +396,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Assume : M.IsFunction "core::intrinsics::mir::Assume" value_Assume.
-    Smpl Add apply Function_value_Assume : is_function.
+    Global Instance Instance_IsFunction_value_Assume :
+      M.IsFunction.Trait "core::intrinsics::mir::Assume" value_Assume.
+    Admitted.
+    Global Typeclasses Opaque value_Assume.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Deinit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -395,8 +417,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Deinit : M.IsFunction "core::intrinsics::mir::Deinit" value_Deinit.
-    Smpl Add apply Function_value_Deinit : is_function.
+    Global Instance Instance_IsFunction_value_Deinit :
+      M.IsFunction.Trait "core::intrinsics::mir::Deinit" value_Deinit.
+    Admitted.
+    Global Typeclasses Opaque value_Deinit.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Checked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -414,8 +438,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Checked : M.IsFunction "core::intrinsics::mir::Checked" value_Checked.
-    Smpl Add apply Function_value_Checked : is_function.
+    Global Instance Instance_IsFunction_value_Checked :
+      M.IsFunction.Trait "core::intrinsics::mir::Checked" value_Checked.
+    Admitted.
+    Global Typeclasses Opaque value_Checked.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -433,8 +459,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Len : M.IsFunction "core::intrinsics::mir::Len" value_Len.
-    Smpl Add apply Function_value_Len : is_function.
+    Global Instance Instance_IsFunction_value_Len :
+      M.IsFunction.Trait "core::intrinsics::mir::Len" value_Len.
+    Admitted.
+    Global Typeclasses Opaque value_Len.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_PtrMetadata (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -452,9 +480,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_PtrMetadata :
-      M.IsFunction "core::intrinsics::mir::PtrMetadata" value_PtrMetadata.
-    Smpl Add apply Function_value_PtrMetadata : is_function.
+    Global Instance Instance_IsFunction_value_PtrMetadata :
+      M.IsFunction.Trait "core::intrinsics::mir::PtrMetadata" value_PtrMetadata.
+    Admitted.
+    Global Typeclasses Opaque value_PtrMetadata.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CopyForDeref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -476,9 +505,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_CopyForDeref :
-      M.IsFunction "core::intrinsics::mir::CopyForDeref" value_CopyForDeref.
-    Smpl Add apply Function_value_CopyForDeref : is_function.
+    Global Instance Instance_IsFunction_value_CopyForDeref :
+      M.IsFunction.Trait "core::intrinsics::mir::CopyForDeref" value_CopyForDeref.
+    Admitted.
+    Global Typeclasses Opaque value_CopyForDeref.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Retag (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -496,8 +526,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Retag : M.IsFunction "core::intrinsics::mir::Retag" value_Retag.
-    Smpl Add apply Function_value_Retag : is_function.
+    Global Instance Instance_IsFunction_value_Retag :
+      M.IsFunction.Trait "core::intrinsics::mir::Retag" value_Retag.
+    Admitted.
+    Global Typeclasses Opaque value_Retag.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Move (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -515,8 +547,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Move : M.IsFunction "core::intrinsics::mir::Move" value_Move.
-    Smpl Add apply Function_value_Move : is_function.
+    Global Instance Instance_IsFunction_value_Move :
+      M.IsFunction.Trait "core::intrinsics::mir::Move" value_Move.
+    Admitted.
+    Global Typeclasses Opaque value_Move.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -534,8 +568,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Static : M.IsFunction "core::intrinsics::mir::Static" value_Static.
-    Smpl Add apply Function_value_Static : is_function.
+    Global Instance Instance_IsFunction_value_Static :
+      M.IsFunction.Trait "core::intrinsics::mir::Static" value_Static.
+    Admitted.
+    Global Typeclasses Opaque value_Static.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_StaticMut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -553,9 +589,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_StaticMut :
-      M.IsFunction "core::intrinsics::mir::StaticMut" value_StaticMut.
-    Smpl Add apply Function_value_StaticMut : is_function.
+    Global Instance Instance_IsFunction_value_StaticMut :
+      M.IsFunction.Trait "core::intrinsics::mir::StaticMut" value_StaticMut.
+    Admitted.
+    Global Typeclasses Opaque value_StaticMut.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Discriminant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -577,9 +614,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Discriminant :
-      M.IsFunction "core::intrinsics::mir::Discriminant" value_Discriminant.
-    Smpl Add apply Function_value_Discriminant : is_function.
+    Global Instance Instance_IsFunction_value_Discriminant :
+      M.IsFunction.Trait "core::intrinsics::mir::Discriminant" value_Discriminant.
+    Admitted.
+    Global Typeclasses Opaque value_Discriminant.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_SetDiscriminant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -602,9 +640,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_SetDiscriminant :
-      M.IsFunction "core::intrinsics::mir::SetDiscriminant" value_SetDiscriminant.
-    Smpl Add apply Function_value_SetDiscriminant : is_function.
+    Global Instance Instance_IsFunction_value_SetDiscriminant :
+      M.IsFunction.Trait "core::intrinsics::mir::SetDiscriminant" value_SetDiscriminant.
+    Admitted.
+    Global Typeclasses Opaque value_SetDiscriminant.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Offset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -623,8 +662,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Offset : M.IsFunction "core::intrinsics::mir::Offset" value_Offset.
-    Smpl Add apply Function_value_Offset : is_function.
+    Global Instance Instance_IsFunction_value_Offset :
+      M.IsFunction.Trait "core::intrinsics::mir::Offset" value_Offset.
+    Admitted.
+    Global Typeclasses Opaque value_Offset.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Field (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -643,8 +684,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Field : M.IsFunction "core::intrinsics::mir::Field" value_Field.
-    Smpl Add apply Function_value_Field : is_function.
+    Global Instance Instance_IsFunction_value_Field :
+      M.IsFunction.Trait "core::intrinsics::mir::Field" value_Field.
+    Admitted.
+    Global Typeclasses Opaque value_Field.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_Variant (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -663,8 +706,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_Variant : M.IsFunction "core::intrinsics::mir::Variant" value_Variant.
-    Smpl Add apply Function_value_Variant : is_function.
+    Global Instance Instance_IsFunction_value_Variant :
+      M.IsFunction.Trait "core::intrinsics::mir::Variant" value_Variant.
+    Admitted.
+    Global Typeclasses Opaque value_Variant.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CastTransmute (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -686,9 +731,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_CastTransmute :
-      M.IsFunction "core::intrinsics::mir::CastTransmute" value_CastTransmute.
-    Smpl Add apply Function_value_CastTransmute : is_function.
+    Global Instance Instance_IsFunction_value_CastTransmute :
+      M.IsFunction.Trait "core::intrinsics::mir::CastTransmute" value_CastTransmute.
+    Admitted.
+    Global Typeclasses Opaque value_CastTransmute.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition value_CastPtrToPtr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -710,9 +756,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_value_CastPtrToPtr :
-      M.IsFunction "core::intrinsics::mir::CastPtrToPtr" value_CastPtrToPtr.
-    Smpl Add apply Function_value_CastPtrToPtr : is_function.
+    Global Instance Instance_IsFunction_value_CastPtrToPtr :
+      M.IsFunction.Trait "core::intrinsics::mir::CastPtrToPtr" value_CastPtrToPtr.
+    Admitted.
+    Global Typeclasses Opaque value_CastPtrToPtr.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition __internal_make_place (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -734,9 +781,10 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function___internal_make_place :
-      M.IsFunction "core::intrinsics::mir::__internal_make_place" __internal_make_place.
-    Smpl Add apply Function___internal_make_place : is_function.
+    Global Instance Instance_IsFunction___internal_make_place :
+      M.IsFunction.Trait "core::intrinsics::mir::__internal_make_place" __internal_make_place.
+    Admitted.
+    Global Typeclasses Opaque __internal_make_place.
     
     (*         pub fn $($sig)* { panic!() } *)
     Definition __debuginfo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -755,7 +803,9 @@ Module intrinsics.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function___debuginfo : M.IsFunction "core::intrinsics::mir::__debuginfo" __debuginfo.
-    Smpl Add apply Function___debuginfo : is_function.
+    Global Instance Instance_IsFunction___debuginfo :
+      M.IsFunction.Trait "core::intrinsics::mir::__debuginfo" __debuginfo.
+    Admitted.
+    Global Typeclasses Opaque __debuginfo.
   End mir.
 End intrinsics.

@@ -19,8 +19,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_empty : M.IsFunction "core::iter::sources::empty::empty" empty.
-      Smpl Add apply Function_empty : is_function.
+      Global Instance Instance_IsFunction_empty :
+        M.IsFunction.Trait "core::iter::sources::empty::empty" empty.
+      Admitted.
+      Global Typeclasses Opaque empty.
       
       (* StructTuple
         {

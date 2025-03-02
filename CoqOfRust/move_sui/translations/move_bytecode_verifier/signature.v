@@ -137,9 +137,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -709,9 +710,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
-    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
+    Global Instance AssociatedFunction_verify_module_impl :
+      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_module_impl.
     
     (*
         fn verify_signature_pool(&self, signatures: &[Signature]) -> PartialVMResult<()> {
@@ -778,6 +780,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -978,9 +981,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_signature_pool :
-      M.IsAssociatedFunction Self "verify_signature_pool" verify_signature_pool.
-    Smpl Add apply AssociatedFunction_verify_signature_pool : is_associated.
+    Global Instance AssociatedFunction_verify_signature_pool :
+      M.IsAssociatedFunction.Trait Self "verify_signature_pool" verify_signature_pool.
+    Admitted.
+    Global Typeclasses Opaque verify_signature_pool.
     
     (*
         fn verify_function_signatures(
@@ -1169,6 +1173,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1874,9 +1879,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_function_signatures :
-      M.IsAssociatedFunction Self "verify_function_signatures" verify_function_signatures.
-    Smpl Add apply AssociatedFunction_verify_function_signatures : is_associated.
+    Global Instance AssociatedFunction_verify_function_signatures :
+      M.IsAssociatedFunction.Trait Self "verify_function_signatures" verify_function_signatures.
+    Admitted.
+    Global Typeclasses Opaque verify_function_signatures.
     
     (*
         fn verify_fields(&self, struct_defs: &[StructDefinition]) -> PartialVMResult<()> {
@@ -2005,6 +2011,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2404,6 +2411,7 @@ Module signature.
                                                   ltac:(M.monadic
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
@@ -3533,9 +3541,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_fields :
-      M.IsAssociatedFunction Self "verify_fields" verify_fields.
-    Smpl Add apply AssociatedFunction_verify_fields : is_associated.
+    Global Instance AssociatedFunction_verify_fields :
+      M.IsAssociatedFunction.Trait Self "verify_fields" verify_fields.
+    Admitted.
+    Global Typeclasses Opaque verify_fields.
     
     (*
         fn verify_code_units(
@@ -3660,6 +3669,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4114,9 +4124,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_code_units :
-      M.IsAssociatedFunction Self "verify_code_units" verify_code_units.
-    Smpl Add apply AssociatedFunction_verify_code_units : is_associated.
+    Global Instance AssociatedFunction_verify_code_units :
+      M.IsAssociatedFunction.Trait Self "verify_code_units" verify_code_units.
+    Admitted.
+    Global Typeclasses Opaque verify_code_units.
     
     (*
         fn verify_code(
@@ -4520,6 +4531,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -7760,8 +7772,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_code : M.IsAssociatedFunction Self "verify_code" verify_code.
-    Smpl Add apply AssociatedFunction_verify_code : is_associated.
+    Global Instance AssociatedFunction_verify_code :
+      M.IsAssociatedFunction.Trait Self "verify_code" verify_code.
+    Admitted.
+    Global Typeclasses Opaque verify_code.
     
     (*
         fn check_phantom_params(
@@ -8169,6 +8183,7 @@ Module signature.
                                           ltac:(M.monadic
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
@@ -8713,9 +8728,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_phantom_params :
-      M.IsAssociatedFunction Self "check_phantom_params" check_phantom_params.
-    Smpl Add apply AssociatedFunction_check_phantom_params : is_associated.
+    Global Instance AssociatedFunction_check_phantom_params :
+      M.IsAssociatedFunction.Trait Self "check_phantom_params" check_phantom_params.
+    Admitted.
+    Global Typeclasses Opaque check_phantom_params.
     
     (*
         fn check_signature(&self, idx: SignatureIndex) -> PartialVMResult<()> {
@@ -8813,6 +8829,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -9216,9 +9233,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_signature :
-      M.IsAssociatedFunction Self "check_signature" check_signature.
-    Smpl Add apply AssociatedFunction_check_signature : is_associated.
+    Global Instance AssociatedFunction_check_signature :
+      M.IsAssociatedFunction.Trait Self "check_signature" check_signature.
+    Admitted.
+    Global Typeclasses Opaque check_signature.
     
     (*
         fn check_signature_tokens(&self, tys: &[SignatureToken]) -> PartialVMResult<()> {
@@ -9271,6 +9289,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -9474,9 +9493,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_signature_tokens :
-      M.IsAssociatedFunction Self "check_signature_tokens" check_signature_tokens.
-    Smpl Add apply AssociatedFunction_check_signature_tokens : is_associated.
+    Global Instance AssociatedFunction_check_signature_tokens :
+      M.IsAssociatedFunction.Trait Self "check_signature_tokens" check_signature_tokens.
+    Admitted.
+    Global Typeclasses Opaque check_signature_tokens.
     
     (*
         fn check_signature_token(&self, ty: &SignatureToken) -> PartialVMResult<()> {
@@ -9835,9 +9855,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_signature_token :
-      M.IsAssociatedFunction Self "check_signature_token" check_signature_token.
-    Smpl Add apply AssociatedFunction_check_signature_token : is_associated.
+    Global Instance AssociatedFunction_check_signature_token :
+      M.IsAssociatedFunction.Trait Self "check_signature_token" check_signature_token.
+    Admitted.
+    Global Typeclasses Opaque check_signature_token.
     
     (*
         fn check_instantiation(
@@ -10094,6 +10115,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -10479,9 +10501,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_instantiation :
-      M.IsAssociatedFunction Self "check_instantiation" check_instantiation.
-    Smpl Add apply AssociatedFunction_check_instantiation : is_associated.
+    Global Instance AssociatedFunction_check_instantiation :
+      M.IsAssociatedFunction.Trait Self "check_instantiation" check_instantiation.
+    Admitted.
+    Global Typeclasses Opaque check_instantiation.
     
     (*
         fn check_type_instantiation(
@@ -10591,6 +10614,7 @@ Module signature.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -10829,9 +10853,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_type_instantiation :
-      M.IsAssociatedFunction Self "check_type_instantiation" check_type_instantiation.
-    Smpl Add apply AssociatedFunction_check_type_instantiation : is_associated.
+    Global Instance AssociatedFunction_check_type_instantiation :
+      M.IsAssociatedFunction.Trait Self "check_type_instantiation" check_type_instantiation.
+    Admitted.
+    Global Typeclasses Opaque check_type_instantiation.
     
     (*
         fn check_type_instantiation_(
@@ -11176,9 +11201,10 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_type_instantiation_ :
-      M.IsAssociatedFunction Self "check_type_instantiation_" check_type_instantiation_.
-    Smpl Add apply AssociatedFunction_check_type_instantiation_ : is_associated.
+    Global Instance AssociatedFunction_check_type_instantiation_ :
+      M.IsAssociatedFunction.Trait Self "check_type_instantiation_" check_type_instantiation_.
+    Admitted.
+    Global Typeclasses Opaque check_type_instantiation_.
     
     (*
         fn check_generic_instance(
@@ -11567,6 +11593,7 @@ Module signature.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -12054,8 +12081,9 @@ Module signature.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_generic_instance :
-      M.IsAssociatedFunction Self "check_generic_instance" check_generic_instance.
-    Smpl Add apply AssociatedFunction_check_generic_instance : is_associated.
+    Global Instance AssociatedFunction_check_generic_instance :
+      M.IsAssociatedFunction.Trait Self "check_generic_instance" check_generic_instance.
+    Admitted.
+    Global Typeclasses Opaque check_generic_instance.
   End Impl_move_bytecode_verifier_signature_SignatureChecker.
 End signature.

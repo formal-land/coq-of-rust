@@ -55,6 +55,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   (let iter := M.copy (| γ |) in
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
@@ -411,5 +412,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "for_and_range_completely_inclusive::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "for_and_range_completely_inclusive::main" main.
+Admitted.
+Global Typeclasses Opaque main.

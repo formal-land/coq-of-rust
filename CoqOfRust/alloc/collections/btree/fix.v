@@ -459,10 +459,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_node_through_parent :
+        Global Instance AssociatedFunction_fix_node_through_parent :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "fix_node_through_parent" (fix_node_through_parent K V).
-        Smpl Add apply AssociatedFunction_fix_node_through_parent : is_associated.
+          M.IsAssociatedFunction.Trait
+            (Self K V)
+            "fix_node_through_parent"
+            (fix_node_through_parent K V).
+        Admitted.
+        Global Typeclasses Opaque fix_node_through_parent.
         (*
             pub fn fix_node_and_affected_ancestors<A: Allocator + Clone>(mut self, alloc: A) -> bool {
                 loop {
@@ -491,6 +495,7 @@ Module collections.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (|
@@ -645,13 +650,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_node_and_affected_ancestors :
+        Global Instance AssociatedFunction_fix_node_and_affected_ancestors :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "fix_node_and_affected_ancestors"
             (fix_node_and_affected_ancestors K V).
-        Smpl Add apply AssociatedFunction_fix_node_and_affected_ancestors : is_associated.
+        Admitted.
+        Global Typeclasses Opaque fix_node_and_affected_ancestors.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       
@@ -683,6 +689,7 @@ Module collections.
               let alloc := M.alloc (| alloc |) in
               M.read (|
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -813,10 +820,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_top :
+        Global Instance AssociatedFunction_fix_top :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "fix_top" (fix_top K V).
-        Smpl Add apply AssociatedFunction_fix_top : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "fix_top" (fix_top K V).
+        Admitted.
+        Global Typeclasses Opaque fix_top.
         
         (*
             pub fn fix_right_border<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -1046,10 +1054,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_right_border :
+        Global Instance AssociatedFunction_fix_right_border :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "fix_right_border" (fix_right_border K V).
-        Smpl Add apply AssociatedFunction_fix_right_border : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "fix_right_border" (fix_right_border K V).
+        Admitted.
+        Global Typeclasses Opaque fix_right_border.
         
         (*
             pub fn fix_left_border<A: Allocator + Clone>(&mut self, alloc: A) {
@@ -1279,10 +1288,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_left_border :
+        Global Instance AssociatedFunction_fix_left_border :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "fix_left_border" (fix_left_border K V).
-        Smpl Add apply AssociatedFunction_fix_left_border : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "fix_left_border" (fix_left_border K V).
+        Admitted.
+        Global Typeclasses Opaque fix_left_border.
         
         (*
             pub fn fix_right_border_of_plentiful(&mut self) {
@@ -1353,6 +1363,7 @@ Module collections.
                     |)
                   |) in
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1680,13 +1691,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_right_border_of_plentiful :
+        Global Instance AssociatedFunction_fix_right_border_of_plentiful :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "fix_right_border_of_plentiful"
             (fix_right_border_of_plentiful K V).
-        Smpl Add apply AssociatedFunction_fix_right_border_of_plentiful : is_associated.
+        Admitted.
+        Global Typeclasses Opaque fix_right_border_of_plentiful.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
@@ -1729,6 +1741,7 @@ Module collections.
               let alloc := M.alloc (| alloc |) in
               M.read (|
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2099,13 +2112,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_left_border_of_left_edge :
+        Global Instance AssociatedFunction_fix_left_border_of_left_edge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "fix_left_border_of_left_edge"
             (fix_left_border_of_left_edge K V).
-        Smpl Add apply AssociatedFunction_fix_left_border_of_left_edge : is_associated.
+        Admitted.
+        Global Typeclasses Opaque fix_left_border_of_left_edge.
         
         (*
             fn fix_right_border_of_right_edge<A: Allocator + Clone>(mut self, alloc: A) {
@@ -2129,6 +2143,7 @@ Module collections.
               let alloc := M.alloc (| alloc |) in
               M.read (|
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -2499,13 +2514,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_right_border_of_right_edge :
+        Global Instance AssociatedFunction_fix_right_border_of_right_edge :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "fix_right_border_of_right_edge"
             (fix_right_border_of_right_edge K V).
-        Smpl Add apply AssociatedFunction_fix_right_border_of_right_edge : is_associated.
+        Admitted.
+        Global Typeclasses Opaque fix_right_border_of_right_edge.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
@@ -2818,10 +2834,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_left_child :
+        Global Instance AssociatedFunction_fix_left_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "fix_left_child" (fix_left_child K V).
-        Smpl Add apply AssociatedFunction_fix_left_child : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "fix_left_child" (fix_left_child K V).
+        Admitted.
+        Global Typeclasses Opaque fix_left_child.
         
         (*
             fn fix_right_child<A: Allocator + Clone>(
@@ -3115,10 +3132,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_fix_right_child :
+        Global Instance AssociatedFunction_fix_right_child :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "fix_right_child" (fix_right_child K V).
-        Smpl Add apply AssociatedFunction_fix_right_child : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "fix_right_child" (fix_right_child K V).
+        Admitted.
+        Global Typeclasses Opaque fix_right_child.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Mut_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_KV.
     End fix_.
   End btree.

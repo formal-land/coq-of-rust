@@ -202,6 +202,8 @@ Module future.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_get_context : M.IsFunction "core::future::get_context" get_context.
-  Smpl Add apply Function_get_context : is_function.
+  Global Instance Instance_IsFunction_get_context :
+    M.IsFunction.Trait "core::future::get_context" get_context.
+  Admitted.
+  Global Typeclasses Opaque get_context.
 End future.

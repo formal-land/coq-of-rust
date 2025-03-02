@@ -885,9 +885,10 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_created_address :
-        M.IsAssociatedFunction Self "created_address" created_address.
-      Smpl Add apply AssociatedFunction_created_address : is_associated.
+      Global Instance AssociatedFunction_created_address :
+        M.IsAssociatedFunction.Trait Self "created_address" created_address.
+      Admitted.
+      Global Typeclasses Opaque created_address.
     End Impl_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
   End create_inputs.
 End interpreter_action.

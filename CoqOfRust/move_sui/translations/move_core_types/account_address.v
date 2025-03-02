@@ -349,16 +349,19 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*     pub const LENGTH: usize = 32; *)
     (* Ty.path "usize" *)
     Definition value_LENGTH : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 32 |))).
     
-    Axiom AssociatedConstant_value_LENGTH : M.IsAssociatedConstant Self "value_LENGTH" value_LENGTH.
-    Smpl Add apply AssociatedConstant_value_LENGTH : is_associated.
+    Global Instance AssociatedConstant_value_LENGTH :
+      M.IsAssociatedConstant.Trait Self "value_LENGTH" value_LENGTH.
+    Admitted.
+    Global Typeclasses Opaque value_LENGTH.
     
     (*     pub const ZERO: Self = Self([0u8; Self::LENGTH]); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
@@ -371,8 +374,10 @@ Module account_address.
               [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
           |))).
     
-    Axiom AssociatedConstant_value_ZERO : M.IsAssociatedConstant Self "value_ZERO" value_ZERO.
-    Smpl Add apply AssociatedConstant_value_ZERO : is_associated.
+    Global Instance AssociatedConstant_value_ZERO :
+      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Admitted.
+    Global Typeclasses Opaque value_ZERO.
     
     (*     pub const ONE: Self = Self::get_hex_address_one(); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
@@ -392,8 +397,10 @@ Module account_address.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_ONE : M.IsAssociatedConstant Self "value_ONE" value_ONE.
-    Smpl Add apply AssociatedConstant_value_ONE : is_associated.
+    Global Instance AssociatedConstant_value_ONE :
+      M.IsAssociatedConstant.Trait Self "value_ONE" value_ONE.
+    Admitted.
+    Global Typeclasses Opaque value_ONE.
     
     (*     pub const TWO: Self = Self::get_hex_address_two(); *)
     (* Ty.path "move_core_types::account_address::AccountAddress" *)
@@ -413,8 +420,10 @@ Module account_address.
             |)
           |))).
     
-    Axiom AssociatedConstant_value_TWO : M.IsAssociatedConstant Self "value_TWO" value_TWO.
-    Smpl Add apply AssociatedConstant_value_TWO : is_associated.
+    Global Instance AssociatedConstant_value_TWO :
+      M.IsAssociatedConstant.Trait Self "value_TWO" value_TWO.
+    Admitted.
+    Global Typeclasses Opaque value_TWO.
     
     (*
         const fn get_hex_address_one() -> Self {
@@ -458,9 +467,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_hex_address_one :
-      M.IsAssociatedFunction Self "get_hex_address_one" get_hex_address_one.
-    Smpl Add apply AssociatedFunction_get_hex_address_one : is_associated.
+    Global Instance AssociatedFunction_get_hex_address_one :
+      M.IsAssociatedFunction.Trait Self "get_hex_address_one" get_hex_address_one.
+    Admitted.
+    Global Typeclasses Opaque get_hex_address_one.
     
     (*
         const fn get_hex_address_two() -> Self {
@@ -504,9 +514,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_hex_address_two :
-      M.IsAssociatedFunction Self "get_hex_address_two" get_hex_address_two.
-    Smpl Add apply AssociatedFunction_get_hex_address_two : is_associated.
+    Global Instance AssociatedFunction_get_hex_address_two :
+      M.IsAssociatedFunction.Trait Self "get_hex_address_two" get_hex_address_two.
+    Admitted.
+    Global Typeclasses Opaque get_hex_address_two.
     
     (*
         pub fn random() -> Self {
@@ -559,8 +570,9 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_random : M.IsAssociatedFunction Self "random" random.
-    Smpl Add apply AssociatedFunction_random : is_associated.
+    Global Instance AssociatedFunction_random : M.IsAssociatedFunction.Trait Self "random" random.
+    Admitted.
+    Global Typeclasses Opaque random.
     
     (*
         pub fn to_canonical_string(&self, with_prefix: bool) -> String {
@@ -608,9 +620,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_string :
-      M.IsAssociatedFunction Self "to_canonical_string" to_canonical_string.
-    Smpl Add apply AssociatedFunction_to_canonical_string : is_associated.
+    Global Instance AssociatedFunction_to_canonical_string :
+      M.IsAssociatedFunction.Trait Self "to_canonical_string" to_canonical_string.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_string.
     
     (*
         pub fn to_canonical_display(&self, with_prefix: bool) -> impl fmt::Display + '_ {
@@ -662,9 +675,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_canonical_display :
-      M.IsAssociatedFunction Self "to_canonical_display" to_canonical_display.
-    Smpl Add apply AssociatedFunction_to_canonical_display : is_associated.
+    Global Instance AssociatedFunction_to_canonical_display :
+      M.IsAssociatedFunction.Trait Self "to_canonical_display" to_canonical_display.
+    Admitted.
+    Global Typeclasses Opaque to_canonical_display.
     
     (*
         pub fn short_str_lossless(&self) -> String {
@@ -809,9 +823,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_short_str_lossless :
-      M.IsAssociatedFunction Self "short_str_lossless" short_str_lossless.
-    Smpl Add apply AssociatedFunction_short_str_lossless : is_associated.
+    Global Instance AssociatedFunction_short_str_lossless :
+      M.IsAssociatedFunction.Trait Self "short_str_lossless" short_str_lossless.
+    Admitted.
+    Global Typeclasses Opaque short_str_lossless.
     
     (*
         pub fn to_vec(&self) -> Vec<u8> {
@@ -848,8 +863,9 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_vec : M.IsAssociatedFunction Self "to_vec" to_vec.
-    Smpl Add apply AssociatedFunction_to_vec : is_associated.
+    Global Instance AssociatedFunction_to_vec : M.IsAssociatedFunction.Trait Self "to_vec" to_vec.
+    Admitted.
+    Global Typeclasses Opaque to_vec.
     
     (*
         pub fn into_bytes(self) -> [u8; Self::LENGTH] {
@@ -871,8 +887,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
-    Smpl Add apply AssociatedFunction_into_bytes : is_associated.
+    Global Instance AssociatedFunction_into_bytes :
+      M.IsAssociatedFunction.Trait Self "into_bytes" into_bytes.
+    Admitted.
+    Global Typeclasses Opaque into_bytes.
     
     (*
         pub fn from_hex_literal(literal: &str) -> Result<Self, AccountAddressParseError> {
@@ -1048,6 +1066,7 @@ Module account_address.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -1252,9 +1271,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_hex_literal :
-      M.IsAssociatedFunction Self "from_hex_literal" from_hex_literal.
-    Smpl Add apply AssociatedFunction_from_hex_literal : is_associated.
+    Global Instance AssociatedFunction_from_hex_literal :
+      M.IsAssociatedFunction.Trait Self "from_hex_literal" from_hex_literal.
+    Admitted.
+    Global Typeclasses Opaque from_hex_literal.
     
     (*
         pub fn to_hex_literal(&self) -> String {
@@ -1358,9 +1378,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_hex_literal :
-      M.IsAssociatedFunction Self "to_hex_literal" to_hex_literal.
-    Smpl Add apply AssociatedFunction_to_hex_literal : is_associated.
+    Global Instance AssociatedFunction_to_hex_literal :
+      M.IsAssociatedFunction.Trait Self "to_hex_literal" to_hex_literal.
+    Admitted.
+    Global Typeclasses Opaque to_hex_literal.
     
     (*
         pub fn from_hex<T: AsRef<[u8]>>(hex: T) -> Result<Self, AccountAddressParseError> {
@@ -1495,8 +1516,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_hex : M.IsAssociatedFunction Self "from_hex" from_hex.
-    Smpl Add apply AssociatedFunction_from_hex : is_associated.
+    Global Instance AssociatedFunction_from_hex :
+      M.IsAssociatedFunction.Trait Self "from_hex" from_hex.
+    Admitted.
+    Global Typeclasses Opaque from_hex.
     
     (*
         pub fn to_hex(&self) -> String {
@@ -1586,8 +1609,9 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_to_hex : M.IsAssociatedFunction Self "to_hex" to_hex.
-    Smpl Add apply AssociatedFunction_to_hex : is_associated.
+    Global Instance AssociatedFunction_to_hex : M.IsAssociatedFunction.Trait Self "to_hex" to_hex.
+    Admitted.
+    Global Typeclasses Opaque to_hex.
     
     (*
         pub fn from_bytes<T: AsRef<[u8]>>(bytes: T) -> Result<Self, AccountAddressParseError> {
@@ -1740,8 +1764,10 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_bytes : M.IsAssociatedFunction Self "from_bytes" from_bytes.
-    Smpl Add apply AssociatedFunction_from_bytes : is_associated.
+    Global Instance AssociatedFunction_from_bytes :
+      M.IsAssociatedFunction.Trait Self "from_bytes" from_bytes.
+    Admitted.
+    Global Typeclasses Opaque from_bytes.
     
     (*
         pub fn abstract_size_for_gas_metering(&self) -> AbstractMemorySize {
@@ -1780,9 +1806,13 @@ Module account_address.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abstract_size_for_gas_metering :
-      M.IsAssociatedFunction Self "abstract_size_for_gas_metering" abstract_size_for_gas_metering.
-    Smpl Add apply AssociatedFunction_abstract_size_for_gas_metering : is_associated.
+    Global Instance AssociatedFunction_abstract_size_for_gas_metering :
+      M.IsAssociatedFunction.Trait
+        Self
+        "abstract_size_for_gas_metering"
+        abstract_size_for_gas_metering.
+    Admitted.
+    Global Typeclasses Opaque abstract_size_for_gas_metering.
   End Impl_move_core_types_account_address_AccountAddress.
   
   Module Impl_core_convert_AsRef_slice_u8_for_move_core_types_account_address_AccountAddress.
@@ -2271,6 +2301,7 @@ Module account_address.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -2798,6 +2829,7 @@ Module account_address.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|

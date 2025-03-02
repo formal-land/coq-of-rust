@@ -2154,6 +2154,7 @@ Module eof.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -2387,11 +2388,12 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_consume_header_section_size :
-      M.IsFunction
+    Global Instance Instance_IsFunction_consume_header_section_size :
+      M.IsFunction.Trait
         "revm_bytecode::eof::header::consume_header_section_size"
         consume_header_section_size.
-    Smpl Add apply Function_consume_header_section_size : is_function.
+    Admitted.
+    Global Typeclasses Opaque consume_header_section_size.
     
     Module Impl_revm_bytecode_eof_header_EofHeader.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::header::EofHeader".
@@ -2531,8 +2533,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
-      Smpl Add apply AssociatedFunction_size : is_associated.
+      Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+      Admitted.
+      Global Typeclasses Opaque size.
       
       (*
           pub fn data_size_raw_i(&self) -> usize {
@@ -2561,9 +2564,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_data_size_raw_i :
-        M.IsAssociatedFunction Self "data_size_raw_i" data_size_raw_i.
-      Smpl Add apply AssociatedFunction_data_size_raw_i : is_associated.
+      Global Instance AssociatedFunction_data_size_raw_i :
+        M.IsAssociatedFunction.Trait Self "data_size_raw_i" data_size_raw_i.
+      Admitted.
+      Global Typeclasses Opaque data_size_raw_i.
       
       (*
           pub fn types_count(&self) -> usize {
@@ -2590,8 +2594,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_types_count : M.IsAssociatedFunction Self "types_count" types_count.
-      Smpl Add apply AssociatedFunction_types_count : is_associated.
+      Global Instance AssociatedFunction_types_count :
+        M.IsAssociatedFunction.Trait Self "types_count" types_count.
+      Admitted.
+      Global Typeclasses Opaque types_count.
       
       (*
           pub fn body_size(&self) -> usize {
@@ -2647,8 +2653,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_body_size : M.IsAssociatedFunction Self "body_size" body_size.
-      Smpl Add apply AssociatedFunction_body_size : is_associated.
+      Global Instance AssociatedFunction_body_size :
+        M.IsAssociatedFunction.Trait Self "body_size" body_size.
+      Admitted.
+      Global Typeclasses Opaque body_size.
       
       (*
           pub fn eof_size(&self) -> usize {
@@ -2685,8 +2693,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_eof_size : M.IsAssociatedFunction Self "eof_size" eof_size.
-      Smpl Add apply AssociatedFunction_eof_size : is_associated.
+      Global Instance AssociatedFunction_eof_size :
+        M.IsAssociatedFunction.Trait Self "eof_size" eof_size.
+      Admitted.
+      Global Typeclasses Opaque eof_size.
       
       (*
           pub fn encode(&self, buffer: &mut Vec<u8>) {
@@ -2984,6 +2994,7 @@ Module eof.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3278,6 +3289,7 @@ Module eof.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -3491,8 +3503,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
-      Smpl Add apply AssociatedFunction_encode : is_associated.
+      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.Trait Self "encode" encode.
+      Admitted.
+      Global Typeclasses Opaque encode.
       
       (*
           pub fn decode(input: &[u8]) -> Result<(Self, &[u8]), EofDecodeError> {
@@ -6952,8 +6965,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
-      Smpl Add apply AssociatedFunction_decode : is_associated.
+      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+      Admitted.
+      Global Typeclasses Opaque decode.
     End Impl_revm_bytecode_eof_header_EofHeader.
   End header.
 End eof.

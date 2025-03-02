@@ -15,11 +15,11 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter comp_sci_student_greeting : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_comp_sci_student_greeting :
-  M.IsFunction "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
-Smpl Add apply Function_comp_sci_student_greeting : is_function.
+Global Instance Instance_IsFunction_comp_sci_student_greeting :
+  M.IsFunction.Trait "supertraits::comp_sci_student_greeting" comp_sci_student_greeting.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "supertraits::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "supertraits::main" main.
+Admitted.

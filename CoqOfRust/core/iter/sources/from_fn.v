@@ -21,8 +21,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_from_fn : M.IsFunction "core::iter::sources::from_fn::from_fn" from_fn.
-      Smpl Add apply Function_from_fn : is_function.
+      Global Instance Instance_IsFunction_from_fn :
+        M.IsFunction.Trait "core::iter::sources::from_fn::from_fn" from_fn.
+      Admitted.
+      Global Typeclasses Opaque from_fn.
       
       (* StructTuple
         {

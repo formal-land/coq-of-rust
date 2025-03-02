@@ -86,8 +86,10 @@ Module utils.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_i16 : M.IsFunction "revm_bytecode::utils::read_i16" read_i16.
-  Smpl Add apply Function_read_i16 : is_function.
+  Global Instance Instance_IsFunction_read_i16 :
+    M.IsFunction.Trait "revm_bytecode::utils::read_i16" read_i16.
+  Admitted.
+  Global Typeclasses Opaque read_i16.
   
   (*
   pub unsafe fn read_u16(ptr: *const u8) -> u16 {
@@ -173,6 +175,8 @@ Module utils.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_read_u16 : M.IsFunction "revm_bytecode::utils::read_u16" read_u16.
-  Smpl Add apply Function_read_u16 : is_function.
+  Global Instance Instance_IsFunction_read_u16 :
+    M.IsFunction.Trait "revm_bytecode::utils::read_u16" read_u16.
+  Admitted.
+  Global Typeclasses Opaque read_u16.
 End utils.

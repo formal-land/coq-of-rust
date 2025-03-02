@@ -62,8 +62,9 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn local_at(&self, i: LocalIndex) -> &SignatureToken {
@@ -224,8 +225,10 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_local_at : M.IsAssociatedFunction Self "local_at" local_at.
-    Smpl Add apply AssociatedFunction_local_at : is_associated.
+    Global Instance AssociatedFunction_local_at :
+      M.IsAssociatedFunction.Trait Self "local_at" local_at.
+    Admitted.
+    Global Typeclasses Opaque local_at.
   End Impl_move_bytecode_verifier_type_safety_Locals.
   
   (* StructRecord
@@ -365,8 +368,9 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn local_at(&self, i: LocalIndex) -> &SignatureToken {
@@ -410,8 +414,10 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_local_at : M.IsAssociatedFunction Self "local_at" local_at.
-    Smpl Add apply AssociatedFunction_local_at : is_associated.
+    Global Instance AssociatedFunction_local_at :
+      M.IsAssociatedFunction.Trait Self "local_at" local_at.
+    Admitted.
+    Global Typeclasses Opaque local_at.
     
     (*
         fn abilities(&self, t: &SignatureToken) -> PartialVMResult<AbilitySet> {
@@ -494,8 +500,10 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_abilities : M.IsAssociatedFunction Self "abilities" abilities.
-    Smpl Add apply AssociatedFunction_abilities : is_associated.
+    Global Instance AssociatedFunction_abilities :
+      M.IsAssociatedFunction.Trait Self "abilities" abilities.
+    Admitted.
+    Global Typeclasses Opaque abilities.
     
     (*
         fn error(&self, status: StatusCode, offset: CodeOffset) -> PartialVMError {
@@ -582,8 +590,9 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.
-    Smpl Add apply AssociatedFunction_error : is_associated.
+    Global Instance AssociatedFunction_error : M.IsAssociatedFunction.Trait Self "error" error.
+    Admitted.
+    Global Typeclasses Opaque error.
     
     (*
         fn push(
@@ -1042,8 +1051,9 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
-    Smpl Add apply AssociatedFunction_push : is_associated.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Admitted.
+    Global Typeclasses Opaque push.
     
     (*
         fn push_n(
@@ -1505,8 +1515,9 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_push_n : M.IsAssociatedFunction Self "push_n" push_n.
-    Smpl Add apply AssociatedFunction_push_n : is_associated.
+    Global Instance AssociatedFunction_push_n : M.IsAssociatedFunction.Trait Self "push_n" push_n.
+    Admitted.
+    Global Typeclasses Opaque push_n.
     
     (*
         fn charge_ty(
@@ -1545,8 +1556,10 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_charge_ty : M.IsAssociatedFunction Self "charge_ty" charge_ty.
-    Smpl Add apply AssociatedFunction_charge_ty : is_associated.
+    Global Instance AssociatedFunction_charge_ty :
+      M.IsAssociatedFunction.Trait Self "charge_ty" charge_ty.
+    Admitted.
+    Global Typeclasses Opaque charge_ty.
     
     (*
         fn charge_ty_(
@@ -1621,8 +1634,10 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_charge_ty_ : M.IsAssociatedFunction Self "charge_ty_" charge_ty_.
-    Smpl Add apply AssociatedFunction_charge_ty_ : is_associated.
+    Global Instance AssociatedFunction_charge_ty_ :
+      M.IsAssociatedFunction.Trait Self "charge_ty_" charge_ty_.
+    Admitted.
+    Global Typeclasses Opaque charge_ty_.
     
     (*
         fn charge_tys(
@@ -1680,6 +1695,7 @@ Module type_safety.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1887,8 +1903,10 @@ Module type_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_charge_tys : M.IsAssociatedFunction Self "charge_tys" charge_tys.
-    Smpl Add apply AssociatedFunction_charge_tys : is_associated.
+    Global Instance AssociatedFunction_charge_tys :
+      M.IsAssociatedFunction.Trait Self "charge_tys" charge_tys.
+    Admitted.
+    Global Typeclasses Opaque charge_tys.
   End Impl_move_bytecode_verifier_type_safety_TypeSafetyChecker.
   
   (*
@@ -2020,6 +2038,7 @@ Module type_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -2164,6 +2183,7 @@ Module type_safety.
                                                 ltac:(M.monadic
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
@@ -2493,8 +2513,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify : M.IsFunction "move_bytecode_verifier::type_safety::verify" verify.
-  Smpl Add apply Function_verify : is_function.
+  Global Instance Instance_IsFunction_verify :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::verify" verify.
+  Admitted.
+  Global Typeclasses Opaque verify.
   
   (*
   fn borrow_field(
@@ -3461,9 +3483,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_borrow_field :
-    M.IsFunction "move_bytecode_verifier::type_safety::borrow_field" borrow_field.
-  Smpl Add apply Function_borrow_field : is_function.
+  Global Instance Instance_IsFunction_borrow_field :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::borrow_field" borrow_field.
+  Admitted.
+  Global Typeclasses Opaque borrow_field.
   
   (*
   fn borrow_loc(
@@ -3792,9 +3815,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_borrow_loc :
-    M.IsFunction "move_bytecode_verifier::type_safety::borrow_loc" borrow_loc.
-  Smpl Add apply Function_borrow_loc : is_function.
+  Global Instance Instance_IsFunction_borrow_loc :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::borrow_loc" borrow_loc.
+  Admitted.
+  Global Typeclasses Opaque borrow_loc.
   
   (*
   fn borrow_global(
@@ -4698,9 +4722,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_borrow_global :
-    M.IsFunction "move_bytecode_verifier::type_safety::borrow_global" borrow_global.
-  Smpl Add apply Function_borrow_global : is_function.
+  Global Instance Instance_IsFunction_borrow_global :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::borrow_global" borrow_global.
+  Admitted.
+  Global Typeclasses Opaque borrow_global.
   
   (*
   fn call(
@@ -4906,6 +4931,7 @@ Module type_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -5611,6 +5637,7 @@ Module type_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -5830,8 +5857,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_call : M.IsFunction "move_bytecode_verifier::type_safety::call" call.
-  Smpl Add apply Function_call : is_function.
+  Global Instance Instance_IsFunction_call :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::call" call.
+  Admitted.
+  Global Typeclasses Opaque call.
   
   (*
   fn type_fields_signature(
@@ -6038,6 +6067,7 @@ Module type_safety.
                             ltac:(M.monadic
                               (let iter := M.copy (| γ |) in
                               M.loop (|
+                                Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
@@ -6176,9 +6206,12 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_type_fields_signature :
-    M.IsFunction "move_bytecode_verifier::type_safety::type_fields_signature" type_fields_signature.
-  Smpl Add apply Function_type_fields_signature : is_function.
+  Global Instance Instance_IsFunction_type_fields_signature :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::type_safety::type_fields_signature"
+      type_fields_signature.
+  Admitted.
+  Global Typeclasses Opaque type_fields_signature.
   
   (*
   fn pack(
@@ -6489,6 +6522,7 @@ Module type_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -7128,8 +7162,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_pack : M.IsFunction "move_bytecode_verifier::type_safety::pack" pack.
-  Smpl Add apply Function_pack : is_function.
+  Global Instance Instance_IsFunction_pack :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::pack" pack.
+  Admitted.
+  Global Typeclasses Opaque pack.
   
   (*
   fn unpack(
@@ -7740,6 +7776,7 @@ Module type_safety.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -7935,8 +7972,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_unpack : M.IsFunction "move_bytecode_verifier::type_safety::unpack" unpack.
-  Smpl Add apply Function_unpack : is_function.
+  Global Instance Instance_IsFunction_unpack :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::unpack" unpack.
+  Admitted.
+  Global Typeclasses Opaque unpack.
   
   (*
   fn exists(
@@ -8706,8 +8745,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_exists_ : M.IsFunction "move_bytecode_verifier::type_safety::exists" exists_.
-  Smpl Add apply Function_exists_ : is_function.
+  Global Instance Instance_IsFunction_exists_ :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::exists" exists_.
+  Admitted.
+  Global Typeclasses Opaque exists_.
   
   (*
   fn move_from(
@@ -9490,9 +9531,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_move_from :
-    M.IsFunction "move_bytecode_verifier::type_safety::move_from" move_from.
-  Smpl Add apply Function_move_from : is_function.
+  Global Instance Instance_IsFunction_move_from :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::move_from" move_from.
+  Admitted.
+  Global Typeclasses Opaque move_from.
   
   (*
   fn move_to(
@@ -10560,8 +10602,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_move_to : M.IsFunction "move_bytecode_verifier::type_safety::move_to" move_to.
-  Smpl Add apply Function_move_to : is_function.
+  Global Instance Instance_IsFunction_move_to :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::move_to" move_to.
+  Admitted.
+  Global Typeclasses Opaque move_to.
   
   (*
   fn borrow_vector_element(
@@ -11601,9 +11645,12 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_borrow_vector_element :
-    M.IsFunction "move_bytecode_verifier::type_safety::borrow_vector_element" borrow_vector_element.
-  Smpl Add apply Function_borrow_vector_element : is_function.
+  Global Instance Instance_IsFunction_borrow_vector_element :
+    M.IsFunction.Trait
+      "move_bytecode_verifier::type_safety::borrow_vector_element"
+      borrow_vector_element.
+  Admitted.
+  Global Typeclasses Opaque borrow_vector_element.
   
   (*
   fn verify_instr(
@@ -14235,6 +14282,7 @@ Module type_safety.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
@@ -39461,9 +39509,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_instr :
-    M.IsFunction "move_bytecode_verifier::type_safety::verify_instr" verify_instr.
-  Smpl Add apply Function_verify_instr : is_function.
+  Global Instance Instance_IsFunction_verify_instr :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::verify_instr" verify_instr.
+  Admitted.
+  Global Typeclasses Opaque verify_instr.
   
   (*
   fn materialize_type(struct_handle: StructHandleIndex, type_args: &Signature) -> SignatureToken {
@@ -39601,9 +39650,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_materialize_type :
-    M.IsFunction "move_bytecode_verifier::type_safety::materialize_type" materialize_type.
-  Smpl Add apply Function_materialize_type : is_function.
+  Global Instance Instance_IsFunction_materialize_type :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::materialize_type" materialize_type.
+  Admitted.
+  Global Typeclasses Opaque materialize_type.
   
   (*
   fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
@@ -40470,9 +40520,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_instantiate :
-    M.IsFunction "move_bytecode_verifier::type_safety::instantiate" instantiate.
-  Smpl Add apply Function_instantiate : is_function.
+  Global Instance Instance_IsFunction_instantiate :
+    M.IsFunction.Trait "move_bytecode_verifier::type_safety::instantiate" instantiate.
+  Admitted.
+  Global Typeclasses Opaque instantiate.
   
   (*
   fn get_vector_element_type(
@@ -40596,9 +40647,10 @@ Module type_safety.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_get_vector_element_type :
-    M.IsFunction
+  Global Instance Instance_IsFunction_get_vector_element_type :
+    M.IsFunction.Trait
       "move_bytecode_verifier::type_safety::get_vector_element_type"
       get_vector_element_type.
-  Smpl Add apply Function_get_vector_element_type : is_function.
+  Admitted.
+  Global Typeclasses Opaque get_vector_element_type.
 End type_safety.

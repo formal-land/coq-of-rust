@@ -126,8 +126,9 @@ Module Impl_basic_contract_caller_OtherContract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn flip(&mut self) {
@@ -164,8 +165,9 @@ Module Impl_basic_contract_caller_OtherContract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
-  Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Admitted.
+  Global Typeclasses Opaque flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -187,8 +189,9 @@ Module Impl_basic_contract_caller_OtherContract.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
+  Global Typeclasses Opaque get.
 End Impl_basic_contract_caller_OtherContract.
 
 (* StructRecord
@@ -239,8 +242,9 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn flip_and_get(&mut self) -> bool {
@@ -301,6 +305,8 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_flip_and_get : M.IsAssociatedFunction Self "flip_and_get" flip_and_get.
-  Smpl Add apply AssociatedFunction_flip_and_get : is_associated.
+  Global Instance AssociatedFunction_flip_and_get :
+    M.IsAssociatedFunction.Trait Self "flip_and_get" flip_and_get.
+  Admitted.
+  Global Typeclasses Opaque flip_and_get.
 End Impl_basic_contract_caller_BasicContractCaller.

@@ -38,8 +38,10 @@ Module ops.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_from_yeet : M.IsFunction "core::ops::try_trait::from_yeet" from_yeet.
-    Smpl Add apply Function_from_yeet : is_function.
+    Global Instance Instance_IsFunction_from_yeet :
+      M.IsFunction.Trait "core::ops::try_trait::from_yeet" from_yeet.
+    Admitted.
+    Global Typeclasses Opaque from_yeet.
     
     (* Trait *)
     (* Empty module 'Residual' *)
@@ -50,7 +52,7 @@ Module ops.
         (Ty.associated_in_trait
           "core::ops::try_trait::Residual"
           []
-          []
+          [ V ]
           (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] T "Residual")
           "TryType").
     
@@ -116,10 +118,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_wrap_mut_1 :
+      Global Instance AssociatedFunction_wrap_mut_1 :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "wrap_mut_1" (wrap_mut_1 T).
-      Smpl Add apply AssociatedFunction_wrap_mut_1 : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "wrap_mut_1" (wrap_mut_1 T).
+      Admitted.
+      Global Typeclasses Opaque wrap_mut_1.
       
       (*
           pub fn wrap_mut_2<A, B>(mut f: impl FnMut(A, B) -> T) -> impl FnMut(A, B) -> Self {
@@ -179,10 +182,11 @@ Module ops.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_wrap_mut_2 :
+      Global Instance AssociatedFunction_wrap_mut_2 :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "wrap_mut_2" (wrap_mut_2 T).
-      Smpl Add apply AssociatedFunction_wrap_mut_2 : is_associated.
+        M.IsAssociatedFunction.Trait (Self T) "wrap_mut_2" (wrap_mut_2 T).
+      Admitted.
+      Global Typeclasses Opaque wrap_mut_2.
     End Impl_core_ops_try_trait_NeverShortCircuit_T.
     
     (*

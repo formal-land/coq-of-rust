@@ -3,20 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter cat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_cat : M.IsFunction "filesystem_operations::cat" cat.
-Smpl Add apply Function_cat : is_function.
+Global Instance Instance_IsFunction_cat : M.IsFunction.Trait "filesystem_operations::cat" cat.
+Admitted.
 
 Parameter echo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_echo : M.IsFunction "filesystem_operations::echo" echo.
-Smpl Add apply Function_echo : is_function.
+Global Instance Instance_IsFunction_echo : M.IsFunction.Trait "filesystem_operations::echo" echo.
+Admitted.
 
 Parameter touch : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_touch : M.IsFunction "filesystem_operations::touch" touch.
-Smpl Add apply Function_touch : is_function.
+Global Instance Instance_IsFunction_touch : M.IsFunction.Trait "filesystem_operations::touch" touch.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "filesystem_operations::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "filesystem_operations::main" main.
+Admitted.

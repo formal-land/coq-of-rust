@@ -786,8 +786,9 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-      Smpl Add apply AssociatedFunction_caller : is_associated.
+      Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+      Admitted.
+      Global Typeclasses Opaque caller.
       
       (*
           pub const fn file(&self) -> &str {
@@ -814,8 +815,9 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_file : M.IsAssociatedFunction Self "file" file.
-      Smpl Add apply AssociatedFunction_file : is_associated.
+      Global Instance AssociatedFunction_file : M.IsAssociatedFunction.Trait Self "file" file.
+      Admitted.
+      Global Typeclasses Opaque file.
       
       (*
           pub const fn line(&self) -> u32 {
@@ -837,8 +839,9 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_line : M.IsAssociatedFunction Self "line" line.
-      Smpl Add apply AssociatedFunction_line : is_associated.
+      Global Instance AssociatedFunction_line : M.IsAssociatedFunction.Trait Self "line" line.
+      Admitted.
+      Global Typeclasses Opaque line.
       
       (*
           pub const fn column(&self) -> u32 {
@@ -860,8 +863,9 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_column : M.IsAssociatedFunction Self "column" column.
-      Smpl Add apply AssociatedFunction_column : is_associated.
+      Global Instance AssociatedFunction_column : M.IsAssociatedFunction.Trait Self "column" column.
+      Admitted.
+      Global Typeclasses Opaque column.
       (*
           pub const fn internal_constructor(file: &'a str, line: u32, col: u32) -> Self {
               Location { file, line, col }
@@ -884,9 +888,10 @@ Module panic.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_internal_constructor :
-        M.IsAssociatedFunction Self "internal_constructor" internal_constructor.
-      Smpl Add apply AssociatedFunction_internal_constructor : is_associated.
+      Global Instance AssociatedFunction_internal_constructor :
+        M.IsAssociatedFunction.Trait Self "internal_constructor" internal_constructor.
+      Admitted.
+      Global Typeclasses Opaque internal_constructor.
     End Impl_core_panic_location_Location.
     
     

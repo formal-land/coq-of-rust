@@ -155,8 +155,9 @@ Module Impl_contract_ref_FlipperRef.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -176,8 +177,9 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new(init_value: bool) -> Self {
@@ -193,8 +195,9 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn new_default() -> Self {
@@ -227,8 +230,10 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
-  Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Instance AssociatedFunction_new_default :
+    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+  Admitted.
+  Global Typeclasses Opaque new_default.
   
   (*
       pub fn try_new(succeed: bool) -> Result<Self, FlipperError> {
@@ -281,8 +286,9 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
-  Smpl Add apply AssociatedFunction_try_new : is_associated.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Admitted.
+  Global Typeclasses Opaque try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -319,8 +325,9 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
-  Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Admitted.
+  Global Typeclasses Opaque flip.
   
   (*
       pub fn get(&self) -> bool {
@@ -342,8 +349,9 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
+  Global Typeclasses Opaque get.
 End Impl_contract_ref_FlipperRef.
 
 (* StructRecord
@@ -405,8 +413,9 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn try_new(version: u32, flipper_code_hash: Hash, succeed: bool) -> Self {
@@ -480,8 +489,9 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
-  Smpl Add apply AssociatedFunction_try_new : is_associated.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Admitted.
+  Global Typeclasses Opaque try_new.
   
   (*
       pub fn flip(&mut self) {
@@ -516,8 +526,9 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
-  Smpl Add apply AssociatedFunction_flip : is_associated.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Admitted.
+  Global Typeclasses Opaque flip.
   
   (*
       pub fn get(&mut self) -> bool {
@@ -546,6 +557,7 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
-  Smpl Add apply AssociatedFunction_get : is_associated.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Admitted.
+  Global Typeclasses Opaque get.
 End Impl_contract_ref_ContractRef.

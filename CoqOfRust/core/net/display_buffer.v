@@ -58,10 +58,11 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new :
+      Global Instance AssociatedFunction_new :
         forall (SIZE : Value.t),
-        M.IsAssociatedFunction (Self SIZE) "new" (new SIZE).
-      Smpl Add apply AssociatedFunction_new : is_associated.
+        M.IsAssociatedFunction.Trait (Self SIZE) "new" (new SIZE).
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn as_str(&self) -> &str {
@@ -186,10 +187,11 @@ Module net.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_str :
+      Global Instance AssociatedFunction_as_str :
         forall (SIZE : Value.t),
-        M.IsAssociatedFunction (Self SIZE) "as_str" (as_str SIZE).
-      Smpl Add apply AssociatedFunction_as_str : is_associated.
+        M.IsAssociatedFunction.Trait (Self SIZE) "as_str" (as_str SIZE).
+      Admitted.
+      Global Typeclasses Opaque as_str.
     End Impl_core_net_display_buffer_DisplayBuffer_SIZE.
     
     Module Impl_core_fmt_Write_for_core_net_display_buffer_DisplayBuffer_SIZE.

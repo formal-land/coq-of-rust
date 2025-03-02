@@ -257,40 +257,43 @@ Module Impl_payment_channel_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
   
   Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_terminate_contract :
-    M.IsAssociatedFunction Self "terminate_contract" terminate_contract.
-  Smpl Add apply AssociatedFunction_terminate_contract : is_associated.
+  Global Instance AssociatedFunction_terminate_contract :
+    M.IsAssociatedFunction.Trait Self "terminate_contract" terminate_contract.
+  Admitted.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
-  Smpl Add apply AssociatedFunction_transfer : is_associated.
+  Global Instance AssociatedFunction_transfer :
+    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Admitted.
   
   Parameter block_timestamp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_block_timestamp :
-    M.IsAssociatedFunction Self "block_timestamp" block_timestamp.
-  Smpl Add apply AssociatedFunction_block_timestamp : is_associated.
+  Global Instance AssociatedFunction_block_timestamp :
+    M.IsAssociatedFunction.Trait Self "block_timestamp" block_timestamp.
+  Admitted.
   
   Parameter balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_balance : M.IsAssociatedFunction Self "balance" balance.
-  Smpl Add apply AssociatedFunction_balance : is_associated.
+  Global Instance AssociatedFunction_balance : M.IsAssociatedFunction.Trait Self "balance" balance.
+  Admitted.
   
   Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_account_id : M.IsAssociatedFunction Self "account_id" account_id.
-  Smpl Add apply AssociatedFunction_account_id : is_associated.
+  Global Instance AssociatedFunction_account_id :
+    M.IsAssociatedFunction.Trait Self "account_id" account_id.
+  Admitted.
 End Impl_payment_channel_Env.
 
 (* Trait *)
@@ -301,13 +304,15 @@ End Impl_payment_channel_Env.
 
 Parameter hash_encoded : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_hash_encoded : M.IsFunction "payment_channel::hash_encoded" hash_encoded.
-Smpl Add apply Function_hash_encoded : is_function.
+Global Instance Instance_IsFunction_hash_encoded :
+  M.IsFunction.Trait "payment_channel::hash_encoded" hash_encoded.
+Admitted.
 
 Parameter ecdsa_recover : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_ecdsa_recover : M.IsFunction "payment_channel::ecdsa_recover" ecdsa_recover.
-Smpl Add apply Function_ecdsa_recover : is_function.
+Global Instance Instance_IsFunction_ecdsa_recover :
+  M.IsFunction.Trait "payment_channel::ecdsa_recover" ecdsa_recover.
+Admitted.
 
 (*
 Enum Sha2x256
@@ -470,83 +475,88 @@ Module Impl_payment_channel_PaymentChannel.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
   
   Parameter is_signature_valid : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_is_signature_valid :
-    M.IsAssociatedFunction Self "is_signature_valid" is_signature_valid.
-  Smpl Add apply AssociatedFunction_is_signature_valid : is_associated.
+  Global Instance AssociatedFunction_is_signature_valid :
+    M.IsAssociatedFunction.Trait Self "is_signature_valid" is_signature_valid.
+  Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter close_inner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_close_inner : M.IsAssociatedFunction Self "close_inner" close_inner.
-  Smpl Add apply AssociatedFunction_close_inner : is_associated.
+  Global Instance AssociatedFunction_close_inner :
+    M.IsAssociatedFunction.Trait Self "close_inner" close_inner.
+  Admitted.
   
   Parameter close : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_close : M.IsAssociatedFunction Self "close" close.
-  Smpl Add apply AssociatedFunction_close : is_associated.
+  Global Instance AssociatedFunction_close : M.IsAssociatedFunction.Trait Self "close" close.
+  Admitted.
   
   Parameter start_sender_close : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_start_sender_close :
-    M.IsAssociatedFunction Self "start_sender_close" start_sender_close.
-  Smpl Add apply AssociatedFunction_start_sender_close : is_associated.
+  Global Instance AssociatedFunction_start_sender_close :
+    M.IsAssociatedFunction.Trait Self "start_sender_close" start_sender_close.
+  Admitted.
   
   Parameter claim_timeout : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_claim_timeout :
-    M.IsAssociatedFunction Self "claim_timeout" claim_timeout.
-  Smpl Add apply AssociatedFunction_claim_timeout : is_associated.
+  Global Instance AssociatedFunction_claim_timeout :
+    M.IsAssociatedFunction.Trait Self "claim_timeout" claim_timeout.
+  Admitted.
   
   Parameter withdraw : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_withdraw : M.IsAssociatedFunction Self "withdraw" withdraw.
-  Smpl Add apply AssociatedFunction_withdraw : is_associated.
+  Global Instance AssociatedFunction_withdraw :
+    M.IsAssociatedFunction.Trait Self "withdraw" withdraw.
+  Admitted.
   
   Parameter get_sender : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_sender : M.IsAssociatedFunction Self "get_sender" get_sender.
-  Smpl Add apply AssociatedFunction_get_sender : is_associated.
+  Global Instance AssociatedFunction_get_sender :
+    M.IsAssociatedFunction.Trait Self "get_sender" get_sender.
+  Admitted.
   
   Parameter get_recipient : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_recipient :
-    M.IsAssociatedFunction Self "get_recipient" get_recipient.
-  Smpl Add apply AssociatedFunction_get_recipient : is_associated.
+  Global Instance AssociatedFunction_get_recipient :
+    M.IsAssociatedFunction.Trait Self "get_recipient" get_recipient.
+  Admitted.
   
   Parameter get_expiration : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_expiration :
-    M.IsAssociatedFunction Self "get_expiration" get_expiration.
-  Smpl Add apply AssociatedFunction_get_expiration : is_associated.
+  Global Instance AssociatedFunction_get_expiration :
+    M.IsAssociatedFunction.Trait Self "get_expiration" get_expiration.
+  Admitted.
   
   Parameter get_withdrawn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_withdrawn :
-    M.IsAssociatedFunction Self "get_withdrawn" get_withdrawn.
-  Smpl Add apply AssociatedFunction_get_withdrawn : is_associated.
+  Global Instance AssociatedFunction_get_withdrawn :
+    M.IsAssociatedFunction.Trait Self "get_withdrawn" get_withdrawn.
+  Admitted.
   
   Parameter get_close_duration : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_close_duration :
-    M.IsAssociatedFunction Self "get_close_duration" get_close_duration.
-  Smpl Add apply AssociatedFunction_get_close_duration : is_associated.
+  Global Instance AssociatedFunction_get_close_duration :
+    M.IsAssociatedFunction.Trait Self "get_close_duration" get_close_duration.
+  Admitted.
   
   Parameter get_balance : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.
-  Smpl Add apply AssociatedFunction_get_balance : is_associated.
+  Global Instance AssociatedFunction_get_balance :
+    M.IsAssociatedFunction.Trait Self "get_balance" get_balance.
+  Admitted.
 End Impl_payment_channel_PaymentChannel.

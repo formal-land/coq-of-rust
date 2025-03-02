@@ -27,25 +27,28 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reg_fn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_reg_fn : M.IsFunction "generics_functions::reg_fn" reg_fn.
-Smpl Add apply Function_reg_fn : is_function.
+Global Instance Instance_IsFunction_reg_fn : M.IsFunction.Trait "generics_functions::reg_fn" reg_fn.
+Admitted.
 
 Parameter gen_spec_t : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_gen_spec_t : M.IsFunction "generics_functions::gen_spec_t" gen_spec_t.
-Smpl Add apply Function_gen_spec_t : is_function.
+Global Instance Instance_IsFunction_gen_spec_t :
+  M.IsFunction.Trait "generics_functions::gen_spec_t" gen_spec_t.
+Admitted.
 
 Parameter gen_spec_i32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_gen_spec_i32 : M.IsFunction "generics_functions::gen_spec_i32" gen_spec_i32.
-Smpl Add apply Function_gen_spec_i32 : is_function.
+Global Instance Instance_IsFunction_gen_spec_i32 :
+  M.IsFunction.Trait "generics_functions::gen_spec_i32" gen_spec_i32.
+Admitted.
 
 Parameter generic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_generic : M.IsFunction "generics_functions::generic" generic.
-Smpl Add apply Function_generic : is_function.
+Global Instance Instance_IsFunction_generic :
+  M.IsFunction.Trait "generics_functions::generic" generic.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_functions::main" main.
+Admitted.

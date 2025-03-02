@@ -37,7 +37,7 @@ Module ops.
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
                   []
-                  []
+                  [ A ]
                   F
                   "CallRefFuture",
                 M.get_trait_method (|
@@ -80,7 +80,7 @@ Module ops.
                     Self: 'a;
         *)
         Definition _CallRefFuture (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [ A ] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_mut(&mut self, args: A) -> Self::CallRefFuture<'_> {
@@ -103,7 +103,7 @@ Module ops.
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
                   []
-                  []
+                  [ A ]
                   F
                   "CallRefFuture",
                 M.get_trait_method (|
@@ -145,11 +145,11 @@ Module ops.
         
         (*         type Output = F::Output; *)
         Definition _Output (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [ A ] F "Output".
         
         (*         type CallOnceFuture = F::CallRefFuture<'a>; *)
         Definition _CallOnceFuture (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [ A ] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_once(self, args: A) -> Self::CallOnceFuture {
@@ -172,7 +172,7 @@ Module ops.
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
                   []
-                  []
+                  [ A ]
                   F
                   "CallRefFuture",
                 M.get_trait_method (|
@@ -217,7 +217,7 @@ Module ops.
                     Self: 'a;
         *)
         Definition _CallRefFuture (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [ A ] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_mut(&mut self, args: A) -> Self::CallRefFuture<'_> {
@@ -240,7 +240,7 @@ Module ops.
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
                   []
-                  []
+                  [ A ]
                   F
                   "CallRefFuture",
                 M.get_trait_method (|
@@ -282,11 +282,11 @@ Module ops.
         
         (*         type Output = F::Output; *)
         Definition _Output (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [ A ] F "Output".
         
         (*         type CallOnceFuture = F::CallRefFuture<'a>; *)
         Definition _CallOnceFuture (A F : Ty.t) : Ty.t :=
-          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
+          Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [ A ] F "CallRefFuture".
         
         (*
                 extern "rust-call" fn async_call_once(self, args: A) -> Self::CallOnceFuture {
@@ -309,7 +309,7 @@ Module ops.
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
                   []
-                  []
+                  [ A ]
                   F
                   "CallRefFuture",
                 M.get_trait_method (|

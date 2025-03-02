@@ -1489,9 +1489,10 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_whitespace :
-      M.IsAssociatedFunction Self "is_whitespace" is_whitespace.
-    Smpl Add apply AssociatedFunction_is_whitespace : is_associated.
+    Global Instance AssociatedFunction_is_whitespace :
+      M.IsAssociatedFunction.Trait Self "is_whitespace" is_whitespace.
+    Admitted.
+    Global Typeclasses Opaque is_whitespace.
   End Impl_move_core_types_parser_Token.
   
   (*
@@ -2106,9 +2107,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_token_as_name :
-    M.IsFunction "move_core_types::parser::token_as_name" token_as_name.
-  Smpl Add apply Function_token_as_name : is_function.
+  Global Instance Instance_IsFunction_token_as_name :
+    M.IsFunction.Trait "move_core_types::parser::token_as_name" token_as_name.
+  Admitted.
+  Global Typeclasses Opaque token_as_name.
   
   (*
   fn name_token(s: String) -> Token {
@@ -2213,8 +2215,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_name_token : M.IsFunction "move_core_types::parser::name_token" name_token.
-  Smpl Add apply Function_name_token : is_function.
+  Global Instance Instance_IsFunction_name_token :
+    M.IsFunction.Trait "move_core_types::parser::name_token" name_token.
+  Admitted.
+  Global Typeclasses Opaque name_token.
   
   (*
   fn next_number(initial: char, mut it: impl Iterator<Item = char>) -> Result<(Token, usize)> {
@@ -2282,6 +2286,7 @@ Module parser.
                 M.never_to_any (|
                   M.read (|
                     M.loop (|
+                      Ty.path "never",
                       ltac:(M.monadic
                         (M.match_operator (|
                           M.alloc (|
@@ -2400,6 +2405,7 @@ Module parser.
                                   M.never_to_any (|
                                     M.read (|
                                       M.loop (|
+                                        Ty.path "never",
                                         ltac:(M.monadic
                                           (M.match_operator (|
                                             M.alloc (|
@@ -2734,8 +2740,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_next_number : M.IsFunction "move_core_types::parser::next_number" next_number.
-  Smpl Add apply Function_next_number : is_function.
+  Global Instance Instance_IsFunction_next_number :
+    M.IsFunction.Trait "move_core_types::parser::next_number" next_number.
+  Admitted.
+  Global Typeclasses Opaque next_number.
   
   (*
   fn next_token(s: &str) -> Result<Option<(Token, usize)>> {
@@ -3437,6 +3445,7 @@ Module parser.
                                                             ltac:(M.monadic
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
+                                                                Ty.tuple [],
                                                                 ltac:(M.monadic
                                                                   (let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
@@ -3981,6 +3990,7 @@ Module parser.
                                             |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (|
@@ -4305,6 +4315,7 @@ Module parser.
                                             |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.loop (|
+                                              Ty.tuple [],
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   M.alloc (|
@@ -4564,6 +4575,7 @@ Module parser.
                                                     ltac:(M.monadic
                                                       (let iter := M.copy (| γ |) in
                                                       M.loop (|
+                                                        Ty.tuple [],
                                                         ltac:(M.monadic
                                                           (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
@@ -4797,6 +4809,7 @@ Module parser.
                                                     ltac:(M.monadic
                                                       (let iter := M.copy (| γ |) in
                                                       M.loop (|
+                                                        Ty.tuple [],
                                                         ltac:(M.monadic
                                                           (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
@@ -5024,8 +5037,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_next_token : M.IsFunction "move_core_types::parser::next_token" next_token.
-  Smpl Add apply Function_next_token : is_function.
+  Global Instance Instance_IsFunction_next_token :
+    M.IsFunction.Trait "move_core_types::parser::next_token" next_token.
+  Admitted.
+  Global Typeclasses Opaque next_token.
   
   (*
   fn tokenize(mut s: &str) -> Result<Vec<Token>> {
@@ -5071,6 +5086,7 @@ Module parser.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
+                  Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -5327,8 +5343,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_tokenize : M.IsFunction "move_core_types::parser::tokenize" tokenize.
-  Smpl Add apply Function_tokenize : is_function.
+  Global Instance Instance_IsFunction_tokenize :
+    M.IsFunction.Trait "move_core_types::parser::tokenize" tokenize.
+  Admitted.
+  Global Typeclasses Opaque tokenize.
   
   (* StructRecord
     {
@@ -5390,8 +5408,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (I : Ty.t), M.IsAssociatedFunction (Self I) "new" (new I).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (I : Ty.t),
+      M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn next(&mut self) -> Result<Token> {
@@ -5517,10 +5538,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_next :
+    Global Instance AssociatedFunction_next :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "next" (next I).
-    Smpl Add apply AssociatedFunction_next : is_associated.
+      M.IsAssociatedFunction.Trait (Self I) "next" (next I).
+    Admitted.
+    Global Typeclasses Opaque next.
     
     (*
         fn peek(&mut self) -> Option<&Token> {
@@ -5558,10 +5580,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_peek :
+    Global Instance AssociatedFunction_peek :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "peek" (peek I).
-    Smpl Add apply AssociatedFunction_peek : is_associated.
+      M.IsAssociatedFunction.Trait (Self I) "peek" (peek I).
+    Admitted.
+    Global Typeclasses Opaque peek.
     
     (*
         fn consume(&mut self, tok: Token) -> Result<()> {
@@ -5869,10 +5892,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_consume :
+    Global Instance AssociatedFunction_consume :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "consume" (consume I).
-    Smpl Add apply AssociatedFunction_consume : is_associated.
+      M.IsAssociatedFunction.Trait (Self I) "consume" (consume I).
+    Admitted.
+    Global Typeclasses Opaque consume.
     
     (*
         fn parse_comma_list<F, R>(
@@ -6028,6 +6052,7 @@ Module parser.
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.alloc (|
@@ -6549,10 +6574,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parse_comma_list :
+    Global Instance AssociatedFunction_parse_comma_list :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "parse_comma_list" (parse_comma_list I).
-    Smpl Add apply AssociatedFunction_parse_comma_list : is_associated.
+      M.IsAssociatedFunction.Trait (Self I) "parse_comma_list" (parse_comma_list I).
+    Admitted.
+    Global Typeclasses Opaque parse_comma_list.
     
     (*
         fn parse_string(&mut self) -> Result<String> {
@@ -6831,10 +6857,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parse_string :
+    Global Instance AssociatedFunction_parse_string :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "parse_string" (parse_string I).
-    Smpl Add apply AssociatedFunction_parse_string : is_associated.
+      M.IsAssociatedFunction.Trait (Self I) "parse_string" (parse_string I).
+    Admitted.
+    Global Typeclasses Opaque parse_string.
     
     (*
         fn parse_type_tag(&mut self) -> Result<TypeTag> {
@@ -9307,10 +9334,11 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parse_type_tag :
+    Global Instance AssociatedFunction_parse_type_tag :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "parse_type_tag" (parse_type_tag I).
-    Smpl Add apply AssociatedFunction_parse_type_tag : is_associated.
+      M.IsAssociatedFunction.Trait (Self I) "parse_type_tag" (parse_type_tag I).
+    Admitted.
+    Global Typeclasses Opaque parse_type_tag.
     
     (*
         fn parse_transaction_argument(&mut self) -> Result<TransactionArgument> {
@@ -11150,10 +11178,14 @@ Module parser.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_parse_transaction_argument :
+    Global Instance AssociatedFunction_parse_transaction_argument :
       forall (I : Ty.t),
-      M.IsAssociatedFunction (Self I) "parse_transaction_argument" (parse_transaction_argument I).
-    Smpl Add apply AssociatedFunction_parse_transaction_argument : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self I)
+        "parse_transaction_argument"
+        (parse_transaction_argument I).
+    Admitted.
+    Global Typeclasses Opaque parse_transaction_argument.
   End Impl_move_core_types_parser_Parser_I.
   
   (*
@@ -11801,8 +11833,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse : M.IsFunction "move_core_types::parser::parse" parse.
-  Smpl Add apply Function_parse : is_function.
+  Global Instance Instance_IsFunction_parse :
+    M.IsFunction.Trait "move_core_types::parser::parse" parse.
+  Admitted.
+  Global Typeclasses Opaque parse.
   
   (*
   pub fn parse_string_list(s: &str) -> Result<Vec<String>> {
@@ -12014,9 +12048,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse_string_list :
-    M.IsFunction "move_core_types::parser::parse_string_list" parse_string_list.
-  Smpl Add apply Function_parse_string_list : is_function.
+  Global Instance Instance_IsFunction_parse_string_list :
+    M.IsFunction.Trait "move_core_types::parser::parse_string_list" parse_string_list.
+  Admitted.
+  Global Typeclasses Opaque parse_string_list.
   
   (*
   pub fn parse_type_tags(s: &str) -> Result<Vec<TypeTag>> {
@@ -12240,9 +12275,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse_type_tags :
-    M.IsFunction "move_core_types::parser::parse_type_tags" parse_type_tags.
-  Smpl Add apply Function_parse_type_tags : is_function.
+  Global Instance Instance_IsFunction_parse_type_tags :
+    M.IsFunction.Trait "move_core_types::parser::parse_type_tags" parse_type_tags.
+  Admitted.
+  Global Typeclasses Opaque parse_type_tags.
   
   (*
   pub fn parse_type_tag(s: &str) -> Result<TypeTag> {
@@ -12349,9 +12385,10 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse_type_tag :
-    M.IsFunction "move_core_types::parser::parse_type_tag" parse_type_tag.
-  Smpl Add apply Function_parse_type_tag : is_function.
+  Global Instance Instance_IsFunction_parse_type_tag :
+    M.IsFunction.Trait "move_core_types::parser::parse_type_tag" parse_type_tag.
+  Admitted.
+  Global Typeclasses Opaque parse_type_tag.
   
   (*
   pub fn parse_transaction_arguments(s: &str) -> Result<Vec<TransactionArgument>> {
@@ -12586,9 +12623,12 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse_transaction_arguments :
-    M.IsFunction "move_core_types::parser::parse_transaction_arguments" parse_transaction_arguments.
-  Smpl Add apply Function_parse_transaction_arguments : is_function.
+  Global Instance Instance_IsFunction_parse_transaction_arguments :
+    M.IsFunction.Trait
+      "move_core_types::parser::parse_transaction_arguments"
+      parse_transaction_arguments.
+  Admitted.
+  Global Typeclasses Opaque parse_transaction_arguments.
   
   (*
   pub fn parse_transaction_argument(s: &str) -> Result<TransactionArgument> {
@@ -12701,9 +12741,12 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse_transaction_argument :
-    M.IsFunction "move_core_types::parser::parse_transaction_argument" parse_transaction_argument.
-  Smpl Add apply Function_parse_transaction_argument : is_function.
+  Global Instance Instance_IsFunction_parse_transaction_argument :
+    M.IsFunction.Trait
+      "move_core_types::parser::parse_transaction_argument"
+      parse_transaction_argument.
+  Admitted.
+  Global Typeclasses Opaque parse_transaction_argument.
   
   (*
   pub fn parse_struct_tag(s: &str) -> Result<StructTag> {
@@ -13257,7 +13300,8 @@ Module parser.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_parse_struct_tag :
-    M.IsFunction "move_core_types::parser::parse_struct_tag" parse_struct_tag.
-  Smpl Add apply Function_parse_struct_tag : is_function.
+  Global Instance Instance_IsFunction_parse_struct_tag :
+    M.IsFunction.Trait "move_core_types::parser::parse_struct_tag" parse_struct_tag.
+  Admitted.
+  Global Typeclasses Opaque parse_struct_tag.
 End parser.

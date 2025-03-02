@@ -48,8 +48,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u8 : M.IsFunction "core::num::int_log10::u8" u8.
-    Smpl Add apply Function_u8 : is_function.
+    Global Instance Instance_IsFunction_u8 : M.IsFunction.Trait "core::num::int_log10::u8" u8.
+    Admitted.
+    Global Typeclasses Opaque u8.
     
     Module u8.
       Definition value_C1 : Value.t :=
@@ -129,8 +130,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_less_than_5 : M.IsFunction "core::num::int_log10::less_than_5" less_than_5.
-    Smpl Add apply Function_less_than_5 : is_function.
+    Global Instance Instance_IsFunction_less_than_5 :
+      M.IsFunction.Trait "core::num::int_log10::less_than_5" less_than_5.
+    Admitted.
+    Global Typeclasses Opaque less_than_5.
     
     Module less_than_5.
       Definition value_C1 : Value.t :=
@@ -204,8 +207,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u16 : M.IsFunction "core::num::int_log10::u16" u16.
-    Smpl Add apply Function_u16 : is_function.
+    Global Instance Instance_IsFunction_u16 : M.IsFunction.Trait "core::num::int_log10::u16" u16.
+    Admitted.
+    Global Typeclasses Opaque u16.
     
     (*
     pub const fn u32(mut val: u32) -> u32 {
@@ -273,8 +277,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u32 : M.IsFunction "core::num::int_log10::u32" u32.
-    Smpl Add apply Function_u32 : is_function.
+    Global Instance Instance_IsFunction_u32 : M.IsFunction.Trait "core::num::int_log10::u32" u32.
+    Admitted.
+    Global Typeclasses Opaque u32.
     
     (*
     pub const fn u64(mut val: u64) -> u32 {
@@ -384,8 +389,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u64 : M.IsFunction "core::num::int_log10::u64" u64.
-    Smpl Add apply Function_u64 : is_function.
+    Global Instance Instance_IsFunction_u64 : M.IsFunction.Trait "core::num::int_log10::u64" u64.
+    Admitted.
+    Global Typeclasses Opaque u64.
     
     (*
     pub const fn u128(mut val: u128) -> u32 {
@@ -527,8 +533,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_u128 : M.IsFunction "core::num::int_log10::u128" u128.
-    Smpl Add apply Function_u128 : is_function.
+    Global Instance Instance_IsFunction_u128 : M.IsFunction.Trait "core::num::int_log10::u128" u128.
+    Admitted.
+    Global Typeclasses Opaque u128.
     
     (*
     pub const fn usize(val: usize) -> u32 {
@@ -548,8 +555,10 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_usize : M.IsFunction "core::num::int_log10::usize" usize.
-    Smpl Add apply Function_usize : is_function.
+    Global Instance Instance_IsFunction_usize :
+      M.IsFunction.Trait "core::num::int_log10::usize" usize.
+    Admitted.
+    Global Typeclasses Opaque usize.
     
     (*
     pub const fn i8(val: i8) -> u32 {
@@ -569,8 +578,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i8 : M.IsFunction "core::num::int_log10::i8" i8.
-    Smpl Add apply Function_i8 : is_function.
+    Global Instance Instance_IsFunction_i8 : M.IsFunction.Trait "core::num::int_log10::i8" i8.
+    Admitted.
+    Global Typeclasses Opaque i8.
     
     (*
     pub const fn i16(val: i16) -> u32 {
@@ -590,8 +600,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i16 : M.IsFunction "core::num::int_log10::i16" i16.
-    Smpl Add apply Function_i16 : is_function.
+    Global Instance Instance_IsFunction_i16 : M.IsFunction.Trait "core::num::int_log10::i16" i16.
+    Admitted.
+    Global Typeclasses Opaque i16.
     
     (*
     pub const fn i32(val: i32) -> u32 {
@@ -611,8 +622,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i32 : M.IsFunction "core::num::int_log10::i32" i32.
-    Smpl Add apply Function_i32 : is_function.
+    Global Instance Instance_IsFunction_i32 : M.IsFunction.Trait "core::num::int_log10::i32" i32.
+    Admitted.
+    Global Typeclasses Opaque i32.
     
     (*
     pub const fn i64(val: i64) -> u32 {
@@ -632,8 +644,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i64 : M.IsFunction "core::num::int_log10::i64" i64.
-    Smpl Add apply Function_i64 : is_function.
+    Global Instance Instance_IsFunction_i64 : M.IsFunction.Trait "core::num::int_log10::i64" i64.
+    Admitted.
+    Global Typeclasses Opaque i64.
     
     (*
     pub const fn i128(val: i128) -> u32 {
@@ -653,8 +666,9 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_i128 : M.IsFunction "core::num::int_log10::i128" i128.
-    Smpl Add apply Function_i128 : is_function.
+    Global Instance Instance_IsFunction_i128 : M.IsFunction.Trait "core::num::int_log10::i128" i128.
+    Admitted.
+    Global Typeclasses Opaque i128.
     
     (*
     pub const fn panic_for_nonpositive_argument() -> ! {
@@ -705,10 +719,11 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_panic_for_nonpositive_argument :
-      M.IsFunction
+    Global Instance Instance_IsFunction_panic_for_nonpositive_argument :
+      M.IsFunction.Trait
         "core::num::int_log10::panic_for_nonpositive_argument"
         panic_for_nonpositive_argument.
-    Smpl Add apply Function_panic_for_nonpositive_argument : is_function.
+    Admitted.
+    Global Typeclasses Opaque panic_for_nonpositive_argument.
   End int_log10.
 End num.

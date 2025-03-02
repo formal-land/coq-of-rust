@@ -8,8 +8,10 @@ Definition used_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_used_function : M.IsFunction "dead_code::used_function" used_function.
-Smpl Add apply Function_used_function : is_function.
+Global Instance Instance_IsFunction_used_function :
+  M.IsFunction.Trait "dead_code::used_function" used_function.
+Admitted.
+Global Typeclasses Opaque used_function.
 
 (* fn unused_function() {} *)
 Definition unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -18,8 +20,10 @@ Definition unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_unused_function : M.IsFunction "dead_code::unused_function" unused_function.
-Smpl Add apply Function_unused_function : is_function.
+Global Instance Instance_IsFunction_unused_function :
+  M.IsFunction.Trait "dead_code::unused_function" unused_function.
+Admitted.
+Global Typeclasses Opaque unused_function.
 
 (* fn noisy_unused_function() {} *)
 Definition noisy_unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -28,9 +32,10 @@ Definition noisy_unused_function (ε : list Value.t) (τ : list Ty.t) (α : list
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_noisy_unused_function :
-  M.IsFunction "dead_code::noisy_unused_function" noisy_unused_function.
-Smpl Add apply Function_noisy_unused_function : is_function.
+Global Instance Instance_IsFunction_noisy_unused_function :
+  M.IsFunction.Trait "dead_code::noisy_unused_function" noisy_unused_function.
+Admitted.
+Global Typeclasses Opaque noisy_unused_function.
 
 (*
 fn main() {
@@ -55,5 +60,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "dead_code::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "dead_code::main" main.
+Admitted.
+Global Typeclasses Opaque main.

@@ -915,8 +915,10 @@ Module kzg_point_evaluation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run : M.IsFunction "revm_precompile::kzg_point_evaluation::run" run.
-  Smpl Add apply Function_run : is_function.
+  Global Instance Instance_IsFunction_run :
+    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::run" run.
+  Admitted.
+  Global Typeclasses Opaque run.
   
   (*
   pub fn kzg_to_versioned_hash(commitment: &[u8]) -> [u8; 32] {
@@ -1114,11 +1116,12 @@ Module kzg_point_evaluation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_kzg_to_versioned_hash :
-    M.IsFunction
+  Global Instance Instance_IsFunction_kzg_to_versioned_hash :
+    M.IsFunction.Trait
       "revm_precompile::kzg_point_evaluation::kzg_to_versioned_hash"
       kzg_to_versioned_hash.
-  Smpl Add apply Function_kzg_to_versioned_hash : is_function.
+  Admitted.
+  Global Typeclasses Opaque kzg_to_versioned_hash.
   
   (*
   pub fn verify_kzg_proof(commitment: &Bytes48, z: &Bytes32, y: &Bytes32, proof: &Bytes48) -> bool {
@@ -1191,9 +1194,10 @@ Module kzg_point_evaluation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_verify_kzg_proof :
-    M.IsFunction "revm_precompile::kzg_point_evaluation::verify_kzg_proof" verify_kzg_proof.
-  Smpl Add apply Function_verify_kzg_proof : is_function.
+  Global Instance Instance_IsFunction_verify_kzg_proof :
+    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::verify_kzg_proof" verify_kzg_proof.
+  Admitted.
+  Global Typeclasses Opaque verify_kzg_proof.
   
   (*
   pub fn as_array<const N: usize>(bytes: &[u8]) -> &[u8; N] {
@@ -1248,8 +1252,10 @@ Module kzg_point_evaluation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_as_array : M.IsFunction "revm_precompile::kzg_point_evaluation::as_array" as_array.
-  Smpl Add apply Function_as_array : is_function.
+  Global Instance Instance_IsFunction_as_array :
+    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::as_array" as_array.
+  Admitted.
+  Global Typeclasses Opaque as_array.
   
   (*
   pub fn as_bytes32(bytes: &[u8]) -> &Bytes32 {
@@ -1319,9 +1325,10 @@ Module kzg_point_evaluation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_as_bytes32 :
-    M.IsFunction "revm_precompile::kzg_point_evaluation::as_bytes32" as_bytes32.
-  Smpl Add apply Function_as_bytes32 : is_function.
+  Global Instance Instance_IsFunction_as_bytes32 :
+    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::as_bytes32" as_bytes32.
+  Admitted.
+  Global Typeclasses Opaque as_bytes32.
   
   (*
   pub fn as_bytes48(bytes: &[u8]) -> &Bytes48 {
@@ -1391,7 +1398,8 @@ Module kzg_point_evaluation.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_as_bytes48 :
-    M.IsFunction "revm_precompile::kzg_point_evaluation::as_bytes48" as_bytes48.
-  Smpl Add apply Function_as_bytes48 : is_function.
+  Global Instance Instance_IsFunction_as_bytes48 :
+    M.IsFunction.Trait "revm_precompile::kzg_point_evaluation::as_bytes48" as_bytes48.
+  Admitted.
+  Global Typeclasses Opaque as_bytes48.
 End kzg_point_evaluation.

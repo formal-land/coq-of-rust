@@ -362,10 +362,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction (Self I) "new" (new I).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_intersperse_Intersperse_I.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_intersperse_Intersperse_I.
@@ -1310,10 +1311,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I G : Ty.t),
-          M.IsAssociatedFunction (Self I G) "new" (new I G).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I G) "new" (new I G).
+        Admitted.
+        Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_intersperse_IntersperseWith_I_G.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_G_Tuple__for_core_iter_adapters_intersperse_IntersperseWith_I_G.
@@ -1957,11 +1959,12 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_intersperse_size_hint :
-        M.IsFunction
+      Global Instance Instance_IsFunction_intersperse_size_hint :
+        M.IsFunction.Trait
           "core::iter::adapters::intersperse::intersperse_size_hint"
           intersperse_size_hint.
-      Smpl Add apply Function_intersperse_size_hint : is_function.
+      Admitted.
+      Global Typeclasses Opaque intersperse_size_hint.
       
       (*
       fn intersperse_fold<I, B, F, G>(
@@ -2290,9 +2293,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_intersperse_fold :
-        M.IsFunction "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
-      Smpl Add apply Function_intersperse_fold : is_function.
+      Global Instance Instance_IsFunction_intersperse_fold :
+        M.IsFunction.Trait "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
+      Admitted.
+      Global Typeclasses Opaque intersperse_fold.
     End intersperse.
   End adapters.
 End iter.

@@ -391,9 +391,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_chainid :
-      M.IsFunction "revm_interpreter::instructions::block_info::chainid" chainid.
-    Smpl Add apply Function_chainid : is_function.
+    Global Instance Instance_IsFunction_chainid :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::chainid" chainid.
+    Admitted.
+    Global Typeclasses Opaque chainid.
     
     (*
     pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -712,9 +713,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_coinbase :
-      M.IsFunction "revm_interpreter::instructions::block_info::coinbase" coinbase.
-    Smpl Add apply Function_coinbase : is_function.
+    Global Instance Instance_IsFunction_coinbase :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::coinbase" coinbase.
+    Admitted.
+    Global Typeclasses Opaque coinbase.
     
     (*
     pub fn timestamp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1005,9 +1007,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_timestamp :
-      M.IsFunction "revm_interpreter::instructions::block_info::timestamp" timestamp.
-    Smpl Add apply Function_timestamp : is_function.
+    Global Instance Instance_IsFunction_timestamp :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::timestamp" timestamp.
+    Admitted.
+    Global Typeclasses Opaque timestamp.
     
     (*
     pub fn block_number<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1298,9 +1301,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_block_number :
-      M.IsFunction "revm_interpreter::instructions::block_info::block_number" block_number.
-    Smpl Add apply Function_block_number : is_function.
+    Global Instance Instance_IsFunction_block_number :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::block_number" block_number.
+    Admitted.
+    Global Typeclasses Opaque block_number.
     
     (*
     pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -1836,9 +1840,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_difficulty :
-      M.IsFunction "revm_interpreter::instructions::block_info::difficulty" difficulty.
-    Smpl Add apply Function_difficulty : is_function.
+    Global Instance Instance_IsFunction_difficulty :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::difficulty" difficulty.
+    Admitted.
+    Global Typeclasses Opaque difficulty.
     
     (*
     pub fn gaslimit<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2129,9 +2134,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_gaslimit :
-      M.IsFunction "revm_interpreter::instructions::block_info::gaslimit" gaslimit.
-    Smpl Add apply Function_gaslimit : is_function.
+    Global Instance Instance_IsFunction_gaslimit :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::gaslimit" gaslimit.
+    Admitted.
+    Global Typeclasses Opaque gaslimit.
     
     (*
     pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2521,9 +2527,10 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_basefee :
-      M.IsFunction "revm_interpreter::instructions::block_info::basefee" basefee.
-    Smpl Add apply Function_basefee : is_function.
+    Global Instance Instance_IsFunction_basefee :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::basefee" basefee.
+    Admitted.
+    Global Typeclasses Opaque basefee.
     
     (*
     pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -2933,8 +2940,9 @@ Module instructions.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_blob_basefee :
-      M.IsFunction "revm_interpreter::instructions::block_info::blob_basefee" blob_basefee.
-    Smpl Add apply Function_blob_basefee : is_function.
+    Global Instance Instance_IsFunction_blob_basefee :
+      M.IsFunction.Trait "revm_interpreter::instructions::block_info::blob_basefee" blob_basefee.
+    Admitted.
+    Global Typeclasses Opaque blob_basefee.
   End block_info.
 End instructions.

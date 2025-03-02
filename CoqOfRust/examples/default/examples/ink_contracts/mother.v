@@ -77,10 +77,10 @@ Module Impl_mother_Mapping_K_V.
   *)
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get :
+  Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "get" (get K V).
-  Smpl Add apply AssociatedFunction_get : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+  Admitted.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
@@ -89,10 +89,10 @@ Module Impl_mother_Mapping_K_V.
   *)
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_insert :
+  Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction (Self K V) "insert" (insert K V).
-  Smpl Add apply AssociatedFunction_insert : is_associated.
+    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+  Admitted.
 End Impl_mother_Mapping_K_V.
 
 (* StructTuple
@@ -2057,8 +2057,9 @@ Module Impl_mother_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
-  Smpl Add apply AssociatedFunction_caller : is_associated.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Admitted.
+  Global Typeclasses Opaque caller.
   
   (*
       fn emit_event(&self, _event: Event) {
@@ -2067,8 +2068,9 @@ Module Impl_mother_Env.
   *)
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_emit_event : M.IsAssociatedFunction Self "emit_event" emit_event.
-  Smpl Add apply AssociatedFunction_emit_event : is_associated.
+  Global Instance AssociatedFunction_emit_event :
+    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+  Admitted.
 End Impl_mother_Env.
 
 (* StructRecord
@@ -2152,8 +2154,9 @@ Module Impl_mother_Mother.
   *)
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_init_env : M.IsAssociatedFunction Self "init_env" init_env.
-  Smpl Add apply AssociatedFunction_init_env : is_associated.
+  Global Instance AssociatedFunction_init_env :
+    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Admitted.
   
   (*
       fn env(&self) -> Env {
@@ -2173,8 +2176,9 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
-  Smpl Add apply AssociatedFunction_env : is_associated.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Admitted.
+  Global Typeclasses Opaque env.
   
   (*
       pub fn new(auction: Auction) -> Self {
@@ -2217,8 +2221,9 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn new_default() -> Self {
@@ -2245,8 +2250,10 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
-  Smpl Add apply AssociatedFunction_new_default : is_associated.
+  Global Instance AssociatedFunction_new_default :
+    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+  Admitted.
+  Global Typeclasses Opaque new_default.
   
   (*
       pub fn failed_new(fail: bool) -> Result<Self, Failure> {
@@ -2325,8 +2332,10 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_failed_new : M.IsAssociatedFunction Self "failed_new" failed_new.
-  Smpl Add apply AssociatedFunction_failed_new : is_associated.
+  Global Instance AssociatedFunction_failed_new :
+    M.IsAssociatedFunction.Trait Self "failed_new" failed_new.
+  Admitted.
+  Global Typeclasses Opaque failed_new.
   
   (*
       pub fn echo_auction(&mut self, auction: Auction) -> Auction {
@@ -2389,8 +2398,10 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_echo_auction : M.IsAssociatedFunction Self "echo_auction" echo_auction.
-  Smpl Add apply AssociatedFunction_echo_auction : is_associated.
+  Global Instance AssociatedFunction_echo_auction :
+    M.IsAssociatedFunction.Trait Self "echo_auction" echo_auction.
+  Admitted.
+  Global Typeclasses Opaque echo_auction.
   
   (*
       pub fn revert_or_trap(&mut self, fail: Option<Failure>) -> Result<(), Failure> {
@@ -2479,9 +2490,10 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_revert_or_trap :
-    M.IsAssociatedFunction Self "revert_or_trap" revert_or_trap.
-  Smpl Add apply AssociatedFunction_revert_or_trap : is_associated.
+  Global Instance AssociatedFunction_revert_or_trap :
+    M.IsAssociatedFunction.Trait Self "revert_or_trap" revert_or_trap.
+  Admitted.
+  Global Typeclasses Opaque revert_or_trap.
   
   (*
       pub fn debug_log(&mut self, _message: String) {
@@ -2566,6 +2578,8 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_debug_log : M.IsAssociatedFunction Self "debug_log" debug_log.
-  Smpl Add apply AssociatedFunction_debug_log : is_associated.
+  Global Instance AssociatedFunction_debug_log :
+    M.IsAssociatedFunction.Trait Self "debug_log" debug_log.
+  Admitted.
+  Global Typeclasses Opaque debug_log.
 End Impl_mother_Mother.

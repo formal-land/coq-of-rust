@@ -465,8 +465,10 @@ Module legacy.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_analysis : M.IsAssociatedFunction Self "analysis" analysis.
-      Smpl Add apply AssociatedFunction_analysis : is_associated.
+      Global Instance AssociatedFunction_analysis :
+        M.IsAssociatedFunction.Trait Self "analysis" analysis.
+      Admitted.
+      Global Typeclasses Opaque analysis.
       
       (*
           pub fn into_analyzed(self) -> LegacyAnalyzedBytecode {
@@ -683,9 +685,10 @@ Module legacy.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_into_analyzed :
-        M.IsAssociatedFunction Self "into_analyzed" into_analyzed.
-      Smpl Add apply AssociatedFunction_into_analyzed : is_associated.
+      Global Instance AssociatedFunction_into_analyzed :
+        M.IsAssociatedFunction.Trait Self "into_analyzed" into_analyzed.
+      Admitted.
+      Global Typeclasses Opaque into_analyzed.
     End Impl_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
     Module Impl_core_convert_From_alloy_primitives_bytes__Bytes_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
@@ -889,8 +892,9 @@ Module legacy.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_analyze_legacy :
-      M.IsFunction "revm_bytecode::legacy::raw::analyze_legacy" analyze_legacy.
-    Smpl Add apply Function_analyze_legacy : is_function.
+    Global Instance Instance_IsFunction_analyze_legacy :
+      M.IsFunction.Trait "revm_bytecode::legacy::raw::analyze_legacy" analyze_legacy.
+    Admitted.
+    Global Typeclasses Opaque analyze_legacy.
   End raw.
 End legacy.

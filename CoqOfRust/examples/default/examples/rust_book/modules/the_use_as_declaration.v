@@ -50,8 +50,10 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_function : M.IsFunction "the_use_as_declaration::function" function.
-Smpl Add apply Function_function : is_function.
+Global Instance Instance_IsFunction_function :
+  M.IsFunction.Trait "the_use_as_declaration::function" function.
+Admitted.
+Global Typeclasses Opaque function.
 
 Module deeply.
   Module nested.
@@ -109,9 +111,10 @@ Module deeply.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_function :
-      M.IsFunction "the_use_as_declaration::deeply::nested::function" function.
-    Smpl Add apply Function_function : is_function.
+    Global Instance Instance_IsFunction_function :
+      M.IsFunction.Trait "the_use_as_declaration::deeply::nested::function" function.
+    Admitted.
+    Global Typeclasses Opaque function.
   End nested.
 End deeply.
 
@@ -240,5 +243,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "the_use_as_declaration::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "the_use_as_declaration::main" main.
+Admitted.
+Global Typeclasses Opaque main.

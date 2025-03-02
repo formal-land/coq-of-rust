@@ -112,13 +112,14 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_append_from_sorted_iters :
+        Global Instance AssociatedFunction_append_from_sorted_iters :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction
+          M.IsAssociatedFunction.Trait
             (Self K V)
             "append_from_sorted_iters"
             (append_from_sorted_iters K V).
-        Smpl Add apply AssociatedFunction_append_from_sorted_iters : is_associated.
+        Admitted.
+        Global Typeclasses Opaque append_from_sorted_iters.
         
         (*
             pub fn bulk_push<I, A: Allocator + Clone>(&mut self, iter: I, length: &mut usize, alloc: A)
@@ -319,6 +320,7 @@ Module collections.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -500,6 +502,7 @@ Module collections.
                                                       |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.loop (|
+                                                        Ty.tuple [],
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
                                                             M.alloc (|
@@ -960,6 +963,7 @@ Module collections.
                                                               ltac:(M.monadic
                                                                 (let iter := M.copy (| γ |) in
                                                                 M.loop (|
+                                                                  Ty.tuple [],
                                                                   ltac:(M.monadic
                                                                     (let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
@@ -1297,10 +1301,11 @@ Module collections.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_bulk_push :
+        Global Instance AssociatedFunction_bulk_push :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction (Self K V) "bulk_push" (bulk_push K V).
-        Smpl Add apply AssociatedFunction_bulk_push : is_associated.
+          M.IsAssociatedFunction.Trait (Self K V) "bulk_push" (bulk_push K V).
+        Admitted.
+        Global Typeclasses Opaque bulk_push.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
       
       (* StructTuple

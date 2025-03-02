@@ -18,8 +18,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "inline_assembly_memory_address_operands::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "inline_assembly_memory_address_operands::main" main.
+Admitted.
+Global Typeclasses Opaque main.
 
 Module main.
   (*
@@ -41,9 +43,10 @@ Module main.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_load_fpu_control_word :
-    M.IsFunction
+  Global Instance Instance_IsFunction_load_fpu_control_word :
+    M.IsFunction.Trait
       "inline_assembly_memory_address_operands::main::load_fpu_control_word"
       load_fpu_control_word.
-  Smpl Add apply Function_load_fpu_control_word : is_function.
+  Admitted.
+  Global Typeclasses Opaque load_fpu_control_word.
 End main.

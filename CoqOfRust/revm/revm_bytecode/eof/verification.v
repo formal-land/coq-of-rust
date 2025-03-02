@@ -33,9 +33,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_raw_eof :
-      M.IsFunction "revm_bytecode::eof::verification::validate_raw_eof" validate_raw_eof.
-    Smpl Add apply Function_validate_raw_eof : is_function.
+    Global Instance Instance_IsFunction_validate_raw_eof :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_raw_eof" validate_raw_eof.
+    Admitted.
+    Global Typeclasses Opaque validate_raw_eof.
     
     (*
     pub fn validate_raw_eof_inner(
@@ -368,11 +369,12 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_raw_eof_inner :
-      M.IsFunction
+    Global Instance Instance_IsFunction_validate_raw_eof_inner :
+      M.IsFunction.Trait
         "revm_bytecode::eof::verification::validate_raw_eof_inner"
         validate_raw_eof_inner.
-    Smpl Add apply Function_validate_raw_eof_inner : is_function.
+    Admitted.
+    Global Typeclasses Opaque validate_raw_eof_inner.
     
     (*
     pub fn validate_eof(eof: &Eof) -> Result<(), EofError> {
@@ -401,9 +403,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof" validate_eof.
-    Smpl Add apply Function_validate_eof : is_function.
+    Global Instance Instance_IsFunction_validate_eof :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof" validate_eof.
+    Admitted.
+    Global Typeclasses Opaque validate_eof.
     
     (*
     pub fn validate_eof_inner(eof: &Eof, first_code_type: Option<CodeType>) -> Result<(), EofError> {
@@ -801,6 +804,7 @@ Module eof.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -1268,6 +1272,7 @@ Module eof.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -1615,9 +1620,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof_inner :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof_inner" validate_eof_inner.
-    Smpl Add apply Function_validate_eof_inner : is_function.
+    Global Instance Instance_IsFunction_validate_eof_inner :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_inner" validate_eof_inner.
+    Admitted.
+    Global Typeclasses Opaque validate_eof_inner.
     
     (*
     pub fn validate_eof_codes(
@@ -2014,6 +2020,7 @@ Module eof.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -2980,9 +2987,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof_codes :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof_codes" validate_eof_codes.
-    Smpl Add apply Function_validate_eof_codes : is_function.
+    Global Instance Instance_IsFunction_validate_eof_codes :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_codes" validate_eof_codes.
+    Admitted.
+    Global Typeclasses Opaque validate_eof_codes.
     
     (*
     Enum EofError
@@ -6021,8 +6029,9 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      Smpl Add apply AssociatedFunction_new : is_associated.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Admitted.
+      Global Typeclasses Opaque new.
       
       (*
           pub fn access_code(&mut self, index: usize) {
@@ -6126,8 +6135,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_access_code : M.IsAssociatedFunction Self "access_code" access_code.
-      Smpl Add apply AssociatedFunction_access_code : is_associated.
+      Global Instance AssociatedFunction_access_code :
+        M.IsAssociatedFunction.Trait Self "access_code" access_code.
+      Admitted.
+      Global Typeclasses Opaque access_code.
       
       (*
           pub fn set_subcontainer_type(
@@ -6336,9 +6347,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_set_subcontainer_type :
-        M.IsAssociatedFunction Self "set_subcontainer_type" set_subcontainer_type.
-      Smpl Add apply AssociatedFunction_set_subcontainer_type : is_associated.
+      Global Instance AssociatedFunction_set_subcontainer_type :
+        M.IsAssociatedFunction.Trait Self "set_subcontainer_type" set_subcontainer_type.
+      Admitted.
+      Global Typeclasses Opaque set_subcontainer_type.
     End Impl_revm_bytecode_eof_verification_AccessTracker.
     
     (*
@@ -6587,8 +6599,10 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_is_initcode : M.IsAssociatedFunction Self "is_initcode" is_initcode.
-      Smpl Add apply AssociatedFunction_is_initcode : is_associated.
+      Global Instance AssociatedFunction_is_initcode :
+        M.IsAssociatedFunction.Trait Self "is_initcode" is_initcode.
+      Admitted.
+      Global Typeclasses Opaque is_initcode.
     End Impl_revm_bytecode_eof_verification_CodeType.
     
     Module Impl_core_fmt_Display_for_revm_bytecode_eof_verification_EofValidationError.
@@ -7517,6 +7531,7 @@ Module eof.
                 let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -8008,6 +8023,7 @@ Module eof.
                                                         ltac:(M.monadic
                                                           (let iter := M.copy (| γ |) in
                                                           M.loop (|
+                                                            Ty.tuple [],
                                                             ltac:(M.monadic
                                                               (let~ _ : Ty.tuple [] :=
                                                                 M.match_operator (|
@@ -8448,6 +8464,7 @@ Module eof.
                                                 ltac:(M.monadic
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
+                                                    Ty.tuple [],
                                                     ltac:(M.monadic
                                                       (let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
@@ -9130,6 +9147,7 @@ Module eof.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -9268,9 +9286,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_validate_eof_code :
-      M.IsFunction "revm_bytecode::eof::verification::validate_eof_code" validate_eof_code.
-    Smpl Add apply Function_validate_eof_code : is_function.
+    Global Instance Instance_IsFunction_validate_eof_code :
+      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_code" validate_eof_code.
+    Admitted.
+    Global Typeclasses Opaque validate_eof_code.
     
     Module validate_eof_code.
       (* StructRecord
@@ -9525,9 +9544,10 @@ Module eof.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_mark_as_immediate :
-          M.IsAssociatedFunction Self "mark_as_immediate" mark_as_immediate.
-        Smpl Add apply AssociatedFunction_mark_as_immediate : is_associated.
+        Global Instance AssociatedFunction_mark_as_immediate :
+          M.IsAssociatedFunction.Trait Self "mark_as_immediate" mark_as_immediate.
+        Admitted.
+        Global Typeclasses Opaque mark_as_immediate.
       End Impl_revm_bytecode_eof_verification_validate_eof_code_InstructionInfo.
       
       Module Impl_core_default_Default_for_revm_bytecode_eof_verification_validate_eof_code_InstructionInfo.

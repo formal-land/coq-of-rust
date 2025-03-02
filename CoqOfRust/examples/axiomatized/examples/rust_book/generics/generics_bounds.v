@@ -50,15 +50,16 @@ End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 
 Parameter print_debug : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_print_debug : M.IsFunction "generics_bounds::print_debug" print_debug.
-Smpl Add apply Function_print_debug : is_function.
+Global Instance Instance_IsFunction_print_debug :
+  M.IsFunction.Trait "generics_bounds::print_debug" print_debug.
+Admitted.
 
 Parameter area : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_area : M.IsFunction "generics_bounds::area" area.
-Smpl Add apply Function_area : is_function.
+Global Instance Instance_IsFunction_area : M.IsFunction.Trait "generics_bounds::area" area.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_bounds::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_bounds::main" main.
+Admitted.

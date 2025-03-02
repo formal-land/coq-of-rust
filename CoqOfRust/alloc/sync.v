@@ -134,10 +134,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_inner :
+    Global Instance AssociatedFunction_from_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_inner" (from_inner T).
-    Smpl Add apply AssociatedFunction_from_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_inner" (from_inner T).
+    Admitted.
+    Global Typeclasses Opaque from_inner.
     
     (*
         unsafe fn from_ptr(ptr: *mut ArcInner<T>) -> Self {
@@ -163,10 +164,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ptr :
+    Global Instance AssociatedFunction_from_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_ptr" (from_ptr T).
-    Smpl Add apply AssociatedFunction_from_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_ptr" (from_ptr T).
+    Admitted.
+    Global Typeclasses Opaque from_ptr.
     (*
         pub fn new(data: T) -> Arc<T> {
             // Start the weak pointer count as 1 which is the weak pointer that's
@@ -312,8 +314,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn new_cyclic<F>(data_fn: F) -> Arc<T>
@@ -342,10 +347,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_cyclic :
+    Global Instance AssociatedFunction_new_cyclic :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_cyclic" (new_cyclic T).
-    Smpl Add apply AssociatedFunction_new_cyclic : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_cyclic" (new_cyclic T).
+    Admitted.
+    Global Typeclasses Opaque new_cyclic.
     
     (*
         pub fn new_uninit() -> Arc<mem::MaybeUninit<T>> {
@@ -503,10 +509,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit :
+    Global Instance AssociatedFunction_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_uninit" (new_uninit T).
-    Smpl Add apply AssociatedFunction_new_uninit : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_uninit" (new_uninit T).
+    Admitted.
+    Global Typeclasses Opaque new_uninit.
     
     (*
         pub fn new_zeroed() -> Arc<mem::MaybeUninit<T>> {
@@ -664,10 +671,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed :
+    Global Instance AssociatedFunction_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_zeroed" (new_zeroed T).
-    Smpl Add apply AssociatedFunction_new_zeroed : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_zeroed" (new_zeroed T).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed.
     
     (*
         pub fn pin(data: T) -> Pin<Arc<T>> {
@@ -710,8 +718,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pin : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pin" (pin T).
-    Smpl Add apply AssociatedFunction_pin : is_associated.
+    Global Instance AssociatedFunction_pin :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "pin" (pin T).
+    Admitted.
+    Global Typeclasses Opaque pin.
     
     (*
         pub fn try_pin(data: T) -> Result<Pin<Arc<T>>, AllocError> {
@@ -905,10 +916,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_pin :
+    Global Instance AssociatedFunction_try_pin :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_pin" (try_pin T).
-    Smpl Add apply AssociatedFunction_try_pin : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_pin" (try_pin T).
+    Admitted.
+    Global Typeclasses Opaque try_pin.
     
     (*
         pub fn try_new(data: T) -> Result<Arc<T>, AllocError> {
@@ -1190,10 +1202,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new :
+    Global Instance AssociatedFunction_try_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new" (try_new T).
-    Smpl Add apply AssociatedFunction_try_new : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new" (try_new T).
+    Admitted.
+    Global Typeclasses Opaque try_new.
     
     (*
         pub fn try_new_uninit() -> Result<Arc<mem::MaybeUninit<T>>, AllocError> {
@@ -1542,10 +1555,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_uninit :
+    Global Instance AssociatedFunction_try_new_uninit :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new_uninit" (try_new_uninit T).
-    Smpl Add apply AssociatedFunction_try_new_uninit : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new_uninit" (try_new_uninit T).
+    Admitted.
+    Global Typeclasses Opaque try_new_uninit.
     
     (*
         pub fn try_new_zeroed() -> Result<Arc<mem::MaybeUninit<T>>, AllocError> {
@@ -1894,10 +1908,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_zeroed :
+    Global Instance AssociatedFunction_try_new_zeroed :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_new_zeroed" (try_new_zeroed T).
-    Smpl Add apply AssociatedFunction_try_new_zeroed : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_new_zeroed" (try_new_zeroed T).
+    Admitted.
+    Global Typeclasses Opaque try_new_zeroed.
     (*
         pub unsafe fn from_raw(ptr: *const T) -> Self {
             unsafe { Arc::from_raw_in(ptr, Global) }
@@ -1922,10 +1937,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_raw :
+    Global Instance AssociatedFunction_from_raw :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
-    Smpl Add apply AssociatedFunction_from_raw : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_raw" (from_raw T).
+    Admitted.
+    Global Typeclasses Opaque from_raw.
     
     (*
         pub unsafe fn increment_strong_count(ptr: *const T) {
@@ -1956,10 +1972,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_increment_strong_count :
+    Global Instance AssociatedFunction_increment_strong_count :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "increment_strong_count" (increment_strong_count T).
-    Smpl Add apply AssociatedFunction_increment_strong_count : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "increment_strong_count" (increment_strong_count T).
+    Admitted.
+    Global Typeclasses Opaque increment_strong_count.
     
     (*
         pub unsafe fn decrement_strong_count(ptr: *const T) {
@@ -1990,10 +2007,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_decrement_strong_count :
+    Global Instance AssociatedFunction_decrement_strong_count :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "decrement_strong_count" (decrement_strong_count T).
-    Smpl Add apply AssociatedFunction_decrement_strong_count : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "decrement_strong_count" (decrement_strong_count T).
+    Admitted.
+    Global Typeclasses Opaque decrement_strong_count.
     (*
         unsafe fn allocate_for_layout(
             value_layout: Layout,
@@ -2138,10 +2156,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocate_for_layout :
+    Global Instance AssociatedFunction_allocate_for_layout :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "allocate_for_layout" (allocate_for_layout T).
-    Smpl Add apply AssociatedFunction_allocate_for_layout : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "allocate_for_layout" (allocate_for_layout T).
+    Admitted.
+    Global Typeclasses Opaque allocate_for_layout.
     
     (*
         unsafe fn try_allocate_for_layout(
@@ -2356,10 +2375,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_allocate_for_layout :
+    Global Instance AssociatedFunction_try_allocate_for_layout :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "try_allocate_for_layout" (try_allocate_for_layout T).
-    Smpl Add apply AssociatedFunction_try_allocate_for_layout : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "try_allocate_for_layout" (try_allocate_for_layout T).
+    Admitted.
+    Global Typeclasses Opaque try_allocate_for_layout.
     
     (*
         unsafe fn initialize_arcinner(
@@ -2652,10 +2672,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_initialize_arcinner :
+    Global Instance AssociatedFunction_initialize_arcinner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "initialize_arcinner" (initialize_arcinner T).
-    Smpl Add apply AssociatedFunction_initialize_arcinner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "initialize_arcinner" (initialize_arcinner T).
+    Admitted.
+    Global Typeclasses Opaque initialize_arcinner.
   End Impl_alloc_sync_Arc_T_alloc_alloc_Global.
   
   Module Impl_alloc_sync_Arc_T_A.
@@ -2777,10 +2798,14 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner_with_allocator :
+    Global Instance AssociatedFunction_into_inner_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_inner_with_allocator" (into_inner_with_allocator T A).
-    Smpl Add apply AssociatedFunction_into_inner_with_allocator : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "into_inner_with_allocator"
+        (into_inner_with_allocator T A).
+    Admitted.
+    Global Typeclasses Opaque into_inner_with_allocator.
     
     (*
         unsafe fn from_inner_in(ptr: NonNull<ArcInner<T>>, alloc: A) -> Self {
@@ -2809,10 +2834,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_inner_in :
+    Global Instance AssociatedFunction_from_inner_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_inner_in" (from_inner_in T A).
-    Smpl Add apply AssociatedFunction_from_inner_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_inner_in" (from_inner_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_inner_in.
     
     (*
         unsafe fn from_ptr_in(ptr: *mut ArcInner<T>, alloc: A) -> Self {
@@ -2857,10 +2883,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_ptr_in :
+    Global Instance AssociatedFunction_from_ptr_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_ptr_in" (from_ptr_in T A).
-    Smpl Add apply AssociatedFunction_from_ptr_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_ptr_in" (from_ptr_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_ptr_in.
     (*
         pub fn new_in(data: T, alloc: A) -> Arc<T, A> {
             // Start the weak pointer count as 1 which is the weak pointer that's
@@ -3011,10 +3038,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_in :
+    Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
-    Smpl Add apply AssociatedFunction_new_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_in.
     
     (*
         pub fn new_uninit_in(alloc: A) -> Arc<mem::MaybeUninit<T>, A> {
@@ -3171,10 +3199,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit_in :
+    Global Instance AssociatedFunction_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_uninit_in" (new_uninit_in T A).
-    Smpl Add apply AssociatedFunction_new_uninit_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_in" (new_uninit_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_uninit_in.
     
     (*
         pub fn new_zeroed_in(alloc: A) -> Arc<mem::MaybeUninit<T>, A> {
@@ -3331,10 +3360,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed_in :
+    Global Instance AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_zeroed_in" (new_zeroed_in T A).
-    Smpl Add apply AssociatedFunction_new_zeroed_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed_in.
     
     (*
         pub fn new_cyclic_in<F>(data_fn: F, alloc: A) -> Arc<T, A>
@@ -3924,10 +3954,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_cyclic_in :
+    Global Instance AssociatedFunction_new_cyclic_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_cyclic_in" (new_cyclic_in T A).
-    Smpl Add apply AssociatedFunction_new_cyclic_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_cyclic_in" (new_cyclic_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_cyclic_in.
     
     (*
         pub fn pin_in(data: T, alloc: A) -> Pin<Arc<T, A>>
@@ -3974,10 +4005,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pin_in :
+    Global Instance AssociatedFunction_pin_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "pin_in" (pin_in T A).
-    Smpl Add apply AssociatedFunction_pin_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "pin_in" (pin_in T A).
+    Admitted.
+    Global Typeclasses Opaque pin_in.
     
     (*
         pub fn try_pin_in(data: T, alloc: A) -> Result<Pin<Arc<T, A>>, AllocError>
@@ -4149,10 +4181,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_pin_in :
+    Global Instance AssociatedFunction_try_pin_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_pin_in" (try_pin_in T A).
-    Smpl Add apply AssociatedFunction_try_pin_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_pin_in" (try_pin_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_pin_in.
     
     (*
         pub fn try_new_in(data: T, alloc: A) -> Result<Arc<T, A>, AllocError> {
@@ -4421,10 +4454,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_in :
+    Global Instance AssociatedFunction_try_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_in" (try_new_in T A).
-    Smpl Add apply AssociatedFunction_try_new_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_new_in" (try_new_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_in.
     
     (*
         pub fn try_new_uninit_in(alloc: A) -> Result<Arc<mem::MaybeUninit<T>, A>, AllocError> {
@@ -4765,10 +4799,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_uninit_in :
+    Global Instance AssociatedFunction_try_new_uninit_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
-    Smpl Add apply AssociatedFunction_try_new_uninit_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_new_uninit_in" (try_new_uninit_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_uninit_in.
     
     (*
         pub fn try_new_zeroed_in(alloc: A) -> Result<Arc<mem::MaybeUninit<T>, A>, AllocError> {
@@ -5109,10 +5144,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_new_zeroed_in :
+    Global Instance AssociatedFunction_try_new_zeroed_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
-    Smpl Add apply AssociatedFunction_try_new_zeroed_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_new_zeroed_in" (try_new_zeroed_in T A).
+    Admitted.
+    Global Typeclasses Opaque try_new_zeroed_in.
     
     (*
         pub fn try_unwrap(this: Self) -> Result<T, Self> {
@@ -5427,10 +5463,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_try_unwrap :
+    Global Instance AssociatedFunction_try_unwrap :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "try_unwrap" (try_unwrap T A).
-    Smpl Add apply AssociatedFunction_try_unwrap : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "try_unwrap" (try_unwrap T A).
+    Admitted.
+    Global Typeclasses Opaque try_unwrap.
     
     (*
         pub fn into_inner(this: Self) -> Option<T> {
@@ -5749,10 +5786,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_inner :
+    Global Instance AssociatedFunction_into_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_inner" (into_inner T A).
-    Smpl Add apply AssociatedFunction_into_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_inner" (into_inner T A).
+    Admitted.
+    Global Typeclasses Opaque into_inner.
     (*
         pub fn allocator(this: &Self) -> &A {
             &this.alloc
@@ -5780,10 +5818,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocator :
+    Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
-    Smpl Add apply AssociatedFunction_allocator : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+    Admitted.
+    Global Typeclasses Opaque allocator.
     
     (*
         pub fn into_raw(this: Self) -> *const T {
@@ -5867,10 +5906,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_raw :
+    Global Instance AssociatedFunction_into_raw :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
-    Smpl Add apply AssociatedFunction_into_raw : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_raw" (into_raw T A).
+    Admitted.
+    Global Typeclasses Opaque into_raw.
     
     (*
         pub fn into_raw_with_allocator(this: Self) -> ( *const T, A) {
@@ -6006,10 +6046,14 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_raw_with_allocator :
+    Global Instance AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
-    Smpl Add apply AssociatedFunction_into_raw_with_allocator : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "into_raw_with_allocator"
+        (into_raw_with_allocator T A).
+    Admitted.
+    Global Typeclasses Opaque into_raw_with_allocator.
     
     (*
         pub fn as_ptr(this: &Self) -> *const T {
@@ -6075,10 +6119,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ptr :
+    Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
-    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+    Admitted.
+    Global Typeclasses Opaque as_ptr.
     
     (*
         pub unsafe fn from_raw_in(ptr: *const T, alloc: A) -> Self {
@@ -6146,10 +6191,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_raw_in :
+    Global Instance AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
-    Smpl Add apply AssociatedFunction_from_raw_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_raw_in" (from_raw_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_raw_in.
     
     (*
         pub fn downgrade(this: &Self) -> Weak<T, A>
@@ -6239,6 +6285,7 @@ Module sync.
                   M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -6629,10 +6676,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downgrade :
+    Global Instance AssociatedFunction_downgrade :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "downgrade" (downgrade T A).
-    Smpl Add apply AssociatedFunction_downgrade : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "downgrade" (downgrade T A).
+    Admitted.
+    Global Typeclasses Opaque downgrade.
     
     (*
         pub fn weak_count(this: &Self) -> usize {
@@ -6712,10 +6760,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_weak_count :
+    Global Instance AssociatedFunction_weak_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "weak_count" (weak_count T A).
-    Smpl Add apply AssociatedFunction_weak_count : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "weak_count" (weak_count T A).
+    Admitted.
+    Global Typeclasses Opaque weak_count.
     
     (*
         pub fn strong_count(this: &Self) -> usize {
@@ -6770,10 +6819,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strong_count :
+    Global Instance AssociatedFunction_strong_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "strong_count" (strong_count T A).
-    Smpl Add apply AssociatedFunction_strong_count : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "strong_count" (strong_count T A).
+    Admitted.
+    Global Typeclasses Opaque strong_count.
     
     (*
         pub unsafe fn increment_strong_count_in(ptr: *const T, alloc: A)
@@ -6864,10 +6914,14 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_increment_strong_count_in :
+    Global Instance AssociatedFunction_increment_strong_count_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "increment_strong_count_in" (increment_strong_count_in T A).
-    Smpl Add apply AssociatedFunction_increment_strong_count_in : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "increment_strong_count_in"
+        (increment_strong_count_in T A).
+    Admitted.
+    Global Typeclasses Opaque increment_strong_count_in.
     
     (*
         pub unsafe fn decrement_strong_count_in(ptr: *const T, alloc: A) {
@@ -6915,10 +6969,14 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_decrement_strong_count_in :
+    Global Instance AssociatedFunction_decrement_strong_count_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "decrement_strong_count_in" (decrement_strong_count_in T A).
-    Smpl Add apply AssociatedFunction_decrement_strong_count_in : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "decrement_strong_count_in"
+        (decrement_strong_count_in T A).
+    Admitted.
+    Global Typeclasses Opaque decrement_strong_count_in.
     
     (*
         fn inner(&self) -> &ArcInner<T> {
@@ -6966,10 +7024,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_inner :
+    Global Instance AssociatedFunction_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "inner" (inner T A).
-    Smpl Add apply AssociatedFunction_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "inner" (inner T A).
+    Admitted.
+    Global Typeclasses Opaque inner.
     
     (*
         unsafe fn drop_slow(&mut self) {
@@ -7059,10 +7118,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_drop_slow :
+    Global Instance AssociatedFunction_drop_slow :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "drop_slow" (drop_slow T A).
-    Smpl Add apply AssociatedFunction_drop_slow : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "drop_slow" (drop_slow T A).
+    Admitted.
+    Global Typeclasses Opaque drop_slow.
     
     (*
         pub fn ptr_eq(this: &Self, other: &Self) -> bool {
@@ -7144,10 +7204,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ptr_eq :
+    Global Instance AssociatedFunction_ptr_eq :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "ptr_eq" (ptr_eq T A).
-    Smpl Add apply AssociatedFunction_ptr_eq : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "ptr_eq" (ptr_eq T A).
+    Admitted.
+    Global Typeclasses Opaque ptr_eq.
     (*
         unsafe fn allocate_for_ptr_in(ptr: *const T, alloc: &A) -> *mut ArcInner<T> {
             // Allocate for the `ArcInner<T>` using the given value.
@@ -7296,10 +7357,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocate_for_ptr_in :
+    Global Instance AssociatedFunction_allocate_for_ptr_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "allocate_for_ptr_in" (allocate_for_ptr_in T A).
-    Smpl Add apply AssociatedFunction_allocate_for_ptr_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "allocate_for_ptr_in" (allocate_for_ptr_in T A).
+    Admitted.
+    Global Typeclasses Opaque allocate_for_ptr_in.
     
     (*
         fn from_box_in(src: Box<T, A>) -> Arc<T, A> {
@@ -7536,10 +7598,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_box_in :
+    Global Instance AssociatedFunction_from_box_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_box_in" (from_box_in T A).
-    Smpl Add apply AssociatedFunction_from_box_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_box_in" (from_box_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_box_in.
     (*
         pub fn make_mut(this: &mut Self) -> &mut T {
             let size_of_val = mem::size_of_val::<T>(&**this);
@@ -8266,10 +8329,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_make_mut :
+    Global Instance AssociatedFunction_make_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "make_mut" (make_mut T A).
-    Smpl Add apply AssociatedFunction_make_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "make_mut" (make_mut T A).
+    Admitted.
+    Global Typeclasses Opaque make_mut.
     (*
         pub fn unwrap_or_clone(this: Self) -> T {
             Arc::try_unwrap(this).unwrap_or_else(|arc| ( *arc).clone())
@@ -8364,10 +8428,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_unwrap_or_clone :
+    Global Instance AssociatedFunction_unwrap_or_clone :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "unwrap_or_clone" (unwrap_or_clone T A).
-    Smpl Add apply AssociatedFunction_unwrap_or_clone : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "unwrap_or_clone" (unwrap_or_clone T A).
+    Admitted.
+    Global Typeclasses Opaque unwrap_or_clone.
     (*
         pub fn get_mut(this: &mut Self) -> Option<&mut T> {
             if this.is_unique() {
@@ -8443,10 +8508,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut :
+    Global Instance AssociatedFunction_get_mut :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "get_mut" (get_mut T A).
-    Smpl Add apply AssociatedFunction_get_mut : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "get_mut" (get_mut T A).
+    Admitted.
+    Global Typeclasses Opaque get_mut.
     
     (*
         pub unsafe fn get_mut_unchecked(this: &mut Self) -> &mut T {
@@ -8517,10 +8583,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_get_mut_unchecked :
+    Global Instance AssociatedFunction_get_mut_unchecked :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "get_mut_unchecked" (get_mut_unchecked T A).
-    Smpl Add apply AssociatedFunction_get_mut_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "get_mut_unchecked" (get_mut_unchecked T A).
+    Admitted.
+    Global Typeclasses Opaque get_mut_unchecked.
     
     (*
         fn is_unique(&mut self) -> bool {
@@ -8729,10 +8796,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_is_unique :
+    Global Instance AssociatedFunction_is_unique :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "is_unique" (is_unique T A).
-    Smpl Add apply AssociatedFunction_is_unique : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "is_unique" (is_unique T A).
+    Admitted.
+    Global Typeclasses Opaque is_unique.
   End Impl_alloc_sync_Arc_T_A.
   
   (* StructRecord
@@ -8966,9 +9034,12 @@ Module sync.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_arcinner_layout_for_value_layout :
-    M.IsFunction "alloc::sync::arcinner_layout_for_value_layout" arcinner_layout_for_value_layout.
-  Smpl Add apply Function_arcinner_layout_for_value_layout : is_function.
+  Global Instance Instance_IsFunction_arcinner_layout_for_value_layout :
+    M.IsFunction.Trait
+      "alloc::sync::arcinner_layout_for_value_layout"
+      arcinner_layout_for_value_layout.
+  Admitted.
+  Global Typeclasses Opaque arcinner_layout_for_value_layout.
   
   Module Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Sync_T_where_core_marker_Send_T_for_alloc_sync_ArcInner_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ].
@@ -9085,10 +9156,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit_slice :
+    Global Instance AssociatedFunction_new_uninit_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_uninit_slice" (new_uninit_slice T).
-    Smpl Add apply AssociatedFunction_new_uninit_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_uninit_slice" (new_uninit_slice T).
+    Admitted.
+    Global Typeclasses Opaque new_uninit_slice.
     
     (*
         pub fn new_zeroed_slice(len: usize) -> Arc<[mem::MaybeUninit<T>]> {
@@ -9340,10 +9412,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed_slice :
+    Global Instance AssociatedFunction_new_zeroed_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "new_zeroed_slice" (new_zeroed_slice T).
-    Smpl Add apply AssociatedFunction_new_zeroed_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "new_zeroed_slice" (new_zeroed_slice T).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed_slice.
     (*
         unsafe fn allocate_for_slice(len: usize) -> *mut ArcInner<[T]> {
             unsafe {
@@ -9542,10 +9615,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocate_for_slice :
+    Global Instance AssociatedFunction_allocate_for_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "allocate_for_slice" (allocate_for_slice T).
-    Smpl Add apply AssociatedFunction_allocate_for_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "allocate_for_slice" (allocate_for_slice T).
+    Admitted.
+    Global Typeclasses Opaque allocate_for_slice.
     
     (*
         unsafe fn copy_from_slice(v: &[T]) -> Arc<[T]> {
@@ -9675,10 +9749,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_copy_from_slice :
+    Global Instance AssociatedFunction_copy_from_slice :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "copy_from_slice" (copy_from_slice T).
-    Smpl Add apply AssociatedFunction_copy_from_slice : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "copy_from_slice" (copy_from_slice T).
+    Admitted.
+    Global Typeclasses Opaque copy_from_slice.
     
     (*
         unsafe fn from_iter_exact(iter: impl Iterator<Item = T>, len: usize) -> Arc<[T]> {
@@ -9886,6 +9961,7 @@ Module sync.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -10012,10 +10088,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_iter_exact :
+    Global Instance AssociatedFunction_from_iter_exact :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_iter_exact" (from_iter_exact T).
-    Smpl Add apply AssociatedFunction_from_iter_exact : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_iter_exact" (from_iter_exact T).
+    Admitted.
+    Global Typeclasses Opaque from_iter_exact.
   End Impl_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
   Module Impl_alloc_sync_Arc_slice_T_A.
@@ -10110,10 +10187,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_uninit_slice_in :
+    Global Instance AssociatedFunction_new_uninit_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
-    Smpl Add apply AssociatedFunction_new_uninit_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_uninit_slice_in" (new_uninit_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_uninit_slice_in.
     
     (*
         pub fn new_zeroed_slice_in(len: usize, alloc: A) -> Arc<[mem::MaybeUninit<T>], A> {
@@ -10372,10 +10450,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_zeroed_slice_in :
+    Global Instance AssociatedFunction_new_zeroed_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
-    Smpl Add apply AssociatedFunction_new_zeroed_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_zeroed_slice_in" (new_zeroed_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_zeroed_slice_in.
     (*
         unsafe fn allocate_for_slice_in(len: usize, alloc: &A) -> *mut ArcInner<[T]> {
             unsafe {
@@ -10575,10 +10654,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocate_for_slice_in :
+    Global Instance AssociatedFunction_allocate_for_slice_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "allocate_for_slice_in" (allocate_for_slice_in T A).
-    Smpl Add apply AssociatedFunction_allocate_for_slice_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "allocate_for_slice_in" (allocate_for_slice_in T A).
+    Admitted.
+    Global Typeclasses Opaque allocate_for_slice_in.
   End Impl_alloc_sync_Arc_slice_T_A.
   
   Module Impl_alloc_sync_Arc_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -10682,10 +10762,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_assume_init :
+    Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
-    Smpl Add apply AssociatedFunction_assume_init : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+    Admitted.
+    Global Typeclasses Opaque assume_init.
   End Impl_alloc_sync_Arc_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   Module Impl_alloc_sync_Arc_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
@@ -10843,10 +10924,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_assume_init :
+    Global Instance AssociatedFunction_assume_init :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "assume_init" (assume_init T A).
-    Smpl Add apply AssociatedFunction_assume_init : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "assume_init" (assume_init T A).
+    Admitted.
+    Global Typeclasses Opaque assume_init.
   End Impl_alloc_sync_Arc_slice_core_mem_maybe_uninit_MaybeUninit_T_A.
   
   
@@ -11793,10 +11875,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast :
+    Global Instance AssociatedFunction_downcast :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast" (downcast A).
-    Smpl Add apply AssociatedFunction_downcast : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+    Admitted.
+    Global Typeclasses Opaque downcast.
     
     (*
         pub unsafe fn downcast_unchecked<T>(self) -> Arc<T, A>
@@ -11919,10 +12002,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_downcast_unchecked :
+    Global Instance AssociatedFunction_downcast_unchecked :
       forall (A : Ty.t),
-      M.IsAssociatedFunction (Self A) "downcast_unchecked" (downcast_unchecked A).
-    Smpl Add apply AssociatedFunction_downcast_unchecked : is_associated.
+      M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+    Admitted.
+    Global Typeclasses Opaque downcast_unchecked.
   End Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
   
   Module Impl_alloc_sync_Weak_T_alloc_alloc_Global.
@@ -11982,8 +12066,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    Admitted.
+    Global Typeclasses Opaque new.
     (*
         pub unsafe fn from_raw(ptr: *const T) -> Self {
             unsafe { Weak::from_raw_in(ptr, Global) }
@@ -12008,10 +12095,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_raw :
+    Global Instance AssociatedFunction_from_raw :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
-    Smpl Add apply AssociatedFunction_from_raw : is_associated.
+      M.IsAssociatedFunction.Trait (Self T) "from_raw" (from_raw T).
+    Admitted.
+    Global Typeclasses Opaque from_raw.
   End Impl_alloc_sync_Weak_T_alloc_alloc_Global.
   
   Module Impl_alloc_sync_Weak_T_A.
@@ -12071,10 +12159,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_in :
+    Global Instance AssociatedFunction_new_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new_in" (new_in T A).
-    Smpl Add apply AssociatedFunction_new_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new_in" (new_in T A).
+    Admitted.
+    Global Typeclasses Opaque new_in.
     (*
         pub fn allocator(&self) -> &A {
             &self.alloc
@@ -12102,10 +12191,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_allocator :
+    Global Instance AssociatedFunction_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "allocator" (allocator T A).
-    Smpl Add apply AssociatedFunction_allocator : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+    Admitted.
+    Global Typeclasses Opaque allocator.
     
     (*
         pub fn as_ptr(&self) -> *const T {
@@ -12203,10 +12293,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_ptr :
+    Global Instance AssociatedFunction_as_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "as_ptr" (as_ptr T A).
-    Smpl Add apply AssociatedFunction_as_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "as_ptr" (as_ptr T A).
+    Admitted.
+    Global Typeclasses Opaque as_ptr.
     
     (*
         pub fn into_raw(self) -> *const T {
@@ -12279,10 +12370,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_raw :
+    Global Instance AssociatedFunction_into_raw :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
-    Smpl Add apply AssociatedFunction_into_raw : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_raw" (into_raw T A).
+    Admitted.
+    Global Typeclasses Opaque into_raw.
     
     (*
         pub fn into_raw_with_allocator(self) -> ( *const T, A) {
@@ -12413,10 +12505,14 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_raw_with_allocator :
+    Global Instance AssociatedFunction_into_raw_with_allocator :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
-    Smpl Add apply AssociatedFunction_into_raw_with_allocator : is_associated.
+      M.IsAssociatedFunction.Trait
+        (Self T A)
+        "into_raw_with_allocator"
+        (into_raw_with_allocator T A).
+    Admitted.
+    Global Typeclasses Opaque into_raw_with_allocator.
     
     (*
         pub unsafe fn from_raw_in(ptr: *const T, alloc: A) -> Self {
@@ -12534,10 +12630,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_raw_in :
+    Global Instance AssociatedFunction_from_raw_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
-    Smpl Add apply AssociatedFunction_from_raw_in : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "from_raw_in" (from_raw_in T A).
+    Admitted.
+    Global Typeclasses Opaque from_raw_in.
     (*
         pub fn upgrade(&self) -> Option<Arc<T, A>>
         where
@@ -12833,10 +12930,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_upgrade :
+    Global Instance AssociatedFunction_upgrade :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "upgrade" (upgrade T A).
-    Smpl Add apply AssociatedFunction_upgrade : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "upgrade" (upgrade T A).
+    Admitted.
+    Global Typeclasses Opaque upgrade.
     
     (*
         pub fn strong_count(&self) -> usize {
@@ -12916,10 +13014,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_strong_count :
+    Global Instance AssociatedFunction_strong_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "strong_count" (strong_count T A).
-    Smpl Add apply AssociatedFunction_strong_count : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "strong_count" (strong_count T A).
+    Admitted.
+    Global Typeclasses Opaque strong_count.
     
     (*
         pub fn weak_count(&self) -> usize {
@@ -13063,10 +13162,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_weak_count :
+    Global Instance AssociatedFunction_weak_count :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "weak_count" (weak_count T A).
-    Smpl Add apply AssociatedFunction_weak_count : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "weak_count" (weak_count T A).
+    Admitted.
+    Global Typeclasses Opaque weak_count.
     
     (*
         fn inner(&self) -> Option<WeakInner<'_>> {
@@ -13185,10 +13285,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_inner :
+    Global Instance AssociatedFunction_inner :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "inner" (inner T A).
-    Smpl Add apply AssociatedFunction_inner : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "inner" (inner T A).
+    Admitted.
+    Global Typeclasses Opaque inner.
     
     (*
         pub fn ptr_eq(&self, other: &Self) -> bool {
@@ -13270,10 +13371,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_ptr_eq :
+    Global Instance AssociatedFunction_ptr_eq :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "ptr_eq" (ptr_eq T A).
-    Smpl Add apply AssociatedFunction_ptr_eq : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "ptr_eq" (ptr_eq T A).
+    Admitted.
+    Global Typeclasses Opaque ptr_eq.
   End Impl_alloc_sync_Weak_T_A.
   
   (* StructRecord
@@ -17522,8 +17624,10 @@ Module sync.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_data_offset : M.IsFunction "alloc::sync::data_offset" data_offset.
-  Smpl Add apply Function_data_offset : is_function.
+  Global Instance Instance_IsFunction_data_offset :
+    M.IsFunction.Trait "alloc::sync::data_offset" data_offset.
+  Admitted.
+  Global Typeclasses Opaque data_offset.
   
   (*
   fn data_offset_align(align: usize) -> usize {
@@ -17578,9 +17682,10 @@ Module sync.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_data_offset_align :
-    M.IsFunction "alloc::sync::data_offset_align" data_offset_align.
-  Smpl Add apply Function_data_offset_align : is_function.
+  Global Instance Instance_IsFunction_data_offset_align :
+    M.IsFunction.Trait "alloc::sync::data_offset_align" data_offset_align.
+  Admitted.
+  Global Typeclasses Opaque data_offset_align.
   
   (* StructRecord
     {
@@ -17822,10 +17927,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new :
+    Global Instance AssociatedFunction_new :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "new" (new T A).
-    Smpl Add apply AssociatedFunction_new : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "new" (new T A).
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         fn data_ptr(&mut self) -> *mut T {
@@ -17918,10 +18024,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_data_ptr :
+    Global Instance AssociatedFunction_data_ptr :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "data_ptr" (data_ptr T A).
-    Smpl Add apply AssociatedFunction_data_ptr : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "data_ptr" (data_ptr T A).
+    Admitted.
+    Global Typeclasses Opaque data_ptr.
     
     (*
         unsafe fn into_arc(self) -> Arc<T, A> {
@@ -18085,10 +18192,11 @@ Module sync.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_into_arc :
+    Global Instance AssociatedFunction_into_arc :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "into_arc" (into_arc T A).
-    Smpl Add apply AssociatedFunction_into_arc : is_associated.
+      M.IsAssociatedFunction.Trait (Self T A) "into_arc" (into_arc T A).
+    Admitted.
+    Global Typeclasses Opaque into_arc.
   End Impl_alloc_sync_UniqueArcUninit_T_A.
   
   Module Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_UniqueArcUninit_T_A.

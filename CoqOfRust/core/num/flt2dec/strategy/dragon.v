@@ -776,9 +776,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_mul_pow10 :
-          M.IsFunction "core::num::flt2dec::strategy::dragon::mul_pow10" mul_pow10.
-        Smpl Add apply Function_mul_pow10 : is_function.
+        Global Instance Instance_IsFunction_mul_pow10 :
+          M.IsFunction.Trait "core::num::flt2dec::strategy::dragon::mul_pow10" mul_pow10.
+        Admitted.
+        Global Typeclasses Opaque mul_pow10.
         
         (*
         fn div_2pow10(x: &mut Big, mut n: usize) -> &mut Big {
@@ -828,6 +829,7 @@ Module num.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -960,9 +962,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_div_2pow10 :
-          M.IsFunction "core::num::flt2dec::strategy::dragon::div_2pow10" div_2pow10.
-        Smpl Add apply Function_div_2pow10 : is_function.
+        Global Instance Instance_IsFunction_div_2pow10 :
+          M.IsFunction.Trait "core::num::flt2dec::strategy::dragon::div_2pow10" div_2pow10.
+        Admitted.
+        Global Typeclasses Opaque div_2pow10.
         
         (*
         fn div_rem_upto_16<'a>(
@@ -1347,9 +1350,12 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_div_rem_upto_16 :
-          M.IsFunction "core::num::flt2dec::strategy::dragon::div_rem_upto_16" div_rem_upto_16.
-        Smpl Add apply Function_div_rem_upto_16 : is_function.
+        Global Instance Instance_IsFunction_div_rem_upto_16 :
+          M.IsFunction.Trait
+            "core::num::flt2dec::strategy::dragon::div_rem_upto_16"
+            div_rem_upto_16.
+        Admitted.
+        Global Typeclasses Opaque div_rem_upto_16.
         
         (*
         pub fn format_shortest<'a>(
@@ -2520,6 +2526,7 @@ Module num.
                 let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (|
@@ -3217,9 +3224,12 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_format_shortest :
-          M.IsFunction "core::num::flt2dec::strategy::dragon::format_shortest" format_shortest.
-        Smpl Add apply Function_format_shortest : is_function.
+        Global Instance Instance_IsFunction_format_shortest :
+          M.IsFunction.Trait
+            "core::num::flt2dec::strategy::dragon::format_shortest"
+            format_shortest.
+        Admitted.
+        Global Typeclasses Opaque format_shortest.
         
         (*
         pub fn format_exact<'a>(
@@ -4312,6 +4322,7 @@ Module num.
                                       ltac:(M.monadic
                                         (let iter := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -4535,6 +4546,7 @@ Module num.
                                                                                       γ
                                                                                     |) in
                                                                                   M.loop (|
+                                                                                    Ty.tuple [],
                                                                                     ltac:(M.monadic
                                                                                       (let~ _ :
                                                                                           Ty.tuple
@@ -5911,9 +5923,10 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_format_exact :
-          M.IsFunction "core::num::flt2dec::strategy::dragon::format_exact" format_exact.
-        Smpl Add apply Function_format_exact : is_function.
+        Global Instance Instance_IsFunction_format_exact :
+          M.IsFunction.Trait "core::num::flt2dec::strategy::dragon::format_exact" format_exact.
+        Admitted.
+        Global Typeclasses Opaque format_exact.
       End dragon.
     End strategy.
   End flt2dec.

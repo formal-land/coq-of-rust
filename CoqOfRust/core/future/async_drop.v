@@ -33,8 +33,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_async_drop : M.IsFunction "core::future::async_drop::async_drop" async_drop.
-    Smpl Add apply Function_async_drop : is_function.
+    Global Instance Instance_IsFunction_async_drop :
+      M.IsFunction.Trait "core::future::async_drop::async_drop" async_drop.
+    Admitted.
+    Global Typeclasses Opaque async_drop.
     
     (* StructRecord
       {
@@ -375,9 +377,12 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_async_drop_in_place_raw :
-      M.IsFunction "core::future::async_drop::async_drop_in_place_raw" async_drop_in_place_raw.
-    Smpl Add apply Function_async_drop_in_place_raw : is_function.
+    Global Instance Instance_IsFunction_async_drop_in_place_raw :
+      M.IsFunction.Trait
+        "core::future::async_drop::async_drop_in_place_raw"
+        async_drop_in_place_raw.
+    Admitted.
+    Global Typeclasses Opaque async_drop_in_place_raw.
     
     (*
     pub unsafe fn async_drop_in_place<T: ?Sized>(to_drop: *mut T) -> AsyncDropInPlace<T> {
@@ -407,9 +412,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_async_drop_in_place :
-      M.IsFunction "core::future::async_drop::async_drop_in_place" async_drop_in_place.
-    Smpl Add apply Function_async_drop_in_place : is_function.
+    Global Instance Instance_IsFunction_async_drop_in_place :
+      M.IsFunction.Trait "core::future::async_drop::async_drop_in_place" async_drop_in_place.
+    Admitted.
+    Global Typeclasses Opaque async_drop_in_place.
     
     (* StructTuple
       {
@@ -740,6 +746,7 @@ Module future.
                                       ltac:(M.monadic
                                         (let __awaitee := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -881,11 +888,12 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_surface_async_drop_in_place :
-      M.IsFunction
+    Global Instance Instance_IsFunction_surface_async_drop_in_place :
+      M.IsFunction.Trait
         "core::future::async_drop::surface_async_drop_in_place"
         surface_async_drop_in_place.
-    Smpl Add apply Function_surface_async_drop_in_place : is_function.
+    Admitted.
+    Global Typeclasses Opaque surface_async_drop_in_place.
     
     Module surface_async_drop_in_place.
       (* Error OpaqueTy *)
@@ -947,9 +955,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_surface_drop_in_place :
-      M.IsFunction "core::future::async_drop::surface_drop_in_place" surface_drop_in_place.
-    Smpl Add apply Function_surface_drop_in_place : is_function.
+    Global Instance Instance_IsFunction_surface_drop_in_place :
+      M.IsFunction.Trait "core::future::async_drop::surface_drop_in_place" surface_drop_in_place.
+    Admitted.
+    Global Typeclasses Opaque surface_drop_in_place.
     
     Module surface_drop_in_place.
       (* Error OpaqueTy *)
@@ -979,8 +988,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_fuse : M.IsFunction "core::future::async_drop::fuse" fuse.
-    Smpl Add apply Function_fuse : is_function.
+    Global Instance Instance_IsFunction_fuse :
+      M.IsFunction.Trait "core::future::async_drop::fuse" fuse.
+    Admitted.
+    Global Typeclasses Opaque fuse.
     
     Module Impl_core_future_future_Future_where_core_future_future_Future_T_for_core_future_async_drop_Fuse_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -1266,6 +1277,7 @@ Module future.
                                         ltac:(M.monadic
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1385,6 +1397,7 @@ Module future.
                                                               ltac:(M.monadic
                                                                 (let __awaitee := M.copy (| γ |) in
                                                                 M.loop (|
+                                                                  Ty.tuple [],
                                                                   ltac:(M.monadic
                                                                     (let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
@@ -1553,8 +1566,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_slice : M.IsFunction "core::future::async_drop::slice" slice.
-    Smpl Add apply Function_slice : is_function.
+    Global Instance Instance_IsFunction_slice :
+      M.IsFunction.Trait "core::future::async_drop::slice" slice.
+    Admitted.
+    Global Typeclasses Opaque slice.
     
     Module slice.
       (* Error OpaqueTy *)
@@ -1619,6 +1634,7 @@ Module future.
                                         ltac:(M.monadic
                                           (let __awaitee := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1781,6 +1797,7 @@ Module future.
                                         ltac:(M.monadic
                                           (let __awaitee := M.copy (| γ |) in
                                           M.loop (|
+                                            Ty.tuple [],
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
@@ -1925,8 +1942,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_chain : M.IsFunction "core::future::async_drop::chain" chain.
-    Smpl Add apply Function_chain : is_function.
+    Global Instance Instance_IsFunction_chain :
+      M.IsFunction.Trait "core::future::async_drop::chain" chain.
+    Admitted.
+    Global Typeclasses Opaque chain.
     
     Module chain.
       (* Error OpaqueTy *)
@@ -1999,6 +2018,7 @@ Module future.
                                       ltac:(M.monadic
                                         (let __awaitee := M.copy (| γ |) in
                                         M.loop (|
+                                          Ty.tuple [],
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
@@ -2137,8 +2157,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_defer : M.IsFunction "core::future::async_drop::defer" defer.
-    Smpl Add apply Function_defer : is_function.
+    Global Instance Instance_IsFunction_defer :
+      M.IsFunction.Trait "core::future::async_drop::defer" defer.
+    Admitted.
+    Global Typeclasses Opaque defer.
     
     Module defer.
       (* Error OpaqueTy *)
@@ -2298,6 +2320,7 @@ Module future.
                                               ltac:(M.monadic
                                                 (let __awaitee := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
@@ -2469,6 +2492,7 @@ Module future.
                                               ltac:(M.monadic
                                                 (let __awaitee := M.copy (| γ |) in
                                                 M.loop (|
+                                                  Ty.tuple [],
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
@@ -2614,8 +2638,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_either : M.IsFunction "core::future::async_drop::either" either.
-    Smpl Add apply Function_either : is_function.
+    Global Instance Instance_IsFunction_either :
+      M.IsFunction.Trait "core::future::async_drop::either" either.
+    Admitted.
+    Global Typeclasses Opaque either.
     
     Module either.
       (* Error OpaqueTy *)
@@ -2664,9 +2690,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_deferred_drop_in_place :
-      M.IsFunction "core::future::async_drop::deferred_drop_in_place" deferred_drop_in_place.
-    Smpl Add apply Function_deferred_drop_in_place : is_function.
+    Global Instance Instance_IsFunction_deferred_drop_in_place :
+      M.IsFunction.Trait "core::future::async_drop::deferred_drop_in_place" deferred_drop_in_place.
+    Admitted.
+    Global Typeclasses Opaque deferred_drop_in_place.
     
     Module deferred_drop_in_place.
       (* Error OpaqueTy *)
@@ -2725,8 +2752,10 @@ Module future.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_noop : M.IsFunction "core::future::async_drop::noop" noop.
-    Smpl Add apply Function_noop : is_function.
+    Global Instance Instance_IsFunction_noop :
+      M.IsFunction.Trait "core::future::async_drop::noop" noop.
+    Admitted.
+    Global Typeclasses Opaque noop.
     
     Module Impl_core_future_future_Future_for_core_future_async_drop_Noop.
       Definition Self : Ty.t := Ty.path "core::future::async_drop::Noop".

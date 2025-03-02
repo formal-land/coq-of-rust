@@ -328,8 +328,10 @@ Module state.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_set_state : M.IsFunction "move_core_types::state::set_state" set_state.
-  Smpl Add apply Function_set_state : is_function.
+  Global Instance Instance_IsFunction_set_state :
+    M.IsFunction.Trait "move_core_types::state::set_state" set_state.
+  Admitted.
+  Global Typeclasses Opaque set_state.
   
   (*
   pub fn get_state() -> VMState {
@@ -447,6 +449,8 @@ Module state.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_get_state : M.IsFunction "move_core_types::state::get_state" get_state.
-  Smpl Add apply Function_get_state : is_function.
+  Global Instance Instance_IsFunction_get_state :
+    M.IsFunction.Trait "move_core_types::state::get_state" get_state.
+  Admitted.
+  Global Typeclasses Opaque get_state.
 End state.

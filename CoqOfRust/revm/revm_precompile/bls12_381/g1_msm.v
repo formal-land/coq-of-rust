@@ -467,6 +467,7 @@ Module bls12_381.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -1507,7 +1508,9 @@ Module bls12_381.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_g1_msm : M.IsFunction "revm_precompile::bls12_381::g1_msm::g1_msm" g1_msm.
-    Smpl Add apply Function_g1_msm : is_function.
+    Global Instance Instance_IsFunction_g1_msm :
+      M.IsFunction.Trait "revm_precompile::bls12_381::g1_msm::g1_msm" g1_msm.
+    Admitted.
+    Global Typeclasses Opaque g1_msm.
   End g1_msm.
 End bls12_381.

@@ -62,8 +62,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_take_mut : M.IsFunction "alloc::collections::btree::mem::take_mut" take_mut.
-      Smpl Add apply Function_take_mut : is_function.
+      Global Instance Instance_IsFunction_take_mut :
+        M.IsFunction.Trait "alloc::collections::btree::mem::take_mut" take_mut.
+      Admitted.
+      Global Typeclasses Opaque take_mut.
       
       (*
       pub fn replace<T, R>(v: &mut T, change: impl FnOnce(T) -> (T, R)) -> R {
@@ -160,8 +162,10 @@ Module collections.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_replace : M.IsFunction "alloc::collections::btree::mem::replace" replace.
-      Smpl Add apply Function_replace : is_function.
+      Global Instance Instance_IsFunction_replace :
+        M.IsFunction.Trait "alloc::collections::btree::mem::replace" replace.
+      Admitted.
+      Global Typeclasses Opaque replace.
       
       Module replace.
         (* StructTuple

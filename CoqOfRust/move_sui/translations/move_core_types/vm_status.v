@@ -8811,8 +8811,10 @@ Module vm_status.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_status_type : M.IsAssociatedFunction Self "status_type" status_type.
-    Smpl Add apply AssociatedFunction_status_type : is_associated.
+    Global Instance AssociatedFunction_status_type :
+      M.IsAssociatedFunction.Trait Self "status_type" status_type.
+    Admitted.
+    Global Typeclasses Opaque status_type.
   End Impl_move_core_types_vm_status_StatusCode.
   
   Module Impl_serde_ser_Serialize_for_move_core_types_vm_status_StatusCode.

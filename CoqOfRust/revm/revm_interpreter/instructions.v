@@ -70,9 +70,10 @@ Module instructions.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_instruction :
-    M.IsFunction "revm_interpreter::instructions::instruction" instruction.
-  Smpl Add apply Function_instruction : is_function.
+  Global Instance Instance_IsFunction_instruction :
+    M.IsFunction.Trait "revm_interpreter::instructions::instruction" instruction.
+  Admitted.
+  Global Typeclasses Opaque instruction.
   
   (*
   pub const fn instruction_table<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -188,7 +189,8 @@ Module instructions.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_instruction_table :
-    M.IsFunction "revm_interpreter::instructions::instruction_table" instruction_table.
-  Smpl Add apply Function_instruction_table : is_function.
+  Global Instance Instance_IsFunction_instruction_table :
+    M.IsFunction.Trait "revm_interpreter::instructions::instruction_table" instruction_table.
+  Admitted.
+  Global Typeclasses Opaque instruction_table.
 End instructions.

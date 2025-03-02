@@ -83,8 +83,10 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_print_one : M.IsFunction "scoping_rules_lifetimes_functions::print_one" print_one.
-Smpl Add apply Function_print_one : is_function.
+Global Instance Instance_IsFunction_print_one :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::print_one" print_one.
+Admitted.
+Global Typeclasses Opaque print_one.
 
 (*
 fn add_one<'a>(x: &'a mut i32) {
@@ -107,8 +109,10 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_add_one : M.IsFunction "scoping_rules_lifetimes_functions::add_one" add_one.
-Smpl Add apply Function_add_one : is_function.
+Global Instance Instance_IsFunction_add_one :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::add_one" add_one.
+Admitted.
+Global Typeclasses Opaque add_one.
 
 (*
 fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
@@ -209,9 +213,10 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_print_multi :
-  M.IsFunction "scoping_rules_lifetimes_functions::print_multi" print_multi.
-Smpl Add apply Function_print_multi : is_function.
+Global Instance Instance_IsFunction_print_multi :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::print_multi" print_multi.
+Admitted.
+Global Typeclasses Opaque print_multi.
 
 (*
 fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
@@ -228,8 +233,10 @@ Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_pass_x : M.IsFunction "scoping_rules_lifetimes_functions::pass_x" pass_x.
-Smpl Add apply Function_pass_x : is_function.
+Global Instance Instance_IsFunction_pass_x :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::pass_x" pass_x.
+Admitted.
+Global Typeclasses Opaque pass_x.
 
 (*
 fn main() {
@@ -319,5 +326,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "scoping_rules_lifetimes_functions::main" main.
+Admitted.
+Global Typeclasses Opaque main.

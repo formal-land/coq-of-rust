@@ -80,5 +80,5 @@ End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "generics_phantom_type::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_phantom_type::main" main.
+Admitted.

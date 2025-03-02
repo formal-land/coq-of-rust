@@ -1168,8 +1168,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_validate : M.IsAssociatedFunction Self "validate" validate.
-    Smpl Add apply AssociatedFunction_validate : is_associated.
+    Global Instance AssociatedFunction_validate :
+      M.IsAssociatedFunction.Trait Self "validate" validate.
+    Admitted.
+    Global Typeclasses Opaque validate.
     
     (*
         pub fn valitate_raw(bytes: Bytes) -> Result<Eof, EofError> {
@@ -1195,8 +1197,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_valitate_raw : M.IsAssociatedFunction Self "valitate_raw" valitate_raw.
-    Smpl Add apply AssociatedFunction_valitate_raw : is_associated.
+    Global Instance AssociatedFunction_valitate_raw :
+      M.IsAssociatedFunction.Trait Self "valitate_raw" valitate_raw.
+    Admitted.
+    Global Typeclasses Opaque valitate_raw.
     
     (*
         pub fn validate_mode(&self, mode: CodeType) -> Result<(), EofError> {
@@ -1223,9 +1227,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_validate_mode :
-      M.IsAssociatedFunction Self "validate_mode" validate_mode.
-    Smpl Add apply AssociatedFunction_validate_mode : is_associated.
+    Global Instance AssociatedFunction_validate_mode :
+      M.IsAssociatedFunction.Trait Self "validate_mode" validate_mode.
+    Admitted.
+    Global Typeclasses Opaque validate_mode.
     
     (*
         pub fn new(body: EofBody) -> Self {
@@ -1250,8 +1255,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub fn size(&self) -> usize {
@@ -1306,8 +1312,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
-    Smpl Add apply AssociatedFunction_size : is_associated.
+    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+    Admitted.
+    Global Typeclasses Opaque size.
     
     (*
         pub fn raw(&self) -> &Bytes {
@@ -1335,8 +1342,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_raw : M.IsAssociatedFunction Self "raw" raw.
-    Smpl Add apply AssociatedFunction_raw : is_associated.
+    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.Trait Self "raw" raw.
+    Admitted.
+    Global Typeclasses Opaque raw.
     
     (*
         pub fn data_slice(&self, offset: usize, len: usize) -> &[u8] {
@@ -1582,8 +1590,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_data_slice : M.IsAssociatedFunction Self "data_slice" data_slice.
-    Smpl Add apply AssociatedFunction_data_slice : is_associated.
+    Global Instance AssociatedFunction_data_slice :
+      M.IsAssociatedFunction.Trait Self "data_slice" data_slice.
+    Admitted.
+    Global Typeclasses Opaque data_slice.
     
     (*
         pub fn data(&self) -> &[u8] {
@@ -1653,8 +1663,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
-    Smpl Add apply AssociatedFunction_data : is_associated.
+    Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+    Admitted.
+    Global Typeclasses Opaque data.
     
     (*
         pub fn encode_slow(&self) -> Bytes {
@@ -1778,8 +1789,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_encode_slow : M.IsAssociatedFunction Self "encode_slow" encode_slow.
-    Smpl Add apply AssociatedFunction_encode_slow : is_associated.
+    Global Instance AssociatedFunction_encode_slow :
+      M.IsAssociatedFunction.Trait Self "encode_slow" encode_slow.
+    Admitted.
+    Global Typeclasses Opaque encode_slow.
     
     (*
         pub fn decode_dangling(mut raw: Bytes) -> Result<(Self, Bytes), EofDecodeError> {
@@ -2264,9 +2277,10 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_decode_dangling :
-      M.IsAssociatedFunction Self "decode_dangling" decode_dangling.
-    Smpl Add apply AssociatedFunction_decode_dangling : is_associated.
+    Global Instance AssociatedFunction_decode_dangling :
+      M.IsAssociatedFunction.Trait Self "decode_dangling" decode_dangling.
+    Admitted.
+    Global Typeclasses Opaque decode_dangling.
     
     (*
         pub fn decode(raw: Bytes) -> Result<Self, EofDecodeError> {
@@ -2620,8 +2634,9 @@ Module eof.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
-    Smpl Add apply AssociatedFunction_decode : is_associated.
+    Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+    Admitted.
+    Global Typeclasses Opaque decode.
   End Impl_revm_bytecode_eof_Eof.
   
   (*

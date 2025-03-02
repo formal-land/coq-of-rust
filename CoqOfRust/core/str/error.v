@@ -286,8 +286,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_valid_up_to : M.IsAssociatedFunction Self "valid_up_to" valid_up_to.
-      Smpl Add apply AssociatedFunction_valid_up_to : is_associated.
+      Global Instance AssociatedFunction_valid_up_to :
+        M.IsAssociatedFunction.Trait Self "valid_up_to" valid_up_to.
+      Admitted.
+      Global Typeclasses Opaque valid_up_to.
       
       (*
           pub const fn error_len(&self) -> Option<usize> {
@@ -335,8 +337,10 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_error_len : M.IsAssociatedFunction Self "error_len" error_len.
-      Smpl Add apply AssociatedFunction_error_len : is_associated.
+      Global Instance AssociatedFunction_error_len :
+        M.IsAssociatedFunction.Trait Self "error_len" error_len.
+      Admitted.
+      Global Typeclasses Opaque error_len.
     End Impl_core_str_error_Utf8Error.
     
     Module Impl_core_fmt_Display_for_core_str_error_Utf8Error.

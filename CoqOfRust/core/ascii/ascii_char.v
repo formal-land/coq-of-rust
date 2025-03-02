@@ -1153,8 +1153,10 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_u8 : M.IsAssociatedFunction Self "from_u8" from_u8.
-      Smpl Add apply AssociatedFunction_from_u8 : is_associated.
+      Global Instance AssociatedFunction_from_u8 :
+        M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+      Admitted.
+      Global Typeclasses Opaque from_u8.
       
       (*
           pub const unsafe fn from_u8_unchecked(b: u8) -> Self {
@@ -1179,9 +1181,10 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_u8_unchecked :
-        M.IsAssociatedFunction Self "from_u8_unchecked" from_u8_unchecked.
-      Smpl Add apply AssociatedFunction_from_u8_unchecked : is_associated.
+      Global Instance AssociatedFunction_from_u8_unchecked :
+        M.IsAssociatedFunction.Trait Self "from_u8_unchecked" from_u8_unchecked.
+      Admitted.
+      Global Typeclasses Opaque from_u8_unchecked.
       
       (*
           pub const fn digit(d: u8) -> Option<Self> {
@@ -1235,8 +1238,9 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_digit : M.IsAssociatedFunction Self "digit" digit.
-      Smpl Add apply AssociatedFunction_digit : is_associated.
+      Global Instance AssociatedFunction_digit : M.IsAssociatedFunction.Trait Self "digit" digit.
+      Admitted.
+      Global Typeclasses Opaque digit.
       
       (*
           pub const unsafe fn digit_unchecked(d: u8) -> Self {
@@ -1319,9 +1323,10 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_digit_unchecked :
-        M.IsAssociatedFunction Self "digit_unchecked" digit_unchecked.
-      Smpl Add apply AssociatedFunction_digit_unchecked : is_associated.
+      Global Instance AssociatedFunction_digit_unchecked :
+        M.IsAssociatedFunction.Trait Self "digit_unchecked" digit_unchecked.
+      Admitted.
+      Global Typeclasses Opaque digit_unchecked.
       
       (*
           pub const fn to_u8(self) -> u8 {
@@ -1337,8 +1342,9 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_u8 : M.IsAssociatedFunction Self "to_u8" to_u8.
-      Smpl Add apply AssociatedFunction_to_u8 : is_associated.
+      Global Instance AssociatedFunction_to_u8 : M.IsAssociatedFunction.Trait Self "to_u8" to_u8.
+      Admitted.
+      Global Typeclasses Opaque to_u8.
       
       (*
           pub const fn to_char(self) -> char {
@@ -1354,8 +1360,10 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_to_char : M.IsAssociatedFunction Self "to_char" to_char.
-      Smpl Add apply AssociatedFunction_to_char : is_associated.
+      Global Instance AssociatedFunction_to_char :
+        M.IsAssociatedFunction.Trait Self "to_char" to_char.
+      Admitted.
+      Global Typeclasses Opaque to_char.
       
       (*
           pub const fn as_str(&self) -> &str {
@@ -1408,8 +1416,9 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-      Smpl Add apply AssociatedFunction_as_str : is_associated.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Admitted.
+      Global Typeclasses Opaque as_str.
     End Impl_core_ascii_ascii_char_AsciiChar.
     
     Module Impl_core_convert_From_core_ascii_ascii_char_AsciiChar_for_u8.
@@ -1610,8 +1619,9 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-      Smpl Add apply AssociatedFunction_as_str : is_associated.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Admitted.
+      Global Typeclasses Opaque as_str.
       
       (*
           pub const fn as_bytes(&self) -> &[u8] {
@@ -1655,8 +1665,10 @@ Module ascii.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
-      Smpl Add apply AssociatedFunction_as_bytes : is_associated.
+      Global Instance AssociatedFunction_as_bytes :
+        M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+      Admitted.
+      Global Typeclasses Opaque as_bytes.
     End Impl_slice_core_ascii_ascii_char_AsciiChar.
     
     Module Impl_core_fmt_Display_for_core_ascii_ascii_char_AsciiChar.

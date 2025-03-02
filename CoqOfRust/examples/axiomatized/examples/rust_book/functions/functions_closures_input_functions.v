@@ -3,15 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter call_me : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_call_me : M.IsFunction "functions_closures_input_functions::call_me" call_me.
-Smpl Add apply Function_call_me : is_function.
+Global Instance Instance_IsFunction_call_me :
+  M.IsFunction.Trait "functions_closures_input_functions::call_me" call_me.
+Admitted.
 
 Parameter function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_function : M.IsFunction "functions_closures_input_functions::function" function.
-Smpl Add apply Function_function : is_function.
+Global Instance Instance_IsFunction_function :
+  M.IsFunction.Trait "functions_closures_input_functions::function" function.
+Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_main : M.IsFunction "functions_closures_input_functions::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "functions_closures_input_functions::main" main.
+Admitted.

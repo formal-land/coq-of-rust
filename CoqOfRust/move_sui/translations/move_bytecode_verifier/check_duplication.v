@@ -114,9 +114,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module :
-      M.IsAssociatedFunction Self "verify_module" verify_module.
-    Smpl Add apply AssociatedFunction_verify_module : is_associated.
+    Global Instance AssociatedFunction_verify_module :
+      M.IsAssociatedFunction.Trait Self "verify_module" verify_module.
+    Admitted.
+    Global Typeclasses Opaque verify_module.
     
     (*
         fn verify_module_impl(module: &'a CompiledModule) -> PartialVMResult<()> {
@@ -1876,9 +1877,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_verify_module_impl :
-      M.IsAssociatedFunction Self "verify_module_impl" verify_module_impl.
-    Smpl Add apply AssociatedFunction_verify_module_impl : is_associated.
+    Global Instance AssociatedFunction_verify_module_impl :
+      M.IsAssociatedFunction.Trait Self "verify_module_impl" verify_module_impl.
+    Admitted.
+    Global Typeclasses Opaque verify_module_impl.
     
     (*
         fn check_identifiers(identifiers: &[Identifier]) -> PartialVMResult<()> {
@@ -1962,9 +1964,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_identifiers :
-      M.IsAssociatedFunction Self "check_identifiers" check_identifiers.
-    Smpl Add apply AssociatedFunction_check_identifiers : is_associated.
+    Global Instance AssociatedFunction_check_identifiers :
+      M.IsAssociatedFunction.Trait Self "check_identifiers" check_identifiers.
+    Admitted.
+    Global Typeclasses Opaque check_identifiers.
     
     (*
         fn check_address_identifiers(address_identifiers: &[AccountAddress]) -> PartialVMResult<()> {
@@ -2054,9 +2057,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_address_identifiers :
-      M.IsAssociatedFunction Self "check_address_identifiers" check_address_identifiers.
-    Smpl Add apply AssociatedFunction_check_address_identifiers : is_associated.
+    Global Instance AssociatedFunction_check_address_identifiers :
+      M.IsAssociatedFunction.Trait Self "check_address_identifiers" check_address_identifiers.
+    Admitted.
+    Global Typeclasses Opaque check_address_identifiers.
     
     (*
         fn check_constants(constant_pool: &[Constant]) -> PartialVMResult<()> {
@@ -2140,9 +2144,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_constants :
-      M.IsAssociatedFunction Self "check_constants" check_constants.
-    Smpl Add apply AssociatedFunction_check_constants : is_associated.
+    Global Instance AssociatedFunction_check_constants :
+      M.IsAssociatedFunction.Trait Self "check_constants" check_constants.
+    Admitted.
+    Global Typeclasses Opaque check_constants.
     
     (*
         fn check_signatures(signatures: &[Signature]) -> PartialVMResult<()> {
@@ -2226,9 +2231,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_signatures :
-      M.IsAssociatedFunction Self "check_signatures" check_signatures.
-    Smpl Add apply AssociatedFunction_check_signatures : is_associated.
+    Global Instance AssociatedFunction_check_signatures :
+      M.IsAssociatedFunction.Trait Self "check_signatures" check_signatures.
+    Admitted.
+    Global Typeclasses Opaque check_signatures.
     
     (*
         fn check_module_handles(module_handles: &[ModuleHandle]) -> PartialVMResult<()> {
@@ -2312,9 +2318,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_module_handles :
-      M.IsAssociatedFunction Self "check_module_handles" check_module_handles.
-    Smpl Add apply AssociatedFunction_check_module_handles : is_associated.
+    Global Instance AssociatedFunction_check_module_handles :
+      M.IsAssociatedFunction.Trait Self "check_module_handles" check_module_handles.
+    Admitted.
+    Global Typeclasses Opaque check_module_handles.
     
     (*
         fn check_struct_handles(struct_handles: &[StructHandle]) -> PartialVMResult<()> {
@@ -2529,9 +2536,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_handles :
-      M.IsAssociatedFunction Self "check_struct_handles" check_struct_handles.
-    Smpl Add apply AssociatedFunction_check_struct_handles : is_associated.
+    Global Instance AssociatedFunction_check_struct_handles :
+      M.IsAssociatedFunction.Trait Self "check_struct_handles" check_struct_handles.
+    Admitted.
+    Global Typeclasses Opaque check_struct_handles.
     
     (*
         fn check_function_instantiations(
@@ -2623,9 +2631,13 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_instantiations :
-      M.IsAssociatedFunction Self "check_function_instantiations" check_function_instantiations.
-    Smpl Add apply AssociatedFunction_check_function_instantiations : is_associated.
+    Global Instance AssociatedFunction_check_function_instantiations :
+      M.IsAssociatedFunction.Trait
+        Self
+        "check_function_instantiations"
+        check_function_instantiations.
+    Admitted.
+    Global Typeclasses Opaque check_function_instantiations.
     
     (*
         fn check_function_handles(function_handles: &[FunctionHandle]) -> PartialVMResult<()> {
@@ -2840,9 +2852,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_handles :
-      M.IsAssociatedFunction Self "check_function_handles" check_function_handles.
-    Smpl Add apply AssociatedFunction_check_function_handles : is_associated.
+    Global Instance AssociatedFunction_check_function_handles :
+      M.IsAssociatedFunction.Trait Self "check_function_handles" check_function_handles.
+    Admitted.
+    Global Typeclasses Opaque check_function_handles.
     
     (*
         fn check_field_handles(&self) -> PartialVMResult<()> {
@@ -2958,9 +2971,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_handles :
-      M.IsAssociatedFunction Self "check_field_handles" check_field_handles.
-    Smpl Add apply AssociatedFunction_check_field_handles : is_associated.
+    Global Instance AssociatedFunction_check_field_handles :
+      M.IsAssociatedFunction.Trait Self "check_field_handles" check_field_handles.
+    Admitted.
+    Global Typeclasses Opaque check_field_handles.
     
     (*
         fn check_struct_instantiations(&self) -> PartialVMResult<()> {
@@ -3082,9 +3096,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_instantiations :
-      M.IsAssociatedFunction Self "check_struct_instantiations" check_struct_instantiations.
-    Smpl Add apply AssociatedFunction_check_struct_instantiations : is_associated.
+    Global Instance AssociatedFunction_check_struct_instantiations :
+      M.IsAssociatedFunction.Trait Self "check_struct_instantiations" check_struct_instantiations.
+    Admitted.
+    Global Typeclasses Opaque check_struct_instantiations.
     
     (*
         fn check_field_instantiations(&self) -> PartialVMResult<()> {
@@ -3223,9 +3238,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_field_instantiations :
-      M.IsAssociatedFunction Self "check_field_instantiations" check_field_instantiations.
-    Smpl Add apply AssociatedFunction_check_field_instantiations : is_associated.
+    Global Instance AssociatedFunction_check_field_instantiations :
+      M.IsAssociatedFunction.Trait Self "check_field_instantiations" check_field_instantiations.
+    Admitted.
+    Global Typeclasses Opaque check_field_instantiations.
     
     (*
         fn check_struct_definitions(&self) -> PartialVMResult<()> {
@@ -3660,6 +3676,7 @@ Module check_duplication.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4889,9 +4906,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_struct_definitions :
-      M.IsAssociatedFunction Self "check_struct_definitions" check_struct_definitions.
-    Smpl Add apply AssociatedFunction_check_struct_definitions : is_associated.
+    Global Instance AssociatedFunction_check_struct_definitions :
+      M.IsAssociatedFunction.Trait Self "check_struct_definitions" check_struct_definitions.
+    Admitted.
+    Global Typeclasses Opaque check_struct_definitions.
     
     (*
         fn check_function_defintions(&self) -> PartialVMResult<()> {
@@ -5324,6 +5342,7 @@ Module check_duplication.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -6344,9 +6363,10 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_check_function_defintions :
-      M.IsAssociatedFunction Self "check_function_defintions" check_function_defintions.
-    Smpl Add apply AssociatedFunction_check_function_defintions : is_associated.
+    Global Instance AssociatedFunction_check_function_defintions :
+      M.IsAssociatedFunction.Trait Self "check_function_defintions" check_function_defintions.
+    Admitted.
+    Global Typeclasses Opaque check_function_defintions.
     
     (*
         fn first_duplicate_element<T>(iter: T) -> Option<TableIndex>
@@ -6509,6 +6529,7 @@ Module check_duplication.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -6655,8 +6676,9 @@ Module check_duplication.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_first_duplicate_element :
-      M.IsAssociatedFunction Self "first_duplicate_element" first_duplicate_element.
-    Smpl Add apply AssociatedFunction_first_duplicate_element : is_associated.
+    Global Instance AssociatedFunction_first_duplicate_element :
+      M.IsAssociatedFunction.Trait Self "first_duplicate_element" first_duplicate_element.
+    Admitted.
+    Global Typeclasses Opaque first_duplicate_element.
   End Impl_move_bytecode_verifier_check_duplication_DuplicationChecker.
 End check_duplication.

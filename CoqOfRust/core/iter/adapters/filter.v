@@ -102,10 +102,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_new :
+        Global Instance AssociatedFunction_new :
           forall (I P : Ty.t),
-          M.IsAssociatedFunction (Self I P) "new" (new I P).
-        Smpl Add apply AssociatedFunction_new : is_associated.
+          M.IsAssociatedFunction.Trait (Self I P) "new" (new I P).
+        Admitted.
+        Global Typeclasses Opaque new.
         (*
             fn next_chunk_dropless<const N: usize>(
                 &mut self,
@@ -549,10 +550,11 @@ Module iter.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom AssociatedFunction_next_chunk_dropless :
+        Global Instance AssociatedFunction_next_chunk_dropless :
           forall (I P : Ty.t),
-          M.IsAssociatedFunction (Self I P) "next_chunk_dropless" (next_chunk_dropless I P).
-        Smpl Add apply AssociatedFunction_next_chunk_dropless : is_associated.
+          M.IsAssociatedFunction.Trait (Self I P) "next_chunk_dropless" (next_chunk_dropless I P).
+        Admitted.
+        Global Typeclasses Opaque next_chunk_dropless.
       End Impl_core_iter_adapters_filter_Filter_I_P.
       
       
@@ -767,9 +769,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_filter_fold :
-        M.IsFunction "core::iter::adapters::filter::filter_fold" filter_fold.
-      Smpl Add apply Function_filter_fold : is_function.
+      Global Instance Instance_IsFunction_filter_fold :
+        M.IsFunction.Trait "core::iter::adapters::filter::filter_fold" filter_fold.
+      Admitted.
+      Global Typeclasses Opaque filter_fold.
       
       Module filter_fold.
         (* Error OpaqueTy *)
@@ -905,9 +908,10 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_filter_try_fold :
-        M.IsFunction "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
-      Smpl Add apply Function_filter_try_fold : is_function.
+      Global Instance Instance_IsFunction_filter_try_fold :
+        M.IsFunction.Trait "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
+      Admitted.
+      Global Typeclasses Opaque filter_try_fold.
       
       Module filter_try_fold.
         (* Error OpaqueTy *)

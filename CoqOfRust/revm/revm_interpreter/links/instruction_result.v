@@ -1,5 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import revm.revm_interpreter.instruction_result.
+
+Import Run.
 
 Module InstructionResult.
 Inductive t : Set :=
@@ -672,3 +675,77 @@ Global Instance IsLink : Link t := {
   Proof. econstructor; apply of_value_with_InvalidEXTCALLTarget; eassumption. Defined.
   Smpl Add simple apply of_value_InvalidEXTCALLTarget : of_value.
 End InstructionResult.
+
+Module Impl_InstructionResult.
+  Definition Self : Set :=
+    InstructionResult.t.
+
+  (* pub const fn is_ok(self) -> bool *)
+  Definition run_is_ok (self : Self) :
+    {{
+      instruction_result.Impl_revm_interpreter_instruction_result_InstructionResult.is_ok
+        [] [] [ φ self ] 🔽
+      bool
+    }}.
+  Proof.
+    run.
+    (* This file is too slow. There a lot of constructors, and we need to find a way to optimize
+       that! *)
+    (* Time destruct self; run. *)
+  Admitted.
+
+  (* pub const fn is_ok_or_revert(self) -> bool *)
+  Definition run_is_ok_or_revert (self : Self) :
+    {{
+      instruction_result.Impl_revm_interpreter_instruction_result_InstructionResult.is_ok_or_revert
+        [] [] [ φ self ] 🔽
+      bool
+    }}.
+  Proof.
+    run.
+    (* Time destruct self; run.
+  Defined. *)
+  Admitted.
+
+  (* pub const fn is_continue(self) -> bool *)
+  Definition run_is_continue (self : Self) :
+    {{
+      instruction_result.Impl_revm_interpreter_instruction_result_InstructionResult.is_continue
+        [] [] [ φ self ] 🔽
+      bool
+    }}.
+  Proof.
+    run.
+    (* This is the only one that is fast in this file, for some reasons! *)
+    destruct self;
+      run_next;
+      RunTactic.unfold_link_in_match;
+      run_next.
+  Defined.
+
+  (* pub const fn is_revert(self) -> bool *)
+  Definition run_is_revert (self : Self) :
+    {{
+      instruction_result.Impl_revm_interpreter_instruction_result_InstructionResult.is_revert
+        [] [] [ φ self ] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+  Admitted.
+    (* Time destruct self; run.
+  Defined. *)
+
+  (* pub const fn is_error(self) -> bool *)
+  Definition run_is_error (self : Self) :
+    {{
+      instruction_result.Impl_revm_interpreter_instruction_result_InstructionResult.is_error
+        [] [] [ φ self ] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+  Admitted.
+    (* Time destruct self; run.
+  Defined. *)
+End Impl_InstructionResult.

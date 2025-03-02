@@ -563,6 +563,7 @@ Module blake2.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -870,6 +871,7 @@ Module blake2.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -1427,6 +1429,7 @@ Module blake2.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -1629,8 +1632,9 @@ Module blake2.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run : M.IsFunction "revm_precompile::blake2::run" run.
-  Smpl Add apply Function_run : is_function.
+  Global Instance Instance_IsFunction_run : M.IsFunction.Trait "revm_precompile::blake2::run" run.
+  Admitted.
+  Global Typeclasses Opaque run.
   
   Module algo.
     Definition value_SIGMA : Value.t :=
@@ -2099,8 +2103,9 @@ Module blake2.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_g : M.IsFunction "revm_precompile::blake2::algo::g" g.
-    Smpl Add apply Function_g : is_function.
+    Global Instance Instance_IsFunction_g : M.IsFunction.Trait "revm_precompile::blake2::algo::g" g.
+    Admitted.
+    Global Typeclasses Opaque g.
     
     (*
         pub fn compress(rounds: usize, h: &mut [u64; 8], m: [u64; 16], t: [u64; 2], f: bool) {
@@ -2357,6 +2362,7 @@ Module blake2.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -2805,6 +2811,7 @@ Module blake2.
                     ltac:(M.monadic
                       (let iter := M.copy (| γ |) in
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -2883,7 +2890,9 @@ Module blake2.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom Function_compress : M.IsFunction "revm_precompile::blake2::algo::compress" compress.
-    Smpl Add apply Function_compress : is_function.
+    Global Instance Instance_IsFunction_compress :
+      M.IsFunction.Trait "revm_precompile::blake2::algo::compress" compress.
+    Admitted.
+    Global Typeclasses Opaque compress.
   End algo.
 End blake2.

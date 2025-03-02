@@ -172,8 +172,10 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_give_adult : M.IsFunction "option_and_unwrap::give_adult" give_adult.
-Smpl Add apply Function_give_adult : is_function.
+Global Instance Instance_IsFunction_give_adult :
+  M.IsFunction.Trait "option_and_unwrap::give_adult" give_adult.
+Admitted.
+Global Typeclasses Opaque give_adult.
 
 (*
 fn drink(drink: Option<&str>) {
@@ -322,8 +324,9 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_drink : M.IsFunction "option_and_unwrap::drink" drink.
-Smpl Add apply Function_drink : is_function.
+Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "option_and_unwrap::drink" drink.
+Admitted.
+Global Typeclasses Opaque drink.
 
 (*
 fn main() {
@@ -428,5 +431,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "option_and_unwrap::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option_and_unwrap::main" main.
+Admitted.
+Global Typeclasses Opaque main.

@@ -682,8 +682,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     (*
         fn wrap_buf<'b, 'c, F>(&'b mut self, wrap: F) -> Formatter<'c>
         where
@@ -800,8 +801,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_wrap_buf : M.IsAssociatedFunction Self "wrap_buf" wrap_buf.
-    Smpl Add apply AssociatedFunction_wrap_buf : is_associated.
+    Global Instance AssociatedFunction_wrap_buf :
+      M.IsAssociatedFunction.Trait Self "wrap_buf" wrap_buf.
+    Admitted.
+    Global Typeclasses Opaque wrap_buf.
     
     (*
         pub fn pad_integral(&mut self, is_nonnegative: bool, prefix: &str, buf: &str) -> Result {
@@ -2305,8 +2308,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pad_integral : M.IsAssociatedFunction Self "pad_integral" pad_integral.
-    Smpl Add apply AssociatedFunction_pad_integral : is_associated.
+    Global Instance AssociatedFunction_pad_integral :
+      M.IsAssociatedFunction.Trait Self "pad_integral" pad_integral.
+    Admitted.
+    Global Typeclasses Opaque pad_integral.
     
     (*
         pub fn pad(&mut self, s: &str) -> Result {
@@ -3012,8 +3017,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pad : M.IsAssociatedFunction Self "pad" pad.
-    Smpl Add apply AssociatedFunction_pad : is_associated.
+    Global Instance AssociatedFunction_pad : M.IsAssociatedFunction.Trait Self "pad" pad.
+    Admitted.
+    Global Typeclasses Opaque pad.
     
     (*
         pub(crate) fn padding(
@@ -3162,6 +3168,7 @@ Module fmt.
                                   ltac:(M.monadic
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
+                                      Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
@@ -3403,8 +3410,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_padding : M.IsAssociatedFunction Self "padding" padding.
-    Smpl Add apply AssociatedFunction_padding : is_associated.
+    Global Instance AssociatedFunction_padding :
+      M.IsAssociatedFunction.Trait Self "padding" padding.
+    Admitted.
+    Global Typeclasses Opaque padding.
     
     (*
         unsafe fn pad_formatted_parts(&mut self, formatted: &numfmt::Formatted<'_>) -> Result {
@@ -4133,9 +4142,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_pad_formatted_parts :
-      M.IsAssociatedFunction Self "pad_formatted_parts" pad_formatted_parts.
-    Smpl Add apply AssociatedFunction_pad_formatted_parts : is_associated.
+    Global Instance AssociatedFunction_pad_formatted_parts :
+      M.IsAssociatedFunction.Trait Self "pad_formatted_parts" pad_formatted_parts.
+    Admitted.
+    Global Typeclasses Opaque pad_formatted_parts.
     
     (*
         unsafe fn write_formatted_parts(&mut self, formatted: &numfmt::Formatted<'_>) -> Result {
@@ -4402,6 +4412,7 @@ Module fmt.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -4470,6 +4481,7 @@ Module fmt.
                                                   let nzeroes := M.copy (| γ0_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.loop (|
+                                                      Ty.tuple [],
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
@@ -5142,6 +5154,7 @@ Module fmt.
                                                             ltac:(M.monadic
                                                               (let iter := M.copy (| γ |) in
                                                               M.loop (|
+                                                                Ty.tuple [],
                                                                 ltac:(M.monadic
                                                                   (let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
@@ -5619,9 +5632,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_write_formatted_parts :
-      M.IsAssociatedFunction Self "write_formatted_parts" write_formatted_parts.
-    Smpl Add apply AssociatedFunction_write_formatted_parts : is_associated.
+    Global Instance AssociatedFunction_write_formatted_parts :
+      M.IsAssociatedFunction.Trait Self "write_formatted_parts" write_formatted_parts.
+    Admitted.
+    Global Typeclasses Opaque write_formatted_parts.
     
     (*
         pub fn write_str(&mut self, data: &str) -> Result {
@@ -5667,8 +5681,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_write_str : M.IsAssociatedFunction Self "write_str" write_str.
-    Smpl Add apply AssociatedFunction_write_str : is_associated.
+    Global Instance AssociatedFunction_write_str :
+      M.IsAssociatedFunction.Trait Self "write_str" write_str.
+    Admitted.
+    Global Typeclasses Opaque write_str.
     
     (*
         pub fn write_fmt(&mut self, fmt: Arguments<'_>) -> Result {
@@ -5778,8 +5794,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_write_fmt : M.IsAssociatedFunction Self "write_fmt" write_fmt.
-    Smpl Add apply AssociatedFunction_write_fmt : is_associated.
+    Global Instance AssociatedFunction_write_fmt :
+      M.IsAssociatedFunction.Trait Self "write_fmt" write_fmt.
+    Admitted.
+    Global Typeclasses Opaque write_fmt.
     
     (*
         pub fn flags(&self) -> u32 {
@@ -5801,8 +5819,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_flags : M.IsAssociatedFunction Self "flags" flags.
-    Smpl Add apply AssociatedFunction_flags : is_associated.
+    Global Instance AssociatedFunction_flags : M.IsAssociatedFunction.Trait Self "flags" flags.
+    Admitted.
+    Global Typeclasses Opaque flags.
     
     (*
         pub fn fill(&self) -> char {
@@ -5824,8 +5843,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_fill : M.IsAssociatedFunction Self "fill" fill.
-    Smpl Add apply AssociatedFunction_fill : is_associated.
+    Global Instance AssociatedFunction_fill : M.IsAssociatedFunction.Trait Self "fill" fill.
+    Admitted.
+    Global Typeclasses Opaque fill.
     
     (*
         pub fn align(&self) -> Option<Alignment> {
@@ -5884,8 +5904,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
-    Smpl Add apply AssociatedFunction_align : is_associated.
+    Global Instance AssociatedFunction_align : M.IsAssociatedFunction.Trait Self "align" align.
+    Admitted.
+    Global Typeclasses Opaque align.
     
     (*
         pub fn width(&self) -> Option<usize> {
@@ -5907,8 +5928,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_width : M.IsAssociatedFunction Self "width" width.
-    Smpl Add apply AssociatedFunction_width : is_associated.
+    Global Instance AssociatedFunction_width : M.IsAssociatedFunction.Trait Self "width" width.
+    Admitted.
+    Global Typeclasses Opaque width.
     
     (*
         pub fn precision(&self) -> Option<usize> {
@@ -5930,8 +5952,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_precision : M.IsAssociatedFunction Self "precision" precision.
-    Smpl Add apply AssociatedFunction_precision : is_associated.
+    Global Instance AssociatedFunction_precision :
+      M.IsAssociatedFunction.Trait Self "precision" precision.
+    Admitted.
+    Global Typeclasses Opaque precision.
     
     (*
         pub fn sign_plus(&self) -> bool {
@@ -5961,8 +5985,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sign_plus : M.IsAssociatedFunction Self "sign_plus" sign_plus.
-    Smpl Add apply AssociatedFunction_sign_plus : is_associated.
+    Global Instance AssociatedFunction_sign_plus :
+      M.IsAssociatedFunction.Trait Self "sign_plus" sign_plus.
+    Admitted.
+    Global Typeclasses Opaque sign_plus.
     
     (*
         pub fn sign_minus(&self) -> bool {
@@ -5992,8 +6018,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sign_minus : M.IsAssociatedFunction Self "sign_minus" sign_minus.
-    Smpl Add apply AssociatedFunction_sign_minus : is_associated.
+    Global Instance AssociatedFunction_sign_minus :
+      M.IsAssociatedFunction.Trait Self "sign_minus" sign_minus.
+    Admitted.
+    Global Typeclasses Opaque sign_minus.
     
     (*
         pub fn alternate(&self) -> bool {
@@ -6023,8 +6051,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_alternate : M.IsAssociatedFunction Self "alternate" alternate.
-    Smpl Add apply AssociatedFunction_alternate : is_associated.
+    Global Instance AssociatedFunction_alternate :
+      M.IsAssociatedFunction.Trait Self "alternate" alternate.
+    Admitted.
+    Global Typeclasses Opaque alternate.
     
     (*
         pub fn sign_aware_zero_pad(&self) -> bool {
@@ -6054,9 +6084,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_sign_aware_zero_pad :
-      M.IsAssociatedFunction Self "sign_aware_zero_pad" sign_aware_zero_pad.
-    Smpl Add apply AssociatedFunction_sign_aware_zero_pad : is_associated.
+    Global Instance AssociatedFunction_sign_aware_zero_pad :
+      M.IsAssociatedFunction.Trait Self "sign_aware_zero_pad" sign_aware_zero_pad.
+    Admitted.
+    Global Typeclasses Opaque sign_aware_zero_pad.
     
     (*
         fn debug_lower_hex(&self) -> bool {
@@ -6086,9 +6117,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_lower_hex :
-      M.IsAssociatedFunction Self "debug_lower_hex" debug_lower_hex.
-    Smpl Add apply AssociatedFunction_debug_lower_hex : is_associated.
+    Global Instance AssociatedFunction_debug_lower_hex :
+      M.IsAssociatedFunction.Trait Self "debug_lower_hex" debug_lower_hex.
+    Admitted.
+    Global Typeclasses Opaque debug_lower_hex.
     
     (*
         fn debug_upper_hex(&self) -> bool {
@@ -6118,9 +6150,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_upper_hex :
-      M.IsAssociatedFunction Self "debug_upper_hex" debug_upper_hex.
-    Smpl Add apply AssociatedFunction_debug_upper_hex : is_associated.
+    Global Instance AssociatedFunction_debug_upper_hex :
+      M.IsAssociatedFunction.Trait Self "debug_upper_hex" debug_upper_hex.
+    Admitted.
+    Global Typeclasses Opaque debug_upper_hex.
     
     (*
         pub fn debug_struct<'b>(&'b mut self, name: &str) -> DebugStruct<'b, 'a> {
@@ -6144,8 +6177,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct : M.IsAssociatedFunction Self "debug_struct" debug_struct.
-    Smpl Add apply AssociatedFunction_debug_struct : is_associated.
+    Global Instance AssociatedFunction_debug_struct :
+      M.IsAssociatedFunction.Trait Self "debug_struct" debug_struct.
+    Admitted.
+    Global Typeclasses Opaque debug_struct.
     
     (*
         pub fn debug_struct_field1_finish<'b>(
@@ -6219,9 +6254,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct_field1_finish :
-      M.IsAssociatedFunction Self "debug_struct_field1_finish" debug_struct_field1_finish.
-    Smpl Add apply AssociatedFunction_debug_struct_field1_finish : is_associated.
+    Global Instance AssociatedFunction_debug_struct_field1_finish :
+      M.IsAssociatedFunction.Trait Self "debug_struct_field1_finish" debug_struct_field1_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_struct_field1_finish.
     
     (*
         pub fn debug_struct_field2_finish<'b>(
@@ -6317,9 +6353,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct_field2_finish :
-      M.IsAssociatedFunction Self "debug_struct_field2_finish" debug_struct_field2_finish.
-    Smpl Add apply AssociatedFunction_debug_struct_field2_finish : is_associated.
+    Global Instance AssociatedFunction_debug_struct_field2_finish :
+      M.IsAssociatedFunction.Trait Self "debug_struct_field2_finish" debug_struct_field2_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_struct_field2_finish.
     
     (*
         pub fn debug_struct_field3_finish<'b>(
@@ -6437,9 +6474,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct_field3_finish :
-      M.IsAssociatedFunction Self "debug_struct_field3_finish" debug_struct_field3_finish.
-    Smpl Add apply AssociatedFunction_debug_struct_field3_finish : is_associated.
+    Global Instance AssociatedFunction_debug_struct_field3_finish :
+      M.IsAssociatedFunction.Trait Self "debug_struct_field3_finish" debug_struct_field3_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_struct_field3_finish.
     
     (*
         pub fn debug_struct_field4_finish<'b>(
@@ -6579,9 +6617,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct_field4_finish :
-      M.IsAssociatedFunction Self "debug_struct_field4_finish" debug_struct_field4_finish.
-    Smpl Add apply AssociatedFunction_debug_struct_field4_finish : is_associated.
+    Global Instance AssociatedFunction_debug_struct_field4_finish :
+      M.IsAssociatedFunction.Trait Self "debug_struct_field4_finish" debug_struct_field4_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_struct_field4_finish.
     
     (*
         pub fn debug_struct_field5_finish<'b>(
@@ -6746,9 +6785,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct_field5_finish :
-      M.IsAssociatedFunction Self "debug_struct_field5_finish" debug_struct_field5_finish.
-    Smpl Add apply AssociatedFunction_debug_struct_field5_finish : is_associated.
+    Global Instance AssociatedFunction_debug_struct_field5_finish :
+      M.IsAssociatedFunction.Trait Self "debug_struct_field5_finish" debug_struct_field5_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_struct_field5_finish.
     
     (*
         pub fn debug_struct_fields_finish<'b>(
@@ -7019,6 +7059,7 @@ Module fmt.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -7157,9 +7198,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_struct_fields_finish :
-      M.IsAssociatedFunction Self "debug_struct_fields_finish" debug_struct_fields_finish.
-    Smpl Add apply AssociatedFunction_debug_struct_fields_finish : is_associated.
+    Global Instance AssociatedFunction_debug_struct_fields_finish :
+      M.IsAssociatedFunction.Trait Self "debug_struct_fields_finish" debug_struct_fields_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_struct_fields_finish.
     
     (*
         pub fn debug_tuple<'b>(&'b mut self, name: &str) -> DebugTuple<'b, 'a> {
@@ -7183,8 +7225,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple : M.IsAssociatedFunction Self "debug_tuple" debug_tuple.
-    Smpl Add apply AssociatedFunction_debug_tuple : is_associated.
+    Global Instance AssociatedFunction_debug_tuple :
+      M.IsAssociatedFunction.Trait Self "debug_tuple" debug_tuple.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple.
     
     (*
         pub fn debug_tuple_field1_finish<'b>(&'b mut self, name: &str, value1: &dyn Debug) -> Result {
@@ -7251,9 +7295,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple_field1_finish :
-      M.IsAssociatedFunction Self "debug_tuple_field1_finish" debug_tuple_field1_finish.
-    Smpl Add apply AssociatedFunction_debug_tuple_field1_finish : is_associated.
+    Global Instance AssociatedFunction_debug_tuple_field1_finish :
+      M.IsAssociatedFunction.Trait Self "debug_tuple_field1_finish" debug_tuple_field1_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple_field1_finish.
     
     (*
         pub fn debug_tuple_field2_finish<'b>(
@@ -7343,9 +7388,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple_field2_finish :
-      M.IsAssociatedFunction Self "debug_tuple_field2_finish" debug_tuple_field2_finish.
-    Smpl Add apply AssociatedFunction_debug_tuple_field2_finish : is_associated.
+    Global Instance AssociatedFunction_debug_tuple_field2_finish :
+      M.IsAssociatedFunction.Trait Self "debug_tuple_field2_finish" debug_tuple_field2_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple_field2_finish.
     
     (*
         pub fn debug_tuple_field3_finish<'b>(
@@ -7454,9 +7500,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple_field3_finish :
-      M.IsAssociatedFunction Self "debug_tuple_field3_finish" debug_tuple_field3_finish.
-    Smpl Add apply AssociatedFunction_debug_tuple_field3_finish : is_associated.
+    Global Instance AssociatedFunction_debug_tuple_field3_finish :
+      M.IsAssociatedFunction.Trait Self "debug_tuple_field3_finish" debug_tuple_field3_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple_field3_finish.
     
     (*
         pub fn debug_tuple_field4_finish<'b>(
@@ -7584,9 +7631,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple_field4_finish :
-      M.IsAssociatedFunction Self "debug_tuple_field4_finish" debug_tuple_field4_finish.
-    Smpl Add apply AssociatedFunction_debug_tuple_field4_finish : is_associated.
+    Global Instance AssociatedFunction_debug_tuple_field4_finish :
+      M.IsAssociatedFunction.Trait Self "debug_tuple_field4_finish" debug_tuple_field4_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple_field4_finish.
     
     (*
         pub fn debug_tuple_field5_finish<'b>(
@@ -7733,9 +7781,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple_field5_finish :
-      M.IsAssociatedFunction Self "debug_tuple_field5_finish" debug_tuple_field5_finish.
-    Smpl Add apply AssociatedFunction_debug_tuple_field5_finish : is_associated.
+    Global Instance AssociatedFunction_debug_tuple_field5_finish :
+      M.IsAssociatedFunction.Trait Self "debug_tuple_field5_finish" debug_tuple_field5_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple_field5_finish.
     
     (*
         pub fn debug_tuple_fields_finish<'b>(
@@ -7813,6 +7862,7 @@ Module fmt.
                       ltac:(M.monadic
                         (let iter := M.copy (| γ |) in
                         M.loop (|
+                          Ty.tuple [],
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
@@ -7926,9 +7976,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_tuple_fields_finish :
-      M.IsAssociatedFunction Self "debug_tuple_fields_finish" debug_tuple_fields_finish.
-    Smpl Add apply AssociatedFunction_debug_tuple_fields_finish : is_associated.
+    Global Instance AssociatedFunction_debug_tuple_fields_finish :
+      M.IsAssociatedFunction.Trait Self "debug_tuple_fields_finish" debug_tuple_fields_finish.
+    Admitted.
+    Global Typeclasses Opaque debug_tuple_fields_finish.
     
     (*
         pub fn debug_list<'b>(&'b mut self) -> DebugList<'b, 'a> {
@@ -7948,8 +7999,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_list : M.IsAssociatedFunction Self "debug_list" debug_list.
-    Smpl Add apply AssociatedFunction_debug_list : is_associated.
+    Global Instance AssociatedFunction_debug_list :
+      M.IsAssociatedFunction.Trait Self "debug_list" debug_list.
+    Admitted.
+    Global Typeclasses Opaque debug_list.
     
     (*
         pub fn debug_set<'b>(&'b mut self) -> DebugSet<'b, 'a> {
@@ -7969,8 +8022,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_set : M.IsAssociatedFunction Self "debug_set" debug_set.
-    Smpl Add apply AssociatedFunction_debug_set : is_associated.
+    Global Instance AssociatedFunction_debug_set :
+      M.IsAssociatedFunction.Trait Self "debug_set" debug_set.
+    Admitted.
+    Global Typeclasses Opaque debug_set.
     
     (*
         pub fn debug_map<'b>(&'b mut self) -> DebugMap<'b, 'a> {
@@ -7990,8 +8045,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_debug_map : M.IsAssociatedFunction Self "debug_map" debug_map.
-    Smpl Add apply AssociatedFunction_debug_map : is_associated.
+    Global Instance AssociatedFunction_debug_map :
+      M.IsAssociatedFunction.Trait Self "debug_map" debug_map.
+    Admitted.
+    Global Typeclasses Opaque debug_map.
   End Impl_core_fmt_Formatter.
   
   (* StructRecord
@@ -8110,8 +8167,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_const : M.IsAssociatedFunction Self "new_const" new_const.
-    Smpl Add apply AssociatedFunction_new_const : is_associated.
+    Global Instance AssociatedFunction_new_const :
+      M.IsAssociatedFunction.Trait Self "new_const" new_const.
+    Admitted.
+    Global Typeclasses Opaque new_const.
     
     (*
         pub fn new_v1<const P: usize, const A: usize>(
@@ -8143,8 +8202,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_v1 : M.IsAssociatedFunction Self "new_v1" new_v1.
-    Smpl Add apply AssociatedFunction_new_v1 : is_associated.
+    Global Instance AssociatedFunction_new_v1 : M.IsAssociatedFunction.Trait Self "new_v1" new_v1.
+    Admitted.
+    Global Typeclasses Opaque new_v1.
     
     (*
         pub fn new_v1_formatted(
@@ -8177,9 +8237,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new_v1_formatted :
-      M.IsAssociatedFunction Self "new_v1_formatted" new_v1_formatted.
-    Smpl Add apply AssociatedFunction_new_v1_formatted : is_associated.
+    Global Instance AssociatedFunction_new_v1_formatted :
+      M.IsAssociatedFunction.Trait Self "new_v1_formatted" new_v1_formatted.
+    Admitted.
+    Global Typeclasses Opaque new_v1_formatted.
     
     (*
         pub fn estimated_capacity(&self) -> usize {
@@ -8507,9 +8568,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_estimated_capacity :
-      M.IsAssociatedFunction Self "estimated_capacity" estimated_capacity.
-    Smpl Add apply AssociatedFunction_estimated_capacity : is_associated.
+    Global Instance AssociatedFunction_estimated_capacity :
+      M.IsAssociatedFunction.Trait Self "estimated_capacity" estimated_capacity.
+    Admitted.
+    Global Typeclasses Opaque estimated_capacity.
     (*
         pub const fn as_str(&self) -> Option<&'static str> {
             match (self.pieces, self.args) {
@@ -8588,8 +8650,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
-    Smpl Add apply AssociatedFunction_as_str : is_associated.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Admitted.
+    Global Typeclasses Opaque as_str.
     
     (*
         fn as_statically_known_str(&self) -> Option<&'static str> {
@@ -8660,9 +8723,10 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_as_statically_known_str :
-      M.IsAssociatedFunction Self "as_statically_known_str" as_statically_known_str.
-    Smpl Add apply AssociatedFunction_as_statically_known_str : is_associated.
+    Global Instance AssociatedFunction_as_statically_known_str :
+      M.IsAssociatedFunction.Trait Self "as_statically_known_str" as_statically_known_str.
+    Admitted.
+    Global Typeclasses Opaque as_statically_known_str.
   End Impl_core_fmt_Arguments.
   
   
@@ -8978,6 +9042,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
@@ -9554,6 +9619,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
+                                    Ty.tuple [],
                                     ltac:(M.monadic
                                       (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
@@ -10229,8 +10295,9 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_write : M.IsFunction "core::fmt::write" write.
-  Smpl Add apply Function_write : is_function.
+  Global Instance Instance_IsFunction_write : M.IsFunction.Trait "core::fmt::write" write.
+  Admitted.
+  Global Typeclasses Opaque write.
   
   (*
   unsafe fn run(fmt: &mut Formatter<'_>, arg: &rt::Placeholder, args: &[rt::Argument<'_>]) -> Result {
@@ -10487,8 +10554,9 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_run : M.IsFunction "core::fmt::run" run.
-  Smpl Add apply Function_run : is_function.
+  Global Instance Instance_IsFunction_run : M.IsFunction.Trait "core::fmt::run" run.
+  Admitted.
+  Global Typeclasses Opaque run.
   
   (*
   unsafe fn getcount(args: &[rt::Argument<'_>], cnt: &rt::Count) -> Option<usize> {
@@ -10633,8 +10701,9 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_getcount : M.IsFunction "core::fmt::getcount" getcount.
-  Smpl Add apply Function_getcount : is_function.
+  Global Instance Instance_IsFunction_getcount : M.IsFunction.Trait "core::fmt::getcount" getcount.
+  Admitted.
+  Global Typeclasses Opaque getcount.
   
   (* StructRecord
     {
@@ -10664,8 +10733,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    Smpl Add apply AssociatedFunction_new : is_associated.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Admitted.
+    Global Typeclasses Opaque new.
     
     (*
         pub(crate) fn write(self, f: &mut Formatter<'_>) -> Result {
@@ -10721,6 +10791,7 @@ Module fmt.
                           ltac:(M.monadic
                             (let iter := M.copy (| γ |) in
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
@@ -10915,8 +10986,9 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
-    Smpl Add apply AssociatedFunction_write : is_associated.
+    Global Instance AssociatedFunction_write : M.IsAssociatedFunction.Trait Self "write" write.
+    Admitted.
+    Global Typeclasses Opaque write.
   End Impl_core_fmt_PostPadding.
   
   
@@ -12207,6 +12279,7 @@ Module fmt.
                 let~ rest : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] := M.copy (| self |) in
                 let~ _ : Ty.tuple [] :=
                   M.loop (|
+                    Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
@@ -13915,8 +13988,10 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_pointer_fmt_inner : M.IsFunction "core::fmt::pointer_fmt_inner" pointer_fmt_inner.
-  Smpl Add apply Function_pointer_fmt_inner : is_function.
+  Global Instance Instance_IsFunction_pointer_fmt_inner :
+    M.IsFunction.Trait "core::fmt::pointer_fmt_inner" pointer_fmt_inner.
+  Admitted.
+  Global Typeclasses Opaque pointer_fmt_inner.
   
   Module Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_pointer_mut_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].

@@ -23,8 +23,9 @@ Module Impl_mutual_loop_LoopA.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub(crate) fn start_loop(&self) -> LoopB {
@@ -44,8 +45,10 @@ Module Impl_mutual_loop_LoopA.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
-  Smpl Add apply AssociatedFunction_start_loop : is_associated.
+  Global Instance AssociatedFunction_start_loop :
+    M.IsAssociatedFunction.Trait Self "start_loop" start_loop.
+  Admitted.
+  Global Typeclasses Opaque start_loop.
 End Impl_mutual_loop_LoopA.
 
 (*
@@ -92,8 +95,10 @@ Module Impl_mutual_loop_LoopB.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_start_loop : M.IsAssociatedFunction Self "start_loop" start_loop.
-  Smpl Add apply AssociatedFunction_start_loop : is_associated.
+  Global Instance AssociatedFunction_start_loop :
+    M.IsAssociatedFunction.Trait Self "start_loop" start_loop.
+  Admitted.
+  Global Typeclasses Opaque start_loop.
 End Impl_mutual_loop_LoopB.
 
 (*
@@ -129,5 +134,7 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_start_loop : M.IsFunction "mutual_loop::start_loop" start_loop.
-Smpl Add apply Function_start_loop : is_function.
+Global Instance Instance_IsFunction_start_loop :
+  M.IsFunction.Trait "mutual_loop::start_loop" start_loop.
+Admitted.
+Global Typeclasses Opaque start_loop.

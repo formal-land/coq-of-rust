@@ -726,9 +726,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_try_logon :
-  M.IsFunction "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
-Smpl Add apply Function_try_logon : is_function.
+Global Instance Instance_IsFunction_try_logon :
+  M.IsFunction.Trait "hash_map_alternate_or_custom_key_types::try_logon" try_logon.
+Admitted.
+Global Typeclasses Opaque try_logon.
 
 (*
 fn main() {
@@ -903,5 +904,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_main : M.IsFunction "hash_map_alternate_or_custom_key_types::main" main.
-Smpl Add apply Function_main : is_function.
+Global Instance Instance_IsFunction_main :
+  M.IsFunction.Trait "hash_map_alternate_or_custom_key_types::main" main.
+Admitted.
+Global Typeclasses Opaque main.

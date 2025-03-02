@@ -81,6 +81,7 @@ Module slice.
                   (M.never_to_any (|
                     M.read (|
                       M.loop (|
+                        Ty.path "never",
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
@@ -727,9 +728,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_quicksort :
-          M.IsFunction "core::slice::sort::unstable::quicksort::quicksort" quicksort.
-        Smpl Add apply Function_quicksort : is_function.
+        Global Instance Instance_IsFunction_quicksort :
+          M.IsFunction.Trait "core::slice::sort::unstable::quicksort::quicksort" quicksort.
+        Admitted.
+        Global Typeclasses Opaque quicksort.
         
         (*
         pub(crate) fn partition<T, F>(v: &mut [T], pivot: usize, is_less: &mut F) -> usize
@@ -994,9 +996,10 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_partition :
-          M.IsFunction "core::slice::sort::unstable::quicksort::partition" partition.
-        Smpl Add apply Function_partition : is_function.
+        Global Instance Instance_IsFunction_partition :
+          M.IsFunction.Trait "core::slice::sort::unstable::quicksort::partition" partition.
+        Admitted.
+        Global Typeclasses Opaque partition.
         
         (*
         const fn inst_partition<T, F: FnMut(&T, &T) -> bool>() -> fn(&mut [T], &T, &mut F) -> usize {
@@ -1069,9 +1072,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_inst_partition :
-          M.IsFunction "core::slice::sort::unstable::quicksort::inst_partition" inst_partition.
-        Smpl Add apply Function_inst_partition : is_function.
+        Global Instance Instance_IsFunction_inst_partition :
+          M.IsFunction.Trait
+            "core::slice::sort::unstable::quicksort::inst_partition"
+            inst_partition.
+        Admitted.
+        Global Typeclasses Opaque inst_partition.
         
         Module inst_partition.
           Definition value_MAX_BRANCHLESS_PARTITION_SIZE : Value.t :=
@@ -1258,9 +1264,11 @@ Module slice.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -1361,6 +1369,7 @@ Module slice.
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.loop (|
+                              Ty.tuple [],
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.alloc (|
@@ -1736,11 +1745,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_partition_hoare_branchy_cyclic :
-          M.IsFunction
+        Global Instance Instance_IsFunction_partition_hoare_branchy_cyclic :
+          M.IsFunction.Trait
             "core::slice::sort::unstable::quicksort::partition_hoare_branchy_cyclic"
             partition_hoare_branchy_cyclic.
-        Smpl Add apply Function_partition_hoare_branchy_cyclic : is_function.
+        Admitted.
+        Global Typeclasses Opaque partition_hoare_branchy_cyclic.
         
         (* StructRecord
           {
@@ -2253,6 +2263,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -2504,6 +2515,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.loop (|
+                        Ty.tuple [],
                         ltac:(M.monadic
                           (let~ is_done : Ty.path "bool" :=
                             M.alloc (|
@@ -2672,11 +2684,12 @@ Module slice.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Axiom Function_partition_lomuto_branchless_cyclic :
-          M.IsFunction
+        Global Instance Instance_IsFunction_partition_lomuto_branchless_cyclic :
+          M.IsFunction.Trait
             "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic"
             partition_lomuto_branchless_cyclic.
-        Smpl Add apply Function_partition_lomuto_branchless_cyclic : is_function.
+        Admitted.
+        Global Typeclasses Opaque partition_lomuto_branchless_cyclic.
         
         (* StructRecord
           {

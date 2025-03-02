@@ -785,8 +785,10 @@ Module Impl_move_binary_format_IndexKind.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_variants : M.IsAssociatedFunction Self "variants" variants.
-  Smpl Add apply AssociatedFunction_variants : is_associated.
+  Global Instance AssociatedFunction_variants :
+    M.IsAssociatedFunction.Trait Self "variants" variants.
+  Admitted.
+  Global Typeclasses Opaque variants.
 End Impl_move_binary_format_IndexKind.
 
 Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.

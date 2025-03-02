@@ -124,8 +124,10 @@ Module Impl_subtle_Choice.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_unwrap_u8 : M.IsAssociatedFunction Self "unwrap_u8" unwrap_u8.
-  Smpl Add apply AssociatedFunction_unwrap_u8 : is_associated.
+  Global Instance AssociatedFunction_unwrap_u8 :
+    M.IsAssociatedFunction.Trait Self "unwrap_u8" unwrap_u8.
+  Admitted.
+  Global Typeclasses Opaque unwrap_u8.
 End Impl_subtle_Choice.
 
 Module Impl_core_convert_From_subtle_Choice_for_bool.
@@ -657,8 +659,9 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Axiom Function_black_box : M.IsFunction "subtle::black_box" black_box.
-Smpl Add apply Function_black_box : is_function.
+Global Instance Instance_IsFunction_black_box : M.IsFunction.Trait "subtle::black_box" black_box.
+Admitted.
+Global Typeclasses Opaque black_box.
 
 Module Impl_core_convert_From_u8_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
@@ -906,6 +909,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                         ltac:(M.monadic
                           (let iter := M.copy (| γ |) in
                           M.loop (|
+                            Ty.tuple [],
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -3924,8 +3928,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+  Admitted.
+  Global Typeclasses Opaque new.
   
   (*
       pub fn expect(self, msg: &str) -> T {
@@ -4116,10 +4123,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_expect :
+  Global Instance AssociatedFunction_expect :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "expect" (expect T).
-  Smpl Add apply AssociatedFunction_expect : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "expect" (expect T).
+  Admitted.
+  Global Typeclasses Opaque expect.
   
   (*
       pub fn unwrap(self) -> T {
@@ -4243,10 +4251,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_unwrap :
+  Global Instance AssociatedFunction_unwrap :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap" (unwrap T).
-  Smpl Add apply AssociatedFunction_unwrap : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "unwrap" (unwrap T).
+  Admitted.
+  Global Typeclasses Opaque unwrap.
   
   (*
       pub fn unwrap_or(self, def: T) -> T
@@ -4293,10 +4302,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_unwrap_or :
+  Global Instance AssociatedFunction_unwrap_or :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap_or" (unwrap_or T).
-  Smpl Add apply AssociatedFunction_unwrap_or : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "unwrap_or" (unwrap_or T).
+  Admitted.
+  Global Typeclasses Opaque unwrap_or.
   
   (*
       pub fn unwrap_or_else<F>(self, f: F) -> T
@@ -4366,10 +4376,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_unwrap_or_else :
+  Global Instance AssociatedFunction_unwrap_or_else :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "unwrap_or_else" (unwrap_or_else T).
-  Smpl Add apply AssociatedFunction_unwrap_or_else : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "unwrap_or_else" (unwrap_or_else T).
+  Admitted.
+  Global Typeclasses Opaque unwrap_or_else.
   
   (*
       pub fn is_some(&self) -> Choice {
@@ -4392,10 +4403,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_is_some :
+  Global Instance AssociatedFunction_is_some :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_some" (is_some T).
-  Smpl Add apply AssociatedFunction_is_some : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "is_some" (is_some T).
+  Admitted.
+  Global Typeclasses Opaque is_some.
   
   (*
       pub fn is_none(&self) -> Choice {
@@ -4432,10 +4444,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_is_none :
+  Global Instance AssociatedFunction_is_none :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "is_none" (is_none T).
-  Smpl Add apply AssociatedFunction_is_none : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "is_none" (is_none T).
+  Admitted.
+  Global Typeclasses Opaque is_none.
   
   (*
       pub fn map<U, F>(self, f: F) -> CtOption<U>
@@ -4552,8 +4565,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
-  Smpl Add apply AssociatedFunction_map : is_associated.
+  Global Instance AssociatedFunction_map :
+    forall (T : Ty.t),
+    M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+  Admitted.
+  Global Typeclasses Opaque map.
   
   (*
       pub fn and_then<U, F>(self, f: F) -> CtOption<U>
@@ -4686,10 +4702,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_and_then :
+  Global Instance AssociatedFunction_and_then :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "and_then" (and_then T).
-  Smpl Add apply AssociatedFunction_and_then : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "and_then" (and_then T).
+  Admitted.
+  Global Typeclasses Opaque and_then.
   
   (*
       pub fn or_else<F>(self, f: F) -> CtOption<T>
@@ -4766,10 +4783,11 @@ Module Impl_subtle_CtOption_T.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom AssociatedFunction_or_else :
+  Global Instance AssociatedFunction_or_else :
     forall (T : Ty.t),
-    M.IsAssociatedFunction (Self T) "or_else" (or_else T).
-  Smpl Add apply AssociatedFunction_or_else : is_associated.
+    M.IsAssociatedFunction.Trait (Self T) "or_else" (or_else T).
+  Admitted.
+  Global Typeclasses Opaque or_else.
 End Impl_subtle_CtOption_T.
 
 Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_T_for_subtle_CtOption_T.
@@ -5172,6 +5190,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5220,6 +5239,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5396,6 +5416,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5444,6 +5465,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5617,6 +5639,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5665,6 +5688,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5838,6 +5862,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -5886,6 +5911,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
           let~ pow : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
           let~ _ : Ty.tuple [] :=
             M.loop (|
+              Ty.tuple [],
               ltac:(M.monadic
                 (M.match_operator (|
                   M.alloc (| Value.Tuple [] |),

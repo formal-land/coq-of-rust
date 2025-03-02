@@ -135,42 +135,45 @@ Module Impl_constructors_return_value_ReturnFlags.
   
   Parameter new_with_reverted : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new_with_reverted :
-    M.IsAssociatedFunction Self "new_with_reverted" new_with_reverted.
-  Smpl Add apply AssociatedFunction_new_with_reverted : is_associated.
+  Global Instance AssociatedFunction_new_with_reverted :
+    M.IsAssociatedFunction.Trait Self "new_with_reverted" new_with_reverted.
+  Admitted.
 End Impl_constructors_return_value_ReturnFlags.
 
 Parameter return_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Axiom Function_return_value : M.IsFunction "constructors_return_value::return_value" return_value.
-Smpl Add apply Function_return_value : is_function.
+Global Instance Instance_IsFunction_return_value :
+  M.IsFunction.Trait "constructors_return_value::return_value" return_value.
+Admitted.
 
 Module Impl_constructors_return_value_ConstructorsReturnValue.
   Definition Self : Ty.t := Ty.path "constructors_return_value::ConstructorsReturnValue".
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-  Smpl Add apply AssociatedFunction_new : is_associated.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Admitted.
   
   Parameter try_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
-  Smpl Add apply AssociatedFunction_try_new : is_associated.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Admitted.
   
   Parameter revert_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_revert_new : M.IsAssociatedFunction Self "revert_new" revert_new.
-  Smpl Add apply AssociatedFunction_revert_new : is_associated.
+  Global Instance AssociatedFunction_revert_new :
+    M.IsAssociatedFunction.Trait Self "revert_new" revert_new.
+  Admitted.
   
   Parameter try_revert_new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_try_revert_new :
-    M.IsAssociatedFunction Self "try_revert_new" try_revert_new.
-  Smpl Add apply AssociatedFunction_try_revert_new : is_associated.
+  Global Instance AssociatedFunction_try_revert_new :
+    M.IsAssociatedFunction.Trait Self "try_revert_new" try_revert_new.
+  Admitted.
   
   Parameter get_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Axiom AssociatedFunction_get_value : M.IsAssociatedFunction Self "get_value" get_value.
-  Smpl Add apply AssociatedFunction_get_value : is_associated.
+  Global Instance AssociatedFunction_get_value :
+    M.IsAssociatedFunction.Trait Self "get_value" get_value.
+  Admitted.
 End Impl_constructors_return_value_ConstructorsReturnValue.

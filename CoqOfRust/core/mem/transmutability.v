@@ -414,9 +414,10 @@ Module mem.
                 ]
             |))).
       
-      Axiom AssociatedConstant_value_NOTHING :
-        M.IsAssociatedConstant Self "value_NOTHING" value_NOTHING.
-      Smpl Add apply AssociatedConstant_value_NOTHING : is_associated.
+      Global Instance AssociatedConstant_value_NOTHING :
+        M.IsAssociatedConstant.Trait Self "value_NOTHING" value_NOTHING.
+      Admitted.
+      Global Typeclasses Opaque value_NOTHING.
       
       (*     pub const ALIGNMENT: Self = Self { alignment: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -429,9 +430,10 @@ Module mem.
                 [ ("alignment", Value.Bool true) ]
             |))).
       
-      Axiom AssociatedConstant_value_ALIGNMENT :
-        M.IsAssociatedConstant Self "value_ALIGNMENT" value_ALIGNMENT.
-      Smpl Add apply AssociatedConstant_value_ALIGNMENT : is_associated.
+      Global Instance AssociatedConstant_value_ALIGNMENT :
+        M.IsAssociatedConstant.Trait Self "value_ALIGNMENT" value_ALIGNMENT.
+      Admitted.
+      Global Typeclasses Opaque value_ALIGNMENT.
       
       (*     pub const LIFETIMES: Self = Self { lifetimes: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -444,9 +446,10 @@ Module mem.
                 [ ("lifetimes", Value.Bool true) ]
             |))).
       
-      Axiom AssociatedConstant_value_LIFETIMES :
-        M.IsAssociatedConstant Self "value_LIFETIMES" value_LIFETIMES.
-      Smpl Add apply AssociatedConstant_value_LIFETIMES : is_associated.
+      Global Instance AssociatedConstant_value_LIFETIMES :
+        M.IsAssociatedConstant.Trait Self "value_LIFETIMES" value_LIFETIMES.
+      Admitted.
+      Global Typeclasses Opaque value_LIFETIMES.
       
       (*     pub const SAFETY: Self = Self { safety: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -459,9 +462,10 @@ Module mem.
                 [ ("safety", Value.Bool true) ]
             |))).
       
-      Axiom AssociatedConstant_value_SAFETY :
-        M.IsAssociatedConstant Self "value_SAFETY" value_SAFETY.
-      Smpl Add apply AssociatedConstant_value_SAFETY : is_associated.
+      Global Instance AssociatedConstant_value_SAFETY :
+        M.IsAssociatedConstant.Trait Self "value_SAFETY" value_SAFETY.
+      Admitted.
+      Global Typeclasses Opaque value_SAFETY.
       
       (*     pub const VALIDITY: Self = Self { validity: true, ..Self::NOTHING }; *)
       (* Ty.path "core::mem::transmutability::Assume" *)
@@ -474,9 +478,10 @@ Module mem.
                 [ ("validity", Value.Bool true) ]
             |))).
       
-      Axiom AssociatedConstant_value_VALIDITY :
-        M.IsAssociatedConstant Self "value_VALIDITY" value_VALIDITY.
-      Smpl Add apply AssociatedConstant_value_VALIDITY : is_associated.
+      Global Instance AssociatedConstant_value_VALIDITY :
+        M.IsAssociatedConstant.Trait Self "value_VALIDITY" value_VALIDITY.
+      Admitted.
+      Global Typeclasses Opaque value_VALIDITY.
       
       (*
           pub const fn and(self, other_assumptions: Self) -> Self {
@@ -573,8 +578,9 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_and : M.IsAssociatedFunction Self "and" and.
-      Smpl Add apply AssociatedFunction_and : is_associated.
+      Global Instance AssociatedFunction_and : M.IsAssociatedFunction.Trait Self "and" and.
+      Admitted.
+      Global Typeclasses Opaque and.
       
       (*
           pub const fn but_not(self, other_assumptions: Self) -> Self {
@@ -679,8 +685,10 @@ Module mem.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_but_not : M.IsAssociatedFunction Self "but_not" but_not.
-      Smpl Add apply AssociatedFunction_but_not : is_associated.
+      Global Instance AssociatedFunction_but_not :
+        M.IsAssociatedFunction.Trait Self "but_not" but_not.
+      Admitted.
+      Global Typeclasses Opaque but_not.
     End Impl_core_mem_transmutability_Assume.
     
     Module Impl_core_ops_arith_Add_for_core_mem_transmutability_Assume.
