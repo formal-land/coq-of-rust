@@ -40,9 +40,7 @@ Module Impl_FnOnce_for_Function2.
       cbn.
       destruct args as [a1 a2].
       with_strategy transparent [φ] cbn.
-      run_symbolic_closure. {
-        apply self.
-      }
+      run_symbolic_closure.
       intros []; run_symbolic.
     }
   Defined.
