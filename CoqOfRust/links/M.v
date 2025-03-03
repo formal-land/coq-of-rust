@@ -1181,7 +1181,13 @@ Ltac prepare_call :=
   end.
 
 Ltac run_symbolic_closure :=
-  unshelve eapply Run.CallClosure; [repeat smpl of_ty | try prepare_call | cbn].
+  unshelve eapply Run.CallClosure; [
+    repeat smpl of_ty |
+    try prepare_call;
+    try match goal with
+    | H : _ |- _ => apply H
+    end |
+  ].
 
 Ltac run_symbolic_closure_auto :=
   unshelve eapply Run.CallClosure; [

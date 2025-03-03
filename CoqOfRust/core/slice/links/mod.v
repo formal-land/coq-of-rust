@@ -17,7 +17,7 @@ Module Impl_Slice.
     }
   *)
   Definition run_get 
-      {T : Set} `{Link T}
+      (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
       (run_SliceIndex_for_Self : SliceIndex.Run I (T := Self T) (Output := Output))
@@ -28,6 +28,10 @@ Module Impl_Slice.
     destruct run_SliceIndex_for_Self.
     destruct get as [get [H_get run_get]].
     run_symbolic.
-    eapply Run.CallPrimitiveGetTraitMethod.
-
+    eapply Run.Rewrite. {
+      (* TODO: fix in the translation *)
+      erewrite IsTraitAssociatedType_eq; admit.
+    }
+    run_symbolic.
+  Admitted.
 End Impl_Slice.
