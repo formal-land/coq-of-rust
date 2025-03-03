@@ -59,7 +59,7 @@ Module CustomInstruction.
         {{ from_base [] [] [ φ instruction ] 🔽 Ref.t Pointer.Kind.Ref Self }}
     }.
 
-  Record Run
+  Class Run
       (Self : Set) `{Link Self}
       (Wire : Set) `{Link Wire}
       (Wire_types : InterpreterTypes.Types.t) `{InterpreterTypes.Types.AreLinks Wire_types}

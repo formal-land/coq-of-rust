@@ -102,5 +102,5 @@ Module Impl_Interpreter.
     destruct set_next_action as [set_next_action [H_set_next_action run_set_next_action]].
     destruct take_next_action as [take_next_action [H_take_next_action run_take_next_action]].
     run_symbolic.
-  Admitted.
+  Defined.
 End Impl_Interpreter.
