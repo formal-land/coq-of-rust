@@ -184,16 +184,6 @@ Module alloy_primitives.
               exact run_clone.
             }
         Defined.
-        Definition getMethod :
-          IsTraitMethod.t "core::clone::Clone" [] []
-          Self 
-          "clone"
-          clone.
-        Proof.
-          eapply IsTraitMethod.Defined.
-          - apply Implements. 
-          - reflexivity.       
-        Qed.
       End Impl_Clone_for_Bytes.
     End bytes_.
   End links.

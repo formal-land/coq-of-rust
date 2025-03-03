@@ -399,7 +399,6 @@ Module Impl_PrecompileError.
     }}.
   Proof.
     run_symbolic.
-    destruct_all Self. 
-    run_symbolic.
+    destruct_all Self; run_symbolic.
   Defined.
 End Impl_PrecompileError.
