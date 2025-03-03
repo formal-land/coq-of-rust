@@ -5,14 +5,12 @@ Require core.links.clone.
 Require core.links.cmp.
 Require core.links.default.
 Require core.links.option.
-Require core.mem.links.mod.
+Require Import core.mem.links.mod.
 Require core.mem.mod.
-Require core.num.links.mod.
+Require Import core.num.links.mod.
 Require Import revm_interpreter.gas.calc.
-Require revm_interpreter.gas.links.calc.
+Require Import revm_interpreter.gas.links.calc.
 Require Import revm_interpreter.gas.
-
-Import Run.
 
 (*
 pub struct MemoryGas {
@@ -131,11 +129,12 @@ Module Impl_MemoryGas.
       }
   }
   *)
-  Definition run_new : {{ gas.Impl_revm_interpreter_gas_MemoryGas.new [] [] [] 🔽 MemoryGas.t }}.
+  Instance run_new :
+    Run.Trait gas.Impl_revm_interpreter_gas_MemoryGas.new [] [] [] MemoryGas.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_new : run_closure.
 
   (*
   pub fn record_new_len(&mut self, new_num: usize) -> Option<u64> {
@@ -150,38 +149,16 @@ Module Impl_MemoryGas.
       Some(self.expansion_cost - cost)
   }
   *)
-  Definition run_record_new_len
+  Instance run_record_new_len
       (self : Ref.t Pointer.Kind.MutRef MemoryGas.t)
       (new_num : Usize.t) :
-    {{
-      gas.Impl_revm_interpreter_gas_MemoryGas.record_new_len [] [] [φ self; φ new_num] 🔽
-      option U64.t
-    }}.
+    Run.Trait
+      gas.Impl_revm_interpreter_gas_MemoryGas.record_new_len [] [] [φ self; φ new_num]
+      (option U64.t).
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_are_equal_bool; run_symbolic.
-    }
-    intros [|[]]; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_closure. {
-        apply calc.run_memory_gas.
-      }
-      intros []; run_symbolic.
-    }
-    intros [|[]]; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_closure. {
-        apply links.mod.run_swap.
-      }
-      intros []; run_symbolic.
-    }
-    intros [|[]]; run_symbolic.
   Defined.
-  Smpl Add apply run_record_new_len : run_closure.
 End Impl_MemoryGas.
 
 (*
@@ -433,6 +410,9 @@ Module Impl_Default_for_Gas.
 End Impl_Default_for_Gas.
 
 Module Impl_Gas.
+  Import Impl_MemoryGas.
+  Import Impl_u64.
+
   Definition Self : Set := Gas.t.
 
   (*
@@ -445,16 +425,12 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition run_new (limit : U64.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] 🔽 Self }}.
+  Instance run_new (limit : U64.t) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.new [] [] [φ limit] Self.
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_closure. {
-      apply Impl_MemoryGas.run_new.
-    }
-    intros []; run_symbolic.
   Defined.
-  Smpl Add apply run_new : run_closure.
 
   (*
       pub const fn new_spent(limit: u64) -> Self {
@@ -466,124 +442,120 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition run_new_spent (limit : U64.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] 🔽 Self }}.
+  Instance run_new_spent (limit : U64.t) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.new_spent [] [] [φ limit] Self.
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_closure. {
-      apply Impl_MemoryGas.run_new.
-    }
-    intros []; run_symbolic.
   Defined.
-  Smpl Add apply run_new_spent : run_closure.
 
   (*
       pub const fn limit(&self) -> u64 {
           self.limit
       }
   *)
-  Definition run_limit (self : Ref.t Pointer.Kind.Ref Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.limit [] [] [φ self] 🔽 U64.t }}.
+  Instance run_limit (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.limit [] [] [φ self] U64.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_limit : run_closure.
 
   (*
       pub const fn memory(&self) -> u64 {
           0
       }
   *)
-  Definition run_memory (self : Ref.t Pointer.Kind.Ref Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.memory [] [] [φ self] 🔽 U64.t }}.
+  Instance run_memory (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.memory [] [] [φ self] U64.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_memory : run_closure.
 
   (*
       pub const fn refunded(&self) -> i64 {
           self.refunded
       }
   *)
-  Definition run_refunded (self : Ref.t Pointer.Kind.Ref Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.refunded [] [] [φ self] 🔽 I64.t }}.
+  Instance run_refunded (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.refunded [] [] [φ self] I64.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_refunded : run_closure.
 
   (*
       pub const fn spent(&self) -> u64 {
           self.limit - self.remaining
       }
   *)
-  Definition run_spent (self : Ref.t Pointer.Kind.Ref Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.spent [] [] [φ self] 🔽 U64.t }}.
+  Instance run_spent (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.spent [] [] [φ self] U64.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_spent : run_closure.
 
   (*
       pub const fn remaining(&self) -> u64 {
           self.remaining
       }
   *)
-  Definition run_remaining (self : Ref.t Pointer.Kind.Ref Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.remaining [] [] [φ self] 🔽 U64.t }}.
+  Instance run_remaining (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.remaining [] [] [φ self] U64.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_remaining : run_closure.
 
   (*
       pub const fn remaining_63_of_64_parts(&self) -> u64 {
           self.remaining - self.remaining / 64
       }
   *)
-  Definition run_remaining_63_of_64_parts (self : Ref.t Pointer.Kind.Ref Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.remaining_63_of_64_parts [] [] [φ self] 🔽 U64.t }}.
+  Instance run_remaining_63_of_64_parts (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.remaining_63_of_64_parts [] [] [φ self] U64.t.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_remaining_63_of_64_parts : run_closure.
 
   (*
       pub fn erase_cost(&mut self, returned: u64) {
           self.remaining += returned;
       }
   *)
-  Definition run_erase_cost (self : Ref.t Pointer.Kind.Ref Self) (returned : U64.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] 🔽 unit }}.
+  Instance run_erase_cost (self : Ref.t Pointer.Kind.Ref Self) (returned : U64.t) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] unit.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_erase_cost : run_closure.
 
   (*
       pub fn spend_all(&mut self) {
           self.remaining = 0;
       }
   *)
-  Definition run_spend_all (self : Ref.t Pointer.Kind.MutRef Self) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.spend_all [] [] [φ self] 🔽 unit }}.
+  Instance run_spend_all (self : Ref.t Pointer.Kind.MutRef Self) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.spend_all [] [] [φ self] unit.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_spend_all : run_closure.
 
   (*
       pub fn record_refund(&mut self, refund: i64) {
           self.refunded += refund;
       }
   *)
-  Definition run_record_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.record_refund [] [] [φ self; φ refund] 🔽 unit }}.
+  Instance run_record_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.record_refund [] [] [φ self; φ refund] unit.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_record_refund : run_closure.
 
   (*
       pub fn set_final_refund(&mut self, is_london: bool) {
@@ -591,28 +563,12 @@ Module Impl_Gas.
           self.refunded = (self.refunded() as u64).min(self.spent() / max_refund_quotient) as i64;
       }
   *)
-  Definition run_set_final_refund (self : Ref.t Pointer.Kind.MutRef Self) (is_london : bool) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [] [φ self; φ is_london] 🔽 unit }}.
+  Instance run_set_final_refund (self : Ref.t Pointer.Kind.MutRef Self) (is_london : bool) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [] [φ self; φ is_london] unit.
   Proof.
+    constructor.
     destruct cmp.Impl_Ord_for_u64.run_min as [min [H_min run_min]].
     run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_are_equal_bool; run_symbolic.
-    }
-    cbn; intros []; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_closure. {
-        apply run_refunded.
-      }
-      intros []; run_symbolic.
-      run_symbolic_closure. {
-        apply run_spent.
-      }
-      intros []; run_symbolic.
-    }
-    intros []; run_symbolic.
   Defined.
 
   (*
@@ -620,12 +576,12 @@ Module Impl_Gas.
           self.refunded = refund;
       }
   *)
-  Definition run_set_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.set_refund [] [] [φ self; φ refund] 🔽 unit }}.
+  Instance run_set_refund (self : Ref.t Pointer.Kind.MutRef Self) (refund : I64.t) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.set_refund [] [] [φ self; φ refund] unit.
   Proof.
+    constructor.
     run_symbolic.
   Defined.
-  Smpl Add apply run_set_refund : run_closure.
 
   (*
       pub fn record_cost(&mut self, cost: u64) -> bool {
@@ -637,21 +593,12 @@ Module Impl_Gas.
         success
     }
   *)
-  Definition run_record_cost (self : Ref.t Pointer.Kind.MutRef Self) (cost : U64.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.record_cost [] [] [φ self; φ cost] 🔽 bool }}.
+  Instance run_record_cost (self : Ref.t Pointer.Kind.MutRef Self) (cost : U64.t) :
+    Run.Trait gas.Impl_revm_interpreter_gas_Gas.record_cost [] [] [φ self; φ cost] bool.
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_closure. {
-      apply num.links.mod.Impl_u64.run_overflowing_sub.
-    }
-    intros []; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_are_equal_bool; run_symbolic.
-    }
-    intros [|[]]; run_symbolic.
   Defined.
-  Smpl Add apply run_record_cost : run_closure.
 
   (*
       pub fn record_memory_expansion(&mut self, new_len: usize) -> MemoryExtensionResult {
@@ -666,25 +613,14 @@ Module Impl_Gas.
           MemoryExtensionResult::Extended
       }
   *)
-  Definition run_record_memory_expansion
+  Instance run_record_memory_expansion
       (self : Ref.t Pointer.Kind.MutRef Self)
       (new_len : Usize.t) :
-    {{ gas.Impl_revm_interpreter_gas_Gas.record_memory_expansion [] [] [φ self; φ new_len] 🔽 MemoryExtensionResult.t }}.
+    Run.Trait
+      gas.Impl_revm_interpreter_gas_Gas.record_memory_expansion [] [] [φ self; φ new_len]
+      MemoryExtensionResult.t.
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_closure. {
-      apply Impl_MemoryGas.run_record_new_len.
-    }
-    intros []; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_closure. {
-        apply Impl_Gas.run_record_cost.
-      }
-      intros []; run_symbolic.
-      run_symbolic_are_equal_bool; run_symbolic.
-    }
-    intros [|[]]; run_symbolic.
   Defined.
-  Smpl Add apply run_record_memory_expansion : run_closure.
 End Impl_Gas.
