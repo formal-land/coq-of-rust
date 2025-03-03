@@ -2,12 +2,12 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.links.clone.
+Require core.links.option.
 Require core.links.default.
 Require Import alloc.links.string.
 Require revm.links.dependencies.
 Import revm.links.dependencies.alloy_primitives.links.bytes_.
 Require Import revm_precompile.interface.
-
 
 Import Run.
 
@@ -402,3 +402,76 @@ Module Impl_PrecompileError.
     destruct_all Self; run_symbolic.
   Defined.
 End Impl_PrecompileError.
+
+Module Impl_Clone_for_PrecompileError.
+  Definition run_clone : clone.Clone.Run_clone PrecompileError.t.
+  Proof.
+  Admitted. 
+  
+End Impl_Clone_for_PrecompileError.
+
+
+Module Impl_PrecompileErrors.
+  Inductive t : Set := 
+  | Error (_ : PrecompileError.t)
+  | Fatal
+      (_ : alloc.links.string.String.t)
+  .
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_precompile::interface::PrecompileErrors";
+    φ x :=
+      match x with
+      | Error γ0 =>
+        Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [φ γ0]
+      | Fatal γ0 => Value.StructTuple "revm_precompile::interface::PrecompileErrors::Fatal" [φ γ0]
+      end
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_precompile::interface::PrecompileErrors").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_Error
+    (γ0 : PrecompileError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [
+      γ0'
+    ] =
+    φ (Error γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Error : of_value.
+
+  Definition of_value_Error
+    (γ0 : PrecompileError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [
+        γ0'
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Error; eassumption. Defined.
+  Smpl Add simple apply of_value_Error : of_value.
+
+  Lemma of_value_with_Fatal
+    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_precompile::interface::PrecompileErrors::Fatal" [
+      γ0'
+    ] =
+    φ (Fatal γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Fatal : of_value.
+
+  Definition of_value_Fatal
+    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_precompile::interface::PrecompileErrors::Fatal" [
+        γ0'
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Fatal; eassumption. Defined.
+  Smpl Add simple apply of_value_Fatal : of_value.
+  
+End Impl_PrecompileErrors.
