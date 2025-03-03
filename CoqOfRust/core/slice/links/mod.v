@@ -23,15 +23,16 @@ Module Impl_Slice.
       (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
       (self : Ref.t Pointer.Kind.Ref (Self T)) 
       (index : I) :
-    {{ slice.Impl_slice_T.get (Φ T) [] [ Φ I ] [ φ self; φ index ] 🔽 option Output }}.
+    {{ slice.Impl_slice_T.get (Φ T) [] [ Φ I ] [ φ self; φ index ] 🔽 option (Ref.t Pointer.Kind.Ref Output)}}.
   Proof.
-    destruct run_SliceIndex_for_I.
+    destruct run_SliceIndex_for_I eqn:?.
     destruct get as [get [H_get run_get]].
     run_symbolic.
     eapply Run.Rewrite. {
-      (* TODO: fix in the translation *)
-      erewrite IsTraitAssociatedType_eq; admit.
+      erewrite IsTraitAssociatedType_eq by eassumption.
+      reflexivity.
     }
-    run_symbolic.
-  Admitted.
+    run_symbolic_closure.
+    intros []; run_symbolic.
+  Defined.
 End Impl_Slice.

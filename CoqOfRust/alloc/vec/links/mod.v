@@ -72,3 +72,22 @@ Module Impl_Deref_for_Vec.
     }
   Defined.
 End Impl_Deref_for_Vec.
+
+Module Impl_alloc_vec_Vec_T_A.
+  Definition Self := Vec.t.
+  (*
+    pub const fn len(&self) -> usize {
+        let len = self.len;
+
+        // SAFETY: The maximum capacity of `Vec<T>` is `isize::MAX` bytes, so the maximum value can
+        // be returned is `usize::checked_div(mem::size_of::<T>()).unwrap_or(usize::MAX)`, which
+        // matches the definition of `T::MAX_SLICE_LEN`.
+        unsafe { intrinsics::assume(len <= T::MAX_SLICE_LEN) };
+
+        len
+    }
+  *)
+  Definition run_len {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
+    {{ vec.Impl_alloc_vec_Vec_T_A.len (Φ T) (Φ A) [] [] [φ self] 🔽 Usize.t }}.
+  Admitted.
+End Impl_alloc_vec_Vec_T_A.

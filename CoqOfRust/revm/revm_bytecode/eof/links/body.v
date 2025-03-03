@@ -244,15 +244,7 @@ Module Impl_EofBody.
   Definition Self : Set := EofBody.t.
 
   (*
-      pub fn code(&self, index: usize) -> Option<Bytes> {
-        if index == 0 {
-            // There should be at least one code section.
-            return Some(self.code.slice(..self.code_section[0]));
-        }
-        self.code_section
-            .get(index)
-            .map(|end| self.code.slice(self.code_section[index - 1]..*end))
-      }
+    pub fn code(&self, index: usize) -> Option<Bytes>
   *)
   Definition run_code (self : Ref.t Pointer.Kind.Ref Self) (index : Usize.t) :
     {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] 🔽 option alloy_primitives.links.bytes_.Bytes.t }}.
@@ -283,38 +275,7 @@ Module Impl_EofBody.
   Admitted.
 
   (*
-  pub fn into_eof(self) -> Eof {
-        // TODO : Add bounds checks.
-        let mut prev_value = 0;
-        let header = EofHeader {
-            types_size: self.types_section.len() as u16 * 4,
-            code_sizes: self
-                .code_section
-                .iter()
-                .map(|x| {
-                    let ret = (x - prev_value) as u16;
-                    prev_value = *x;
-                    ret
-                })
-                .collect(),
-            container_sizes: self
-                .container_section
-                .iter()
-                .map(|x| x.len() as u16)
-                .collect(),
-            data_size: self.data_section.len() as u16,
-            sum_code_sizes: self.code.len(),
-            sum_container_sizes: self.container_section.iter().map(|x| x.len()).sum(),
-        };
-        let mut buffer = Vec::new();
-        header.encode(&mut buffer);
-        self.encode(&mut buffer);
-        Eof {
-            header,
-            body: self,
-            raw: buffer.into(),
-        }
-    }
+    pub fn into_eof(self) -> Eof
   *)
   Definition run_into_eof (self : Self) :
     {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.into_eof [] [] [φ self] 🔽 Eof.t }}.
@@ -329,14 +290,7 @@ Module Impl_EofBody.
   Admitted.
 
   (*
-    pub fn eof_code_section_start(&self, idx: usize) -> Option<usize> {
-      // Starting code section start with 0.
-      let code_offset = self.code_offset;
-      if idx == 0 {
-          return Some(code_offset);
-      }
-      self.code_section.get(idx - 1).map(|i| i + code_offset)
-    }
+    pub fn eof_code_section_start(&self, idx: usize) -> Option<usize> 
   *)
   Definition run_eof_code_section_start (self : Ref.t Pointer.Kind.Ref Self) (idx : Usize.t) :
     {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.eof_code_section_start [] [] [φ self; φ idx] 🔽 option Usize.t }}.
@@ -356,19 +310,7 @@ Module Impl_EofBody.
   Admitted.
 
   (*
-    pub fn encode(&self, buffer: &mut Vec<u8>) {
-      for code_info in &self.code_info {
-          code_info.encode(buffer);
-      }
-
-      buffer.extend_from_slice(&self.code);
-
-      for container_section in &self.container_section {
-          buffer.extend_from_slice(container_section);
-      }
-
-      buffer.extend_from_slice(&self.data_section);
-    }
+    pub fn encode(&self, buffer: &mut Vec<u8>)
   *)
   Definition run_encode (self : Ref.t Pointer.Kind.Ref Self) (buffer : Ref.t Pointer.Kind.MutPointer (Vec.t U8.t Global.t)) :
     {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.encode [] [] [φ self; φ buffer] 🔽 unit }}.
@@ -379,52 +321,6 @@ Module Impl_EofBody.
 Admitted.
 
   (*
-    pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError> {
-      let header_len = header.size();
-      let partial_body_len =
-          header.sum_code_sizes + header.sum_container_sizes + header.types_size as usize;
-      let full_body_len = partial_body_len + header.data_size as usize;
-
-      if input.len() < header_len + partial_body_len {
-          return Err(EofDecodeError::MissingBodyWithoutData);
-      }
-
-      if input.len() > header_len + full_body_len {
-          return Err(EofDecodeError::DanglingData);
-      }
-
-      let mut body = EofBody::default();
-
-      let mut types_input = &input[header_len..];
-      for _ in 0..header.types_count() {
-          let (code_info, local_input) = CodeInfo::decode(types_input)?;
-          types_input = local_input;
-          body.code_info.push(code_info);
-      }
-
-      // Extract code section
-      let start = header_len + header.types_size as usize;
-      body.code_offset = start;
-      let mut code_end = 0;
-      for size in header.code_sizes.iter().map(|x| *x as usize) {
-          code_end += size;
-          body.code_section.push(code_end);
-      }
-      body.code = input.slice(start..start + header.sum_code_sizes);
-
-      // Extract container section
-      let mut start = start + header.sum_code_sizes;
-      for size in header.container_sizes.iter().map(|x| *x as usize) {
-          body.container_section
-              .push(input.slice(start..start + size));
-          start += size;
-      }
-
-      body.data_section = input.slice(start..);
-      body.is_data_filled = body.data_section.len() == header.data_size as usize;
-
-      Ok(body)
-    }
+    pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError>
   *)
-
 End Impl_EofBody.
