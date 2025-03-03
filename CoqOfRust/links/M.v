@@ -1130,7 +1130,7 @@ Ltac prepare_call :=
   end.
 
 Ltac run_symbolic_closure :=
-  unshelve eapply Run.CallClosure; [repeat smpl of_ty | try prepare_call |].
+  unshelve eapply Run.CallClosure; [repeat smpl of_ty | try prepare_call | cbn].
 
 Ltac run_symbolic_closure_auto :=
   unshelve eapply Run.CallClosure; [
@@ -1252,7 +1252,7 @@ Ltac run_symbolic_one_step_immediate :=
   end.
 
 Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | |].
+  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn].
 
 Ltac run_symbolic_are_equal_bool :=
   eapply Run.CallPrimitiveAreEqualBool;
@@ -1269,12 +1269,16 @@ Ltac run_symbolic :=
   progress (repeat (
     run_symbolic_one_step_immediate ||
     smpl run_symbolic ||
+    match goal with
+    | |- context[match Output.Exception.to_exception ?exception with _ => _ end] =>
+      destruct exception; run_symbolic
+    end ||
     (
       (* Automatically handle common lets *)
       run_symbolic_let; [
         run_symbolic
       |];
-      intros [|[]]; run_symbolic
+      intros []; run_symbolic
     )
   )).
 

@@ -171,7 +171,7 @@ Module Impl_MemoryGas.
       }
       intros []; run_symbolic.
     }
-    intros [|[]]; run_symbolic.
+    intros []; run_symbolic.
     run_symbolic_let. {
       run_symbolic.
       run_symbolic_closure. {
@@ -684,7 +684,7 @@ Module Impl_Gas.
       intros []; run_symbolic.
       run_symbolic_are_equal_bool; run_symbolic.
     }
-    intros [|[]]; run_symbolic.
+    intros []; run_symbolic.
   Defined.
   Smpl Add apply run_record_memory_expansion : run_closure.
 End Impl_Gas.
