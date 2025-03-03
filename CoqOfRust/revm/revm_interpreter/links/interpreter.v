@@ -16,6 +16,9 @@ Require Export revm.revm_interpreter.links.interpreter_Interpreter.
 
 (* impl<IW: InterpreterTypes> Interpreter<IW> { *)
 Module Impl_Interpreter.
+  Import Impl_InstructionResult.
+  Import Impl_InterpreterAction.
+
   Definition Self
     (IW : Set) `{Link IW}
     {IW_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks IW_types}
@@ -28,7 +31,7 @@ Module Impl_Interpreter.
   where
       FN: CustomInstruction<Wire = IW, Host = H>,
   *)
-  Definition run_step
+  Instance run_step
       (IW : Set) `{Link IW}
       {IW_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks IW_types}
       (run_InterpreterTypes_for_IW : InterpreterTypes.Run IW IW_types)
@@ -38,16 +41,15 @@ Module Impl_Interpreter.
       (self : Ref.t Pointer.Kind.MutRef (Self IW run_InterpreterTypes_for_IW))
       (instruction_table : Ref.t Pointer.Kind.Ref (array.t FN {| Integer.value := 256 |}))
       (host : Ref.t Pointer.Kind.MutRef H_) :
-    {{
-      interpreter.Impl_revm_interpreter_interpreter_Interpreter_IW.step
-        (Φ IW)
+    Run.Trait
+      (interpreter.Impl_revm_interpreter_interpreter_Interpreter_IW.step (Φ IW))
         []
         [ Φ FN; Φ H_ ]
-        [ φ self; φ instruction_table; φ host ] 🔽
-      unit
-    }}.
+        [ φ self; φ instruction_table; φ host ]
+      unit.
   Proof.
-    run_symbolic.
+    constructor.
+    cbn.
     eapply Run.Rewrite. {
       erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_IW.
       reflexivity.
@@ -70,7 +72,7 @@ Module Impl_Interpreter.
   where
       FN: CustomInstruction<Wire = IW, Host = H>,
   *)
-  Definition run_run
+  Instance run_run
       (IW : Set) `{Link IW}
       {IW_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks IW_types}
       (run_InterpreterTypes_for_IW : InterpreterTypes.Run IW IW_types)
@@ -80,70 +82,25 @@ Module Impl_Interpreter.
       (self : Ref.t Pointer.Kind.MutRef (Self IW run_InterpreterTypes_for_IW))
       (instruction_table : Ref.t Pointer.Kind.Ref (array.t FN {| Integer.value := 256 |}))
       (host : Ref.t Pointer.Kind.MutRef H_) :
-    {{
-      interpreter.Impl_revm_interpreter_interpreter_Interpreter_IW.run
-        (Φ IW)
+    Run.Trait
+      (interpreter.Impl_revm_interpreter_interpreter_Interpreter_IW.run (Φ IW))
         []
         [ Φ FN; Φ H_ ]
-        [ φ self; φ instruction_table; φ host ] 🔽
-      InterpreterAction.t
-    }}.
+        [ φ self; φ instruction_table; φ host ]
+      InterpreterAction.t.
   Proof.
-    run_symbolic.
+    constructor.
+    cbn.
     eapply Run.Rewrite. {
       erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_IW.
       reflexivity.
     }
-    run_symbolic_let. {
-      destruct run_InterpreterTypes_for_IW.
-      destruct run_LoopControl_for_Control.
-      destruct set_next_action as [set_next_action [H_set_next_action run_set_next_action]].
-      run_symbolic.
-    }
-    intros []; run_symbolic.
-    run_symbolic_let. {
-      unshelve eapply Run.Loop; [smpl of_ty | |]. {
-        run_symbolic.
-        destruct run_InterpreterTypes_for_IW.
-        destruct run_LoopControl_for_Control.
-        destruct instruction_result as [instruction_result [H_instruction_result run_instruction_result]].
-        run_symbolic.
-        run_symbolic_closure. {
-          apply Impl_InstructionResult.run_is_continue.
-        }
-        intros []; run_symbolic.
-        run_symbolic_are_equal_bool; run_symbolic.
-        run_symbolic_let. {
-          run_symbolic.
-          run_symbolic_closure. {
-            apply run_step; assumption.
-          }
-          intros []; run_symbolic.
-        }
-        intros []; run_symbolic.
-      }
-      intros []; run_symbolic.
-    }
-    intros []; run_symbolic.
-    run_symbolic_let. {
-      destruct run_InterpreterTypes_for_IW.
-      destruct run_LoopControl_for_Control.
-      destruct take_next_action as [take_next_action [H_take_next_action run_take_next_action]].
-      run_symbolic.
-    }
-    intros []; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_closure. {
-        apply Impl_InterpreterAction.run_is_some.
-      }
-      intros []; run_symbolic.
-      run_symbolic_are_equal_bool; run_symbolic.
-    }
-    intros []; run_symbolic.
     destruct run_InterpreterTypes_for_IW.
     destruct run_LoopControl_for_Control.
+    destruct gas as [gas [H_gas run_gas]].
     destruct instruction_result as [instruction_result [H_instruction_result run_instruction_result]].
+    destruct set_next_action as [set_next_action [H_set_next_action run_set_next_action]].
+    destruct take_next_action as [take_next_action [H_take_next_action run_take_next_action]].
     run_symbolic.
   Admitted.
 End Impl_Interpreter.

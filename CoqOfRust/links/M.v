@@ -883,15 +883,19 @@ Module Run.
   where "{{ e 🔽 R , Output }}" :=
     (t R Output e).
 
-  (* Print CallPrimitiveGetSubPointer.
-  Arguments CallPrimitiveGetSubPointer (R Output)%_type_scope 
-  {H H0} {A Sub_A}%_type_scope {H1} H2 ref_core index 
-  runner k%_function_scope _ _%_function_scope. *)
+  Notation "{{ e 🔽 Output }}" := {{ e 🔽 Output, Output }}.
 
-  Notation "{{ e 🔽 Output }}" := ({{ e 🔽 Output , Output }}).
+  Class Trait
+      (f : PolymorphicFunction.t)
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      (Output : Set) `{Link Output} := {
+    run_f : {{ f ε τ α 🔽 Output, Output }};
+  }.
 End Run.
 
-Import Run.
+Export Run.
 
 Module Primitive.
   (** These primitives are equivalent to the ones in the generated code, except that we are now
@@ -1090,8 +1094,6 @@ Ltac run_symbolic_get_trait_method :=
     end
   |].
 
-Smpl Create run_closure.
-
 Ltac as_of_values elements :=
   match elements with
   | [] => constr:(@nil Value.t)
@@ -1115,18 +1117,48 @@ Ltac as_of_tys elements :=
     )
   end.
 
+Ltac prepare_call_f f :=
+  match f with
+  | ?e ?const =>
+    let e' := prepare_call_f e in
+    let x := fresh "x" in
+    let const' := constr:(
+      let x := OfValue.get_value (value' := const) ltac:(repeat smpl of_value) in
+      φ x
+    ) in
+    let const' := eval cbn in const' in
+    constr:(e' const')
+  | ?e ?ty =>
+    let e' := prepare_call_f e in
+    let ty' := constr:(Φ (OfTy.get_Set (ty' := ty) ltac:(repeat smpl of_ty))) in
+    let ty' := eval cbn in ty' in
+    constr:(e' ty')
+  | _ => constr:(f)
+  end.
+
 (** We put all the parameters of a function call in a form where each element is the image of some
     value of the link side. *)
 Ltac prepare_call :=
-  match goal with
-  | |- {{ ?f ?consts ?tys ?arguments 🔽 _ }} =>
+  with_strategy opaque [Φ] match goal with
+  | |- {{ ?f ?consts ?tys ?arguments 🔽 _, _ }} =>
+    let f' := prepare_call_f f in
+    let f' := eval cbn in f' in
     let consts' := as_of_values consts in
+    let consts' := eval cbn in consts' in
     let tys' := as_of_tys tys in
+    let tys' := eval cbn in tys' in
     let arguments' := as_of_values arguments in
+    let arguments' := eval cbn in arguments' in
+    change f with f';
     change consts with consts';
     change tys with tys';
-    change arguments with arguments';
-    try with_strategy opaque [f Φ] cbn
+    change arguments with arguments'
+  end;
+  match goal with
+  | |- {{ _ 🔽 ?Output }} =>
+    let Output' := fresh "Output'" in
+    let Output' := eval cbn in Output in
+    change Output with Output'
   end.
 
 Ltac run_symbolic_closure :=
@@ -1135,13 +1167,17 @@ Ltac run_symbolic_closure :=
 Ltac run_symbolic_closure_auto :=
   unshelve eapply Run.CallClosure; [
     now repeat smpl of_ty |
-    prepare_call;
-    now (
+    try prepare_call;
+    (
       match goal with
-      | H : _ |- _ => simple apply H
-      end
+      | H : _ |- _ => now simple apply H
+      end ||
+      (
+        unshelve eapply Run.run_f;
+        try typeclasses eauto
+      )
     ) |
-    intros []
+    cbn; intros []
   ].
 
 Smpl Create run_sub_pointer.
@@ -1232,11 +1268,30 @@ Ltac rewrite_cast_integer :=
     |]
   end.
 
+Ltac run_symbolic_let :=
+  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros []].
+
+Ltac run_symbolic_are_equal_bool :=
+  eapply Run.CallPrimitiveAreEqualBool;
+    [now repeat smpl of_value | now repeat smpl of_value | intros []].
+
+Ltac run_symbolic_are_equal_integer :=
+  eapply Run.CallPrimitiveAreEqualInteger;
+    [now repeat smpl of_value | now repeat smpl of_value | intros []].
+
+Ltac run_symbolic_loop :=
+  unshelve eapply Run.Loop; [
+    smpl of_ty |
+    |
+    cbn; intros []
+  ].
+
 Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
     cbn ||
     run_main_rewrites ||
+    rewrite_cast_integer ||
     run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
@@ -1246,21 +1301,14 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_associated_function ||
     run_symbolic_get_trait_method ||
     run_symbolic_closure_auto ||
+    run_symbolic_let ||
     run_sub_pointer ||
     run_rewrites ||
+    run_symbolic_are_equal_bool ||
+    run_symbolic_are_equal_integer ||
+    run_symbolic_loop ||
     fold @LowM.let_
   end.
-
-Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn].
-
-Ltac run_symbolic_are_equal_bool :=
-  eapply Run.CallPrimitiveAreEqualBool;
-    [now repeat smpl of_value | now repeat smpl of_value | intros []].
-
-Ltac run_symbolic_are_equal_integer :=
-  eapply Run.CallPrimitiveAreEqualInteger;
-    [now repeat smpl of_value | now repeat smpl of_value | intros []].
 
 Smpl Create run_symbolic.
 
@@ -1272,14 +1320,7 @@ Ltac run_symbolic :=
     match goal with
     | |- context[match Output.Exception.to_exception ?exception with _ => _ end] =>
       destruct exception; run_symbolic
-    end ||
-    (
-      (* Automatically handle common lets *)
-      run_symbolic_let; [
-        run_symbolic
-      |];
-      intros []; run_symbolic
-    )
+    end
   )).
 
 (** A set of tactics to apply the evaluation rules that:
@@ -1292,7 +1333,7 @@ Module RunTactic.
   (* TODO: extend it to the case where the function is applied to a few polymorphic parameters *)
   Ltac initial_unfold :=
     match goal with
-    | |- {{ ?f _ _ _ 🔽 _ }} =>
+    | |- {{ ?f _ _ _ 🔽 _, _ }} =>
       with_strategy transparent [f] unfold f
     end.
 
@@ -1349,7 +1390,6 @@ Module RunTactic.
       run_symbolic_closure; [
         (* We expect it to succeed to make sure it is the case *)
         (
-          smpl run_closure ||
           match goal with
           | H : _ |- _ => simple apply H
           end
@@ -1411,7 +1451,7 @@ Module Function1.
   Record t {A Output : Set} `{Link A} `{Link Output} : Set := {
     f : list Value.t -> M;
     run : forall (a : A),
-      {{ f [ φ a ] 🔽 Output }};
+      {{ f [ φ a ] 🔽 Output, Output }};
   }.
   Arguments t _ _ {_ _}.
 
@@ -1420,13 +1460,36 @@ Module Function1.
     Φ := Ty.function [Φ A] (Φ Output);
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
+
+  Definition of_ty (ty1 ty2 : Ty.t) :
+    OfTy.t ty1 ->
+    OfTy.t ty2 ->
+    OfTy.t (Ty.function [ty1] ty2).
+  Proof.
+    intros [A] [Output].
+    eapply OfTy.Make with (A := t A Output).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Definition of_run {A Output : Set} `{Link A} `{Link Output}
+      {f : PolymorphicFunction.t}
+      {ε : list Value.t}
+      {τ : list Ty.t}
+      (H_run : forall (a : A), Run.Trait f ε τ [ φ a ] Output) :
+    Function1.t A Output.
+  Proof.
+    econstructor.
+    apply H_run.
+  Defined.
 End Function1.
 
 Module Function2.
   Record t {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output} : Set := {
     f : list Value.t -> M;
     run : forall (a1 : A1) (a2 : A2),
-      {{ f [ φ a1; φ a2 ] 🔽 Output }};
+      {{ f [ φ a1; φ a2 ] 🔽 Output, Output }};
   }.
   Arguments t _ _ _ {_ _ _}.
 
@@ -1448,13 +1511,24 @@ Module Function2.
     reflexivity.
   Defined.
   Smpl Add apply of_ty : of_ty.
+
+  Definition of_run {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output}
+      {f : PolymorphicFunction.t}
+      {ε : list Value.t}
+      {τ : list Ty.t}
+      (H_run : forall (a1 : A1) (a2 : A2), Run.Trait f ε τ [ φ a1; φ a2 ] Output) :
+    Function2.t A1 A2 Output.
+  Proof.
+    econstructor.
+    apply H_run.
+  Defined.
 End Function2.
 
 Module Function3.
   Record t {A1 A2 A3 Output : Set} `{Link A1} `{Link A2} `{Link A3} `{Link Output} : Set := {
     f : list Value.t -> M;
     run : forall (a1 : A1) (a2 : A2) (a3 : A3),
-      {{ f [ φ a1; φ a2; φ a3 ] 🔽 Output }};
+      {{ f [ φ a1; φ a2; φ a3 ] 🔽 Output, Output }};
   }.
   Arguments t _ _ _ _ {_ _ _ _}.
 
@@ -1463,6 +1537,31 @@ Module Function3.
     Φ := Ty.function [Φ A1; Φ A2; Φ A3] (Φ Output);
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
+
+  Definition of_ty (ty1 ty2 ty3 ty4 : Ty.t) :
+    OfTy.t ty1 ->
+    OfTy.t ty2 ->
+    OfTy.t ty3 ->
+    OfTy.t ty4 ->
+    OfTy.t (Ty.function [ty1; ty2; ty3] ty4).
+  Proof.
+    intros [A1] [A2] [A3] [Output].
+    eapply OfTy.Make with (A := t A1 A2 A3 Output).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Definition of_run {A1 A2 A3 Output : Set} `{Link A1} `{Link A2} `{Link A3} `{Link Output}
+      {f : PolymorphicFunction.t}
+      {ε : list Value.t}
+      {τ : list Ty.t}
+      (H_run : forall (a1 : A1) (a2 : A2) (a3 : A3), Run.Trait f ε τ [ φ a1; φ a2; φ a3 ] Output) :
+    Function3.t A1 A2 A3 Output.
+  Proof.
+    econstructor.
+    apply H_run.
+  Defined.
 End Function3.
 
 Module OneElementTuple.

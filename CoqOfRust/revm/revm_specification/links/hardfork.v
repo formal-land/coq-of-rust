@@ -417,33 +417,31 @@ End SpecId.
 Module Impl_SpecId.
   Definition Self : Set := SpecId.t.
 
-  Definition run_n (spec_id : U8.t) :
-    {{
-      hardfork.Impl_revm_specification_hardfork_SpecId.n [] [] [ φ spec_id ] 🔽
-      option Self
-    }}.
+  Instance run_n (spec_id : U8.t) :
+    Run.Trait
+      hardfork.Impl_revm_specification_hardfork_SpecId.n [] [] [ φ spec_id ]
+      (option Self).
   Proof.
-    run.
+    constructor.
+    run_symbolic.
   Defined.
-  Smpl Add simple apply run_n : run_closure.
 
-  Definition run_try_from_u8 (spec_id : U8.t) :
-    {{
-      hardfork.Impl_revm_specification_hardfork_SpecId.try_from_u8 [] [] [ φ spec_id ] 🔽
-      option Self
-    }}.
+  Instance run_try_from_u8 (spec_id : U8.t) :
+    Run.Trait
+      hardfork.Impl_revm_specification_hardfork_SpecId.try_from_u8 [] [] [ φ spec_id ]
+      (option Self).
   Proof.
-    run.
+    constructor.
+    run_symbolic.
   Defined.
-  Smpl Add simple apply run_try_from_u8 : run_closure.
 
-  Definition run_is_enabled_in (self other : Self) :
-    {{
-      hardfork.Impl_revm_specification_hardfork_SpecId.is_enabled_in [] [] [ φ self; φ other ] 🔽
-      bool
-    }}.
+  Instance run_is_enabled_in (self other : Self) :
+    Run.Trait
+      hardfork.Impl_revm_specification_hardfork_SpecId.is_enabled_in [] [] [ φ self; φ other ]
+      bool.
   Proof.
-    run.
+    constructor.
+    run_symbolic.
     change_cast_integer.
     eapply Run.Rewrite. {
       do 2 rewrite SpecId.cast_integer_eq.
@@ -451,5 +449,4 @@ Module Impl_SpecId.
     }
     run_symbolic.
   Defined.
-  Smpl Add simple apply run_is_enabled_in : run_closure.
 End Impl_SpecId.

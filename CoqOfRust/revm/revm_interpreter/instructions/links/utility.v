@@ -5,8 +5,6 @@ Require Import core.convert.links.mod.
 Require Import revm.revm_interpreter.instructions.utility.
 Require Import revm.links.dependencies.
 
-Import Run.
-
 (*
 pub trait IntoAddress {
     fn into_address(self) -> Address;
@@ -45,19 +43,6 @@ Module Impl_IntoAddress_for_U256.
       ).
       destruct from as [from [H_from run_from]].
       run_symbolic.
-      run_symbolic_closure. {
-        apply (
-          ruint.Impl_Uint.run_to_be_bytes
-            {| Integer.value := 256 |}
-            {| Integer.value := 4 |}
-            {| Integer.value := 32 |}
-        ).
-      }
-      intros []; run_symbolic.
-      run_symbolic_closure. {
-        apply alloy_primitives.bits.links.address.Impl_Address.run_from_word.
-      }
-      intros []; run_symbolic.
     }
   Defined.
 
