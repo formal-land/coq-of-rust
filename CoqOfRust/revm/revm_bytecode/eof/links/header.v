@@ -1,13 +1,13 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require alloc.links.alloc.
-Require alloc.links.vec.
+Require alloc.vec.links.mod.
 
 Module EofHeader.
   Record t : Set := {
     types_size: U16.t;
-    code_sizes: alloc.links.vec.Vec.t U16.t alloc.links.alloc.Global.t;
-    container_sizes: alloc.links.vec.Vec.t U16.t alloc.links.alloc.Global.t;
+    code_sizes: alloc.vec.links.mod.Vec.t U16.t alloc.links.alloc.Global.t;
+    container_sizes: alloc.vec.links.mod.Vec.t U16.t alloc.links.alloc.Global.t;
     data_size: U16.t;
     sum_code_sizes: Usize.t;
     sum_container_sizes: Usize.t;
@@ -25,4 +25,8 @@ Module EofHeader.
         ("sum_container_sizes", φ sum_container_sizes)
       ]
   }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_bytecode::eof::header::EofHeader").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
 End EofHeader.
