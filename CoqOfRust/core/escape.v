@@ -171,6 +171,12 @@ Module escape.
         M.read (|
           let~ _ : Ty.tuple [] := M.get_constant "core::escape::escape_ascii_discriminant" in
           M.match_operator (|
+            Some
+              (Ty.tuple
+                [
+                  Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                ]),
             byte,
             [
               fun γ =>
@@ -314,6 +320,15 @@ Module escape.
                       |)
                     |) in
                   M.match_operator (|
+                    Some
+                      (Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ N ]
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                        ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -874,6 +889,7 @@ Module escape.
           (let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -926,6 +942,7 @@ Module escape.
           (let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -978,6 +995,7 @@ Module escape.
           (let c := M.alloc (| c |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -1292,6 +1310,7 @@ Module escape.
                 let~ i : Ty.path "u8" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "u8"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1481,6 +1500,7 @@ Module escape.
                 let~ i : Ty.path "u8" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "u8"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply

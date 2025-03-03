@@ -321,6 +321,7 @@ Module verifier.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.match_operator (|
+                                                Some (Ty.path "alloc::string::String"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -640,6 +641,7 @@ Module verifier.
             M.alloc (| Value.Tuple [] |) in
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -850,6 +852,7 @@ Module verifier.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -920,6 +923,16 @@ Module verifier.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ]
+                                            ]
+                                            (Ty.path "move_binary_format::errors::VMError")),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -1010,6 +1023,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1117,6 +1131,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1221,6 +1236,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1325,6 +1341,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1430,6 +1447,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1533,6 +1551,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1636,6 +1655,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1739,6 +1759,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1844,6 +1865,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1949,6 +1971,7 @@ Module verifier.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

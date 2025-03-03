@@ -21,6 +21,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
+            None,
             β1,
             [
               fun γ =>
@@ -228,6 +229,8 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -304,6 +307,11 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -966,6 +974,7 @@ Module error.
               M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1070,6 +1079,7 @@ Module error.
               M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1263,6 +1273,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -1811,6 +1822,16 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1969,6 +1990,16 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2349,6 +2380,12 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

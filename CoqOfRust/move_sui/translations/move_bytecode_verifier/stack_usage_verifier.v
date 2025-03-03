@@ -141,6 +141,7 @@ Module stack_usage_verifier.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -216,6 +217,7 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -263,6 +265,7 @@ Module stack_usage_verifier.
                                             |) in
                                           let block_id := M.copy (| γ0_0 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -572,6 +575,7 @@ Module stack_usage_verifier.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -641,6 +645,7 @@ Module stack_usage_verifier.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -688,7 +693,9 @@ Module stack_usage_verifier.
                                             |) in
                                           let i := M.copy (| γ0_0 |) in
                                           M.match_operator (|
+                                            None,
                                             M.match_operator (|
+                                              Some (Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -873,6 +880,7 @@ Module stack_usage_verifier.
                                                   let num_pushes := M.copy (| γ0_1 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -916,6 +924,7 @@ Module stack_usage_verifier.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -935,6 +944,7 @@ Module stack_usage_verifier.
                                                             let max_push_size :=
                                                               M.copy (| γ0_0 |) in
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -1035,6 +1045,7 @@ Module stack_usage_verifier.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1124,6 +1135,7 @@ Module stack_usage_verifier.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1231,6 +1243,7 @@ Module stack_usage_verifier.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1337,6 +1350,7 @@ Module stack_usage_verifier.
                                                       ]
                                                     |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -1439,6 +1453,11 @@ Module stack_usage_verifier.
                       ]
                     |)) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1684,6 +1703,7 @@ Module stack_usage_verifier.
             [
               M.read (|
                 M.match_operator (|
+                  Some (Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]),
                   instruction,
                   [
                     fun γ =>
@@ -2969,6 +2989,7 @@ Module stack_usage_verifier.
                         let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "usize"),
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3122,6 +3143,7 @@ Module stack_usage_verifier.
                         let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "usize"),
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3233,6 +3255,7 @@ Module stack_usage_verifier.
                         let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "usize"),
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3386,6 +3409,7 @@ Module stack_usage_verifier.
                         let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "usize"),
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,

@@ -205,6 +205,7 @@ Module array.
                   let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
                     M.copy (|
                       M.match_operator (|
+                        Some (Ty.apply (Ty.path "*const") [] [ T ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply

@@ -618,6 +618,7 @@ Module array.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some (Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -823,12 +824,15 @@ Module array.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                Some (Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let acc := M.copy (| γ |) in
                                       M.match_operator (|
+                                        Some
+                                          (Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc),
                                         M.alloc (| α1 |),
                                         [
                                           fun γ =>
@@ -1407,6 +1411,7 @@ Module array.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some (Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1566,12 +1571,15 @@ Module array.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                Some (Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let acc := M.copy (| γ |) in
                                       M.match_operator (|
+                                        Some
+                                          (Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc),
                                         M.alloc (| α1 |),
                                         [
                                           fun γ =>
@@ -2168,6 +2176,7 @@ Module array.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2270,6 +2279,7 @@ Module array.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply

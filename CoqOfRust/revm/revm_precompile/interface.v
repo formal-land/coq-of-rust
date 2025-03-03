@@ -274,11 +274,13 @@ Module interface.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -455,6 +457,7 @@ Module interface.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_precompile::interface::PrecompileErrors"),
               self,
               [
                 fun γ =>
@@ -544,6 +547,11 @@ Module interface.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -688,6 +696,7 @@ Module interface.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -818,11 +827,13 @@ Module interface.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -888,6 +899,7 @@ Module interface.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -1037,6 +1049,11 @@ Module interface.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -1231,6 +1248,7 @@ Module interface.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_precompile::interface::PrecompileError"),
               self,
               [
                 fun γ =>
@@ -1443,6 +1461,11 @@ Module interface.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -1896,6 +1919,7 @@ Module interface.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -1970,6 +1994,7 @@ Module interface.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -2033,6 +2058,7 @@ Module interface.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -2128,6 +2154,7 @@ Module interface.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -2224,6 +2251,7 @@ Module interface.
             let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>

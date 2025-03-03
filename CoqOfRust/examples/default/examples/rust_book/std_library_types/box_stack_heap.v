@@ -88,6 +88,7 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)

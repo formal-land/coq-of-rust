@@ -494,7 +494,9 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (|
-            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+            M.read (|
+              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -523,12 +525,19 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
+            None,
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
-                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "never"),
+                        M.deref (| M.read (| self |) |),
+                        []
+                      |)
+                    |)
                   |)))
             ]
           |)))
@@ -559,12 +568,19 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
+            None,
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
-                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "never"),
+                        M.deref (| M.read (| self |) |),
+                        []
+                      |)
+                    |)
                   |)))
             ]
           |)))
@@ -594,7 +610,9 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (|
-            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+            M.read (|
+              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -623,12 +641,19 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
+            None,
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
-                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "never"),
+                        M.deref (| M.read (| self |) |),
+                        []
+                      |)
+                    |)
                   |)))
             ]
           |)))
@@ -671,7 +696,9 @@ Module convert.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (|
-            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+            M.read (|
+              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -700,7 +727,9 @@ Module convert.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (|
-            M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+            M.read (|
+              M.match_operator (| Some (Ty.path "never"), M.deref (| M.read (| self |) |), [] |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -755,12 +784,19 @@ Module convert.
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
           M.match_operator (|
+            None,
             β1,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.never_to_any (|
-                    M.read (| M.match_operator (| M.deref (| M.read (| self |) |), [] |) |)
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "never"),
+                        M.deref (| M.read (| self |) |),
+                        []
+                      |)
+                    |)
                   |)))
             ]
           |)))

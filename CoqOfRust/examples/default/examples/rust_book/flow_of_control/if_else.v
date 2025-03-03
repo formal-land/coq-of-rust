@@ -38,6 +38,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ n : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -120,6 +121,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -282,6 +284,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ big_n : Ty.path "i32" :=
           M.copy (|
             M.match_operator (|
+              Some (Ty.path "i32"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

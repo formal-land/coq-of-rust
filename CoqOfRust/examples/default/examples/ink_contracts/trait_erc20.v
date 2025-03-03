@@ -151,6 +151,7 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -230,6 +231,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 self,
                 [
                   fun γ =>
@@ -943,6 +945,7 @@ Module Impl_trait_erc20_Erc20.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1402,6 +1405,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1430,6 +1434,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

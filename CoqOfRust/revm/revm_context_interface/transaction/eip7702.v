@@ -1333,6 +1333,7 @@ Module transaction.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1343,6 +1344,7 @@ Module transaction.
                                   UnOp.not (|
                                     M.read (|
                                       M.match_operator (|
+                                        Some (Ty.path "bool"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "alloy_primitives::signature::parity::Parity",
@@ -1432,6 +1434,7 @@ Module transaction.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

@@ -54,6 +54,7 @@ Module fmt.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String")),
                         M.alloc (| α0 |),
                         [
                           fun γ =>

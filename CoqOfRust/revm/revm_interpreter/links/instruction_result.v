@@ -685,6 +685,7 @@ Module Impl_InstructionResult.
         [] [] [ φ self ]
       bool.
   Proof.
+    constructor.
     (* This file is too slow. There a lot of constructors, and we need to find a way to optimize
        that! *)
     (* Time destruct self; run. *)
@@ -710,10 +711,7 @@ Module Impl_InstructionResult.
   Proof.
     (* This is the only one that is fast in this file, for some reasons! *)
     constructor.
-    destruct self;
-      run_next;
-      RunTactic.unfold_link_in_match;
-      run_next.
+    destruct self; run_symbolic.
   Defined.
 
   (* pub const fn is_revert(self) -> bool *)

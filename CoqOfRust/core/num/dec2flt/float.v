@@ -100,6 +100,7 @@ Module num.
               M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -109,6 +110,7 @@ Module num.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -230,6 +232,7 @@ Module num.
                 let~ sign : Ty.path "i8" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "i8"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -263,6 +266,7 @@ Module num.
                 let~ mantissa : Ty.path "u32" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "u32"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -468,6 +472,7 @@ Module num.
               M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -477,6 +482,7 @@ Module num.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -598,6 +604,7 @@ Module num.
                 let~ sign : Ty.path "i8" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "i8"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -631,6 +638,7 @@ Module num.
                 let~ mantissa : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>

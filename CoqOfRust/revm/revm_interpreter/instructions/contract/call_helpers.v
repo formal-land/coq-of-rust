@@ -34,6 +34,7 @@ Module instructions.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -100,6 +101,11 @@ Module instructions.
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
                             M.copy (|
                               M.match_operator (|
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -248,6 +254,7 @@ Module instructions.
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -418,6 +425,11 @@ Module instructions.
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
                             M.copy (|
                               M.match_operator (|
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -600,6 +612,7 @@ Module instructions.
                   let~ len : Ty.path "usize" :=
                     M.copy (|
                       M.match_operator (|
+                        Some (Ty.path "usize"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -632,6 +645,7 @@ Module instructions.
                               (let x := M.copy (| γ |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -749,6 +763,7 @@ Module instructions.
                   let~ offset : Ty.path "usize" :=
                     M.copy (|
                       M.match_operator (|
+                        Some (Ty.path "usize"),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -769,6 +784,7 @@ Module instructions.
                               let~ offset : Ty.path "usize" :=
                                 M.copy (|
                                   M.match_operator (|
+                                    Some (Ty.path "usize"),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -801,6 +817,7 @@ Module instructions.
                                           (let x := M.copy (| γ |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -952,6 +969,7 @@ Module instructions.
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.path "revm_interpreter::gas::MemoryExtensionResult",
@@ -1213,6 +1231,7 @@ Module instructions.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1318,6 +1337,7 @@ Module instructions.
                   let~ gas_limit : Ty.path "u64" :=
                     M.copy (|
                       M.match_operator (|
+                        Some (Ty.path "u64"),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>

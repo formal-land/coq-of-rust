@@ -348,6 +348,7 @@ Module instruction_result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -1128,6 +1129,7 @@ Module instruction_result.
           (let e := M.alloc (| e |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_interpreter::instruction_result::InstructionResult"),
               e,
               [
                 fun γ =>
@@ -1196,6 +1198,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1274,6 +1277,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1427,6 +1431,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1461,6 +1466,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1548,6 +1554,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1828,6 +1835,7 @@ Module instruction_result.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_interpreter::instruction_result::InstructionResult"),
               value,
               [
                 fun γ =>
@@ -1939,6 +1947,7 @@ Module instruction_result.
           (let value := M.alloc (| value |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_interpreter::instruction_result::InstructionResult"),
               value,
               [
                 fun γ =>
@@ -1951,6 +1960,7 @@ Module instruction_result.
                       |) in
                     let error := M.copy (| γ0_0 |) in
                     M.match_operator (|
+                      Some (Ty.path "revm_interpreter::instruction_result::InstructionResult"),
                       error,
                       [
                         fun γ =>
@@ -2367,6 +2377,7 @@ Module instruction_result.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -2695,6 +2706,11 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                  []
+                  [ HaltReasonT ]),
               self,
               [
                 fun γ =>
@@ -2840,6 +2856,11 @@ Module instruction_result.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -3088,6 +3109,7 @@ Module instruction_result.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -3262,16 +3284,19 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -3355,6 +3380,7 @@ Module instruction_result.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -3480,6 +3506,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -3525,6 +3552,11 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "revm_context_interface::result::SuccessReason" ]),
               self,
               [
                 fun γ =>
@@ -3571,6 +3603,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -3612,6 +3645,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -3657,6 +3691,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ HaltReasonT ]),
               self,
               [
                 fun γ =>
@@ -3829,6 +3864,11 @@ Module instruction_result.
           (let result := M.alloc (| result |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                  []
+                  [ HaltReasonT ]),
               result,
               [
                 fun γ =>

@@ -230,6 +230,7 @@ Module num.
             let~ log : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -304,6 +305,7 @@ Module num.
             let~ log : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -342,6 +344,7 @@ Module num.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -419,6 +422,7 @@ Module num.
                 let~ log : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -478,6 +482,7 @@ Module num.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

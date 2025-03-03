@@ -55,16 +55,19 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                None,
                                 Value.DeclaredButUndefined,
                                 [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                               |)))
@@ -138,6 +141,7 @@ Module num.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
+                        Some (Ty.path "bool"),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -316,16 +320,19 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                None,
                                 Value.DeclaredButUndefined,
                                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                               |)))
@@ -359,6 +366,11 @@ Module num.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                 self,
                 [
                   fun γ =>
@@ -512,6 +524,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "usize"),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -534,6 +547,7 @@ Module num.
                         |) in
                       let v := M.copy (| γ0_0 |) in
                       M.match_operator (|
+                        Some (Ty.path "usize"),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -552,6 +566,7 @@ Module num.
                                   Value.Bool true
                                 |) in
                               M.match_operator (|
+                                Some (Ty.path "usize"),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -573,6 +588,7 @@ Module num.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some (Ty.path "usize"),
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -601,6 +617,7 @@ Module num.
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                Some (Ty.path "usize"),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -699,6 +716,7 @@ Module num.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -723,6 +741,7 @@ Module num.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.deref (| M.read (| self |) |),
                           [
                             fun γ =>
@@ -736,6 +755,7 @@ Module num.
                                 let nzeroes := M.copy (| γ0_0 |) in
                                 M.use
                                   (M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -802,6 +822,7 @@ Module num.
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -882,6 +903,7 @@ Module num.
                                 let v := M.copy (| γ0_0 |) in
                                 M.use
                                   (M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1004,6 +1026,7 @@ Module num.
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1353,6 +1376,7 @@ Module num.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1391,6 +1415,7 @@ Module num.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -1506,6 +1531,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1684,6 +1710,7 @@ Module num.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1723,6 +1750,7 @@ Module num.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1777,6 +1805,7 @@ Module num.
                                             let~ len : Ty.path "usize" :=
                                               M.copy (|
                                                 M.match_operator (|
+                                                  Some (Ty.path "usize"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply

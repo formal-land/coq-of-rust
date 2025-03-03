@@ -49,6 +49,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_bytecode::bytecode::Bytecode"),
               self,
               [
                 fun γ =>
@@ -172,6 +173,11 @@ Module bytecode.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -347,6 +353,7 @@ Module bytecode.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -553,16 +560,19 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -630,6 +640,7 @@ Module bytecode.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -770,6 +781,7 @@ Module bytecode.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -791,6 +803,7 @@ Module bytecode.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
+                      Some (Ty.path "core::cmp::Ordering"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -999,6 +1012,7 @@ Module bytecode.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -1261,6 +1275,16 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
+                  ]),
               M.alloc (| M.borrow (| Pointer.Kind.Ref, self |) |),
               [
                 fun γ =>
@@ -1332,6 +1356,11 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1413,6 +1442,21 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
+                      ]
+                  ]),
               self,
               [
                 fun γ =>
@@ -1454,6 +1498,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1489,6 +1534,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -1731,6 +1777,14 @@ Module bytecode.
                     |)
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_bytecode::bytecode::Bytecode";
+                        Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError"
+                      ]),
                   prefix,
                   [
                     fun γ =>
@@ -1786,6 +1840,7 @@ Module bytecode.
                         let~ eof : Ty.path "revm_bytecode::eof::Eof" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "revm_bytecode::eof::Eof"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -1988,6 +2043,7 @@ Module bytecode.
                         let~ eip7702 : Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "revm_bytecode::eip7702::Eip7702Bytecode"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2205,6 +2261,7 @@ Module bytecode.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]),
                   self,
                   [
                     fun γ =>
@@ -2357,6 +2414,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "alloy_primitives::bytes_::Bytes"),
               self,
               [
                 fun γ =>
@@ -2450,6 +2508,8 @@ Module bytecode.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                   self,
                   [
                     fun γ =>
@@ -2580,6 +2640,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "alloy_primitives::bytes_::Bytes"),
               self,
               [
                 fun γ =>
@@ -2760,6 +2821,8 @@ Module bytecode.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                   self,
                   [
                     fun γ =>

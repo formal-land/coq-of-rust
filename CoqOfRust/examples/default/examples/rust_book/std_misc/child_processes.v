@@ -90,6 +90,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                (Ty.path "std::process::Output")),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -171,6 +175,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.match_operator (|
+          Some (Ty.tuple []),
           M.alloc (| Value.Tuple [] |),
           [
             fun γ =>

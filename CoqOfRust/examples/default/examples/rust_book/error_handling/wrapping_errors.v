@@ -36,6 +36,11 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
         let f := M.alloc (| f |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
             self,
             [
               fun γ =>
@@ -139,6 +144,11 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
         let f := M.alloc (| f |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -273,6 +283,11 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]),
             M.deref (| M.read (| self |) |),
             [
               fun γ =>
@@ -356,6 +371,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -537,6 +553,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             let~ parsed : Ty.path "i32" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "i32"),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -679,6 +696,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let result := M.alloc (| result |) in
       M.read (|
         M.match_operator (|
+          Some (Ty.tuple []),
           result,
           [
             fun γ =>
@@ -825,6 +843,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

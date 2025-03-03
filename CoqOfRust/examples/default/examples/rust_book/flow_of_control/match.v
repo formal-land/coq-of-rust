@@ -106,6 +106,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             number,
             [
               fun γ =>
@@ -310,6 +311,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ binary : Ty.path "i32" :=
           M.copy (|
             M.match_operator (|
+              Some (Ty.path "i32"),
               boolean,
               [
                 fun γ =>

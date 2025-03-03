@@ -237,6 +237,7 @@ Module num.
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -294,6 +295,7 @@ Module num.
                                   |)
                                 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -535,11 +537,13 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          None,
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                         |)))
@@ -642,11 +646,13 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          None,
                           Value.DeclaredButUndefined,
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)))

@@ -151,6 +151,7 @@ Module Impl_core_clone_Clone_for_mother_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -244,6 +245,7 @@ Module Impl_core_cmp_Eq_for_mother_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -481,6 +483,7 @@ Module Impl_core_cmp_Eq_for_mother_Bids.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -707,6 +710,7 @@ Module Impl_core_clone_Clone_for_mother_Outline.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            Some (Ty.path "mother::Outline"),
             self,
             [
               fun γ =>
@@ -829,6 +833,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
+                    Some (Ty.path "bool"),
                     M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                     [
                       fun γ =>
@@ -979,11 +984,13 @@ Module Impl_core_cmp_Eq_for_mother_Status.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
+                    None,
                     Value.DeclaredButUndefined,
                     [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                   |)))
@@ -1014,6 +1021,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            Some (Ty.path "mother::Status"),
             self,
             [
               fun γ =>
@@ -1427,36 +1435,43 @@ Module Impl_core_cmp_Eq_for_mother_Auction.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
+                    None,
                     Value.DeclaredButUndefined,
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            None,
                             Value.DeclaredButUndefined,
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    None,
                                     Value.DeclaredButUndefined,
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
+                                            None,
                                             Value.DeclaredButUndefined,
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
+                                                    None,
                                                     Value.DeclaredButUndefined,
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
+                                                            None,
                                                             Value.DeclaredButUndefined,
                                                             [
                                                               fun γ =>
@@ -1918,6 +1933,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
+                    Some (Ty.path "bool"),
                     M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                     [
                       fun γ =>
@@ -1992,6 +2008,7 @@ Module Impl_core_cmp_Eq_for_mother_Failure.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
@@ -2271,6 +2288,11 @@ Module Impl_mother_Mother.
         (let fail := M.alloc (| fail |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "mother::Mother"; Ty.path "mother::Failure" ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2424,6 +2446,11 @@ Module Impl_mother_Mother.
         let fail := M.alloc (| fail |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "mother::Failure" ]),
             fail,
             [
               fun γ =>

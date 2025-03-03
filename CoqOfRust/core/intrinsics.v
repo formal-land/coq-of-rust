@@ -738,6 +738,7 @@ Module intrinsics.
         (let b := M.alloc (| b |) in
         M.read (|
           M.match_operator (|
+            Some (Ty.tuple []),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -815,6 +816,7 @@ Module intrinsics.
         let false_val := M.alloc (| false_val |) in
         M.read (|
           M.match_operator (|
+            Some T,
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2282,6 +2284,7 @@ Module intrinsics.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2395,6 +2398,7 @@ Module intrinsics.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2488,6 +2492,7 @@ Module intrinsics.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

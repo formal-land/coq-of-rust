@@ -602,7 +602,7 @@ Module marker.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let β1 := M.alloc (| β1 |) in
-          M.match_operator (| β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
+          M.match_operator (| None, β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -389,21 +389,25 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                None,
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        None,
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
@@ -607,6 +611,11 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                 self,
                 [
                   fun γ =>
@@ -859,6 +868,11 @@ Module task.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]),
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.MutRef,
@@ -1240,6 +1254,7 @@ Module task.
               let~ ext : Ty.path "core::task::wake::ExtData" :=
                 M.copy (|
                   M.match_operator (|
+                    Some (Ty.path "core::task::wake::ExtData"),
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -1413,6 +1428,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 self,
                 [
                   fun γ =>
@@ -1727,6 +1743,7 @@ Module task.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::task::wake::Waker",
@@ -1750,6 +1767,7 @@ Module task.
                       let a_data := M.copy (| γ0_0 |) in
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
+                        None,
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::Waker",
@@ -2004,6 +2022,7 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2518,6 +2537,7 @@ Module task.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::task::wake::LocalWaker",
@@ -2541,6 +2561,7 @@ Module task.
                       let a_data := M.copy (| γ0_0 |) in
                       let a_vtable := M.copy (| γ0_1 |) in
                       M.match_operator (|
+                        None,
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::LocalWaker",
@@ -2795,6 +2816,7 @@ Module task.
             let source := M.alloc (| source |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

@@ -58,16 +58,19 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          None,
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  None,
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                                 |)))
@@ -413,16 +416,19 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          None,
                           Value.DeclaredButUndefined,
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  None,
                                   Value.DeclaredButUndefined,
                                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                 |)))
@@ -581,6 +587,7 @@ Module num.
                         |)
                       |) in
                     M.match_operator (|
+                      Some (Ty.apply (Ty.path "core::option::Option") [] [ F ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -609,6 +616,7 @@ Module num.
                             let~ value : F :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some F,
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -660,6 +668,7 @@ Module num.
                                             |)
                                           |) in
                                         M.match_operator (|
+                                          Some F,
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -790,6 +799,7 @@ Module num.
                                         let~ mantissa : Ty.path "u64" :=
                                           M.copy (|
                                             M.match_operator (|
+                                              Some (Ty.path "u64"),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -908,6 +918,7 @@ Module num.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -997,6 +1008,7 @@ Module num.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>

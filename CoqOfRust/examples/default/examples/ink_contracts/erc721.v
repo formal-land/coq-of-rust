@@ -199,6 +199,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -1385,6 +1386,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1457,6 +1459,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1560,6 +1563,7 @@ Module Impl_erc721_Erc721.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1745,6 +1749,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1844,6 +1849,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1913,6 +1919,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2051,6 +2058,7 @@ Module Impl_erc721_Erc721.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2199,6 +2207,7 @@ Module Impl_erc721_Erc721.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
+                None,
                 self,
                 [
                   fun γ =>
@@ -2220,6 +2229,7 @@ Module Impl_erc721_Erc721.
                       let owned_tokens_count := M.alloc (| γ1_1 |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2274,6 +2284,7 @@ Module Impl_erc721_Erc721.
                       let~ count : Ty.path "u32" :=
                         M.copy (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -2367,6 +2378,10 @@ Module Impl_erc721_Erc721.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
+                                                      Some
+                                                        (Ty.function
+                                                          [ Ty.tuple [ Ty.path "u32" ] ]
+                                                          (Ty.path "u32")),
                                                       M.alloc (| α0 |),
                                                       [
                                                         fun γ =>
@@ -2613,6 +2628,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2757,6 +2773,7 @@ Module Impl_erc721_Erc721.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2919,6 +2936,7 @@ Module Impl_erc721_Erc721.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

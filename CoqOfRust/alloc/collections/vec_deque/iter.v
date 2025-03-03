@@ -379,6 +379,11 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -561,6 +566,14 @@ Module collections.
                     |)
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]),
                   remaining,
                   [
                     fun γ =>
@@ -811,6 +824,7 @@ Module collections.
                     let~ acc : B :=
                       M.copy (|
                         M.match_operator (|
+                          Some B,
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -1024,6 +1038,7 @@ Module collections.
                     |)
                   |) in
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ T ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1139,6 +1154,11 @@ Module collections.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ T ] ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1281,6 +1301,14 @@ Module collections.
               let n := M.alloc (| n |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1521,6 +1549,7 @@ Module collections.
                     let~ acc : B :=
                       M.copy (|
                         M.match_operator (|
+                          Some B,
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply

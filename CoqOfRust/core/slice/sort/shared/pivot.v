@@ -65,6 +65,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -145,6 +146,7 @@ Module slice.
                     |)
                   |) in
                 M.match_operator (|
+                  Some (Ty.path "usize"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -286,6 +288,7 @@ Module slice.
               M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -586,6 +589,7 @@ Module slice.
                     |)
                   |) in
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "*const") [] [ T ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -627,6 +631,7 @@ Module slice.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.apply (Ty.path "*const") [] [ T ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>

@@ -1118,6 +1118,11 @@ Module ascii.
             (let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1203,6 +1208,11 @@ Module ascii.
             (let d := M.alloc (| d |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1267,6 +1277,7 @@ Module ascii.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1762,7 +1773,17 @@ Module ascii.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.match_operator (|
+                  Some
+                    (Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                        Ty.path "usize"
+                      ]),
                   self,
                   [
                     fun γ =>

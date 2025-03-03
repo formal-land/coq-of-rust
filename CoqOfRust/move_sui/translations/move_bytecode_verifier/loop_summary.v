@@ -33,6 +33,7 @@ Module loop_summary.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -170,6 +171,7 @@ Module loop_summary.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -964,6 +966,11 @@ Module loop_summary.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                        (Ty.path
+                                          "move_bytecode_verifier::loop_summary::new::Frontier")),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -990,6 +997,7 @@ Module loop_summary.
                 Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1024,6 +1032,7 @@ Module loop_summary.
                             |) in
                           let action := M.copy (| γ0_0 |) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             action,
                             [
                               fun γ =>
@@ -1233,6 +1242,7 @@ Module loop_summary.
                                   let from_node := M.copy (| γ0_0 |) in
                                   let to_block := M.copy (| γ0_1 |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1275,6 +1285,7 @@ Module loop_summary.
                                             |) in
                                           let entry := M.copy (| γ0_0 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -1926,6 +1937,19 @@ Module loop_summary.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
+                                                                  Some
+                                                                    (Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "u16" ]
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.path
+                                                                        "move_bytecode_verifier::loop_summary::new::Frontier")),
                                                                   M.alloc (| α0 |),
                                                                   [
                                                                     fun γ =>
@@ -2008,6 +2032,7 @@ Module loop_summary.
           let β1 := M.alloc (| β1 |) in
           let β2 := M.alloc (| β2 |) in
           M.match_operator (|
+            None,
             β1,
             [
               fun γ =>
@@ -2020,6 +2045,7 @@ Module loop_summary.
                     |) in
                   let ancestor := M.copy (| γ0_0 |) in
                   M.match_operator (|
+                    None,
                     β2,
                     [
                       fun γ =>
@@ -2155,6 +2181,10 @@ Module loop_summary.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [ Ty.tuple [ Ty.path "usize" ] ]
+                              (Ty.path "move_bytecode_verifier::loop_summary::NodeId")),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -2532,6 +2562,11 @@ Module loop_summary.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [ Ty.tuple [ Ty.path "usize" ] ]
+                                            (Ty.path
+                                              "move_bytecode_verifier::loop_summary::NodeId")),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -2641,6 +2676,7 @@ Module loop_summary.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2749,6 +2785,7 @@ Module loop_summary.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          None,
                           M.alloc (|
                             Value.Tuple
                               [
@@ -2791,6 +2828,7 @@ Module loop_summary.
                           ]
                         |) in
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2828,6 +2866,7 @@ Module loop_summary.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2864,6 +2903,7 @@ Module loop_summary.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2990,6 +3030,7 @@ Module loop_summary.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2998,6 +3039,7 @@ Module loop_summary.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             Value.Tuple
                               [
@@ -3034,6 +3076,7 @@ Module loop_summary.
                                 let left_val := M.copy (| γ0_0 |) in
                                 let right_val := M.copy (| γ0_1 |) in
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -3154,6 +3197,7 @@ Module loop_summary.
             let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3192,6 +3236,7 @@ Module loop_summary.
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -3242,6 +3287,7 @@ Module loop_summary.
                                       let constituent := M.copy (| γ0_0 |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -3254,6 +3300,7 @@ Module loop_summary.
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (|
                                                       Value.Tuple
                                                         [
@@ -3306,6 +3353,7 @@ Module loop_summary.
                                                           let left_val := M.copy (| γ0_0 |) in
                                                           let right_val := M.copy (| γ0_1 |) in
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -3878,6 +3926,7 @@ Module loop_summary.
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           M.match_operator (|
+            None,
             β0,
             [
               fun γ =>

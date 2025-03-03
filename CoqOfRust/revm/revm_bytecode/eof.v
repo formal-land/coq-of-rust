@@ -409,16 +409,19 @@ Module eof.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -568,6 +571,7 @@ Module eof.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -615,6 +619,7 @@ Module eof.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
+                      Some (Ty.path "core::cmp::Ordering"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -740,6 +745,7 @@ Module eof.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -793,6 +799,11 @@ Module eof.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
+                      Some
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1506,6 +1517,26 @@ Module eof.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  Some
+                                    (Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ]
+                                      ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ])),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -1815,7 +1846,17 @@ Module eof.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
+                  None,
                   M.match_operator (|
+                    Some
+                      (Ty.tuple
+                        [
+                          Ty.path "revm_bytecode::eof::header::EofHeader";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2040,6 +2081,7 @@ Module eof.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2122,6 +2164,7 @@ Module eof.
                         let~ body : Ty.path "revm_bytecode::eof::body::EofBody" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "revm_bytecode::eof::body::EofBody"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2298,7 +2341,17 @@ Module eof.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
+                  None,
                   M.match_operator (|
+                    Some
+                      (Ty.tuple
+                        [
+                          Ty.path "revm_bytecode::eof::header::EofHeader";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2491,6 +2544,7 @@ Module eof.
                         let~ body : Ty.path "revm_bytecode::eof::body::EofBody" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "revm_bytecode::eof::body::EofBody"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2825,6 +2879,7 @@ Module eof.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -3445,6 +3500,7 @@ Module eof.
             let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>

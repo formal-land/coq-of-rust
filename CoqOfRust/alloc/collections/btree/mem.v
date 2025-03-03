@@ -31,6 +31,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some (Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ])),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -105,6 +106,7 @@ Module collections.
                   |)
                 |) in
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ T; R ],

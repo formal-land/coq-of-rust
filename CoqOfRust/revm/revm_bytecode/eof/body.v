@@ -852,26 +852,31 @@ Module eof.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                None,
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        None,
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
+                                                None,
                                                 Value.DeclaredButUndefined,
                                                 [
                                                   fun γ =>
@@ -1134,6 +1139,7 @@ Module eof.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "core::cmp::Ordering"),
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -1187,6 +1193,7 @@ Module eof.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
+                        Some (Ty.path "core::cmp::Ordering"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
@@ -1237,6 +1244,7 @@ Module eof.
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                               M.match_operator (|
+                                Some (Ty.path "core::cmp::Ordering"),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "core::cmp::Ordering",
@@ -1285,6 +1293,7 @@ Module eof.
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                       M.match_operator (|
+                                        Some (Ty.path "core::cmp::Ordering"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.path "core::cmp::Ordering",
@@ -1342,6 +1351,7 @@ Module eof.
                                                   "core::cmp::Ordering::Equal"
                                                 |) in
                                               M.match_operator (|
+                                                Some (Ty.path "core::cmp::Ordering"),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.path "core::cmp::Ordering",
@@ -1491,6 +1501,8 @@ Module eof.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -1558,6 +1570,11 @@ Module eof.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1622,6 +1639,11 @@ Module eof.
                                 |) in
                               let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.match_operator (|
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1682,6 +1704,11 @@ Module eof.
                                           "core::cmp::Ordering::Equal"
                                         |) in
                                       M.match_operator (|
+                                        Some
+                                          (Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -1756,6 +1783,11 @@ Module eof.
                                                   "core::cmp::Ordering::Equal"
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ]),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -1930,6 +1962,7 @@ Module eof.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2100,6 +2133,11 @@ Module eof.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                        ]
+                                        (Ty.path "alloy_primitives::bytes_::Bytes")),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -2380,6 +2418,14 @@ Module eof.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
+                                            Some
+                                              (Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                                                    ]
+                                                ]
+                                                (Ty.path "u16")),
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>
@@ -2579,6 +2625,19 @@ Module eof.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
+                                            Some
+                                              (Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.path "alloy_primitives::bytes_::Bytes"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "u16")),
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>
@@ -2856,6 +2915,19 @@ Module eof.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
+                                            Some
+                                              (Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.path "alloy_primitives::bytes_::Bytes"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "usize")),
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>
@@ -3024,6 +3096,7 @@ Module eof.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3148,6 +3221,7 @@ Module eof.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -3195,6 +3269,7 @@ Module eof.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3354,6 +3429,7 @@ Module eof.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -3401,6 +3477,7 @@ Module eof.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3730,6 +3807,7 @@ Module eof.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3803,6 +3881,7 @@ Module eof.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3978,6 +4057,7 @@ Module eof.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -4024,6 +4104,7 @@ Module eof.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -4070,7 +4151,23 @@ Module eof.
                                                 0
                                               |) in
                                             M.match_operator (|
+                                              None,
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "revm_bytecode::eof::types_section::TypesSection";
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ]
+                                                    ]),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -4318,6 +4415,7 @@ Module eof.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4429,6 +4527,14 @@ Module eof.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              Some
+                                                (Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                                                      ]
+                                                  ]
+                                                  (Ty.path "usize")),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -4455,6 +4561,7 @@ Module eof.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -4614,6 +4721,7 @@ Module eof.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4725,6 +4833,14 @@ Module eof.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              Some
+                                                (Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                                                      ]
+                                                  ]
+                                                  (Ty.path "usize")),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -4751,6 +4867,7 @@ Module eof.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply

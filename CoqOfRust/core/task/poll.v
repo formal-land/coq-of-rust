@@ -50,6 +50,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]),
                 self,
                 [
                   fun γ =>
@@ -116,6 +117,11 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                 self,
                 [
                   fun γ =>
@@ -211,6 +217,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -284,6 +291,7 @@ Module task.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
+                        Some (Ty.path "bool"),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -381,6 +389,7 @@ Module task.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.path "core::cmp::Ordering"),
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -410,6 +419,7 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
+                        Some (Ty.path "core::cmp::Ordering"),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -518,6 +528,8 @@ Module task.
                   |)
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                 [
                   fun γ =>
@@ -653,6 +665,7 @@ Module task.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.tuple []),
                 self,
                 [
                   fun γ =>
@@ -723,6 +736,7 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ]),
                 self,
                 [
                   fun γ =>
@@ -782,6 +796,7 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "bool"),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -867,6 +882,11 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]),
                 self,
                 [
                   fun γ =>
@@ -964,6 +984,11 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]),
                 self,
                 [
                   fun γ =>
@@ -1075,6 +1100,16 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -1207,6 +1242,16 @@ Module task.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -1413,6 +1458,17 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "core::convert::Infallible"; E ];
+                      Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -1512,6 +1568,11 @@ Module task.
             (let x := M.alloc (| x |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]),
                 x,
                 [
                   fun γ =>
@@ -1642,6 +1703,13 @@ Module task.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
+                                (Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ])),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1695,6 +1763,20 @@ Module task.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "core::convert::Infallible"; E ];
+                      Ty.apply
+                        (Ty.path "core::task::poll::Poll")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                    ]),
                 self,
                 [
                   fun γ =>
@@ -1833,6 +1915,16 @@ Module task.
             (let x := M.alloc (| x |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                    ]),
                 x,
                 [
                   fun γ =>

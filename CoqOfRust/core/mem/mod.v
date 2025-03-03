@@ -14,6 +14,7 @@ Module mem.
         (let t := M.alloc (| t |) in
         M.read (|
           M.match_operator (|
+            None,
             M.alloc (|
               M.call_closure (|
                 Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
@@ -363,6 +364,7 @@ Module mem.
             |) in
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -588,6 +590,7 @@ Module mem.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -653,6 +656,7 @@ Module mem.
               ]
             |) in
           M.match_operator (|
+            Some Dst,
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

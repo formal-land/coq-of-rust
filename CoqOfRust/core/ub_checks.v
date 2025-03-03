@@ -18,6 +18,7 @@ Module hint.
         ltac:(M.monadic
           (M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -68,6 +69,7 @@ Module hint.
           (let cond := M.alloc (| cond |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -124,6 +126,7 @@ Module intrinsics.
           let count := M.alloc (| count |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -220,6 +223,7 @@ Module intrinsics.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -300,6 +304,7 @@ Module intrinsics.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -370,6 +375,7 @@ Module ptr.
           let count := M.alloc (| count |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -466,6 +472,7 @@ Module ptr.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -531,6 +538,7 @@ Module ptr.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -596,6 +604,7 @@ Module ptr.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -664,6 +673,7 @@ Module ptr.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -729,6 +739,7 @@ Module ptr.
           let align := M.alloc (| align |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -933,6 +944,7 @@ Module ub_checks.
           let~ max_len : Ty.path "usize" :=
             M.copy (|
               M.match_operator (|
+                Some (Ty.path "usize"),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1103,6 +1115,7 @@ Module ub_checks.
                 |)
               |) in
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -1154,21 +1167,25 @@ Module ub_checks.
           let β2 := M.alloc (| β2 |) in
           let β3 := M.alloc (| β3 |) in
           M.match_operator (|
+            None,
             β0,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
+                    None,
                     β1,
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            None,
                             β2,
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    None,
                                     β3,
                                     [ fun γ => ltac:(M.monadic (Value.Bool true)) ]
                                   |)))
@@ -1207,6 +1224,7 @@ Module char.
             (let i := M.alloc (| i |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1308,6 +1326,7 @@ Module slice.
             let len := M.alloc (| len |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1392,6 +1411,7 @@ Module slice.
             let len := M.alloc (| len |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

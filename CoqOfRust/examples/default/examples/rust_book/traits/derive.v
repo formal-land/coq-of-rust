@@ -199,6 +199,7 @@ Module Impl_derive_Inches.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             self,
             [
               fun γ =>
@@ -345,6 +346,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ cmp : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           M.copy (|
             M.match_operator (|
+              Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

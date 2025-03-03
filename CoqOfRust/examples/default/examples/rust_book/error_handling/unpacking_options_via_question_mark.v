@@ -24,11 +24,13 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [
               fun γ =>
                 ltac:(M.monadic
                   (M.match_operator (|
+                    None,
                     Value.DeclaredButUndefined,
                     [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                   |)))
@@ -85,6 +87,7 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -149,6 +152,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
             (M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.match_operator (|
+                  Some (Ty.path "unpacking_options_via_question_mark::PhoneNumber"),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -177,6 +181,7 @@ Module Impl_unpacking_options_via_question_mark_Person.
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.match_operator (|
+                              Some (Ty.path "unpacking_options_via_question_mark::Job"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -386,6 +391,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             M.alloc (|
               Value.Tuple
                 [
@@ -422,6 +428,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let left_val := M.copy (| γ0_0 |) in
                   let right_val := M.copy (| γ0_1 |) in
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

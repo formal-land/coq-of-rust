@@ -76,6 +76,10 @@ Module instruction_consistency.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                              (Ty.path "move_binary_format::errors::VMError")),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -155,6 +159,7 @@ Module instruction_consistency.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -275,6 +280,7 @@ Module instruction_consistency.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -345,6 +351,7 @@ Module instruction_consistency.
                                           let idx := M.copy (| γ1_0 |) in
                                           let func_def := M.copy (| γ1_1 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -398,6 +405,7 @@ Module instruction_consistency.
                                                         ]
                                                     |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -661,6 +669,7 @@ Module instruction_consistency.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -788,6 +797,7 @@ Module instruction_consistency.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -858,6 +868,7 @@ Module instruction_consistency.
                                           let offset := M.copy (| γ1_0 |) in
                                           let instr := M.copy (| γ1_1 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             instr,
                                             [
                                               fun γ =>
@@ -872,6 +883,7 @@ Module instruction_consistency.
                                                   let field_handle_index := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1068,6 +1080,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1223,6 +1236,7 @@ Module instruction_consistency.
                                                   let field_handle_index := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1419,6 +1433,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1574,6 +1589,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1766,6 +1782,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1921,6 +1938,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2113,6 +2131,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2268,6 +2287,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2460,6 +2480,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2615,6 +2636,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2807,6 +2829,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2962,6 +2985,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3154,6 +3178,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3309,6 +3334,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3501,6 +3527,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3656,6 +3683,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3848,6 +3876,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4003,6 +4032,7 @@ Module instruction_consistency.
                                                   let idx := M.alloc (| γ1_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4195,6 +4225,7 @@ Module instruction_consistency.
                                                     |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -4384,6 +4415,7 @@ Module instruction_consistency.
                                                         | [ num ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -5312,6 +5344,7 @@ Module instruction_consistency.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -5484,6 +5517,7 @@ Module instruction_consistency.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

@@ -120,6 +120,7 @@ Module reference_safety.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -337,6 +338,7 @@ Module reference_safety.
                               |)
                             |) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -463,6 +465,7 @@ Module reference_safety.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -681,6 +684,7 @@ Module reference_safety.
                               |)
                             |) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1214,6 +1218,22 @@ Module reference_safety.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
+                                          Some
+                                            (Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ]
+                                                  ]
+                                              ]
+                                              (Ty.path
+                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -1292,6 +1312,14 @@ Module reference_safety.
                     ] :=
                 M.copy (|
                   M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [
+                          Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                          Ty.path "alloc::alloc::Global"
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1430,6 +1458,14 @@ Module reference_safety.
                               |)
                             |) in
                           M.match_operator (|
+                            Some
+                              (Ty.apply
+                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                  Ty.path "alloc::alloc::Global"
+                                ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1730,6 +1766,15 @@ Module reference_safety.
                     ] :=
                 M.copy (|
                   M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path
+                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
+                          Ty.path "alloc::alloc::Global"
+                        ]),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1879,6 +1924,7 @@ Module reference_safety.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1917,6 +1963,7 @@ Module reference_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -1968,6 +2015,7 @@ Module reference_safety.
                                           |) in
                                         let value := M.copy (| γ0_0 |) in
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -2127,6 +2175,7 @@ Module reference_safety.
         (let struct_def := M.alloc (| struct_def |) in
         M.read (|
           M.match_operator (|
+            Some (Ty.path "usize"),
             M.alloc (|
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -2211,6 +2260,7 @@ Module reference_safety.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -2256,6 +2306,7 @@ Module reference_safety.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2299,6 +2350,7 @@ Module reference_safety.
                                             0
                                           |) in
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -2320,6 +2372,9 @@ Module reference_safety.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.match_operator (|
+                                                                Some
+                                                                  (Ty.path
+                                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -2570,6 +2625,9 @@ Module reference_safety.
                                                                           |)
                                                                         |) in
                                                                       M.match_operator (|
+                                                                        Some
+                                                                          (Ty.path
+                                                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                         M.alloc (|
                                                                           Value.Tuple []
                                                                         |),
@@ -2837,6 +2895,7 @@ Module reference_safety.
                                                     |)
                                                   |) in
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -2960,6 +3019,7 @@ Module reference_safety.
                   |)) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3106,6 +3166,7 @@ Module reference_safety.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3127,6 +3188,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3366,6 +3430,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -3592,6 +3659,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -3690,6 +3758,7 @@ Module reference_safety.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -3851,6 +3920,14 @@ Module reference_safety.
         let idx := M.alloc (| idx |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "move_binary_format::file_format::SignatureToken";
+                  Ty.path "move_binary_format::errors::PartialVMError"
+                ]),
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -4296,6 +4373,7 @@ Module reference_safety.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4415,6 +4493,7 @@ Module reference_safety.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4545,6 +4624,7 @@ Module reference_safety.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4675,6 +4755,7 @@ Module reference_safety.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   bytecode,
                   [
                     fun γ =>
@@ -4699,6 +4780,9 @@ Module reference_safety.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |);
                               M.read (|
                                 M.match_operator (|
+                                  Some
+                                    (Ty.path
+                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -4933,6 +5017,9 @@ Module reference_safety.
                                             |)
                                           |) in
                                         M.match_operator (|
+                                          Some
+                                            (Ty.path
+                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -5058,6 +5145,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -5187,6 +5277,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5323,6 +5414,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -5452,6 +5546,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5584,6 +5679,7 @@ Module reference_safety.
                           |) in
                         let local := M.alloc (| γ1_0 |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -5639,6 +5735,9 @@ Module reference_safety.
                                     M.read (| M.deref (| M.read (| local |) |) |);
                                     M.read (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -5878,6 +5977,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -6073,6 +6175,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -6090,6 +6193,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -6329,6 +6435,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -6581,6 +6690,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -6692,6 +6802,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -6821,6 +6934,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -6976,6 +7090,9 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                                     M.copy (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7215,6 +7332,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -7335,6 +7455,9 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                                     M.copy (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7574,6 +7697,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -7694,6 +7820,9 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                                     M.copy (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -7827,6 +7956,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -7964,6 +8094,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -7981,6 +8112,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -8220,6 +8354,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -8472,6 +8609,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -8583,6 +8721,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8712,6 +8853,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -8844,6 +8986,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -8861,6 +9004,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -9100,6 +9246,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -9352,6 +9501,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -9463,6 +9613,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -9693,6 +9846,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -9801,6 +9957,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -9944,6 +10101,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -10051,6 +10209,7 @@ Module reference_safety.
                             ]
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10188,6 +10347,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10318,6 +10480,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10454,6 +10617,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10584,6 +10750,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -10718,6 +10885,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -10735,6 +10903,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -10974,6 +11145,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -11226,6 +11400,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -11337,6 +11512,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -11468,6 +11646,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -11636,6 +11815,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -11653,6 +11833,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -11892,6 +12075,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -12144,6 +12330,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -12255,6 +12442,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -12392,6 +12582,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -12526,6 +12717,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -12543,6 +12735,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -12782,6 +12977,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -13034,6 +13232,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -13145,6 +13344,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13276,6 +13478,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -13444,6 +13647,7 @@ Module reference_safety.
                         let~ id : Ty.path "move_borrow_graph::references::RefID" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_borrow_graph::references::RefID"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -13461,6 +13665,9 @@ Module reference_safety.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -13700,6 +13907,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -13952,6 +14162,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "move_borrow_graph::references::RefID"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -14063,6 +14274,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -14200,6 +14414,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -14333,6 +14548,7 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -14354,6 +14570,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -14600,6 +14819,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -14847,6 +15069,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -14958,6 +15181,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -15088,6 +15314,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -15221,6 +15448,7 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -15242,6 +15470,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -15488,6 +15719,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -15735,6 +15969,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -15882,6 +16117,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -16018,6 +16256,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -16151,6 +16390,7 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -16172,6 +16412,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -16418,6 +16661,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -16665,6 +16911,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -16776,6 +17023,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -16906,6 +17156,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -17039,6 +17290,7 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -17060,6 +17312,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -17306,6 +17561,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -17553,6 +17811,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -17700,6 +17959,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -17836,6 +18098,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -17969,6 +18232,7 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -17990,6 +18254,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -18236,6 +18503,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -18483,6 +18753,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -18594,6 +18865,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -18723,6 +18997,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -18856,6 +19131,7 @@ Module reference_safety.
                         let idx := M.alloc (| γ1_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -18877,6 +19153,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -19123,6 +19402,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -19370,6 +19652,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -19517,6 +19800,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -19652,6 +19938,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -19818,6 +20105,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20036,6 +20324,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -20213,6 +20502,7 @@ Module reference_safety.
                         let~ _ : Ty.tuple [] :=
                           M.use
                             (M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -20296,6 +20586,7 @@ Module reference_safety.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -20367,6 +20658,9 @@ Module reference_safety.
                                                           |);
                                                           M.read (|
                                                             M.match_operator (|
+                                                              Some
+                                                                (Ty.path
+                                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -20616,6 +20910,9 @@ Module reference_safety.
                                                                         |)
                                                                       |) in
                                                                     M.match_operator (|
+                                                                      Some
+                                                                        (Ty.path
+                                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                       M.alloc (| Value.Tuple [] |),
                                                                       [
                                                                         fun γ =>
@@ -20808,6 +21105,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -21087,6 +21385,7 @@ Module reference_safety.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21108,6 +21407,9 @@ Module reference_safety.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
+                                                            Some
+                                                              (Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -21357,6 +21659,9 @@ Module reference_safety.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
+                                                                    Some
+                                                                      (Ty.path
+                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -21620,6 +21925,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -21768,6 +22074,7 @@ Module reference_safety.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -21789,6 +22096,9 @@ Module reference_safety.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
+                                                            Some
+                                                              (Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -22038,6 +22348,9 @@ Module reference_safety.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
+                                                                    Some
+                                                                      (Ty.path
+                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -22301,6 +22614,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -22430,6 +22744,9 @@ Module reference_safety.
                                           |);
                                           M.read (|
                                             M.match_operator (|
+                                              Some
+                                                (Ty.path
+                                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -22671,6 +22988,9 @@ Module reference_safety.
                                                         |)
                                                       |) in
                                                     M.match_operator (|
+                                                      Some
+                                                        (Ty.path
+                                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -22827,6 +23147,7 @@ Module reference_safety.
                               | [] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -22992,6 +23313,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23152,6 +23474,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23312,6 +23635,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23472,6 +23796,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23632,6 +23957,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23792,6 +24118,7 @@ Module reference_safety.
                             0
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -23996,6 +24323,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -24294,6 +24622,7 @@ Module reference_safety.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -24315,6 +24644,9 @@ Module reference_safety.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
+                                                            Some
+                                                              (Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -24564,6 +24896,9 @@ Module reference_safety.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
+                                                                    Some
+                                                                      (Ty.path
+                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -24827,6 +25162,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -24940,6 +25276,7 @@ Module reference_safety.
                                     |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -24961,6 +25298,9 @@ Module reference_safety.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.match_operator (|
+                                                            Some
+                                                              (Ty.path
+                                                                "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -25210,6 +25550,9 @@ Module reference_safety.
                                                                       |)
                                                                     |) in
                                                                   M.match_operator (|
+                                                                    Some
+                                                                      (Ty.path
+                                                                        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -25473,6 +25816,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -25585,6 +25929,7 @@ Module reference_safety.
                                       ]
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -25758,6 +26103,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -25967,6 +26313,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26134,6 +26481,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26343,6 +26691,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -26484,6 +26833,7 @@ Module reference_safety.
                         let num := M.alloc (| γ1_1 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -26568,6 +26918,9 @@ Module reference_safety.
                                         "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                                     M.copy (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                         result,
                                         [
                                           fun γ =>
@@ -26774,6 +27127,9 @@ Module reference_safety.
                                                   |)
                                                 |) in
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.path
+                                                    "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -26891,6 +27247,7 @@ Module reference_safety.
                                     |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -27046,6 +27403,7 @@ Module reference_safety.
                                                 |)
                                               |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -27165,6 +27523,7 @@ Module reference_safety.
                             Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -27288,6 +27647,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -27477,6 +27837,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -27707,6 +28070,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -27815,6 +28181,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -27940,6 +28307,7 @@ Module reference_safety.
                             ]
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -28101,6 +28469,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -28122,6 +28491,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -28368,6 +28740,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -28615,6 +28990,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -28726,6 +29102,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -28956,6 +29335,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -29067,6 +29449,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -29197,6 +29582,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -29329,6 +29715,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -29350,6 +29737,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -29596,6 +29986,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -29843,6 +30236,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -29954,6 +30348,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -30184,6 +30581,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -30295,6 +30695,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -30425,6 +30828,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -30557,6 +30961,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -30578,6 +30983,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -30824,6 +31232,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -31071,6 +31482,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -31182,6 +31594,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -31412,6 +31827,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -31520,6 +31938,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -31660,6 +32079,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -31890,6 +32312,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -31998,6 +32423,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -32126,6 +32552,7 @@ Module reference_safety.
                             Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -32249,6 +32676,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -32411,6 +32839,7 @@ Module reference_safety.
                         let num := M.alloc (| γ1_1 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -32432,6 +32861,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -32678,6 +33110,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -32925,6 +33360,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -33035,6 +33471,7 @@ Module reference_safety.
                             Ty.path "move_binary_format::file_format::SignatureToken" :=
                           M.copy (|
                             M.match_operator (|
+                              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -33158,6 +33595,7 @@ Module reference_safety.
                             |)
                           |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -33313,6 +33751,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -33334,6 +33773,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -33580,6 +34022,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -33827,6 +34272,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -33935,6 +34381,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -33956,6 +34403,9 @@ Module reference_safety.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -34202,6 +34652,9 @@ Module reference_safety.
                                                             |)
                                                           |) in
                                                         M.match_operator (|
+                                                          Some
+                                                            (Ty.path
+                                                              "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -34449,6 +34902,7 @@ Module reference_safety.
                                       |)
                                     |) in
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -34560,6 +35014,9 @@ Module reference_safety.
                               "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.path
+                                  "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -34790,6 +35247,9 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some
+                                        (Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -34898,6 +35358,7 @@ Module reference_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -35079,6 +35540,7 @@ Module reference_safety.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -35193,6 +35655,7 @@ Module reference_safety.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -35206,6 +35669,7 @@ Module reference_safety.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -35365,6 +35829,7 @@ Module reference_safety.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
