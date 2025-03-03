@@ -1,9 +1,156 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
+Require Import core.links.clone.
+Require core.links.option.
+Require core.links.default.
 Require Import alloc.links.string.
-Require Import revm.revm_precompile.interface.
+Require revm.links.dependencies.
+Import revm.links.dependencies.alloy_primitives.links.bytes_.
+Require Import revm_precompile.interface.
 
 Import Run.
+
+
+(* 
+    pub struct PrecompileOutput {
+        /// Gas used by the precompile
+        pub gas_used: u64,
+        /// Output bytes
+        pub bytes: Bytes,
+    }
+*)
+
+Module PrecompileOutput.
+  Record t : Set := {
+    gas_used : U64.t;
+    bytes : Bytes.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_precompile::interface::PrecompileOutput";
+    φ x :=
+        Value.StructRecord "revm_precompile::interface::PrecompileOutput" [
+          ("gas_used", φ x.(gas_used));
+          ("bytes", φ x.(bytes))
+        ];
+    }.
+
+    Definition of_ty : OfTy.t (Ty.path "revm_precompile::interface::PrecompileOutput").
+    Proof. eapply OfTy.Make with (A := t); reflexivity.
+    Defined.
+    Smpl Add apply of_ty : of_ty.
+
+    Lemma of_value_with gas_used gas_used' bytes bytes' :
+    gas_used' = φ gas_used ->
+    bytes' = φ bytes ->
+    Value.StructRecord "revm_precompile::interface::PrecompileOutput" [
+      ("gas_used", gas_used');
+      ("bytes", bytes')
+    ] = φ (Build_t gas_used bytes).
+  Proof. now intros; subst. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (gas_used : U64.t) gas_used' (bytes : Bytes.t) bytes' :
+    gas_used' = φ gas_used ->
+    bytes' = φ bytes ->
+    OfValue.t (
+      Value.StructRecord "revm_precompile::interface::PrecompileOutput" [
+        ("gas_used", gas_used');
+        ("bytes", bytes')
+      ]
+    ).
+  Proof. econstructor; apply of_value_with; repeat eassumption.
+  Defined.
+  Smpl Add apply of_value : of_value.
+
+  Module SubPointer.
+    Definition get_gas_used : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_precompile::interface::PrecompileOutput" "gas_used") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(gas_used);
+      SubPointer.Runner.injection x y := Some (x <| gas_used := y |>);
+    |}.
+
+    Lemma get_gas_used_is_valid :
+      SubPointer.Runner.Valid.t get_gas_used.
+    Proof.
+      now constructor.
+    Qed.
+
+    Smpl Add apply get_gas_used_is_valid : run_sub_pointer.
+
+    Definition get_bytes : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_precompile::interface::PrecompileOutput" "bytes") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(bytes);
+      SubPointer.Runner.injection x y := Some (x <| bytes := y |>);
+    |}.
+
+    Lemma get_bytes_is_valid :
+      SubPointer.Runner.Valid.t get_bytes.
+    Proof.
+      now constructor.
+    Qed.
+
+    Smpl Add apply get_bytes_is_valid : run_sub_pointer.
+
+  End SubPointer.
+
+End PrecompileOutput.
+
+Module Impl_PrecompileOutput.
+  Definition Self : Set := PrecompileOutput.t.
+
+  (*
+     pub fn new(gas_used: u64, bytes: Bytes) -> Self {
+        Self { gas_used, bytes }
+    }
+  *)
+
+  Definition run_new 
+      (gas_used : U64.t) 
+      (bytes : Bytes.t)
+    : {{ interface.Impl_revm_precompile_interface_PrecompileOutput.new [] [] [φ gas_used; φ bytes] 🔽 PrecompileOutput.t }}.
+  Proof.
+    run_symbolic.
+  Defined.
+  Smpl Add apply run_new : run_closure.
+End Impl_PrecompileOutput.
+
+Module Impl_Clone_for_PrecompileOutput.
+  Definition run_clone : clone.Clone.Run_clone PrecompileOutput.t.
+  Proof.
+    eexists; split.
+    - eapply IsTraitMethod.Defined.
+      + apply interface.Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileOutput.Implements.
+      + reflexivity.
+    - intros self.
+       + destruct Impl_Clone_for_u64.run.
+         destruct clone.
+         destruct Impl_Clone_for_Bytes.run.
+         destruct clone.
+         run_symbolic. 
+         run_symbolic_closure.
+         { apply p with (self := Ref.cast_to Pointer.Kind.Ref sub_ref). }
+         {
+          intros []; run_symbolic.
+          run_symbolic_closure.
+          {
+            eapply OfTy.Make with (A := Bytes.t).
+            reflexivity.
+          }
+          {
+            run_symbolic.
+            destruct p0 as [pProof pMeth].
+            apply pMeth.
+          }
+          {
+            intros []; run_symbolic.
+          }
+         }
+  Defined.
+End Impl_Clone_for_PrecompileOutput.
 
 Module PrecompileError.
   Inductive t : Set :=
@@ -255,3 +402,76 @@ Module Impl_PrecompileError.
     destruct_all Self; run_symbolic.
   Defined.
 End Impl_PrecompileError.
+
+Module Impl_Clone_for_PrecompileError.
+  Definition run_clone : clone.Clone.Run_clone PrecompileError.t.
+  Proof.
+  Admitted. 
+  
+End Impl_Clone_for_PrecompileError.
+
+
+Module Impl_PrecompileErrors.
+  Inductive t : Set := 
+  | Error (_ : PrecompileError.t)
+  | Fatal
+      (_ : alloc.links.string.String.t)
+  .
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_precompile::interface::PrecompileErrors";
+    φ x :=
+      match x with
+      | Error γ0 =>
+        Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [φ γ0]
+      | Fatal γ0 => Value.StructTuple "revm_precompile::interface::PrecompileErrors::Fatal" [φ γ0]
+      end
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_precompile::interface::PrecompileErrors").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_Error
+    (γ0 : PrecompileError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [
+      γ0'
+    ] =
+    φ (Error γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Error : of_value.
+
+  Definition of_value_Error
+    (γ0 : PrecompileError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_precompile::interface::PrecompileErrors::Error" [
+        γ0'
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Error; eassumption. Defined.
+  Smpl Add simple apply of_value_Error : of_value.
+
+  Lemma of_value_with_Fatal
+    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_precompile::interface::PrecompileErrors::Fatal" [
+      γ0'
+    ] =
+    φ (Fatal γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Fatal : of_value.
+
+  Definition of_value_Fatal
+    (γ0 : alloc.links.string.String.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_precompile::interface::PrecompileErrors::Fatal" [
+        γ0'
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Fatal; eassumption. Defined.
+  Smpl Add simple apply of_value_Fatal : of_value.
+  
+End Impl_PrecompileErrors.
