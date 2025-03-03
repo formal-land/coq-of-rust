@@ -3,7 +3,7 @@ Require Import links.M.
 Require Import core.cmp.
 Require Import core.intrinsics.
 Require core.ops.links.function.
-Require core.links.intrinsics.
+Require Import core.links.intrinsics.
 Require Export core.links.cmpOrdering.
 
 Import Run.
@@ -16,7 +16,7 @@ Import Run.
         }
     }
 *)
-Definition run_max_by {T F : Set} `{Link T} `{Link F}
+Instance run_max_by {T F : Set} `{Link T} `{Link F}
     (Run_FnOnce_for_F :
       function.FnOnce.Run
         F
@@ -24,13 +24,13 @@ Definition run_max_by {T F : Set} `{Link T} `{Link F}
         (Output := Ordering.t)
     )
     (v1 v2 : T) (compare : F) :
-  {{ cmp.max_by [] [ Φ T; Φ F ] [ φ v1; φ v2; φ compare ] 🔽 T }}.
+  Run.Trait cmp.max_by [] [ Φ T; Φ F ] [ φ v1; φ v2; φ compare ] T.
 Proof.
+  constructor.
   destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
   run.
   destruct_all Ordering.t; run_symbolic.
 Defined.
-Smpl Add apply run_max_by : run_closure.
 
 (*
     pub trait Ord: Eq + PartialOrd<Self> {
@@ -82,32 +82,30 @@ Module Ord.
     clamp : Run_clamp Self;
   }.
 
-  Definition run_max {Self : Set} `{Link Self} (self other : Self)
+  Instance run_max {Self : Set} `{Link Self} (self other : Self)
       (H_cmp : Run_cmp Self) :
-    {{ cmp.cmp.Ord.max (Φ Self) [] [] [ φ self; φ other ] 🔽 Self }}.
+    Run.Trait (cmp.cmp.Ord.max (Φ Self)) [] [] [ φ self; φ other ] Self.
   Proof.
+    constructor.
     destruct H_cmp as [cmp [H_cmp run_cmp]].
     run_symbolic.
-    run_symbolic_closure. {
-      apply (
-        run_max_by
-          (function.Impl_FnOnce_for_Function2.run _ _ _)
-          self other
-          {| Function2.run := run_cmp |}
-      ).
-    }
-    intros []; run_symbolic.
+    apply (
+      run_max_by
+        (function.Impl_FnOnce_for_Function2.run _ _ _)
+        self other
+        {| Function2.run := run_cmp |}
+    ).
   Defined.
 
-  Definition run_min {Self : Set} `{Link Self} (self other : Self)
+  Instance run_min {Self : Set} `{Link Self} (self other : Self)
       (H_cmp : Run_cmp Self) :
-    {{ cmp.cmp.Ord.min (Φ Self) [] [] [ φ self; φ other ] 🔽 Self }}.
+    Run.Trait (cmp.cmp.Ord.min (Φ Self)) [] [] [ φ self; φ other ] Self.
   Proof.
   Admitted.
 
-  Definition run_clamp {Self : Set} `{Link Self} (self min max : Self)
+  Instance run_clamp {Self : Set} `{Link Self} (self min max : Self)
       (H_cmp : Run_cmp Self) :
-    {{ cmp.cmp.Ord.clamp (Φ Self) [] [] [ φ self; φ min; φ max ] 🔽 Self }}.
+    Run.Trait (cmp.cmp.Ord.clamp (Φ Self)) [] [] [ φ self; φ min; φ max ] Self.
   Proof.
   Admitted.
 End Ord.
@@ -124,10 +122,6 @@ Module Impl_Ord_for_u64.
     }
     { intros.
       run_symbolic.
-      run_symbolic_closure. {
-        apply (intrinsics.run_three_way_compare IntegerKind.U64).
-      }
-      intros []; run_symbolic.
     }
   Defined.
 

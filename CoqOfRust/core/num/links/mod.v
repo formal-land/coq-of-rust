@@ -3,9 +3,7 @@ Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.num.mod.
 Require Import core.intrinsics.
-Require core.links.intrinsics.
-
-Import Run.
+Require Import core.links.intrinsics.
 
 Module Impl_u64.
   Definition Self : Set := U64.t.
@@ -15,23 +13,21 @@ Module Impl_u64.
       intrinsics::saturating_add(self, rhs)
   }
   *)
-  Lemma run_saturating_add (self rhs: Self) :
-    {{ num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] 🔽 Self }}.
+  Instance run_saturating_add (self rhs: Self) :
+    Run.Trait num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] Self.
   Proof.
-    run.
+    constructor.
+    run_symbolic.
   Defined.
-  Smpl Add simple apply run_saturating_add : run_closure.
 
-  Lemma run_saturating_mul (self rhs: Self) :
-    {{ num.Impl_u64.saturating_mul [] [] [ φ self; φ rhs ] 🔽 Self }}.
+  Instance run_saturating_mul (self rhs: Self) :
+    Run.Trait num.Impl_u64.saturating_mul [] [] [ φ self; φ rhs ] Self.
   Proof.
   Admitted.
-  Smpl Add simple apply run_saturating_mul : run_closure.
 
   (* pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) *)
-  Lemma run_overflowing_sub (self rhs: Self) :
-    {{ num.Impl_u64.overflowing_sub [] [] [ φ self; φ rhs ] 🔽 (Self * bool) }}.
+  Instance run_overflowing_sub (self rhs: Self) :
+    Run.Trait num.Impl_u64.overflowing_sub [] [] [ φ self; φ rhs ] (Self * bool).
   Proof.
   Admitted.
-  Smpl Add simple apply run_overflowing_sub : run_closure.
 End Impl_u64.

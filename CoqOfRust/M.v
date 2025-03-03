@@ -785,7 +785,7 @@ Definition find_or_pattern
   end.
 
 Definition never_to_any (x : Value.t) : M :=
-  M.impossible "never_to_any got called".
+  M.panic (Panic.Make "never_to_any got called").
 
 Definition use (x : Value.t) : Value.t :=
   x.
