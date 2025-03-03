@@ -25,4 +25,8 @@ Module EofHeader.
         ("sum_container_sizes", φ sum_container_sizes)
       ]
   }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_bytecode::eof::header::EofHeader").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
 End EofHeader.
