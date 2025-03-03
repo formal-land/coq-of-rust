@@ -6,6 +6,8 @@ Require core.links.clone.
 Require core.links.default.
 Require Import core.links.option.
 Require Import revm.links.dependencies.
+Require Export revm.revm_bytecode.eof.links.body_EofBody.
+Require Export revm.revm_bytecode.eof.links.header.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
 Require Import core.slice.mod.
@@ -259,12 +261,8 @@ Module Impl_EofBody.
     run_symbolic_let. {
       run_symbolic.
       run_symbolic_are_equal_integer; run_symbolic.
-      { run_symbolic_are_equal_bool; run_symbolic.
-        admit.
-      }
-      { run_symbolic_are_equal_bool; run_symbolic.
-        admit.
-      }
+      { run_symbolic_are_equal_bool; run_symbolic; admit. }
+      { run_symbolic_are_equal_bool; run_symbolic; admit. }
     }
     intros [|[]]; run_symbolic.
     destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
@@ -282,9 +280,6 @@ Module Impl_EofBody.
       Print Impl_Slice.Self.
       unfold Impl_Slice.Self.
       cbn.
-      admit.
-    }
-    admit.
   Admitted.
 
   (*
@@ -324,5 +319,112 @@ Module Impl_EofBody.
   Definition run_into_eof (self : Self) :
     {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.into_eof [] [] [φ self] 🔽 Eof.t }}.
   Proof.
+    run_symbolic.
+    run_symbolic_let. { 
+      run_symbolic.
+      run_symbolic_closure. {
+        apply Impl_alloc_vec_Vec_T_A.run_len.
+      }
+      intros []; run_symbolic.
   Admitted.
+
+  (*
+    pub fn eof_code_section_start(&self, idx: usize) -> Option<usize> {
+      // Starting code section start with 0.
+      let code_offset = self.code_offset;
+      if idx == 0 {
+          return Some(code_offset);
+      }
+      self.code_section.get(idx - 1).map(|i| i + code_offset)
+    }
+  *)
+  Definition run_eof_code_section_start (self : Ref.t Pointer.Kind.Ref Self) (idx : Usize.t) :
+    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.eof_code_section_start [] [] [φ self; φ idx] 🔽 option Usize.t }}.
+  Proof.
+    run_symbolic.
+    run_symbolic_let. {
+      run_symbolic.
+      run_symbolic_are_equal_integer; run_symbolic; run_symbolic_are_equal_bool; run_symbolic.
+    }
+    intros []; run_symbolic. {
+      destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
+      destruct deref.
+      run_symbolic.
+      run_symbolic_closure.
+      intros []; run_symbolic.
+      run_symbolic_closure.
+  Admitted.
+
+  (*
+    pub fn encode(&self, buffer: &mut Vec<u8>) {
+      for code_info in &self.code_info {
+          code_info.encode(buffer);
+      }
+
+      buffer.extend_from_slice(&self.code);
+
+      for container_section in &self.container_section {
+          buffer.extend_from_slice(container_section);
+      }
+
+      buffer.extend_from_slice(&self.data_section);
+    }
+  *)
+  Definition run_encode (self : Ref.t Pointer.Kind.Ref Self) (buffer : Ref.t Pointer.Kind.MutPointer (Vec.t U8.t Global.t)) :
+    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.encode [] [] [φ self; φ buffer] 🔽 unit }}.
+  Proof.
+    run_symbolic.
+    run_symbolic_let. {
+      run_symbolic.
+Admitted.
+
+  (*
+    pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError> {
+      let header_len = header.size();
+      let partial_body_len =
+          header.sum_code_sizes + header.sum_container_sizes + header.types_size as usize;
+      let full_body_len = partial_body_len + header.data_size as usize;
+
+      if input.len() < header_len + partial_body_len {
+          return Err(EofDecodeError::MissingBodyWithoutData);
+      }
+
+      if input.len() > header_len + full_body_len {
+          return Err(EofDecodeError::DanglingData);
+      }
+
+      let mut body = EofBody::default();
+
+      let mut types_input = &input[header_len..];
+      for _ in 0..header.types_count() {
+          let (code_info, local_input) = CodeInfo::decode(types_input)?;
+          types_input = local_input;
+          body.code_info.push(code_info);
+      }
+
+      // Extract code section
+      let start = header_len + header.types_size as usize;
+      body.code_offset = start;
+      let mut code_end = 0;
+      for size in header.code_sizes.iter().map(|x| *x as usize) {
+          code_end += size;
+          body.code_section.push(code_end);
+      }
+      body.code = input.slice(start..start + header.sum_code_sizes);
+
+      // Extract container section
+      let mut start = start + header.sum_code_sizes;
+      for size in header.container_sizes.iter().map(|x| *x as usize) {
+          body.container_section
+              .push(input.slice(start..start + size));
+          start += size;
+      }
+
+      body.data_section = input.slice(start..);
+      body.is_data_filled = body.data_section.len() == header.data_size as usize;
+
+      Ok(body)
+    }
+  *)
+
 End Impl_EofBody.
