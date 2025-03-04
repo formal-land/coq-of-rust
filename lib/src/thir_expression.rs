@@ -344,8 +344,13 @@ fn build_inner_match(
         })
 }
 
-pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> {
+pub(crate) fn build_match(
+    ty: Option<Rc<CoqType>>,
+    scrutinee: Rc<Expr>,
+    arms: Vec<MatchArm>,
+) -> Rc<Expr> {
     Rc::new(Expr::Match {
+        ty,
         scrutinee,
         arms: arms
             .into_iter()
@@ -489,6 +494,7 @@ pub(crate) fn compile_expr<'a>(
             else_opt,
             ..
         } => {
+            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let conditions = get_if_conditions(env, generics, thir, cond);
             let success = compile_expr(env, generics, thir, then);
             let failure = match else_opt {
@@ -497,6 +503,7 @@ pub(crate) fn compile_expr<'a>(
             };
 
             build_match(
+                Some(ty),
                 Expr::tt(),
                 vec![
                     MatchArm {
@@ -638,6 +645,7 @@ pub(crate) fn compile_expr<'a>(
             arms,
             match_source: _,
         } => {
+            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let scrutinee = compile_expr(env, generics, thir, scrutinee);
             let arms: Vec<MatchArm> = arms
                 .iter()
@@ -658,7 +666,7 @@ pub(crate) fn compile_expr<'a>(
                 })
                 .collect();
 
-            build_match(scrutinee, arms)
+            build_match(Some(ty), scrutinee, arms)
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, generics, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
@@ -892,6 +900,7 @@ pub(crate) fn compile_expr<'a>(
             compile_expr(env, generics, thir, source)
         }
         thir::ExprKind::Closure(closure) => {
+            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let rustc_middle::thir::ClosureExpr { closure_id, .. } = closure.as_ref();
             let result = apply_on_thir(env, closure_id, |thir, expr_id| {
                 let args: Vec<(Rc<Pattern>, Rc<CoqType>)> = thir
@@ -918,6 +927,7 @@ pub(crate) fn compile_expr<'a>(
                     .enumerate()
                     .rfold(body, |body, (index, (pattern, _))| {
                         build_match(
+                            Some(ty.clone()),
                             Expr::local_var(&format!("α{index}")).alloc(),
                             vec![MatchArm {
                                 pattern: pattern.clone(),
@@ -1252,6 +1262,7 @@ fn compile_stmts<'a>(
                             body,
                         }),
                         _ => build_match(
+                            None,
                             init,
                             vec![MatchArm {
                                 pattern: compiled_pattern,

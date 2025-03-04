@@ -127,6 +127,7 @@ pub(crate) enum Expr {
         body: Rc<Expr>,
     },
     Match {
+        ty: Option<Rc<CoqType>>,
         scrutinee: Rc<Expr>,
         arms: Vec<Rc<Expr>>,
     },
@@ -280,9 +281,11 @@ impl Expr {
                 body,
             } => init.has_return() || body.has_return(),
             Expr::Loop { ty: _, body } => body.has_return(),
-            Expr::Match { scrutinee, arms } => {
-                scrutinee.has_return() || arms.iter().any(|arm| arm.has_return())
-            }
+            Expr::Match {
+                ty: _,
+                scrutinee,
+                arms,
+            } => scrutinee.has_return() || arms.iter().any(|arm| arm.has_return()),
             Expr::Index { base, index } => base.has_return() || index.has_return(),
             Expr::ControlFlow(_) => false,
             Expr::StructStruct {
@@ -633,13 +636,20 @@ impl Expr {
                 init: init.to_coq(),
                 body: body.to_coq(),
             }),
-            Expr::Match { scrutinee, arms } => coq::Expression::just_name("M.match_operator")
-                .monadic_apply_many(&[
-                    scrutinee.to_coq(),
-                    Rc::new(coq::Expression::List {
-                        exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
-                    }),
-                ]),
+            Expr::Match {
+                ty,
+                scrutinee,
+                arms,
+            } => coq::Expression::just_name("M.match_operator").monadic_apply_many(&[
+                match ty {
+                    Some(ty) => coq::Expression::just_name("Some").apply(ty.to_coq()),
+                    None => coq::Expression::just_name("None"),
+                },
+                scrutinee.to_coq(),
+                Rc::new(coq::Expression::List {
+                    exprs: arms.iter().map(|arm| arm.to_coq()).collect(),
+                }),
+            ]),
             Expr::Loop { ty, body } => coq::Expression::just_name("M.loop")
                 .monadic_apply_many(&[ty.to_coq(), coq::Expression::monadic(body.to_coq())]),
             Expr::Index { base, index } => {

@@ -265,6 +265,13 @@ Module future.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some
+                                        (Ty.function
+                                          [ Ty.tuple [] ]
+                                          (Ty.apply
+                                            (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                                            []
+                                            [ T ])),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -661,6 +668,24 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14457 ~ core[e9d2]::future::async_drop::surface_async_drop_in_place::{closure#0}),
+    [
+        T/#0,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14457 ~ core[e9d2]::future::async_drop::surface_async_drop_in_place::{closure#0}),
+            [
+                T/#0,
+            ],
+        ),
+        (*mut T/#0,),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -670,6 +695,7 @@ Module future.
                               let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] := M.copy (| ptr |) in
                               M.use
                                 (M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.associated_in_trait
@@ -750,6 +776,7 @@ Module future.
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -918,6 +945,24 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14461 ~ core[e9d2]::future::async_drop::surface_drop_in_place::{closure#0}),
+    [
+        T/#0,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14461 ~ core[e9d2]::future::async_drop::surface_drop_in_place::{closure#0}),
+            [
+                T/#0,
+            ],
+        ),
+        (*mut T/#0,),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -1053,6 +1098,7 @@ Module future.
                         |)
                       |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1078,6 +1124,7 @@ Module future.
                             let inner := M.alloc (| γ1_0 |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
@@ -1197,6 +1244,24 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14474 ~ core[e9d2]::future::async_drop::slice::{closure#0}),
+    [
+        T/#0,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14474 ~ core[e9d2]::future::async_drop::slice::{closure#0}),
+            [
+                T/#0,
+            ],
+        ),
+        (*mut [T/#0],),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -1244,6 +1309,7 @@ Module future.
                                   |) in
                                 M.use
                                   (M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1281,6 +1347,7 @@ Module future.
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1332,6 +1399,7 @@ Module future.
                                                           |) in
                                                         let i := M.copy (| γ0_0 |) in
                                                         M.match_operator (|
+                                                          Some (Ty.tuple []),
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.associated_in_trait
@@ -1401,6 +1469,7 @@ Module future.
                                                                   ltac:(M.monadic
                                                                     (let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
+                                                                        Some (Ty.tuple []),
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.apply
@@ -1598,6 +1667,26 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14479 ~ core[e9d2]::future::async_drop::chain::{closure#0}),
+    [
+        F/#0,
+        G/#1,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14479 ~ core[e9d2]::future::async_drop::chain::{closure#0}),
+            [
+                F/#0,
+                G/#1,
+            ],
+        ),
+        (F/#0, G/#1),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -1609,6 +1698,7 @@ Module future.
                               M.use
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.associated_in_trait
@@ -1638,6 +1728,7 @@ Module future.
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1772,6 +1863,7 @@ Module future.
                                   |) in
                                 let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.associated_in_trait
@@ -1801,6 +1893,7 @@ Module future.
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1969,6 +2062,24 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14483 ~ core[e9d2]::future::async_drop::defer::{closure#0}),
+    [
+        T/#0,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14483 ~ core[e9d2]::future::async_drop::defer::{closure#0}),
+            [
+                T/#0,
+            ],
+        ),
+        (*mut T/#0,),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -1979,6 +2090,7 @@ Module future.
                                 M.copy (| to_drop |) in
                               M.use
                                 (M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2022,6 +2134,7 @@ Module future.
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -2198,6 +2311,28 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14489 ~ core[e9d2]::future::async_drop::either::{closure#0}),
+    [
+        O/#0,
+        M/#1,
+        T/#2,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14489 ~ core[e9d2]::future::async_drop::either::{closure#0}),
+            [
+                O/#0,
+                M/#1,
+                T/#2,
+            ],
+        ),
+        (O/#0, M/#1, *mut T/#2, Alias(Projection, AliasTy { args: [T/#2], def_id: DefId(0:3442 ~ core[e9d2]::marker::DiscriminantKind::Discriminant), .. })),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -2217,6 +2352,7 @@ Module future.
                                 M.copy (| discr |) in
                               M.use
                                 (M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -2295,6 +2431,7 @@ Module future.
                                             |)
                                           |) in
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.associated_in_trait
@@ -2324,6 +2461,7 @@ Module future.
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -2467,6 +2605,7 @@ Module future.
                                             |)
                                           |) in
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.associated_in_trait
@@ -2496,6 +2635,7 @@ Module future.
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -2666,6 +2806,24 @@ Module future.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some
+                        type Coroutine(
+    DefId(0:14493 ~ core[e9d2]::future::async_drop::deferred_drop_in_place::{closure#0}),
+    [
+        T/#0,
+        (),
+        future::ResumeTy,
+        (),
+        (),
+        CoroutineWitness(
+            DefId(0:14493 ~ core[e9d2]::future::async_drop::deferred_drop_in_place::{closure#0}),
+            [
+                T/#0,
+            ],
+        ),
+        (*mut T/#0,),
+    ],
+) not yet handled,
                       M.alloc (| α0 |),
                       [
                         fun γ =>
@@ -2775,6 +2933,7 @@ Module future.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
+              None,
               β1,
               [
                 fun γ =>

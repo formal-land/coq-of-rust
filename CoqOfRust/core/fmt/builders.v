@@ -99,6 +99,21 @@ Module fmt.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ])),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -187,6 +202,7 @@ Module fmt.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -234,6 +250,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -282,6 +299,7 @@ Module fmt.
                                             let s := M.copy (| γ0_0 |) in
                                             let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -308,6 +326,7 @@ Module fmt.
                                                         |) in
                                                       let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
+                                                          Some (Ty.tuple []),
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -501,6 +520,7 @@ Module fmt.
                                               |) in
                                             let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -666,6 +686,7 @@ Module fmt.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -689,6 +710,7 @@ Module fmt.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1006,6 +1028,21 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.path "core::fmt::Formatter" ]
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -1139,12 +1176,24 @@ Module fmt.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [ Ty.tuple [ Ty.tuple [] ] ]
+                                            (Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.read (|
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -1176,6 +1225,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -1202,6 +1252,7 @@ Module fmt.
                                                                     |) in
                                                                   let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
+                                                                      Some (Ty.tuple []),
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -1455,6 +1506,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1595,6 +1647,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1737,6 +1790,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1930,6 +1984,11 @@ Module fmt.
                                                               [ Ty.path "str" ] :=
                                                           M.copy (|
                                                             M.match_operator (|
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "str" ]),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -1966,6 +2025,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -2116,6 +2176,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -2266,6 +2327,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -2572,12 +2634,24 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.read (|
                                             M.match_operator (|
+                                              Some
+                                                (Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -2595,6 +2669,12 @@ Module fmt.
                                                         Value.Bool true
                                                       |) in
                                                     M.match_operator (|
+                                                      Some
+                                                        (Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [ Ty.tuple []; Ty.path "core::fmt::Error"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -2709,6 +2789,7 @@ Module fmt.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
+                                                                Some (Ty.tuple []),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -3021,6 +3102,7 @@ Module fmt.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3079,12 +3161,27 @@ Module fmt.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              Some
+                                                (Ty.function
+                                                  [ Ty.tuple [ Ty.tuple [] ] ]
+                                                  (Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.read (|
                                                       M.match_operator (|
+                                                        Some
+                                                          (Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path "core::fmt::Error"
+                                                            ]),
                                                         M.alloc (| Value.Tuple [] |),
                                                         [
                                                           fun γ =>
@@ -3393,6 +3490,21 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.path "core::fmt::Formatter" ]
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -3521,12 +3633,24 @@ Module fmt.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [ Ty.tuple [ Ty.tuple [] ] ]
+                                            (Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.read (|
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -3558,6 +3682,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -3587,6 +3712,7 @@ Module fmt.
                                                                     |) in
                                                                   let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
+                                                                      Some (Ty.tuple []),
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -3840,6 +3966,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -4033,6 +4160,11 @@ Module fmt.
                                                               [ Ty.path "str" ] :=
                                                           M.copy (|
                                                             M.match_operator (|
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "str" ]),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -4078,6 +4210,7 @@ Module fmt.
                                                           |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -4384,12 +4517,24 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.read (|
                                             M.match_operator (|
+                                              Some
+                                                (Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -4414,6 +4559,12 @@ Module fmt.
                                                         Value.Bool true
                                                       |) in
                                                     M.match_operator (|
+                                                      Some
+                                                        (Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [ Ty.tuple []; Ty.path "core::fmt::Error"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -4528,6 +4679,7 @@ Module fmt.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
+                                                                Some (Ty.tuple []),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -4843,6 +4995,7 @@ Module fmt.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -4908,6 +5061,13 @@ Module fmt.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              Some
+                                                (Ty.function
+                                                  [ Ty.tuple [ Ty.tuple [] ] ]
+                                                  (Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                               M.alloc (| α0 |),
                                               [
                                                 fun γ =>
@@ -4915,6 +5075,7 @@ Module fmt.
                                                     (M.read (|
                                                       let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
+                                                          Some (Ty.tuple []),
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
                                                             fun γ =>
@@ -4981,6 +5142,7 @@ Module fmt.
                                                                   |) in
                                                                 let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
+                                                                    Some (Ty.tuple []),
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -5346,12 +5508,24 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.read (|
                                             M.match_operator (|
+                                              Some
+                                                (Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -5383,6 +5557,7 @@ Module fmt.
                                                       |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (| Value.Tuple [] |),
                                                         [
                                                           fun γ =>
@@ -5409,6 +5584,7 @@ Module fmt.
                                                                 |) in
                                                               let~ _ : Ty.tuple [] :=
                                                                 M.match_operator (|
+                                                                  Some (Ty.tuple []),
                                                                   M.alloc (|
                                                                     M.call_closure (|
                                                                       Ty.apply
@@ -5656,6 +5832,7 @@ Module fmt.
                                                       |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -5838,6 +6015,7 @@ Module fmt.
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (| Value.Tuple [] |),
                                                         [
                                                           fun γ =>
@@ -5855,6 +6033,7 @@ Module fmt.
                                                                   Value.Bool true
                                                                 |) in
                                                               M.match_operator (|
+                                                                Some (Ty.tuple []),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -6256,6 +6435,21 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some
+                                        (Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.path "core::fmt::Formatter" ]
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -6383,6 +6577,7 @@ Module fmt.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.associated_in_trait
@@ -6412,6 +6607,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply (Ty.path "core::option::Option") [] [ D ],
@@ -6586,12 +6782,24 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.read (|
                                             M.match_operator (|
+                                              Some
+                                                (Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -6613,6 +6821,12 @@ Module fmt.
                                                         Value.Bool true
                                                       |) in
                                                     M.match_operator (|
+                                                      Some
+                                                        (Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [ Ty.tuple []; Ty.path "core::fmt::Error"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -6735,6 +6949,7 @@ Module fmt.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
+                                                                Some (Ty.tuple []),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -7110,6 +7325,13 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -7296,6 +7518,21 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some
+                                        (Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.path "core::fmt::Formatter" ]
+                                              ]
+                                          ]
+                                          (Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -7423,6 +7660,7 @@ Module fmt.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.associated_in_trait
@@ -7452,6 +7690,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply (Ty.path "core::option::Option") [] [ D ],
@@ -7612,12 +7851,24 @@ Module fmt.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [ Ty.tuple [ Ty.tuple [] ] ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -7639,6 +7890,11 @@ Module fmt.
                                                 Value.Bool true
                                               |) in
                                             M.match_operator (|
+                                              Some
+                                                (Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -7758,6 +8014,7 @@ Module fmt.
                                                       |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -8096,6 +8353,13 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -8356,6 +8620,21 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.path "core::fmt::Formatter" ]
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -8494,6 +8773,13 @@ Module fmt.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [ Ty.tuple [ Ty.tuple [] ] ]
+                                            (Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -8501,6 +8787,7 @@ Module fmt.
                                               (M.read (|
                                                 let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -8581,6 +8868,7 @@ Module fmt.
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -8614,6 +8902,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -8640,6 +8929,7 @@ Module fmt.
                                                                       |) in
                                                                     let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
+                                                                        Some (Ty.tuple []),
                                                                         M.alloc (|
                                                                           M.call_closure (|
                                                                             Ty.apply
@@ -8904,6 +9194,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -9064,6 +9355,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -9213,6 +9505,7 @@ Module fmt.
                                                         ltac:(M.monadic
                                                           (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -9232,6 +9525,7 @@ Module fmt.
                                                                         Value.Bool true
                                                                       |) in
                                                                     M.match_operator (|
+                                                                      Some (Ty.tuple []),
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -9402,6 +9696,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -9569,6 +9864,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -9807,6 +10103,21 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.path "core::fmt::Formatter" ]
+                                            ]
+                                        ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -9934,6 +10245,13 @@ Module fmt.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [ Ty.tuple [ Ty.tuple [] ] ]
+                                            (Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -9941,6 +10259,7 @@ Module fmt.
                                               (M.read (|
                                                 let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -10019,6 +10338,7 @@ Module fmt.
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -10119,6 +10439,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -10279,6 +10600,7 @@ Module fmt.
                                                             |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -10429,6 +10751,7 @@ Module fmt.
                                                         ltac:(M.monadic
                                                           (let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
+                                                              Some (Ty.tuple []),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -10671,6 +10994,7 @@ Module fmt.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.associated_in_trait
@@ -10700,6 +11024,7 @@ Module fmt.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -10882,6 +11207,13 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -10889,6 +11221,7 @@ Module fmt.
                                           (M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -10964,6 +11297,11 @@ Module fmt.
                                                 ]
                                               |) in
                                             M.match_operator (|
+                                              Some
+                                                (Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -10981,6 +11319,12 @@ Module fmt.
                                                         Value.Bool true
                                                       |) in
                                                     M.match_operator (|
+                                                      Some
+                                                        (Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [ Ty.tuple []; Ty.path "core::fmt::Error"
+                                                          ]),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -11095,6 +11439,7 @@ Module fmt.
                                                               |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
+                                                                Some (Ty.tuple []),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply
@@ -11450,6 +11795,13 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                        (Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
@@ -11457,6 +11809,7 @@ Module fmt.
                                           (M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>

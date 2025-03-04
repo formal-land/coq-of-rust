@@ -34,6 +34,7 @@ Module panicking.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -216,6 +217,7 @@ Module panicking.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1705,6 +1707,7 @@ Module panicking.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1836,6 +1839,7 @@ Module panicking.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2069,6 +2073,7 @@ Module panicking.
         (let fmt := M.alloc (| fmt |) in
         M.read (|
           M.match_operator (|
+            Some (Ty.path "never"),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2179,6 +2184,7 @@ Module panicking.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -2418,6 +2424,7 @@ Module panicking.
           let~ op : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.copy (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 kind,
                 [
                   fun γ =>
@@ -2446,6 +2453,7 @@ Module panicking.
               |)
             |) in
           M.match_operator (|
+            Some (Ty.path "never"),
             args,
             [
               fun γ =>

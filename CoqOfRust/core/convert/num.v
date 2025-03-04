@@ -3425,6 +3425,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3489,6 +3494,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3553,6 +3563,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3617,6 +3632,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3681,6 +3701,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3745,6 +3770,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3809,6 +3839,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3873,6 +3908,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3937,6 +3977,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4001,6 +4046,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4075,6 +4125,11 @@ Module convert.
                   M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4149,6 +4204,11 @@ Module convert.
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4223,6 +4283,11 @@ Module convert.
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4297,6 +4362,11 @@ Module convert.
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4371,6 +4441,11 @@ Module convert.
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4445,6 +4520,11 @@ Module convert.
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4519,6 +4599,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4593,6 +4678,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4667,6 +4757,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4741,6 +4836,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4805,6 +4905,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4869,6 +4974,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4933,6 +5043,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4997,6 +5112,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5061,6 +5181,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5125,6 +5250,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5189,6 +5319,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5253,6 +5388,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5317,6 +5457,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5381,6 +5526,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5445,6 +5595,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5509,6 +5664,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5573,6 +5733,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5637,6 +5802,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5701,6 +5871,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5765,6 +5940,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5826,6 +6006,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5887,6 +6072,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5948,6 +6138,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6009,6 +6204,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6080,6 +6280,11 @@ Module convert.
                   M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6144,6 +6349,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6205,6 +6415,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6266,6 +6481,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6327,6 +6547,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6398,6 +6623,11 @@ Module convert.
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6472,6 +6702,11 @@ Module convert.
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6536,6 +6771,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6597,6 +6837,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6658,6 +6903,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6729,6 +6979,11 @@ Module convert.
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6803,6 +7058,11 @@ Module convert.
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6877,6 +7137,11 @@ Module convert.
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -6941,6 +7206,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7002,6 +7272,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7073,6 +7348,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7147,6 +7427,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7221,6 +7506,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7295,6 +7585,11 @@ Module convert.
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7359,6 +7654,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7420,6 +7720,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7486,6 +7791,11 @@ Module convert.
             (let u := M.alloc (| u |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7548,6 +7858,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7618,6 +7933,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7688,6 +8008,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7822,6 +8147,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7892,6 +8222,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -7962,6 +8297,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8032,6 +8372,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8144,6 +8489,11 @@ Module convert.
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8222,6 +8572,11 @@ Module convert.
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8300,6 +8655,11 @@ Module convert.
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8368,6 +8728,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8433,6 +8798,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8508,6 +8878,11 @@ Module convert.
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8586,6 +8961,11 @@ Module convert.
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8664,6 +9044,11 @@ Module convert.
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8860,6 +9245,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8930,6 +9320,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -8995,6 +9390,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9060,6 +9460,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9125,6 +9530,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9200,6 +9610,11 @@ Module convert.
                     M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9332,6 +9747,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9402,6 +9822,11 @@ Module convert.
               (let u := M.alloc (| u |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -9546,6 +9971,11 @@ Module convert.
                     M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -12600,6 +13030,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -12783,6 +13214,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -12966,6 +13398,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -13150,6 +13583,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -13335,6 +13769,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -13518,6 +13953,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -13702,6 +14138,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -13886,6 +14323,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14071,6 +14509,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14254,6 +14693,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14438,6 +14878,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14622,6 +15063,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14806,6 +15248,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14991,6 +15434,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -15174,6 +15618,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -15358,6 +15803,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -15542,6 +15988,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -15726,6 +16173,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -15910,6 +16358,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16093,6 +16542,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16276,6 +16726,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16460,6 +16911,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16645,6 +17097,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16828,6 +17281,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17012,6 +17466,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17196,6 +17651,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17381,6 +17837,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17564,6 +18021,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17748,6 +18206,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -17932,6 +18391,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18116,6 +18576,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18301,6 +18762,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18484,6 +18946,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18668,6 +19131,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18852,6 +19316,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19036,6 +19501,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19220,6 +19686,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19403,6 +19870,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19586,6 +20054,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19770,6 +20239,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -19955,6 +20425,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20138,6 +20609,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20322,6 +20794,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20506,6 +20979,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20691,6 +21165,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20874,6 +21349,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21058,6 +21534,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21242,6 +21719,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21426,6 +21904,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21611,6 +22090,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21794,6 +22274,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -21978,6 +22459,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -22162,6 +22644,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -22346,6 +22829,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -22530,6 +23014,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -22715,6 +23200,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -22898,6 +23384,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23082,6 +23569,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23266,6 +23754,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23450,6 +23939,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23634,6 +24124,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -23819,6 +24310,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24002,6 +24494,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24186,6 +24679,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24370,6 +24864,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24554,6 +25049,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24738,6 +25234,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24923,6 +25420,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -25106,6 +25604,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -25290,6 +25789,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -25474,6 +25974,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -25658,6 +26159,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -25842,6 +26344,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26027,6 +26530,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26210,6 +26714,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26394,6 +26899,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26578,6 +27084,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26762,6 +27269,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26946,6 +27454,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -27131,6 +27640,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -27314,6 +27824,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -27498,6 +28009,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -27682,6 +28194,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -27866,6 +28379,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28050,6 +28564,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28235,6 +28750,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28418,6 +28934,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28602,6 +29119,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28786,6 +29304,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -28970,6 +29489,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -29154,6 +29674,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -29339,6 +29860,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -29522,6 +30044,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -29706,6 +30229,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -29890,6 +30414,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -30074,6 +30599,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -30258,6 +30784,7 @@ Module convert.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply

@@ -231,6 +231,13 @@ Module iter.
                           "Item" :=
                       M.copy (|
                         M.match_operator (|
+                          Some
+                            (Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -478,6 +485,13 @@ Module iter.
                           "Item" :=
                       M.copy (|
                         M.match_operator (|
+                          Some
+                            (Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -908,6 +922,7 @@ Module iter.
                 let~ advanced : Ty.path "usize" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "usize"),
                       remaining,
                       [
                         fun γ =>
@@ -1098,6 +1113,13 @@ Module iter.
                           "Item" :=
                       M.copy (|
                         M.match_operator (|
+                          Some
+                            (Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -1325,6 +1347,13 @@ Module iter.
                           "Item" :=
                       M.copy (|
                         M.match_operator (|
+                          Some
+                            (Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply

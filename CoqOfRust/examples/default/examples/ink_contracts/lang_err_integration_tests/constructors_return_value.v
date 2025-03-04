@@ -57,6 +57,7 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -268,6 +269,14 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
         (let succeed := M.alloc (| succeed |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "constructors_return_value::ConstructorsReturnValue";
+                  Ty.path "constructors_return_value::ConstructorError"
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -431,6 +440,20 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 ] :=
             M.copy (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "constructors_return_value::AccountId";
+                          Ty.path "constructors_return_value::ConstructorError"
+                        ];
+                      Ty.path "constructors_return_value::LangError"
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

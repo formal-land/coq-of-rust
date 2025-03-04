@@ -166,6 +166,11 @@ Module utilities.
         (let data := M.alloc (| data |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "alloc::borrow::Cow")
+                []
+                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -363,6 +368,11 @@ Module utilities.
         let len := M.alloc (| len |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "alloc::borrow::Cow")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -516,6 +526,11 @@ Module utilities.
         (let data := M.alloc (| data |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "alloc::borrow::Cow")
+                []
+                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -719,6 +734,11 @@ Module utilities.
         let len := M.alloc (| len |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "alloc::borrow::Cow")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -931,6 +951,16 @@ Module utilities.
         (let value := M.alloc (| value |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    []
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

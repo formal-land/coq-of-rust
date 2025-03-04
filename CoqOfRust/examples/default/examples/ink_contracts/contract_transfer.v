@@ -57,6 +57,7 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -408,6 +409,7 @@ Module Impl_contract_transfer_GiveMe.
             M.alloc (| Value.Tuple [] |) in
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -470,6 +472,7 @@ Module Impl_contract_transfer_GiveMe.
               ]
             |) in
           M.match_operator (|
+            Some (Ty.tuple []),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -710,6 +713,7 @@ Module Impl_contract_transfer_GiveMe.
             M.alloc (| Value.Tuple [] |) in
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>

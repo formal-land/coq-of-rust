@@ -491,6 +491,12 @@ Module boxed.
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some
+                        (Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                          ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -728,6 +734,11 @@ Module boxed.
                 |)
               |) in
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -816,6 +827,11 @@ Module boxed.
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some
+                        (Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -900,6 +916,11 @@ Module boxed.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1151,6 +1172,11 @@ Module boxed.
                 |)
               |) in
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -1239,6 +1265,11 @@ Module boxed.
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some
+                        (Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1323,6 +1354,11 @@ Module boxed.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1601,6 +1637,7 @@ Module boxed.
           (let boxed := M.alloc (| boxed |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -2018,6 +2055,7 @@ Module boxed.
           (let b := M.alloc (| b |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -2082,6 +2120,7 @@ Module boxed.
           (let b := M.alloc (| b |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
@@ -2475,6 +2514,7 @@ Module boxed.
                 let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2512,6 +2552,7 @@ Module boxed.
                             (let~ layout : Ty.path "core::alloc::layout::Layout" :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some (Ty.path "core::alloc::layout::Layout"),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2583,6 +2624,11 @@ Module boxed.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -2857,6 +2903,7 @@ Module boxed.
                 let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2894,6 +2941,7 @@ Module boxed.
                             (let~ layout : Ty.path "core::alloc::layout::Layout" :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some (Ty.path "core::alloc::layout::Layout"),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2965,6 +3013,11 @@ Module boxed.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -3362,6 +3415,7 @@ Module boxed.
                 let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3399,6 +3453,7 @@ Module boxed.
                             (let~ layout : Ty.path "core::alloc::layout::Layout" :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some (Ty.path "core::alloc::layout::Layout"),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3470,6 +3525,11 @@ Module boxed.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -3737,6 +3797,7 @@ Module boxed.
                 let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3774,6 +3835,7 @@ Module boxed.
                             (let~ layout : Ty.path "core::alloc::layout::Layout" :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some (Ty.path "core::alloc::layout::Layout"),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -3845,6 +3907,11 @@ Module boxed.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -4099,6 +4166,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -4240,6 +4308,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -4377,6 +4446,7 @@ Module boxed.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -6177,6 +6247,11 @@ Module boxed.
           (let cow := M.alloc (| cow |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]),
               cow,
               [
                 fun γ =>
@@ -6338,6 +6413,11 @@ Module boxed.
           (let cow := M.alloc (| cow |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]),
               cow,
               [
                 fun γ =>
@@ -6433,6 +6513,7 @@ Module boxed.
           (let s := M.alloc (| s |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ]; A ],
@@ -6572,6 +6653,7 @@ Module boxed.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -6580,6 +6662,7 @@ Module boxed.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           Value.Tuple
                             [
@@ -6617,6 +6700,7 @@ Module boxed.
                               let left_val := M.copy (| γ0_0 |) in
                               let right_val := M.copy (| γ0_1 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -6690,6 +6774,7 @@ Module boxed.
               ]
             |) in
           M.match_operator (|
+            None,
             M.alloc (|
               M.call_closure (|
                 Ty.tuple
@@ -6786,6 +6871,20 @@ Module boxed.
           (let boxed_slice := M.alloc (| boxed_slice |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -6900,6 +6999,17 @@ Module boxed.
           (let vec := M.alloc (| vec |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7012,6 +7122,17 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7090,6 +7211,7 @@ Module boxed.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7098,6 +7220,7 @@ Module boxed.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -7146,6 +7269,7 @@ Module boxed.
                 ]
               |) in
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -7218,6 +7342,21 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.dyn
+                          [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ];
+                        A
+                      ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7307,6 +7446,7 @@ Module boxed.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7315,6 +7455,7 @@ Module boxed.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -7367,6 +7508,7 @@ Module boxed.
                 ]
               |) in
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -7459,6 +7601,25 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.dyn
+                          [
+                            ("core::any::Any::Trait", []);
+                            ("core::marker::Send::AutoTrait", []);
+                            ("core::marker::Sync::AutoTrait", [])
+                          ];
+                        A
+                      ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -7551,6 +7712,7 @@ Module boxed.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7559,6 +7721,7 @@ Module boxed.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -7612,6 +7775,7 @@ Module boxed.
                 ]
               |) in
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple
@@ -9512,6 +9676,7 @@ Module boxed.
           let source := M.alloc (| source |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -10295,6 +10460,18 @@ Module boxed.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global"
+                      ]
+                  ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -10510,6 +10687,31 @@ Module boxed.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("core::error::Error::Trait", []);
+                                          ("core::marker::Send::AutoTrait", [])
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ])),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -10713,6 +10915,32 @@ Module boxed.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("core::error::Error::Trait", []);
+                                          ("core::marker::Send::AutoTrait", []);
+                                          ("core::marker::Sync::AutoTrait", [])
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ])),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

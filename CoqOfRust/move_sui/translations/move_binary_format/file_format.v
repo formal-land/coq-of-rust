@@ -23,6 +23,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -103,6 +104,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -608,6 +610,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -688,6 +691,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1193,6 +1197,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -1273,6 +1278,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1778,6 +1784,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -1858,6 +1865,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -2364,6 +2372,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -2447,6 +2456,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -2963,6 +2973,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -3043,6 +3054,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -3550,6 +3562,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -3630,6 +3643,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -4135,6 +4149,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -4215,6 +4230,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -4720,6 +4736,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -4800,6 +4817,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -5305,6 +5323,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -5385,6 +5404,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -5890,6 +5910,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -5970,6 +5991,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -6473,6 +6495,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -6553,6 +6576,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -7058,6 +7082,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -7138,6 +7163,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -7897,11 +7923,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -8115,6 +8143,7 @@ Module file_format.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -8243,6 +8272,7 @@ Module file_format.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -8640,21 +8670,25 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                     |)))
@@ -9020,6 +9054,7 @@ Module file_format.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -9073,6 +9108,11 @@ Module file_format.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
+                      Some
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ]),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -9129,6 +9169,11 @@ Module file_format.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
+                              Some
+                                (Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ]),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -9289,6 +9334,7 @@ Module file_format.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -9336,6 +9382,7 @@ Module file_format.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
+                      Some (Ty.path "core::cmp::Ordering"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
@@ -9383,6 +9430,7 @@ Module file_format.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.match_operator (|
+                              Some (Ty.path "core::cmp::Ordering"),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
@@ -9635,6 +9683,21 @@ Module file_format.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "move_binary_format::file_format::StructTypeParameter"
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path "move_binary_format::file_format::AbilitySet")),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -9685,11 +9748,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -9812,11 +9877,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -10016,6 +10083,7 @@ Module file_format.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -10144,6 +10212,7 @@ Module file_format.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -10269,6 +10338,13 @@ Module file_format.
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
+                        Some
+                          (Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -10341,6 +10417,7 @@ Module file_format.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10421,6 +10498,7 @@ Module file_format.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -10596,6 +10674,14 @@ Module file_format.
             let __serializer := M.alloc (| __serializer |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                    ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -11202,21 +11288,25 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                     |)))
@@ -11816,11 +11906,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -12053,6 +12145,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_binary_format::file_format::StructFieldInformation"),
               self,
               [
                 fun γ =>
@@ -12136,6 +12229,11 @@ Module file_format.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -12232,6 +12330,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -12302,6 +12401,7 @@ Module file_format.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -12572,11 +12672,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -12963,11 +13065,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -13354,11 +13458,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -13748,11 +13854,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -13889,6 +13997,11 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "u16"; Ty.path "move_binary_format::errors::PartialVMError" ]),
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -14022,6 +14135,16 @@ Module file_format.
           let offset := M.alloc (| offset |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                  ]),
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -14135,6 +14258,21 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
+                      ]
+                  ]),
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -14397,11 +14535,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -14623,6 +14763,7 @@ Module file_format.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -14947,6 +15088,11 @@ Module file_format.
           (let v := M.alloc (| v |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "move_binary_format::file_format::Visibility"; Ty.tuple [] ]),
               v,
               [
                 fun γ =>
@@ -15497,26 +15643,31 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              None,
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
@@ -15957,6 +16108,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -16373,16 +16525,19 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -16911,6 +17066,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -17354,6 +17510,7 @@ Module file_format.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -17765,6 +17922,11 @@ Module file_format.
           (let u := M.alloc (| u |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "move_binary_format::file_format::Ability" ]),
               u,
               [
                 fun γ =>
@@ -17845,6 +18007,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_binary_format::file_format::Ability"),
               self,
               [
                 fun γ =>
@@ -17906,6 +18069,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_binary_format::file_format::AbilitySet"),
               self,
               [
                 fun γ =>
@@ -18028,6 +18192,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -18059,6 +18224,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -18973,6 +19139,7 @@ Module file_format.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -19423,6 +19590,25 @@ Module file_format.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
+                                            Some
+                                              (Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet";
+                                                              Ty.path "bool"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "bool")),
                                             M.alloc (| α0 |),
                                             [
                                               fun γ =>
@@ -19459,6 +19645,21 @@ Module file_format.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet";
+                                                      Ty.path "bool"
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.path
+                                              "move_binary_format::file_format::AbilitySet")),
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -19572,6 +19773,17 @@ Module file_format.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
+                                                                  Some
+                                                                    (Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::Ability"
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet")),
                                                                   M.alloc (| α0 |),
                                                                   [
                                                                     fun γ =>
@@ -19624,12 +19836,35 @@ Module file_format.
                               | [ α0; α1 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some
+                                      (Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "move_binary_format::file_format::AbilitySet";
+                                              Ty.path "move_binary_format::file_format::AbilitySet"
+                                            ]
+                                        ]
+                                        (Ty.path "move_binary_format::file_format::AbilitySet")),
                                     M.alloc (| α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let acc := M.copy (| γ |) in
                                           M.match_operator (|
+                                            Some
+                                              (Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet";
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    ]
+                                                ]
+                                                (Ty.path
+                                                  "move_binary_format::file_format::AbilitySet")),
                                             M.alloc (| α1 |),
                                             [
                                               fun γ =>
@@ -19690,6 +19925,11 @@ Module file_format.
           (let byte := M.alloc (| byte |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "move_binary_format::file_format::AbilitySet" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -19898,6 +20138,7 @@ Module file_format.
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -19978,6 +20219,7 @@ Module file_format.
                                   |)
                                 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -20111,6 +20353,7 @@ Module file_format.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -20234,6 +20477,7 @@ Module file_format.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "move_binary_format::file_format::AbilitySetIterator",
@@ -20258,6 +20502,7 @@ Module file_format.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -20304,6 +20549,7 @@ Module file_format.
                                           let ability := M.copy (| γ0_0 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -20709,6 +20955,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_binary_format::file_format::SignatureToken"),
               self,
               [
                 fun γ =>
@@ -21084,31 +21331,37 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              None,
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
+                                                      None,
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
@@ -21186,6 +21439,7 @@ Module file_format.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -21442,6 +21696,7 @@ Module file_format.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -21463,6 +21718,7 @@ Module file_format.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
+                      Some (Ty.path "core::cmp::Ordering"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -21842,6 +22098,7 @@ Module file_format.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -22260,6 +22517,7 @@ Module file_format.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -22689,6 +22947,16 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -22739,6 +23007,7 @@ Module file_format.
                     let tok := M.copy (| γ0_0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         tok,
                         [
                           fun γ =>
@@ -22838,6 +23107,7 @@ Module file_format.
                                 |) in
                               let struct_inst := M.alloc (| γ1_0 |) in
                               M.match_operator (|
+                                None,
                                 M.alloc (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -23217,6 +23487,20 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                        Ty.path "usize"
+                      ]
+                  ]),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -23278,6 +23562,7 @@ Module file_format.
                     let depth := M.copy (| γ1_1 |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         tok,
                         [
                           fun γ =>
@@ -23390,6 +23675,7 @@ Module file_format.
                                 |) in
                               let struct_inst := M.alloc (| γ1_0 |) in
                               M.match_operator (|
+                                None,
                                 M.alloc (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -23745,6 +24031,31 @@ Module file_format.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
+                                                                Some
+                                                                  (Ty.function
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken"
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                    (Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::SignatureToken"
+                                                                          ];
+                                                                        Ty.path "usize"
+                                                                      ])),
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -23955,6 +24266,11 @@ Module file_format.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -24561,6 +24877,7 @@ Module file_format.
                       |) in
                     let struct_inst := M.alloc (| γ1_0 |) in
                     M.match_operator (|
+                      None,
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -25019,6 +25336,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_binary_format::SignatureTokenKind"),
               self,
               [
                 fun γ =>
@@ -25222,6 +25540,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -25416,6 +25735,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -25477,6 +25797,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -25515,6 +25836,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -25561,6 +25883,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -25782,6 +26105,7 @@ Module file_format.
           let sh_idx := M.alloc (| sh_idx |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -26466,11 +26790,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -26943,11 +27269,13 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -27595,6 +27923,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_binary_format::file_format::Bytecode"),
               self,
               [
                 fun γ =>
@@ -29284,6 +29613,7 @@ Module file_format.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -30580,86 +30910,102 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              None,
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
+                                                      None,
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              None,
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
+                                                                      None,
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (M.match_operator (|
+                                                                              None,
                                                                               Value.DeclaredButUndefined,
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
+                                                                                      None,
                                                                                       Value.DeclaredButUndefined,
                                                                                       [
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (M.match_operator (|
+                                                                                              None,
                                                                                               Value.DeclaredButUndefined,
                                                                                               [
                                                                                                 fun
                                                                                                     γ =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
+                                                                                                      None,
                                                                                                       Value.DeclaredButUndefined,
                                                                                                       [
                                                                                                         fun
                                                                                                             γ =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
+                                                                                                              None,
                                                                                                               Value.DeclaredButUndefined,
                                                                                                               [
                                                                                                                 fun
                                                                                                                     γ =>
                                                                                                                   ltac:(M.monadic
                                                                                                                     (M.match_operator (|
+                                                                                                                      None,
                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                       [
                                                                                                                         fun
                                                                                                                             γ =>
                                                                                                                           ltac:(M.monadic
                                                                                                                             (M.match_operator (|
+                                                                                                                              None,
                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                               [
                                                                                                                                 fun
                                                                                                                                     γ =>
                                                                                                                                   ltac:(M.monadic
                                                                                                                                     (M.match_operator (|
+                                                                                                                                      None,
                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                       [
                                                                                                                                         fun
@@ -30739,6 +31085,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -30806,6 +31153,7 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -30911,6 +31259,11 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]),
               self,
               [
                 fun γ =>
@@ -31026,6 +31379,7 @@ Module file_format.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -31146,6 +31500,7 @@ Module file_format.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -31207,6 +31562,7 @@ Module file_format.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -31248,6 +31604,7 @@ Module file_format.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -31349,6 +31706,7 @@ Module file_format.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -31535,6 +31893,7 @@ Module file_format.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -33740,6 +34099,11 @@ Module file_format.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -40721,92 +41085,109 @@ Module file_format.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              None,
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
+                                                      None,
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              None,
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
+                                                                      None,
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (M.match_operator (|
+                                                                              None,
                                                                               Value.DeclaredButUndefined,
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
+                                                                                      None,
                                                                                       Value.DeclaredButUndefined,
                                                                                       [
                                                                                         fun γ =>
                                                                                           ltac:(M.monadic
                                                                                             (M.match_operator (|
+                                                                                              None,
                                                                                               Value.DeclaredButUndefined,
                                                                                               [
                                                                                                 fun
                                                                                                     γ =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
+                                                                                                      None,
                                                                                                       Value.DeclaredButUndefined,
                                                                                                       [
                                                                                                         fun
                                                                                                             γ =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
+                                                                                                              None,
                                                                                                               Value.DeclaredButUndefined,
                                                                                                               [
                                                                                                                 fun
                                                                                                                     γ =>
                                                                                                                   ltac:(M.monadic
                                                                                                                     (M.match_operator (|
+                                                                                                                      None,
                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                       [
                                                                                                                         fun
                                                                                                                             γ =>
                                                                                                                           ltac:(M.monadic
                                                                                                                             (M.match_operator (|
+                                                                                                                              None,
                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                               [
                                                                                                                                 fun
                                                                                                                                     γ =>
                                                                                                                                   ltac:(M.monadic
                                                                                                                                     (M.match_operator (|
+                                                                                                                                      None,
                                                                                                                                       Value.DeclaredButUndefined,
                                                                                                                                       [
                                                                                                                                         fun
                                                                                                                                             γ =>
                                                                                                                                           ltac:(M.monadic
                                                                                                                                             (M.match_operator (|
+                                                                                                                                              None,
                                                                                                                                               Value.DeclaredButUndefined,
                                                                                                                                               [
                                                                                                                                                 fun
@@ -41713,6 +42094,7 @@ Module file_format.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -41721,6 +42103,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -41732,6 +42115,7 @@ Module file_format.
                                         UnOp.not (|
                                           M.read (|
                                             M.match_operator (|
+                                              Some (Ty.path "bool"),
                                               kind,
                                               [
                                                 fun γ =>
@@ -41827,6 +42211,7 @@ Module file_format.
                 ]
               |) in
             M.match_operator (|
+              Some (Ty.path "usize"),
               kind,
               [
                 fun γ =>
@@ -42499,6 +42884,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -42507,6 +42893,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -42595,6 +42982,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -42603,6 +42991,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -42986,6 +43375,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -42994,6 +43384,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -43082,6 +43473,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -43090,6 +43482,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -43257,6 +43650,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -43265,6 +43659,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -43434,6 +43829,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -43442,6 +43838,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -43530,6 +43927,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -43538,6 +43936,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -43706,6 +44105,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -43714,6 +44114,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -44499,6 +44900,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -44507,6 +44909,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -44618,6 +45021,7 @@ Module file_format.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -44626,6 +45030,7 @@ Module file_format.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -44636,6 +45041,7 @@ Module file_format.
                                       UnOp.not (|
                                         M.read (|
                                           M.match_operator (|
+                                            Some (Ty.path "bool"),
                                             M.alloc (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -46010,6 +46416,26 @@ Module file_format.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some
+                                        (Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::ModuleHandle"
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path "bool")),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -46059,6 +46485,21 @@ Module file_format.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  Some
+                                    (Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandle"
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.path "move_core_types::language_storage::ModuleId")),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -46254,6 +46695,19 @@ Module file_format.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.path "move_core_types::language_storage::ModuleId")),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -46397,6 +46851,26 @@ Module file_format.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ]
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path "bool")),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -46546,6 +47020,26 @@ Module file_format.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ]
+                                      ]
+                                  ]
+                              ]
+                              (Ty.path "bool")),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -46710,6 +47204,14 @@ Module file_format.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::AbilitySet";
+                        Ty.path "move_binary_format::errors::PartialVMError"
+                      ]),
                   ty,
                   [
                     fun γ =>
@@ -47028,6 +47530,9 @@ Module file_format.
                                             [
                                               M.read (|
                                                 M.match_operator (|
+                                                  Some
+                                                    (Ty.path
+                                                      "move_binary_format::file_format::AbilitySet"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -47242,6 +47747,7 @@ Module file_format.
                           |) in
                         let struct_inst := M.alloc (| γ1_0 |) in
                         M.match_operator (|
+                          None,
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -47301,6 +47807,14 @@ Module file_format.
                                       ] :=
                                   M.copy (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "move_binary_format::file_format::AbilitySet";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -47578,6 +48092,30 @@ Module file_format.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
+                                                                Some
+                                                                  (Ty.function
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken"
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                    (Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::AbilitySet";
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ])),
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -47890,6 +48428,21 @@ Module file_format.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
+                                                      Some
+                                                        (Ty.function
+                                                          [
+                                                            Ty.tuple
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructTypeParameter"
+                                                                  ]
+                                                              ]
+                                                          ]
+                                                          (Ty.path "bool")),
                                                       M.alloc (| α0 |),
                                                       [
                                                         fun γ =>

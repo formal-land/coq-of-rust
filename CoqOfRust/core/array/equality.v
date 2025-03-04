@@ -147,6 +147,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.path "bool"),
                 b,
                 [
                   fun γ =>
@@ -244,6 +245,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.path "bool"),
                 b,
                 [
                   fun γ =>
@@ -355,6 +357,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.path "bool"),
                 b,
                 [
                   fun γ =>
@@ -452,6 +455,7 @@ Module array.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.path "bool"),
                 b,
                 [
                   fun γ =>

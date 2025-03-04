@@ -165,12 +165,18 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some
+                          (Ty.function [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ] Acc),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| γ |) in
                               M.match_operator (|
+                                Some
+                                  (Ty.function
+                                    [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                    Acc),
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
@@ -228,12 +234,17 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.function [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ] R),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| γ |) in
                               M.match_operator (|
+                                Some
+                                  (Ty.function
+                                    [ Ty.tuple [ Acc; Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                    R),
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
@@ -1371,6 +1382,7 @@ Module iter.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1387,6 +1399,7 @@ Module iter.
                                   M.read (|
                                     let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
+                                        Some (Ty.tuple []),
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -1411,6 +1424,7 @@ Module iter.
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.match_operator (|
+                                                      None,
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -1492,6 +1506,7 @@ Module iter.
                                         ]
                                       |) in
                                     M.match_operator (|
+                                      None,
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1557,6 +1572,7 @@ Module iter.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1662,6 +1678,7 @@ Module iter.
                                         |)
                                       |) in
                                     M.match_operator (|
+                                      None,
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1808,6 +1825,7 @@ Module iter.
                         |)
                       |) in
                     M.match_operator (|
+                      None,
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply

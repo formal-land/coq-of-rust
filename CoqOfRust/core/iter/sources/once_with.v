@@ -111,6 +111,11 @@ Module iter.
               let f := M.alloc (| f |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -225,6 +230,7 @@ Module iter.
                     let~ f : F :=
                       M.copy (|
                         M.match_operator (|
+                          Some F,
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply

@@ -64,6 +64,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             reference,
             [
               fun γ =>
@@ -142,6 +143,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             M.deref (| M.read (| reference |) |),
             [
               fun γ =>
@@ -219,6 +221,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _not_a_reference : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
         M.match_operator (|
+          None,
           M.alloc (| Value.Integer IntegerKind.I32 3 |),
           [
             fun γ =>
@@ -228,6 +231,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let~ mut_value : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 6 |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     value,
                     [
                       fun γ =>
@@ -309,6 +313,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |) in
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   mut_value,
                   [
                     fun γ =>

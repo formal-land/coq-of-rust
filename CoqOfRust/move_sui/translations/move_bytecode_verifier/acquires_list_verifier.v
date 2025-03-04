@@ -292,6 +292,7 @@ Module acquires_list_verifier.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -347,6 +348,7 @@ Module acquires_list_verifier.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -509,6 +511,7 @@ Module acquires_list_verifier.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -614,6 +617,14 @@ Module acquires_list_verifier.
                                                 M.deref (|
                                                   M.read (|
                                                     M.match_operator (|
+                                                      Some
+                                                        (Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::CodeUnit"
+                                                          ]),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -809,6 +820,14 @@ Module acquires_list_verifier.
                                                                 |)
                                                               |) in
                                                             M.match_operator (|
+                                                              Some
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CodeUnit"
+                                                                  ]),
                                                               M.alloc (| Value.Tuple [] |),
                                                               [
                                                                 fun γ =>
@@ -955,6 +974,7 @@ Module acquires_list_verifier.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1025,6 +1045,7 @@ Module acquires_list_verifier.
                                           let offset := M.copy (| γ1_0 |) in
                                           let instruction := M.copy (| γ1_1 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -1162,6 +1183,7 @@ Module acquires_list_verifier.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1206,6 +1228,7 @@ Module acquires_list_verifier.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1261,6 +1284,7 @@ Module acquires_list_verifier.
                                           let annotation := M.copy (| γ0_0 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -1357,6 +1381,14 @@ Module acquires_list_verifier.
                                                 ] :=
                                             M.copy (|
                                               M.match_operator (|
+                                                Some
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::StructDefinition"
+                                                    ]),
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     Ty.apply
@@ -1580,6 +1612,14 @@ Module acquires_list_verifier.
                                                           |)
                                                         |) in
                                                       M.match_operator (|
+                                                        Some
+                                                          (Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructDefinition"
+                                                            ]),
                                                         M.alloc (| Value.Tuple [] |),
                                                         [
                                                           fun γ =>
@@ -1739,6 +1779,7 @@ Module acquires_list_verifier.
                                               |)
                                             |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -1926,6 +1967,11 @@ Module acquires_list_verifier.
           let offset := M.alloc (| offset |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
               instruction,
               [
                 fun γ =>
@@ -2998,6 +3044,7 @@ Module acquires_list_verifier.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3037,6 +3084,7 @@ Module acquires_list_verifier.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3095,6 +3143,7 @@ Module acquires_list_verifier.
                                             |) in
                                           let acquired_resource := M.copy (| γ0_0 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -3257,6 +3306,11 @@ Module acquires_list_verifier.
           let offset := M.alloc (| offset |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -3392,6 +3446,7 @@ Module acquires_list_verifier.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3491,6 +3546,14 @@ Module acquires_list_verifier.
                     ]
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                        Ty.path "alloc::alloc::Global"
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

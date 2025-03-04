@@ -206,6 +206,7 @@ Module cell.
             let value := M.alloc (| value |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; T ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -291,6 +292,7 @@ Module cell.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -438,6 +440,7 @@ Module cell.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ T ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -464,6 +467,13 @@ Module cell.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  Some
+                                    (Ty.function
+                                      [ Ty.tuple [] ]
+                                      (Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ T; Ty.path "never" ])),
                                   M.alloc (| α0 |),
                                   [
                                     fun γ =>
@@ -547,6 +557,7 @@ Module cell.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
+                        Some (Ty.apply (Ty.path "&mut") [] [ T ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -576,6 +587,13 @@ Module cell.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
+                                          Some
+                                            (Ty.function
+                                              [ Ty.tuple [] ]
+                                              (Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ T; Ty.path "never" ])),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -661,6 +679,7 @@ Module cell.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -765,6 +784,7 @@ Module cell.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -817,6 +837,7 @@ Module cell.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.apply (Ty.path "&") [] [ T ] :=
                               M.match_operator (|
+                                Some (Ty.apply (Ty.path "&") [] [ T ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -1002,6 +1023,7 @@ Module cell.
                   let~ val : T :=
                     M.copy (|
                       M.match_operator (|
+                        Some T,
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1096,6 +1118,11 @@ Module cell.
                       |)
                     |) in
                   M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; E ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1344,6 +1371,7 @@ Module cell.
                 |) in
               let~ _ : Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ] :=
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1513,6 +1541,7 @@ Module cell.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1541,6 +1570,7 @@ Module cell.
                           |) in
                         let value := M.copy (| γ0_0 |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; T ],

@@ -400,6 +400,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -477,6 +478,7 @@ Module iter.
                   (M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -500,6 +502,7 @@ Module iter.
                                   Value.Bool true
                                 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -548,6 +551,7 @@ Module iter.
                                           init,
                                           M.read (|
                                             M.match_operator (|
+                                              Some Acc,
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -744,6 +748,7 @@ Module iter.
                   (M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -767,6 +772,7 @@ Module iter.
                                   Value.Bool true
                                 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply

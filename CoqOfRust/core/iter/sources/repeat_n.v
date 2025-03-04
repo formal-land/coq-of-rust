@@ -26,6 +26,7 @@ Module iter.
               let~ element : Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] :=
                 M.copy (|
                   M.match_operator (|
+                    Some (Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -119,6 +120,11 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ A ] ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -213,6 +219,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "core::option::Option") [] [ A ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -654,6 +661,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "core::option::Option") [] [ A ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -790,6 +798,7 @@ Module iter.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -825,6 +834,14 @@ Module iter.
                     ]
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1186,6 +1203,7 @@ Module iter.
                     |)
                   |) in
                 M.match_operator (|
+                  Some A,
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

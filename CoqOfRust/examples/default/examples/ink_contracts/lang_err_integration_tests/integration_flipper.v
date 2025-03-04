@@ -120,6 +120,14 @@ Module Impl_integration_flipper_Flipper.
         (let succeed := M.alloc (| succeed |) in
         M.read (|
           M.match_operator (|
+            Some
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "integration_flipper::Flipper";
+                  Ty.path "integration_flipper::FlipperError"
+                ]),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

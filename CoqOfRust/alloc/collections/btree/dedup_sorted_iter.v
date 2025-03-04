@@ -104,6 +104,7 @@ Module collections.
                           (let~ next : Ty.tuple [ K; V ] :=
                             M.copy (|
                               M.match_operator (|
+                                Some (Ty.tuple [ K; V ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -164,6 +165,7 @@ Module collections.
                           let~ peeked : Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] :=
                             M.copy (|
                               M.match_operator (|
+                                Some (Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -221,6 +223,7 @@ Module collections.
                               |)
                             |) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>

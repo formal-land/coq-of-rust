@@ -46,6 +46,21 @@ Module slice.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                        ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -269,6 +284,19 @@ Module slice.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                Some
+                                  (Ty.function
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                            ]
+                                        ]
+                                    ]
+                                    (Ty.path "bool")),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
@@ -333,6 +361,7 @@ Module slice.
                 Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -446,6 +475,7 @@ Module slice.
                 Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -624,6 +654,7 @@ Module slice.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -635,6 +666,7 @@ Module slice.
                             let first := M.alloc (| γ1_0 |) in
                             let rest := M.alloc (| γ1_rest |) in
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -732,6 +764,7 @@ Module slice.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -743,6 +776,7 @@ Module slice.
                             let rest := M.alloc (| γ1_rest |) in
                             let last := M.alloc (| γ1_rev0 |) in
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1328,6 +1362,7 @@ Module slice.
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -1499,6 +1534,7 @@ Module slice.
                           let~ _ : Ty.tuple [] :=
                             M.use
                               (M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "core::ascii::EscapeDefault",
@@ -1523,6 +1559,7 @@ Module slice.
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -1570,6 +1607,7 @@ Module slice.
                                                     let byte := M.copy (| γ0_0 |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -1715,6 +1753,7 @@ Module slice.
                               Ty.tuple [],
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -1870,6 +1909,23 @@ Module slice.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
+                                                                Some
+                                                                  (Ty.function
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u8" ]
+                                                                            ]
+                                                                        ]
+                                                                    ]
+                                                                    (Ty.path "bool")),
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -1900,6 +1956,7 @@ Module slice.
                                             |)
                                           |) in
                                         M.match_operator (|
+                                          None,
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.tuple
@@ -1959,6 +2016,7 @@ Module slice.
                                                   |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (|
                                                       M.call_closure (|
                                                         Ty.apply
@@ -2098,6 +2156,7 @@ Module slice.
                                                     |)
                                                   |) in
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -2141,6 +2200,7 @@ Module slice.
                                                         let b := M.copy (| γ0_0 |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -2397,6 +2457,7 @@ Module slice.
                           let~ _ : Ty.tuple [] :=
                             M.use
                               (M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path "core::ascii::EscapeDefault",
@@ -2421,6 +2482,7 @@ Module slice.
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -2468,6 +2530,7 @@ Module slice.
                                                     let byte := M.copy (| γ0_0 |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (|
                                                           M.call_closure (|
                                                             Ty.apply
@@ -2753,6 +2816,7 @@ Module slice.
                 Ty.tuple [],
                 ltac:(M.monadic
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2765,6 +2829,7 @@ Module slice.
                           let last := M.alloc (| γ1_rev0 |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2976,6 +3041,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3037,6 +3103,7 @@ Module slice.
                 let~ offset_to_aligned : Ty.path "usize" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "usize"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -3088,6 +3155,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3115,6 +3183,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3124,6 +3193,7 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -3182,6 +3252,7 @@ Module slice.
                 let~ byte_pos : Ty.path "usize" := M.copy (| offset_to_aligned |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3191,6 +3262,7 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -3253,6 +3325,7 @@ Module slice.
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -3277,6 +3350,7 @@ Module slice.
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -3289,6 +3363,7 @@ Module slice.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -3342,6 +3417,7 @@ Module slice.
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -3354,6 +3430,7 @@ Module slice.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -3364,6 +3441,7 @@ Module slice.
                                                         UnOp.not (|
                                                           M.read (|
                                                             M.match_operator (|
+                                                              Some (Ty.path "bool"),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -3517,6 +3595,7 @@ Module slice.
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -3595,6 +3674,7 @@ Module slice.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3604,6 +3684,7 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>

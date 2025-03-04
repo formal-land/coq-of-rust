@@ -51,6 +51,7 @@ Module Impl_wildcard_selector_WildcardSelector.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             M.alloc (|
               M.call_closure (|
                 Ty.tuple

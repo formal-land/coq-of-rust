@@ -104,6 +104,18 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::ops::coroutine::Coroutine"
+                          []
+                          [ Ty.tuple [] ]
+                          G
+                          "Yield"
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply

@@ -58,6 +58,10 @@ Module cyclic_dependencies.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some
+                          (Ty.function
+                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                            (Ty.path "move_binary_format::errors::VMError")),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -205,6 +209,7 @@ Module cyclic_dependencies.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -258,6 +263,7 @@ Module cyclic_dependencies.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -305,6 +311,7 @@ Module cyclic_dependencies.
                                           |) in
                                         let dep := M.copy (| γ0_0 |) in
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -312,6 +319,7 @@ Module cyclic_dependencies.
                                                 (let γ :=
                                                   M.use
                                                     (M.match_operator (|
+                                                      Some (Ty.path "bool"),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -567,6 +575,7 @@ Module cyclic_dependencies.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -615,6 +624,7 @@ Module cyclic_dependencies.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -668,6 +678,7 @@ Module cyclic_dependencies.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.use
                             (M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -695,6 +706,14 @@ Module cyclic_dependencies.
                                   [
                                     M.read (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::language_storage::ModuleId";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -874,6 +893,7 @@ Module cyclic_dependencies.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -930,6 +950,7 @@ Module cyclic_dependencies.
                                                     |) in
                                                   let dep := M.copy (| γ0_0 |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -937,6 +958,7 @@ Module cyclic_dependencies.
                                                           (let γ :=
                                                             M.use
                                                               (M.match_operator (|
+                                                                Some (Ty.path "bool"),
                                                                 M.alloc (|
                                                                   M.call_closure (|
                                                                     Ty.apply

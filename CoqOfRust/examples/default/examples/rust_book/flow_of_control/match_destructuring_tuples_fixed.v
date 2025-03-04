@@ -101,6 +101,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         M.match_operator (|
+          Some (Ty.tuple []),
           triple,
           [
             fun γ =>

@@ -142,6 +142,7 @@ Module iter.
                     let~ item : T :=
                       M.copy (|
                         M.match_operator (|
+                          Some T,
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -300,6 +301,12 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

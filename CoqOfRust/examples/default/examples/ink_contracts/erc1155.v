@@ -199,6 +199,7 @@ Module Impl_core_clone_Clone_for_erc1155_AccountId.
         (let self := M.alloc (| self |) in
         M.read (|
           M.match_operator (|
+            None,
             Value.DeclaredButUndefined,
             [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
           |)
@@ -917,6 +918,11 @@ Module Impl_erc1155_Contract.
                           ("to",
                             M.read (|
                               M.match_operator (|
+                                Some
+                                  (Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "erc1155::AccountId" ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1005,6 +1011,7 @@ Module Impl_erc1155_Contract.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1694,6 +1701,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1722,6 +1730,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1792,6 +1801,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1879,6 +1889,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2041,6 +2052,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2069,6 +2081,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2139,6 +2152,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2206,6 +2220,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2264,6 +2279,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2436,6 +2452,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2501,6 +2518,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2589,6 +2607,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -2651,6 +2670,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2687,6 +2707,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2896,6 +2917,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
           let~ _ : Ty.tuple [] :=
             M.use
               (M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -2931,6 +2953,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -2974,6 +2997,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                     let o := M.copy (| γ0_0 |) in
                                     M.use
                                       (M.match_operator (|
+                                        Some (Ty.tuple []),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -3010,6 +3034,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                                                 ltac:(M.monadic
                                                   (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -3197,6 +3222,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3255,6 +3281,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

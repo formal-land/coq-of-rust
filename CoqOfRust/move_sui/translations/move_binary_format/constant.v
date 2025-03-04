@@ -32,6 +32,11 @@ Module constant.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]),
                 sig,
                 [
                   fun γ =>
@@ -227,6 +232,9 @@ Module constant.
                                   [
                                     M.read (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_core_types::runtime_value::MoveTypeLayout"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -484,6 +492,11 @@ Module constant.
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]),
                 ty,
                 [
                   fun γ =>
@@ -662,6 +675,9 @@ Module constant.
                                   [
                                     M.read (|
                                       M.match_operator (|
+                                        Some
+                                          (Ty.path
+                                            "move_binary_format::file_format::SignatureToken"),
                                         M.alloc (|
                                           M.call_closure (|
                                             Ty.apply
@@ -883,6 +899,7 @@ Module constant.
                       ("type_",
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "move_binary_format::file_format::SignatureToken"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -986,6 +1003,11 @@ Module constant.
                       ("data",
                         M.read (|
                           M.match_operator (|
+                            Some
+                              (Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1128,6 +1150,7 @@ Module constant.
                 let~ ty : Ty.path "move_core_types::runtime_value::MoveTypeLayout" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "move_core_types::runtime_value::MoveTypeLayout"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply

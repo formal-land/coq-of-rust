@@ -113,6 +113,13 @@ Module gas_algebra.
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
+                        Some
+                          (Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -185,6 +192,7 @@ Module gas_algebra.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -265,6 +273,7 @@ Module gas_algebra.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -877,6 +886,7 @@ Module gas_algebra.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -895,6 +905,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1159,6 +1170,7 @@ Module gas_algebra.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (|
                   Value.Tuple
                     [
@@ -1174,6 +1186,7 @@ Module gas_algebra.
                       let left_val := M.copy (| γ0_0 |) in
                       let right_val := M.copy (| γ0_1 |) in
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1301,6 +1314,7 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
@@ -1396,6 +1410,7 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
@@ -1843,6 +1858,7 @@ Module gas_algebra.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -2259,6 +2275,7 @@ Module gas_algebra.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2274,6 +2291,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2337,6 +2355,7 @@ Module gas_algebra.
             |) in
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2352,6 +2371,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2424,6 +2444,7 @@ Module gas_algebra.
               |)
             |) in
           M.match_operator (|
+            Some (Ty.path "u64"),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>
@@ -2478,6 +2499,7 @@ Module gas_algebra.
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2493,6 +2515,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2556,6 +2579,7 @@ Module gas_algebra.
             |) in
           let~ _ : Ty.tuple [] :=
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (|
                 Value.Tuple
                   [
@@ -2571,6 +2595,7 @@ Module gas_algebra.
                     let left_val := M.copy (| γ0_0 |) in
                     let right_val := M.copy (| γ0_1 |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2647,6 +2672,7 @@ Module gas_algebra.
                 BinOp.Wrap.div (| M.read (| n |), M.read (| d |) |),
                 M.read (|
                   M.match_operator (|
+                    Some (Ty.path "u128"),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2669,6 +2695,7 @@ Module gas_algebra.
               |)
             |) in
           M.match_operator (|
+            Some (Ty.path "u64"),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

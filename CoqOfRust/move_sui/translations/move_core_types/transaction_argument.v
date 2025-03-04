@@ -86,6 +86,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_core_types::transaction_argument::TransactionArgument"),
               self,
               [
                 fun γ =>
@@ -416,6 +417,7 @@ Module transaction_argument.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -703,46 +705,55 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
+                                              None,
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
+                                                      None,
                                                       Value.DeclaredButUndefined,
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              None,
                                                               Value.DeclaredButUndefined,
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
+                                                                      None,
                                                                       Value.DeclaredButUndefined,
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
                                                                             (M.match_operator (|
+                                                                              None,
                                                                               Value.DeclaredButUndefined,
                                                                               [
                                                                                 fun γ =>
@@ -835,6 +846,7 @@ Module transaction_argument.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -1256,6 +1268,14 @@ Module transaction_argument.
             let __serializer := M.alloc (| __serializer |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                    ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -1753,6 +1773,11 @@ Module transaction_argument.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -2578,6 +2603,7 @@ Module transaction_argument.
           (let val := M.alloc (| val |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_core_types::runtime_value::MoveValue"),
               val,
               [
                 fun γ =>
@@ -2775,6 +2801,7 @@ Module transaction_argument.
                 [
                   M.read (|
                     M.match_operator (|
+                      Some (Ty.path "move_core_types::transaction_argument::TransactionArgument"),
                       val,
                       [
                         fun γ =>
@@ -2862,6 +2889,11 @@ Module transaction_argument.
                                 [
                                   M.read (|
                                     M.match_operator (|
+                                      Some
+                                        (Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -3053,6 +3085,23 @@ Module transaction_argument.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
+                                                                Some
+                                                                  (Ty.function
+                                                                    [
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::runtime_value::MoveValue"
+                                                                        ]
+                                                                    ]
+                                                                    (Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.path "u8";
+                                                                        Ty.path "anyhow::Error"
+                                                                      ])),
                                                                 M.alloc (| α0 |),
                                                                 [
                                                                   fun γ =>
@@ -3060,6 +3109,16 @@ Module transaction_argument.
                                                                       (let mv := M.copy (| γ |) in
                                                                       M.read (|
                                                                         M.match_operator (|
+                                                                          Some
+                                                                            (Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path "u8";
+                                                                                Ty.path
+                                                                                  "anyhow::Error"
+                                                                              ]),
                                                                           M.alloc (|
                                                                             Value.Tuple []
                                                                           |),
@@ -3668,6 +3727,24 @@ Module transaction_argument.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::transaction_argument::TransactionArgument"
+                                        ]
+                                    ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -3921,6 +3998,7 @@ Module transaction_argument.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -4314,6 +4392,13 @@ Module transaction_argument.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
+                                  (Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ])),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

@@ -72,6 +72,10 @@ Module limits.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                              (Ty.path "move_binary_format::errors::VMError")),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
@@ -154,6 +158,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -266,6 +271,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -378,6 +384,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -490,6 +497,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -602,6 +610,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -764,6 +773,7 @@ Module limits.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -783,6 +793,7 @@ Module limits.
                           let limit := M.copy (| γ0_0 |) in
                           M.use
                             (M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -917,6 +928,7 @@ Module limits.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -992,6 +1004,7 @@ Module limits.
                                                   let idx := M.copy (| γ1_0 |) in
                                                   let struct_handle := M.copy (| γ1_1 |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
@@ -1142,6 +1155,7 @@ Module limits.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1265,6 +1279,7 @@ Module limits.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1336,6 +1351,7 @@ Module limits.
                                           let function_handle := M.copy (| γ1_1 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -1354,6 +1370,7 @@ Module limits.
                                                       |) in
                                                     let limit := M.copy (| γ0_0 |) in
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1460,6 +1477,7 @@ Module limits.
                                             |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -1478,6 +1496,7 @@ Module limits.
                                                       |) in
                                                     let limit := M.copy (| γ0_0 |) in
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
                                                         fun γ =>
@@ -1677,6 +1696,7 @@ Module limits.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1744,6 +1764,7 @@ Module limits.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1799,6 +1820,7 @@ Module limits.
                                           let sign := M.copy (| γ0_0 |) in
                                           M.use
                                             (M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -1850,6 +1872,7 @@ Module limits.
                                                       ltac:(M.monadic
                                                         (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1916,6 +1939,7 @@ Module limits.
                                                                     |) in
                                                                   let ty := M.copy (| γ0_0 |) in
                                                                   M.match_operator (|
+                                                                    Some (Ty.tuple []),
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -2088,6 +2112,7 @@ Module limits.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2155,6 +2180,7 @@ Module limits.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2208,6 +2234,7 @@ Module limits.
                                             |) in
                                           let cons := M.copy (| γ0_0 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -2403,6 +2430,7 @@ Module limits.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2438,6 +2466,7 @@ Module limits.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2496,6 +2525,7 @@ Module limits.
                                             |) in
                                           let sdef := M.copy (| γ0_0 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -2521,6 +2551,7 @@ Module limits.
                                                   let fdefs := M.alloc (| γ1_0 |) in
                                                   M.use
                                                     (M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       M.alloc (|
                                                         M.call_closure (|
                                                           Ty.apply
@@ -2563,6 +2594,7 @@ Module limits.
                                                               ltac:(M.monadic
                                                                 (let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
+                                                                    Some (Ty.tuple []),
                                                                     M.alloc (|
                                                                       M.call_closure (|
                                                                         Ty.apply
@@ -2633,6 +2665,7 @@ Module limits.
                                                                           let fdef :=
                                                                             M.copy (| γ0_0 |) in
                                                                           M.match_operator (|
+                                                                            Some (Ty.tuple []),
                                                                             M.alloc (|
                                                                               M.call_closure (|
                                                                                 Ty.apply
@@ -2881,6 +2914,7 @@ Module limits.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2909,6 +2943,7 @@ Module limits.
                           let~ _ : Ty.tuple [] :=
                             M.use
                               (M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.path
@@ -2952,6 +2987,7 @@ Module limits.
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -3007,6 +3043,7 @@ Module limits.
                                                       |) in
                                                     let t := M.copy (| γ0_0 |) in
                                                     M.match_operator (|
+                                                      Some (Ty.tuple []),
                                                       t,
                                                       [
                                                         fun γ =>
@@ -3098,6 +3135,7 @@ Module limits.
                                 ]
                               |)) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3250,6 +3288,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3268,6 +3307,7 @@ Module limits.
                             |) in
                           let max_function_definitions := M.copy (| γ0_0 |) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3384,6 +3424,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3402,6 +3443,7 @@ Module limits.
                             |) in
                           let max_struct_definitions := M.copy (| γ0_0 |) in
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -3475,6 +3517,7 @@ Module limits.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3494,6 +3537,7 @@ Module limits.
                           let max_fields_in_struct := M.copy (| γ0_0 |) in
                           M.use
                             (M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -3532,6 +3576,7 @@ Module limits.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -3592,6 +3637,7 @@ Module limits.
                                                     |) in
                                                   let def := M.copy (| γ0_0 |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (|
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
@@ -3623,6 +3669,7 @@ Module limits.
                                                             |) in
                                                           let fields := M.alloc (| γ1_0 |) in
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -3767,6 +3814,7 @@ Module limits.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3890,6 +3938,7 @@ Module limits.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -3960,6 +4009,7 @@ Module limits.
                                           let idx := M.copy (| γ1_0 |) in
                                           let constant := M.copy (| γ1_1 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -3977,12 +4027,16 @@ Module limits.
                                                       0
                                                     |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.match_operator (|
+                                                              Some
+                                                                (Ty.path
+                                                                  "move_core_types::runtime_value::MoveValue"),
                                                               M.alloc (|
                                                                 M.call_closure (|
                                                                   Ty.apply
@@ -4088,6 +4142,14 @@ Module limits.
                                                                               | [ α0 ] =>
                                                                                 ltac:(M.monadic
                                                                                   (M.match_operator (|
+                                                                                    Some
+                                                                                      (Ty.function
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            []
+                                                                                        ]
+                                                                                        (Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError")),
                                                                                     M.alloc (|
                                                                                       α0
                                                                                     |),
@@ -4211,6 +4273,7 @@ Module limits.
                                                             |) in
                                                           let cons := M.copy (| γ0_0 |) in
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (| Value.Tuple [] |),
                                                             [
                                                               fun γ =>
@@ -4231,6 +4294,7 @@ Module limits.
                                                                     |) in
                                                                   let lim := M.copy (| γ0_0 |) in
                                                                   M.match_operator (|
+                                                                    Some (Ty.tuple []),
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
                                                                       fun γ =>
@@ -4522,6 +4586,7 @@ Module limits.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4541,6 +4606,7 @@ Module limits.
                           let max_idenfitier_len := M.copy (| γ0_0 |) in
                           M.use
                             (M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -4664,6 +4730,7 @@ Module limits.
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -4739,6 +4806,7 @@ Module limits.
                                                   let idx := M.copy (| γ1_0 |) in
                                                   let identifier := M.copy (| γ1_1 |) in
                                                   M.match_operator (|
+                                                    Some (Ty.tuple []),
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
                                                       fun γ =>

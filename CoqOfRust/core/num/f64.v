@@ -561,6 +561,7 @@ Module f64.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::FpCategory",
@@ -597,6 +598,7 @@ Module f64.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::num::FpCategory",
@@ -653,6 +655,7 @@ Module f64.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.path "core::num::FpCategory"),
               M.alloc (|
                 Value.Tuple
                   [
@@ -874,6 +877,7 @@ Module f64.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -920,6 +924,7 @@ Module f64.
                 let~ next_bits : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -935,6 +940,7 @@ Module f64.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "u64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1024,6 +1030,7 @@ Module f64.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1070,6 +1077,7 @@ Module f64.
                 let~ next_bits : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1085,6 +1093,7 @@ Module f64.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "u64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1271,6 +1280,7 @@ Module f64.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "f64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1282,6 +1292,7 @@ Module f64.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.path "f64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1297,6 +1308,7 @@ Module f64.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "f64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1312,6 +1324,7 @@ Module f64.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "f64"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -1394,6 +1407,7 @@ Module f64.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "f64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1405,6 +1419,7 @@ Module f64.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.path "f64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1420,6 +1435,7 @@ Module f64.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "f64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1435,6 +1451,7 @@ Module f64.
                                         Value.Bool true
                                       |) in
                                     M.match_operator (|
+                                      Some (Ty.path "f64"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -1527,6 +1544,7 @@ Module f64.
           let other := M.alloc (| other |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
@@ -1552,6 +1570,7 @@ Module f64.
                         |)
                       |) in
                     M.match_operator (|
+                      Some (Ty.path "f64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1582,6 +1601,7 @@ Module f64.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "f64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -1611,6 +1631,7 @@ Module f64.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some (Ty.path "f64"),
                                       M.alloc (| Value.Tuple [] |),
                                       [
                                         fun γ =>
@@ -2081,6 +2102,7 @@ Module f64.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2184,6 +2206,7 @@ Module f64.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2198,6 +2221,7 @@ Module f64.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

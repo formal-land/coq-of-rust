@@ -178,6 +178,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 self,
                 [
                   fun γ =>
@@ -833,6 +834,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
           let~ desc : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.copy (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 self,
                 [
                   fun γ =>
@@ -1179,6 +1181,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 self,
                 [
                   fun γ =>
@@ -1490,6 +1493,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
           let~ desc : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.copy (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 self,
                 [
                   fun γ =>

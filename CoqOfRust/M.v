@@ -532,8 +532,8 @@ Module Notations.
     (let_user ty b (fun a => c))
       (at level 200, b at level 100, a name).
 
-  Notation "'let*~' a := b 'in' c" :=
-    (let_user_monadic b (fun a => c))
+  Notation "'let*~' a : ty := b 'in' c" :=
+    (let_user_monadic ty b (fun a => c))
       (at level 200, b at level 100, a name).
 
   Notation "e (| e1 , .. , en |)" :=
@@ -691,15 +691,19 @@ Definition get_trait_method
     trait self_ty trait_consts trait_tys method generic_consts generic_tys
   ).
 
-Definition catch (body : M) (handler : Exception.t -> M) : M :=
-  let- result := body in
+Definition catch (ty : option Ty.t) (body : M) (handler : Exception.t -> M) : M :=
+  (match ty with
+  | Some ty => LowM.Let ty
+  | None => LowM.let_
+  end) body (fun result =>
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception
-  end.
+  end).
 
 Definition catch_return (body : M) : M :=
   catch
+    None
     body
     (fun exception =>
       match exception with
@@ -710,6 +714,7 @@ Definition catch_return (body : M) : M :=
 
 Definition catch_continue (body : M) : M :=
   catch
+    None
     body
     (fun exception =>
       match exception with
@@ -720,6 +725,7 @@ Definition catch_continue (body : M) : M :=
 
 Definition catch_break (body : M) : M :=
   catch
+    None
     body
     (fun exception =>
       match exception with
@@ -735,7 +741,11 @@ Definition loop (ty : Ty.t) (body : M) : M :=
     (fun result =>
       catch_break (LowM.Pure result)).
 
+(** It is recommended to provide a [ty] when there are more than one branch, to prevent a
+    combinatorial explosion. Indeed, only when a [ty] is there we can use a hard monadic `let` tà
+    cut the proof into two parts for each of the [arms]. *)
 Fixpoint match_operator
+    (ty : option Ty.t)
     (scrutinee : Value.t)
     (arms : list (Value.t -> M)) :
     M :=
@@ -745,17 +755,19 @@ Fixpoint match_operator
     panic (Panic.Make "no match branches left")
   | arm :: arms =>
     catch
+      ty
       (arm scrutinee)
       (fun exception =>
         match exception with
-        | Exception.BreakMatch => match_operator scrutinee arms
+        | Exception.BreakMatch => match_operator ty scrutinee arms
         | _ => raise exception
         end
       )
   end.
 
 (** Each arm must return a tuple of the free variables found in the pattern. If
-    no arms are valid, we raise an [Exception.BreakMatch]. *)
+    no arms are valid, we raise an [Exception.BreakMatch].
+*)
 Fixpoint find_or_pattern_aux
     (scrutinee : Value.t)
     (arms : list (Value.t -> M)) :
@@ -764,6 +776,7 @@ Fixpoint find_or_pattern_aux
   | nil => break_match
   | arm :: arms =>
     catch
+      None
       (arm scrutinee)
       (fun exception =>
         match exception with
@@ -773,6 +786,7 @@ Fixpoint find_or_pattern_aux
       )
   end.
 
+(* TODO: add a [ty] parameter to prevent combinatorial explosion or find another similar way. *)
 Definition find_or_pattern
     (scrutinee : Value.t)
     (arms : list (Value.t -> M))

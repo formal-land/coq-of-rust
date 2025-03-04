@@ -148,6 +148,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -195,6 +196,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ltac:(M.monadic
                         (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -387,6 +389,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
+                                                          Some
+                                                            (Ty.function
+                                                              [ Ty.tuple [] ]
+                                                              (Ty.path "u32")),
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
@@ -487,6 +493,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                     | [ α0 ] =>
                                                                                       ltac:(M.monadic
                                                                                         (M.match_operator (|
+                                                                                          Some
+                                                                                            (Ty.function
+                                                                                              [
+                                                                                                Ty.tuple
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "char"
+                                                                                                  ]
+                                                                                              ]
+                                                                                              (Ty.path
+                                                                                                "u32")),
                                                                                           M.alloc (|
                                                                                             α0
                                                                                           |),
@@ -810,6 +827,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                Some
+                                  (Ty.function
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "std::thread::JoinHandle")
+                                            []
+                                            [ Ty.path "u32" ]
+                                        ]
+                                    ]
+                                    (Ty.path "u32")),
                                 M.alloc (| α0 |),
                                 [
                                   fun γ =>
