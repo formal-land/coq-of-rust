@@ -11,24 +11,25 @@ Module Impl_Default_for_MemoryGas.
 End Impl_Default_for_MemoryGas.
 
 Module Impl_MemoryGas.
-  Definition Self : Set := MemoryGas.t.
+  Definition Self : Set :=
+    MemoryGas.t.
 
-  Definition new : Self := Impl_Default_for_MemoryGas.default.
-
-  Lemma run_new :
-    {{
-      M.evaluate Impl_MemoryGas.run_new 🌲
-      SuccessOrPanic.to_output (SuccessOrPanic.Success new)
-    }}.
+  Definition run_new :
+    {{ [] 🌲 links.M.evaluate Impl_MemoryGas.run_new.(Run.run_f) }}.
   Proof.
     constructor.
-  Qed.
+  Defined.
 
-  (* Lemma run_record_new_len *)
+  Lemma new_eq :
+    M.evaluate run_new tt = (Output.Success Impl_Default_for_MemoryGas.default, tt).
+  Proof.
+    reflexivity.
+  Qed.
 End Impl_MemoryGas.
 
 Module Impl_Gas.
-  Definition Self : Set := Gas.t.
+  Definition Self : Set :=
+    Gas.t.
 
   (*
       pub const fn new(limit: u64) -> Self {
@@ -40,25 +41,27 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition new (limit : U64.t) : Self := {|
-    Gas.limit := limit;
-    Gas.remaining := limit;
-    Gas.refunded := {| Integer.value := 0 |};
-    Gas.memory := Impl_MemoryGas.new;
-  |}.
-
-  Lemma run_new (limit : U64.t) :
-    {{
-      M.evaluate (Impl_Gas.run_new limit) 🌲
-      Output.Success (new limit)
-    }}.
+  Definition run_new (limit : U64.t) :
+    {{ [] 🌲 links.M.evaluate (Impl_Gas.run_new limit).(Run.run_f) }}.
   Proof.
-    cbn [evaluate Impl_Gas.run_new].
-    eapply Run.Call. {
+    cbn.
+    apply Run.Call. {
       apply Impl_MemoryGas.run_new.
     }
-    cbn [M.evaluate].
+    intros []; cbn; [|apply Run.Pure].
     apply Run.Pure.
+  Defined.
+
+  Lemma new_eq (limit : U64.t) :
+    M.evaluate (run_new limit) tt =
+    (Output.Success {|
+      Gas.limit := limit;
+      Gas.remaining := limit;
+      Gas.refunded := {| Integer.value := 0 |};
+      Gas.memory := Impl_Default_for_MemoryGas.default;
+    |}, tt).
+  Proof.
+    reflexivity.
   Qed.
 
   (*
@@ -71,25 +74,27 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition new_spent (limit : U64.t) : Self := {|
-    Gas.limit := limit;
-    Gas.remaining := {| Integer.value := 0 |};
-    Gas.refunded := {| Integer.value := 0 |};
-    Gas.memory := Impl_MemoryGas.new;
-  |}.
-
-  Lemma run_new_spent (limit : U64.t) :
-    {{
-      M.evaluate (Impl_Gas.run_new_spent limit) 🌲
-      Output.Success (new_spent limit)
-    }}.
+  Definition run_new_spent (limit : U64.t) :
+    {{ [] 🌲 links.M.evaluate (Impl_Gas.run_new_spent limit).(Run.run_f) }}.
   Proof.
-    cbn [evaluate Impl_Gas.run_new_spent].
-    eapply Run.Call. {
+    cbn.
+    apply Run.Call. {
       apply Impl_MemoryGas.run_new.
     }
-    cbn [M.evaluate].
+    intros []; cbn; [|apply Run.Pure].
     apply Run.Pure.
+  Defined.
+
+  Lemma new_spent_eq (limit : U64.t) :
+    M.evaluate (run_new_spent limit) tt =
+    (Output.Success {|
+      Gas.limit := limit;
+      Gas.remaining := {| Integer.value := 0 |};
+      Gas.refunded := {| Integer.value := 0 |};
+      Gas.memory := Impl_Default_for_MemoryGas.default;
+    |}, tt).
+  Proof.
+    reflexivity.
   Qed.
 
   (*
@@ -97,12 +102,34 @@ Module Impl_Gas.
           self.limit
       }
   *)
-  Definition limit (self : Self) : U64.t :=
-    self.(Gas.limit).
+  Definition run_limit :
+    let self := {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
+    {{ [Self] 🌲 links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f) }}.
+  Proof.
+    cbn.
+    set (ref_core := Ref.Core.Mutable _ _ _ _ _).
+    epose proof (Run.GetSubPointer _ _ ref_core Gas.SubPointer.get_limit).
+    apply H; clear H.
+    cbn; intros.
+    apply Run.StateRead. {
+      epose proof (
+        Stack.CanRead.Mutable
+          [Self]
+          0%nat
+          _
+          _
+          (fun big_a : links.gas.Impl_Gas.Self => Some big_a.(Gas.limit))
+      ).
+      apply H.
+    }
+    cbn; intros.
+    apply Run.Pure.
+  Defined.
 
-  (* Lemma run_limit (self : Self) :
-    {{
-      M.evaluate (Impl_Gas.run_limit self) 🌲
-      Output.Success (limit self)
-    }}. *)
+  Lemma limit_eq (gas : Gas.t) :
+    M.evaluate run_limit (gas, tt) =
+    (Output.Success gas.(Gas.limit), (gas, tt)).
+  Proof.
+    reflexivity.
+  Qed.
 End Impl_Gas.
