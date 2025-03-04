@@ -373,7 +373,7 @@ Proof.
       constructor; cbn;
       sauto lq: on.
   }
-  { guard_instruction (Bytecode.LdConst t).
+  { guard_instruction (Bytecode.LdConst t0).
     unfold_state_monad.
     unfold CompiledModule.constant_at.
     match goal with
@@ -548,22 +548,22 @@ Proof.
     end.
     sauto lq: on.
   }
-  { guard_instruction (Bytecode.Call t).
+  { guard_instruction (Bytecode.Call t0).
     easy.
   }
-  { guard_instruction (Bytecode.CallGeneric t).
+  { guard_instruction (Bytecode.CallGeneric t0).
     easy.
   }
-  { guard_instruction (Bytecode.Pack t).
+  { guard_instruction (Bytecode.Pack t0).
     admit.
   }
-  { guard_instruction (Bytecode.PackGeneric t).
+  { guard_instruction (Bytecode.PackGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.Unpack t).
+  { guard_instruction (Bytecode.Unpack t0).
     admit.
   }
-  { guard_instruction (Bytecode.UnpackGeneric t).
+  { guard_instruction (Bytecode.UnpackGeneric t0).
     admit.
   }
   { guard_instruction Bytecode.ReadRef.
@@ -581,28 +581,28 @@ Proof.
   { guard_instruction (Bytecode.ImmBorrowLoc z).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowField t).
+  { guard_instruction (Bytecode.MutBorrowField t0).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowFieldGeneric t).
+  { guard_instruction (Bytecode.MutBorrowFieldGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowField t).
+  { guard_instruction (Bytecode.ImmBorrowField t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowFieldGeneric t).
+  { guard_instruction (Bytecode.ImmBorrowFieldGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowGlobalDeprecated t).
+  { guard_instruction (Bytecode.MutBorrowGlobalDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowGlobalGenericDeprecated t).
+  { guard_instruction (Bytecode.MutBorrowGlobalGenericDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowGlobalDeprecated t).
+  { guard_instruction (Bytecode.ImmBorrowGlobalDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowGlobalGenericDeprecated t).
+  { guard_instruction (Bytecode.ImmBorrowGlobalGenericDeprecated t0).
     admit.
   }
   { guard_instruction Bytecode.Add.
@@ -800,22 +800,22 @@ Proof.
   { guard_instruction Bytecode.Nop.
     now constructor; cbn.
   }
-  { guard_instruction (Bytecode.ExistsDeprecated t).
+  { guard_instruction (Bytecode.ExistsDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.ExistsGenericDeprecated t).
+  { guard_instruction (Bytecode.ExistsGenericDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveFromDeprecated t).
+  { guard_instruction (Bytecode.MoveFromDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveFromGenericDeprecated t).
+  { guard_instruction (Bytecode.MoveFromGenericDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveToDeprecated t).
+  { guard_instruction (Bytecode.MoveToDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveToGenericDeprecated t).
+  { guard_instruction (Bytecode.MoveToGenericDeprecated t0).
     admit.
   }
   { guard_instruction Bytecode.Shl.
@@ -840,28 +840,28 @@ Proof.
       constructor; cbn; try easy;
       sauto lq: on.
   }
-  { guard_instruction (Bytecode.VecPack t z).
+  { guard_instruction (Bytecode.VecPack t0 z).
     admit.
   }
-  { guard_instruction (Bytecode.VecLen t).
+  { guard_instruction (Bytecode.VecLen t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecImmBorrow t).
+  { guard_instruction (Bytecode.VecImmBorrow t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecMutBorrow t).
+  { guard_instruction (Bytecode.VecMutBorrow t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecPushBack t).
+  { guard_instruction (Bytecode.VecPushBack t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecPopBack t).
+  { guard_instruction (Bytecode.VecPopBack t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecUnpack t z).
+  { guard_instruction (Bytecode.VecUnpack t0 z).
     admit.
   }
-  { guard_instruction (Bytecode.VecSwap t).
+  { guard_instruction (Bytecode.VecSwap t0).
     admit.
   }
 Admitted.
@@ -967,8 +967,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.U8 stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     sauto q: on.
   }
   { guard_instruction Bytecode.CastU16.
@@ -983,8 +983,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.U16 stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     sauto q: on.
   }
   { guard_instruction Bytecode.CastU32.
@@ -999,8 +999,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.U32 stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     sauto q: on.
   }
   { guard_instruction Bytecode.CastU64.
@@ -1015,8 +1015,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.U64 stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     sauto q: on.
   }
   { guard_instruction Bytecode.CastU128.
@@ -1031,8 +1031,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.U128 stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     sauto q: on.
   }
   { guard_instruction Bytecode.CastU256.
@@ -1047,12 +1047,12 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.U256 stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     (* U256 too big? sauto lq: on *)
     admit.
   }
-  { guard_instruction (Bytecode.LdConst t).
+  { guard_instruction (Bytecode.LdConst t0).
     admit.
   }
   { guard_instruction Bytecode.LdTrue.
@@ -1114,19 +1114,19 @@ Proof.
     repeat(step; cbn; trivial).
     hauto drew: off.
   }
-  { guard_instruction (Bytecode.Call t).
+  { guard_instruction (Bytecode.Call t0).
     admit.
   }
-  { guard_instruction (Bytecode.CallGeneric t).
+  { guard_instruction (Bytecode.CallGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.Pack t).
+  { guard_instruction (Bytecode.Pack t0).
     admit.
   }
-  { guard_instruction (Bytecode.PackGeneric t).
+  { guard_instruction (Bytecode.PackGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.Unpack t).
+  { guard_instruction (Bytecode.Unpack t0).
     unfold_state_monad.
     destruct CompiledModule.struct_def_at; cbn; trivial.
     destruct type_safety_checker; cbn in *.
@@ -1139,7 +1139,7 @@ Proof.
     (* FOLD Issue *)
     admit.
   }
-  { guard_instruction (Bytecode.UnpackGeneric t).
+  { guard_instruction (Bytecode.UnpackGeneric t0).
 
     admit.
   }
@@ -1162,7 +1162,7 @@ Proof.
     unfold set; cbn.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
-    pose proof (AbstractStack.push_is_valid (SignatureToken.Reference t) stack' H).
+    pose proof (AbstractStack.push_is_valid (SignatureToken.Reference t0) stack' H).
     repeat (step; cbn; trivial).
     unfold set; cbn.
     sauto q: on.
@@ -1173,28 +1173,28 @@ Proof.
   { guard_instruction (Bytecode.ImmBorrowLoc z).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowField t).
+  { guard_instruction (Bytecode.MutBorrowField t0).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowFieldGeneric t).
+  { guard_instruction (Bytecode.MutBorrowFieldGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowField t).
+  { guard_instruction (Bytecode.ImmBorrowField t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowFieldGeneric t).
+  { guard_instruction (Bytecode.ImmBorrowFieldGeneric t0).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowGlobalDeprecated t).
+  { guard_instruction (Bytecode.MutBorrowGlobalDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MutBorrowGlobalGenericDeprecated t).
+  { guard_instruction (Bytecode.MutBorrowGlobalGenericDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowGlobalDeprecated t).
+  { guard_instruction (Bytecode.ImmBorrowGlobalDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.ImmBorrowGlobalGenericDeprecated t).
+  { guard_instruction (Bytecode.ImmBorrowGlobalGenericDeprecated t0).
     admit.
   }
   { guard_instruction Bytecode.Add.
@@ -1212,8 +1212,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1232,8 +1232,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1252,8 +1252,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1272,8 +1272,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1292,8 +1292,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1312,8 +1312,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1332,8 +1332,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1352,8 +1352,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid operand1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1372,8 +1372,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.Bool stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1392,8 +1392,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.Bool stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1409,8 +1409,8 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.Bool stack' H).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1427,14 +1427,14 @@ Proof.
     destruct operand3 as [operand4|]; cbn; [|trivial].
     unfold set; cbn.
     step; cbn; trivial.
-    destruct t; cbn; trivial.
+    destruct t0; cbn; trivial.
     step; cbn; trivial.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.Bool stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1451,14 +1451,14 @@ Proof.
     destruct operand3 as [operand4|]; cbn; [|trivial].
     unfold set; cbn.
     step; cbn; trivial.
-    destruct t; cbn; trivial.
+    destruct t0; cbn; trivial.
     step; cbn; trivial.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid SignatureToken.Bool stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0 type_safety_checker'].
-    destruct t0; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1563,22 +1563,22 @@ Proof.
   { guard_instruction Bytecode.Nop.
     hauto l: on.
   }
-  { guard_instruction (Bytecode.ExistsDeprecated t).
+  { guard_instruction (Bytecode.ExistsDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.ExistsGenericDeprecated t).
+  { guard_instruction (Bytecode.ExistsGenericDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveFromDeprecated t).
+  { guard_instruction (Bytecode.MoveFromDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveFromGenericDeprecated t).
+  { guard_instruction (Bytecode.MoveFromGenericDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveToDeprecated t).
+  { guard_instruction (Bytecode.MoveToDeprecated t0).
     admit.
   }
-  { guard_instruction (Bytecode.MoveToGenericDeprecated t).
+  { guard_instruction (Bytecode.MoveToGenericDeprecated t0).
     admit.
   }
   { guard_instruction Bytecode.Shl.
@@ -1594,10 +1594,10 @@ Proof.
     step; cbn; trivial.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
-    pose proof (AbstractStack.push_is_valid t0 stack'' H0).
+    pose proof (AbstractStack.push_is_valid t1 stack'' H0).
     step; cbn; [|trivial].
-    destruct p as [t0' type_safety_checker'].
-    destruct t0'; cbn; trivial.
+    destruct p as [x type_safety_checker'].
+    destruct x; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
@@ -1614,35 +1614,35 @@ Proof.
     step; cbn; trivial.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
-    pose proof (AbstractStack.push_is_valid t0 stack'' H0).
+    pose proof (AbstractStack.push_is_valid t1 stack'' H0).
     step; cbn; [|trivial].
     destruct p as [t0' type_safety_checker'].
     destruct t0'; cbn; trivial.
     unfold set; cbn.
     hauto l: on.
   }
-  { guard_instruction (Bytecode.VecPack t z).
+  { guard_instruction (Bytecode.VecPack t0 z).
     admit.
   }
-  { guard_instruction (Bytecode.VecLen t).
+  { guard_instruction (Bytecode.VecLen t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecImmBorrow t).
+  { guard_instruction (Bytecode.VecImmBorrow t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecMutBorrow t).
+  { guard_instruction (Bytecode.VecMutBorrow t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecPushBack t).
+  { guard_instruction (Bytecode.VecPushBack t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecPopBack t).
+  { guard_instruction (Bytecode.VecPopBack t0).
     admit.
   }
-  { guard_instruction (Bytecode.VecUnpack t z).
+  { guard_instruction (Bytecode.VecUnpack t0 z).
     admit.
   }
-  { guard_instruction (Bytecode.VecSwap t).
+  { guard_instruction (Bytecode.VecSwap t0).
     admit.
   }
 Admitted.

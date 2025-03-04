@@ -80,3 +80,18 @@ Proof.
   rewrite repeat_nat_φ_eq.
   reflexivity.
 Qed.
+
+Definition of_value (times : Z) (value' : Value.t) :
+  OfValue.t value' ->
+  OfValue.t (
+    Value.Array (repeat_nat (Z.to_nat times) value')
+  ).
+Proof.
+  intros [A ? item].
+  eapply OfValue.Make with
+    (A := t A {| Integer.value := times |})
+    (value := {| value := repeat_nat (Z.to_nat times) item |}).
+  subst.
+  now rewrite repeat_nat_φ_eq.
+Defined.
+Smpl Add eapply of_value : of_value.

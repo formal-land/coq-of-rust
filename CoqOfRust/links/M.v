@@ -383,7 +383,8 @@ End Str.
 Module Ref.
   Module Core.
     Inductive t (A : Set) `{Link A} : Set :=
-    | Immediate (value : A)
+    (** The value is optional for pointers to an enum case that is not the current one. *)
+    | Immediate (value : option A)
     | Mutable {Address Big_A : Set}
       (address : Address)
       (path : Pointer.Path.t)
@@ -396,7 +397,7 @@ Module Ref.
     Definition to_core {A : Set} `{Link A} (ref : t A) : Pointer.Core.t Value.t :=
       match ref with
       | Immediate value =>
-        Pointer.Core.Immediate (φ value)
+        Pointer.Core.Immediate (Option.map value φ)
       | Mutable address path big_to_value projection injection =>
         Pointer.Core.Mutable address path
       end.
@@ -424,7 +425,7 @@ Module Ref.
   }.
 
   Definition immediate (kind : Pointer.Kind.t) {A : Set} `{Link A} (value : A) : t kind A :=
-    {| core := Core.Immediate value |}.
+    {| core := Core.Immediate (Some value) |}.
 
   Definition cast_to {A : Set} `{Link A} {kind_source : Pointer.Kind.t}
       (kind_target : Pointer.Kind.t) (ref : t kind_source A) :
@@ -516,7 +517,7 @@ Module Ref.
     value' = φ value ->
     Value.Pointer {|
       Pointer.kind := Pointer.Kind.Raw;
-      Pointer.core := Pointer.Core.Immediate value';
+      Pointer.core := Pointer.Core.Immediate (Some value');
     |} = φ (immediate Pointer.Kind.Raw value).
   Proof.
     now intros; subst.
@@ -527,7 +528,7 @@ Module Ref.
     OfValue.t value' ->
     OfValue.t (Value.Pointer {|
       Pointer.kind := Pointer.Kind.Raw;
-      Pointer.core := Pointer.Core.Immediate value';
+      Pointer.core := Pointer.Core.Immediate (Some value');
     |}).
   Proof.
     intros [A].
@@ -585,6 +586,52 @@ Module SubPointer.
           Value.write_index (φ a) index (φ sub_a);
       }.
     End Valid.
+
+    Definition apply {A : Set} `{Link A} {index : Pointer.Index.t}
+        (ref_core : Ref.Core.t A)
+        (runner : SubPointer.Runner.t A index) :
+      let _ := runner.(H_Sub_A) in
+      Ref.Core.t runner.(Sub_A).
+    Proof.
+      destruct
+        ref_core as [| ? ? address path big_to_value projection injection],
+        runner as [? ? runner_projection runner_injection];
+        cbn.
+      { (* Immediate *)
+        exact (
+          Ref.Core.Immediate (
+            match value with
+            | Some a => runner_projection a
+            | None => None
+            end
+          )
+        ).
+      }
+      { (* Mutable *)
+        exact (
+          Ref.Core.Mutable
+            address
+            (path ++ [index])
+            big_to_value
+            (fun big_a =>
+              match projection big_a with
+              | Some a => runner_projection a
+              | None => None
+              end
+            )
+            (fun big_a new_sub_a =>
+              match projection big_a with
+              | Some a =>
+                match runner_injection a new_sub_a with
+                | Some new_a => injection big_a new_a
+                | None => None
+                end
+              | None => None
+              end
+            )
+        ).
+      }
+    Defined.
   End Runner.
 End SubPointer.
 
@@ -714,6 +761,9 @@ Module Output.
     inr exception' = to_value (Output.Exception (R := R) exception).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_exception_eq : of_output.
+
+  Definition panic {R Output : Set} (message : string) : t R Output :=
+    Exception (Exception.Panic (Panic.Make message)).
 End Output.
 
 (** For the output of closure calls, where we know it can only be a success or panic, but not a
@@ -736,6 +786,15 @@ Module SuccessOrPanic.
     match output with
     | Success output => Output.Success output
     | Panic panic => Output.Exception (Output.Exception.Panic panic)
+    end.
+
+  Definition of_output {Output : Set} (output : Output.t Output Output) :
+    t Output :=
+    match output with
+    | Output.Success output => Success output
+    | Output.Exception (Output.Exception.Panic panic) => Panic panic
+    | Output.Exception _ =>
+      Panic (Panic.Make "unexpected return, break, or continue escaping a function")
     end.
 End SuccessOrPanic.
 
@@ -1125,8 +1184,16 @@ Ltac run_symbolic_pure :=
     repeat smpl of_value
   ).
 
+Ltac run_symbolic_state_alloc :=
+  unshelve eapply Run.CallPrimitiveStateAlloc; [
+    repeat smpl of_value |
+    cbn; intros
+  ].
+
 Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat smpl of_value |].
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [
+    repeat smpl of_value |
+  ].
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;
@@ -1337,7 +1404,11 @@ Ltac rewrite_cast_integer :=
   end.
 
 Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros []].
+  unshelve eapply Run.Let; [
+    repeat smpl of_ty |
+    try run_symbolic_state_alloc |
+    cbn; intros []
+  ].
 
 Ltac run_symbolic_are_equal_bool :=
   eapply Run.CallPrimitiveAreEqualBool;

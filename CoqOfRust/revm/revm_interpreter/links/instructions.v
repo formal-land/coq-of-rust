@@ -27,14 +27,14 @@ Instance run_instruction_table
     (array.t (Instruction.t WIRE H WIRE_types) {| Integer.value := 256 |}).
 Proof.
   constructor.
+  cbn.
   run_symbolic.
   { (* unknown *)
     set (f := Function2.of_run (run_unknown run_InterpreterTypes_for_WIRE)).
     change (Value.Closure _) with (φ f).
-    run_symbolic.
-    rewrite array.repeat_φ_eq.
-    run_symbolic.
+    smpl of_value.
   }
+  { reflexivity. }
   { (* stop *)
     set (f := Function2.of_run (run_stop run_InterpreterTypes_for_WIRE)).
     change (Value.Closure _) with (φ f).
