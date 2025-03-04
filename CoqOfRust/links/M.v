@@ -697,6 +697,15 @@ Module SuccessOrPanic.
     | Success output => Output.Success output
     | Panic panic => Output.Exception (Output.Exception.Panic panic)
     end.
+
+  Definition of_output {Output : Set} (output : Output.t Output Output) :
+    t Output :=
+    match output with
+    | Output.Success output => Success output
+    | Output.Exception (Output.Exception.Panic panic) => Panic panic
+    | Output.Exception _ =>
+      Panic (Panic.Make "unexpected return, break, or continue escaping a function")
+    end.
 End SuccessOrPanic.
 
 Module Run.
@@ -1063,8 +1072,16 @@ Ltac run_symbolic_pure :=
     repeat smpl of_value
   ).
 
+Ltac run_symbolic_state_alloc :=
+  unshelve eapply Run.CallPrimitiveStateAlloc; [
+    repeat smpl of_value |
+    cbn; intros
+  ].
+
 Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat smpl of_value |].
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [
+    repeat smpl of_value |
+  ].
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;
@@ -1269,7 +1286,11 @@ Ltac rewrite_cast_integer :=
   end.
 
 Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros []].
+  unshelve eapply Run.Let; [
+    repeat smpl of_ty |
+    try run_symbolic_state_alloc |
+    cbn; intros []
+  ].
 
 Ltac run_symbolic_are_equal_bool :=
   eapply Run.CallPrimitiveAreEqualBool;

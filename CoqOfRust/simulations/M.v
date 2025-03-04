@@ -458,18 +458,48 @@ Module Notations.
     ).
 End Notations.
 
+Module Stack.
+  Definition t : Type :=
+    list Set.
+
+  Fixpoint to_Set (stack : t) : Set :=
+    match stack with
+    | [] => unit
+    | A :: stack => A * to_Set stack
+    end.
+End Stack.
+
 Module Run.
-  Reserved Notation "{{ e 🌲 v }}".
+  Reserved Notation "{{ StackIn 🌲 e }}".
 
-  Inductive t {R Output : Set} (output : Output.t R Output) : LowM.t R Output -> Prop :=
-  | Pure :
-    {{ LowM.Pure output 🌲 output }}
+  Inductive t {R Output : Set} (StackIn : Stack.t) : LowM.t R Output -> Set :=
+  | Pure
+      (output : Output.t R Output) :
+    {{ StackIn 🌲 LowM.Pure output }}
   | Call {Output' : Set}
-    (e : LowM.t Output' Output') (output' : SuccessOrPanic.t Output')
-    (k : SuccessOrPanic.t Output' -> LowM.t R Output) :
-    {{ e 🌲 SuccessOrPanic.to_output output' }} ->
-    {{ k output' 🌲 output }} ->
-    {{ LowM.Call e k 🌲 output }}
+      (e : LowM.t Output' Output')
+      (k : SuccessOrPanic.t Output' -> LowM.t R Output)
+    (H_e : {{ [] 🌲 e }})
+    (H_k : forall (output' : SuccessOrPanic.t Output'),
+      {{ StackIn 🌲 k output' }}
+    ) :
+    {{ StackIn 🌲 LowM.Call e k }}
 
-  where "{{ e 🌲 output }}" := (t output e).
+  where "{{ StackIn 🌲 e }}" := (t StackIn e).
 End Run.
+
+Export Run.
+
+Fixpoint evaluate {R Output : Set} {StackIn : Stack.t} {e : LowM.t R Output}
+    (run : {{ StackIn 🌲 e }})
+    (stack_in : Stack.to_Set StackIn)
+    {struct run} :
+  Output.t R Output * Stack.to_Set StackIn.
+Proof.
+  destruct run.
+  { exact (output, stack_in). }
+  { unshelve eapply (evaluate _ _ _ _ (H_k _) stack_in).
+    apply SuccessOrPanic.of_output.
+    apply (evaluate _ _ _ _ run tt).
+  }
+Defined.

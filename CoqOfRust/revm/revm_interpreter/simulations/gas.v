@@ -5,32 +5,31 @@ Require Import revm_interpreter.links.gas.
 
 Import Run.
 
-Module Impl_Default_for_MemoryGas.
+(* Module Impl_Default_for_MemoryGas.
   Definition default : MemoryGas.t := {|
     MemoryGas.words_num := {| Integer.value := 0 |};
     MemoryGas.expansion_cost := {| Integer.value := 0 |};
   |}.
-End Impl_Default_for_MemoryGas.
+End Impl_Default_for_MemoryGas. *)
 
 Module Impl_MemoryGas.
-  Definition Self : Set := MemoryGas.t.
+  (* Definition Self : Set := MemoryGas.t. *)
 
-  Definition new : Self := Impl_Default_for_MemoryGas.default.
+  (* Definition new : Self := Impl_Default_for_MemoryGas.default. *)
 
-  Lemma run_new :
-    {{
-      M.evaluate Impl_MemoryGas.run_new 🌲
-      SuccessOrPanic.to_output (SuccessOrPanic.Success new)
-    }}.
+  Compute links.M.evaluate Impl_MemoryGas.run_new.(Run.run_f).
+
+  Definition run_new :
+    {{ [] 🌲 links.M.evaluate Impl_MemoryGas.run_new.(Run.run_f) }}.
   Proof.
     constructor.
-  Qed.
+  Defined.
 
-  (* Lemma run_record_new_len *)
+  Compute M.evaluate run_new tt.
 End Impl_MemoryGas.
 
 Module Impl_Gas.
-  Definition Self : Set := Gas.t.
+  (* Definition Self : Set := Gas.t. *)
 
   (*
       pub const fn new(limit: u64) -> Self {
@@ -42,26 +41,27 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition new (limit : U64.t) : Self := {|
+  (* Definition new (limit : U64.t) : Self := {|
     Gas.limit := limit;
     Gas.remaining := limit;
     Gas.refunded := {| Integer.value := 0 |};
     Gas.memory := Impl_MemoryGas.new;
-  |}.
+  |}. *)
 
-  Lemma run_new (limit : U64.t) :
-    {{
-      M.evaluate (Impl_Gas.run_new limit) 🌲
-      Output.Success (new limit)
-    }}.
+  Compute links.M.evaluate ((Impl_Gas.run_new {| Integer.value := 12 |}).(Run.run_f)).
+
+  Definition run_new (limit : U64.t) :
+    {{ [] 🌲 links.M.evaluate (Impl_Gas.run_new limit).(Run.run_f) }}.
   Proof.
-    cbn [evaluate Impl_Gas.run_new].
-    eapply Run.Call. {
+    cbn.
+    apply Run.Call. {
       apply Impl_MemoryGas.run_new.
     }
-    cbn [M.evaluate].
+    intros []; cbn; [|apply Run.Pure].
     apply Run.Pure.
-  Qed.
+  Defined.
+
+  Compute M.evaluate (run_new {| Integer.value := 12 |}) tt.
 
   (*
       pub const fn new_spent(limit: u64) -> Self {
@@ -73,34 +73,24 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition new_spent (limit : U64.t) : Self := {|
-    Gas.limit := limit;
-    Gas.remaining := {| Integer.value := 0 |};
-    Gas.refunded := {| Integer.value := 0 |};
-    Gas.memory := Impl_MemoryGas.new;
-  |}.
-
-  Lemma run_new_spent (limit : U64.t) :
-    {{
-      M.evaluate (Impl_Gas.run_new_spent limit) 🌲
-      Output.Success (new_spent limit)
-    }}.
+  Definition run_new_spent (limit : U64.t) :
+    {{ [] 🌲 links.M.evaluate (Impl_Gas.run_new_spent limit).(Run.run_f) }}.
   Proof.
-    cbn [evaluate Impl_Gas.run_new_spent].
-    eapply Run.Call. {
+    cbn.
+    apply Run.Call. {
       apply Impl_MemoryGas.run_new.
     }
-    cbn [M.evaluate].
+    intros []; cbn; [|apply Run.Pure].
     apply Run.Pure.
-  Qed.
+  Defined.
 
   (*
       pub const fn limit(&self) -> u64 {
           self.limit
       }
   *)
-  Definition limit (self : Self) : U64.t :=
-    self.(Gas.limit).
+  (* Definition limit (self : Self) : U64.t :=
+    self.(Gas.limit). *)
 
   (* Lemma run_limit (self : Self) :
     {{
