@@ -16,6 +16,22 @@
 - [x] `exp`
 - [x] `signextend`
 
+## Bitwise
+
+- [x] `lt`
+- [x] `gt`
+- [x] `slt`
+- [x] `sgt`
+- [x] `bitwise_eq`
+- [x] `bitwise_is_zero`
+- [x] `bitwise_bitand`
+- [x] `bitwise_bitor`
+- [x] `bitwise_bitxor`
+- [x] `bitwise_not`
+- [x] `bitwise_sar`
+- [x] `bitwise_shl`
+- [x] `bitwise_shr`
+
 ## Block_info
 
 - [x] `chainid`
@@ -147,7 +163,7 @@
 
 ## Summary
 
-- Total: 107
+- Total: 120
 - Admitted: 37
-- Defined: 70
-- Percentage: 65.42%
+- Defined: 83
+- Percentage: 69.17%

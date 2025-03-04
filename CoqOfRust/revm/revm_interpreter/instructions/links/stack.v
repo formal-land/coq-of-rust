@@ -28,7 +28,7 @@ Instance run_pop
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   run_symbolic.
@@ -51,7 +51,7 @@ Instance run_push0
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -76,7 +76,7 @@ Instance run_push
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_Jumps_for_Bytecode.
@@ -102,7 +102,7 @@ Instance run_dup
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   run_symbolic.
@@ -126,7 +126,7 @@ Instance run_swap
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   run_symbolic.
@@ -149,7 +149,7 @@ Instance run_dupn
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -175,7 +175,7 @@ Instance run_swapn
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -201,7 +201,7 @@ Instance run_exchange
     unit.
 Proof.
   constructor.
-  InterpreterTypes.destruct_run.
+  destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.

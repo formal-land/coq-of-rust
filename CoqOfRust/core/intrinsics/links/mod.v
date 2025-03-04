@@ -24,9 +24,26 @@ Instance run_saturating_sub (integer_kind : IntegerKind.t) (x y : Integer.t inte
 Proof.
 Admitted.
 
+Instance run_sub_with_overflow
+  (x y : Integer.t IntegerKind.U64) :
+  Run.Trait
+    intrinsics.sub_with_overflow
+    []
+    [ Φ (Integer.t IntegerKind.U64) ]
+    [ φ x; φ y ]
+    (Integer.t IntegerKind.U64 * bool).
+Proof.
+Admitted.
+
 (* pub const unsafe fn transmute<Src, Dst>(_src: Src) -> Dst *)
 Instance run_transmute (Src Dst : Set) `{Link Src} `{Link Dst} (src : Src) :
   Run.Trait
     intrinsics.transmute [] [ Φ Src; Φ Dst ] [ φ src ] Dst.
+Proof.
+Admitted.
+
+Instance run_discriminant_value (ref : Ref.t Pointer.Kind.Ref Ordering.t) :
+  Run.Trait intrinsics.discriminant_value [] [Φ Ordering.t] [φ ref]
+             (Integer.t IntegerKind.I8).
 Proof.
 Admitted.

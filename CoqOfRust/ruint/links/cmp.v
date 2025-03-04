@@ -28,3 +28,4 @@ Module Impl_PartialOrd_for_Uint.
   Instance run (BITS LIMBS : Usize.t) : PartialOrd.Run (Self BITS LIMBS) (Self BITS LIMBS).
   Admitted.
 End Impl_PartialOrd_for_Uint.
+Export Impl_PartialOrd_for_Uint.
