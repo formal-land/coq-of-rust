@@ -64,6 +64,11 @@ Module collections.
                 let f := M.alloc (| f |) in
                 M.read (|
                   M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                     M.deref (| M.read (| self |) |),
                     [
                       fun γ =>
@@ -1082,6 +1087,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.apply (Ty.path "&mut") [] [ V ]),
                             self,
                             [
                               fun γ =>
@@ -1188,6 +1194,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.apply (Ty.path "&mut") [] [ V ]),
                             self,
                             [
                               fun γ =>
@@ -1312,6 +1319,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.apply (Ty.path "&mut") [] [ V ]),
                             self,
                             [
                               fun γ =>
@@ -1452,6 +1460,7 @@ Module collections.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
+                        Some (Ty.apply (Ty.path "&") [] [ K ]),
                         M.deref (| M.read (| self |) |),
                         [
                           fun γ =>
@@ -1566,6 +1575,11 @@ Module collections.
                 let f := M.alloc (| f |) in
                 M.read (|
                   M.match_operator (|
+                    Some
+                      (Ty.apply
+                        (Ty.path "alloc::collections::btree::map::entry::Entry")
+                        []
+                        [ K; V; A ]),
                     self,
                     [
                       fun γ =>
@@ -1674,6 +1688,7 @@ Module collections.
                       M.deref (|
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.apply (Ty.path "&mut") [] [ V ]),
                             self,
                             [
                               fun γ =>
@@ -1895,6 +1910,7 @@ Module collections.
                       let~ out_ptr : Ty.apply (Ty.path "*mut") [] [ V ] :=
                         M.copy (|
                           M.match_operator (|
+                            Some (Ty.apply (Ty.path "*mut") [] [ V ]),
                             M.SubPointer.get_struct_record_field (|
                               self,
                               "alloc::collections::btree::map::entry::VacantEntry",
@@ -2288,6 +2304,24 @@ Module collections.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              Some
+                                                                (Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::collections::btree::node::SplitResult")
+                                                                          []
+                                                                          [
+                                                                            K;
+                                                                            V;
+                                                                            Ty.path
+                                                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                                                          ]
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.tuple [])),
                                                               M.alloc (| α0 |),
                                                               [
                                                                 fun γ =>
@@ -3302,6 +3336,7 @@ Module collections.
                 M.read (|
                   let~ emptied_internal_root : Ty.path "bool" := M.alloc (| Value.Bool false |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -3358,6 +3393,7 @@ Module collections.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some (Ty.function [ Ty.tuple [] ] (Ty.tuple [])),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -3467,6 +3503,7 @@ Module collections.
                             |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>

@@ -40,6 +40,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ]),
                 self,
                 [
                   fun γ =>
@@ -189,6 +190,7 @@ Module ops.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
+                        Some (Ty.path "bool"),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -340,6 +342,8 @@ Module ops.
                   |)
                 |) in
               M.match_operator (|
+                Some
+                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                 [
                   fun γ =>
@@ -487,11 +491,13 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -551,6 +557,7 @@ Module ops.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.path "core::cmp::Ordering"),
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -580,6 +587,7 @@ Module ops.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
+                        Some (Ty.path "core::cmp::Ordering"),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -717,6 +725,11 @@ Module ops.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                 self,
                 [
                   fun γ =>
@@ -853,6 +866,7 @@ Module ops.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.tuple []),
                 self,
                 [
                   fun γ =>

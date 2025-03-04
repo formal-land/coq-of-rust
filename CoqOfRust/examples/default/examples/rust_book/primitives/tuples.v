@@ -16,6 +16,7 @@ Definition reverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       (let pair_ := M.alloc (| pair_ |) in
       M.read (|
         M.match_operator (|
+          None,
           pair_,
           [
             fun γ =>
@@ -761,6 +762,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
           |) in
         M.match_operator (|
+          None,
           tuple,
           [
             fun γ =>

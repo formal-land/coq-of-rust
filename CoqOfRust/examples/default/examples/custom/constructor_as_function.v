@@ -16,6 +16,7 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       (let tuple := M.alloc (| tuple |) in
       M.read (|
         M.match_operator (|
+          Some (Ty.path "i32"),
           tuple,
           [
             fun γ =>

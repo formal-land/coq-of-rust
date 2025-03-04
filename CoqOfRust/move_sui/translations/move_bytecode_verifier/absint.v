@@ -83,6 +83,7 @@ Module absint.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -252,6 +253,7 @@ Module absint.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -553,6 +555,7 @@ Module absint.
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -584,6 +587,24 @@ Module absint.
                                     ] :=
                                 M.copy (|
                                   M.match_operator (|
+                                    Some
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path
+                                              "move_bytecode_verifier::absint::BlockInvariant")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "move_bytecode_verifier::absint::TransferFunctions"
+                                                []
+                                                []
+                                                Self
+                                                "State"
+                                            ]
+                                        ]),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -754,6 +775,13 @@ Module absint.
                                     "State" :=
                                 M.copy (|
                                   M.match_operator (|
+                                    Some
+                                      (Ty.associated_in_trait
+                                        "move_bytecode_verifier::absint::TransferFunctions"
+                                        []
+                                        []
+                                        Self
+                                        "State"),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -957,6 +985,7 @@ Module absint.
                               let~ _ : Ty.tuple [] :=
                                 M.use
                                   (M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1044,6 +1073,7 @@ Module absint.
                                             ltac:(M.monadic
                                               (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1102,6 +1132,7 @@ Module absint.
                                                           M.copy (| γ0_0 |) in
                                                         let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
+                                                            Some (Ty.tuple []),
                                                             M.alloc (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -1249,6 +1280,7 @@ Module absint.
                                                             ]
                                                           |) in
                                                         M.match_operator (|
+                                                          Some (Ty.tuple []),
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               Ty.apply
@@ -1328,6 +1360,9 @@ Module absint.
                                                                       "move_bytecode_verifier::absint::JoinResult" :=
                                                                   M.copy (|
                                                                     M.match_operator (|
+                                                                      Some
+                                                                        (Ty.path
+                                                                          "move_bytecode_verifier::absint::JoinResult"),
                                                                       M.alloc (|
                                                                         M.call_closure (|
                                                                           Ty.apply
@@ -1535,6 +1570,7 @@ Module absint.
                                                                     |)
                                                                   |) in
                                                                 M.match_operator (|
+                                                                  Some (Ty.tuple []),
                                                                   join_result,
                                                                   [
                                                                     fun γ =>
@@ -1555,6 +1591,7 @@ Module absint.
                                                                             "move_bytecode_verifier::absint::JoinResult::Changed"
                                                                           |) in
                                                                         M.match_operator (|
+                                                                          Some (Ty.tuple []),
                                                                           M.alloc (|
                                                                             Value.Tuple []
                                                                           |),
@@ -1635,6 +1672,9 @@ Module absint.
                                                                                           Ty.tuple
                                                                                             [] :=
                                                                                         M.match_operator (|
+                                                                                          Some
+                                                                                            (Ty.tuple
+                                                                                              []),
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
                                                                                               Ty.apply
@@ -2013,6 +2053,7 @@ Module absint.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2219,6 +2260,7 @@ Module absint.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2304,6 +2346,7 @@ Module absint.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -2434,6 +2477,7 @@ Module absint.
                                               |)
                                             |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply

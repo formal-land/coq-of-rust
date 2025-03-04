@@ -76,6 +76,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.StructTuple "enums_use::Work::Civilian" [] |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             status,
             [
               fun γ =>
@@ -156,6 +157,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |) in
         M.match_operator (|
+          Some (Ty.tuple []),
           work,
           [
             fun γ =>

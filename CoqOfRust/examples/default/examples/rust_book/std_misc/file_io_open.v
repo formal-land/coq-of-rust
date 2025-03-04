@@ -53,6 +53,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ file : Ty.path "std::fs::File" :=
           M.copy (|
             M.match_operator (|
+              Some (Ty.path "std::fs::File"),
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -181,6 +182,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |) in
         M.match_operator (|
+          Some (Ty.tuple []),
           M.alloc (|
             M.call_closure (|
               Ty.apply

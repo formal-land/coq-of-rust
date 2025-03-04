@@ -89,6 +89,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -219,6 +220,7 @@ Module slice.
                     let~ save_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.copy (|
                         M.match_operator (|
+                          Some (Ty.apply (Ty.path "*mut") [] [ T ]),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -237,6 +239,7 @@ Module slice.
                     let~ save_len : Ty.path "usize" :=
                       M.copy (|
                         M.match_operator (|
+                          Some (Ty.path "usize"),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -289,6 +292,7 @@ Module slice.
                           ]
                       |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -446,6 +450,7 @@ Module slice.
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -533,6 +538,7 @@ Module slice.
                               let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
                                 M.copy (|
                                   M.match_operator (|
+                                    Some (Ty.apply (Ty.path "*const") [] [ T ]),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -812,6 +818,7 @@ Module slice.
                       let~ src : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.copy (|
                           M.match_operator (|
+                            Some (Ty.apply (Ty.path "*mut") [] [ T ]),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -886,6 +893,7 @@ Module slice.
                           |)
                         |) in
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>

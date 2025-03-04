@@ -52,6 +52,7 @@ Module future.
             (let self := M.alloc (| self |) in
             let β1 := M.alloc (| β1 |) in
             M.match_operator (|
+              None,
               β1,
               [ fun γ => ltac:(M.monadic (Value.StructTuple "core::task::poll::Poll::Pending" [])) ]
             |)))

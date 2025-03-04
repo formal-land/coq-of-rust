@@ -29,6 +29,7 @@ Module slice.
             let value := M.alloc (| value |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -71,6 +72,7 @@ Module slice.
                       let~ _ : Ty.tuple [] :=
                         M.use
                           (M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -98,6 +100,7 @@ Module slice.
                                     ltac:(M.monadic
                                       (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -220,6 +223,7 @@ Module slice.
             M.read (|
               M.use
                 (M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -255,6 +259,7 @@ Module slice.
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply

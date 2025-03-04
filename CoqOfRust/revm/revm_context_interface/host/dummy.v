@@ -1385,6 +1385,22 @@ Module host.
             let index := M.alloc (| index |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
+                        ]
+                    ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

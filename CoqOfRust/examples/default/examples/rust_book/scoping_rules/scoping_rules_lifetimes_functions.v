@@ -229,7 +229,7 @@ Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       let β1 := M.alloc (| β1 |) in
-      M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| x |))) ] |)))
+      M.match_operator (| None, β1, [ fun γ => ltac:(M.monadic (M.read (| x |))) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 

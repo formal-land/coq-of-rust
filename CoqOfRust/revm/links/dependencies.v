@@ -3,8 +3,6 @@ Require Import CoqOfRust.links.M.
 Require Import core.links.array.
 Require Import core.convert.links.mod.
 
-Import Run.
-
 Module ruint.
   Module Uint.
     Parameter t : Usize.t -> Usize.t -> Set.
@@ -43,10 +41,13 @@ Module ruint.
         (wrapping_add BITS LIMBS).
     Admitted.
 
-    Parameter run_wrapping_add :
+    Global Instance run_wrapping_add :
       forall (BITS LIMBS : Usize.t),
       forall (x1 x2 : Self BITS LIMBS),
-      {{ wrapping_add (φ BITS) (φ LIMBS) [] [] [ φ x1; φ x2 ] 🔽 Self BITS LIMBS }}.
+      Run.Trait
+        (wrapping_add (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+        (Self BITS LIMBS).
+    Admitted.
 
     (* pub const fn to_be_bytes<const BYTES: usize>(&self) -> [u8; BYTES] *)
     Parameter to_be_bytes : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
@@ -59,10 +60,13 @@ Module ruint.
         (to_be_bytes BITS LIMBS).
     Admitted.
 
-    Parameter run_to_be_bytes :
+    Global Instance run_to_be_bytes :
       forall (BITS LIMBS BYTES : Usize.t),
       forall (x : Ref.t Pointer.Kind.Ref (Self BITS LIMBS)),
-      {{ to_be_bytes (φ BITS) (φ LIMBS) [ φ BYTES ] [] [ φ x ] 🔽 array.t U8.t BYTES }}.
+      Run.Trait
+        (to_be_bytes (φ BITS) (φ LIMBS)) [ φ BYTES ] [] [ φ x ]
+        (array.t U8.t BYTES).
+    Admitted.
   End Impl_Uint.
   Module Impl_from_Uint.
     Definition Self (BITS LIMBS : Usize.t) : Set :=
@@ -191,8 +195,9 @@ Module alloy_primitives.
             M.IsAssociatedFunction.Trait (Φ Self) "from_word" from_word.
           Admitted.
 
-          Parameter run_from_word : forall (word : fixed.FixedBytes.t {| Integer.value := 32 |}),
-            {{ from_word [] [] [ φ word ] 🔽 Address.t }}.
+          Global Instance run_from_word (word : fixed.FixedBytes.t {| Integer.value := 32 |}) :
+            Run.Trait from_word [] [] [ φ word ] Address.t.
+          Admitted.
         End Impl_Address.
       End address.
     End links.
@@ -206,10 +211,29 @@ Module alloy_primitives.
         Parameter to_value : t -> Value.t.
 
         Global Instance IsLink : Link t := {
-          Φ := Ty.path "bytes::bytes::Bytes";
+          Φ := Ty.path "alloy_primitives::bytes_::Bytes";
           φ := to_value;
         }.
+
+        Definition of_ty : OfTy.t (Ty.path "alloy_primitives::bytes_::Bytes").
+        Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+        Smpl Add apply of_ty : of_ty.
       End Bytes.
+
+      Module Impl_Bytes.
+        Definition Self : Set :=
+          Bytes.t.
+
+        (* pub fn new() -> Self *)
+        Parameter new : PolymorphicFunction.t.
+
+        Global Instance AssociatedFunction_new :
+          M.IsAssociatedFunction.Trait (Φ Self) "new" new.
+        Admitted.
+
+        Global Instance run_new : Run.Trait new [] [] [] Bytes.t.
+        Admitted.
+      End Impl_Bytes.
     End bytes_.
   End links.
 End alloy_primitives.

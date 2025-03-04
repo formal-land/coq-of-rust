@@ -173,7 +173,7 @@ Module InterpreterAction.
       ]
     ).
   Proof. econstructor; apply of_value_with_NewFrame; eassumption. Defined.
-  Smpl Add simple apply of_value_NewFrame : of_value.
+  Smpl Add eapply of_value_NewFrame : of_value.
 
   Definition of_value_Return
     (result : InterpreterResult.t) (result' : Value.t) :
@@ -184,7 +184,7 @@ Module InterpreterAction.
       ]
     ).
   Proof. econstructor; apply of_value_with_Return; eassumption. Defined.
-  Smpl Add simple apply of_value_Return : of_value.
+  Smpl Add eapply of_value_Return : of_value.
 
   Definition of_value_None :
     OfValue.t (
@@ -240,76 +240,74 @@ Module Impl_InterpreterAction.
     InterpreterAction.t.
 
   (* pub fn is_call(&self) -> bool *)
-  Definition run_is_call (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
+  Instance run_is_call (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
       interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_call
-        [] [] [φ self] 🔽
-      bool
-    }}.
+        [] [] [φ self]
+      bool.
   Proof.
+    constructor.
     run_symbolic.
     destruct_all FrameInput.t; run_symbolic.
   Defined.
 
   (* pub fn is_create(&self) -> bool *)
-  Definition run_is_create (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
+  Instance run_is_create (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
       interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_create
-        [] [] [φ self] 🔽
-      bool
-    }}.
+        [] [] [φ self]
+      bool.
   Proof.
+    constructor.
     run_symbolic.
     destruct_all FrameInput.t; run_symbolic.
   Defined.
 
   (* pub fn is_return(&self) -> bool *)
-  Definition run_is_return (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
+  Instance run_is_return (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
       interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_return
-        [] [] [φ self] 🔽
-      bool
-    }}.
+        [] [] [φ self]
+      bool.
   Proof.
+    constructor.
     run_symbolic.
     destruct_all Self; run_symbolic.
   Defined.
 
   (* pub fn is_none(&self) -> bool *)
-  Definition run_is_none (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
+  Instance run_is_none (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
       interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_none
-        [] [] [φ self] 🔽
-      bool
-    }}.
+        [] [] [φ self]
+      bool.
   Proof.
+    constructor.
     run_symbolic.
     destruct_all Self; run_symbolic.
   Defined.
 
   (* pub fn is_some(&self) -> bool *)
-  Definition run_is_some (self : Ref.t Pointer.Kind.Ref Self) :
-    {{
+  Instance run_is_some (self : Ref.t Pointer.Kind.Ref Self) :
+    Run.Trait
       interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.is_some
-        [] [] [φ self] 🔽
-      bool
-    }}.
+        [] [] [φ self]
+      bool.
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_closure. {
-      apply run_is_none.
-    }
-    intros []; run_symbolic.
   Defined.
 
   (* pub fn into_result_return(self) -> Option<InterpreterResult> *)
-  Definition run_into_result_return (self : Self) :
-    {{
+  Instance run_into_result_return (self : Self) :
+    Run.Trait
       interpreter_action.Impl_revm_interpreter_interpreter_action_InterpreterAction.into_result_return
-        [] [] [φ self] 🔽
-      option InterpreterResult.t
-    }}.
+        [] [] [φ self]
+      (option InterpreterResult.t).
   Proof.
+    constructor.
     run_symbolic.
-  Defined.
+    (* The failure is probably dues to the phantom type on the [None] constructor. TODO: make a
+       general fix. *)
+  Admitted.
 End Impl_InterpreterAction.

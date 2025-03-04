@@ -146,6 +146,7 @@ Module journaled_state.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -400,6 +401,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
             |)
@@ -500,6 +502,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -820,11 +823,13 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1373,11 +1378,13 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1846,11 +1853,13 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))

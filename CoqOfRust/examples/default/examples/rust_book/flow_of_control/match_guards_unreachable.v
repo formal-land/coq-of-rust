@@ -20,6 +20,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ number : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 4 |) in
         M.match_operator (|
+          Some (Ty.tuple []),
           number,
           [
             fun γ =>

@@ -51,6 +51,7 @@ Module slice.
                   |) in
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -113,6 +114,7 @@ Module slice.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -164,6 +166,7 @@ Module slice.
                                         let~ sift_idx : Ty.path "usize" :=
                                           M.copy (|
                                             M.match_operator (|
+                                              Some (Ty.path "usize"),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -416,6 +419,7 @@ Module slice.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -437,6 +441,7 @@ Module slice.
                     let~ _ : Ty.tuple [] :=
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -551,6 +556,7 @@ Module slice.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>

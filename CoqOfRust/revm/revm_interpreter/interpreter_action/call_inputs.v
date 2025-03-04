@@ -946,36 +946,43 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (M.match_operator (|
+                                None,
                                 Value.DeclaredButUndefined,
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
+                                        None,
                                         Value.DeclaredButUndefined,
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
+                                                None,
                                                 Value.DeclaredButUndefined,
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
+                                                        None,
                                                         Value.DeclaredButUndefined,
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
+                                                                None,
                                                                 Value.DeclaredButUndefined,
                                                                 [
                                                                   fun γ =>
@@ -1423,6 +1430,21 @@ Module interpreter_action.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ]
+                                ]
+                                (Ty.path "bool")),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
@@ -1772,6 +1794,7 @@ Module interpreter_action.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
+                    Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     self,
                     [
                       fun γ =>
@@ -2057,6 +2080,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "bool"),
                 self,
                 [
                   fun γ =>
@@ -2122,6 +2146,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "bool"),
                 self,
                 [
                   fun γ =>
@@ -2196,6 +2221,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue"),
                 self,
                 [
                   fun γ =>
@@ -2310,6 +2336,11 @@ Module interpreter_action.
             let f := M.alloc (| f |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                 self,
                 [
                   fun γ =>
@@ -2452,6 +2483,7 @@ Module interpreter_action.
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
+                        Some (Ty.path "bool"),
                         M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                         [
                           fun γ =>
@@ -2623,6 +2655,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
@@ -2687,6 +2720,7 @@ Module interpreter_action.
                   |)
                 |) in
               M.match_operator (|
+                Some (Ty.tuple []),
                 self,
                 [
                   fun γ =>
@@ -2818,6 +2852,11 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2878,6 +2917,16 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -2924,6 +2973,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "bool"),
                 self,
                 [
                   fun γ =>
@@ -2963,6 +3013,16 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -3009,6 +3069,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "bool"),
                 self,
                 [
                   fun γ =>

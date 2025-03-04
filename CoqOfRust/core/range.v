@@ -229,6 +229,7 @@ Module range.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -341,6 +342,7 @@ Module range.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -446,6 +448,7 @@ Module range.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -568,6 +571,7 @@ Module range.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1256,6 +1260,7 @@ Module range.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -1370,6 +1375,7 @@ Module range.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1475,6 +1481,7 @@ Module range.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -1599,6 +1606,7 @@ Module range.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2134,6 +2142,7 @@ Module range.
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2196,6 +2205,7 @@ Module range.
                 ]
               |) in
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ T; T ],
@@ -2381,6 +2391,7 @@ Module range.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -2465,6 +2476,7 @@ Module range.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -2570,6 +2582,7 @@ Module range.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply

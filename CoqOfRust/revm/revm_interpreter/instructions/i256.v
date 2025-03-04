@@ -87,6 +87,7 @@ Module instructions.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.read (|
                   M.match_operator (|
+                    Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     self,
                     [
                       fun γ =>
@@ -525,6 +526,7 @@ Module instructions.
           (let val := M.alloc (| val |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "revm_interpreter::instructions::i256::Sign"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -627,6 +629,7 @@ Module instructions.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -853,6 +856,7 @@ Module instructions.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.path "core::cmp::Ordering"),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
@@ -972,6 +976,7 @@ Module instructions.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1032,6 +1037,7 @@ Module instructions.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1216,6 +1222,11 @@ Module instructions.
                     |)
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1409,6 +1420,7 @@ Module instructions.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1469,6 +1481,7 @@ Module instructions.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1560,6 +1573,11 @@ Module instructions.
                     |)
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

@@ -319,6 +319,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              Some
+                                                                (Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "i32" ]
+                                                                          ]
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.path "bool")),
                                                               M.alloc (| α0 |),
                                                               [
                                                                 fun γ =>
@@ -455,6 +472,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              Some
+                                                                (Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "i32" ]
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.path "bool")),
                                                               M.alloc (| α0 |),
                                                               [
                                                                 fun γ =>
@@ -634,6 +663,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              Some
+                                                                (Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "i32" ]
+                                                                          ]
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.path "bool")),
                                                               M.alloc (| α0 |),
                                                               [
                                                                 fun γ =>
@@ -803,6 +849,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
+                                                              Some
+                                                                (Ty.function
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "i32" ]
+                                                                          ]
+                                                                      ]
+                                                                  ]
+                                                                  (Ty.path "bool")),
                                                               M.alloc (| α0 |),
                                                               [
                                                                 fun γ =>

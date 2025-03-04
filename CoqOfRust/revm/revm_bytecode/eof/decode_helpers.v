@@ -21,6 +21,7 @@ Module eof.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -147,6 +148,7 @@ Module eof.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -194,6 +196,7 @@ Module eof.
                     ]
                   |) in
                 M.match_operator (|
+                  None,
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple

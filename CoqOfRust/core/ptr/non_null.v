@@ -276,6 +276,7 @@ Module ptr.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -350,6 +351,11 @@ Module ptr.
             (let ptr := M.alloc (| ptr |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1102,6 +1108,7 @@ Module ptr.
             let count := M.alloc (| count |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2028,6 +2035,7 @@ Module ptr.
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

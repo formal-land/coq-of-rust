@@ -88,6 +88,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                 self,
                 [
                   fun γ =>
@@ -396,6 +397,7 @@ Module Meter.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -471,6 +473,7 @@ Module Meter.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -497,6 +500,7 @@ Module Meter.
               let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -528,6 +532,7 @@ Module Meter.
                             ltac:(M.monadic
                               (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -572,6 +577,7 @@ Module Meter.
                                           |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply

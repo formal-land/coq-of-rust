@@ -60,6 +60,7 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       (let event := M.alloc (| event |) in
       M.read (|
         M.match_operator (|
+          Some (Ty.tuple []),
           event,
           [
             fun γ =>

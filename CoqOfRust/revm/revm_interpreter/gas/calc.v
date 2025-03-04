@@ -61,6 +61,7 @@ Module gas.
           let vals := M.alloc (| vals |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "i64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -86,6 +87,7 @@ Module gas.
                     let~ sstore_clears_schedule : Ty.path "i64" :=
                       M.copy (|
                         M.match_operator (|
+                          Some (Ty.path "i64"),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -142,6 +144,7 @@ Module gas.
                         |)
                       |) in
                     M.match_operator (|
+                      Some (Ty.path "i64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -171,6 +174,7 @@ Module gas.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "i64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -226,6 +230,7 @@ Module gas.
                                       M.alloc (| Value.Integer IntegerKind.I64 0 |) in
                                     let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
+                                        Some (Ty.tuple []),
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -258,6 +263,7 @@ Module gas.
                                                   Value.Bool true
                                                 |) in
                                               M.match_operator (|
+                                                Some (Ty.tuple []),
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
                                                   fun γ =>
@@ -302,6 +308,7 @@ Module gas.
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (| Value.Tuple [] |),
                                                         [
                                                           fun γ =>
@@ -359,6 +366,7 @@ Module gas.
                                       |) in
                                     let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
+                                        Some (Ty.tuple []),
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -389,7 +397,9 @@ Module gas.
                                                   Value.Bool true
                                                 |) in
                                               M.match_operator (|
+                                                None,
                                                 M.match_operator (|
+                                                  Some (Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -473,6 +483,7 @@ Module gas.
                                                       let gas_sstore_reset := M.copy (| γ0_0 |) in
                                                       let gas_sload := M.copy (| γ0_1 |) in
                                                       M.match_operator (|
+                                                        Some (Ty.tuple []),
                                                         M.alloc (| Value.Tuple [] |),
                                                         [
                                                           fun γ =>
@@ -560,6 +571,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.path "i64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -640,6 +652,7 @@ Module gas.
                   M.read (| M.get_constant "revm_interpreter::gas::constants::CREATE" |);
                   M.read (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -726,6 +739,7 @@ Module gas.
                     ltac:(M.monadic
                       (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -842,6 +856,7 @@ Module gas.
                                     |)
                                   |) in
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -884,6 +899,7 @@ Module gas.
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -954,6 +970,7 @@ Module gas.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1019,6 +1036,7 @@ Module gas.
                               [
                                 M.read (|
                                   M.match_operator (|
+                                    Some (Ty.path "i32"),
                                     M.alloc (| Value.Tuple [] |),
                                     [
                                       fun γ =>
@@ -1067,6 +1085,14 @@ Module gas.
                               [] :=
                           M.copy (|
                             M.match_operator (|
+                              Some
+                                (Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []),
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.apply
@@ -1160,6 +1186,14 @@ Module gas.
                                         |);
                                         M.read (|
                                           M.match_operator (|
+                                            Some
+                                              (Ty.apply
+                                                (Ty.path "ruint::Uint")
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
+                                                []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.apply
@@ -1504,6 +1538,7 @@ Module gas.
             let~ base_gas : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "u64"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1543,6 +1578,7 @@ Module gas.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some (Ty.path "u64"),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -1615,6 +1651,7 @@ Module gas.
                   M.read (| base_cost |);
                   M.read (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1679,6 +1716,7 @@ Module gas.
                 [
                   M.read (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1687,6 +1725,7 @@ Module gas.
                             M.read (| M.get_constant "revm_interpreter::gas::constants::LOG" |);
                             M.read (|
                               M.match_operator (|
+                                Some (Ty.path "u64"),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1792,6 +1831,7 @@ Module gas.
                   M.read (| M.get_constant "revm_interpreter::gas::constants::KECCAK256" |);
                   M.read (|
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1891,6 +1931,7 @@ Module gas.
           (let len := M.alloc (| len |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1952,6 +1993,7 @@ Module gas.
           let is_cold := M.alloc (| is_cold |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "u64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -1975,6 +2017,7 @@ Module gas.
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1992,6 +2035,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2021,6 +2065,7 @@ Module gas.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "u64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2095,6 +2140,7 @@ Module gas.
           let is_cold := M.alloc (| is_cold |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "u64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2132,6 +2178,7 @@ Module gas.
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2164,6 +2211,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2251,6 +2299,7 @@ Module gas.
           (let vals := M.alloc (| vals |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "u64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2274,6 +2323,7 @@ Module gas.
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.path "u64"),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2321,6 +2371,7 @@ Module gas.
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some (Ty.path "u64"),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2386,6 +2437,7 @@ Module gas.
           (let vals := M.alloc (| vals |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "u64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -2476,6 +2528,7 @@ Module gas.
             let~ should_charge_topup : Ty.path "bool" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "bool"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2553,6 +2606,7 @@ Module gas.
             let~ selfdestruct_gas_topup : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "u64"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2589,6 +2643,7 @@ Module gas.
             let~ selfdestruct_gas : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "u64"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2628,6 +2683,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2732,6 +2788,7 @@ Module gas.
             let~ gas : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "u64"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2779,6 +2836,7 @@ Module gas.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some (Ty.path "u64"),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2817,6 +2875,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2842,6 +2901,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2855,6 +2915,7 @@ Module gas.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -2884,6 +2945,7 @@ Module gas.
                                   Value.Bool true
                                 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -2960,6 +3022,7 @@ Module gas.
           (let is_cold := M.alloc (| is_cold |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "u64"),
               M.alloc (| Value.Tuple [] |),
               [
                 fun γ =>
@@ -3022,6 +3085,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3278,6 +3342,18 @@ Module gas.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      Some
+                                        (Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                              ]
+                                          ]
+                                          (Ty.path "bool")),
                                       M.alloc (| α0 |),
                                       [
                                         fun γ =>
@@ -3345,6 +3421,7 @@ Module gas.
                       M.read (| non_zero_data_len |),
                       M.read (|
                         M.match_operator (|
+                          Some (Ty.path "u64"),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -3385,6 +3462,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3398,6 +3476,7 @@ Module gas.
                         |) in
                       let access_list := M.copy (| γ0_0 |) in
                       M.match_operator (|
+                        None,
                         M.alloc (|
                           M.call_closure (|
                             Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
@@ -3474,6 +3553,7 @@ Module gas.
                     M.read (| β |),
                     M.read (|
                       M.match_operator (|
+                        Some (Ty.path "u64"),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -3485,6 +3565,7 @@ Module gas.
                                   Value.Bool true
                                 |) in
                               M.match_operator (|
+                                Some (Ty.path "u64"),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -3529,6 +3610,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3595,6 +3677,7 @@ Module gas.
               |) in
             let~ _ : Ty.tuple [] :=
               M.match_operator (|
+                Some (Ty.tuple []),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>

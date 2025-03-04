@@ -130,6 +130,7 @@ Module bls12_381.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -168,6 +169,7 @@ Module bls12_381.
                     ]
                   |) in
                 M.match_operator (|
+                  None,
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -286,6 +288,7 @@ Module bls12_381.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -385,6 +388,18 @@ Module bls12_381.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.match_operator (|
+                                                                    Some
+                                                                      (Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        ]
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument"
+                                                                        ]),
                                                                     M.alloc (|
                                                                       Value.Tuple
                                                                         [
@@ -512,6 +527,7 @@ Module bls12_381.
                     ]
                   |) in
                 M.match_operator (|
+                  None,
                   M.alloc (|
                     M.call_closure (|
                       Ty.tuple
@@ -548,6 +564,7 @@ Module bls12_381.
                         let unpadded := M.copy (| γ0_1 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -611,6 +628,18 @@ Module bls12_381.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
+                                                          Some
+                                                            (Ty.function
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u8" ]
+                                                                  ]
+                                                              ]
+                                                              (Ty.path "bool")),
                                                           M.alloc (| α0 |),
                                                           [
                                                             fun γ =>
@@ -885,6 +914,7 @@ Module bls12_381.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -984,6 +1014,18 @@ Module bls12_381.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.match_operator (|
+                                                                    Some
+                                                                      (Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        ]
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument"
+                                                                        ]),
                                                                     M.alloc (|
                                                                       Value.Tuple
                                                                         [
@@ -1186,6 +1228,7 @@ Module bls12_381.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1274,6 +1317,7 @@ Module bls12_381.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -1339,6 +1383,7 @@ Module bls12_381.
                                           let i := M.copy (| γ1_0 |) in
                                           let modulo := M.copy (| γ1_1 |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (|
                                               M.call_closure (|
                                                 Ty.path "core::cmp::Ordering",
@@ -1444,6 +1489,7 @@ Module bls12_381.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

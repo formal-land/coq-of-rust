@@ -910,6 +910,7 @@ fn compile_function_body(
                 |body, (name, _, pattern)| match pattern {
                     None => body,
                     Some(pattern) => crate::thir_expression::build_match(
+                        None,
                         Expr::local_var(name),
                         vec![MatchArm {
                             pattern: pattern.clone(),

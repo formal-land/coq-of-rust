@@ -37,6 +37,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "move_core_types::abi::ScriptABI"),
               self,
               [
                 fun γ =>
@@ -124,6 +125,11 @@ Module abi.
           let f := M.alloc (| f |) in
           M.read (|
             M.match_operator (|
+              Some
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
               self,
               [
                 fun γ =>
@@ -257,6 +263,7 @@ Module abi.
                 |)
               |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               self,
               [
                 fun γ =>
@@ -345,11 +352,13 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -422,6 +431,7 @@ Module abi.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      Some (Ty.path "bool"),
                       M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
                       [
                         fun γ =>
@@ -558,6 +568,14 @@ Module abi.
             let __serializer := M.alloc (| __serializer |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                    ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -712,6 +730,13 @@ Module abi.
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
+                        Some
+                          (Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -793,6 +818,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -873,6 +899,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -953,6 +980,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1033,6 +1061,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1121,6 +1150,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1307,6 +1337,13 @@ Module abi.
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
+                        Some
+                          (Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1388,6 +1425,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1468,6 +1506,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1548,6 +1587,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1648,6 +1688,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1736,6 +1777,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1922,6 +1964,13 @@ Module abi.
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
+                        Some
+                          (Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -1994,6 +2043,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2074,6 +2124,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -2252,6 +2303,13 @@ Module abi.
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
+                        Some
+                          (Ty.associated_in_trait
+                            "serde::ser::Serializer"
+                            []
+                            []
+                            __S
+                            "SerializeStruct"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -2321,6 +2379,7 @@ Module abi.
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -3013,21 +3072,25 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                     |)))
@@ -3810,21 +3873,25 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
+                                      None,
                                       Value.DeclaredButUndefined,
                                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                     |)))
@@ -4344,11 +4411,13 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -4653,6 +4722,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -5360,6 +5430,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -5400,6 +5471,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              Some (Ty.path "bool"),
               self,
               [
                 fun γ =>
@@ -5442,6 +5514,7 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -5528,6 +5601,7 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -5614,6 +5688,16 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                      ]),
                   self,
                   [
                     fun γ =>
@@ -5717,6 +5801,16 @@ Module abi.
             M.deref (|
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                      ]),
                   self,
                   [
                     fun γ =>

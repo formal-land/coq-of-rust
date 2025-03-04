@@ -18,6 +18,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       (let drink := M.alloc (| drink |) in
       M.read (|
         M.match_operator (|
+          Some (Ty.tuple []),
           drink,
           [
             fun γ =>
@@ -212,6 +213,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ : Ty.tuple [] :=
           M.match_operator (|
+            Some (Ty.tuple []),
             M.alloc (| Value.Tuple [] |),
             [
               fun γ =>

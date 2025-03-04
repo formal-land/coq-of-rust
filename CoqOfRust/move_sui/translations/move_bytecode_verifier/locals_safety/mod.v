@@ -26,6 +26,9 @@ Module locals_safety.
                   Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState" :=
                 M.copy (|
                   M.match_operator (|
+                    Some
+                      (Ty.path
+                        "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"),
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -338,6 +341,7 @@ Module locals_safety.
             (M.read (|
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -457,6 +461,7 @@ Module locals_safety.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   bytecode,
                   [
                     fun γ =>
@@ -470,6 +475,7 @@ Module locals_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -625,6 +631,7 @@ Module locals_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -745,6 +752,7 @@ Module locals_safety.
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (|
                             M.call_closure (|
                               Ty.path
@@ -870,6 +878,7 @@ Module locals_safety.
                               | [ idx ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.path
@@ -1018,6 +1027,7 @@ Module locals_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1209,6 +1219,7 @@ Module locals_safety.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1289,6 +1300,7 @@ Module locals_safety.
                           |) in
                         M.use
                           (M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -1458,6 +1470,7 @@ Module locals_safety.
                                     ltac:(M.monadic
                                       (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (|
                                             M.call_closure (|
                                               Ty.apply
@@ -1545,6 +1558,7 @@ Module locals_safety.
                                                 let local_state := M.copy (| γ1_0 |) in
                                                 let local_abilities := M.copy (| γ1_1 |) in
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   local_state,
                                                   [
                                                     fun γ =>

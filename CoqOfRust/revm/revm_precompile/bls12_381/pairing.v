@@ -170,6 +170,7 @@ Module bls12_381.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -375,6 +376,7 @@ Module bls12_381.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -438,6 +440,7 @@ Module bls12_381.
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -469,6 +472,7 @@ Module bls12_381.
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
+                                    Some (Ty.tuple []),
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply
@@ -524,6 +528,7 @@ Module bls12_381.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some (Ty.path "blst::blst_p1_affine"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -792,6 +797,7 @@ Module bls12_381.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
+                                                  Some (Ty.path "blst::blst_p2_affine"),
                                                   M.alloc (|
                                                     M.call_closure (|
                                                       Ty.apply
@@ -1064,6 +1070,7 @@ Module bls12_381.
                                               |)
                                             |) in
                                           M.match_operator (|
+                                            Some (Ty.tuple []),
                                             M.alloc (| Value.Tuple [] |),
                                             [
                                               fun γ =>
@@ -1266,6 +1273,7 @@ Module bls12_381.
                 let~ result : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

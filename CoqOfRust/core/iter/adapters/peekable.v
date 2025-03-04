@@ -374,6 +374,20 @@ Module iter.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
+                                          Some
+                                            (Ty.function
+                                              [ Ty.tuple [] ]
+                                              (Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ])),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -557,6 +571,20 @@ Module iter.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
+                                          Some
+                                            (Ty.function
+                                              [ Ty.tuple [] ]
+                                              (Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ])),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -632,6 +660,18 @@ Module iter.
               let func := M.alloc (| func |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -717,6 +757,7 @@ Module iter.
                         (let other := M.copy (| γ |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -867,6 +908,25 @@ Module iter.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.path "bool")),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>
@@ -938,6 +998,18 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1060,6 +1132,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some (Ty.path "usize"),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1213,6 +1286,18 @@ Module iter.
               let n := M.alloc (| n |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -1423,6 +1508,18 @@ Module iter.
                           ] :=
                       M.copy (|
                         M.match_operator (|
+                          Some
+                            (Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -1609,6 +1706,7 @@ Module iter.
                     let~ peek_len : Ty.path "usize" :=
                       M.copy (|
                         M.match_operator (|
+                          Some (Ty.path "usize"),
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
                             "core::iter::adapters::peekable::Peekable",
@@ -1663,6 +1761,7 @@ Module iter.
                         |)
                       |) in
                     M.match_operator (|
+                      None,
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -1715,6 +1814,11 @@ Module iter.
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ]),
                                   hi,
                                   [
                                     fun γ =>
@@ -1788,6 +1892,7 @@ Module iter.
                     let~ acc : B :=
                       M.copy (|
                         M.match_operator (|
+                          Some B,
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -1887,6 +1992,7 @@ Module iter.
                                   |) in
                                 let v := M.copy (| γ1_0 |) in
                                 M.match_operator (|
+                                  Some B,
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply
@@ -2056,6 +2162,7 @@ Module iter.
                     let~ acc : Acc :=
                       M.copy (|
                         M.match_operator (|
+                          Some Acc,
                           M.SubPointer.get_struct_record_field (|
                             self,
                             "core::iter::adapters::peekable::Peekable",
@@ -2199,6 +2306,18 @@ Module iter.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2355,6 +2474,20 @@ Module iter.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
+                                          Some
+                                            (Ty.function
+                                              [ Ty.tuple [] ]
+                                              (Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ])),
                                           M.alloc (| α0 |),
                                           [
                                             fun γ =>
@@ -2485,6 +2618,7 @@ Module iter.
               let f := M.alloc (| f |) in
               M.read (|
                 M.match_operator (|
+                  Some R,
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -2577,6 +2711,7 @@ Module iter.
                           |) in
                         let v := M.copy (| γ1_0 |) in
                         M.match_operator (|
+                          Some R,
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -2777,6 +2912,7 @@ Module iter.
               let fold := M.alloc (| fold |) in
               M.read (|
                 M.match_operator (|
+                  Some Acc,
                   M.SubPointer.get_struct_record_field (|
                     self,
                     "core::iter::adapters::peekable::Peekable",

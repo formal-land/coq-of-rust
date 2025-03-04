@@ -88,6 +88,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -244,6 +245,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -400,6 +402,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -556,6 +559,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -712,6 +716,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -868,6 +873,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -1024,6 +1030,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -1180,6 +1187,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -1336,6 +1344,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -1492,6 +1501,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -1648,6 +1658,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -1804,6 +1815,7 @@ Module num.
               (let self := M.alloc (| self |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   Value.DeclaredButUndefined,
                   [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                 |)
@@ -3827,6 +3839,7 @@ Module num.
             (let n := M.alloc (| n |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply
@@ -3858,6 +3871,7 @@ Module num.
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -4055,6 +4069,11 @@ Module num.
                   M.deref (|
                     M.read (|
                       M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -4098,6 +4117,7 @@ Module num.
                                     M.read (|
                                       let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -4891,6 +4911,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5082,6 +5107,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5402,6 +5432,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5626,6 +5661,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5803,6 +5843,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -6821,6 +6862,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7012,6 +7058,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7332,6 +7383,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7556,6 +7612,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -7733,6 +7794,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -8751,6 +8813,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -8942,6 +9009,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -9262,6 +9334,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -9486,6 +9563,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -9663,6 +9745,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -10681,6 +10764,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -10872,6 +10960,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -11192,6 +11285,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -11416,6 +11514,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -11593,6 +11696,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -12611,6 +12715,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -12805,6 +12914,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -13128,6 +13242,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -13355,6 +13474,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -13535,6 +13659,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "u128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -14553,6 +14678,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -14747,6 +14877,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -15070,6 +15205,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -15297,6 +15437,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -15477,6 +15622,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "usize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -16528,6 +16674,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -16611,6 +16762,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i8"; Ty.path "bool" ],
@@ -16891,6 +17043,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -16985,6 +17138,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i8"; Ty.path "bool" ],
@@ -17058,6 +17212,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -17187,6 +17342,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -17411,6 +17571,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -17588,6 +17753,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i8"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -18507,6 +18673,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -18590,6 +18761,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i16"; Ty.path "bool" ],
@@ -18870,6 +19042,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -18964,6 +19137,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i16"; Ty.path "bool" ],
@@ -19037,6 +19211,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -19166,6 +19341,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -19390,6 +19570,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -19567,6 +19752,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i16"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -20486,6 +20672,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -20569,6 +20760,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i32"; Ty.path "bool" ],
@@ -20849,6 +21041,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -20943,6 +21136,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i32"; Ty.path "bool" ],
@@ -21016,6 +21210,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -21145,6 +21340,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -21369,6 +21569,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -21546,6 +21751,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i32"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -22465,6 +22671,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -22548,6 +22759,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i64"; Ty.path "bool" ],
@@ -22828,6 +23040,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -22922,6 +23135,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i64"; Ty.path "bool" ],
@@ -22995,6 +23209,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -23124,6 +23339,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -23348,6 +23568,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -23525,6 +23750,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i64"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -24444,6 +24670,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -24530,6 +24761,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i128"; Ty.path "bool" ],
@@ -24813,6 +25045,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -24907,6 +25140,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "i128"; Ty.path "bool" ],
@@ -24983,6 +25217,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -25112,6 +25347,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -25339,6 +25579,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -25519,6 +25764,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "i128"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -26438,6 +26684,11 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -26524,6 +26775,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "isize"; Ty.path "bool" ],
@@ -26807,6 +27059,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -26901,6 +27154,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple [ Ty.path "isize"; Ty.path "bool" ],
@@ -26977,6 +27231,7 @@ Module num.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -27106,6 +27361,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -27333,6 +27593,11 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -27513,6 +27778,7 @@ Module num.
                       [
                         M.read (|
                           M.match_operator (|
+                            Some (Ty.path "isize"),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply

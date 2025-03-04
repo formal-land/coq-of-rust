@@ -174,6 +174,7 @@ Module iter.
               let additional := M.alloc (| additional |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   additional,
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
@@ -334,6 +335,7 @@ Module iter.
               let into_iter := M.alloc (| into_iter |) in
               M.read (|
                 M.match_operator (|
+                  None,
                   self,
                   [
                     fun γ =>
@@ -663,6 +665,7 @@ Module iter.
             let b := M.alloc (| b |) in
             M.read (|
               M.match_operator (|
+                None,
                 M.alloc (|
                   M.call_closure (|
                     Ty.tuple
@@ -690,6 +693,7 @@ Module iter.
                       let lower_bound := M.copy (| γ0_0 |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
+                          Some (Ty.tuple []),
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -823,11 +827,19 @@ Module iter.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.function
+                              [ Ty.tuple [ Ty.tuple []; Ty.tuple [ A; B ] ] ]
+                              (Ty.tuple [])),
                           M.alloc (| α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
+                                  Some
+                                    (Ty.function
+                                      [ Ty.tuple [ Ty.tuple []; Ty.tuple [ A; B ] ] ]
+                                      (Ty.tuple [])),
                                   M.alloc (| α1 |),
                                   [
                                     fun γ =>
@@ -1008,6 +1020,7 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
+                      None,
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple
@@ -1036,6 +1049,7 @@ Module iter.
                             let upper_bound := M.copy (| γ0_1 |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1096,6 +1110,7 @@ Module iter.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>

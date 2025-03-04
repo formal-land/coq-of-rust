@@ -2,8 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.ops.function.
 
-Import Run.
-
 (*
     pub trait FnOnce<Args: Tuple> {
         type Output;
@@ -18,7 +16,7 @@ Module FnOnce.
     {call_once @
       IsTraitMethod.t "core::ops::function::FnOnce" [] [ Φ Args ] (Φ Self) "call_once" call_once *
       forall (self : Self) (args : Args),
-      {{ call_once [] [] [ φ self; φ args ] 🔽 Output }}
+      {{ call_once [] [] [ φ self; φ args ] 🔽 Output, Output }}
     }.
 
   Record Run (Self Args : Set) {Output : Set}

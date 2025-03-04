@@ -39,11 +39,13 @@ Module panic.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                       |)))
@@ -162,11 +164,13 @@ Module panic.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                None,
                 Value.DeclaredButUndefined,
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        None,
                         Value.DeclaredButUndefined,
                         [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                       |)))
@@ -314,6 +318,7 @@ Module panic.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some (Ty.path "core::cmp::Ordering"),
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
@@ -361,6 +366,7 @@ Module panic.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
+                        Some (Ty.path "core::cmp::Ordering"),
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
@@ -588,6 +594,8 @@ Module panic.
             let other := M.alloc (| other |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ]),
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
@@ -641,6 +649,11 @@ Module panic.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply

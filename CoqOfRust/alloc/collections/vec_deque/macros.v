@@ -29,6 +29,7 @@ Module collections.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -81,6 +82,7 @@ Module collections.
                       ]
                     |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -105,6 +107,7 @@ Module collections.
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
+                            None,
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -271,6 +274,7 @@ Module collections.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -325,6 +329,7 @@ Module collections.
                       ]
                     |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -349,6 +354,7 @@ Module collections.
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
+                            None,
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -518,6 +524,7 @@ Module collections.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -572,6 +579,7 @@ Module collections.
                       ]
                     |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -596,6 +604,7 @@ Module collections.
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
+                            None,
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -771,6 +780,7 @@ Module collections.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -823,6 +833,7 @@ Module collections.
                       ]
                     |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -847,6 +858,7 @@ Module collections.
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
+                            None,
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -1019,6 +1031,7 @@ Module collections.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1073,6 +1086,7 @@ Module collections.
                       ]
                     |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -1097,6 +1111,7 @@ Module collections.
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
+                            None,
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple
@@ -1272,6 +1287,7 @@ Module collections.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1326,6 +1342,7 @@ Module collections.
                       ]
                     |) in
                   M.match_operator (|
+                    None,
                     M.alloc (|
                       M.call_closure (|
                         Ty.tuple
@@ -1350,6 +1367,7 @@ Module collections.
                           let sa := M.copy (| γ0_0 |) in
                           let sb := M.copy (| γ0_1 |) in
                           M.match_operator (|
+                            None,
                             M.alloc (|
                               M.call_closure (|
                                 Ty.tuple

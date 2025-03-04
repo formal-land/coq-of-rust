@@ -27,16 +27,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                             |)))
@@ -384,16 +387,19 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              None,
                               Value.DeclaredButUndefined,
                               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                             |)))
@@ -920,6 +926,7 @@ Module gas.
             let~ max_refund_quotient : Ty.path "u64" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "u64"),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1044,6 +1051,7 @@ Module gas.
           let cost := M.alloc (| cost |) in
           M.read (|
             M.match_operator (|
+              None,
               M.alloc (|
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "bool" ],
@@ -1071,6 +1079,7 @@ Module gas.
                       M.alloc (| UnOp.not (| M.read (| overflow |) |) |) in
                     let~ _ : Ty.tuple [] :=
                       M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -1131,6 +1140,7 @@ Module gas.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
+                  None,
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1165,6 +1175,7 @@ Module gas.
                         let additional_cost := M.copy (| γ0_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -1277,11 +1288,13 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
                     |)))
@@ -1522,11 +1535,13 @@ Module gas.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
+                      None,
                       Value.DeclaredButUndefined,
                       [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
@@ -1683,6 +1698,7 @@ Module gas.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>

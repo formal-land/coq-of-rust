@@ -57,6 +57,11 @@ Module future.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ]),
                 M.deref (| M.read (| self |) |),
                 [
                   fun γ =>
@@ -68,6 +73,12 @@ Module future.
                           0
                         |) in
                       M.match_operator (|
+                        Some
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output"
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ],
@@ -165,6 +176,7 @@ Module future.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.deref (|
                         M.call_closure (|
                           Ty.apply
@@ -235,6 +247,13 @@ Module future.
                                   "Output" :=
                               M.copy (|
                                 M.match_operator (|
+                                  Some
+                                    (Ty.associated_in_trait
+                                      "core::future::future::Future"
+                                      []
+                                      []
+                                      F
+                                      "Output"),
                                   M.alloc (|
                                     M.call_closure (|
                                       Ty.apply

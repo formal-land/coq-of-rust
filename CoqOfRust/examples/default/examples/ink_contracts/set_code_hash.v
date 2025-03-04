@@ -294,6 +294,10 @@ Module Impl_set_code_hash_Incrementer.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [ Ty.tuple [ Ty.path "set_code_hash::Error" ] ]
+                                  (Ty.tuple [])),
                               M.alloc (| α0 |),
                               [
                                 fun γ =>

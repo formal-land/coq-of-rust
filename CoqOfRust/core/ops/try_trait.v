@@ -86,6 +86,13 @@ Module ops.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some
+                          (Ty.function
+                            [ Ty.tuple [ A ] ]
+                            (Ty.apply
+                              (Ty.path "core::ops::try_trait::NeverShortCircuit")
+                              []
+                              [ T ])),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
@@ -142,12 +149,26 @@ Module ops.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some
+                          (Ty.function
+                            [ Ty.tuple [ A; B ] ]
+                            (Ty.apply
+                              (Ty.path "core::ops::try_trait::NeverShortCircuit")
+                              []
+                              [ T ])),
                         M.alloc (| α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let a := M.copy (| γ |) in
                               M.match_operator (|
+                                Some
+                                  (Ty.function
+                                    [ Ty.tuple [ A; B ] ]
+                                    (Ty.apply
+                                      (Ty.path "core::ops::try_trait::NeverShortCircuit")
+                                      []
+                                      [ T ])),
                                 M.alloc (| α1 |),
                                 [
                                   fun γ =>
@@ -286,7 +307,9 @@ Module ops.
         | [], [], [ never ] =>
           ltac:(M.monadic
             (let never := M.alloc (| never |) in
-            M.never_to_any (| M.read (| M.match_operator (| never, [] |) |) |)))
+            M.never_to_any (|
+              M.read (| M.match_operator (| Some (Ty.path "never"), never, [] |) |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

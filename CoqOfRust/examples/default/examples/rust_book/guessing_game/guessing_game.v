@@ -204,6 +204,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             let~ guess : Ty.path "u32" :=
               M.copy (|
                 M.match_operator (|
+                  Some (Ty.path "u32"),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -334,6 +335,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |) in
               M.alloc (| Value.Tuple [] |) in
             M.match_operator (|
+              Some (Ty.tuple []),
               M.alloc (|
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",

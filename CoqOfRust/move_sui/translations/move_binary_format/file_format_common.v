@@ -511,6 +511,7 @@ Module file_format_common.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -1041,6 +1042,7 @@ Module file_format_common.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -1353,6 +1355,7 @@ Module file_format_common.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -1942,6 +1945,7 @@ Module file_format_common.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.read (|
                 M.match_operator (|
+                  Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                   self,
                   [
                     fun γ =>
@@ -3320,6 +3324,7 @@ Module file_format_common.
               (M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -3628,6 +3633,7 @@ Module file_format_common.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -4144,6 +4150,7 @@ Module file_format_common.
                         BinOp.bit_and (M.read (| val |)) (Value.Integer IntegerKind.U64 127)
                       |) in
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -4155,6 +4162,7 @@ Module file_format_common.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (|
                                   M.call_closure (|
                                     Ty.apply
@@ -4286,6 +4294,7 @@ Module file_format_common.
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -4692,6 +4701,7 @@ Module file_format_common.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -4852,6 +4862,7 @@ Module file_format_common.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
@@ -5031,6 +5042,7 @@ Module file_format_common.
                     Ty.tuple [],
                     ltac:(M.monadic
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -5072,6 +5084,7 @@ Module file_format_common.
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -5170,6 +5183,7 @@ Module file_format_common.
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
+                                  Some (Ty.tuple []),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -5194,6 +5208,7 @@ Module file_format_common.
                                             M.read (|
                                               let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
+                                                  Some (Ty.tuple []),
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
                                                     fun γ =>
@@ -5309,6 +5324,7 @@ Module file_format_common.
                                   |)
                                 |) in
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -5559,6 +5575,7 @@ Module file_format_common.
           let~ opcode : Ty.path "move_binary_format::file_format_common::Opcodes" :=
             M.copy (|
               M.match_operator (|
+                Some (Ty.path "move_binary_format::file_format_common::Opcodes"),
                 instruction,
                 [
                   fun γ =>

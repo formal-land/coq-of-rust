@@ -299,6 +299,7 @@ Module iter.
                                 init,
                                 M.read (|
                                   M.match_operator (|
+                                    Some Acc,
                                     M.alloc (|
                                       M.call_closure (|
                                         Ty.apply

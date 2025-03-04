@@ -14,6 +14,7 @@ Module identifier.
         (let c := M.alloc (| c |) in
         M.read (|
           M.match_operator (|
+            Some (Ty.path "bool"),
             c,
             [
               fun γ =>
@@ -82,6 +83,7 @@ Module identifier.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -112,6 +114,7 @@ Module identifier.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -219,6 +222,7 @@ Module identifier.
               |)
             |) in
           M.match_operator (|
+            Some (Ty.path "bool"),
             b,
             [
               fun γ =>
@@ -493,6 +497,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -933,6 +938,12 @@ Module identifier.
                     |)
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "move_core_types::identifier::Identifier"; Ty.path "anyhow::Error"
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1220,6 +1231,7 @@ Module identifier.
                 let~ s : Ty.path "alloc::string::String" :=
                   M.copy (|
                     M.match_operator (|
+                      Some (Ty.path "alloc::string::String"),
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -1854,6 +1866,7 @@ Module identifier.
           (let self := M.alloc (| self |) in
           M.read (|
             M.match_operator (|
+              None,
               Value.DeclaredButUndefined,
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
@@ -2258,6 +2271,17 @@ Module identifier.
             ltac:(M.monadic
               (M.read (|
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::identifier::IdentStr" ];
+                        Ty.path "anyhow::Error"
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>

@@ -90,6 +90,35 @@ Module collections.
                     |)
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                              []
+                              [
+                                Ty.path "alloc::collections::btree::node::marker::Mut";
+                                K;
+                                V;
+                                Ty.path "alloc::collections::btree::node::marker::Internal"
+                              ]
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                          []
+                          [
+                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                            K;
+                            V;
+                            Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                          ]
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -114,6 +143,36 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (M.match_operator (|
+                          Some
+                            (Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                                      []
+                                      [
+                                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                                        K;
+                                        V;
+                                        Ty.path "alloc::collections::btree::node::marker::Internal"
+                                      ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::node::NodeRef")
+                                  []
+                                  [
+                                    Ty.path "alloc::collections::btree::node::marker::Mut";
+                                    K;
+                                    V;
+                                    Ty.path
+                                      "alloc::collections::btree::node::marker::LeafOrInternal"
+                                  ]
+                              ]),
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply
@@ -176,6 +235,38 @@ Module collections.
                                   |) in
                                 let left_parent_kv := M.copy (| γ1_0 |) in
                                 M.match_operator (|
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ]
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ]
+                                      ]),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -301,6 +392,38 @@ Module collections.
                                   |) in
                                 let right_parent_kv := M.copy (| γ1_0 |) in
                                 M.match_operator (|
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ]
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ]
+                                      ]),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -420,6 +543,38 @@ Module collections.
                                   |) in
                                 let root := M.copy (| γ0_0 |) in
                                 M.match_operator (|
+                                  Some
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::node::NodeRef")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Mut";
+                                                K;
+                                                V;
+                                                Ty.path
+                                                  "alloc::collections::btree::node::marker::Internal"
+                                              ]
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::node::NodeRef")
+                                          []
+                                          [
+                                            Ty.path "alloc::collections::btree::node::marker::Mut";
+                                            K;
+                                            V;
+                                            Ty.path
+                                              "alloc::collections::btree::node::marker::LeafOrInternal"
+                                          ]
+                                      ]),
                                   M.alloc (| Value.Tuple [] |),
                                   [
                                     fun γ =>
@@ -498,6 +653,7 @@ Module collections.
                         Ty.path "never",
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
@@ -692,6 +848,7 @@ Module collections.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -877,6 +1034,7 @@ Module collections.
                     |)
                   |) in
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1111,6 +1269,7 @@ Module collections.
                     |)
                   |) in
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1366,6 +1525,7 @@ Module collections.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1495,6 +1655,7 @@ Module collections.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1507,6 +1668,7 @@ Module collections.
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -1593,6 +1755,7 @@ Module collections.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1744,6 +1907,7 @@ Module collections.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -1914,6 +2078,7 @@ Module collections.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -1926,6 +2091,7 @@ Module collections.
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -2146,6 +2312,7 @@ Module collections.
                   Ty.tuple [],
                   ltac:(M.monadic
                     (M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -2316,6 +2483,7 @@ Module collections.
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
+                                Some (Ty.tuple []),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -2328,6 +2496,7 @@ Module collections.
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
+                                          Some (Ty.tuple []),
                                           M.alloc (| Value.Tuple [] |),
                                           [
                                             fun γ =>
@@ -2627,6 +2796,7 @@ Module collections.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2636,6 +2806,7 @@ Module collections.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2693,6 +2864,16 @@ Module collections.
                     ]
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
+                      [
+                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                        K;
+                        V;
+                        Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -2764,6 +2945,7 @@ Module collections.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>
@@ -2925,6 +3107,7 @@ Module collections.
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
+                    Some (Ty.tuple []),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -2934,6 +3117,7 @@ Module collections.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
+                              Some (Ty.tuple []),
                               M.alloc (| Value.Tuple [] |),
                               [
                                 fun γ =>
@@ -2991,6 +3175,16 @@ Module collections.
                     ]
                   |) in
                 M.match_operator (|
+                  Some
+                    (Ty.apply
+                      (Ty.path "alloc::collections::btree::node::NodeRef")
+                      []
+                      [
+                        Ty.path "alloc::collections::btree::node::marker::Mut";
+                        K;
+                        V;
+                        Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
+                      ]),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -3062,6 +3256,7 @@ Module collections.
                           |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
+                            Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
                             [
                               fun γ =>

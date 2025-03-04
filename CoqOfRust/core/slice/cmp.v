@@ -245,6 +245,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -296,6 +297,7 @@ Module slice.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -342,6 +344,7 @@ Module slice.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -389,6 +392,7 @@ Module slice.
                                               |) in
                                             let idx := M.copy (| γ0_0 |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (| Value.Tuple [] |),
                                               [
                                                 fun γ =>
@@ -492,6 +496,7 @@ Module slice.
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
+                      Some (Ty.tuple []),
                       M.alloc (| Value.Tuple [] |),
                       [
                         fun γ =>
@@ -737,6 +742,7 @@ Module slice.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -768,6 +774,7 @@ Module slice.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -815,6 +822,7 @@ Module slice.
                                               |) in
                                             let i := M.copy (| γ0_0 |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -1378,6 +1386,7 @@ Module slice.
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
+                        Some (Ty.tuple []),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -1409,6 +1418,7 @@ Module slice.
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
+                                      Some (Ty.tuple []),
                                       M.alloc (|
                                         M.call_closure (|
                                           Ty.apply
@@ -1456,6 +1466,7 @@ Module slice.
                                               |) in
                                             let i := M.copy (| γ0_0 |) in
                                             M.match_operator (|
+                                              Some (Ty.tuple []),
                                               M.alloc (|
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
@@ -1722,6 +1733,7 @@ Module slice.
               let~ len : Ty.path "usize" :=
                 M.copy (|
                   M.match_operator (|
+                    Some (Ty.path "usize"),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -1853,6 +1865,7 @@ Module slice.
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.match_operator (|
+                  Some (Ty.tuple []),
                   M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
@@ -1959,6 +1972,10 @@ Module slice.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                                (Ty.path "bool")),
                             M.alloc (| α0 |),
                             [
                               fun γ =>
