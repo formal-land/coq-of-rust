@@ -16,3 +16,15 @@ Instance run_saturating_add (integer_kind : IntegerKind.t) (x y : Integer.t inte
     (Integer.t integer_kind).
 Proof.
 Admitted.
+
+Instance run_sub_with_overflow
+  (x y : Integer.t IntegerKind.U64) :
+  Run.Trait
+    intrinsics.intrinsics.sub_with_overflow
+    []
+    [ Φ (Integer.t IntegerKind.U64) ]
+    [ φ x; φ y ]
+    (Integer.t IntegerKind.U64 * bool).
+Proof.
+Admitted.
+
