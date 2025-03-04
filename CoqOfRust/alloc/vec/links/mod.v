@@ -1,4 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import alloc.vec.mod.
 Require Import links.M.
 Require core.links.clone.
 Require core.links.default.
