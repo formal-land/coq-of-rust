@@ -462,46 +462,40 @@ Module Stack.
   Definition t : Type :=
     list Set.
 
-  Fixpoint to_Set (stack : t) : Set :=
-    match stack with
+  Fixpoint to_Set_aux (A : Set) (Stack : t) : Set :=
+    match Stack with
+    | [] => A
+    | B :: Stack => A * to_Set_aux B Stack
+    end.
+
+  Definition to_Set (Stack : t) : Set :=
+    match Stack with
     | [] => unit
-    | A :: stack => A * to_Set stack
+    | A :: Stack => to_Set_aux A Stack
     end.
 
   Definition read_Set (Stack : t) (index : nat) : Set :=
     List.nth index Stack unit.
 
-  Fixpoint read {Stack : t} (stack : to_Set Stack) (index : nat) : read_Set Stack index.
+  Fixpoint read_aux {A : Set} {Stack : t}
+    (stack : to_Set_aux A Stack)
+    (index : nat)
+    {struct Stack} :
+    read_Set (A :: Stack) index.
   Proof.
-    destruct Stack as [|A Stack], index as [|index]; cbn in *.
-    { exact tt. }
-    { exact tt. }
+    destruct Stack as [|B Stack], index as [|index]; cbn in *.
+    { exact stack. }
+    { destruct index; exact tt. }
     { exact (fst stack). }
-    { exact (read _ (snd stack) index). }
+    { exact (read_aux _ _ (snd stack) index). }
   Defined.
 
-  (* Module Read.
-    Inductive t {A : Set} `{Link A} {Stack : Stack.t} (stack : to_Set Stack) :
-      Ref.Core.t A ->
-      option A ->
-      Set :=
-    | Immediate
-        (value : option A) :
-      t stack
-        (Ref.Core.Immediate value)
-        value
-    | Mutable
-        (index : nat)
-        (path : Pointer.Path.t)
-        (big_to_value : read_Set Stack index -> Value.t)
-        (projection : read_Set Stack index -> option A)
-        (injection : read_Set Stack index -> A -> option (read_Set Stack index)) :
-      t stack
-        (Ref.Core.Mutable (Address := nat) (Big_A := read_Set Stack index)
-          index path big_to_value projection injection
-        )
-        (projection (read stack index)).
-  End Read. *)
+  Definition read {Stack : t} (stack : to_Set Stack) (index : nat) : read_Set Stack index.
+  Proof.
+    destruct Stack; cbn in *.
+    { destruct index; exact tt. }
+    { apply (read_aux stack). }
+  Defined.
 
   Module CanRead.
     Inductive t {A : Set} `{Link A} (Stack : Stack.t) : Ref.Core.t A -> Set :=
