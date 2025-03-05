@@ -522,6 +522,22 @@ Module Stack.
     { apply (write_aux stack index value). }
   Defined.
 
+  (* Fixpoint pop_aux {A : Set} {Stack : t}
+    (stack : to_Set_aux A Stack)
+    {struct Stack} :
+    to_Set Stack.
+  Proof.
+    destruct Stack as [|B Stack]; cbn in *.
+    { exact tt. }
+    { exact (fst stack, pop_aux _ (snd stack)). }
+  Defined. *)
+
+  Definition alloc {Stack : t} {A : Set} (stack : to_Set Stack) (value : A) : to_Set (Stack ++ [A]).
+  Admitted.
+
+  Definition dealloc {Stack : t} {A : Set} (stack : to_Set (Stack ++ [A])) : to_Set Stack.
+  Admitted.
+
   Module CanAccess.
     Inductive t {A : Set} `{Link A} (Stack : Stack.t) : Ref.Core.t A -> Set :=
     | Immediate
@@ -571,6 +587,22 @@ Module Run.
   | Pure
       (output : Output.t R Output) :
     {{ StackIn 🌲 LowM.Pure output }}
+  | StateAlloc {A : Set} `{Link A}
+      (value : A)
+      (k : Ref.Core.t A -> LowM.t R Output)
+    (H_k :
+      {{ StackIn ++ [A] 🌲
+        let ref_core :=
+          Ref.Core.Mutable
+            (List.length StackIn)
+            []
+            φ
+            Some
+            (fun _ => Some) in
+        k ref_core
+      }}
+    ) :
+    {{ StackIn 🌲 LowM.CallPrimitive (Primitive.StateAlloc value) k }}
   | StateRead {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (k : A -> LowM.t R Output)
@@ -601,6 +633,19 @@ Module Run.
       {{ StackIn 🌲 k output' }}
     ) :
     {{ StackIn 🌲 LowM.Call e k }}
+  | Let {Output' : Set} `{Link Output'}
+      (e : LowM.t R Output')
+      (k : Output.t R (Ref.t Pointer.Kind.Raw Output') -> LowM.t R Output)
+    (H_e : {{ StackIn 🌲 e }})
+    (H_k : forall (ref : Output.t R (Ref.t Pointer.Kind.Raw Output')),
+      let StackIn' :=
+        match ref with
+        | Output.Success _ => StackIn ++ [Output']
+        | Output.Exception _ => StackIn
+        end in
+      {{ StackIn' 🌲 k ref }}
+    ) :
+    {{ StackIn 🌲 LowM.Let e k }}
 
   where "{{ StackIn 🌲 e }}" := (t StackIn e).
 End Run.
@@ -616,6 +661,14 @@ Proof.
   destruct run.
   { (* Pure *)
     exact (output, stack_in).
+  }
+  { (* StateAlloc *)
+    refine (
+      let '(output, stack_out) := _ in
+      (output, Stack.dealloc (A := A) stack_out)
+    ).
+    unshelve eapply (evaluate _ _ _ _ run _).
+    exact (Stack.alloc stack_in value).
   }
   { (* StateRead *)
     destruct (Stack.CanAccess.read H_access stack_in) as [value|].
@@ -634,5 +687,31 @@ Proof.
     unshelve eapply (evaluate _ _ _ _ (H_k _) stack_in).
     apply SuccessOrPanic.of_output.
     apply (evaluate _ _ _ _ run tt).
+  }
+  { (* Let *)
+    refine (
+      let '(output', stack_in') := evaluate _ _ _ _ run stack_in in
+      _
+    ).
+    destruct output' as [output' | exception].
+    { refine (
+        let ref_core :=
+          Ref.Core.Mutable
+            (List.length StackIn)
+            []
+            φ
+            Some
+            (fun _ => Some) in
+        let ref : Ref.t Pointer.Kind.Raw Output' := {| Ref.core := ref_core |} in
+        _
+      ).
+      refine (
+        let '(output, stack_out) := _ in
+        (output, Stack.dealloc (A := Output') stack_out)
+      ).
+      unshelve eapply (evaluate _ _ _ _ (H_k (Output.Success ref)) _).
+      exact (Stack.alloc stack_in' output').
+    }
+    { exact (evaluate _ _ _ _ (H_k (Output.Exception exception)) stack_in'). }
   }
 Defined.
