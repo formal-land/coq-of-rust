@@ -110,8 +110,8 @@ Module Impl_Gas.
     set (ref_core := Ref.Core.Mutable _ _ _ _ _).
     epose proof (Run.GetSubPointer _ _ ref_core Gas.SubPointer.get_limit).
     apply H; clear H.
-    cbn; intros.
     apply Run.StateRead. {
+      cbn.
       epose proof (
         Stack.CanRead.Mutable
           [Self]
@@ -126,10 +126,38 @@ Module Impl_Gas.
     apply Run.Pure.
   Defined.
 
-  Lemma limit_eq (gas : Gas.t) :
-    M.evaluate run_limit (gas, tt) =
-    (Output.Success gas.(Gas.limit), (gas, tt)).
+  Lemma limit_eq (self : Self) :
+    M.evaluate run_limit self =
+    (Output.Success self.(Gas.limit), self).
   Proof.
     reflexivity.
   Qed.
+
+  (*
+      pub fn erase_cost(&mut self, returned: u64) {
+          self.remaining += returned;
+      }
+  *)
+  Definition run_erase_cost (returned : U64.t) :
+    let self := {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
+    {{ [Self] 🌲 links.M.evaluate (Impl_Gas.run_erase_cost self returned).(Run.run_f) }}.
+  Proof.
+    cbn.
+    set (ref_core := Ref.Core.Mutable _ _ _ _ _).
+    epose proof (Run.GetSubPointer _ _ ref_core Gas.SubPointer.get_remaining).
+    apply H; clear H.
+    apply Run.StateRead. {
+      cbn.
+      epose proof (
+        Stack.CanRead.Mutable
+          [Self]
+          0%nat
+          _
+          _
+          (fun big_a : links.gas.Impl_Gas.Self => Some big_a.(Gas.remaining))
+      ).
+      apply H.
+    }
+    cbn; intros.
+  Admitted.
 End Impl_Gas.
