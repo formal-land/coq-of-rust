@@ -458,18 +458,181 @@ Module Notations.
     ).
 End Notations.
 
+Module Stack.
+  Definition t : Type :=
+    list Set.
+
+  Fixpoint to_Set_aux (A : Set) (Stack : t) : Set :=
+    match Stack with
+    | [] => A
+    | B :: Stack => A * to_Set_aux B Stack
+    end.
+
+  Definition to_Set (Stack : t) : Set :=
+    match Stack with
+    | [] => unit
+    | A :: Stack => to_Set_aux A Stack
+    end.
+
+  Definition read_Set (Stack : t) (index : nat) : Set :=
+    List.nth index Stack unit.
+
+  Fixpoint read_aux {A : Set} {Stack : t}
+    (stack : to_Set_aux A Stack)
+    (index : nat)
+    {struct Stack} :
+    read_Set (A :: Stack) index.
+  Proof.
+    destruct Stack as [|B Stack], index as [|index]; cbn in *.
+    { exact stack. }
+    { destruct index; exact tt. }
+    { exact (fst stack). }
+    { exact (read_aux _ _ (snd stack) index). }
+  Defined.
+
+  Definition read {Stack : t} (stack : to_Set Stack) (index : nat) : read_Set Stack index.
+  Proof.
+    destruct Stack; cbn in *.
+    { destruct index; exact tt. }
+    { apply (read_aux stack). }
+  Defined.
+
+  Fixpoint write_aux {A : Set} {Stack : t}
+    (stack : to_Set_aux A Stack)
+    (index : nat)
+    (value : read_Set (A :: Stack) index)
+    {struct Stack} :
+    to_Set_aux A Stack.
+  Proof.
+    destruct Stack as [|B Stack], index as [|index]; cbn in *.
+    { exact value. }
+    { exact stack. }
+    { exact (value, snd stack). }
+    { exact (fst stack, write_aux _ _ (snd stack) index value). }
+  Defined.
+
+  Definition write {Stack : t}
+    (stack : to_Set Stack)
+    (index : nat)
+    (value : read_Set Stack index) :
+    to_Set Stack.
+  Proof.
+    destruct Stack; cbn in *.
+    { exact tt. }
+    { apply (write_aux stack index value). }
+  Defined.
+
+  Module CanAccess.
+    Inductive t {A : Set} `{Link A} (Stack : Stack.t) : Ref.Core.t A -> Set :=
+    | Immediate
+        (value : option A) :
+      t Stack (Ref.Core.Immediate value)
+    | Mutable
+        (index : nat)
+        (path : Pointer.Path.t)
+        (big_to_value : read_Set Stack index -> Value.t)
+        (projection : read_Set Stack index -> option A)
+        (injection : read_Set Stack index -> A -> option (read_Set Stack index)) :
+      t Stack (Ref.Core.Mutable (Address := nat) (Big_A := read_Set Stack index)
+          index path big_to_value projection injection
+        ).
+
+    Definition read {A : Set} `{Link A} {Stack : Stack.t}
+        {ref_core : Ref.Core.t A}
+        (run : t Stack ref_core)
+        (stack : to_Set Stack) :
+        option A :=
+      match run with
+      | Immediate _ value => value
+      | Mutable _ index _ _ projection _ => projection (read stack index)
+      end.
+
+    Definition write {A : Set} `{Link A} {Stack : Stack.t}
+        {ref_core : Ref.Core.t A}
+        (run : t Stack ref_core)
+        (stack : to_Set Stack)
+        (value : A) :
+        option (to_Set Stack) :=
+      match run with
+      | Immediate _ _ => None
+      | Mutable _ index _ _ _ injection =>
+        match injection (Stack.read stack index) value with
+        | Some value => Some (Stack.write stack index value)
+        | None => None
+        end
+      end.
+  End CanAccess.
+End Stack.
+
 Module Run.
-  Reserved Notation "{{ e 🌲 v }}".
+  Reserved Notation "{{ StackIn 🌲 e }}".
 
-  Inductive t {R Output : Set} (output : Output.t R Output) : LowM.t R Output -> Prop :=
-  | Pure :
-    {{ LowM.Pure output 🌲 output }}
+  Inductive t {R Output : Set} (StackIn : Stack.t) : LowM.t R Output -> Set :=
+  | Pure
+      (output : Output.t R Output) :
+    {{ StackIn 🌲 LowM.Pure output }}
+  | StateRead {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
+      (k : A -> LowM.t R Output)
+    (H_access : Stack.CanAccess.t StackIn ref_core)
+    (H_k : forall (value : A),
+      {{ StackIn 🌲 k value }}
+    ) :
+    {{ StackIn 🌲 LowM.CallPrimitive (Primitive.StateRead ref_core) k }}
+  | StateWrite {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
+      (value : A)
+      (k : unit -> LowM.t R Output)
+    (H_access : Stack.CanAccess.t StackIn ref_core)
+    (H_k : {{ StackIn 🌲 k tt }}) :
+    {{ StackIn 🌲 LowM.CallPrimitive (Primitive.StateWrite ref_core value) k }}
+  | GetSubPointer {A : Set} `{Link A}
+      (index : Pointer.Index.t)
+      (ref_core : Ref.Core.t A)
+      (runner : SubPointer.Runner.t A index)
+      (k : Ref.Core.t runner.(SubPointer.Runner.Sub_A) -> LowM.t R Output)
+    (H_k : {{ StackIn 🌲 k (SubPointer.Runner.apply ref_core runner) }}) :
+    {{ StackIn 🌲 LowM.CallPrimitive (Primitive.GetSubPointer ref_core runner) k }}
   | Call {Output' : Set}
-    (e : LowM.t Output' Output') (output' : SuccessOrPanic.t Output')
-    (k : SuccessOrPanic.t Output' -> LowM.t R Output) :
-    {{ e 🌲 SuccessOrPanic.to_output output' }} ->
-    {{ k output' 🌲 output }} ->
-    {{ LowM.Call e k 🌲 output }}
+      (e : LowM.t Output' Output')
+      (k : SuccessOrPanic.t Output' -> LowM.t R Output)
+    (H_e : {{ [] 🌲 e }})
+    (H_k : forall (output' : SuccessOrPanic.t Output'),
+      {{ StackIn 🌲 k output' }}
+    ) :
+    {{ StackIn 🌲 LowM.Call e k }}
 
-  where "{{ e 🌲 output }}" := (t output e).
+  where "{{ StackIn 🌲 e }}" := (t StackIn e).
 End Run.
+
+Export Run.
+
+Fixpoint evaluate {R Output : Set} {StackIn : Stack.t} {e : LowM.t R Output}
+    (run : {{ StackIn 🌲 e }})
+    (stack_in : Stack.to_Set StackIn)
+    {struct run} :
+  Output.t R Output * Stack.to_Set StackIn.
+Proof.
+  destruct run.
+  { (* Pure *)
+    exact (output, stack_in).
+  }
+  { (* StateRead *)
+    destruct (Stack.CanAccess.read H_access stack_in) as [value|].
+    { exact (evaluate _ _ _ _ (H_k value) stack_in). }
+    { exact (Output.panic "StateRead: invalid reference", stack_in). }
+  }
+  { (* StateWrite *)
+    destruct (Stack.CanAccess.write H_access stack_in value) as [stack_in'|].
+    { exact (evaluate _ _ _ _ run stack_in'). }
+    { exact (Output.panic "StateWrite: invalid reference", stack_in). }
+  }
+  { (* GetSubPointer *)
+    exact (evaluate _ _ _ _ run stack_in).
+  }
+  { (* Call *)
+    unshelve eapply (evaluate _ _ _ _ (H_k _) stack_in).
+    apply SuccessOrPanic.of_output.
+    apply (evaluate _ _ _ _ run tt).
+  }
+Defined.
