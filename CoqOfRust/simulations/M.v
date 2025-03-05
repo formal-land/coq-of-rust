@@ -497,7 +497,32 @@ Module Stack.
     { apply (read_aux stack). }
   Defined.
 
-  Module CanRead.
+  Fixpoint write_aux {A : Set} {Stack : t}
+    (stack : to_Set_aux A Stack)
+    (index : nat)
+    (value : read_Set (A :: Stack) index)
+    {struct Stack} :
+    to_Set_aux A Stack.
+  Proof.
+    destruct Stack as [|B Stack], index as [|index]; cbn in *.
+    { exact value. }
+    { exact stack. }
+    { exact (value, snd stack). }
+    { exact (fst stack, write_aux _ _ (snd stack) index value). }
+  Defined.
+
+  Definition write {Stack : t}
+    (stack : to_Set Stack)
+    (index : nat)
+    (value : read_Set Stack index) :
+    to_Set Stack.
+  Proof.
+    destruct Stack; cbn in *.
+    { exact tt. }
+    { apply (write_aux stack index value). }
+  Defined.
+
+  Module CanAccess.
     Inductive t {A : Set} `{Link A} (Stack : Stack.t) : Ref.Core.t A -> Set :=
     | Immediate
         (value : option A) :
@@ -512,8 +537,8 @@ Module Stack.
           index path big_to_value projection injection
         ).
 
-    Definition apply {A : Set} `{Link A} {Stack : Stack.t}
-        (ref_core : Ref.Core.t A)
+    Definition read {A : Set} `{Link A} {Stack : Stack.t}
+        {ref_core : Ref.Core.t A}
         (run : t Stack ref_core)
         (stack : to_Set Stack) :
         option A :=
@@ -521,7 +546,22 @@ Module Stack.
       | Immediate _ value => value
       | Mutable _ index _ _ projection _ => projection (read stack index)
       end.
-  End CanRead.
+
+    Definition write {A : Set} `{Link A} {Stack : Stack.t}
+        {ref_core : Ref.Core.t A}
+        (run : t Stack ref_core)
+        (stack : to_Set Stack)
+        (value : A) :
+        option (to_Set Stack) :=
+      match run with
+      | Immediate _ _ => None
+      | Mutable _ index _ _ _ injection =>
+        match injection (Stack.read stack index) value with
+        | Some value => Some (Stack.write stack index value)
+        | None => None
+        end
+      end.
+  End CanAccess.
 End Stack.
 
 Module Run.
@@ -534,11 +574,18 @@ Module Run.
   | StateRead {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (k : A -> LowM.t R Output)
-    (H_read : Stack.CanRead.t StackIn ref_core)
+    (H_access : Stack.CanAccess.t StackIn ref_core)
     (H_k : forall (value : A),
       {{ StackIn 🌲 k value }}
     ) :
     {{ StackIn 🌲 LowM.CallPrimitive (Primitive.StateRead ref_core) k }}
+  | StateWrite {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
+      (value : A)
+      (k : unit -> LowM.t R Output)
+    (H_access : Stack.CanAccess.t StackIn ref_core)
+    (H_k : {{ StackIn 🌲 k tt }}) :
+    {{ StackIn 🌲 LowM.CallPrimitive (Primitive.StateWrite ref_core value) k }}
   | GetSubPointer {A : Set} `{Link A}
       (index : Pointer.Index.t)
       (ref_core : Ref.Core.t A)
@@ -571,9 +618,14 @@ Proof.
     exact (output, stack_in).
   }
   { (* StateRead *)
-    destruct (Stack.CanRead.apply ref_core H_read stack_in) as [value|].
+    destruct (Stack.CanAccess.read H_access stack_in) as [value|].
     { exact (evaluate _ _ _ _ (H_k value) stack_in). }
-    { exact (Output.panic "StateRead: index out of bounds", stack_in). }
+    { exact (Output.panic "StateRead: invalid reference", stack_in). }
+  }
+  { (* StateWrite *)
+    destruct (Stack.CanAccess.write H_access stack_in value) as [stack_in'|].
+    { exact (evaluate _ _ _ _ run stack_in'). }
+    { exact (Output.panic "StateWrite: invalid reference", stack_in). }
   }
   { (* GetSubPointer *)
     exact (evaluate _ _ _ _ run stack_in).
