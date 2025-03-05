@@ -114,8 +114,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
         let _rhs := M.alloc (| _rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -144,9 +144,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -182,8 +182,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
         let _rhs := M.alloc (| _rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -212,9 +212,9 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -241,8 +241,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -321,12 +321,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -405,9 +405,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -80,8 +80,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let t := M.alloc (| t |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -138,9 +138,9 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -166,8 +166,8 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
       (let t := M.alloc (| t |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -224,9 +224,9 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -251,42 +251,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
+        let~ x : Ty.path "i32" := Value.Integer IntegerKind.I32 7 in
         let~ ref_x :
             Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "scoping_rules_lifetimes_bounds::Ref"
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
+          Value.StructTuple
+            "scoping_rules_lifetimes_bounds::Ref"
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ] in
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "scoping_rules_lifetimes_bounds::print_ref",
+              [],
+              [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] ]
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, ref_x |) |) |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "scoping_rules_lifetimes_bounds::print_ref",
-                [],
-                [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] ]
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, ref_x |) |)
-                |)
-              ]
-            |)
-          |) in
-        let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "scoping_rules_lifetimes_bounds::print",
-                [],
-                [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] ]
-              |),
-              [ M.read (| ref_x |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "scoping_rules_lifetimes_bounds::print",
+              [],
+              [ Ty.apply (Ty.path "scoping_rules_lifetimes_bounds::Ref") [] [ Ty.path "i32" ] ]
+            |),
+            [ M.read (| ref_x |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

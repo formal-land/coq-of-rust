@@ -18,8 +18,8 @@ Module Animal.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -140,9 +140,9 @@ Module Animal.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -218,8 +218,8 @@ Module Impl_traits_Sheep.
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -307,15 +307,15 @@ Module Impl_traits_Sheep.
                               ]
                             |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |) in
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |) in
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -385,19 +385,17 @@ Module Impl_traits_Sheep.
                               ]
                             |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |) in
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |) in
                   let~ _ : Ty.tuple [] :=
-                    M.alloc (|
-                      M.write (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "traits::Sheep",
-                          "naked"
-                        |),
-                        Value.Bool true
-                      |)
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "traits::Sheep",
+                        "naked"
+                      |),
+                      Value.Bool true
                     |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
@@ -510,8 +508,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -621,9 +619,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -662,60 +660,52 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ dolly : Ty.path "traits::Sheep" :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.path "traits::Sheep",
+            M.get_trait_method (|
+              "traits::Animal",
               Ty.path "traits::Sheep",
-              M.get_trait_method (|
-                "traits::Animal",
-                Ty.path "traits::Sheep",
-                [],
-                [],
-                "new",
-                [],
-                []
-              |),
-              [ mk_str (| "Dolly" |) ]
-            |)
+              [],
+              [],
+              "new",
+              [],
+              []
+            |),
+            [ mk_str (| "Dolly" |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_trait_method (|
-                "traits::Animal",
-                Ty.path "traits::Sheep",
-                [],
-                [],
-                "talk",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_trait_method (|
+              "traits::Animal",
+              Ty.path "traits::Sheep",
+              [],
+              [],
+              "talk",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_associated_function (| Ty.path "traits::Sheep", "shear", [], [] |),
-              [ M.borrow (| Pointer.Kind.MutRef, dolly |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_associated_function (| Ty.path "traits::Sheep", "shear", [], [] |),
+            [ M.borrow (| Pointer.Kind.MutRef, dolly |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_trait_method (|
-                "traits::Animal",
-                Ty.path "traits::Sheep",
-                [],
-                [],
-                "talk",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_trait_method (|
+              "traits::Animal",
+              Ty.path "traits::Sheep",
+              [],
+              [],
+              "talk",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -29,78 +29,84 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.path "bool" :=
-          M.match_operator (|
-            Some (Ty.path "bool"),
-            M.alloc (| Value.Integer IntegerKind.I32 1 |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (|
-                      M.read (| γ |),
-                      Value.Integer IntegerKind.I32 0
-                    |) in
-                  M.alloc (| Value.Bool false |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
-            ]
+          M.read (|
+            M.match_operator (|
+              Some (Ty.path "bool"),
+              M.alloc (| Value.Integer IntegerKind.I32 1 |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.I32 0
+                      |) in
+                    M.alloc (| Value.Bool false |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+              ]
+            |)
           |) in
         let~ _ : Ty.path "i32" :=
-          M.match_operator (|
-            Some (Ty.path "i32"),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer IntegerKind.I32 0 |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 1 |)))
-            ]
+          M.read (|
+            M.match_operator (|
+              Some (Ty.path "i32"),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (| Value.Integer IntegerKind.I32 0 |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 1 |)))
+              ]
+            |)
           |) in
         let~ _ : Ty.path "i32" :=
-          M.match_operator (|
-            Some (Ty.path "i32"),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Integer IntegerKind.I32 2 |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    Some (Ty.path "i32"),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer IntegerKind.I32 3 |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Some (Ty.path "i32"),
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (| Value.Integer IntegerKind.I32 4 |)));
-                              fun γ =>
-                                ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 5 |)))
-                            ]
-                          |)))
-                    ]
-                  |)))
-            ]
+          M.read (|
+            M.match_operator (|
+              Some (Ty.path "i32"),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (| Value.Integer IntegerKind.I32 2 |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Some (Ty.path "i32"),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (| Value.Integer IntegerKind.I32 3 |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Some (Ty.path "i32"),
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (| Value.Integer IntegerKind.I32 4 |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 5 |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+              ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

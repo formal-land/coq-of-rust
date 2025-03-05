@@ -195,35 +195,33 @@ Module eip7702.
             let state := M.alloc (| state |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "core::hash::Hash",
-                      Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
-                      [],
-                      [],
-                      "hash",
-                      [],
-                      [ __H ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                              "inner"
-                            |)
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "core::hash::Hash",
+                    Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
+                    [],
+                    [],
+                    "hash",
+                    [],
+                    [ __H ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                            "inner"
                           |)
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                    ]
-                  |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -559,13 +557,25 @@ Module eip7702.
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.path "alloy_primitives::bits::address::Address" ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                  M.get_associated_function (|
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "core::result::Result")
                       []
-                      [ Ty.path "alloy_primitives::bits::address::Address" ],
-                    M.get_associated_function (|
+                      [
+                        Ty.path "alloy_primitives::bits::address::Address";
+                        Ty.path "alloy_primitives::signature::error::SignatureError"
+                      ],
+                    "ok",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -573,29 +583,15 @@ Module eip7702.
                           Ty.path "alloy_primitives::bits::address::Address";
                           Ty.path "alloy_primitives::signature::error::SignatureError"
                         ],
-                      "ok",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.path "alloy_primitives::bits::address::Address";
-                            Ty.path "alloy_primitives::signature::error::SignatureError"
-                          ],
-                        M.get_associated_function (|
-                          Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
-                          "recover_authority",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, signed_auth |) ]
-                      |)
-                    ]
-                  |)
+                      M.get_associated_function (|
+                        Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
+                        "recover_authority",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, signed_auth |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|

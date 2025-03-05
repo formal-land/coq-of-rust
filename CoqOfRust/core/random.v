@@ -69,34 +69,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -136,34 +132,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I8 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I8 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -203,34 +195,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -270,34 +258,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I16 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I16 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -337,34 +321,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -404,34 +384,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I32 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I32 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -471,34 +447,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -538,34 +510,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I64 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I64 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -608,37 +576,30 @@ Module random.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 16 ]
                   [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 16 ]
-                    [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -681,37 +642,30 @@ Module random.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 16 ]
                   [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 16 ]
-                    [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I128 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I128 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -751,34 +705,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -818,34 +768,30 @@ Module random.
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
-                  M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [], [] |),
-                  [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Isize 0 |)) |) ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
+                M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [], [] |),
+                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Isize 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::random::RandomSource",
-                    impl_RandomSource__plus___Sized,
-                    [],
-                    [],
-                    "fill_bytes",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::random::RandomSource",
+                  impl_RandomSource__plus___Sized,
+                  [],
+                  [],
+                  "fill_bytes",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |);
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|

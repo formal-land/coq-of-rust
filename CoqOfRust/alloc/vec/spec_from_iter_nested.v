@@ -52,7 +52,7 @@ Module vec.
                         (Ty.path "alloc::vec::Vec")
                         []
                         [ T; Ty.path "alloc::alloc::Global" ] :=
-                    M.copy (|
+                    M.read (|
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -142,60 +142,56 @@ Module vec.
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                       let lower := M.copy (| γ0_0 |) in
                                       let~ initial_capacity : Ty.path "usize" :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_function (|
-                                              "core::cmp::max",
-                                              [],
-                                              [ Ty.path "usize" ]
-                                            |),
-                                            [
-                                              M.read (|
-                                                M.get_constant "alloc::raw_vec::MIN_NON_ZERO_CAP"
-                                              |);
-                                              M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_function (|
+                                            "core::cmp::max",
+                                            [],
+                                            [ Ty.path "usize" ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.get_constant "alloc::raw_vec::MIN_NON_ZERO_CAP"
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
                                                 Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "usize",
-                                                  "saturating_add",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| lower |);
-                                                  Value.Integer IntegerKind.Usize 1
-                                                ]
-                                              |)
-                                            ]
-                                          |)
+                                                "saturating_add",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.read (| lower |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |)
+                                          ]
                                         |) in
                                       let~ vector :
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
                                             []
                                             [ T; Ty.path "alloc::alloc::Global" ] :=
-                                        M.alloc (|
-                                          M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ T; Ty.path "alloc::alloc::Global" ],
+                                          M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
                                               []
                                               [ T; Ty.path "alloc::alloc::Global" ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [ T; Ty.path "alloc::alloc::Global" ],
-                                              "with_capacity",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| initial_capacity |) ]
-                                          |)
+                                            "with_capacity",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| initial_capacity |) ]
                                         |) in
                                       let~ _ : Ty.tuple [] :=
-                                        let~ _ : Ty.tuple [] :=
-                                          M.alloc (|
+                                        M.read (|
+                                          let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
                                               Ty.tuple [],
                                               M.get_function (| "core::ptr::write", [], [ T ] |),
@@ -215,10 +211,8 @@ Module vec.
                                                 |);
                                                 M.read (| element |)
                                               ]
-                                            |)
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.alloc (|
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
                                               Ty.tuple [],
                                               M.get_associated_function (|
@@ -234,9 +228,9 @@ Module vec.
                                                 M.borrow (| Pointer.Kind.MutRef, vector |);
                                                 Value.Integer IntegerKind.Usize 1
                                               ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |) in
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |) in
                                       vector))
                                 ]
                               |)))
@@ -244,29 +238,27 @@ Module vec.
                       |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "alloc::vec::spec_extend::SpecExtend",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ T; Ty.path "alloc::alloc::Global" ],
-                          [],
-                          [ T; I ],
-                          "spec_extend",
-                          [],
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_trait_method (|
+                        "alloc::vec::spec_extend::SpecExtend",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
                           []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.borrow (| Pointer.Kind.MutRef, vector |) |)
-                          |);
-                          M.read (| iterator |)
-                        ]
-                      |)
+                          [ T; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        [ T; I ],
+                        "spec_extend",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, vector |) |)
+                        |);
+                        M.read (| iterator |)
+                      ]
                     |) in
                   vector
                 |)))
@@ -312,7 +304,7 @@ Module vec.
             M.read (|
               let~ vector :
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Some
                       (Ty.apply
@@ -406,20 +398,18 @@ Module vec.
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_trait_method (|
-                      "alloc::vec::spec_extend::SpecExtend",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
-                      [],
-                      [ T; I ],
-                      "spec_extend",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.MutRef, vector |); M.read (| iterator |) ]
-                  |)
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_trait_method (|
+                    "alloc::vec::spec_extend::SpecExtend",
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                    [],
+                    [ T; I ],
+                    "spec_extend",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.MutRef, vector |); M.read (| iterator |) ]
                 |) in
               vector
             |)))

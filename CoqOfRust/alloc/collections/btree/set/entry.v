@@ -588,20 +588,18 @@ Module collections.
                             |) in
                           let entry := M.copy (| γ0_0 |) in
                           let~ _ : Ty.tuple [] :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.tuple [],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::set::entry::VacantEntry")
-                                    []
-                                    [ T; A ],
-                                  "insert",
-                                  [],
+                            M.call_closure (|
+                              Ty.tuple [],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::set::entry::VacantEntry")
                                   []
-                                |),
-                                [ M.read (| entry |) ]
-                              |)
+                                  [ T; A ],
+                                "insert",
+                                [],
+                                []
+                              |),
+                              [ M.read (| entry |) ]
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -948,32 +946,30 @@ Module collections.
                         (Ty.path "&mut")
                         []
                         [ Ty.path "alloc::collections::btree::set_val::SetValZST" ] :=
-                    M.alloc (|
-                      M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "&mut")
+                          (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
                           []
-                          [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
-                            []
-                            [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
-                          "insert",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "alloc::collections::btree::set::entry::VacantEntry",
-                              "inner"
-                            |)
-                          |);
-                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
-                        ]
-                      |)
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "insert",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::set::entry::VacantEntry",
+                            "inner"
+                          |)
+                        |);
+                        Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                      ]
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))

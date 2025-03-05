@@ -607,28 +607,24 @@ Module num.
               let other := M.alloc (| other |) in
               M.read (|
                 let~ __self_discr : Ty.path "isize" :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "isize",
-                      M.get_function (|
-                        "core::intrinsics::discriminant_value",
-                        [],
-                        [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "isize",
+                    M.get_function (|
+                      "core::intrinsics::discriminant_value",
+                      [],
+                      [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |) in
                 let~ __arg1_discr : Ty.path "isize" :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "isize",
-                      M.get_function (|
-                        "core::intrinsics::discriminant_value",
-                        [],
-                        [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "isize",
+                    M.get_function (|
+                      "core::intrinsics::discriminant_value",
+                      [],
+                      [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |) in
                 M.alloc (|
                   LogicalOp.and (|
@@ -860,14 +856,12 @@ Module num.
                       let exp := M.copy (| γ0_1 |) in
                       let sign := M.copy (| γ0_2 |) in
                       let~ even : Ty.path "bool" :=
-                        M.alloc (|
-                          BinOp.eq (|
-                            BinOp.bit_and (M.read (| mant |)) (Value.Integer IntegerKind.U64 1),
-                            Value.Integer IntegerKind.U64 0
-                          |)
+                        BinOp.eq (|
+                          BinOp.bit_and (M.read (| mant |)) (Value.Integer IntegerKind.U64 1),
+                          Value.Integer IntegerKind.U64 0
                         |) in
                       let~ decoded : Ty.path "core::num::flt2dec::decoder::FullDecoded" :=
-                        M.copy (|
+                        M.read (|
                           M.match_operator (|
                             Some (Ty.path "core::num::flt2dec::decoder::FullDecoded"),
                             M.alloc (|
@@ -938,34 +932,32 @@ Module num.
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
                                   let~ minnorm :
                                       Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ] :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
-                                        M.get_trait_method (|
-                                          "core::num::dec2flt::float::RawFloat",
+                                    M.call_closure (|
+                                      Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
+                                      M.get_trait_method (|
+                                        "core::num::dec2flt::float::RawFloat",
+                                        T,
+                                        [],
+                                        [],
+                                        "integer_decode",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
                                           T,
-                                          [],
-                                          [],
-                                          "integer_decode",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::num::flt2dec::decoder::DecodableFloat",
                                             T,
-                                            M.get_trait_method (|
-                                              "core::num::flt2dec::decoder::DecodableFloat",
-                                              T,
-                                              [],
-                                              [],
-                                              "min_pos_norm_value",
-                                              [],
-                                              []
-                                            |),
+                                            [],
+                                            [],
+                                            "min_pos_norm_value",
+                                            [],
                                             []
-                                          |)
-                                        ]
-                                      |)
+                                          |),
+                                          []
+                                        |)
+                                      ]
                                     |) in
                                   M.match_operator (|
                                     Some (Ty.path "core::num::flt2dec::decoder::FullDecoded"),

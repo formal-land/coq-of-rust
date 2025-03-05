@@ -1175,19 +1175,17 @@ Module task.
             M.read (|
               let~ local_waker :
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [],
-                      [
-                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ];
-                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]
-                      ]
-                    |),
-                    [ M.read (| waker |) ]
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                  M.get_function (|
+                    "core::intrinsics::transmute",
+                    [],
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ]
+                    ]
+                  |),
+                  [ M.read (| waker |) ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -1231,7 +1229,7 @@ Module task.
             (let cx := M.alloc (| cx |) in
             M.read (|
               let~ ext : Ty.path "core::task::wake::ExtData" :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Some (Ty.path "core::task::wake::ExtData"),
                     M.alloc (|
@@ -1549,95 +1547,91 @@ Module task.
                     (Ty.path "core::mem::manually_drop::ManuallyDrop")
                     []
                     [ Ty.path "core::task::wake::Waker" ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.path "core::task::wake::Waker" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
                       []
                       [ Ty.path "core::task::wake::Waker" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        []
-                        [ Ty.path "core::task::wake::Waker" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
+                                      [ Ty.path "core::task::wake::Waker" ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                |)
+                              |),
+                              "core::task::wake::Waker",
+                              "waker"
+                            |),
+                            "core::task::wake::RawWaker",
+                            "vtable"
+                          |)
+                        |)
+                      |),
+                      "core::task::wake::RawWakerVTable",
+                      "wake"
+                    |)
+                  |),
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
-                        M.deref (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                        []
-                                        [ Ty.path "core::task::wake::Waker" ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, this |) ]
-                                  |)
-                                |),
-                                "core::task::wake::Waker",
-                                "waker"
-                              |),
-                              "core::task::wake::RawWaker",
-                              "vtable"
-                            |)
-                          |)
-                        |),
-                        "core::task::wake::RawWakerVTable",
-                        "wake"
-                      |)
-                    |),
-                    [
-                      M.read (|
                         M.SubPointer.get_struct_record_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ Ty.path "core::task::wake::Waker" ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
                                   []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
-                              |)
-                            |),
-                            "core::task::wake::Waker",
-                            "waker"
+                                  [ Ty.path "core::task::wake::Waker" ],
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                            |)
                           |),
-                          "core::task::wake::RawWaker",
-                          "data"
-                        |)
+                          "core::task::wake::Waker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
+                        "data"
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2027,22 +2021,20 @@ Module task.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
-                        M.alloc (|
-                          M.write (|
-                            M.deref (| M.read (| self |) |),
-                            M.call_closure (|
+                        M.write (|
+                          M.deref (| M.read (| self |) |),
+                          M.call_closure (|
+                            Ty.path "core::task::wake::Waker",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
                               Ty.path "core::task::wake::Waker",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "core::task::wake::Waker",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
-                            |)
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2148,7 +2140,7 @@ Module task.
             M.read (|
               let~ vtable_ptr :
                   Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
-                M.copy (|
+                M.read (|
                   M.use
                     (M.alloc (|
                       M.borrow (|
@@ -2334,101 +2326,94 @@ Module task.
                     (Ty.path "core::mem::manually_drop::ManuallyDrop")
                     []
                     [ Ty.path "core::task::wake::LocalWaker" ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.path "core::task::wake::LocalWaker" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
                       []
                       [ Ty.path "core::task::wake::LocalWaker" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                        []
-                        [ Ty.path "core::task::wake::LocalWaker" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "core::task::wake::LocalWaker" ],
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                        []
-                                        [ Ty.path "core::task::wake::LocalWaker" ],
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, this |) ]
-                                  |)
-                                |),
-                                "core::task::wake::LocalWaker",
-                                "waker"
-                              |),
-                              "core::task::wake::RawWaker",
-                              "vtable"
-                            |)
-                          |)
-                        |),
-                        "core::task::wake::RawWakerVTable",
-                        "wake"
-                      |)
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "core::task::wake::LocalWaker" ],
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    (Ty.path "&")
                                     []
                                     [ Ty.path "core::task::wake::LocalWaker" ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
-                              |)
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
+                                      [ Ty.path "core::task::wake::LocalWaker" ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                |)
+                              |),
+                              "core::task::wake::LocalWaker",
+                              "waker"
                             |),
-                            "core::task::wake::LocalWaker",
-                            "waker"
-                          |),
-                          "core::task::wake::RawWaker",
-                          "data"
+                            "core::task::wake::RawWaker",
+                            "vtable"
+                          |)
                         |)
+                      |),
+                      "core::task::wake::RawWakerVTable",
+                      "wake"
+                    |)
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                  []
+                                  [ Ty.path "core::task::wake::LocalWaker" ],
+                                [],
+                                [],
+                                "deref",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                            |)
+                          |),
+                          "core::task::wake::LocalWaker",
+                          "waker"
+                        |),
+                        "core::task::wake::RawWaker",
+                        "data"
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -2818,22 +2803,20 @@ Module task.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
-                        M.alloc (|
-                          M.write (|
-                            M.deref (| M.read (| self |) |),
-                            M.call_closure (|
+                        M.write (|
+                          M.deref (| M.read (| self |) |),
+                          M.call_closure (|
+                            Ty.path "core::task::wake::LocalWaker",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
                               Ty.path "core::task::wake::LocalWaker",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "core::task::wake::LocalWaker",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
-                            |)
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2977,7 +2960,7 @@ Module task.
             M.read (|
               let~ vtable_ptr :
                   Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
-                M.copy (|
+                M.read (|
                   M.use
                     (M.alloc (|
                       M.borrow (|

@@ -2990,7 +2990,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3034,7 +3035,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3078,7 +3080,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3122,7 +3125,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3166,7 +3170,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3210,7 +3215,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3254,7 +3260,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3298,7 +3305,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3342,7 +3350,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3386,7 +3395,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3430,7 +3440,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3474,7 +3485,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                M.read (| M.get_constant "alloc::vec::is_zero::is_zero_discriminant" |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3604,19 +3616,15 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ raw : Ty.path "u8" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [],
-                      [
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ];
-                        Ty.path "u8"
-                      ]
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::transmute",
+                    [],
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ]; Ty.path "u8"
+                    ]
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
             |)))
@@ -3656,22 +3664,20 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ raw : Ty.path "u8" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ];
-                        Ty.path "u8"
-                      ]
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::transmute",
+                    [],
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ];
+                      Ty.path "u8"
+                    ]
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
             |)))
@@ -3716,27 +3722,25 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ raw : Ty.path "u8" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ]
-                          ];
-                        Ty.path "u8"
-                      ]
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (|
+                    "core::intrinsics::transmute",
+                    [],
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ]
+                        ];
+                      Ty.path "u8"
+                    ]
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
             |)))

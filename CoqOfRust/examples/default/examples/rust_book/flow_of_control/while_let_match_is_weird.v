@@ -34,9 +34,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ optional : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ]
-          |) in
+          Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ] in
         M.loop (|
           Ty.tuple [],
           ltac:(M.monadic
@@ -67,8 +65,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
-                              let~ _ : Ty.tuple [] :=
-                                M.alloc (|
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -98,22 +96,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                       |)
                                     ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |) in
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |) in
                             let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.write (|
-                                  optional,
-                                  Value.StructTuple "core::option::Option::None" []
-                                |)
+                              M.write (|
+                                optional,
+                                Value.StructTuple "core::option::Option::None" []
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
-                              let~ _ : Ty.tuple [] :=
-                                M.alloc (|
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -179,22 +175,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                       |)
                                     ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |) in
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |) in
                             let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.write (|
-                                  optional,
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    [
-                                      BinOp.Wrap.add (|
-                                        M.read (| i |),
-                                        Value.Integer IntegerKind.I32 1
-                                      |)
-                                    ]
-                                |)
+                              M.write (|
+                                optional,
+                                Value.StructTuple
+                                  "core::option::Option::Some"
+                                  [
+                                    BinOp.Wrap.add (|
+                                      M.read (| i |),
+                                      Value.Integer IntegerKind.I32 1
+                                    |)
+                                  ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]

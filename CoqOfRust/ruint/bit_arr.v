@@ -2547,38 +2547,36 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitOrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
-                    ],
-                    "bitor_assign",
-                    [],
-                    []
-                  |),
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitOrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
                   [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                  ],
+                  "bitor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -2619,36 +2617,34 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitOrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| rhs |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitOrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| rhs |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -2695,28 +2691,26 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitOrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitOrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |)
+                ]
               |) in
             self
           |)))
@@ -2766,32 +2760,30 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitOrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| rhs |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitOrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| rhs |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             self
           |)))
@@ -2842,32 +2834,30 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitOrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitOrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             rhs
           |)))
@@ -3013,38 +3003,36 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitAndAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
-                    ],
-                    "bitand_assign",
-                    [],
-                    []
-                  |),
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitAndAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
                   [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                  ],
+                  "bitand_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -3085,36 +3073,34 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitAndAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitand_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| rhs |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitAndAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitand_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| rhs |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -3161,28 +3147,26 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitAndAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitand_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitAndAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitand_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |)
+                ]
               |) in
             self
           |)))
@@ -3232,32 +3216,30 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitAndAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitand_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| rhs |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitAndAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitand_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| rhs |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             self
           |)))
@@ -3308,32 +3290,30 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitAndAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitand_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitAndAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitand_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             rhs
           |)))
@@ -3479,38 +3459,36 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitXorAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
-                    ],
-                    "bitxor_assign",
-                    [],
-                    []
-                  |),
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitXorAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
                   [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
+                  ],
+                  "bitxor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -3551,36 +3529,34 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitXorAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitxor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| rhs |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitXorAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitxor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| rhs |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -3627,28 +3603,26 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitXorAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitxor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
-                    |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitXorAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitxor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |)
+                ]
               |) in
             self
           |)))
@@ -3698,32 +3672,30 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitXorAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitxor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| rhs |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitXorAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitxor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| self, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| rhs |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             self
           |)))
@@ -3774,32 +3746,30 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::BitXorAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "bitxor_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
-                    |);
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::BitXorAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "bitxor_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (| rhs, "ruint::bit_arr::Bits", 0 |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             rhs
           |)))
@@ -3945,30 +3915,28 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::ShlAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.path "usize" ],
-                    "shl_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (| rhs |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::ShlAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.path "usize" ],
+                  "shl_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |);
+                  M.read (| rhs |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -4008,30 +3976,28 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::ShlAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                    "shl_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (| rhs |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::ShlAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                  "shl_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |);
+                  M.read (| rhs |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -4375,30 +4341,28 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::ShrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.path "usize" ],
-                    "shr_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (| rhs |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::ShrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.path "usize" ],
+                  "shr_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |);
+                  M.read (| rhs |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -4438,30 +4402,28 @@ Module bit_arr.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::ops::bit::ShrAssign",
-                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    [],
-                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                    "shr_assign",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::bit_arr::Bits",
-                        0
-                      |)
-                    |);
-                    M.read (| rhs |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::ops::bit::ShrAssign",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  [],
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                  "shr_assign",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "ruint::bit_arr::Bits",
+                      0
+                    |)
+                  |);
+                  M.read (| rhs |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))

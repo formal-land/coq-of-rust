@@ -33,18 +33,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ logical : Ty.path "bool" := M.alloc (| Value.Bool true |) in
-        let~ a_float : Ty.path "f64" := M.copy (| UnsupportedLiteral |) in
-        let~ an_integer : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
-        let~ default_float : Ty.path "f64" := M.copy (| UnsupportedLiteral |) in
-        let~ default_integer : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
-        let~ inferred_type : Ty.path "i64" := M.alloc (| Value.Integer IntegerKind.I64 12 |) in
+        let~ logical : Ty.path "bool" := Value.Bool true in
+        let~ a_float : Ty.path "f64" := M.read (| UnsupportedLiteral |) in
+        let~ an_integer : Ty.path "i32" := Value.Integer IntegerKind.I32 5 in
+        let~ default_float : Ty.path "f64" := M.read (| UnsupportedLiteral |) in
+        let~ default_integer : Ty.path "i32" := Value.Integer IntegerKind.I32 7 in
+        let~ inferred_type : Ty.path "i64" := Value.Integer IntegerKind.I64 12 in
         let~ _ : Ty.tuple [] :=
-          M.alloc (| M.write (| inferred_type, Value.Integer IntegerKind.I64 4294967296 |) |) in
-        let~ mutable : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 12 |) in
-        let~ _ : Ty.tuple [] :=
-          M.alloc (| M.write (| mutable, Value.Integer IntegerKind.I32 21 |) |) in
-        let~ mutable : Ty.path "bool" := M.alloc (| Value.Bool true |) in
+          M.write (| inferred_type, Value.Integer IntegerKind.I64 4294967296 |) in
+        let~ mutable : Ty.path "i32" := Value.Integer IntegerKind.I32 12 in
+        let~ _ : Ty.tuple [] := M.write (| mutable, Value.Integer IntegerKind.I32 21 |) in
+        let~ mutable : Ty.path "bool" := Value.Bool true in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

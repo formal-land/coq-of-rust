@@ -89,97 +89,98 @@ Module vec.
               ltac:(M.monadic
                 (M.read (|
                   let~ has_advanced : Ty.path "bool" :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_trait_method (|
-                          "core::cmp::PartialEq",
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          [],
-                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
-                          "ne",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              iterator,
-                              "alloc::vec::into_iter::IntoIter",
-                              "buf"
-                            |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              iterator,
-                              "alloc::vec::into_iter::IntoIter",
-                              "ptr"
-                            |)
+                    M.call_closure (|
+                      Ty.path "bool",
+                      M.get_trait_method (|
+                        "core::cmp::PartialEq",
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        [],
+                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
+                        "ne",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            iterator,
+                            "alloc::vec::into_iter::IntoIter",
+                            "buf"
                           |)
-                        ]
-                      |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            iterator,
+                            "alloc::vec::into_iter::IntoIter",
+                            "ptr"
+                          |)
+                        |)
+                      ]
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  LogicalOp.or (|
-                                    UnOp.not (| M.read (| has_advanced |) |),
-                                    ltac:(M.monadic
-                                      (BinOp.ge (|
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_trait_method (|
-                                            "core::iter::traits::exact_size::ExactSizeIterator",
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    LogicalOp.or (|
+                                      UnOp.not (| M.read (| has_advanced |) |),
+                                      ltac:(M.monadic
+                                        (BinOp.ge (|
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_trait_method (|
+                                              "core::iter::traits::exact_size::ExactSizeIterator",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
+                                                [ T; Ty.path "alloc::alloc::Global" ],
+                                              [],
+                                              [],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
+                                          |),
+                                          BinOp.Wrap.div (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                iterator,
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "cap"
+                                              |)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 2
+                                          |)
+                                        |)))
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ it :
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                          []
+                                          [
                                             Ty.apply
                                               (Ty.path "alloc::vec::into_iter::IntoIter")
                                               []
-                                              [ T; Ty.path "alloc::alloc::Global" ],
-                                            [],
-                                            [],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
-                                        |),
-                                        BinOp.Wrap.div (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              iterator,
-                                              "alloc::vec::into_iter::IntoIter",
-                                              "cap"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.Usize 2
-                                        |)
-                                      |)))
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ it :
-                                      Ty.apply
-                                        (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::into_iter::IntoIter")
-                                            []
-                                            [ T; Ty.path "alloc::alloc::Global" ]
-                                        ] :=
-                                    M.alloc (|
+                                              [ T; Ty.path "alloc::alloc::Global" ]
+                                          ] :=
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -205,34 +206,101 @@ Module vec.
                                           []
                                         |),
                                         [ M.read (| iterator |) ]
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    M.match_operator (|
-                                      Some (Ty.tuple []),
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ := M.use has_advanced in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.tuple [],
-                                                  M.get_function (|
-                                                    "core::intrinsics::copy",
-                                                    [],
-                                                    [ T ]
-                                                  |),
-                                                  [
-                                                    (* MutToConstPointer *)
-                                                    M.pointer_coercion
-                                                      (M.call_closure (|
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
+                                      M.read (|
+                                        M.match_operator (|
+                                          Some (Ty.tuple []),
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ := M.use has_advanced in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.Bool true
+                                                  |) in
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.call_closure (|
+                                                    Ty.tuple [],
+                                                    M.get_function (|
+                                                      "core::intrinsics::copy",
+                                                      [],
+                                                      [ T ]
+                                                    |),
+                                                    [
+                                                      (* MutToConstPointer *)
+                                                      M.pointer_coercion
+                                                        (M.call_closure (|
+                                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [ T ],
+                                                            "as_ptr",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::into_iter::IntoIter")
+                                                                          []
+                                                                          [
+                                                                            T;
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ]
+                                                                      ],
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::deref::Deref",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::mem::manually_drop::ManuallyDrop")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::into_iter::IntoIter")
+                                                                            []
+                                                                            [
+                                                                              T;
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      [],
+                                                                      [],
+                                                                      "deref",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        it
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |),
+                                                                "alloc::vec::into_iter::IntoIter",
+                                                                "ptr"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                        |));
+                                                      M.call_closure (|
                                                         Ty.apply (Ty.path "*mut") [] [ T ],
                                                         M.get_associated_function (|
                                                           Ty.apply
@@ -294,25 +362,29 @@ Module vec.
                                                                 |)
                                                               |),
                                                               "alloc::vec::into_iter::IntoIter",
-                                                              "ptr"
+                                                              "buf"
                                                             |)
                                                           |)
                                                         ]
-                                                      |));
-                                                    M.call_closure (|
-                                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                      |);
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_trait_method (|
+                                                          "core::iter::traits::exact_size::ExactSizeIterator",
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::vec::into_iter::IntoIter")
+                                                            []
+                                                            [ T; Ty.path "alloc::alloc::Global" ],
+                                                          [],
+                                                          [],
+                                                          "len",
+                                                          [],
                                                           []
-                                                          [ T ],
-                                                        "as_ptr",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.call_closure (|
                                                                 Ty.apply
@@ -359,154 +431,35 @@ Module vec.
                                                                   |)
                                                                 ]
                                                               |)
-                                                            |),
-                                                            "alloc::vec::into_iter::IntoIter",
-                                                            "buf"
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_trait_method (|
-                                                        "core::iter::traits::exact_size::ExactSizeIterator",
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::vec::into_iter::IntoIter")
-                                                          []
-                                                          [ T; Ty.path "alloc::alloc::Global" ],
-                                                        [],
-                                                        [],
-                                                        "len",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.call_closure (|
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "alloc::vec::into_iter::IntoIter")
-                                                                    []
-                                                                    [
-                                                                      T;
-                                                                      Ty.path "alloc::alloc::Global"
-                                                                    ]
-                                                                ],
-                                                              M.get_trait_method (|
-                                                                "core::ops::deref::Deref",
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::manually_drop::ManuallyDrop")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "alloc::vec::into_iter::IntoIter")
-                                                                      []
-                                                                      [
-                                                                        T;
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ]
-                                                                  ],
-                                                                [],
-                                                                [],
-                                                                "deref",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [ M.borrow (| Pointer.Kind.Ref, it |)
-                                                              ]
                                                             |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |) in
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ T; Ty.path "alloc::alloc::Global" ],
-                                      M.get_associated_function (|
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)));
+                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |)
+                                      |) in
+                                    M.return_ (|
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
                                           []
                                           [ T; Ty.path "alloc::alloc::Global" ],
-                                        "from_parts",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                      []
-                                                      [ T; Ty.path "alloc::alloc::Global" ]
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "core::mem::manually_drop::ManuallyDrop")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "alloc::vec::into_iter::IntoIter")
-                                                        []
-                                                        [ T; Ty.path "alloc::alloc::Global" ]
-                                                    ],
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, it |) ]
-                                              |)
-                                            |),
-                                            "alloc::vec::into_iter::IntoIter",
-                                            "buf"
-                                          |)
-                                        |);
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_trait_method (|
-                                            "core::iter::traits::exact_size::ExactSizeIterator",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::into_iter::IntoIter")
-                                              []
-                                              [ T; Ty.path "alloc::alloc::Global" ],
-                                            [],
-                                            [],
-                                            "len",
-                                            [],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
                                             []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
+                                            [ T; Ty.path "alloc::alloc::Global" ],
+                                          "from_parts",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
                                               M.deref (|
                                                 M.call_closure (|
                                                   Ty.apply
@@ -539,28 +492,71 @@ Module vec.
                                                   |),
                                                   [ M.borrow (| Pointer.Kind.Ref, it |) ]
                                                 |)
-                                              |)
+                                              |),
+                                              "alloc::vec::into_iter::IntoIter",
+                                              "buf"
                                             |)
-                                          ]
-                                        |);
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
+                                          |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_trait_method (|
+                                              "core::iter::traits::exact_size::ExactSizeIterator",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
+                                                [ T; Ty.path "alloc::alloc::Global" ],
+                                              [],
+                                              [],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
                                                     Ty.apply
-                                                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                      (Ty.path "&")
                                                       []
-                                                      [ T; Ty.path "alloc::alloc::Global" ]
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::vec::into_iter::IntoIter")
+                                                          []
+                                                          [ T; Ty.path "alloc::alloc::Global" ]
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::ops::deref::Deref",
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::manually_drop::ManuallyDrop")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::vec::into_iter::IntoIter")
+                                                            []
+                                                            [ T; Ty.path "alloc::alloc::Global" ]
+                                                        ],
+                                                      [],
+                                                      [],
+                                                      "deref",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, it |) ]
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (|
+                                                M.call_closure (|
                                                   Ty.apply
-                                                    (Ty.path
-                                                      "core::mem::manually_drop::ManuallyDrop")
+                                                    (Ty.path "&")
                                                     []
                                                     [
                                                       Ty.apply
@@ -568,75 +564,82 @@ Module vec.
                                                         []
                                                         [ T; Ty.path "alloc::alloc::Global" ]
                                                     ],
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.borrow (| Pointer.Kind.Ref, it |) ]
-                                              |)
-                                            |),
-                                            "alloc::vec::into_iter::IntoIter",
-                                            "cap"
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::manually_drop::ManuallyDrop")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "alloc::vec::into_iter::IntoIter")
+                                                          []
+                                                          [ T; Ty.path "alloc::alloc::Global" ]
+                                                      ],
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.borrow (| Pointer.Kind.Ref, it |) ]
+                                                |)
+                                              |),
+                                              "alloc::vec::into_iter::IntoIter",
+                                              "cap"
+                                            |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)
                     |) in
                   let~ vec :
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
                         [ T; Ty.path "alloc::alloc::Global" ] :=
-                    M.alloc (|
-                      M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                      M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           []
                           [ T; Ty.path "alloc::alloc::Global" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ T; Ty.path "alloc::alloc::Global" ],
-                          "new",
-                          [],
-                          []
-                        |),
+                        "new",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "alloc::vec::spec_extend::SpecExtend",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ T; Ty.path "alloc::alloc::Global" ],
-                          [],
-                          [
-                            T;
-                            Ty.apply
-                              (Ty.path "alloc::vec::into_iter::IntoIter")
-                              []
-                              [ T; Ty.path "alloc::alloc::Global" ]
-                          ],
-                          "spec_extend",
-                          [],
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_trait_method (|
+                        "alloc::vec::spec_extend::SpecExtend",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
                           []
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| iterator |) ]
-                      |)
+                          [ T; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        [
+                          T;
+                          Ty.apply
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
+                            []
+                            [ T; Ty.path "alloc::alloc::Global" ]
+                        ],
+                        "spec_extend",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| iterator |) ]
                     |) in
                   vec
                 |)))

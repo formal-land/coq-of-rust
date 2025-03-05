@@ -78,20 +78,18 @@ Module Impl_flipper_Flipper.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "flipper::Flipper",
-                  "value"
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "flipper::Flipper",
-                      "value"
-                    |)
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "flipper::Flipper",
+                "value"
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "flipper::Flipper",
+                    "value"
                   |)
                 |)
               |)

@@ -15,91 +15,87 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ child : Ty.path "std::process::Child" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "std::process::Child",
-              M.get_associated_function (|
+          M.call_closure (|
+            Ty.path "std::process::Child",
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
+              "unwrap",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
-                "unwrap",
-                [],
-                []
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
-                  M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "&mut") [] [ Ty.path "std::process::Command" ],
-                          M.get_associated_function (|
-                            Ty.path "std::process::Command",
-                            "arg",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.alloc (|
-                                M.call_closure (|
+                M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "std::process::Command" ],
+                        M.get_associated_function (|
+                          Ty.path "std::process::Command",
+                          "arg",
+                          [],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.path "std::process::Command",
+                                M.get_associated_function (|
                                   Ty.path "std::process::Command",
-                                  M.get_associated_function (|
-                                    Ty.path "std::process::Command",
-                                    "new",
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [ mk_str (| "sleep" |) ]
-                                |)
+                                  "new",
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [ mk_str (| "sleep" |) ]
                               |)
-                            |);
-                            mk_str (| "5" |)
-                          ]
-                        |)
+                            |)
+                          |);
+                          mk_str (| "5" |)
+                        ]
                       |)
                     |)
-                  ]
-                |)
-              ]
-            |)
+                  |)
+                ]
+              |)
+            ]
           |) in
         let~ _result : Ty.path "std::process::ExitStatus" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "std::process::ExitStatus",
-              M.get_associated_function (|
+          M.call_closure (|
+            Ty.path "std::process::ExitStatus",
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
+              "unwrap",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
-                "unwrap",
-                [],
-                []
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
-                  M.get_associated_function (| Ty.path "std::process::Child", "wait", [], [] |),
-                  [ M.borrow (| Pointer.Kind.MutRef, child |) ]
-                |)
-              ]
-            |)
+                M.get_associated_function (| Ty.path "std::process::Child", "wait", [], [] |),
+                [ M.borrow (| Pointer.Kind.MutRef, child |) ]
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -126,9 +122,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

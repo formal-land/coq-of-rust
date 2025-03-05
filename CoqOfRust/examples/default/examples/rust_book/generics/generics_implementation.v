@@ -103,20 +103,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ x : Ty.path "generics_implementation::Val" :=
-          M.alloc (|
-            Value.StructRecord
-              "generics_implementation::Val"
-              [ ("val", M.read (| UnsupportedLiteral |)) ]
-          |) in
+          Value.StructRecord
+            "generics_implementation::Val"
+            [ ("val", M.read (| UnsupportedLiteral |)) ] in
         let~ y : Ty.apply (Ty.path "generics_implementation::GenVal") [] [ Ty.path "i32" ] :=
-          M.alloc (|
-            Value.StructRecord
-              "generics_implementation::GenVal"
-              [ ("gen_val", Value.Integer IntegerKind.I32 3) ]
-          |) in
+          Value.StructRecord
+            "generics_implementation::GenVal"
+            [ ("gen_val", Value.Integer IntegerKind.I32 3) ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -223,9 +219,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -342,7 +342,7 @@ Module iter.
                                   []
                                   I
                                   "Item" :=
-                              M.copy (|
+                              M.read (|
                                 M.match_operator (|
                                   Some
                                     (Ty.associated_in_trait
@@ -570,15 +570,13 @@ Module iter.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
-                                      M.alloc (|
-                                        M.write (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::iter::adapters::take_while::TakeWhile",
-                                            "flag"
-                                          |),
-                                          Value.Bool true
-                                        |)
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::iter::adapters::take_while::TakeWhile",
+                                          "flag"
+                                        |),
+                                        Value.Bool true
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple "core::option::Option::None" []
@@ -771,25 +769,21 @@ Module iter.
                     fun γ =>
                       ltac:(M.monadic
                         (let~ flag : Ty.apply (Ty.path "&mut") [] [ Ty.path "bool" ] :=
-                          M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::take_while::TakeWhile",
-                                "flag"
-                              |)
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::take_while::TakeWhile",
+                              "flag"
                             |)
                           |) in
                         let~ p : Ty.apply (Ty.path "&mut") [] [ P ] :=
-                          M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::take_while::TakeWhile",
-                                "predicate"
-                              |)
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::take_while::TakeWhile",
+                              "predicate"
                             |)
                           |) in
                         M.alloc (|

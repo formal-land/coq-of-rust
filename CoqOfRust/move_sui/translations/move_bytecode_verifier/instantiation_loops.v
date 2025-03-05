@@ -148,35 +148,33 @@ Module instantiation_loops.
           let state := M.alloc (| state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_bytecode_verifier::instantiation_loops::Node",
-                            0
-                          |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_bytecode_verifier::instantiation_loops::Node",
+                          0
                         |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -867,30 +865,26 @@ Module instantiation_loops.
           M.read (|
             let~ checker :
                 Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                  M.get_associated_function (|
-                    Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
-                |)
+                  "new",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (|
-                    Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                    "build_graph",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.MutRef, checker |) ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_associated_function (|
+                  Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                  "build_graph",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.MutRef, checker |) ]
               |) in
             let~ components :
                 Ty.apply
@@ -922,45 +916,43 @@ Module instantiation_loops.
                       ];
                     Ty.path "alloc::alloc::Global"
                   ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "petgraph::graph_impl::NodeIndex")
-                                []
-                                [ Ty.path "u32" ];
-                              Ty.path "alloc::alloc::Global"
-                            ];
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "petgraph::graph_impl::EdgeIndex")
-                                []
-                                [ Ty.path "u32" ];
-                              Ty.path "alloc::alloc::Global"
-                            ]
-                        ];
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  M.get_associated_function (|
-                    Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                    "find_non_trivial_components",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, checker |) ]
-                |)
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                              []
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::EdgeIndex")
+                              []
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.get_associated_function (|
+                  Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                  "find_non_trivial_components",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, checker |) ]
               |) in
             M.match_operator (|
               Some
@@ -1053,58 +1045,102 @@ Module instantiation_loops.
                     let nodes := M.copy (| γ1_0 |) in
                     let edges := M.copy (| γ1_1 |) in
                     let~ msg_edges : Ty.path "alloc::string::String" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "alloc::string::String",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "alloc::string::String" ],
-                            "join",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "alloc::string::String" ],
+                          "join",
+                          [],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "alloc::string::String" ]
+                                  ],
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
                                   Ty.apply
-                                    (Ty.path "&")
+                                    (Ty.path "alloc::vec::Vec")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [ Ty.path "alloc::string::String" ]
+                                      Ty.path "alloc::string::String";
+                                      Ty.path "alloc::alloc::Global"
                                     ],
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "alloc::string::String";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        M.call_closure (|
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "alloc::string::String";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
                                           Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                            (Ty.path "core::iter::adapters::filter_map::FilterMap")
                                             []
                                             [
-                                              Ty.path "alloc::string::String";
-                                              Ty.path "alloc::alloc::Global"
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                    []
+                                                    [ Ty.path "u32" ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ];
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                        []
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                ]
+                                                (Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "alloc::string::String" ])
                                             ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
+                                          [],
+                                          [],
+                                          "collect",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "alloc::string::String";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path
                                                 "core::iter::adapters::filter_map::FilterMap")
@@ -1136,55 +1172,43 @@ Module instantiation_loops.
                                                     []
                                                     [ Ty.path "alloc::string::String" ])
                                               ],
-                                            [],
-                                            [],
-                                            "collect",
-                                            [],
-                                            [
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.path "alloc::string::String";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path
-                                                  "core::iter::adapters::filter_map::FilterMap")
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                    (Ty.path "petgraph::graph_impl::EdgeIndex")
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "petgraph::graph_impl::EdgeIndex")
-                                                        []
-                                                        [ Ty.path "u32" ];
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ];
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::EdgeIndex")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "alloc::string::String" ])
+                                                    [ Ty.path "u32" ];
+                                                  Ty.path "alloc::alloc::Global"
                                                 ],
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
+                                              [],
+                                              [],
+                                              "filter_map",
+                                              [],
+                                              [
+                                                Ty.path "alloc::string::String";
+                                                Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::EdgeIndex")
+                                                          []
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  ]
+                                                  (Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "alloc::string::String" ])
+                                              ]
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::into_iter::IntoIter")
                                                   []
@@ -1195,33 +1219,10 @@ Module instantiation_loops.
                                                       [ Ty.path "u32" ];
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
-                                                [],
-                                                [],
-                                                "filter_map",
-                                                [],
-                                                [
-                                                  Ty.path "alloc::string::String";
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::EdgeIndex")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.path "alloc::string::String" ])
-                                                ]
-                                              |),
-                                              [
-                                                M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                    (Ty.path "alloc::vec::Vec")
                                                     []
                                                     [
                                                       Ty.apply
@@ -1230,77 +1231,83 @@ Module instantiation_loops.
                                                         [ Ty.path "u32" ];
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::collect::IntoIterator",
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "petgraph::graph_impl::EdgeIndex")
-                                                          []
-                                                          [ Ty.path "u32" ];
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    [],
-                                                    [],
-                                                    "into_iter",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| edges |) ]
-                                                |);
-                                                M.closure
-                                                  (fun γ =>
-                                                    ltac:(M.monadic
-                                                      match γ with
-                                                      | [ α0 ] =>
-                                                        ltac:(M.monadic
-                                                          (M.match_operator (|
-                                                            Some
-                                                              (Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
+                                                  [],
+                                                  [],
+                                                  "into_iter",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| edges |) ]
+                                              |);
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [ α0 ] =>
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          Some
+                                                            (Ty.function
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::EdgeIndex")
+                                                                      []
+                                                                      [ Ty.path "u32" ]
+                                                                  ]
+                                                              ]
+                                                              (Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.path "alloc::string::String"
+                                                                ])),
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let edge_idx := M.copy (| γ |) in
+                                                                M.read (|
+                                                                  M.match_operator (|
+                                                                    Some
+                                                                      (Ty.apply
                                                                         (Ty.path
-                                                                          "petgraph::graph_impl::EdgeIndex")
+                                                                          "core::option::Option")
                                                                         []
-                                                                        [ Ty.path "u32" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.apply
-                                                                  (Ty.path "core::option::Option")
-                                                                  []
-                                                                  [ Ty.path "alloc::string::String"
-                                                                  ])),
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let edge_idx := M.copy (| γ |) in
-                                                                  M.read (|
-                                                                    M.match_operator (|
-                                                                      Some
-                                                                        (Ty.apply
-                                                                          (Ty.path
-                                                                            "core::option::Option")
+                                                                        [
+                                                                          Ty.path
+                                                                            "alloc::string::String"
+                                                                        ]),
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
                                                                           []
                                                                           [
                                                                             Ty.path
-                                                                              "alloc::string::String"
-                                                                          ]),
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
+                                                                              "move_bytecode_verifier::instantiation_loops::Edge"
+                                                                          ],
+                                                                        M.get_associated_function (|
                                                                           Ty.apply
-                                                                            (Ty.path "&")
+                                                                            (Ty.path
+                                                                              "core::option::Option")
                                                                             []
                                                                             [
-                                                                              Ty.path
-                                                                                "move_bytecode_verifier::instantiation_loops::Edge"
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::instantiation_loops::Edge"
+                                                                                ]
                                                                             ],
-                                                                          M.get_associated_function (|
+                                                                          "unwrap",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::option::Option")
@@ -1314,179 +1321,197 @@ Module instantiation_loops.
                                                                                       "move_bytecode_verifier::instantiation_loops::Edge"
                                                                                   ]
                                                                               ],
-                                                                            "unwrap",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
+                                                                            M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path
-                                                                                  "core::option::Option")
+                                                                                  "petgraph::graph_impl::Graph")
                                                                                 []
                                                                                 [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_bytecode_verifier::instantiation_loops::Edge"
-                                                                                    ]
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::instantiation_loops::Node";
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                  Ty.path
+                                                                                    "petgraph::Directed";
+                                                                                  Ty.path "u32"
                                                                                 ],
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "petgraph::graph_impl::Graph")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_bytecode_verifier::instantiation_loops::Node";
-                                                                                    Ty.path
-                                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                    Ty.path
-                                                                                      "petgraph::Directed";
-                                                                                    Ty.path "u32"
-                                                                                  ],
-                                                                                "edge_weight",
-                                                                                [],
-                                                                                []
-                                                                              |),
+                                                                              "edge_weight",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  checker,
+                                                                                  "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                                  "graph"
+                                                                                |)
+                                                                              |);
+                                                                              M.read (| edge_idx |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ :=
+                                                                            M.read (| γ |) in
+                                                                          let γ1_0 :=
+                                                                            M.SubPointer.get_struct_tuple_field (|
+                                                                              γ,
+                                                                              "move_bytecode_verifier::instantiation_loops::Edge::TyConApp",
+                                                                              0
+                                                                            |) in
+                                                                          M.alloc (|
+                                                                            Value.StructTuple
+                                                                              "core::option::Option::Some"
                                                                               [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    checker,
-                                                                                    "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                                    "graph"
-                                                                                  |)
-                                                                                |);
-                                                                                M.read (|
-                                                                                  edge_idx
+                                                                                M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "alloc::string::String",
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                                    "format_edge",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      checker
+                                                                                    |);
+                                                                                    M.read (|
+                                                                                      edge_idx
+                                                                                    |)
+                                                                                  ]
                                                                                 |)
                                                                               ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.read (| γ |) in
-                                                                            let γ1_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "move_bytecode_verifier::instantiation_loops::Edge::TyConApp",
-                                                                                0
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              Value.StructTuple
-                                                                                "core::option::Option::Some"
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    Ty.path
-                                                                                      "alloc::string::String",
-                                                                                    M.get_associated_function (|
-                                                                                      Ty.path
-                                                                                        "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                                      "format_edge",
-                                                                                      [],
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        checker
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        edge_idx
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (M.alloc (|
-                                                                              Value.StructTuple
-                                                                                "core::option::Option::None"
-                                                                                []
-                                                                            |)))
-                                                                      ]
-                                                                    |)
-                                                                  |)))
-                                                            ]
-                                                          |)))
-                                                      | _ =>
-                                                        M.impossible "wrong number of arguments"
-                                                      end))
-                                              ]
-                                            |)
-                                          ]
-                                        |)
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (M.alloc (|
+                                                                            Value.StructTuple
+                                                                              "core::option::Option::None"
+                                                                              []
+                                                                          |)))
+                                                                    ]
+                                                                  |)
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
+                                                    end))
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)
-                                  ]
-                                |)
+                                  |)
+                                ]
                               |)
-                            |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
-                          ]
-                        |)
+                            |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
+                        ]
                       |) in
                     let~ msg_nodes : Ty.path "alloc::string::String" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "alloc::string::String",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "alloc::string::String" ],
-                            "join",
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "alloc::string::String" ],
+                          "join",
+                          [],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "alloc::string::String" ]
+                                  ],
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
                                   Ty.apply
-                                    (Ty.path "&")
+                                    (Ty.path "alloc::vec::Vec")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [ Ty.path "alloc::string::String" ]
+                                      Ty.path "alloc::string::String";
+                                      Ty.path "alloc::alloc::Global"
                                     ],
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "alloc::string::String";
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        M.call_closure (|
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "alloc::string::String";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
                                           Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
+                                            (Ty.path "core::iter::adapters::map::Map")
                                             []
                                             [
-                                              Ty.path "alloc::string::String";
-                                              Ty.path "alloc::alloc::Global"
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                    []
+                                                    [ Ty.path "u32" ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ];
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                        []
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                ]
+                                                (Ty.path "alloc::string::String")
                                             ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
+                                          [],
+                                          [],
+                                          "collect",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "alloc::string::String";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::iter::adapters::map::Map")
                                               []
@@ -1514,51 +1539,40 @@ Module instantiation_loops.
                                                   ]
                                                   (Ty.path "alloc::string::String")
                                               ],
-                                            [],
-                                            [],
-                                            "collect",
-                                            [],
-                                            [
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.path "alloc::string::String";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::iter::adapters::map::Map")
+                                                (Ty.path "alloc::vec::into_iter::IntoIter")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                    (Ty.path "petgraph::graph_impl::NodeIndex")
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "petgraph::graph_impl::NodeIndex")
-                                                        []
-                                                        [ Ty.path "u32" ];
-                                                      Ty.path "alloc::alloc::Global"
-                                                    ];
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::NodeIndex")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "alloc::string::String")
+                                                    [ Ty.path "u32" ];
+                                                  Ty.path "alloc::alloc::Global"
                                                 ],
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
+                                              [],
+                                              [],
+                                              "map",
+                                              [],
+                                              [
+                                                Ty.path "alloc::string::String";
+                                                Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "petgraph::graph_impl::NodeIndex")
+                                                          []
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  ]
+                                                  (Ty.path "alloc::string::String")
+                                              ]
+                                            |),
+                                            [
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::into_iter::IntoIter")
                                                   []
@@ -1569,30 +1583,10 @@ Module instantiation_loops.
                                                       [ Ty.path "u32" ];
                                                     Ty.path "alloc::alloc::Global"
                                                   ],
-                                                [],
-                                                [],
-                                                "map",
-                                                [],
-                                                [
-                                                  Ty.path "alloc::string::String";
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::NodeIndex")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "alloc::string::String")
-                                                ]
-                                              |),
-                                              [
-                                                M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
-                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                    (Ty.path "alloc::vec::Vec")
                                                     []
                                                     [
                                                       Ty.apply
@@ -1601,195 +1595,170 @@ Module instantiation_loops.
                                                         [ Ty.path "u32" ];
                                                       Ty.path "alloc::alloc::Global"
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::collect::IntoIterator",
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "petgraph::graph_impl::NodeIndex")
-                                                          []
-                                                          [ Ty.path "u32" ];
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    [],
-                                                    [],
-                                                    "into_iter",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| nodes |) ]
-                                                |);
-                                                M.closure
-                                                  (fun γ =>
-                                                    ltac:(M.monadic
-                                                      match γ with
-                                                      | [ α0 ] =>
-                                                        ltac:(M.monadic
-                                                          (M.match_operator (|
-                                                            Some
-                                                              (Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "petgraph::graph_impl::NodeIndex")
-                                                                        []
-                                                                        [ Ty.path "u32" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "alloc::string::String")),
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let node_idx := M.copy (| γ |) in
-                                                                  M.call_closure (|
-                                                                    Ty.path "alloc::string::String",
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                      "format_node",
-                                                                      [],
+                                                  [],
+                                                  [],
+                                                  "into_iter",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| nodes |) ]
+                                              |);
+                                              M.closure
+                                                (fun γ =>
+                                                  ltac:(M.monadic
+                                                    match γ with
+                                                    | [ α0 ] =>
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          Some
+                                                            (Ty.function
+                                                              [
+                                                                Ty.tuple
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::NodeIndex")
                                                                       []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        checker
-                                                                      |);
-                                                                      M.read (| node_idx |)
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)))
-                                                      | _ =>
-                                                        M.impossible "wrong number of arguments"
-                                                      end))
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)
-                            |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
-                          ]
-                        |)
-                      |) in
-                    let~ msg : Ty.path "alloc::string::String" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "alloc::string::String",
-                          M.get_function (|
-                            "core::hint::must_use",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.read (|
-                              let~ res : Ty.path "alloc::string::String" :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "alloc::string::String",
-                                    M.get_function (| "alloc::fmt::format", [], [] |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "core::fmt::Arguments",
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          [
-                                            Value.Integer IntegerKind.Usize 3;
-                                            Value.Integer IntegerKind.Usize 2
-                                          ],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      mk_str (| "edges with constructors: [" |);
-                                                      mk_str (| "], nodes: [" |);
-                                                      mk_str (| "]" |)
-                                                    ]
-                                                |)
-                                              |)
-                                            |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                msg_edges
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        ]
-                                                      |);
-                                                      M.call_closure (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                msg_nodes
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                |)
-                                              |)
-                                            |)
+                                                                      [ Ty.path "u32" ]
+                                                                  ]
+                                                              ]
+                                                              (Ty.path "alloc::string::String")),
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let node_idx := M.copy (| γ |) in
+                                                                M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                    "format_node",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      checker
+                                                                    |);
+                                                                    M.read (| node_idx |)
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
+                                                    end))
+                                            ]
                                           |)
                                         ]
                                       |)
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
+                        ]
+                      |) in
+                    let~ msg : Ty.path "alloc::string::String" :=
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_function (|
+                          "core::hint::must_use",
+                          [],
+                          [ Ty.path "alloc::string::String" ]
+                        |),
+                        [
+                          M.read (|
+                            let~ res : Ty.path "alloc::string::String" :=
+                              M.call_closure (|
+                                Ty.path "alloc::string::String",
+                                M.get_function (| "alloc::fmt::format", [], [] |),
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::Arguments",
+                                      "new_v1",
+                                      [
+                                        Value.Integer IntegerKind.Usize 3;
+                                        Value.Integer IntegerKind.Usize 2
+                                      ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  mk_str (| "edges with constructors: [" |);
+                                                  mk_str (| "], nodes: [" |);
+                                                  mk_str (| "]" |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, msg_edges |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, msg_nodes |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
                                     ]
                                   |)
-                                |) in
-                              res
-                            |)
-                          ]
-                        |)
+                                ]
+                              |) in
+                            res
+                          |)
+                        ]
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -1940,35 +1909,33 @@ Module instantiation_loops.
                     let entry := M.copy (| γ0_0 |) in
                     let~ idx :
                         Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "petgraph::graph_impl::Graph")
-                              []
-                              [
-                                Ty.path "move_bytecode_verifier::instantiation_loops::Node";
-                                Ty.path "move_bytecode_verifier::instantiation_loops::Edge";
-                                Ty.path "petgraph::Directed";
-                                Ty.path "u32"
-                              ],
-                            "add_node",
-                            [],
+                      M.call_closure (|
+                        Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "petgraph::graph_impl::Graph")
                             []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                "graph"
-                              |)
-                            |);
-                            M.read (| node |)
-                          ]
-                        |)
+                            [
+                              Ty.path "move_bytecode_verifier::instantiation_loops::Node";
+                              Ty.path "move_bytecode_verifier::instantiation_loops::Edge";
+                              Ty.path "petgraph::Directed";
+                              Ty.path "u32"
+                            ],
+                          "add_node",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                              "graph"
+                            |)
+                          |);
+                          M.read (| node |)
+                        ]
                       |) in
                     let~ _ :
                         Ty.apply
@@ -1980,34 +1947,32 @@ Module instantiation_loops.
                               []
                               [ Ty.path "u32" ]
                           ] :=
-                      M.alloc (|
-                        M.call_closure (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                              []
+                              [ Ty.path "u32" ]
+                          ],
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "std::collections::hash::map::VacantEntry")
                             []
                             [
+                              Ty.path "move_bytecode_verifier::instantiation_loops::Node";
                               Ty.apply
                                 (Ty.path "petgraph::graph_impl::NodeIndex")
                                 []
                                 [ Ty.path "u32" ]
                             ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "std::collections::hash::map::VacantEntry")
-                              []
-                              [
-                                Ty.path "move_bytecode_verifier::instantiation_loops::Node";
-                                Ty.apply
-                                  (Ty.path "petgraph::graph_impl::NodeIndex")
-                                  []
-                                  [ Ty.path "u32" ]
-                              ],
-                            "insert",
-                            [],
-                            []
-                          |),
-                          [ M.read (| entry |); M.read (| idx |) ]
-                        |)
+                          "insert",
+                          [],
+                          []
+                        |),
+                        [ M.read (| entry |); M.read (| idx |) ]
                       |) in
                     idx))
               ]
@@ -2060,37 +2025,33 @@ Module instantiation_loops.
                   (Ty.path "std::collections::hash::set::HashSet")
                   []
                   [ Ty.path "u16"; Ty.path "std::hash::random::RandomState" ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::set::HashSet")
+                  []
+                  [ Ty.path "u16"; Ty.path "std::hash::random::RandomState" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::set::HashSet")
                     []
                     [ Ty.path "u16"; Ty.path "std::hash::random::RandomState" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "std::collections::hash::set::HashSet")
-                      []
-                      [ Ty.path "u16"; Ty.path "std::hash::random::RandomState" ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (| Self, "rec.extract_type_parameters", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (| M.borrow (| Pointer.Kind.MutRef, type_params |) |)
-                    |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ty |) |) |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_associated_function (| Self, "rec.extract_type_parameters", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (| M.borrow (| Pointer.Kind.MutRef, type_params |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ty |) |) |)
+                ]
               |) in
             type_params
           |)))
@@ -2120,70 +2081,64 @@ Module instantiation_loops.
           M.read (|
             let~ node_from_idx :
                 Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
-                  M.get_associated_function (|
-                    Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                    "get_or_add_node",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                    M.read (| node_from |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
+                M.get_associated_function (|
+                  Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                  "get_or_add_node",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| node_from |)
+                ]
               |) in
             let~ node_to_idx :
                 Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
-                  M.get_associated_function (|
-                    Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                    "get_or_add_node",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                    M.read (| node_to |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
+                M.get_associated_function (|
+                  Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                  "get_or_add_node",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| node_to |)
+                ]
               |) in
             let~ _ : Ty.apply (Ty.path "petgraph::graph_impl::EdgeIndex") [] [ Ty.path "u32" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "petgraph::graph_impl::EdgeIndex") [] [ Ty.path "u32" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "petgraph::graph_impl::Graph")
-                      []
-                      [
-                        Ty.path "move_bytecode_verifier::instantiation_loops::Node";
-                        Ty.path "move_bytecode_verifier::instantiation_loops::Edge";
-                        Ty.path "petgraph::Directed";
-                        Ty.path "u32"
-                      ],
-                    "add_edge",
-                    [],
+              M.call_closure (|
+                Ty.apply (Ty.path "petgraph::graph_impl::EdgeIndex") [] [ Ty.path "u32" ],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "petgraph::graph_impl::Graph")
                     []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                        "graph"
-                      |)
-                    |);
-                    M.read (| node_from_idx |);
-                    M.read (| node_to_idx |);
-                    M.read (| edge |)
-                  ]
-                |)
+                    [
+                      Ty.path "move_bytecode_verifier::instantiation_loops::Node";
+                      Ty.path "move_bytecode_verifier::instantiation_loops::Edge";
+                      Ty.path "petgraph::Directed";
+                      Ty.path "u32"
+                    ],
+                  "add_edge",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                      "graph"
+                    |)
+                  |);
+                  M.read (| node_from_idx |);
+                  M.read (| node_to_idx |);
+                  M.read (| edge |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -2247,42 +2202,40 @@ Module instantiation_loops.
                         Ty.path "alloc::alloc::Global"
                       ]
                   ] :=
-              M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_binary_format::file_format::Signature" ],
-                        M.get_associated_function (|
-                          Ty.path "move_binary_format::file_format::CompiledModule",
-                          "signature_at",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                  "module"
-                                |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ],
+                      M.get_associated_function (|
+                        Ty.path "move_binary_format::file_format::CompiledModule",
+                        "signature_at",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                "module"
                               |)
                             |)
-                          |);
-                          M.read (| type_actuals_idx |)
-                        ]
-                      |)
-                    |),
-                    "move_binary_format::file_format::Signature",
-                    0
-                  |)
+                          |)
+                        |);
+                        M.read (| type_actuals_idx |)
+                      ]
+                    |)
+                  |),
+                  "move_binary_format::file_format::Signature",
+                  0
                 |)
               |) in
             M.use
@@ -2410,155 +2363,140 @@ Module instantiation_loops.
                         Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.tuple
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ]
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
                                         [
-                                          Ty.path "usize";
                                           Ty.apply
-                                            (Ty.path "&")
+                                            (Ty.path "core::slice::iter::Iter")
                                             []
                                             [
                                               Ty.path
                                                 "move_binary_format::file_format::SignatureToken"
                                             ]
-                                        ]
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
-                                    Ty.apply
-                                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::SignatureToken"
-                                          ]
-                                      ],
-                                    [],
-                                    [],
-                                    "next",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                    let formal_idx := M.copy (| γ1_0 |) in
-                                    let ty := M.copy (| γ1_1 |) in
-                                    let~ formal_idx : Ty.path "u16" :=
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
-                                        M.cast (Ty.path "u16") (M.read (| formal_idx |))
-                                      |) in
-                                    M.match_operator (|
-                                      Some (Ty.tuple []),
-                                      ty,
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ := M.read (| γ |) in
-                                            let γ1_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "move_binary_format::file_format::SignatureToken::TypeParameter",
-                                                0
-                                              |) in
-                                            let actual_idx := M.alloc (| γ1_0 |) in
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                  "add_edge",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |);
-                                                  Value.StructTuple
-                                                    "move_bytecode_verifier::instantiation_loops::Node"
-                                                    [
-                                                      M.read (| caller_idx |);
-                                                      M.read (|
-                                                        M.deref (| M.read (| actual_idx |) |)
-                                                      |)
-                                                    ];
-                                                  Value.StructTuple
-                                                    "move_bytecode_verifier::instantiation_loops::Node"
-                                                    [
-                                                      M.read (| callee_idx |);
-                                                      M.read (| formal_idx |)
-                                                    ];
-                                                  Value.StructTuple
-                                                    "move_bytecode_verifier::instantiation_loops::Edge::Identity"
+                                        M.never_to_any (| M.read (| M.break (||) |) |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                      let formal_idx := M.copy (| γ1_0 |) in
+                                      let ty := M.copy (| γ1_1 |) in
+                                      let~ formal_idx : Ty.path "u16" :=
+                                        M.cast (Ty.path "u16") (M.read (| formal_idx |)) in
+                                      M.match_operator (|
+                                        Some (Ty.tuple []),
+                                        ty,
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.read (| γ |) in
+                                              let γ1_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "move_binary_format::file_format::SignatureToken::TypeParameter",
+                                                  0
+                                                |) in
+                                              let actual_idx := M.alloc (| γ1_0 |) in
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  Ty.tuple [],
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                    "add_edge",
+                                                    [],
                                                     []
-                                                ]
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.use
-                                              (M.match_operator (|
-                                                Some (Ty.tuple []),
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "std::collections::hash::set::IntoIter")
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (| M.read (| self |) |)
+                                                    |);
+                                                    Value.StructTuple
+                                                      "move_bytecode_verifier::instantiation_loops::Node"
+                                                      [
+                                                        M.read (| caller_idx |);
+                                                        M.read (|
+                                                          M.deref (| M.read (| actual_idx |) |)
+                                                        |)
+                                                      ];
+                                                    Value.StructTuple
+                                                      "move_bytecode_verifier::instantiation_loops::Node"
+                                                      [
+                                                        M.read (| callee_idx |);
+                                                        M.read (| formal_idx |)
+                                                      ];
+                                                    Value.StructTuple
+                                                      "move_bytecode_verifier::instantiation_loops::Edge::Identity"
                                                       []
-                                                      [ Ty.path "u16" ],
-                                                    M.get_trait_method (|
-                                                      "core::iter::traits::collect::IntoIterator",
+                                                  ]
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.use
+                                                (M.match_operator (|
+                                                  Some (Ty.tuple []),
+                                                  M.alloc (|
+                                                    M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path
-                                                          "std::collections::hash::set::HashSet")
+                                                          "std::collections::hash::set::IntoIter")
                                                         []
-                                                        [
-                                                          Ty.path "u16";
-                                                          Ty.path "std::hash::random::RandomState"
-                                                        ],
-                                                      [],
-                                                      [],
-                                                      "into_iter",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
+                                                        [ Ty.path "u16" ],
+                                                      M.get_trait_method (|
+                                                        "core::iter::traits::collect::IntoIterator",
                                                         Ty.apply
                                                           (Ty.path
                                                             "std::collections::hash::set::HashSet")
@@ -2567,153 +2505,178 @@ Module instantiation_loops.
                                                             Ty.path "u16";
                                                             Ty.path "std::hash::random::RandomState"
                                                           ],
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                          "extract_type_parameters",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (| M.read (| self |) |)
-                                                          |);
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (| M.read (| ty |) |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let iter := M.copy (| γ |) in
-                                                      M.loop (|
-                                                        Ty.tuple [],
-                                                        ltac:(M.monadic
-                                                          (let~ _ : Ty.tuple [] :=
-                                                            M.match_operator (|
-                                                              Some (Ty.tuple []),
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [ Ty.path "u16" ],
-                                                                  M.get_trait_method (|
-                                                                    "core::iter::traits::iterator::Iterator",
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "std::collections::hash::set::IntoIter")
-                                                                      []
-                                                                      [ Ty.path "u16" ],
-                                                                    [],
-                                                                    [],
-                                                                    "next",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.MutRef,
-                                                                      M.deref (|
+                                                        [],
+                                                        [],
+                                                        "into_iter",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "std::collections::hash::set::HashSet")
+                                                            []
+                                                            [
+                                                              Ty.path "u16";
+                                                              Ty.path
+                                                                "std::hash::random::RandomState"
+                                                            ],
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                            "extract_type_parameters",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| self |) |)
+                                                            |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| ty |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let iter := M.copy (| γ |) in
+                                                        M.loop (|
+                                                          Ty.tuple [],
+                                                          ltac:(M.monadic
+                                                            (let~ _ : Ty.tuple [] :=
+                                                              M.read (|
+                                                                M.match_operator (|
+                                                                  Some (Ty.tuple []),
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [ Ty.path "u16" ],
+                                                                      M.get_trait_method (|
+                                                                        "core::iter::traits::iterator::Iterator",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "std::collections::hash::set::IntoIter")
+                                                                          []
+                                                                          [ Ty.path "u16" ],
+                                                                        [],
+                                                                        [],
+                                                                        "next",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
                                                                         M.borrow (|
                                                                           Pointer.Kind.MutRef,
-                                                                          iter
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let _ :=
-                                                                      M.is_struct_tuple (|
-                                                                        γ,
-                                                                        "core::option::Option::None"
-                                                                      |) in
-                                                                    M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (| M.break (||) |)
-                                                                      |)
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::option::Option::Some",
-                                                                        0
-                                                                      |) in
-                                                                    let type_param :=
-                                                                      M.copy (| γ0_0 |) in
-                                                                    let~ _ : Ty.tuple [] :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          Ty.tuple [],
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                            "add_edge",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
+                                                                          M.deref (|
                                                                             M.borrow (|
                                                                               Pointer.Kind.MutRef,
-                                                                              M.deref (|
-                                                                                M.read (| self |)
-                                                                              |)
-                                                                            |);
-                                                                            Value.StructTuple
-                                                                              "move_bytecode_verifier::instantiation_loops::Node"
-                                                                              [
-                                                                                M.read (|
-                                                                                  caller_idx
-                                                                                |);
-                                                                                M.read (|
-                                                                                  type_param
-                                                                                |)
-                                                                              ];
-                                                                            Value.StructTuple
-                                                                              "move_bytecode_verifier::instantiation_loops::Node"
-                                                                              [
-                                                                                M.read (|
-                                                                                  callee_idx
-                                                                                |);
-                                                                                M.read (|
-                                                                                  formal_idx
-                                                                                |)
-                                                                              ];
-                                                                            Value.StructTuple
-                                                                              "move_bytecode_verifier::instantiation_loops::Edge::TyConApp"
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.read (| ty |)
-                                                                                  |)
-                                                                                |)
-                                                                              ]
-                                                                          ]
+                                                                              iter
+                                                                            |)
+                                                                          |)
                                                                         |)
-                                                                      |) in
-                                                                    M.alloc (| Value.Tuple [] |)))
-                                                              ]
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)))
-                                                      |)))
-                                                ]
-                                              |))))
-                                      ]
-                                    |)))
-                              ]
+                                                                      ]
+                                                                    |)
+                                                                  |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let _ :=
+                                                                          M.is_struct_tuple (|
+                                                                            γ,
+                                                                            "core::option::Option::None"
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.break (||)
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            γ,
+                                                                            "core::option::Option::Some",
+                                                                            0
+                                                                          |) in
+                                                                        let type_param :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        let~ _ : Ty.tuple [] :=
+                                                                          M.call_closure (|
+                                                                            Ty.tuple [],
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                              "add_edge",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.MutRef,
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |)
+                                                                              |);
+                                                                              Value.StructTuple
+                                                                                "move_bytecode_verifier::instantiation_loops::Node"
+                                                                                [
+                                                                                  M.read (|
+                                                                                    caller_idx
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    type_param
+                                                                                  |)
+                                                                                ];
+                                                                              Value.StructTuple
+                                                                                "move_bytecode_verifier::instantiation_loops::Node"
+                                                                                [
+                                                                                  M.read (|
+                                                                                    callee_idx
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    formal_idx
+                                                                                  |)
+                                                                                ];
+                                                                              Value.StructTuple
+                                                                                "move_bytecode_verifier::instantiation_loops::Edge::TyConApp"
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        ty
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                            ]
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Value.Tuple []
+                                                                        |)))
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            M.alloc (| Value.Tuple [] |)))
+                                                        |)))
+                                                  ]
+                                                |))))
+                                        ]
+                                      |)))
+                                ]
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
                       |)))
@@ -2832,87 +2795,91 @@ Module instantiation_loops.
                                 Ty.tuple [],
                                 ltac:(M.monadic
                                   (let~ _ : Ty.tuple [] :=
-                                    M.match_operator (|
-                                      Some (Ty.tuple []),
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [
+                                    M.read (|
+                                      M.match_operator (|
+                                        Some (Ty.tuple []),
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Bytecode"
+                                                  ]
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "core::slice::iter::Iter")
                                                 []
                                                 [
                                                   Ty.path
                                                     "move_binary_format::file_format::Bytecode"
-                                                ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "core::slice::iter::Iter")
+                                                ],
+                                              [],
+                                              [],
+                                              "next",
+                                              [],
                                               []
-                                              [ Ty.path "move_binary_format::file_format::Bytecode"
-                                              ],
-                                            [],
-                                            [],
-                                            "next",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let instr := M.copy (| γ0_0 |) in
-                                            M.match_operator (|
-                                              Some (Ty.tuple []),
-                                              M.alloc (| Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ := instr in
-                                                    let γ := M.read (| γ |) in
-                                                    let γ1_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "move_binary_format::file_format::Bytecode::CallGeneric",
-                                                        0
-                                                      |) in
-                                                    let callee_inst_idx := M.alloc (| γ1_0 |) in
-                                                    let~ callee_si :
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::FunctionInstantiation"
-                                                          ] :=
-                                                      M.alloc (|
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (|
+                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (| M.read (| M.break (||) |) |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let instr := M.copy (| γ0_0 |) in
+                                              M.match_operator (|
+                                                Some (Ty.tuple []),
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ := instr in
+                                                      let γ := M.read (| γ |) in
+                                                      let γ1_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "move_binary_format::file_format::Bytecode::CallGeneric",
+                                                          0
+                                                        |) in
+                                                      let callee_inst_idx := M.alloc (| γ1_0 |) in
+                                                      let~ callee_si :
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionInstantiation"
+                                                            ] :=
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -2947,132 +2914,137 @@ Module instantiation_loops.
                                                               |)
                                                             |)
                                                           ]
-                                                        |)
-                                                      |) in
-                                                    M.match_operator (|
-                                                      Some (Ty.tuple []),
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "core::option::Option")
-                                                                    []
-                                                                    [
+                                                        |) in
+                                                      M.match_operator (|
+                                                        Some (Ty.tuple []),
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                          ]
+                                                                      ],
+                                                                    M.get_associated_function (|
                                                                       Ty.apply
-                                                                        (Ty.path "&")
+                                                                        (Ty.path
+                                                                          "std::collections::hash::map::HashMap")
                                                                         []
                                                                         [
                                                                           Ty.path
-                                                                            "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                                        ]
-                                                                    ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "std::collections::hash::map::HashMap")
-                                                                      []
+                                                                            "move_binary_format::file_format::FunctionHandleIndex";
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FunctionDefinitionIndex";
+                                                                          Ty.path
+                                                                            "std::hash::random::RandomState"
+                                                                        ],
+                                                                      "get",
+                                                                      [],
                                                                       [
                                                                         Ty.path
-                                                                          "move_binary_format::file_format::FunctionHandleIndex";
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::FunctionDefinitionIndex";
-                                                                        Ty.path
-                                                                          "std::hash::random::RandomState"
-                                                                      ],
-                                                                    "get",
-                                                                    [],
+                                                                          "move_binary_format::file_format::FunctionHandleIndex"
+                                                                      ]
+                                                                    |),
                                                                     [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::FunctionHandleIndex"
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.deref (|
+                                                                            M.read (| self |)
+                                                                          |),
+                                                                          "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                          "func_handle_def_map"
+                                                                        |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (|
+                                                                                  callee_si
+                                                                                |)
+                                                                              |),
+                                                                              "move_binary_format::file_format::FunctionInstantiation",
+                                                                              "handle"
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
                                                                     ]
+                                                                  |)
+                                                                |) in
+                                                              let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::option::Option::Some",
+                                                                  0
+                                                                |) in
+                                                              let callee_idx := M.copy (| γ0_0 |) in
+                                                              let~ callee_idx :
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::FunctionDefinitionIndex" :=
+                                                                M.read (|
+                                                                  M.deref (|
+                                                                    M.read (| callee_idx |)
+                                                                  |)
+                                                                |) in
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  Ty.tuple [],
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                    "build_graph_call",
+                                                                    [],
+                                                                    []
                                                                   |),
                                                                   [
                                                                     M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.deref (|
-                                                                          M.read (| self |)
-                                                                        |),
-                                                                        "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                        "func_handle_def_map"
+                                                                      Pointer.Kind.MutRef,
+                                                                      M.deref (|
+                                                                        M.read (| self |)
                                                                       |)
                                                                     |);
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| callee_si |)
-                                                                            |),
-                                                                            "move_binary_format::file_format::FunctionInstantiation",
-                                                                            "handle"
-                                                                          |)
-                                                                        |)
+                                                                    M.read (| caller_idx |);
+                                                                    M.read (| callee_idx |);
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.deref (|
+                                                                          M.read (| callee_si |)
+                                                                        |),
+                                                                        "move_binary_format::file_format::FunctionInstantiation",
+                                                                        "type_parameters"
                                                                       |)
                                                                     |)
                                                                   ]
                                                                 |)
-                                                              |) in
-                                                            let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::option::Option::Some",
-                                                                0
-                                                              |) in
-                                                            let callee_idx := M.copy (| γ0_0 |) in
-                                                            let~ callee_idx :
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::FunctionDefinitionIndex" :=
-                                                              M.copy (|
-                                                                M.deref (|
-                                                                  M.read (| callee_idx |)
-                                                                |)
-                                                              |) in
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.tuple [],
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                  "build_graph_call",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.MutRef,
-                                                                    M.deref (| M.read (| self |) |)
-                                                                  |);
-                                                                  M.read (| caller_idx |);
-                                                                  M.read (| callee_idx |);
-                                                                  M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.deref (|
-                                                                        M.read (| callee_si |)
-                                                                      |),
-                                                                      "move_binary_format::file_format::FunctionInstantiation",
-                                                                      "type_parameters"
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
-                                                      ]
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |)))
-                                      ]
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)))
                               |)))
@@ -3435,135 +3407,139 @@ Module instantiation_loops.
                         Ty.tuple [],
                         ltac:(M.monadic
                           (let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "usize";
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinition"
-                                            ]
-                                        ]
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (|
+                                  M.call_closure (|
                                     Ty.apply
-                                      (Ty.path "core::iter::adapters::filter::Filter")
+                                      (Ty.path "core::option::Option")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
-                                          []
+                                        Ty.tuple
                                           [
+                                            Ty.path "usize";
                                             Ty.apply
-                                              (Ty.path "core::slice::iter::Iter")
+                                              (Ty.path "&")
                                               []
                                               [
                                                 Ty.path
                                                   "move_binary_format::file_format::FunctionDefinition"
                                               ]
-                                          ];
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path "usize";
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::FunctionDefinition"
-                                                          ]
-                                                      ]
-                                                  ]
-                                              ]
                                           ]
-                                          (Ty.path "bool")
                                       ],
-                                    [],
-                                    [],
-                                    "next",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let _ :=
-                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::option::Option::Some",
-                                        0
-                                      |) in
-                                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                    let def_idx := M.copy (| γ1_0 |) in
-                                    let func_def := M.copy (| γ1_1 |) in
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                          "build_graph_function_def",
-                                          [],
-                                          []
-                                        |),
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::filter::Filter")
+                                        []
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| self |) |)
-                                          |);
-                                          M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ];
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.path "usize";
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionDefinition"
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.path "bool")
+                                        ],
+                                      [],
+                                      [],
+                                      "next",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
+                                        M.never_to_any (| M.read (| M.break (||) |) |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                      let def_idx := M.copy (| γ1_0 |) in
+                                      let func_def := M.copy (| γ1_1 |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.tuple [],
+                                          M.get_associated_function (|
                                             Ty.path
-                                              "move_binary_format::file_format::FunctionDefinitionIndex",
-                                            M.get_associated_function (|
+                                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                            "build_graph_function_def",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.read (| self |) |)
+                                            |);
+                                            M.call_closure (|
                                               Ty.path
                                                 "move_binary_format::file_format::FunctionDefinitionIndex",
-                                              "new",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.cast (Ty.path "u16") (M.read (| def_idx |)) ]
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| func_def |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    |)))
-                              ]
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinitionIndex",
+                                                "new",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.cast (Ty.path "u16") (M.read (| def_idx |)) ]
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| func_def |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)))
+                                ]
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
                       |)))
@@ -4063,20 +4039,52 @@ Module instantiation_loops.
                                                 [ Ty.path "u32" ];
                                               Ty.path "std::hash::random::RandomState"
                                             ] :=
-                                        M.alloc (|
-                                          M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "std::collections::hash::set::HashSet")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                []
+                                                [ Ty.path "u32" ];
+                                              Ty.path "std::hash::random::RandomState"
+                                            ],
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
                                             Ty.apply
-                                              (Ty.path "std::collections::hash::set::HashSet")
+                                              (Ty.path "core::iter::adapters::cloned::Cloned")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                  (Ty.path "core::slice::iter::Iter")
                                                   []
-                                                  [ Ty.path "u32" ];
-                                                Ty.path "std::hash::random::RandomState"
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                      []
+                                                      [ Ty.path "u32" ]
+                                                  ]
                                               ],
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
+                                            [],
+                                            [],
+                                            "collect",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "std::collections::hash::set::HashSet")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                    []
+                                                    [ Ty.path "u32" ];
+                                                  Ty.path "std::hash::random::RandomState"
+                                                ]
+                                            ]
+                                          |),
+                                          [
+                                            M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::cloned::Cloned")
                                                 []
@@ -4091,42 +4099,30 @@ Module instantiation_loops.
                                                         [ Ty.path "u32" ]
                                                     ]
                                                 ],
-                                              [],
-                                              [],
-                                              "collect",
-                                              [],
-                                              [
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "std::collections::hash::set::HashSet")
+                                                  (Ty.path "core::slice::iter::Iter")
                                                   []
                                                   [
                                                     Ty.apply
                                                       (Ty.path "petgraph::graph_impl::NodeIndex")
                                                       []
-                                                      [ Ty.path "u32" ];
-                                                    Ty.path "std::hash::random::RandomState"
-                                                  ]
-                                              ]
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::iter::adapters::cloned::Cloned")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "petgraph::graph_impl::NodeIndex")
-                                                          []
-                                                          [ Ty.path "u32" ]
-                                                      ]
+                                                      [ Ty.path "u32" ]
                                                   ],
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::iterator::Iterator",
+                                                [],
+                                                [],
+                                                "cloned",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                    []
+                                                    [ Ty.path "u32" ]
+                                                ]
+                                              |),
+                                              [
+                                                M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
                                                     []
@@ -4136,21 +4132,9 @@ Module instantiation_loops.
                                                         []
                                                         [ Ty.path "u32" ]
                                                     ],
-                                                  [],
-                                                  [],
-                                                  "cloned",
-                                                  [],
-                                                  [
+                                                  M.get_associated_function (|
                                                     Ty.apply
-                                                      (Ty.path "petgraph::graph_impl::NodeIndex")
-                                                      []
-                                                      [ Ty.path "u32" ]
-                                                  ]
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
+                                                      (Ty.path "slice")
                                                       []
                                                       [
                                                         Ty.apply
@@ -4159,71 +4143,58 @@ Module instantiation_loops.
                                                           []
                                                           [ Ty.path "u32" ]
                                                       ],
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [
+                                                    "iter",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
                                                           Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::NodeIndex")
+                                                            (Ty.path "&")
                                                             []
-                                                            [ Ty.path "u32" ]
-                                                        ],
-                                                      "iter",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "slice")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "petgraph::graph_impl::NodeIndex")
-                                                                      []
-                                                                      [ Ty.path "u32" ]
-                                                                  ]
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
+                                                            [
                                                               Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
+                                                                (Ty.path "slice")
                                                                 []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "petgraph::graph_impl::NodeIndex")
                                                                     []
-                                                                    [ Ty.path "u32" ];
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ],
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
+                                                                    [ Ty.path "u32" ]
+                                                                ]
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
                                                               []
-                                                            |),
-                                                            [ M.borrow (| Pointer.Kind.Ref, nodes |)
-                                                            ]
-                                                          |)
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "petgraph::graph_impl::NodeIndex")
+                                                                  []
+                                                                  [ Ty.path "u32" ];
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, nodes |) ]
                                                         |)
                                                       |)
-                                                    ]
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |) in
                                       let~ edges :
                                           Ty.apply
@@ -4236,20 +4207,148 @@ Module instantiation_loops.
                                                 [ Ty.path "u32" ];
                                               Ty.path "alloc::alloc::Global"
                                             ] :=
-                                        M.alloc (|
-                                          M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                []
+                                                [ Ty.path "u32" ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ],
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
                                             Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
+                                              (Ty.path "core::iter::adapters::flatten::FlatMap")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                  (Ty.path "core::slice::iter::Iter")
                                                   []
-                                                  [ Ty.path "u32" ];
-                                                Ty.path "alloc::alloc::Global"
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "petgraph::graph_impl::NodeIndex")
+                                                      []
+                                                      [ Ty.path "u32" ]
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "core::iter::adapters::filter_map::FilterMap")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "petgraph::graph_impl::Edges")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::instantiation_loops::Edge";
+                                                        Ty.path "petgraph::Directed";
+                                                        Ty.path "u32"
+                                                      ];
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeReference")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                Ty.path "u32"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "petgraph::graph_impl::EdgeIndex")
+                                                            []
+                                                            [ Ty.path "u32" ]
+                                                        ])
+                                                  ];
+                                                Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::NodeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ]
+                                                          ]
+                                                      ]
+                                                  ]
+                                                  (Ty.apply
+                                                    (Ty.path
+                                                      "core::iter::adapters::filter_map::FilterMap")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "petgraph::graph_impl::Edges")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::instantiation_loops::Edge";
+                                                          Ty.path "petgraph::Directed";
+                                                          Ty.path "u32"
+                                                        ];
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "petgraph::graph_impl::EdgeReference")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                  Ty.path "u32"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                        (Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ]
+                                                          ])
+                                                    ])
                                               ],
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
+                                            [],
+                                            [],
+                                            "collect",
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                    []
+                                                    [ Ty.path "u32" ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                          |),
+                                          [
+                                            M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::iter::adapters::flatten::FlatMap")
                                                 []
@@ -4360,40 +4459,79 @@ Module instantiation_loops.
                                                             ])
                                                       ])
                                                 ],
-                                              [],
-                                              [],
-                                              "collect",
-                                              [],
-                                              [
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
+                                                  (Ty.path "core::slice::iter::Iter")
                                                   []
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "petgraph::graph_impl::EdgeIndex")
+                                                      (Ty.path "petgraph::graph_impl::NodeIndex")
                                                       []
-                                                      [ Ty.path "u32" ];
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::iter::adapters::flatten::FlatMap")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "petgraph::graph_impl::NodeIndex")
+                                                      [ Ty.path "u32" ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "flat_map",
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "core::iter::adapters::filter_map::FilterMap")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "petgraph::graph_impl::Edges")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_bytecode_verifier::instantiation_loops::Edge";
+                                                          Ty.path "petgraph::Directed";
+                                                          Ty.path "u32"
+                                                        ];
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "petgraph::graph_impl::EdgeReference")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                  Ty.path "u32"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                        (Ty.apply
+                                                          (Ty.path "core::option::Option")
                                                           []
-                                                          [ Ty.path "u32" ]
-                                                      ];
-                                                    Ty.apply
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ]
+                                                          ])
+                                                    ];
+                                                  Ty.function
+                                                    [
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "petgraph::graph_impl::NodeIndex")
+                                                                []
+                                                                [ Ty.path "u32" ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                    (Ty.apply
                                                       (Ty.path
                                                         "core::iter::adapters::filter_map::FilterMap")
                                                       []
@@ -4432,66 +4570,11 @@ Module instantiation_loops.
                                                                 []
                                                                 [ Ty.path "u32" ]
                                                             ])
-                                                      ];
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::NodeIndex")
-                                                                  []
-                                                                  [ Ty.path "u32" ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.apply
-                                                        (Ty.path
-                                                          "core::iter::adapters::filter_map::FilterMap")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "petgraph::graph_impl::Edges")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_bytecode_verifier::instantiation_loops::Edge";
-                                                              Ty.path "petgraph::Directed";
-                                                              Ty.path "u32"
-                                                            ];
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "petgraph::graph_impl::EdgeReference")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                      Ty.path "u32"
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                            (Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::EdgeIndex")
-                                                                  []
-                                                                  [ Ty.path "u32" ]
-                                                              ])
-                                                        ])
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::iterator::Iterator",
+                                                      ])
+                                                ]
+                                              |),
+                                              [
+                                                M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
                                                     []
@@ -4501,113 +4584,9 @@ Module instantiation_loops.
                                                         []
                                                         [ Ty.path "u32" ]
                                                     ],
-                                                  [],
-                                                  [],
-                                                  "flat_map",
-                                                  [],
-                                                  [
+                                                  M.get_associated_function (|
                                                     Ty.apply
-                                                      (Ty.path
-                                                        "core::iter::adapters::filter_map::FilterMap")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "petgraph::graph_impl::Edges")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_bytecode_verifier::instantiation_loops::Edge";
-                                                            Ty.path "petgraph::Directed";
-                                                            Ty.path "u32"
-                                                          ];
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::EdgeReference")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                    Ty.path "u32"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                          (Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path
-                                                                  "petgraph::graph_impl::EdgeIndex")
-                                                                []
-                                                                [ Ty.path "u32" ]
-                                                            ])
-                                                      ];
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::NodeIndex")
-                                                                  []
-                                                                  [ Ty.path "u32" ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.apply
-                                                        (Ty.path
-                                                          "core::iter::adapters::filter_map::FilterMap")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "petgraph::graph_impl::Edges")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_bytecode_verifier::instantiation_loops::Edge";
-                                                              Ty.path "petgraph::Directed";
-                                                              Ty.path "u32"
-                                                            ];
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "petgraph::graph_impl::EdgeReference")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                      Ty.path "u32"
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                            (Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "petgraph::graph_impl::EdgeIndex")
-                                                                  []
-                                                                  [ Ty.path "u32" ]
-                                                              ])
-                                                        ])
-                                                  ]
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
+                                                      (Ty.path "slice")
                                                       []
                                                       [
                                                         Ty.apply
@@ -4616,96 +4595,173 @@ Module instantiation_loops.
                                                           []
                                                           [ Ty.path "u32" ]
                                                       ],
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [
+                                                    "iter",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.call_closure (|
                                                           Ty.apply
-                                                            (Ty.path
-                                                              "petgraph::graph_impl::NodeIndex")
+                                                            (Ty.path "&")
                                                             []
-                                                            [ Ty.path "u32" ]
-                                                        ],
-                                                      "iter",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "slice")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "petgraph::graph_impl::NodeIndex")
-                                                                      []
-                                                                      [ Ty.path "u32" ]
-                                                                  ]
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "core::ops::deref::Deref",
+                                                            [
                                                               Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
+                                                                (Ty.path "slice")
                                                                 []
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path
                                                                       "petgraph::graph_impl::NodeIndex")
                                                                     []
-                                                                    [ Ty.path "u32" ];
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ],
-                                                              [],
-                                                              [],
-                                                              "deref",
-                                                              [],
+                                                                    [ Ty.path "u32" ]
+                                                                ]
+                                                            ],
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
                                                               []
-                                                            |),
-                                                            [ M.borrow (| Pointer.Kind.Ref, nodes |)
-                                                            ]
-                                                          |)
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "petgraph::graph_impl::NodeIndex")
+                                                                  []
+                                                                  [ Ty.path "u32" ];
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            [],
+                                                            [],
+                                                            "deref",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, nodes |) ]
                                                         |)
                                                       |)
-                                                    ]
-                                                  |);
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ α0 ] =>
-                                                          ltac:(M.monadic
-                                                            (M.match_operator (|
-                                                              Some
-                                                                (Ty.function
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.closure
+                                                  (fun γ =>
+                                                    ltac:(M.monadic
+                                                      match γ with
+                                                      | [ α0 ] =>
+                                                        ltac:(M.monadic
+                                                          (M.match_operator (|
+                                                            Some
+                                                              (Ty.function
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "petgraph::graph_impl::NodeIndex")
+                                                                            []
+                                                                            [ Ty.path "u32" ]
+                                                                        ]
+                                                                    ]
+                                                                ]
+                                                                (Ty.apply
+                                                                  (Ty.path
+                                                                    "core::iter::adapters::filter_map::FilterMap")
+                                                                  []
                                                                   [
-                                                                    Ty.tuple
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::Edges")
+                                                                      []
                                                                       [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
+                                                                        Ty.path
+                                                                          "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                        Ty.path
+                                                                          "petgraph::Directed";
+                                                                        Ty.path "u32"
+                                                                      ];
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
                                                                           [
                                                                             Ty.apply
                                                                               (Ty.path
-                                                                                "petgraph::graph_impl::NodeIndex")
+                                                                                "petgraph::graph_impl::EdgeReference")
                                                                               []
-                                                                              [ Ty.path "u32" ]
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                Ty.path "u32"
+                                                                              ]
                                                                           ]
                                                                       ]
-                                                                  ]
-                                                                  (Ty.apply
-                                                                    (Ty.path
-                                                                      "core::iter::adapters::filter_map::FilterMap")
-                                                                    []
-                                                                    [
+                                                                      (Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "petgraph::graph_impl::EdgeIndex")
+                                                                            []
+                                                                            [ Ty.path "u32" ]
+                                                                        ])
+                                                                  ])),
+                                                            M.alloc (| α0 |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let node_idx := M.copy (| γ |) in
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::iter::adapters::filter_map::FilterMap")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "petgraph::graph_impl::Edges")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                            Ty.path
+                                                                              "petgraph::Directed";
+                                                                            Ty.path "u32"
+                                                                          ];
+                                                                        Ty.function
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "petgraph::graph_impl::EdgeReference")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                    Ty.path "u32"
+                                                                                  ]
+                                                                              ]
+                                                                          ]
+                                                                          (Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "petgraph::graph_impl::EdgeIndex")
+                                                                                []
+                                                                                [ Ty.path "u32" ]
+                                                                            ])
+                                                                      ],
+                                                                    M.get_trait_method (|
+                                                                      "core::iter::traits::iterator::Iterator",
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "petgraph::graph_impl::Edges")
@@ -4716,86 +4772,47 @@ Module instantiation_loops.
                                                                           Ty.path
                                                                             "petgraph::Directed";
                                                                           Ty.path "u32"
-                                                                        ];
-                                                                      Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "petgraph::graph_impl::EdgeReference")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                  Ty.path "u32"
-                                                                                ]
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.apply
+                                                                        ],
+                                                                      [],
+                                                                      [],
+                                                                      "filter_map",
+                                                                      [],
+                                                                      [
+                                                                        Ty.apply
                                                                           (Ty.path
-                                                                            "core::option::Option")
+                                                                            "petgraph::graph_impl::EdgeIndex")
                                                                           []
+                                                                          [ Ty.path "u32" ];
+                                                                        Ty.function
                                                                           [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "petgraph::graph_impl::EdgeIndex")
-                                                                              []
-                                                                              [ Ty.path "u32" ]
-                                                                          ])
-                                                                    ])),
-                                                              M.alloc (| α0 |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let node_idx :=
-                                                                      M.copy (| γ |) in
-                                                                    M.call_closure (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::iter::adapters::filter_map::FilterMap")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "petgraph::graph_impl::Edges")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                              Ty.path
-                                                                                "petgraph::Directed";
-                                                                              Ty.path "u32"
-                                                                            ];
-                                                                          Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "petgraph::graph_impl::EdgeReference")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                      Ty.path "u32"
-                                                                                    ]
-                                                                                ]
-                                                                            ]
-                                                                            (Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
+                                                                            Ty.tuple
                                                                               [
                                                                                 Ty.apply
                                                                                   (Ty.path
-                                                                                    "petgraph::graph_impl::EdgeIndex")
+                                                                                    "petgraph::graph_impl::EdgeReference")
                                                                                   []
-                                                                                  [ Ty.path "u32" ]
-                                                                              ])
-                                                                        ],
-                                                                      M.get_trait_method (|
-                                                                        "core::iter::traits::iterator::Iterator",
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                    Ty.path "u32"
+                                                                                  ]
+                                                                              ]
+                                                                          ]
+                                                                          (Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "petgraph::graph_impl::EdgeIndex")
+                                                                                []
+                                                                                [ Ty.path "u32" ]
+                                                                            ])
+                                                                      ]
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "petgraph::graph_impl::Edges")
@@ -4807,195 +4824,125 @@ Module instantiation_loops.
                                                                               "petgraph::Directed";
                                                                             Ty.path "u32"
                                                                           ],
-                                                                        [],
-                                                                        [],
-                                                                        "filter_map",
-                                                                        [],
-                                                                        [
+                                                                        M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path
-                                                                              "petgraph::graph_impl::EdgeIndex")
-                                                                            []
-                                                                            [ Ty.path "u32" ];
-                                                                          Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "petgraph::graph_impl::EdgeReference")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                      Ty.path "u32"
-                                                                                    ]
-                                                                                ]
-                                                                            ]
-                                                                            (Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "petgraph::graph_impl::EdgeIndex")
-                                                                                  []
-                                                                                  [ Ty.path "u32" ]
-                                                                              ])
-                                                                        ]
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "petgraph::graph_impl::Edges")
+                                                                              "petgraph::graph_impl::Graph")
                                                                             []
                                                                             [
+                                                                              Ty.path
+                                                                                "move_bytecode_verifier::instantiation_loops::Node";
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::instantiation_loops::Edge";
                                                                               Ty.path
                                                                                 "petgraph::Directed";
                                                                               Ty.path "u32"
                                                                             ],
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "petgraph::graph_impl::Graph")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "move_bytecode_verifier::instantiation_loops::Node";
-                                                                                Ty.path
-                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                Ty.path
-                                                                                  "petgraph::Directed";
-                                                                                Ty.path "u32"
-                                                                              ],
-                                                                            "edges",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.SubPointer.get_struct_record_field (|
-                                                                                M.deref (|
-                                                                                  M.read (| self |)
-                                                                                |),
-                                                                                "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                                                                                "graph"
-                                                                              |)
-                                                                            |);
-                                                                            M.read (|
+                                                                          "edges",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.SubPointer.get_struct_record_field (|
                                                                               M.deref (|
-                                                                                M.read (|
-                                                                                  node_idx
-                                                                                |)
-                                                                              |)
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                                                                              "graph"
                                                                             |)
-                                                                          ]
-                                                                        |);
-                                                                        M.closure
-                                                                          (fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              match γ with
-                                                                              | [ α0 ] =>
-                                                                                ltac:(M.monadic
-                                                                                  (M.match_operator (|
-                                                                                    Some
-                                                                                      (Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "petgraph::graph_impl::EdgeReference")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                                  Ty.path
-                                                                                                    "u32"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "core::option::Option")
-                                                                                          []
+                                                                          |);
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| node_idx |)
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      M.closure
+                                                                        (fun γ =>
+                                                                          ltac:(M.monadic
+                                                                            match γ with
+                                                                            | [ α0 ] =>
+                                                                              ltac:(M.monadic
+                                                                                (M.match_operator (|
+                                                                                  Some
+                                                                                    (Ty.function
+                                                                                      [
+                                                                                        Ty.tuple
                                                                                           [
                                                                                             Ty.apply
                                                                                               (Ty.path
-                                                                                                "petgraph::graph_impl::EdgeIndex")
+                                                                                                "petgraph::graph_impl::EdgeReference")
                                                                                               []
                                                                                               [
                                                                                                 Ty.path
+                                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                                Ty.path
                                                                                                   "u32"
                                                                                               ]
-                                                                                          ])),
-                                                                                    M.alloc (|
-                                                                                      α0
-                                                                                    |),
-                                                                                    [
-                                                                                      fun γ =>
-                                                                                        ltac:(M.monadic
-                                                                                          (let
-                                                                                                edge :=
-                                                                                            M.copy (|
-                                                                                              γ
-                                                                                            |) in
-                                                                                          M.read (|
-                                                                                            M.match_operator (|
-                                                                                              Some
-                                                                                                (Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "core::option::Option")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "petgraph::graph_impl::EdgeIndex")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "u32"
-                                                                                                      ]
-                                                                                                  ]),
-                                                                                              M.alloc (|
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
-                                                                                                          M.call_closure (|
-                                                                                                            Ty.path
-                                                                                                              "bool",
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.apply
-                                                                                                                (Ty.path
-                                                                                                                  "std::collections::hash::set::HashSet")
-                                                                                                                []
-                                                                                                                [
-                                                                                                                  Ty.apply
-                                                                                                                    (Ty.path
-                                                                                                                      "petgraph::graph_impl::NodeIndex")
-                                                                                                                    []
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "u32"
-                                                                                                                    ];
-                                                                                                                  Ty.path
-                                                                                                                    "std::hash::random::RandomState"
-                                                                                                                ],
-                                                                                                              "contains",
-                                                                                                              [],
+                                                                                          ]
+                                                                                      ]
+                                                                                      (Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::option::Option")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "petgraph::graph_impl::EdgeIndex")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u32"
+                                                                                            ]
+                                                                                        ])),
+                                                                                  M.alloc (| α0 |),
+                                                                                  [
+                                                                                    fun γ =>
+                                                                                      ltac:(M.monadic
+                                                                                        (let edge :=
+                                                                                          M.copy (|
+                                                                                            γ
+                                                                                          |) in
+                                                                                        M.read (|
+                                                                                          M.match_operator (|
+                                                                                            Some
+                                                                                              (Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "core::option::Option")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "petgraph::graph_impl::EdgeIndex")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "u32"
+                                                                                                    ]
+                                                                                                ]),
+                                                                                            M.alloc (|
+                                                                                              Value.Tuple
+                                                                                                []
+                                                                                            |),
+                                                                                            [
+                                                                                              fun
+                                                                                                  γ =>
+                                                                                                ltac:(M.monadic
+                                                                                                  (let
+                                                                                                        γ :=
+                                                                                                    M.use
+                                                                                                      (M.alloc (|
+                                                                                                        M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "bool",
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "std::collections::hash::set::HashSet")
+                                                                                                              []
                                                                                                               [
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
@@ -5004,138 +4951,151 @@ Module instantiation_loops.
                                                                                                                   [
                                                                                                                     Ty.path
                                                                                                                       "u32"
-                                                                                                                  ]
-                                                                                                              ]
-                                                                                                            |),
+                                                                                                                  ];
+                                                                                                                Ty.path
+                                                                                                                  "std::hash::random::RandomState"
+                                                                                                              ],
+                                                                                                            "contains",
+                                                                                                            [],
                                                                                                             [
-                                                                                                              M.borrow (|
-                                                                                                                Pointer.Kind.Ref,
-                                                                                                                node_set
-                                                                                                              |);
-                                                                                                              M.borrow (|
-                                                                                                                Pointer.Kind.Ref,
-                                                                                                                M.deref (|
-                                                                                                                  M.borrow (|
-                                                                                                                    Pointer.Kind.Ref,
-                                                                                                                    M.alloc (|
-                                                                                                                      M.call_closure (|
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "petgraph::graph_impl::NodeIndex")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "u32"
+                                                                                                                ]
+                                                                                                            ]
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              node_set
+                                                                                                            |);
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              M.deref (|
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                  M.alloc (|
+                                                                                                                    M.call_closure (|
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "petgraph::graph_impl::NodeIndex")
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.path
+                                                                                                                            "u32"
+                                                                                                                        ],
+                                                                                                                      M.get_trait_method (|
+                                                                                                                        "petgraph::visit::EdgeRef",
                                                                                                                         Ty.apply
                                                                                                                           (Ty.path
-                                                                                                                            "petgraph::graph_impl::NodeIndex")
+                                                                                                                            "petgraph::graph_impl::EdgeReference")
                                                                                                                           []
                                                                                                                           [
                                                                                                                             Ty.path
+                                                                                                                              "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                                                            Ty.path
                                                                                                                               "u32"
                                                                                                                           ],
-                                                                                                                        M.get_trait_method (|
-                                                                                                                          "petgraph::visit::EdgeRef",
-                                                                                                                          Ty.apply
-                                                                                                                            (Ty.path
-                                                                                                                              "petgraph::graph_impl::EdgeReference")
-                                                                                                                            []
-                                                                                                                            [
-                                                                                                                              Ty.path
-                                                                                                                                "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                                                              Ty.path
-                                                                                                                                "u32"
-                                                                                                                            ],
-                                                                                                                          [],
-                                                                                                                          [],
-                                                                                                                          "target",
-                                                                                                                          [],
-                                                                                                                          []
-                                                                                                                        |),
-                                                                                                                        [
-                                                                                                                          M.borrow (|
-                                                                                                                            Pointer.Kind.Ref,
-                                                                                                                            edge
-                                                                                                                          |)
-                                                                                                                        ]
-                                                                                                                      |)
+                                                                                                                        [],
+                                                                                                                        [],
+                                                                                                                        "target",
+                                                                                                                        [],
+                                                                                                                        []
+                                                                                                                      |),
+                                                                                                                      [
+                                                                                                                        M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          edge
+                                                                                                                        |)
+                                                                                                                      ]
                                                                                                                     |)
                                                                                                                   |)
                                                                                                                 |)
                                                                                                               |)
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      M.is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
-                                                                                                    M.alloc (|
-                                                                                                      Value.StructTuple
-                                                                                                        "core::option::Option::Some"
-                                                                                                        [
-                                                                                                          M.call_closure (|
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
+                                                                                                      |)) in
+                                                                                                  let
+                                                                                                        _ :=
+                                                                                                    M.is_constant_or_break_match (|
+                                                                                                      M.read (|
+                                                                                                        γ
+                                                                                                      |),
+                                                                                                      Value.Bool
+                                                                                                        true
+                                                                                                    |) in
+                                                                                                  M.alloc (|
+                                                                                                    Value.StructTuple
+                                                                                                      "core::option::Option::Some"
+                                                                                                      [
+                                                                                                        M.call_closure (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "petgraph::graph_impl::EdgeIndex")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "u32"
+                                                                                                            ],
+                                                                                                          M.get_trait_method (|
+                                                                                                            "petgraph::visit::EdgeRef",
                                                                                                             Ty.apply
                                                                                                               (Ty.path
-                                                                                                                "petgraph::graph_impl::EdgeIndex")
+                                                                                                                "petgraph::graph_impl::EdgeReference")
                                                                                                               []
                                                                                                               [
                                                                                                                 Ty.path
+                                                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                                                Ty.path
                                                                                                                   "u32"
                                                                                                               ],
-                                                                                                            M.get_trait_method (|
-                                                                                                              "petgraph::visit::EdgeRef",
-                                                                                                              Ty.apply
-                                                                                                                (Ty.path
-                                                                                                                  "petgraph::graph_impl::EdgeReference")
-                                                                                                                []
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "move_bytecode_verifier::instantiation_loops::Edge";
-                                                                                                                  Ty.path
-                                                                                                                    "u32"
-                                                                                                                ],
-                                                                                                              [],
-                                                                                                              [],
-                                                                                                              "id",
-                                                                                                              [],
-                                                                                                              []
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.borrow (|
-                                                                                                                Pointer.Kind.Ref,
-                                                                                                                edge
-                                                                                                              |)
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        ]
-                                                                                                    |)));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (M.alloc (|
-                                                                                                      Value.StructTuple
-                                                                                                        "core::option::Option::None"
-                                                                                                        []
-                                                                                                    |)))
-                                                                                              ]
-                                                                                            |)
-                                                                                          |)))
-                                                                                    ]
-                                                                                  |)))
-                                                                              | _ =>
-                                                                                M.impossible
-                                                                                  "wrong number of arguments"
-                                                                              end))
-                                                                      ]
-                                                                    |)))
-                                                              ]
-                                                            |)))
-                                                        | _ =>
-                                                          M.impossible "wrong number of arguments"
-                                                        end))
-                                                ]
-                                              |)
-                                            ]
-                                          |)
+                                                                                                            [],
+                                                                                                            [],
+                                                                                                            "id",
+                                                                                                            [],
+                                                                                                            []
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              edge
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
+                                                                                                      ]
+                                                                                                  |)));
+                                                                                              fun
+                                                                                                  γ =>
+                                                                                                ltac:(M.monadic
+                                                                                                  (M.alloc (|
+                                                                                                    Value.StructTuple
+                                                                                                      "core::option::Option::None"
+                                                                                                      []
+                                                                                                  |)))
+                                                                                            ]
+                                                                                          |)
+                                                                                        |)))
+                                                                                  ]
+                                                                                |)))
+                                                                            | _ =>
+                                                                              M.impossible
+                                                                                "wrong number of arguments"
+                                                                            end))
+                                                                    ]
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
+                                                      end))
+                                              ]
+                                            |)
+                                          ]
                                         |) in
                                       M.match_operator (|
                                         Some
@@ -5604,101 +5564,92 @@ Module instantiation_loops.
                         [
                           M.read (|
                             let~ res : Ty.path "alloc::string::String" :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "alloc::string::String",
-                                  M.get_function (| "alloc::fmt::format", [], [] |),
-                                  [
-                                    M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "alloc::string::String",
+                                M.get_function (| "alloc::fmt::format", [], [] |),
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
+                                    M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        [
-                                          Value.Integer IntegerKind.Usize 2;
-                                          Value.Integer IntegerKind.Usize 2
-                                        ],
-                                        []
-                                      |),
+                                      "new_v1",
                                       [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Value.Array [ mk_str (| "f" |); mk_str (| "#" |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::FunctionDefinitionIndex"
-                                                            ]
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (| Pointer.Kind.Ref, def_idx |)
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u16" ]
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              param_idx
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              |)
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.Integer IntegerKind.Usize 2
+                                      ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array [ mk_str (| "f" |); mk_str (| "#" |) ]
                                             |)
                                           |)
                                         |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                          ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, def_idx |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.call_closure (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [],
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                                                      ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (| Pointer.Kind.Ref, param_idx |)
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |) in
                             res
                           |)
@@ -5820,38 +5771,34 @@ Module instantiation_loops.
                     let node_idx_1 := M.copy (| γ0_0 |) in
                     let node_idx_2 := M.copy (| γ0_1 |) in
                     let~ node_1 : Ty.path "alloc::string::String" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "alloc::string::String",
-                          M.get_associated_function (|
-                            Ty.path
-                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                            "format_node",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (| node_idx_1 |)
-                          ]
-                        |)
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_associated_function (|
+                          Ty.path
+                            "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                          "format_node",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| node_idx_1 |)
+                        ]
                       |) in
                     let~ node_2 : Ty.path "alloc::string::String" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "alloc::string::String",
-                          M.get_associated_function (|
-                            Ty.path
-                              "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
-                            "format_node",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (| node_idx_2 |)
-                          ]
-                        |)
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_associated_function (|
+                          Ty.path
+                            "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker",
+                          "format_node",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                          M.read (| node_idx_2 |)
+                        ]
                       |) in
                     M.match_operator (|
                       Some (Ty.path "alloc::string::String"),
@@ -5937,129 +5884,127 @@ Module instantiation_loops.
                                 [
                                   M.read (|
                                     let~ res : Ty.path "alloc::string::String" :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "alloc::string::String",
-                                          M.get_function (| "alloc::fmt::format", [], [] |),
-                                          [
-                                            M.call_closure (|
+                                      M.call_closure (|
+                                        Ty.path "alloc::string::String",
+                                        M.get_function (| "alloc::fmt::format", [], [] |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
+                                            M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_v1",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 3;
-                                                  Value.Integer IntegerKind.Usize 3
-                                                ],
-                                                []
-                                              |),
+                                              "new_v1",
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            mk_str (| "" |);
-                                                            mk_str (| " --" |);
-                                                            mk_str (| "--> " |)
-                                                          ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [],
-                                                                [ Ty.path "alloc::string::String" ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      node_1
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_debug",
-                                                                [],
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::SignatureToken"
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      ty
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [],
-                                                                [ Ty.path "alloc::string::String" ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      node_2
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                      |)
+                                                Value.Integer IntegerKind.Usize 3;
+                                                Value.Integer IntegerKind.Usize 3
+                                              ],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          mk_str (| "" |);
+                                                          mk_str (| " --" |);
+                                                          mk_str (| "--> " |)
+                                                        ]
                                                     |)
                                                   |)
                                                 |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "alloc::string::String" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    node_1
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [],
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken"
+                                                                      ]
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    ty
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "alloc::string::String" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    node_2
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |) in
                                     res
                                   |)
@@ -6085,93 +6030,90 @@ Module instantiation_loops.
                                 [
                                   M.read (|
                                     let~ res : Ty.path "alloc::string::String" :=
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.path "alloc::string::String",
-                                          M.get_function (| "alloc::fmt::format", [], [] |),
-                                          [
-                                            M.call_closure (|
+                                      M.call_closure (|
+                                        Ty.path "alloc::string::String",
+                                        M.get_function (| "alloc::fmt::format", [], [] |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
+                                            M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::Arguments",
-                                                "new_v1",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 2;
-                                                  Value.Integer IntegerKind.Usize 2
-                                                ],
-                                                []
-                                              |),
+                                              "new_v1",
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [ mk_str (| "" |); mk_str (| " ----> " |)
-                                                          ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [],
-                                                                [ Ty.path "alloc::string::String" ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      node_1
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [],
-                                                                [ Ty.path "alloc::string::String" ]
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (|
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      node_2
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                      |)
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [ mk_str (| "" |); mk_str (| " ----> " |) ]
                                                     |)
                                                   |)
                                                 |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "alloc::string::String" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    node_1
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [],
+                                                              [ Ty.path "alloc::string::String" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    node_2
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |) in
                                     res
                                   |)

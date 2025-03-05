@@ -720,43 +720,41 @@ Module pin.
           let state := M.alloc (| state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
-                            Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
-                            [],
-                            [],
-                            "deref",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
+                        M.get_trait_method (|
+                          "core::ops::deref::Deref",
+                          Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
+                          [],
+                          [],
+                          "deref",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1129,37 +1127,35 @@ Module pin.
           let value := M.alloc (| value |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
-                        [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
-                      M.get_trait_method (|
-                        "core::ops::deref::DerefMut",
-                        Ptr,
-                        [],
-                        [],
-                        "deref_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::pin::Pin",
-                            "__pointer"
-                          |)
+              M.write (|
+                M.deref (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
+                    M.get_trait_method (|
+                      "core::ops::deref::DerefMut",
+                      Ptr,
+                      [],
+                      [],
+                      "deref_mut",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::pin::Pin",
+                          "__pointer"
                         |)
-                      ]
-                    |)
-                  |),
-                  M.read (| value |)
-                |)
+                      |)
+                    ]
+                  |)
+                |),
+                M.read (| value |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1230,35 +1226,31 @@ Module pin.
           let func := M.alloc (| func |) in
           M.read (|
             let~ pointer : Ty.apply (Ty.path "&") [] [ T ] :=
-              M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
-                    |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
                   |)
                 |)
               |) in
             let~ new_pointer : Ty.apply (Ty.path "&") [] [ U ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ U ],
-                  M.get_trait_method (|
-                    "core::ops::function::FnOnce",
-                    F,
-                    [],
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                    "call_once",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| func |);
-                    Value.Tuple
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pointer |) |) |) ]
-                  ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ U ],
+                M.get_trait_method (|
+                  "core::ops::function::FnOnce",
+                  F,
+                  [],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                  "call_once",
+                  [],
+                  []
+                |),
+                [
+                  M.read (| func |);
+                  Value.Tuple
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pointer |) |) |) ]
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1477,45 +1469,38 @@ Module pin.
           let func := M.alloc (| func |) in
           M.read (|
             let~ pointer : Ty.apply (Ty.path "&mut") [] [ T ] :=
-              M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&mut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::pin::Pin")
-                          []
-                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                        "get_unchecked_mut",
-                        [],
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                      "get_unchecked_mut",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
                   |)
                 |)
               |) in
             let~ new_pointer : Ty.apply (Ty.path "&mut") [] [ U ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "&mut") [] [ U ],
-                  M.get_trait_method (|
-                    "core::ops::function::FnOnce",
-                    F,
-                    [],
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
-                    "call_once",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (| func |);
-                    Value.Tuple
-                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| pointer |) |) |) ]
-                  ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ U ],
+                M.get_trait_method (|
+                  "core::ops::function::FnOnce",
+                  F,
+                  [],
+                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
+                  "call_once",
+                  [],
+                  []
+                |),
+                [
+                  M.read (| func |);
+                  Value.Tuple
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| pointer |) |) |) ]
+                ]
               |) in
             M.alloc (|
               M.call_closure (|

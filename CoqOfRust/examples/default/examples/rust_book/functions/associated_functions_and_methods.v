@@ -291,61 +291,53 @@ Module Impl_associated_functions_and_methods_Rectangle.
         let y := M.alloc (| y |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
+            let β :=
+              M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "associated_functions_and_methods::Rectangle",
-                    "p1"
-                  |),
-                  "associated_functions_and_methods::Point",
-                  "x"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |)
-            |) in
+                  M.deref (| M.read (| self |) |),
+                  "associated_functions_and_methods::Rectangle",
+                  "p1"
+                |),
+                "associated_functions_and_methods::Point",
+                "x"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
+            let β :=
+              M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "associated_functions_and_methods::Rectangle",
-                    "p2"
-                  |),
-                  "associated_functions_and_methods::Point",
-                  "x"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |)
-            |) in
+                  M.deref (| M.read (| self |) |),
+                  "associated_functions_and_methods::Rectangle",
+                  "p2"
+                |),
+                "associated_functions_and_methods::Point",
+                "x"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| x |) |) |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
+            let β :=
+              M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "associated_functions_and_methods::Rectangle",
-                    "p1"
-                  |),
-                  "associated_functions_and_methods::Point",
-                  "y"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |)
-            |) in
+                  M.deref (| M.read (| self |) |),
+                  "associated_functions_and_methods::Rectangle",
+                  "p1"
+                |),
+                "associated_functions_and_methods::Point",
+                "y"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
+            let β :=
+              M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "associated_functions_and_methods::Rectangle",
-                    "p2"
-                  |),
-                  "associated_functions_and_methods::Point",
-                  "y"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |)
-            |) in
+                  M.deref (| M.read (| self |) |),
+                  "associated_functions_and_methods::Rectangle",
+                  "p2"
+                |),
+                "associated_functions_and_methods::Point",
+                "y"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| y |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -409,8 +401,8 @@ Module Impl_associated_functions_and_methods_Pair.
                   let first := M.copy (| γ0_0 |) in
                   let second := M.copy (| γ0_1 |) in
                   let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -506,9 +498,9 @@ Module Impl_associated_functions_and_methods_Pair.
                               ]
                             |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |) in
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
           |)
@@ -563,37 +555,35 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ rectangle : Ty.path "associated_functions_and_methods::Rectangle" :=
-          M.alloc (|
-            Value.StructRecord
-              "associated_functions_and_methods::Rectangle"
-              [
-                ("p1",
-                  M.call_closure (|
+          Value.StructRecord
+            "associated_functions_and_methods::Rectangle"
+            [
+              ("p1",
+                M.call_closure (|
+                  Ty.path "associated_functions_and_methods::Point",
+                  M.get_associated_function (|
                     Ty.path "associated_functions_and_methods::Point",
-                    M.get_associated_function (|
-                      Ty.path "associated_functions_and_methods::Point",
-                      "origin",
-                      [],
-                      []
-                    |),
+                    "origin",
+                    [],
                     []
-                  |));
-                ("p2",
-                  M.call_closure (|
+                  |),
+                  []
+                |));
+              ("p2",
+                M.call_closure (|
+                  Ty.path "associated_functions_and_methods::Point",
+                  M.get_associated_function (|
                     Ty.path "associated_functions_and_methods::Point",
-                    M.get_associated_function (|
-                      Ty.path "associated_functions_and_methods::Point",
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
-                  |))
-              ]
-          |) in
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
+                |))
+            ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -667,12 +657,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -746,106 +736,98 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ square : Ty.path "associated_functions_and_methods::Rectangle" :=
-          M.alloc (|
-            Value.StructRecord
-              "associated_functions_and_methods::Rectangle"
-              [
-                ("p1",
-                  M.call_closure (|
-                    Ty.path "associated_functions_and_methods::Point",
-                    M.get_associated_function (|
-                      Ty.path "associated_functions_and_methods::Point",
-                      "origin",
-                      [],
-                      []
-                    |),
-                    []
-                  |));
-                ("p2",
-                  M.call_closure (|
-                    Ty.path "associated_functions_and_methods::Point",
-                    M.get_associated_function (|
-                      Ty.path "associated_functions_and_methods::Point",
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
-                  |))
-              ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
+        let~ square : Ty.path "associated_functions_and_methods::Rectangle" :=
+          Value.StructRecord
+            "associated_functions_and_methods::Rectangle"
+            [
+              ("p1",
+                M.call_closure (|
+                  Ty.path "associated_functions_and_methods::Point",
+                  M.get_associated_function (|
+                    Ty.path "associated_functions_and_methods::Point",
+                    "origin",
+                    [],
+                    []
+                  |),
+                  []
+                |));
+              ("p2",
+                M.call_closure (|
+                  Ty.path "associated_functions_and_methods::Point",
+                  M.get_associated_function (|
+                    Ty.path "associated_functions_and_methods::Point",
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| UnsupportedLiteral |); M.read (| UnsupportedLiteral |) ]
+                |))
+            ] in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_associated_function (|
-                Ty.path "associated_functions_and_methods::Rectangle",
-                "translate",
-                [],
-                []
-              |),
-              [
-                M.borrow (| Pointer.Kind.MutRef, square |);
-                M.read (| UnsupportedLiteral |);
-                M.read (| UnsupportedLiteral |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_associated_function (|
+              Ty.path "associated_functions_and_methods::Rectangle",
+              "translate",
+              [],
+              []
+            |),
+            [
+              M.borrow (| Pointer.Kind.MutRef, square |);
+              M.read (| UnsupportedLiteral |);
+              M.read (| UnsupportedLiteral |)
+            ]
           |) in
         let~ pair_ : Ty.path "associated_functions_and_methods::Pair" :=
-          M.alloc (|
-            Value.StructTuple
-              "associated_functions_and_methods::Pair"
-              [
-                M.call_closure (|
+          Value.StructTuple
+            "associated_functions_and_methods::Pair"
+            [
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ Value.Integer IntegerKind.I32 1 ]
-                |);
-                M.call_closure (|
+                  "new",
+                  [],
+                  []
+                |),
+                [ Value.Integer IntegerKind.I32 1 ]
+              |);
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::boxed::Box")
                     []
                     [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ Value.Integer IntegerKind.I32 2 ]
-                |)
-              ]
-          |) in
+                  "new",
+                  [],
+                  []
+                |),
+                [ Value.Integer IntegerKind.I32 2 ]
+              |)
+            ] in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_associated_function (|
-                Ty.path "associated_functions_and_methods::Pair",
-                "destroy",
-                [],
-                []
-              |),
-              [ M.read (| pair_ |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_associated_function (|
+              Ty.path "associated_functions_and_methods::Pair",
+              "destroy",
+              [],
+              []
+            |),
+            [ M.read (| pair_ |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -283,41 +283,30 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 18 |) in
-        let~ y : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
+        let~ x : Ty.path "i32" := Value.Integer IntegerKind.I32 18 in
+        let~ y : Ty.path "i32" := Value.Integer IntegerKind.I32 15 in
         let~ single : Ty.path "scoping_rules_lifetimes_structs::Borrowed" :=
-          M.alloc (|
-            Value.StructTuple
-              "scoping_rules_lifetimes_structs::Borrowed"
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
-          |) in
+          Value.StructTuple
+            "scoping_rules_lifetimes_structs::Borrowed"
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ] in
         let~ double : Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" :=
-          M.alloc (|
-            Value.StructRecord
-              "scoping_rules_lifetimes_structs::NamedBorrowed"
-              [
-                ("x",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
-                  |));
-                ("y",
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |) |))
-              ]
-          |) in
+          Value.StructRecord
+            "scoping_rules_lifetimes_structs::NamedBorrowed"
+            [
+              ("x",
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |));
+              ("y",
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, y |) |) |))
+            ] in
         let~ reference : Ty.path "scoping_rules_lifetimes_structs::Either" :=
-          M.alloc (|
-            Value.StructTuple
-              "scoping_rules_lifetimes_structs::Either::Ref"
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
-          |) in
+          Value.StructTuple
+            "scoping_rules_lifetimes_structs::Either::Ref"
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ] in
         let~ number : Ty.path "scoping_rules_lifetimes_structs::Either" :=
-          M.alloc (|
-            Value.StructTuple "scoping_rules_lifetimes_structs::Either::Num" [ M.read (| y |) ]
-          |) in
+          Value.StructTuple "scoping_rules_lifetimes_structs::Either::Num" [ M.read (| y |) ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -374,12 +363,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -437,12 +426,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -499,12 +488,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -562,9 +551,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

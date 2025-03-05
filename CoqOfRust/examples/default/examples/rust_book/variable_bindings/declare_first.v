@@ -31,17 +31,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let a_binding := M.copy (| Value.DeclaredButUndefined |) in
+        let a_binding := M.read (| Value.DeclaredButUndefined |) in
         let~ _ : Ty.tuple [] :=
-          let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (| a_binding, BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+          M.read (|
+            let~ x : Ty.path "i32" := Value.Integer IntegerKind.I32 2 in
+            let~ _ : Ty.tuple [] :=
+              M.write (| a_binding, BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -98,15 +98,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let another_binding := M.copy (| Value.DeclaredButUndefined |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let another_binding := M.read (| Value.DeclaredButUndefined |) in
+        let~ _ : Ty.tuple [] := M.write (| another_binding, Value.Integer IntegerKind.I32 1 |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (| M.write (| another_binding, Value.Integer IntegerKind.I32 1 |) |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -165,9 +164,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -55,8 +55,8 @@ Module main.
         (let arg := M.alloc (| arg |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -111,9 +111,9 @@ Module main.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| BinOp.Wrap.mul (| M.read (| arg |), Value.Integer IntegerKind.I32 2 |) |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -150,8 +150,8 @@ Module main.
       ltac:(M.monadic
         (let arg := M.alloc (| arg |) in
         M.read (|
-          let result := M.copy (| Value.DeclaredButUndefined |) in
-          let~ _ : Ty.tuple [] := InlineAssembly in
+          let result := M.read (| Value.DeclaredButUndefined |) in
+          let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
           result
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

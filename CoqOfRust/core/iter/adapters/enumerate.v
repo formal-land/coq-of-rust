@@ -226,7 +226,7 @@ Module iter.
                           []
                           I
                           "Item" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some
                             (Ty.associated_in_trait
@@ -385,7 +385,7 @@ Module iter.
                         |)
                       |) in
                     let~ i : Ty.path "usize" :=
-                      M.copy (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
                           "core::iter::adapters::enumerate::Enumerate",
@@ -393,17 +393,15 @@ Module iter.
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
-                      M.alloc (|
-                        let β :=
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::enumerate::Enumerate",
-                            "count"
-                          |) in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
-                        |)
+                      let β :=
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "count"
+                        |) in
+                      M.write (|
+                        β,
+                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -480,7 +478,7 @@ Module iter.
                           []
                           I
                           "Item" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some
                             (Ty.associated_in_trait
@@ -640,28 +638,24 @@ Module iter.
                         |)
                       |) in
                     let~ i : Ty.path "usize" :=
-                      M.alloc (|
-                        BinOp.Wrap.add (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::enumerate::Enumerate",
-                              "count"
-                            |)
-                          |),
-                          M.read (| n |)
-                        |)
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
-                        M.write (|
+                      BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
                             "core::iter::adapters::enumerate::Enumerate",
                             "count"
-                          |),
-                          BinOp.Wrap.add (| M.read (| i |), Value.Integer IntegerKind.Usize 1 |)
-                        |)
+                          |)
+                        |),
+                        M.read (| n |)
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.write (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "count"
+                        |),
+                        BinOp.Wrap.add (| M.read (| i |), Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -885,39 +879,37 @@ Module iter.
                         Ty.tuple [];
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
                       ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
-                        ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        I,
-                        [],
-                        [],
-                        "advance_by",
-                        [],
-                        []
-                      |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
                       [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::enumerate::Enumerate",
-                            "iter"
-                          |)
-                        |);
-                        M.read (| n |)
-                      ]
-                    |)
+                        Ty.tuple [];
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      I,
+                      [],
+                      [],
+                      "advance_by",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::enumerate::Enumerate",
+                          "iter"
+                        |)
+                      |);
+                      M.read (| n |)
+                    ]
                   |) in
                 let~ advanced : Ty.path "usize" :=
-                  M.copy (|
+                  M.read (|
                     M.match_operator (|
                       Some (Ty.path "usize"),
                       remaining,
@@ -962,15 +954,13 @@ Module iter.
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    let β :=
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::enumerate::Enumerate",
-                        "count"
-                      |) in
-                    M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| advanced |) |) |)
-                  |) in
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::enumerate::Enumerate",
+                      "count"
+                    |) in
+                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| advanced |) |) |) in
                 remaining
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1007,36 +997,25 @@ Module iter.
                       []
                       I
                       "Item" :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.associated_in_trait
-                        "core::iter::traits::iterator::Iterator"
-                        []
-                        []
-                        I
-                        "Item",
-                      M.get_function (|
-                        "core::iter::adapters::zip::try_get_unchecked",
-                        [],
-                        [ I ]
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::enumerate::Enumerate",
-                                "iter"
-                              |)
+                  M.call_closure (|
+                    Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item",
+                    M.get_function (| "core::iter::adapters::zip::try_get_unchecked", [], [ I ] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "iter"
                             |)
                           |)
-                        |);
-                        M.read (| idx |)
-                      ]
-                    |)
+                        |)
+                      |);
+                      M.read (| idx |)
+                    ]
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -1108,7 +1087,7 @@ Module iter.
                           []
                           I
                           "Item" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some
                             (Ty.associated_in_trait
@@ -1267,29 +1246,27 @@ Module iter.
                         |)
                       |) in
                     let~ len : Ty.path "usize" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_trait_method (|
-                            "core::iter::traits::exact_size::ExactSizeIterator",
-                            I,
-                            [],
-                            [],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::enumerate::Enumerate",
-                                "iter"
-                              |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_trait_method (|
+                          "core::iter::traits::exact_size::ExactSizeIterator",
+                          I,
+                          [],
+                          [],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "iter"
                             |)
-                          ]
-                        |)
+                          |)
+                        ]
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -1342,7 +1319,7 @@ Module iter.
                           []
                           I
                           "Item" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some
                             (Ty.associated_in_trait
@@ -1502,29 +1479,27 @@ Module iter.
                         |)
                       |) in
                     let~ len : Ty.path "usize" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_trait_method (|
-                            "core::iter::traits::exact_size::ExactSizeIterator",
-                            I,
-                            [],
-                            [],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::enumerate::Enumerate",
-                                "iter"
-                              |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_trait_method (|
+                          "core::iter::traits::exact_size::ExactSizeIterator",
+                          I,
+                          [],
+                          [],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::enumerate::Enumerate",
+                              "iter"
                             |)
-                          ]
-                        |)
+                          |)
+                        ]
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -1584,37 +1559,35 @@ Module iter.
               let fold := M.alloc (| fold |) in
               M.read (|
                 let~ count : Ty.path "usize" :=
-                  M.alloc (|
-                    BinOp.Wrap.add (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "count"
-                        |)
-                      |),
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_trait_method (|
-                          "core::iter::traits::exact_size::ExactSizeIterator",
-                          I,
-                          [],
-                          [],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::enumerate::Enumerate",
-                              "iter"
-                            |)
-                          |)
-                        ]
+                  BinOp.Wrap.add (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::iter::adapters::enumerate::Enumerate",
+                        "count"
                       |)
+                    |),
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_trait_method (|
+                        "core::iter::traits::exact_size::ExactSizeIterator",
+                        I,
+                        [],
+                        [],
+                        "len",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::adapters::enumerate::Enumerate",
+                            "iter"
+                          |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (|
@@ -1682,37 +1655,35 @@ Module iter.
               let fold := M.alloc (| fold |) in
               M.read (|
                 let~ count : Ty.path "usize" :=
-                  M.alloc (|
-                    BinOp.Wrap.add (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::iter::adapters::enumerate::Enumerate",
-                          "count"
-                        |)
-                      |),
-                      M.call_closure (|
-                        Ty.path "usize",
-                        M.get_trait_method (|
-                          "core::iter::traits::exact_size::ExactSizeIterator",
-                          I,
-                          [],
-                          [],
-                          "len",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              self,
-                              "core::iter::adapters::enumerate::Enumerate",
-                              "iter"
-                            |)
-                          |)
-                        ]
+                  BinOp.Wrap.add (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::iter::adapters::enumerate::Enumerate",
+                        "count"
                       |)
+                    |),
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_trait_method (|
+                        "core::iter::traits::exact_size::ExactSizeIterator",
+                        I,
+                        [],
+                        [],
+                        "len",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "core::iter::adapters::enumerate::Enumerate",
+                            "iter"
+                          |)
+                        |)
+                      ]
                     |)
                   |) in
                 M.alloc (|

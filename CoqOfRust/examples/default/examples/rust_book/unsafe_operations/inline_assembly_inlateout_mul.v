@@ -62,11 +62,13 @@ Module main.
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
         M.read (|
-          let lo := M.copy (| Value.DeclaredButUndefined |) in
-          let hi := M.copy (| Value.DeclaredButUndefined |) in
+          let lo := M.read (| Value.DeclaredButUndefined |) in
+          let hi := M.read (| Value.DeclaredButUndefined |) in
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] := InlineAssembly in
-            M.alloc (| Value.Tuple [] |) in
+            M.read (|
+              let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (|
             BinOp.Wrap.add (|
               BinOp.Wrap.shl (|

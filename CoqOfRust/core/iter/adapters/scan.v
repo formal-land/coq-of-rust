@@ -303,7 +303,7 @@ Module iter.
                           []
                           I
                           "Item" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some
                             (Ty.associated_in_trait
@@ -591,25 +591,21 @@ Module iter.
               let fold := M.alloc (| fold |) in
               M.read (|
                 let~ state : Ty.apply (Ty.path "&mut") [] [ St ] :=
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::scan::Scan",
-                        "state"
-                      |)
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::scan::Scan",
+                      "state"
                     |)
                   |) in
                 let~ f : Ty.apply (Ty.path "&mut") [] [ F ] :=
-                  M.alloc (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::scan::Scan",
-                        "f"
-                      |)
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::iter::adapters::scan::Scan",
+                      "f"
                     |)
                   |) in
                 M.alloc (|

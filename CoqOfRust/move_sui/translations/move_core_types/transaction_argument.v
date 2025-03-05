@@ -383,38 +383,34 @@ Module transaction_argument.
           let state := M.alloc (| state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.path "isize",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ __H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.path "isize",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ __H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.match_operator (|
               Some (Ty.tuple []),
@@ -817,28 +813,24 @@ Module transaction_argument.
           let other := M.alloc (| other |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ __arg1_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               LogicalOp.and (|
@@ -3147,92 +3139,90 @@ Module transaction_argument.
                                                                                                       res :
                                                                                                     Ty.path
                                                                                                       "alloc::string::String" :=
-                                                                                                  M.alloc (|
-                                                                                                    M.call_closure (|
-                                                                                                      Ty.path
-                                                                                                        "alloc::string::String",
-                                                                                                      M.get_function (|
-                                                                                                        "alloc::fmt::format",
-                                                                                                        [],
-                                                                                                        []
-                                                                                                      |),
-                                                                                                      [
-                                                                                                        M.call_closure (|
+                                                                                                  M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "alloc::string::String",
+                                                                                                    M.get_function (|
+                                                                                                      "alloc::fmt::format",
+                                                                                                      [],
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.call_closure (|
+                                                                                                        Ty.path
+                                                                                                          "core::fmt::Arguments",
+                                                                                                        M.get_associated_function (|
                                                                                                           Ty.path
                                                                                                             "core::fmt::Arguments",
-                                                                                                          M.get_associated_function (|
-                                                                                                            Ty.path
-                                                                                                              "core::fmt::Arguments",
-                                                                                                            "new_v1",
-                                                                                                            [
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                1;
-                                                                                                              Value.Integer
-                                                                                                                IntegerKind.Usize
-                                                                                                                1
-                                                                                                            ],
-                                                                                                            []
-                                                                                                          |),
+                                                                                                          "new_v1",
                                                                                                           [
-                                                                                                            M.borrow (|
-                                                                                                              Pointer.Kind.Ref,
-                                                                                                              M.deref (|
-                                                                                                                M.borrow (|
-                                                                                                                  Pointer.Kind.Ref,
-                                                                                                                  M.alloc (|
-                                                                                                                    Value.Array
-                                                                                                                      [
-                                                                                                                        mk_str (|
-                                                                                                                          "unexpected value in bytes: "
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                  |)
-                                                                                                                |)
-                                                                                                              |)
-                                                                                                            |);
-                                                                                                            M.borrow (|
-                                                                                                              Pointer.Kind.Ref,
-                                                                                                              M.deref (|
-                                                                                                                M.borrow (|
-                                                                                                                  Pointer.Kind.Ref,
-                                                                                                                  M.alloc (|
-                                                                                                                    Value.Array
-                                                                                                                      [
-                                                                                                                        M.call_closure (|
-                                                                                                                          Ty.path
-                                                                                                                            "core::fmt::rt::Argument",
-                                                                                                                          M.get_associated_function (|
-                                                                                                                            Ty.path
-                                                                                                                              "core::fmt::rt::Argument",
-                                                                                                                            "new_debug",
-                                                                                                                            [],
-                                                                                                                            [
-                                                                                                                              Ty.path
-                                                                                                                                "move_core_types::runtime_value::MoveValue"
-                                                                                                                            ]
-                                                                                                                          |),
-                                                                                                                          [
-                                                                                                                            M.borrow (|
-                                                                                                                              Pointer.Kind.Ref,
-                                                                                                                              M.deref (|
-                                                                                                                                M.borrow (|
-                                                                                                                                  Pointer.Kind.Ref,
-                                                                                                                                  mv
-                                                                                                                                |)
-                                                                                                                              |)
-                                                                                                                            |)
-                                                                                                                          ]
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                  |)
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              1;
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              1
+                                                                                                          ],
+                                                                                                          []
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.deref (|
+                                                                                                              M.borrow (|
+                                                                                                                Pointer.Kind.Ref,
+                                                                                                                M.alloc (|
+                                                                                                                  Value.Array
+                                                                                                                    [
+                                                                                                                      mk_str (|
+                                                                                                                        "unexpected value in bytes: "
+                                                                                                                      |)
+                                                                                                                    ]
                                                                                                                 |)
                                                                                                               |)
                                                                                                             |)
-                                                                                                          ]
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                    |)
+                                                                                                          |);
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.deref (|
+                                                                                                              M.borrow (|
+                                                                                                                Pointer.Kind.Ref,
+                                                                                                                M.alloc (|
+                                                                                                                  Value.Array
+                                                                                                                    [
+                                                                                                                      M.call_closure (|
+                                                                                                                        Ty.path
+                                                                                                                          "core::fmt::rt::Argument",
+                                                                                                                        M.get_associated_function (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::Argument",
+                                                                                                                          "new_debug",
+                                                                                                                          [],
+                                                                                                                          [
+                                                                                                                            Ty.path
+                                                                                                                              "move_core_types::runtime_value::MoveValue"
+                                                                                                                          ]
+                                                                                                                        |),
+                                                                                                                        [
+                                                                                                                          M.borrow (|
+                                                                                                                            Pointer.Kind.Ref,
+                                                                                                                            M.deref (|
+                                                                                                                              M.borrow (|
+                                                                                                                                Pointer.Kind.Ref,
+                                                                                                                                mv
+                                                                                                                              |)
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        ]
+                                                                                                                      |)
+                                                                                                                    ]
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                      |)
+                                                                                                    ]
                                                                                                   |) in
                                                                                                 res
                                                                                               |)
@@ -3381,91 +3371,88 @@ Module transaction_argument.
                                                           M.read (|
                                                             let~ res :
                                                                 Ty.path "alloc::string::String" :=
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  Ty.path "alloc::string::String",
-                                                                  M.get_function (|
-                                                                    "alloc::fmt::format",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
+                                                              M.call_closure (|
+                                                                Ty.path "alloc::string::String",
+                                                                M.get_function (|
+                                                                  "alloc::fmt::format",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "core::fmt::Arguments",
+                                                                    M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Arguments",
-                                                                        "new_v1",
-                                                                        [
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1;
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
-                                                                        ],
-                                                                        []
-                                                                      |),
+                                                                      "new_v1",
                                                                       [
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.deref (|
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    mk_str (|
-                                                                                      "invalid transaction argument: "
-                                                                                    |)
-                                                                                  ]
-                                                                              |)
-                                                                            |)
-                                                                          |)
-                                                                        |);
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.deref (|
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::rt::Argument",
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "core::fmt::rt::Argument",
-                                                                                        "new_debug",
-                                                                                        [],
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "move_core_types::runtime_value::MoveValue"
-                                                                                        ]
-                                                                                      |),
-                                                                                      [
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.deref (|
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              val
-                                                                                            |)
-                                                                                          |)
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  ]
-                                                                              |)
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1;
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  mk_str (|
+                                                                                    "invalid transaction argument: "
+                                                                                  |)
+                                                                                ]
                                                                             |)
                                                                           |)
                                                                         |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
+                                                                      |);
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
+                                                                              Value.Array
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "new_debug",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_core_types::runtime_value::MoveValue"
+                                                                                      ]
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            val
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
                                                               |) in
                                                             res
                                                           |)

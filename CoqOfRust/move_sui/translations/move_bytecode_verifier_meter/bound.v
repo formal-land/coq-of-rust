@@ -51,57 +51,51 @@ Module bound.
                   (Ty.path "&mut")
                   []
                   [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ] :=
-              M.alloc (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
+                M.get_associated_function (|
+                  Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
+                  "get_bounds_mut",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| scope |)
+                ]
+              |) in
+            let~ _ : Ty.tuple [] :=
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| bounds |) |),
+                  "move_bytecode_verifier_meter::bound::Bounds",
+                  "name"
+                |),
                 M.call_closure (|
-                  Ty.apply
-                    (Ty.path "&mut")
-                    []
-                    [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
-                  M.get_associated_function (|
-                    Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
-                    "get_bounds_mut",
+                  Ty.path "alloc::string::String",
+                  M.get_trait_method (|
+                    "core::convert::Into",
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    [],
+                    [ Ty.path "alloc::string::String" ],
+                    "into",
                     [],
                     []
                   |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                    M.read (| scope |)
-                  ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |) ]
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| bounds |) |),
-                    "move_bytecode_verifier_meter::bound::Bounds",
-                    "name"
-                  |),
-                  M.call_closure (|
-                    Ty.path "alloc::string::String",
-                    M.get_trait_method (|
-                      "core::convert::Into",
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      [],
-                      [ Ty.path "alloc::string::String" ],
-                      "into",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |) ]
-                  |)
-                |)
-              |) in
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| bounds |) |),
-                    "move_bytecode_verifier_meter::bound::Bounds",
-                    "units"
-                  |),
-                  Value.Integer IntegerKind.U128 0
-                |)
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| bounds |) |),
+                  "move_bytecode_verifier_meter::bound::Bounds",
+                  "units"
+                |),
+                Value.Integer IntegerKind.U128 0
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -124,39 +118,37 @@ Module bound.
           let factor := M.alloc (| factor |) in
           M.read (|
             let~ units : Ty.path "u128" :=
-              M.alloc (|
-                M.cast
-                  (Ty.path "u128")
-                  (BinOp.Wrap.mul (|
-                    M.cast
-                      (Ty.path "f32")
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
-                              M.get_associated_function (|
-                                Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
-                                "get_bounds_mut",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                M.read (| from |)
-                              ]
-                            |)
-                          |),
-                          "move_bytecode_verifier_meter::bound::Bounds",
-                          "units"
-                        |)
-                      |)),
-                    M.read (| factor |)
-                  |))
-              |) in
+              M.cast
+                (Ty.path "u128")
+                (BinOp.Wrap.mul (|
+                  M.cast
+                    (Ty.path "f32")
+                    (M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "move_bytecode_verifier_meter::bound::Bounds" ],
+                            M.get_associated_function (|
+                              Ty.path "move_bytecode_verifier_meter::bound::BoundMeter",
+                              "get_bounds_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                              M.read (| from |)
+                            ]
+                          |)
+                        |),
+                        "move_bytecode_verifier_meter::bound::Bounds",
+                        "units"
+                      |)
+                    |)),
+                  M.read (| factor |)
+                |)) in
             M.alloc (|
               M.call_closure (|
                 Ty.apply
@@ -279,27 +271,27 @@ Module bound.
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "move_bytecode_verifier_meter::bound::Bounds",
-                              "max"
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let max := M.copy (| γ0_0 |) in
-                          let~ new_units : Ty.path "u128" :=
-                            M.alloc (|
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_bytecode_verifier_meter::bound::Bounds",
+                                "max"
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let max := M.copy (| γ0_0 |) in
+                            let~ new_units : Ty.path "u128" :=
                               M.call_closure (|
                                 Ty.path "u128",
                                 M.get_associated_function (|
@@ -318,42 +310,34 @@ Module bound.
                                   |);
                                   M.read (| units |)
                                 ]
-                              |)
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.gt (| M.read (| new_units |), M.read (| max |) |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            Value.StructTuple
-                                              "core::result::Result::Err"
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path
-                                                    "move_binary_format::errors::PartialVMError",
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_binary_format::errors::PartialVMError",
-                                                    "with_message",
-                                                    [],
-                                                    []
-                                                  |),
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.read (|
+                                M.match_operator (|
+                                  Some (Ty.tuple []),
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              BinOp.gt (|
+                                                M.read (| new_units |),
+                                                M.read (| max |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple
+                                                  "core::result::Result::Err"
                                                   [
                                                     M.call_closure (|
                                                       Ty.path
@@ -361,231 +345,241 @@ Module bound.
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::errors::PartialVMError",
-                                                        "new",
+                                                        "with_message",
                                                         [],
                                                         []
                                                       |),
                                                       [
-                                                        Value.StructTuple
-                                                          "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
-                                                          []
-                                                      ]
-                                                    |);
-                                                    M.call_closure (|
-                                                      Ty.path "alloc::string::String",
-                                                      M.get_function (|
-                                                        "core::hint::must_use",
-                                                        [],
-                                                        [ Ty.path "alloc::string::String" ]
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          let~ res :
-                                                              Ty.path "alloc::string::String" :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                Ty.path "alloc::string::String",
-                                                                M.get_function (|
-                                                                  "alloc::fmt::format",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    Ty.path "core::fmt::Arguments",
-                                                                    M.get_associated_function (|
+                                                        M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError",
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError",
+                                                            "new",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            Value.StructTuple
+                                                              "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
+                                                              []
+                                                          ]
+                                                        |);
+                                                        M.call_closure (|
+                                                          Ty.path "alloc::string::String",
+                                                          M.get_function (|
+                                                            "core::hint::must_use",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              let~ res :
+                                                                  Ty.path "alloc::string::String" :=
+                                                                M.call_closure (|
+                                                                  Ty.path "alloc::string::String",
+                                                                  M.get_function (|
+                                                                    "alloc::fmt::format",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
-                                                                      "new_v1",
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_v1",
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            5;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            4
+                                                                        ],
+                                                                        []
+                                                                      |),
                                                                       [
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          5;
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          4
-                                                                      ],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  mk_str (|
-                                                                                    "program too complex (in `"
-                                                                                  |);
-                                                                                  mk_str (|
-                                                                                    "` with `"
-                                                                                  |);
-                                                                                  mk_str (|
-                                                                                    " current + "
-                                                                                  |);
-                                                                                  mk_str (|
-                                                                                    " new > "
-                                                                                  |);
-                                                                                  mk_str (|
-                                                                                    " max`)"
-                                                                                  |)
-                                                                                ]
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    mk_str (|
+                                                                                      "program too complex (in `"
+                                                                                    |);
+                                                                                    mk_str (|
+                                                                                      "` with `"
+                                                                                    |);
+                                                                                    mk_str (|
+                                                                                      " current + "
+                                                                                    |);
+                                                                                    mk_str (|
+                                                                                      " new > "
+                                                                                    |);
+                                                                                    mk_str (|
+                                                                                      " max`)"
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
                                                                             |)
                                                                           |)
-                                                                        |)
-                                                                      |);
-                                                                      M.borrow (|
-                                                                        Pointer.Kind.Ref,
-                                                                        M.deref (|
-                                                                          M.borrow (|
-                                                                            Pointer.Kind.Ref,
-                                                                            M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    M.get_associated_function (|
+                                                                        |);
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          M.deref (|
+                                                                            M.borrow (|
+                                                                              Pointer.Kind.Ref,
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.call_closure (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
-                                                                                      "new_display",
-                                                                                      [],
-                                                                                      [
+                                                                                      M.get_associated_function (|
                                                                                         Ty.path
-                                                                                          "alloc::string::String"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        M.deref (|
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            M.SubPointer.get_struct_record_field (|
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  self
-                                                                                                |)
-                                                                                              |),
-                                                                                              "move_bytecode_verifier_meter::bound::Bounds",
-                                                                                              "name"
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "alloc::string::String"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    self
+                                                                                                  |)
+                                                                                                |),
+                                                                                                "move_bytecode_verifier_meter::bound::Bounds",
+                                                                                                "name"
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |);
-                                                                                  M.call_closure (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    M.get_associated_function (|
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
-                                                                                      "new_display",
-                                                                                      [],
-                                                                                      [
+                                                                                      M.get_associated_function (|
                                                                                         Ty.path
-                                                                                          "u128"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        M.deref (|
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            M.SubPointer.get_struct_record_field (|
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  self
-                                                                                                |)
-                                                                                              |),
-                                                                                              "move_bytecode_verifier_meter::bound::Bounds",
-                                                                                              "units"
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u128"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    self
+                                                                                                  |)
+                                                                                                |),
+                                                                                                "move_bytecode_verifier_meter::bound::Bounds",
+                                                                                                "units"
+                                                                                              |)
                                                                                             |)
                                                                                           |)
                                                                                         |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |);
-                                                                                  M.call_closure (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    M.get_associated_function (|
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
-                                                                                      "new_display",
-                                                                                      [],
-                                                                                      [
+                                                                                      M.get_associated_function (|
                                                                                         Ty.path
-                                                                                          "u128"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        M.deref (|
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            units
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u128"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              units
+                                                                                            |)
                                                                                           |)
                                                                                         |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |);
-                                                                                  M.call_closure (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    M.get_associated_function (|
+                                                                                      ]
+                                                                                    |);
+                                                                                    M.call_closure (|
                                                                                       Ty.path
                                                                                         "core::fmt::rt::Argument",
-                                                                                      "new_display",
-                                                                                      [],
-                                                                                      [
+                                                                                      M.get_associated_function (|
                                                                                         Ty.path
-                                                                                          "u128"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        M.deref (|
-                                                                                          M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            max
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [],
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u128"
+                                                                                        ]
+                                                                                      |),
+                                                                                      [
+                                                                                        M.borrow (|
+                                                                                          Pointer.Kind.Ref,
+                                                                                          M.deref (|
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              max
+                                                                                            |)
                                                                                           |)
                                                                                         |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                ]
+                                                                                      ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
                                                                             |)
                                                                           |)
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          res
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |) in
+                                                              res
+                                                            |)
+                                                          ]
                                                         |)
                                                       ]
                                                     |)
                                                   ]
-                                                |)
-                                              ]
+                                              |)
+                                            |)
                                           |)
-                                        |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
+                              |) in
+                            let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.deref (| M.read (| self |) |),
@@ -593,11 +587,11 @@ Module bound.
                                   "units"
                                 |),
                                 M.read (| new_units |)
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))

@@ -141,8 +141,8 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let t := M.alloc (| t |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -197,9 +197,9 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -258,43 +258,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ rectangle : Ty.path "generics_bounds::Rectangle" :=
-          M.alloc (|
-            Value.StructRecord
-              "generics_bounds::Rectangle"
-              [
-                ("length", M.read (| UnsupportedLiteral |));
-                ("height", M.read (| UnsupportedLiteral |))
-              ]
-          |) in
+          Value.StructRecord
+            "generics_bounds::Rectangle"
+            [
+              ("length", M.read (| UnsupportedLiteral |));
+              ("height", M.read (| UnsupportedLiteral |))
+            ] in
         let~ _triangle : Ty.path "generics_bounds::Triangle" :=
-          M.alloc (|
-            Value.StructRecord
-              "generics_bounds::Triangle"
-              [
-                ("length", M.read (| UnsupportedLiteral |));
-                ("height", M.read (| UnsupportedLiteral |))
-              ]
+          Value.StructRecord
+            "generics_bounds::Triangle"
+            [
+              ("length", M.read (| UnsupportedLiteral |));
+              ("height", M.read (| UnsupportedLiteral |))
+            ] in
+        let~ _ : Ty.tuple [] :=
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (|
+              "generics_bounds::print_debug",
+              [],
+              [ Ty.path "generics_bounds::Rectangle" ]
+            |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.borrow (| Pointer.Kind.Ref, rectangle |) |)
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (|
-                "generics_bounds::print_debug",
-                [],
-                [ Ty.path "generics_bounds::Rectangle" ]
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, rectangle |) |)
-                |)
-              ]
-            |)
-          |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -368,9 +362,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -17,41 +17,37 @@ Module journaled_state.
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                    [ Value.Integer IntegerKind.Usize 32 ]
-                    [],
-                  M.get_associated_function (|
-                    Ty.path "revm_bytecode::bytecode::Bytecode",
-                    "hash_slow",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, code |) ]
-                |)
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                M.get_associated_function (|
+                  Ty.path "revm_bytecode::bytecode::Bytecode",
+                  "hash_slow",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, code |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "revm_context_interface::journaled_state::Journal",
-                    Self,
-                    [],
-                    [],
-                    "set_code_with_hash",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                    M.read (| address |);
-                    M.read (| code |);
-                    M.read (| hash |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "revm_context_interface::journaled_state::Journal",
+                  Self,
+                  [],
+                  [],
+                  "set_code_with_hash",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                  M.read (| address |);
+                  M.read (| code |);
+                  M.read (| hash |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -229,28 +225,24 @@ Module journaled_state.
           let other := M.alloc (| other |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ __arg1_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
@@ -2076,7 +2068,7 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ is_cold : Ty.path "bool" :=
-              M.copy (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
                     M.call_closure (|
@@ -2182,17 +2174,15 @@ Module journaled_state.
           let is_delegate_account_cold := M.alloc (| is_delegate_account_cold |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_context_interface::journaled_state::Eip7702CodeLoad",
-                    "is_delegate_account_cold"
-                  |),
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    [ M.read (| is_delegate_account_cold |) ]
-                |)
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_context_interface::journaled_state::Eip7702CodeLoad",
+                  "is_delegate_account_cold"
+                |),
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [ M.read (| is_delegate_account_cold |) ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))

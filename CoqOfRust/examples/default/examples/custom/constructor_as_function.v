@@ -128,14 +128,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "alloc::vec::Vec")
               []
               [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ],
+            M.get_trait_method (|
+              "core::iter::traits::iterator::Iterator",
               Ty.apply
-                (Ty.path "alloc::vec::Vec")
+                (Ty.path "core::iter::adapters::map::Map")
                 []
-                [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ],
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    []
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
+                  Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
+                ],
+              [],
+              [],
+              "collect",
+              [],
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global" ]
+              ]
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
                   []
@@ -146,78 +168,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
                     Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
                   ],
-                [],
-                [],
-                "collect",
-                [],
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    []
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [],
+                  "map",
+                  [],
+                  [
+                    Ty.path "constructor_as_function::Constructor";
+                    Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
+                  ]
+                |),
                 [
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "constructor_as_function::Constructor"; Ty.path "alloc::alloc::Global"
-                    ]
-                ]
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::iter::adapters::map::Map")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::vec::into_iter::IntoIter")
-                        []
-                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ];
-                      Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
-                    ],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "alloc::vec::into_iter::IntoIter")
                       []
                       [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    [],
-                    [],
-                    "map",
-                    [],
-                    [
-                      Ty.path "constructor_as_function::Constructor";
-                      Ty.function [ Ty.path "i32" ] (Ty.path "constructor_as_function::Constructor")
-                    ]
-                  |),
-                  [
-                    M.call_closure (|
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::IntoIterator",
                       Ty.apply
-                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        (Ty.path "alloc::vec::Vec")
                         []
                         [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+                      [],
+                      [],
+                      "into_iter",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           []
                           [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                            "into_vec",
-                            [],
-                            [ Ty.path "alloc::alloc::Global" ]
-                          |),
-                          [
-                            M.read (|
-                              M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                          "into_vec",
+                          [],
+                          [ Ty.path "alloc::alloc::Global" ]
+                        |),
+                        [
+                          M.read (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "i32" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
                                   []
@@ -228,46 +237,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       [ Ty.path "i32" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
+                                "new",
+                                [],
+                                []
+                              |),
+                              [
+                                M.alloc (|
+                                  Value.Array
                                     [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 3 ]
-                                        [ Ty.path "i32" ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        Value.Integer IntegerKind.I32 1;
-                                        Value.Integer IntegerKind.I32 2;
-                                        Value.Integer IntegerKind.I32 3
-                                      ]
-                                  |)
-                                ]
-                              |)
+                                      Value.Integer IntegerKind.I32 1;
+                                      Value.Integer IntegerKind.I32 2;
+                                      Value.Integer IntegerKind.I32 3
+                                    ]
+                                |)
+                              ]
                             |)
-                          ]
-                        |)
-                      ]
-                    |);
-                    M.constructor_as_closure "constructor_as_function::Constructor"
-                  ]
-                |)
-              ]
-            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |);
+                  M.constructor_as_closure "constructor_as_function::Constructor"
+                ]
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -330,9 +327,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

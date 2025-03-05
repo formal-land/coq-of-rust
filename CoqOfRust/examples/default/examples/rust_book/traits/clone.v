@@ -283,11 +283,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ unit_ : Ty.path "clone::Unit" := M.alloc (| Value.StructTuple "clone::Unit" [] |) in
-        let~ copied_unit : Ty.path "clone::Unit" := M.copy (| unit_ |) in
+        let~ unit_ : Ty.path "clone::Unit" := Value.StructTuple "clone::Unit" [] in
+        let~ copied_unit : Ty.path "clone::Unit" := M.read (| unit_ |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -344,12 +344,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -404,51 +404,49 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ pair_ : Ty.path "clone::Pair" :=
-          M.alloc (|
-            Value.StructTuple
-              "clone::Pair"
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ Value.Integer IntegerKind.I32 1 ]
-                |);
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ Value.Integer IntegerKind.I32 2 ]
-                |)
-              ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
+        let~ pair_ : Ty.path "clone::Pair" :=
+          Value.StructTuple
+            "clone::Pair"
+            [
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                  "new",
+                  [],
+                  []
+                |),
+                [ Value.Integer IntegerKind.I32 1 ]
+              |);
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                  "new",
+                  [],
+                  []
+                |),
+                [ Value.Integer IntegerKind.I32 2 ]
+              |)
+            ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -505,13 +503,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ moved_pair : Ty.path "clone::Pair" := M.copy (| pair_ |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
+        let~ moved_pair : Ty.path "clone::Pair" := M.read (| pair_ |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -566,36 +564,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ cloned_pair : Ty.path "clone::Pair" :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.path "clone::Pair",
+            M.get_trait_method (|
+              "core::clone::Clone",
               Ty.path "clone::Pair",
-              M.get_trait_method (|
-                "core::clone::Clone",
-                Ty.path "clone::Pair",
-                [],
-                [],
-                "clone",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, moved_pair |) ]
-            |)
+              [],
+              [],
+              "clone",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, moved_pair |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "core::mem::drop", [], [ Ty.path "clone::Pair" ] |),
-              [ M.read (| moved_pair |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "core::mem::drop", [], [ Ty.path "clone::Pair" ] |),
+            [ M.read (| moved_pair |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -650,9 +644,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

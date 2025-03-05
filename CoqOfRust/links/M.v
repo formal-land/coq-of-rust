@@ -953,15 +953,15 @@ Module Run.
       {{ k (SuccessOrPanic.to_value value_inter) 🔽 R, Output }}
     ) ->
     {{ LowM.CallClosure ty closure args k 🔽 R, Output }}
-  | Let
+  | LetAlloc
       (ty : Ty.t) (e : M) (k : Value.t + Exception.t -> M)
       (of_ty : OfTy.t ty) :
-    let Output' : Set := Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty) in
+    let Output' : Set := OfTy.get_Set of_ty in
     {{ e 🔽 R, Output' }} ->
-    (forall (value_inter : Output.t R Output'),
+    (forall (value_inter : Output.t R (Ref.t Pointer.Kind.Raw Output')),
       {{ k (Output.to_value value_inter) 🔽 R, Output }}
     ) ->
-    {{ LowM.Let ty e k 🔽 R, Output }}
+    {{ LowM.LetAlloc ty e k 🔽 R, Output }}
   | Loop
       (ty : Ty.t) (body : M) (k : Value.t + Exception.t -> M)
       (of_ty : OfTy.t ty) :
@@ -1039,13 +1039,15 @@ Module LowM.
   Inductive t (R Output : Set) : Set :=
   | Pure (value : Output.t R Output)
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t R Output)
-  | Let {A : Set} (e : t R A) (k : Output.t R A -> t R Output)
   | Call {A : Set} (e : t A A) (k : SuccessOrPanic.t A -> t R Output)
+  | LetAlloc {A : Set} `{Link A}
+      (e : t R A)
+      (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output)
   | Loop {A : Set} (body : t R A) (k : Output.t R A -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
-  Arguments Let {_ _ _}.
   Arguments Call {_ _ _}.
+  Arguments LetAlloc {_ _ _ _}.
   Arguments Loop {_ _ _}.
 End LowM.
 
@@ -1151,12 +1153,12 @@ Proof.
     end.
   }
   { (* Let *)
-    eapply LowM.Let. {
+    eapply (LowM.LetAlloc (A := Output')). {
       exact (evaluate _ _ _ _ _ run).
     }
     intros output'; eapply evaluate.
     match goal with
-    | H : forall _ : Output.t _ Output', _ |- _ => apply (H output')
+    | H : forall _ : Output.t _ (Ref.t Pointer.Kind.Raw Output'), _ |- _ => apply (H output')
     end.
   }
   { (* Loop *)
@@ -1404,9 +1406,9 @@ Ltac rewrite_cast_integer :=
   end.
 
 Ltac run_symbolic_let :=
-  unshelve eapply Run.Let; [
+  unshelve eapply Run.LetAlloc; [
     repeat smpl of_ty |
-    try run_symbolic_state_alloc |
+    |
     cbn; intros []
   ].
 
@@ -1535,8 +1537,8 @@ Module RunTactic.
         ) |
         cbn; intros []
       ]
-    | |- {{ CoqOfRust.M.LowM.Let ?ty ?e ?k 🔽 _, _ }} =>
-      unshelve eapply Run.Let; [repeat smpl of_ty | | cbn; intros [] ]
+    | |- {{ CoqOfRust.M.LowM.LetAlloc ?ty ?e ?k 🔽 _, _ }} =>
+      unshelve eapply Run.LetAlloc; [repeat smpl of_ty | | cbn; intros [] ]
     end ||
     (* fold @LowM.let_ || *)
     match goal with

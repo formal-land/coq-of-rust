@@ -235,54 +235,54 @@ Module vec.
               ltac:(M.monadic
                 (M.read (|
                   let~ _ : Ty.tuple [] :=
-                    M.loop (|
-                      Ty.tuple [],
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Some (Ty.tuple []),
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      BinOp.lt (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::vec::extract_if::ExtractIf",
-                                            "idx"
-                                          |)
-                                        |),
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::vec::extract_if::ExtractIf",
-                                            "old_len"
+                    M.read (|
+                      M.loop (|
+                        Ty.tuple [],
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some (Ty.tuple []),
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        BinOp.lt (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::vec::extract_if::ExtractIf",
+                                              "idx"
+                                            |)
+                                          |),
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::vec::extract_if::ExtractIf",
+                                              "old_len"
+                                            |)
                                           |)
                                         |)
+                                      |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ i : Ty.path "usize" :=
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::vec::extract_if::ExtractIf",
+                                        "idx"
                                       |)
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                let~ i : Ty.path "usize" :=
-                                  M.copy (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::vec::extract_if::ExtractIf",
-                                      "idx"
-                                    |)
-                                  |) in
-                                let~ v :
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
-                                  M.alloc (|
+                                    |) in
+                                  let~ v :
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -325,10 +325,8 @@ Module vec.
                                           |)
                                         |)
                                       ]
-                                    |)
-                                  |) in
-                                let~ drained : Ty.path "bool" :=
-                                  M.alloc (|
+                                    |) in
+                                  let~ drained : Ty.path "bool" :=
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -365,10 +363,8 @@ Module vec.
                                             |)
                                           ]
                                       ]
-                                    |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.alloc (|
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
                                     let β :=
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| self |) |),
@@ -381,25 +377,23 @@ Module vec.
                                         M.read (| β |),
                                         Value.Integer IntegerKind.Usize 1
                                       |)
-                                    |)
-                                  |) in
-                                M.match_operator (|
-                                  Some (Ty.tuple []),
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.use drained in
-                                        let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        M.alloc (|
-                                          M.never_to_any (|
-                                            M.read (|
-                                              let~ _ : Ty.tuple [] :=
-                                                M.alloc (|
+                                    |) in
+                                  M.match_operator (|
+                                    Some (Ty.tuple []),
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.use drained in
+                                          let _ :=
+                                            M.is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (|
+                                              M.read (|
+                                                let~ _ : Ty.tuple [] :=
                                                   let β :=
                                                     M.SubPointer.get_struct_record_field (|
                                                       M.deref (| M.read (| self |) |),
@@ -412,76 +406,74 @@ Module vec.
                                                       M.read (| β |),
                                                       Value.Integer IntegerKind.Usize 1
                                                     |)
-                                                  |)
-                                                |) in
-                                              M.return_ (|
-                                                Value.StructTuple
-                                                  "core::option::Option::Some"
-                                                  [
-                                                    M.call_closure (|
-                                                      T,
-                                                      M.get_function (|
-                                                        "core::ptr::read",
-                                                        [],
-                                                        [ T ]
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.ConstPointer,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.SubPointer.get_array_field (|
-                                                                M.deref (| M.read (| v |) |),
-                                                                M.read (| i |)
+                                                  |) in
+                                                M.return_ (|
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    [
+                                                      M.call_closure (|
+                                                        T,
+                                                        M.get_function (|
+                                                          "core::ptr::read",
+                                                          [],
+                                                          [ T ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.ConstPointer,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.SubPointer.get_array_field (|
+                                                                  M.deref (| M.read (| v |) |),
+                                                                  M.read (| i |)
+                                                                |)
                                                               |)
                                                             |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
+                                                        ]
+                                                      |)
+                                                    ]
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.match_operator (|
-                                          Some (Ty.tuple []),
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      BinOp.gt (|
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "alloc::vec::extract_if::ExtractIf",
-                                                            "del"
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.Usize 0
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            Some (Ty.tuple []),
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        BinOp.gt (|
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "alloc::vec::extract_if::ExtractIf",
+                                                              "del"
+                                                            |)
+                                                          |),
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  let~ del : Ty.path "usize" :=
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "alloc::vec::extract_if::ExtractIf",
+                                                        "del"
                                                       |)
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ del : Ty.path "usize" :=
-                                                  M.copy (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "alloc::vec::extract_if::ExtractIf",
-                                                      "del"
-                                                    |)
-                                                  |) in
-                                                let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
-                                                  M.alloc (|
+                                                    |) in
+                                                  let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
                                                     M.borrow (|
                                                       Pointer.Kind.ConstPointer,
                                                       M.deref (|
@@ -493,10 +485,8 @@ Module vec.
                                                           |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  |) in
-                                                let~ dst : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                                                  M.alloc (|
+                                                    |) in
+                                                  let~ dst : Ty.apply (Ty.path "*mut") [] [ T ] :=
                                                     M.borrow (|
                                                       Pointer.Kind.MutPointer,
                                                       M.deref (|
@@ -511,10 +501,8 @@ Module vec.
                                                           |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.alloc (|
+                                                    |) in
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.call_closure (|
                                                       Ty.tuple [],
                                                       M.get_function (|
@@ -527,29 +515,28 @@ Module vec.
                                                         M.read (| dst |);
                                                         Value.Integer IntegerKind.Usize 1
                                                       ]
-                                                    |)
-                                                  |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  M.never_to_any (|
-                                    M.read (|
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
-                                          M.never_to_any (| M.read (| M.break (||) |) |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |)));
+                                              fun γ =>
+                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.never_to_any (| M.read (| M.break (||) |) |) in
+                                        M.alloc (| Value.Tuple [] |)
+                                      |)
                                     |)
-                                  |)
-                                |)))
-                          ]
-                        |)))
+                                  |)))
+                            ]
+                          |)))
+                      |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
@@ -647,49 +634,49 @@ Module vec.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              LogicalOp.and (|
-                                BinOp.lt (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::vec::extract_if::ExtractIf",
-                                      "idx"
-                                    |)
-                                  |),
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::vec::extract_if::ExtractIf",
-                                      "old_len"
-                                    |)
-                                  |)
-                                |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                LogicalOp.and (|
+                                  BinOp.lt (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| self |) |),
                                         "alloc::vec::extract_if::ExtractIf",
-                                        "del"
+                                        "idx"
                                       |)
                                     |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)))
-                              |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.alloc (|
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::vec::extract_if::ExtractIf",
+                                        "old_len"
+                                      |)
+                                    |)
+                                  |),
+                                  ltac:(M.monadic
+                                    (BinOp.gt (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::vec::extract_if::ExtractIf",
+                                          "del"
+                                        |)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)))
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
                             M.call_closure (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               M.get_associated_function (|
@@ -712,10 +699,8 @@ Module vec.
                                   |)
                                 |)
                               ]
-                            |)
-                          |) in
-                        let~ src : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.alloc (|
+                            |) in
+                          let~ src : Ty.apply (Ty.path "*mut") [] [ T ] :=
                             M.call_closure (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               M.get_associated_function (|
@@ -734,10 +719,8 @@ Module vec.
                                   |)
                                 |)
                               ]
-                            |)
-                          |) in
-                        let~ dst : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.alloc (|
+                            |) in
+                          let~ dst : Ty.apply (Ty.path "*mut") [] [ T ] :=
                             M.call_closure (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               M.get_associated_function (|
@@ -756,10 +739,8 @@ Module vec.
                                   |)
                                 |)
                               ]
-                            |)
-                          |) in
-                        let~ tail_len : Ty.path "usize" :=
-                          M.alloc (|
+                            |) in
+                          let~ tail_len : Ty.path "usize" :=
                             BinOp.Wrap.sub (|
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
@@ -775,10 +756,8 @@ Module vec.
                                   "idx"
                                 |)
                               |)
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
+                            |) in
+                          let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_associated_function (|
@@ -788,53 +767,51 @@ Module vec.
                                 []
                               |),
                               [ M.read (| src |); M.read (| dst |); M.read (| tail_len |) ]
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                      "set_len",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::vec::extract_if::ExtractIf",
-                              "vec"
-                            |)
-                          |)
-                        |)
-                      |);
-                      BinOp.Wrap.sub (|
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "set_len",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (|
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
                             "alloc::vec::extract_if::ExtractIf",
-                            "old_len"
-                          |)
-                        |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::vec::extract_if::ExtractIf",
-                            "del"
+                            "vec"
                           |)
                         |)
                       |)
-                    ]
-                  |)
+                    |);
+                    BinOp.Wrap.sub (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::extract_if::ExtractIf",
+                          "old_len"
+                        |)
+                      |),
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::extract_if::ExtractIf",
+                          "del"
+                        |)
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

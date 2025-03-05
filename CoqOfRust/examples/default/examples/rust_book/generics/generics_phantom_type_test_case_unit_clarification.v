@@ -399,86 +399,78 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
               []
               [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "generics_phantom_type_test_case_unit_clarification::Length"
-              [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
-          |) in
+          Value.StructTuple
+            "generics_phantom_type_test_case_unit_clarification::Length"
+            [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ] in
         let~ one_meter :
             Ty.apply
               (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
               []
               [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "generics_phantom_type_test_case_unit_clarification::Length"
-              [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ]
-          |) in
+          Value.StructTuple
+            "generics_phantom_type_test_case_unit_clarification::Length"
+            [ M.read (| UnsupportedLiteral |); Value.StructTuple "core::marker::PhantomData" [] ] in
         let~ two_feet :
             Ty.apply
               (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
               []
               [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
+            M.get_trait_method (|
+              "core::ops::arith::Add",
               Ty.apply
                 (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
                 []
                 [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
-              M.get_trait_method (|
-                "core::ops::arith::Add",
+              [],
+              [
                 Ty.apply
                   (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
                   []
-                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ],
-                [],
-                [
-                  Ty.apply
-                    (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-                    []
-                    [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
-                ],
-                "add",
-                [],
-                []
-              |),
-              [ M.read (| one_foot |); M.read (| one_foot |) ]
-            |)
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Inch" ]
+              ],
+              "add",
+              [],
+              []
+            |),
+            [ M.read (| one_foot |); M.read (| one_foot |) ]
           |) in
         let~ two_meters :
             Ty.apply
               (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
               []
               [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
+              []
+              [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
+            M.get_trait_method (|
+              "core::ops::arith::Add",
               Ty.apply
                 (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
                 []
                 [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
-              M.get_trait_method (|
-                "core::ops::arith::Add",
+              [],
+              [
                 Ty.apply
                   (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
                   []
-                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ],
-                [],
-                [
-                  Ty.apply
-                    (Ty.path "generics_phantom_type_test_case_unit_clarification::Length")
-                    []
-                    [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
-                ],
-                "add",
-                [],
-                []
-              |),
-              [ M.read (| one_meter |); M.read (| one_meter |) ]
-            |)
+                  [ Ty.path "generics_phantom_type_test_case_unit_clarification::Mm" ]
+              ],
+              "add",
+              [],
+              []
+            |),
+            [ M.read (| one_meter |); M.read (| one_meter |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -545,12 +537,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -617,9 +609,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

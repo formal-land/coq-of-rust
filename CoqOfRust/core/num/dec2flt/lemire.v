@@ -105,126 +105,126 @@ Module num.
               ltac:(M.monadic
                 (M.read (|
                   let~ fp_zero : Ty.path "core::num::dec2flt::common::BiasedFp" :=
-                    M.alloc (|
-                      M.call_closure (|
+                    M.call_closure (|
+                      Ty.path "core::num::dec2flt::common::BiasedFp",
+                      M.get_associated_function (|
                         Ty.path "core::num::dec2flt::common::BiasedFp",
-                        M.get_associated_function (|
-                          Ty.path "core::num::dec2flt::common::BiasedFp",
-                          "zero_pow2",
-                          [],
-                          []
-                        |),
-                        [ Value.Integer IntegerKind.I32 0 ]
-                      |)
+                        "zero_pow2",
+                        [],
+                        []
+                      |),
+                      [ Value.Integer IntegerKind.I32 0 ]
                     |) in
                   let~ fp_inf : Ty.path "core::num::dec2flt::common::BiasedFp" :=
-                    M.alloc (|
-                      M.call_closure (|
+                    M.call_closure (|
+                      Ty.path "core::num::dec2flt::common::BiasedFp",
+                      M.get_associated_function (|
                         Ty.path "core::num::dec2flt::common::BiasedFp",
-                        M.get_associated_function (|
-                          Ty.path "core::num::dec2flt::common::BiasedFp",
-                          "zero_pow2",
-                          [],
-                          []
-                        |),
+                        "zero_pow2",
+                        [],
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.get_constant "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
+                        |)
+                      ]
+                    |) in
+                  let~ fp_error : Ty.path "core::num::dec2flt::common::BiasedFp" :=
+                    M.call_closure (|
+                      Ty.path "core::num::dec2flt::common::BiasedFp",
+                      M.get_associated_function (|
+                        Ty.path "core::num::dec2flt::common::BiasedFp",
+                        "zero_pow2",
+                        [],
+                        []
+                      |),
+                      [ Value.Integer IntegerKind.I32 (-1) ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
                         [
-                          M.read (|
-                            M.get_constant "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
-                          |)
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    LogicalOp.or (|
+                                      BinOp.eq (|
+                                        M.read (| w |),
+                                        Value.Integer IntegerKind.U64 0
+                                      |),
+                                      ltac:(M.monadic
+                                        (BinOp.lt (|
+                                          M.read (| q |),
+                                          M.cast
+                                            (Ty.path "i64")
+                                            (M.read (|
+                                              M.get_constant
+                                                "core::num::dec2flt::float::RawFloat::SMALLEST_POWER_OF_TEN"
+                                            |))
+                                        |)))
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (| M.return_ (| M.read (| fp_zero |) |) |)
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.gt (|
+                                              M.read (| q |),
+                                              M.cast
+                                                (Ty.path "i64")
+                                                (M.read (|
+                                                  M.get_constant
+                                                    "core::num::dec2flt::float::RawFloat::LARGEST_POWER_OF_TEN"
+                                                |))
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (| M.return_ (| M.read (| fp_inf |) |) |)
+                                        |)
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)))
                         ]
                       |)
                     |) in
-                  let~ fp_error : Ty.path "core::num::dec2flt::common::BiasedFp" :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "core::num::dec2flt::common::BiasedFp",
-                        M.get_associated_function (|
-                          Ty.path "core::num::dec2flt::common::BiasedFp",
-                          "zero_pow2",
-                          [],
-                          []
-                        |),
-                        [ Value.Integer IntegerKind.I32 (-1) ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  LogicalOp.or (|
-                                    BinOp.eq (| M.read (| w |), Value.Integer IntegerKind.U64 0 |),
-                                    ltac:(M.monadic
-                                      (BinOp.lt (|
-                                        M.read (| q |),
-                                        M.cast
-                                          (Ty.path "i64")
-                                          (M.read (|
-                                            M.get_constant
-                                              "core::num::dec2flt::float::RawFloat::SMALLEST_POWER_OF_TEN"
-                                          |))
-                                      |)))
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| M.read (| fp_zero |) |) |) |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.gt (|
-                                            M.read (| q |),
-                                            M.cast
-                                              (Ty.path "i64")
-                                              (M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::LARGEST_POWER_OF_TEN"
-                                              |))
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (| M.return_ (| M.read (| fp_inf |) |) |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |)))
-                      ]
-                    |) in
                   let~ lz : Ty.path "u32" :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
-                        [ M.read (| w |) ]
-                      |)
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
+                      [ M.read (| w |) ]
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.alloc (|
-                      let β := w in
-                      M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| lz |) |) |)
-                    |) in
+                    let β := w in
+                    M.write (| β, BinOp.Wrap.shl (| M.read (| β |), M.read (| lz |) |) |) in
                   M.match_operator (|
                     None,
                     M.alloc (|
@@ -256,27 +256,27 @@ Module num.
                           let lo := M.copy (| γ0_0 |) in
                           let hi := M.copy (| γ0_1 |) in
                           let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.eq (|
-                                            M.read (| lo |),
-                                            Value.Integer IntegerKind.U64 18446744073709551615
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ inside_safe_exponent : Ty.path "bool" :=
-                                      M.alloc (|
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.eq (|
+                                              M.read (| lo |),
+                                              Value.Integer IntegerKind.U64 18446744073709551615
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ inside_safe_exponent : Ty.path "bool" :=
                                         LogicalOp.and (|
                                           BinOp.ge (|
                                             M.read (| q |),
@@ -287,148 +287,147 @@ Module num.
                                               M.read (| q |),
                                               Value.Integer IntegerKind.I64 55
                                             |)))
-                                        |)
-                                      |) in
-                                    M.match_operator (|
-                                      Some (Ty.tuple []),
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  UnOp.not (| M.read (| inside_safe_exponent |) |)
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (| M.return_ (| M.read (| fp_error |) |) |)
-                                              |)
-                                            |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          let~ upperbit : Ty.path "i32" :=
-                            M.alloc (|
-                              M.cast
-                                (Ty.path "i32")
-                                (BinOp.Wrap.shr (|
-                                  M.read (| hi |),
-                                  Value.Integer IntegerKind.I32 63
-                                |))
-                            |) in
-                          let~ mantissa : Ty.path "u64" :=
-                            M.alloc (|
-                              BinOp.Wrap.shr (|
-                                M.read (| hi |),
-                                BinOp.Wrap.sub (|
-                                  BinOp.Wrap.sub (|
-                                    BinOp.Wrap.add (|
-                                      M.read (| upperbit |),
-                                      Value.Integer IntegerKind.I32 64
-                                    |),
-                                    M.cast
-                                      (Ty.path "i32")
-                                      (M.read (|
-                                        M.get_constant
-                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                                      |))
-                                  |),
-                                  Value.Integer IntegerKind.I32 3
-                                |)
+                                        |) in
+                                      M.match_operator (|
+                                        Some (Ty.tuple []),
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    UnOp.not (| M.read (| inside_safe_exponent |) |)
+                                                  |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.alloc (|
+                                                M.never_to_any (|
+                                                  M.read (| M.return_ (| M.read (| fp_error |) |) |)
+                                                |)
+                                              |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        ]
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
                               |)
                             |) in
-                          let~ power2 : Ty.path "i32" :=
-                            M.alloc (|
+                          let~ upperbit : Ty.path "i32" :=
+                            M.cast
+                              (Ty.path "i32")
+                              (BinOp.Wrap.shr (|
+                                M.read (| hi |),
+                                Value.Integer IntegerKind.I32 63
+                              |)) in
+                          let~ mantissa : Ty.path "u64" :=
+                            BinOp.Wrap.shr (|
+                              M.read (| hi |),
                               BinOp.Wrap.sub (|
                                 BinOp.Wrap.sub (|
                                   BinOp.Wrap.add (|
-                                    M.call_closure (|
-                                      Ty.path "i32",
-                                      M.get_function (|
-                                        "core::num::dec2flt::lemire::power",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.cast (Ty.path "i32") (M.read (| q |)) ]
-                                    |),
-                                    M.read (| upperbit |)
+                                    M.read (| upperbit |),
+                                    Value.Integer IntegerKind.I32 64
                                   |),
-                                  M.cast (Ty.path "i32") (M.read (| lz |))
+                                  M.cast
+                                    (Ty.path "i32")
+                                    (M.read (|
+                                      M.get_constant
+                                        "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                    |))
                                 |),
-                                M.read (|
-                                  M.get_constant
-                                    "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
-                                |)
+                                Value.Integer IntegerKind.I32 3
+                              |)
+                            |) in
+                          let~ power2 : Ty.path "i32" :=
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                BinOp.Wrap.add (|
+                                  M.call_closure (|
+                                    Ty.path "i32",
+                                    M.get_function (|
+                                      "core::num::dec2flt::lemire::power",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.cast (Ty.path "i32") (M.read (| q |)) ]
+                                  |),
+                                  M.read (| upperbit |)
+                                |),
+                                M.cast (Ty.path "i32") (M.read (| lz |))
+                              |),
+                              M.read (|
+                                M.get_constant
+                                  "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.le (|
-                                            M.read (| power2 |),
-                                            Value.Integer IntegerKind.I32 0
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (|
-                                          let~ _ : Ty.tuple [] :=
-                                            M.match_operator (|
-                                              Some (Ty.tuple []),
-                                              M.alloc (| Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use
-                                                        (M.alloc (|
-                                                          BinOp.ge (|
-                                                            BinOp.Wrap.add (|
-                                                              UnOp.neg (| M.read (| power2 |) |),
-                                                              Value.Integer IntegerKind.I32 1
-                                                            |),
-                                                            Value.Integer IntegerKind.I32 64
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.le (|
+                                              M.read (| power2 |),
+                                              Value.Integer IntegerKind.I32 0
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.read (|
+                                                M.match_operator (|
+                                                  Some (Ty.tuple []),
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ :=
+                                                          M.use
+                                                            (M.alloc (|
+                                                              BinOp.ge (|
+                                                                BinOp.Wrap.add (|
+                                                                  UnOp.neg (|
+                                                                    M.read (| power2 |)
+                                                                  |),
+                                                                  Value.Integer IntegerKind.I32 1
+                                                                |),
+                                                                Value.Integer IntegerKind.I32 64
+                                                              |)
+                                                            |)) in
+                                                        let _ :=
+                                                          M.is_constant_or_break_match (|
+                                                            M.read (| γ |),
+                                                            Value.Bool true
+                                                          |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.read (|
+                                                              M.return_ (| M.read (| fp_zero |) |)
+                                                            |)
                                                           |)
-                                                        |)) in
-                                                    let _ :=
-                                                      M.is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    M.alloc (|
-                                                      M.never_to_any (|
-                                                        M.read (|
-                                                          M.return_ (| M.read (| fp_zero |) |)
-                                                        |)
-                                                      |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |) in
-                                          let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |)
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
                                               let β := mantissa in
                                               M.write (|
                                                 β,
@@ -439,10 +438,8 @@ Module num.
                                                     Value.Integer IntegerKind.I32 1
                                                   |)
                                                 |)
-                                              |)
-                                            |) in
-                                          let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
                                               let β := mantissa in
                                               M.write (|
                                                 β,
@@ -452,10 +449,8 @@ Module num.
                                                     (M.read (| mantissa |))
                                                     (Value.Integer IntegerKind.U64 1)
                                                 |)
-                                              |)
-                                            |) in
-                                          let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
                                               let β := mantissa in
                                               M.write (|
                                                 β,
@@ -463,10 +458,8 @@ Module num.
                                                   M.read (| β |),
                                                   Value.Integer IntegerKind.I32 1
                                                 |)
-                                              |)
-                                            |) in
-                                          let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
                                               M.write (|
                                                 power2,
                                                 M.cast
@@ -481,162 +474,158 @@ Module num.
                                                       |)
                                                     |)
                                                   |))
-                                              |)
-                                            |) in
-                                          M.return_ (|
-                                            Value.StructRecord
-                                              "core::num::dec2flt::common::BiasedFp"
-                                              [
-                                                ("f", M.read (| mantissa |));
-                                                ("e", M.read (| power2 |))
-                                              ]
+                                              |) in
+                                            M.return_ (|
+                                              Value.StructRecord
+                                                "core::num::dec2flt::common::BiasedFp"
+                                                [
+                                                  ("f", M.read (| mantissa |));
+                                                  ("e", M.read (| power2 |))
+                                                ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
                             |) in
                           let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          LogicalOp.and (|
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
                                             LogicalOp.and (|
                                               LogicalOp.and (|
                                                 LogicalOp.and (|
-                                                  BinOp.le (|
-                                                    M.read (| lo |),
-                                                    Value.Integer IntegerKind.U64 1
+                                                  LogicalOp.and (|
+                                                    BinOp.le (|
+                                                      M.read (| lo |),
+                                                      Value.Integer IntegerKind.U64 1
+                                                    |),
+                                                    ltac:(M.monadic
+                                                      (BinOp.ge (|
+                                                        M.read (| q |),
+                                                        M.cast
+                                                          (Ty.path "i64")
+                                                          (M.read (|
+                                                            M.get_constant
+                                                              "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_ROUND_TO_EVEN"
+                                                          |))
+                                                      |)))
                                                   |),
                                                   ltac:(M.monadic
-                                                    (BinOp.ge (|
+                                                    (BinOp.le (|
                                                       M.read (| q |),
                                                       M.cast
                                                         (Ty.path "i64")
                                                         (M.read (|
                                                           M.get_constant
-                                                            "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_ROUND_TO_EVEN"
+                                                            "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_ROUND_TO_EVEN"
                                                         |))
                                                     |)))
                                                 |),
                                                 ltac:(M.monadic
-                                                  (BinOp.le (|
-                                                    M.read (| q |),
-                                                    M.cast
-                                                      (Ty.path "i64")
-                                                      (M.read (|
-                                                        M.get_constant
-                                                          "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_ROUND_TO_EVEN"
-                                                      |))
+                                                  (BinOp.eq (|
+                                                    BinOp.bit_and
+                                                      (M.read (| mantissa |))
+                                                      (Value.Integer IntegerKind.U64 3),
+                                                    Value.Integer IntegerKind.U64 1
                                                   |)))
                                               |),
                                               ltac:(M.monadic
                                                 (BinOp.eq (|
-                                                  BinOp.bit_and
-                                                    (M.read (| mantissa |))
-                                                    (Value.Integer IntegerKind.U64 3),
-                                                  Value.Integer IntegerKind.U64 1
-                                                |)))
-                                            |),
-                                            ltac:(M.monadic
-                                              (BinOp.eq (|
-                                                BinOp.Wrap.shl (|
-                                                  M.read (| mantissa |),
-                                                  BinOp.Wrap.sub (|
+                                                  BinOp.Wrap.shl (|
+                                                    M.read (| mantissa |),
                                                     BinOp.Wrap.sub (|
-                                                      BinOp.Wrap.add (|
-                                                        M.read (| upperbit |),
-                                                        Value.Integer IntegerKind.I32 64
+                                                      BinOp.Wrap.sub (|
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| upperbit |),
+                                                          Value.Integer IntegerKind.I32 64
+                                                        |),
+                                                        M.cast
+                                                          (Ty.path "i32")
+                                                          (M.read (|
+                                                            M.get_constant
+                                                              "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                                          |))
                                                       |),
-                                                      M.cast
-                                                        (Ty.path "i32")
-                                                        (M.read (|
-                                                          M.get_constant
-                                                            "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                                                        |))
-                                                    |),
-                                                    Value.Integer IntegerKind.I32 3
-                                                  |)
-                                                |),
-                                                M.read (| hi |)
-                                              |)))
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.alloc (|
+                                                      Value.Integer IntegerKind.I32 3
+                                                    |)
+                                                  |),
+                                                  M.read (| hi |)
+                                                |)))
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
                                         let β := mantissa in
                                         M.write (|
                                           β,
                                           BinOp.bit_and
                                             (M.read (| β |))
                                             (UnOp.not (| Value.Integer IntegerKind.U64 1 |))
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
-                              let β := mantissa in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.add (|
-                                  M.read (| β |),
-                                  BinOp.bit_and
-                                    (M.read (| mantissa |))
-                                    (Value.Integer IntegerKind.U64 1)
-                                |)
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
-                            M.alloc (|
-                              let β := mantissa in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                            let β := mantissa in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.add (|
+                                M.read (| β |),
+                                BinOp.bit_and
+                                  (M.read (| mantissa |))
+                                  (Value.Integer IntegerKind.U64 1)
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.ge (|
-                                            M.read (| mantissa |),
-                                            BinOp.Wrap.shl (|
-                                              Value.Integer IntegerKind.U64 2,
-                                              M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                            let β := mantissa in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                            |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.ge (|
+                                              M.read (| mantissa |),
+                                              BinOp.Wrap.shl (|
+                                                Value.Integer IntegerKind.U64 2,
+                                                M.read (|
+                                                  M.get_constant
+                                                    "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.alloc (|
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
                                         M.write (|
                                           mantissa,
                                           BinOp.Wrap.shl (|
@@ -646,10 +635,8 @@ Module num.
                                                 "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                                             |)
                                           |)
-                                        |)
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.alloc (|
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
                                         let β := power2 in
                                         M.write (|
                                           β,
@@ -657,60 +644,60 @@ Module num.
                                             M.read (| β |),
                                             Value.Integer IntegerKind.I32 1
                                           |)
-                                        |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
-                              let β := mantissa in
-                              M.write (|
-                                β,
-                                BinOp.bit_and
-                                  (M.read (| β |))
-                                  (UnOp.not (|
-                                    BinOp.Wrap.shl (|
-                                      Value.Integer IntegerKind.U64 1,
-                                      M.read (|
-                                        M.get_constant
-                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                                      |)
-                                    |)
-                                  |))
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
-                            M.match_operator (|
-                              Some (Ty.tuple []),
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.ge (|
-                                            M.read (| power2 |),
-                                            M.read (|
-                                              M.get_constant
-                                                "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
+                            let β := mantissa in
+                            M.write (|
+                              β,
+                              BinOp.bit_and
+                                (M.read (| β |))
+                                (UnOp.not (|
+                                  BinOp.Wrap.shl (|
+                                    Value.Integer IntegerKind.U64 1,
+                                    M.read (|
+                                      M.get_constant
+                                        "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                    |)
+                                  |)
+                                |))
+                            |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.ge (|
+                                              M.read (| power2 |),
+                                              M.read (|
+                                                M.get_constant
+                                                  "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
+                                              |)
                                             |)
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      M.never_to_any (|
-                                        M.read (| M.return_ (| M.read (| fp_inf |) |) |)
-                                      |)
-                                    |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                              ]
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.read (| M.return_ (| M.read (| fp_inf |) |) |)
+                                        |)
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
                             |) in
                           M.alloc (|
                             Value.StructRecord
@@ -778,11 +765,9 @@ Module num.
             let b := M.alloc (| b |) in
             M.read (|
               let~ r : Ty.path "u128" :=
-                M.alloc (|
-                  BinOp.Wrap.mul (|
-                    M.cast (Ty.path "u128") (M.read (| a |)),
-                    M.cast (Ty.path "u128") (M.read (| b |))
-                  |)
+                BinOp.Wrap.mul (|
+                  M.cast (Ty.path "u128") (M.read (| a |)),
+                  M.cast (Ty.path "u128") (M.read (| b |))
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -847,169 +832,181 @@ Module num.
             let precision := M.alloc (| precision |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.match_operator (|
-                            Some (Ty.tuple []),
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          BinOp.ge (|
-                                            M.read (| q |),
-                                            M.cast
-                                              (Ty.path "i64")
-                                              (M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
-                                              |))
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            UnOp.not (|
+                                              BinOp.ge (|
+                                                M.read (| q |),
+                                                M.cast
+                                                  (Ty.path "i64")
+                                                  (M.read (|
+                                                    M.get_constant
+                                                      "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
+                                                  |))
+                                              |)
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (| "core::panicking::panic", [], [] |),
+                                            [
+                                              mk_str (|
+                                                "assertion failed: q >= SMALLEST_POWER_OF_FIVE as i64"
+                                              |)
+                                            ]
                                           |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          mk_str (|
-                                            "assertion failed: q >= SMALLEST_POWER_OF_FIVE as i64"
-                                          |)
-                                        ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.match_operator (|
-                            Some (Ty.tuple []),
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          BinOp.le (|
-                                            M.read (| q |),
-                                            M.cast
-                                              (Ty.path "i64")
-                                              (M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE"
-                                              |))
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            UnOp.not (|
+                                              BinOp.le (|
+                                                M.read (| q |),
+                                                M.cast
+                                                  (Ty.path "i64")
+                                                  (M.read (|
+                                                    M.get_constant
+                                                      "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE"
+                                                  |))
+                                              |)
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (| "core::panicking::panic", [], [] |),
+                                            [
+                                              mk_str (|
+                                                "assertion failed: q <= LARGEST_POWER_OF_FIVE as i64"
+                                              |)
+                                            ]
                                           |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          mk_str (|
-                                            "assertion failed: q <= LARGEST_POWER_OF_FIVE as i64"
-                                          |)
-                                        ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.match_operator (|
-                            Some (Ty.tuple []),
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          BinOp.le (|
-                                            M.read (| precision |),
-                                            Value.Integer IntegerKind.Usize 64
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            UnOp.not (|
+                                              BinOp.le (|
+                                                M.read (| precision |),
+                                                Value.Integer IntegerKind.Usize 64
+                                              |)
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (| "core::panicking::panic", [], [] |),
+                                            [ mk_str (| "assertion failed: precision <= 64" |) ]
                                           |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ mk_str (| "assertion failed: precision <= 64" |) ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               let~ mask : Ty.path "u64" :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Some (Ty.path "u64"),
                     M.alloc (| Value.Tuple [] |),
@@ -1039,18 +1036,16 @@ Module num.
                   |)
                 |) in
               let~ index : Ty.path "usize" :=
-                M.alloc (|
-                  M.cast
-                    (Ty.path "usize")
-                    (BinOp.Wrap.sub (|
-                      M.read (| q |),
-                      M.cast
-                        (Ty.path "i64")
-                        (M.read (|
-                          M.get_constant "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
-                        |))
-                    |))
-                |) in
+                M.cast
+                  (Ty.path "usize")
+                  (BinOp.Wrap.sub (|
+                    M.read (| q |),
+                    M.cast
+                      (Ty.path "i64")
+                      (M.read (|
+                        M.get_constant "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
+                      |))
+                  |)) in
               M.match_operator (|
                 None,
                 M.SubPointer.get_array_field (|
@@ -1087,50 +1082,50 @@ Module num.
                               let first_lo := M.copy (| γ0_0 |) in
                               let first_hi := M.copy (| γ0_1 |) in
                               let~ _ : Ty.tuple [] :=
-                                M.match_operator (|
-                                  Some (Ty.tuple []),
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              BinOp.eq (|
-                                                BinOp.bit_and
-                                                  (M.read (| first_hi |))
-                                                  (M.read (| mask |)),
-                                                M.read (| mask |)
+                                M.read (|
+                                  M.match_operator (|
+                                    Some (Ty.tuple []),
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                BinOp.eq (|
+                                                  BinOp.bit_and
+                                                    (M.read (| first_hi |))
+                                                    (M.read (| mask |)),
+                                                  M.read (| mask |)
+                                                |)
+                                              |)) in
+                                          let _ :=
+                                            M.is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.match_operator (|
+                                            None,
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
+                                                M.get_function (|
+                                                  "core::num::dec2flt::lemire::full_multiplication",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| w |); M.read (| hi5 |) ]
                                               |)
-                                            |)) in
-                                        let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        M.match_operator (|
-                                          None,
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
-                                              M.get_function (|
-                                                "core::num::dec2flt::lemire::full_multiplication",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| w |); M.read (| hi5 |) ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                let γ0_1 :=
-                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                let second_hi := M.copy (| γ0_1 |) in
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.alloc (|
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                  let γ0_1 :=
+                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                  let second_hi := M.copy (| γ0_1 |) in
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.write (|
                                                       first_lo,
                                                       M.call_closure (|
@@ -1146,29 +1141,27 @@ Module num.
                                                           M.read (| second_hi |)
                                                         ]
                                                       |)
-                                                    |)
-                                                  |) in
-                                                M.match_operator (|
-                                                  Some (Ty.tuple []),
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use
-                                                            (M.alloc (|
-                                                              BinOp.gt (|
-                                                                M.read (| second_hi |),
-                                                                M.read (| first_lo |)
-                                                              |)
-                                                            |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        let~ _ : Ty.tuple [] :=
-                                                          M.alloc (|
+                                                    |) in
+                                                  M.match_operator (|
+                                                    Some (Ty.tuple []),
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                BinOp.gt (|
+                                                                  M.read (| second_hi |),
+                                                                  M.read (| first_lo |)
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ _ : Ty.tuple [] :=
                                                             let β := first_hi in
                                                             M.write (|
                                                               β,
@@ -1176,18 +1169,18 @@ Module num.
                                                                 M.read (| β |),
                                                                 Value.Integer IntegerKind.U64 1
                                                               |)
-                                                            |)
-                                                          |) in
-                                                        M.alloc (| Value.Tuple [] |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                  ]
+                                                            |) in
+                                                          M.alloc (| Value.Tuple [] |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Tuple [] |)))
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)));
+                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |)
                                 |) in
                               M.alloc (|
                                 Value.Tuple [ M.read (| first_lo |); M.read (| first_hi |) ]

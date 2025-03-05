@@ -13,34 +13,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "std::io::stdio::_print", [], [] |),
-              [
-                M.call_closure (|
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "std::io::stdio::_print", [], [] |),
+            [
+              M.call_closure (|
+                Ty.path "core::fmt::Arguments",
+                M.get_associated_function (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Arguments",
-                    "new_const",
-                    [ Value.Integer IntegerKind.Usize 1 ],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (| Value.Array [ mk_str (| "Hello!
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Value.Array [ mk_str (| "Hello!
 " |) ] |)
-                        |)
                       |)
                     |)
-                  ]
-                |)
-              ]
-            |)
+                  |)
+                ]
+              |)
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -176,75 +176,73 @@ Module bls12_381.
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.eq (| M.read (| k |), Value.Integer IntegerKind.Usize 0 |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ index : Ty.path "usize" :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
                       [
-                        BinOp.Wrap.sub (| M.read (| k |), Value.Integer IntegerKind.Usize 1 |);
-                        BinOp.Wrap.sub (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
-                                  |)
-                                |)
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.eq (| M.read (| k |), Value.Integer IntegerKind.Usize 0 |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
                               |)
-                            ]
-                          |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |)
                   |) in
-                let~ discount : Ty.path "u64" :=
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "u64")
-                      (M.read (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (|
-                            M.read (|
-                              M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
-                            |)
+                let~ index : Ty.path "usize" :=
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
+                    [
+                      BinOp.Wrap.sub (| M.read (| k |), Value.Integer IntegerKind.Usize 1 |);
+                      BinOp.Wrap.sub (|
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                            "len",
+                            [],
+                            []
                           |),
-                          M.read (| index |)
-                        |)
-                      |))
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.read (|
+                                  M.get_constant
+                                    "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                                |)
+                              |)
+                            |)
+                          ]
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
+                    ]
                   |) in
+                let~ discount : Ty.path "u64" :=
+                  M.cast
+                    (Ty.path "u64")
+                    (M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.deref (|
+                          M.read (|
+                            M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                          |)
+                        |),
+                        M.read (| index |)
+                      |)
+                    |)) in
                 M.alloc (|
                   BinOp.Wrap.div (|
                     BinOp.Wrap.mul (|

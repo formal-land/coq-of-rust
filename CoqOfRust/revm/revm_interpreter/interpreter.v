@@ -98,35 +98,27 @@ Module interpreter.
                       [ Value.Integer IntegerKind.Usize 9 ]
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   ] :=
-              M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            mk_str (| "bytecode" |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "stack" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| mk_str (| "return_data" |) |)
-                            |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| mk_str (| "sub_routine" |) |)
-                            |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "control" |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| mk_str (| "runtime_flag" |) |)
-                            |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "extend" |) |) |)
-                          ]
-                      |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.Array
+                        [
+                          mk_str (| "bytecode" |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "stack" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_data" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "sub_routine" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "control" |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| mk_str (| "runtime_flag" |) |)
+                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "extend" |) |) |)
+                        ]
                     |)
                   |)
                 |)
@@ -141,139 +133,137 @@ Module interpreter.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                   ] :=
-              M.alloc (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "bytecode"
-                                  |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "bytecode"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "stack"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "stack"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "return_data"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "return_data"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "memory"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "memory"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "input"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "input"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "sub_routine"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "sub_routine"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "control"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "control"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "revm_interpreter::interpreter::Interpreter",
-                                    "runtime_flag"
-                                  |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_interpreter::interpreter::Interpreter",
+                                  "runtime_flag"
                                 |)
                               |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "extend"
-                                      |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "extend"
                                     |)
                                   |)
                                 |)
                               |)
                             |)
-                          ]
-                      |)
+                          |)
+                        ]
                     |)
                   |)
                 |)
@@ -733,26 +723,24 @@ Module interpreter.
           M.read (|
             let~ runtime_flag :
                 Ty.path "revm_interpreter::interpreter::runtime_flags::RuntimeFlags" :=
-              M.alloc (|
-                Value.StructRecord
-                  "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
-                  [
-                    ("spec_id", M.read (| spec_id |));
-                    ("is_static", M.read (| is_static |));
-                    ("is_eof",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_associated_function (|
-                          Ty.path "revm_bytecode::bytecode::Bytecode",
-                          "is_eof",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, bytecode |) ]
-                      |));
-                    ("is_eof_init", M.read (| is_eof_init |))
-                  ]
-              |) in
+              Value.StructRecord
+                "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
+                [
+                  ("spec_id", M.read (| spec_id |));
+                  ("is_static", M.read (| is_static |));
+                  ("is_eof",
+                    M.call_closure (|
+                      Ty.path "bool",
+                      M.get_associated_function (|
+                        Ty.path "revm_bytecode::bytecode::Bytecode",
+                        "is_eof",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, bytecode |) ]
+                    |));
+                  ("is_eof_init", M.read (| is_eof_init |))
+                ] in
             M.alloc (|
               Value.StructRecord
                 "revm_interpreter::interpreter::Interpreter"
@@ -1349,15 +1337,13 @@ Module interpreter.
           let host := M.alloc (| host |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.read (| M.deref (| M.read (| self |) |) |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| host |) |) |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.read (| M.deref (| M.read (| self |) |) |),
+                [
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| interpreter |) |) |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| host |) |) |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -1426,65 +1412,61 @@ Module interpreter.
           let host := M.alloc (| host |) in
           M.read (|
             let~ opcode : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_trait_method (|
-                    "revm_interpreter::interpreter_types::Jumps",
-                    Ty.associated_in_trait
-                      "revm_interpreter::interpreter_types::InterpreterTypes"
-                      []
-                      []
-                      IW
-                      "Bytecode",
-                    [],
-                    [],
-                    "opcode",
-                    [],
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_trait_method (|
+                  "revm_interpreter::interpreter_types::Jumps",
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
                     []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::Interpreter",
-                        "bytecode"
-                      |)
+                    []
+                    IW
+                    "Bytecode",
+                  [],
+                  [],
+                  "opcode",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::Interpreter",
+                      "bytecode"
                     |)
-                  ]
-                |)
+                  |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "revm_interpreter::interpreter_types::Jumps",
-                    Ty.associated_in_trait
-                      "revm_interpreter::interpreter_types::InterpreterTypes"
-                      []
-                      []
-                      IW
-                      "Bytecode",
-                    [],
-                    [],
-                    "relative_jump",
-                    [],
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "revm_interpreter::interpreter_types::Jumps",
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
                     []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::Interpreter",
-                        "bytecode"
-                      |)
-                    |);
-                    Value.Integer IntegerKind.Isize 1
-                  ]
-                |)
+                    []
+                    IW
+                    "Bytecode",
+                  [],
+                  [],
+                  "relative_jump",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::Interpreter",
+                      "bytecode"
+                    |)
+                  |);
+                  Value.Integer IntegerKind.Isize 1
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1566,102 +1548,100 @@ Module interpreter.
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "revm_interpreter::interpreter_types::LoopControl",
-                        Ty.associated_in_trait
-                          "revm_interpreter::interpreter_types::InterpreterTypes"
-                          []
-                          []
-                          IW
-                          "Control",
-                        [],
-                        [],
-                        "set_next_action",
-                        [],
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "revm_interpreter::interpreter_types::LoopControl",
+                      Ty.associated_in_trait
+                        "revm_interpreter::interpreter_types::InterpreterTypes"
                         []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "control"
-                          |)
-                        |);
-                        Value.StructTuple
-                          "revm_interpreter::interpreter_action::InterpreterAction::None"
-                          [];
-                        Value.StructTuple
-                          "revm_interpreter::instruction_result::InstructionResult::Continue"
-                          []
-                      ]
-                    |)
+                        []
+                        IW
+                        "Control",
+                      [],
+                      [],
+                      "set_next_action",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::Interpreter",
+                          "control"
+                        |)
+                      |);
+                      Value.StructTuple
+                        "revm_interpreter::interpreter_action::InterpreterAction::None"
+                        [];
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::Continue"
+                        []
+                    ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.loop (|
-                    Ty.tuple [],
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Some (Ty.tuple []),
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.path
-                                          "revm_interpreter::instruction_result::InstructionResult",
-                                        "is_continue",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
+                  M.read (|
+                    M.loop (|
+                      Ty.tuple [],
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          Some (Ty.tuple []),
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
                                           Ty.path
                                             "revm_interpreter::instruction_result::InstructionResult",
-                                          M.get_trait_method (|
-                                            "revm_interpreter::interpreter_types::LoopControl",
-                                            Ty.associated_in_trait
-                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                          "is_continue",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.path
+                                              "revm_interpreter::instruction_result::InstructionResult",
+                                            M.get_trait_method (|
+                                              "revm_interpreter::interpreter_types::LoopControl",
+                                              Ty.associated_in_trait
+                                                "revm_interpreter::interpreter_types::InterpreterTypes"
+                                                []
+                                                []
+                                                IW
+                                                "Control",
+                                              [],
+                                              [],
+                                              "instruction_result",
+                                              [],
                                               []
-                                              []
-                                              IW
-                                              "Control",
-                                            [],
-                                            [],
-                                            "instruction_result",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "control"
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "control"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              let~ _ : Ty.tuple [] :=
-                                M.alloc (|
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_associated_function (|
@@ -1687,84 +1667,82 @@ Module interpreter.
                                         M.deref (| M.read (| host |) |)
                                       |)
                                     ]
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
+                                        M.never_to_any (| M.read (| M.break (||) |) |) in
+                                      M.alloc (| Value.Tuple [] |)
+                                    |)
                                   |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    let~ _ : Ty.tuple [] :=
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |) in
-                                    M.alloc (| Value.Tuple [] |)
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)))
-                  |) in
-                let~ action : Ty.path "revm_interpreter::interpreter_action::InterpreterAction" :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
-                      M.get_trait_method (|
-                        "revm_interpreter::interpreter_types::LoopControl",
-                        Ty.associated_in_trait
-                          "revm_interpreter::interpreter_types::InterpreterTypes"
-                          []
-                          []
-                          IW
-                          "Control",
-                        [],
-                        [],
-                        "take_next_action",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::Interpreter",
-                            "control"
-                          |)
-                        |)
-                      ]
+                                |)))
+                          ]
+                        |)))
                     |)
                   |) in
-                let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
+                let~ action : Ty.path "revm_interpreter::interpreter_action::InterpreterAction" :=
+                  M.call_closure (|
+                    Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
+                    M.get_trait_method (|
+                      "revm_interpreter::interpreter_types::LoopControl",
+                      Ty.associated_in_trait
+                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                        []
+                        []
+                        IW
+                        "Control",
+                      [],
+                      [],
+                      "take_next_action",
+                      [],
+                      []
+                    |),
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_associated_function (|
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::InterpreterAction",
-                                    "is_some",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, action |) ]
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (| M.read (| M.return_ (| M.read (| action |) |) |) |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::Interpreter",
+                          "control"
+                        |)
+                      |)
                     ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_associated_function (|
+                                      Ty.path
+                                        "revm_interpreter::interpreter_action::InterpreterAction",
+                                      "is_some",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, action |) ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (| M.read (| M.return_ (| M.read (| action |) |) |) |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (|
                   Value.StructRecord
