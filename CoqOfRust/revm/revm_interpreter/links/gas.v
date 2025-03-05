@@ -392,9 +392,7 @@ Module Impl_Default_for_Gas.
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
-      run_symbolic_closure. {
-        apply run_default_u64.
-      }
+      run_symbolic_closure.
       intros []; run_symbolic.
     }
   Defined.
