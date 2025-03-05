@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require alloc.links.slice.
 Require core.links.array.
 Require core.ops.links.deref.
 Require core.ops.links.range.
@@ -141,7 +140,7 @@ Module MemoryTrait.
       forall
         (self : Ref.t Pointer.Kind.MutRef Self)
         (memory_offset data_offset len : Usize.t)
-        (data : Ref.t Pointer.Kind.Ref (slice.t U8.t)),
+        (data : Ref.t Pointer.Kind.Ref (Slice.t U8.t)),
       {{ set_data [] [] [ φ self; φ memory_offset; φ data_offset; φ len; φ data ] 🔽 unit }}
     }.
 
