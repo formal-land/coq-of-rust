@@ -290,7 +290,7 @@ Module Gas.
         ("memory", memory')
       ]
     ).
-  Proof. econstructor; apply of_value_impl; eassumption. Defined.
+  Proof. econstructor; apply of_value_with; eassumption. Defined.
   Smpl Add apply of_value : of_value.
 
   Module SubPointer.
