@@ -68,6 +68,56 @@ Module ruint.
         (array.t U8.t BYTES).
     Admitted.
   End Impl_Uint.
+  Module Impl_from_Uint.
+    Definition Self (BITS LIMBS : Usize.t) : Set :=
+      ruint.Uint.t BITS LIMBS.
+  
+    Definition Self_ty (BITS LIMBS : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
+  
+    (* pub const fn from(value: Usize.t) -> Self *)
+    Parameter from : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+  
+    Global Instance from_IsAssociated :
+      forall (BITS LIMBS : Value.t),
+      M.IsAssociatedFunction.Trait
+        (Self_ty BITS LIMBS)
+        "from"
+        (from BITS LIMBS).
+    Admitted.
+  
+    Parameter run_from :
+      forall (BITS LIMBS : Usize.t) (value : Usize.t),
+      {{ from (φ BITS) (φ LIMBS) [] [] [ φ value ] 🔽 Self BITS LIMBS }}.
+    End Impl_from_Uint.
+
+    Module Impl_PartialOrd_for_Uint.
+      Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
+    
+      Parameter lt : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+    
+      Axiom Implements :
+        forall (BITS LIMBS : Value.t) (trait_tys : list Ty.t),
+          M.IsTraitInstance
+            "core::cmp::PartialOrd"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) trait_tys
+            (Self BITS LIMBS)
+            (* Instance *) [ ("lt", InstanceField.Method (lt BITS LIMBS)) ].
+    
+      Definition run_lt :
+        forall (BITS LIMBS : Usize.t),
+        forall (x1 x2 : Ref.t Pointer.Kind.Ref (ruint.Uint.t BITS LIMBS)),
+        {{ lt (φ BITS) (φ LIMBS) [] [] [ φ x1; φ x2 ] 🔽 bool }}.
+      Admitted.
+    
+      Definition run (BITS LIMBS : Value.t) :
+        PolymorphicFunction.t.
+      Proof.
+        exact (lt BITS LIMBS).
+      Defined.
+    End Impl_PartialOrd_for_Uint.
 End ruint.
 
 Module alloy_primitives.
