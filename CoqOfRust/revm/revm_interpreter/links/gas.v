@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
 Require core.links.cmp.
@@ -260,7 +259,7 @@ Module Gas.
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
 
-  Lemma of_value_impl limit limit' remaining remaining' refunded refunded' memory memory' :
+  Lemma of_value_with limit limit' remaining remaining' refunded refunded' memory memory' :
     limit' = φ limit ->
     remaining' = φ remaining ->
     refunded' = φ refunded ->
@@ -272,7 +271,7 @@ Module Gas.
       ("memory", memory')
     ] = φ (Build_t limit remaining refunded memory).
   Proof. now intros; subst. Qed.
-  Smpl Add apply of_value_impl : of_value.
+  Smpl Add apply of_value_with : of_value.
 
   Definition of_value
       (limit : U64.t) limit'
@@ -291,7 +290,7 @@ Module Gas.
         ("memory", memory')
       ]
     ).
-  Proof. econstructor; apply of_value_impl; eassumption. Defined.
+  Proof. econstructor; apply of_value_with; eassumption. Defined.
   Smpl Add apply of_value : of_value.
 
   Module SubPointer.
@@ -393,9 +392,7 @@ Module Impl_Default_for_Gas.
       eapply Run.CallPrimitiveGetTraitMethod. {
         apply H_default_u64.
       }
-      run_symbolic_closure. {
-        apply run_default_u64.
-      }
+      run_symbolic_closure.
       intros []; run_symbolic.
     }
   Defined.

@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import revm.revm_interpreter.instructions.control.
 Require Import revm.revm_interpreter.links.interpreter.

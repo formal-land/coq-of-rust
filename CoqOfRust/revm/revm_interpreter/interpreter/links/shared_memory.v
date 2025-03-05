@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require Import CoqOfRust.core.links.option.
 Require Import CoqOfRust.core.links.array.
@@ -26,8 +27,8 @@ Require Import CoqOfRust.core.links.array.
 *)
 Module SharedMemory.
   Record t : Set := {
-    buffer : Vec.t U8.t;
-    checkpoints : Vec.t Usize.t;
+    buffer : Vec.t U8.t Global.t;
+    checkpoints : Vec.t Usize.t Global.t;
     last_checkpoint : Usize.t;
     memory_limit : option U64.t;
   }.
