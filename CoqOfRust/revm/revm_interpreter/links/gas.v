@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require core.links.clone.
 Require core.links.cmp.
