@@ -114,14 +114,7 @@ Module Impl_Gas.
     apply H; clear H.
     apply Run.StateRead. {
       cbn.
-      epose proof (
-        Stack.CanRead.Mutable
-          [Self]
-          0%nat
-          _
-          _
-          (fun big_a : links.gas.Impl_Gas.Self => Some big_a.(Gas.limit))
-      ).
+      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
       apply H.
     }
     cbn; intros.
@@ -150,16 +143,14 @@ Module Impl_Gas.
     apply H; clear H.
     apply Run.StateRead. {
       cbn.
-      epose proof (
-        Stack.CanRead.Mutable
-          [Self]
-          0%nat
-          _
-          _
-          (fun big_a : links.gas.Impl_Gas.Self => Some big_a.(Gas.remaining))
-      ).
+      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
       apply H.
     }
     cbn; intros.
+    apply Run.StateWrite. {
+      cbn.
+      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
+      apply H.
+    }
   Admitted.
 End Impl_Gas.
