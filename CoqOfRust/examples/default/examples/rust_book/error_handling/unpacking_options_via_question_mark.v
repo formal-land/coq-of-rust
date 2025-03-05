@@ -360,169 +360,170 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ p : Ty.path "unpacking_options_via_question_mark::Person" :=
-          M.alloc (|
-            Value.StructRecord
-              "unpacking_options_via_question_mark::Person"
-              [
-                ("job",
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    [
-                      Value.StructRecord
-                        "unpacking_options_via_question_mark::Job"
-                        [
-                          ("phone_number",
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              [
-                                Value.StructRecord
-                                  "unpacking_options_via_question_mark::PhoneNumber"
-                                  [
-                                    ("area_code",
-                                      Value.StructTuple
-                                        "core::option::Option::Some"
-                                        [ Value.Integer IntegerKind.U8 61 ]);
-                                    ("number", Value.Integer IntegerKind.U32 439222222)
-                                  ]
-                              ])
-                        ]
-                    ])
-              ]
-          |) in
+          Value.StructRecord
+            "unpacking_options_via_question_mark::Person"
+            [
+              ("job",
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [
+                    Value.StructRecord
+                      "unpacking_options_via_question_mark::Job"
+                      [
+                        ("phone_number",
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              Value.StructRecord
+                                "unpacking_options_via_question_mark::PhoneNumber"
+                                [
+                                  ("area_code",
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [ Value.Integer IntegerKind.U8 61 ]);
+                                  ("number", Value.Integer IntegerKind.U32 439222222)
+                                ]
+                            ])
+                      ]
+                  ])
+            ] in
         let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (|
-              Value.Tuple
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "unpacking_options_via_question_mark::Person",
-                          "work_phone_area_code",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, p |) ]
+          M.read (|
+            M.match_operator (|
+              Some (Ty.tuple []),
+              M.alloc (|
+                Value.Tuple
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.path "unpacking_options_via_question_mark::Person",
+                            "work_phone_area_code",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, p |) ]
+                        |)
+                      |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ Value.Integer IntegerKind.U8 61 ]
                       |)
                     |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [ Value.Integer IntegerKind.U8 61 ]
-                    |)
-                  |)
-                ]
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let left_val := M.copy (| γ0_0 |) in
-                  let right_val := M.copy (| γ0_1 |) in
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                UnOp.not (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                                      [],
+                  ]
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let left_val := M.copy (| γ0_0 |) in
+                    let right_val := M.copy (| γ0_1 |) in
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u8" ],
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u8" ]
+                                        ],
+                                        "eq",
+                                        [],
+                                        []
+                                      |),
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u8" ]
-                                      ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| left_val |) |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| right_val |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                  M.alloc (|
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" []
-                                  |) in
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (|
-                                      "core::panicking::assert_failed",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u8" ];
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u8" ]
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| left_val |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| right_val |) |)
+                                        |)
                                       ]
-                                    |),
-                                    [
-                                      M.read (| kind |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| left_val |) |)
+                                    |)
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] in
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "never",
+                                      M.get_function (|
+                                        "core::panicking::assert_failed",
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u8" ];
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u8" ]
+                                        ]
+                                      |),
+                                      [
+                                        M.read (| kind |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
                                           |)
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| right_val |) |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
                                           |)
-                                        |)
-                                      |);
-                                      Value.StructTuple "core::option::Option::None" []
-                                    ]
+                                        |);
+                                        Value.StructTuple "core::option::Option::None" []
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |)))
-            ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)))
+              ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

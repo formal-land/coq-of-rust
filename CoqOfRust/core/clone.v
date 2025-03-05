@@ -127,20 +127,18 @@ Module clone.
           let dst := M.alloc (| dst |) in
           M.read (|
             let~ dst : Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                    "with_metadata_of",
-                    [],
-                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                  |),
-                  [
-                    M.read (| dst |);
-                    M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                  "with_metadata_of",
+                  [],
+                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                |),
+                [
+                  M.read (| dst |);
+                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|

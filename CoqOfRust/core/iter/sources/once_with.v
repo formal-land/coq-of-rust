@@ -228,7 +228,7 @@ Module iter.
                 ltac:(M.monadic
                   (M.read (|
                     let~ f : F :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some F,
                           M.alloc (|

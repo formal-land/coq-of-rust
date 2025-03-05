@@ -71,10 +71,8 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                       (let γ := M.read (| γ |) in
                       let end_ := M.copy (| γ |) in
                       M.read (|
-                        let~ start : Ty.path "u32" :=
-                          M.alloc (| M.cast (Ty.path "u32") (M.read (| start |)) |) in
-                        let~ end_ : Ty.path "u32" :=
-                          M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
+                        let~ start : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| start |)) in
+                        let~ end_ : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| end_ |)) in
                         M.match_operator (|
                           Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
                           M.alloc (| Value.Tuple [] |),
@@ -92,9 +90,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                     Value.Bool true
                                   |) in
                                 let~ count : Ty.path "u32" :=
-                                  M.alloc (|
-                                    BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
-                                  |) in
+                                  BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |) in
                                 M.match_operator (|
                                   Some
                                     (Ty.apply

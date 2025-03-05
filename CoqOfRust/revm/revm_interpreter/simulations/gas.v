@@ -102,32 +102,31 @@ Module Impl_Gas.
           self.limit
       }
   *)
-  Definition run_limit :
-    let self := {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
-    {{ [Self] 🌲 links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f) }}.
+  Definition run_limit (Stack : Stack.t)
+      (self : Ref.t Pointer.Kind.Ref Self)
+      (H_self : Stack.CanAccess.t Stack self.(Ref.core)) :
+    {{ Stack 🌲 links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f) }}.
   Proof.
     cbn.
-    set (ref_core := Ref.Core.Mutable _ _ _ _ _).
-    epose proof (Run.GetSubPointer _ _ ref_core Gas.SubPointer.get_limit).
+    epose proof (Run.GetSubPointer _ _ self.(Ref.core) Gas.SubPointer.get_limit).
     apply H; clear H.
     apply Run.StateRead. {
-      cbn.
-      epose proof (
-        Stack.CanRead.Mutable
-          [Self]
-          0%nat
-          _
-          _
-          (fun big_a : links.gas.Impl_Gas.Self => Some big_a.(Gas.limit))
-      ).
-      apply H.
+      now apply (Stack.CanAccess.runner Gas.SubPointer.get_limit).
     }
-    cbn; intros.
+    intros.
     apply Run.Pure.
   Defined.
 
   Lemma limit_eq (self : Self) :
-    M.evaluate run_limit self =
+    let Stack := [Self] in
+    let ref_self: Ref.t Pointer.Kind.Ref Self :=
+      {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
+    M.evaluate (
+      run_limit
+        [Self]
+        ref_self
+        ltac:(apply (Stack.CanAccess.Mutable (A := Gas.t) Stack 0 []))
+    ) self =
     (Output.Success self.(Gas.limit), self).
   Proof.
     reflexivity.
@@ -148,16 +147,39 @@ Module Impl_Gas.
     apply H; clear H.
     apply Run.StateRead. {
       cbn.
-      epose proof (
-        Stack.CanRead.Mutable
-          [Self]
-          0%nat
-          _
-          _
-          (fun big_a : links.gas.Impl_Gas.Self => Some big_a.(Gas.remaining))
-      ).
+      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
       apply H.
     }
-    cbn; intros.
-  Admitted.
+    intros.
+    apply Run.StateWrite. {
+      cbn.
+      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
+      apply H.
+    }
+    apply Run.LetAlloc. {
+      apply Run.Pure.
+    }
+    intros []; cbn; apply Run.Pure.
+  Defined.
+
+  Lemma erase_cost_eq (self : Self) (returned : U64.t) :
+    M.evaluate (
+      run_erase_cost returned
+    ) self =
+    (Output.Success tt, {|
+      Gas.limit := self.(Gas.limit);
+      Gas.remaining := {| Integer.value := 12 |};
+      Gas.refunded := self.(Gas.refunded);
+      Gas.memory := self.(Gas.memory);
+    |}).
+  Proof.
+    cbn.
+    set (foo := {|
+      Integer.value :=
+        (self.(Gas.remaining).(Integer.value) +
+         returned.(Integer.value))
+        mod 18446744073709551616
+    |}).
+    simpl.
+  Qed.
 End Impl_Gas.

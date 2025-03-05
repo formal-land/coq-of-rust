@@ -1258,7 +1258,7 @@ fn compile_stmts<'a>(
                             ty: init_ty
                                 .as_ref()
                                 .map(|init_ty| compile_type(env, &pattern.span, generics, init_ty)),
-                            init: init.copy(),
+                            init: init.read(),
                             body,
                         }),
                         _ => build_match(
@@ -1284,7 +1284,7 @@ fn compile_stmts<'a>(
                     Rc::new(Expr::Let {
                         name: None,
                         ty: Some(compile_type(env, &expr.span, generics, init_ty)),
-                        init,
+                        init: init.read(),
                         body,
                     })
                 }

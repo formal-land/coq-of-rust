@@ -111,26 +111,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ circle : Ty.path "converting_to_string::Circle" :=
-          M.alloc (|
-            Value.StructRecord
-              "converting_to_string::Circle"
-              [ ("radius", Value.Integer IntegerKind.I32 6) ]
-          |) in
+          Value.StructRecord
+            "converting_to_string::Circle"
+            [ ("radius", Value.Integer IntegerKind.I32 6) ] in
         let~ _ : Ty.path "alloc::string::String" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "alloc::string::String",
-              M.get_trait_method (|
-                "alloc::string::ToString",
-                Ty.path "converting_to_string::Circle",
-                [],
-                [],
-                "to_string",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, circle |) ]
-            |)
+          M.call_closure (|
+            Ty.path "alloc::string::String",
+            M.get_trait_method (|
+              "alloc::string::ToString",
+              Ty.path "converting_to_string::Circle",
+              [],
+              [],
+              "to_string",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, circle |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

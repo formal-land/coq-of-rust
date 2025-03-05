@@ -552,28 +552,24 @@ Module hardfork.
           let other := M.alloc (| other |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ __arg1_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
@@ -628,28 +624,24 @@ Module hardfork.
           let other := M.alloc (| other |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ __arg1_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -700,28 +692,24 @@ Module hardfork.
           let other := M.alloc (| other |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ __arg1_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -764,16 +752,14 @@ Module hardfork.
           let state := M.alloc (| state |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u8",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "revm_specification::hardfork::SpecId" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u8",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "revm_specification::hardfork::SpecId" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
               M.call_closure (|

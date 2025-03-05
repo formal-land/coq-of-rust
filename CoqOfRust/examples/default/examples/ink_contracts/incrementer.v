@@ -79,15 +79,13 @@ Module Impl_incrementer_Incrementer.
         let by_ := M.alloc (| by_ |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "incrementer::Incrementer",
-                  "value"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| by_ |) |) |)
-            |) in
+            let β :=
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "incrementer::Incrementer",
+                "value"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| by_ |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

@@ -303,13 +303,13 @@ Module LowM.
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
-  | Let (ty : Ty.t) (e : t A) (k : A -> t A)
+  | LetAlloc (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
   Arguments CallClosure {_}.
-  Arguments Let {_}.
+  Arguments LetAlloc {_}.
   Arguments Loop {_}.
   Arguments Impossible {_}.
 
@@ -320,8 +320,8 @@ Module LowM.
       CallPrimitive primitive (fun v => let_ (k v) e2)
     | CallClosure ty f args k =>
       CallClosure ty f args (fun v => let_ (k v) e2)
-    | Let ty e k =>
-      Let ty e (fun v => let_ (k v) e2)
+    | LetAlloc ty e k =>
+      LetAlloc ty e (fun v => let_ (k v) e2)
     | Loop ty body k =>
       Loop ty body (fun v => let_ (k v) e2)
     | Impossible message => Impossible message
@@ -364,7 +364,7 @@ Definition let_user (ty : Ty.t) (e1 : Value.t) (e2 : Value.t -> Value.t) : Value
   e2 e1.
 
 Definition let_user_monadic (ty : Ty.t) (e1 : M) (e2 : Value.t -> M) : M :=
-  LowM.Let ty e1 (fun v1 =>
+  LowM.LetAlloc ty e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
@@ -695,9 +695,14 @@ Definition get_trait_method
 
 Definition catch (ty : option Ty.t) (body : M) (handler : Exception.t -> M) : M :=
   (match ty with
-  | Some ty => LowM.Let ty
+  | Some ty => LowM.LetAlloc ty
   | None => LowM.let_
-  end) body (fun result =>
+  end)
+  (match ty with
+  | Some _ => let* body := body in M.read body
+  | None => body
+  end)
+  (fun result =>
   match result with
   | inl v => LowM.Pure (inl v)
   | inr exception => handler exception
@@ -927,7 +932,7 @@ Fixpoint run_constant (constant : M) : Value.t :=
       end in
     run_constant (k value)
   | LowM.CallClosure _ _ _ _ => Value.Error "unexpected closure call"
-  | LowM.Let _ _ _ => Value.Error "unexpected let"
+  | LowM.LetAlloc _ _ _ => Value.Error "unexpected let-alloc"
   | LowM.Loop _ _ _ => Value.Error "unexpected loop"
   | LowM.Impossible _ => Value.Error "impossible"
   end.

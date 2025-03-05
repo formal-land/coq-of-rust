@@ -86,13 +86,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ decimal : Ty.path "f32" := M.copy (| UnsupportedLiteral |) in
-        let~ integer : Ty.path "u8" := M.alloc (| M.cast (Ty.path "u8") (M.read (| decimal |)) |) in
-        let~ character : Ty.path "char" :=
-          M.alloc (| M.cast (Ty.path "char") (M.read (| integer |)) |) in
+        let~ decimal : Ty.path "f32" := M.read (| UnsupportedLiteral |) in
+        let~ integer : Ty.path "u8" := M.cast (Ty.path "u8") (M.read (| decimal |)) in
+        let~ character : Ty.path "char" := M.cast (Ty.path "char") (M.read (| integer |)) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -185,12 +184,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -256,12 +255,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -327,12 +326,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -402,12 +401,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -478,12 +477,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -549,12 +548,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -620,12 +619,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -691,12 +690,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -762,12 +761,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -837,12 +836,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -912,12 +911,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -987,12 +986,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -1069,12 +1068,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -1151,12 +1150,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -1233,9 +1232,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
