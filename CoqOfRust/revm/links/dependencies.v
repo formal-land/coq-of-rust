@@ -157,7 +157,7 @@ Module alloy_primitives.
   End bits.
 
   Module links.
-    Module bytes_.
+    
       Module Bytes.
         Parameter t : Set.
 

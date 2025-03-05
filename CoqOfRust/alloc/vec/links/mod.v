@@ -76,6 +76,16 @@ End Impl_Deref_for_Vec.
 
 Module Impl_alloc_vec_Vec_T_A.
   Definition Self := Vec.t.
+
+  (*
+    pub const fn new() -> Self {
+      Vec { buf: RawVec::new(), len: 0 }
+    }
+  *)
+  Instance run_new {T A : Set} `{Link T} `{Link A} : 
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_alloc_alloc_Global.new (Φ T)) [] [] [] (Self T A).
+  Admitted.
+
   (*
     pub const fn len(&self) -> usize {
         let len = self.len;
@@ -88,7 +98,7 @@ Module Impl_alloc_vec_Vec_T_A.
         len
     }
   *)
-  Definition run_len {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
-    {{ vec.Impl_alloc_vec_Vec_T_A.len (Φ T) (Φ A) [] [] [φ self] 🔽 Usize.t }}.
+  Instance run_len {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_A.len (Φ T) (Φ A)) [] [] [φ self] Usize.t.
   Admitted.
 End Impl_alloc_vec_Vec_T_A.

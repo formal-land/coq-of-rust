@@ -87,17 +87,17 @@ Module SliceIndex.
       (Self : Set) `{Link Self}
       {T : Set} `{Link T}
       {Output : Set} `{Link Output} :
-      Set := {
-    Output_IsAssociated :
-      IsTraitAssociatedType
-        "core::slice::index::SliceIndex" [] [Φ T] (Φ Self)
-        "Output" (Φ Output);
-    get : run_get Self T Output;
-    get_mut : run_get_mut Self T Output;
-    get_unchecked : run_get_unchecked Self T Output;
-    get_unchecked_mut : run_get_unchecked_mut Self T Output;
-    index : run_index Self T Output;
-    index_mut : run_index_mut Self T Output;
+    Set := {
+      Output_IsAssociated :
+        IsTraitAssociatedType
+          "core::slice::index::SliceIndex" [] [Φ T] (Φ Self)
+          "Output" (Φ Output);
+      get : run_get Self T Output;
+      get_mut : run_get_mut Self T Output;
+      get_unchecked : run_get_unchecked Self T Output;
+      get_unchecked_mut : run_get_unchecked_mut Self T Output;
+      index : run_index Self T Output;
+      index_mut : run_index_mut Self T Output;
   }.
 End SliceIndex.
 

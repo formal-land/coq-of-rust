@@ -1195,7 +1195,7 @@ Ltac run_symbolic_closure_auto :=
     try prepare_call;
     (
       match goal with
-      | H : _ |- _ => now simple apply H
+      | H : _ |- _ => now apply H
       end ||
       (
         unshelve eapply Run.run_f;
@@ -1698,3 +1698,67 @@ Module Pair.
     Smpl Add apply get_index_1_is_valid : run_sub_pointer.
   End SubPointer.
 End Pair.
+
+Module BinOp.
+  Module Wrap.
+    Lemma make_arithmetic_eq (kind : IntegerKind.t)
+        (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
+      v1' = φ v1 ->
+      v2' = φ v2 ->
+      BinOp.Wrap.make_arithmetic bin_op v1' v2' =
+      M.pure (φ (Integer.Build_t kind (
+        Integer.normalize_wrap kind (bin_op v1.(Integer.value) v2.(Integer.value))
+      ))).
+    Proof.
+      intros -> ->.
+      now destruct kind.
+    Qed.
+
+    Ltac rewrite_make_arithmetic :=
+      match goal with
+      | |- context[BinOp.Wrap.make_arithmetic _ _ _] =>
+        eapply Run.Rewrite; [
+          (
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U8) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U16) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U32) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U64) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.U128) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.Usize) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I8) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I16) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I32) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I64) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.I128) by smpl of_value) ||
+            (erewrite (BinOp.Wrap.make_arithmetic_eq IntegerKind.Isize) by smpl of_value)
+          );
+          reflexivity
+        |]
+      end.
+    Smpl Add rewrite_make_arithmetic : run_symbolic.
+  End Wrap.
+End BinOp.
+
+Ltac rewrite_cast :=
+  change_cast_integer;
+  match goal with
+  | |- context[M.cast _ (φ _)] =>
+    eapply Run.Rewrite; [
+      (
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U8) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U16) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U32) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U64) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.U128) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.Usize) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I8) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I16) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I32) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I64) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.I128) ||
+        erewrite cast_integer_eq with (kind_source := IntegerKind.Isize)
+      );
+      reflexivity
+    |]
+  end.
+Smpl Add rewrite_cast : run_symbolic.

@@ -16,23 +16,13 @@ Module Impl_Slice.
         index.get(self)
     }
   *)
-  Definition run_get 
+  Instance run_get 
       (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
       (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
       (self : Ref.t Pointer.Kind.Ref (Self T)) 
       (index : I) :
-    {{ slice.Impl_slice_T.get (Φ T) [] [ Φ I ] [ φ self; φ index ] 🔽 option (Ref.t Pointer.Kind.Ref Output)}}.
-  Proof.
-    destruct run_SliceIndex_for_I eqn:?.
-    destruct get as [get [H_get run_get]].
-    run_symbolic.
-    eapply Run.Rewrite. {
-      erewrite IsTraitAssociatedType_eq by eassumption.
-      reflexivity.
-    }
-    run_symbolic_closure.
-    intros []; run_symbolic.
-  Defined.
+    Run.Trait (slice.Impl_slice_T.get (Φ T)) [] [Φ I] [φ self; φ index] (option (Ref.t Pointer.Kind.Ref Output)).
+  Admitted.
 End Impl_Slice.

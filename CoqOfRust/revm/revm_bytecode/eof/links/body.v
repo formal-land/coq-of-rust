@@ -9,8 +9,9 @@ Require Import revm.links.dependencies.
 Require Export revm.revm_bytecode.eof.links.body_EofBody.
 Require Export revm.revm_bytecode.eof.links.header.
 Require Import revm.revm_bytecode.eof.links.types_section.
+Require Import revm.revm_bytecode.links.eof.
 Require Import revm_bytecode.eof.body.
-Require Import core.slice.mod.
+Require Import core.slice.links.mod.
 
 Import Run.
 
@@ -223,102 +224,59 @@ Module Impl_Default_for_EofBody.
       destruct default.
       destruct default.Impl_Default_for_bool.run.
       destruct default.
-      run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
+      run_symbolic. 
     }
   Defined.
 End Impl_Default_for_EofBody.
 
 Module Impl_EofBody.
+  Import Impl_alloc_vec_Vec_T_A.
+  Import Impl_EofHeader.
+  Import Impl_Slice.
+
   Definition Self : Set := EofBody.t.
 
   (*
     pub fn code(&self, index: usize) -> Option<Bytes>
   *)
-  Definition run_code (self : Ref.t Pointer.Kind.Ref Self) (index : Usize.t) :
-    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] 🔽 option alloy_primitives.links.bytes_.Bytes.t }}.
+  Instance run_code (self : Ref.t Pointer.Kind.Ref Self) (index : Usize.t) :
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
   Proof.
+    constructor.
+    run_symbolic. 
+  Admitted.
+  
+  (*
+    pub fn encode(&self, buffer: &mut Vec<u8>)
+  *)
+  Instance run_encode (self : Ref.t Pointer.Kind.Ref Self) (buffer : Ref.t Pointer.Kind.MutPointer (Vec.t U8.t Global.t)) :
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.encode [] [] [φ self; φ buffer] unit.
+  Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_are_equal_integer; run_symbolic.
-      { run_symbolic_are_equal_bool; run_symbolic; admit. }
-      { run_symbolic_are_equal_bool; run_symbolic; admit. }
-    }
-    intros [|[]]; run_symbolic.
-    destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
-    destruct deref as [deref [H_deref run_deref]].
-    run_symbolic.
-    run_symbolic_closure. {
-      pose proof (Impl_Slice.run_get
-        Usize.t
-        (I := Usize.t)
-        (Output := Ref.t Pointer.Kind.Ref Usize.t)
-      ).
-      apply H.
-      pose proof (Impl_SliceIndex_for_Usize.run Usize.t).
-      cbn.
-      Print Impl_Slice.Self.
-      unfold Impl_Slice.Self.
-      cbn.
   Admitted.
 
   (*
     pub fn into_eof(self) -> Eof
   *)
-  Definition run_into_eof (self : Self) :
-    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.into_eof [] [] [φ self] 🔽 Eof.t }}.
+  Instance run_into_eof (self : Self) :
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.into_eof [] [] [φ self] Eof.t.
   Proof.
+    constructor.
     run_symbolic.
-    run_symbolic_let. { 
-      run_symbolic.
-      run_symbolic_closure. {
-        apply Impl_alloc_vec_Vec_T_A.run_len.
-      }
-      intros []; run_symbolic.
   Admitted.
 
   (*
     pub fn eof_code_section_start(&self, idx: usize) -> Option<usize> 
   *)
-  Definition run_eof_code_section_start (self : Ref.t Pointer.Kind.Ref Self) (idx : Usize.t) :
-    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.eof_code_section_start [] [] [φ self; φ idx] 🔽 option Usize.t }}.
+  Instance run_eof_code_section_start (self : Ref.t Pointer.Kind.Ref Self) (idx : Usize.t) :
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.eof_code_section_start [] [] [φ self; φ idx] (option Usize.t).
   Proof.
+    constructor.
+    destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
+    destruct deref.
     run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_are_equal_integer; run_symbolic; run_symbolic_are_equal_bool; run_symbolic.
-    }
-    intros []; run_symbolic. {
-      destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
-      destruct deref.
-      run_symbolic.
-      run_symbolic_closure.
-      intros []; run_symbolic.
-      run_symbolic_closure.
   Admitted.
-
-  (*
-    pub fn encode(&self, buffer: &mut Vec<u8>)
-  *)
-  Definition run_encode (self : Ref.t Pointer.Kind.Ref Self) (buffer : Ref.t Pointer.Kind.MutPointer (Vec.t U8.t Global.t)) :
-    {{ body.eof.body.Impl_revm_bytecode_eof_body_EofBody.encode [] [] [φ self; φ buffer] 🔽 unit }}.
-  Proof.
-    run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-Admitted.
 
   (*
     pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError>
