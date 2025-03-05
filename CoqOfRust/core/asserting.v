@@ -114,29 +114,27 @@ Module asserting.
           let to := M.alloc (| to |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| to |) |),
-                    "core::asserting::Capture",
-                    "elem"
-                  |),
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    [
-                      M.read (|
-                        M.deref (|
-                          M.read (|
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::asserting::Wrapper",
-                              0
-                            |)
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| to |) |),
+                  "core::asserting::Capture",
+                  "elem"
+                |),
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  [
+                    M.read (|
+                      M.deref (|
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::asserting::Wrapper",
+                            0
                           |)
                         |)
                       |)
-                    ]
-                |)
+                    |)
+                  ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))

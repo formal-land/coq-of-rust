@@ -12,8 +12,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -42,9 +42,9 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -68,8 +68,8 @@ Module deeply.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -103,9 +103,9 @@ Module deeply.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -145,16 +145,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "the_use_as_declaration::deeply::nested::function", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "the_use_as_declaration::deeply::nested::function", [], [] |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -183,60 +181,58 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "the_use_as_declaration::deeply::nested::function", [], [] |),
                 []
-              |)
-            |) in
-          let~ _ : Ty.tuple [] :=
+              |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                  [
-                    M.call_closure (|
-                      Ty.path "core::fmt::Arguments",
-                      M.get_associated_function (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
                         Ty.path "core::fmt::Arguments",
-                        "new_const",
-                        [ Value.Integer IntegerKind.Usize 1 ],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "Leaving block
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "Leaving block
 " |) ]
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
+                        ]
+                      |)
+                    ]
+                  |) in
+                M.alloc (| Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "the_use_as_declaration::function", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "the_use_as_declaration::function", [], [] |),
+            []
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

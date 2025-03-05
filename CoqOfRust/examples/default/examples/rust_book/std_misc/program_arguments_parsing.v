@@ -13,8 +13,8 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       (let number := M.alloc (| number |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -82,9 +82,9 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -107,8 +107,8 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       (let number := M.alloc (| number |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -176,9 +176,9 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -206,8 +206,8 @@ Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -246,9 +246,9 @@ match_args {increase|decrease} <integer>
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -316,34 +316,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    Ty.path "std::env::Args",
-                    [],
-                    [],
-                    "collect",
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
-                    ]
-                  |),
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.path "std::env::Args",
+                  [],
+                  [],
+                  "collect",
+                  [],
                   [
-                    M.call_closure (|
-                      Ty.path "std::env::Args",
-                      M.get_function (| "std::env::args", [], [] |),
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
                       []
-                    |)
+                      [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
                   ]
-                |)
+                |),
+                [
+                  M.call_closure (|
+                    Ty.path "std::env::Args",
+                    M.get_function (| "std::env::args", [], [] |),
+                    []
+                  |)
+                ]
               |) in
             M.match_operator (|
               Some (Ty.tuple []),
@@ -371,8 +369,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Integer IntegerKind.Usize 1
                       |) in
                     let~ _ : Ty.tuple [] :=
-                      let~ _ : Ty.tuple [] :=
-                        M.alloc (|
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
                           M.call_closure (|
                             Ty.tuple [],
                             M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -407,9 +405,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 ]
                               |)
                             ]
-                          |)
-                        |) in
-                      M.alloc (| Value.Tuple [] |) in
+                          |) in
+                        M.alloc (| Value.Tuple [] |)
+                      |) in
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -500,78 +498,73 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Value.Integer IntegerKind.I32 42
                               |) in
                             let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                                  [
-                                    M.call_closure (|
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_function (| "std::io::stdio::_print", [], [] |),
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
+                                    M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        [ Value.Integer IntegerKind.Usize 1 ],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "This is the answer!
-" |)
-                                                  ]
-                                              |)
+                                      "new_const",
+                                      [ Value.Integer IntegerKind.Usize 1 ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "This is the answer!
+" |) ]
                                             |)
                                           |)
                                         |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                                  [
-                                    M.call_closure (|
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_function (| "std::io::stdio::_print", [], [] |),
+                                [
+                                  M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
+                                    M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        [ Value.Integer IntegerKind.Usize 1 ],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "This is not the answer.
+                                      "new_const",
+                                      [ Value.Integer IntegerKind.Usize 1 ],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.read (|
+                                                    Value.String "This is not the answer.
 "
-                                                    |)
-                                                  ]
-                                              |)
+                                                  |)
+                                                ]
                                             |)
                                           |)
                                         |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]
@@ -584,63 +577,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Value.Integer IntegerKind.Usize 3
                       |) in
                     let~ cmd : Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] :=
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                              M.get_trait_method (|
-                                "core::ops::index::Index",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [ Ty.path "usize" ],
-                                "index",
-                                [],
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                            M.get_trait_method (|
+                              "core::ops::index::Index",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, args |);
-                                Value.Integer IntegerKind.Usize 1
-                              ]
-                            |)
+                                [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [ Ty.path "usize" ],
+                              "index",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, args |);
+                              Value.Integer IntegerKind.Usize 1
+                            ]
                           |)
                         |)
                       |) in
                     let~ num : Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] :=
-                      M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                              M.get_trait_method (|
-                                "core::ops::index::Index",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [ Ty.path "usize" ],
-                                "index",
-                                [],
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                            M.get_trait_method (|
+                              "core::ops::index::Index",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, args |);
-                                Value.Integer IntegerKind.Usize 2
-                              ]
-                            |)
+                                [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [ Ty.path "usize" ],
+                              "index",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, args |);
+                              Value.Integer IntegerKind.Usize 2
+                            ]
                           |)
                         |)
                       |) in
                     let~ number : Ty.path "i32" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some (Ty.path "i32"),
                           M.alloc (|
@@ -705,8 +692,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.never_to_any (|
                                     M.read (|
                                       let~ _ : Ty.tuple [] :=
-                                        let~ _ : Ty.tuple [] :=
-                                          M.alloc (|
+                                        M.read (|
+                                          let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
                                               Ty.tuple [],
                                               M.get_function (|
@@ -745,20 +732,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   ]
                                                 |)
                                               ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |) in
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |) in
                                       let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_function (|
-                                              "program_arguments_parsing::help",
-                                              [],
-                                              []
-                                            |),
+                                        M.call_closure (|
+                                          Ty.tuple [],
+                                          M.get_function (|
+                                            "program_arguments_parsing::help",
+                                            [],
                                             []
-                                          |)
+                                          |),
+                                          []
                                         |) in
                                       M.return_ (| Value.Tuple [] |)
                                     |)
@@ -824,8 +809,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         fun γ =>
                           ltac:(M.monadic
                             (let~ _ : Ty.tuple [] :=
-                              let~ _ : Ty.tuple [] :=
-                                M.alloc (|
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_eprint", [], [] |),
@@ -859,16 +844,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         ]
                                       |)
                                     ]
-                                  |)
-                                |) in
-                              M.alloc (| Value.Tuple [] |) in
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |) in
                             let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_function (| "program_arguments_parsing::help", [], [] |),
-                                  []
-                                |)
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_function (| "program_arguments_parsing::help", [], [] |),
+                                []
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]
@@ -876,12 +859,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let~ _ : Ty.tuple [] :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (| "program_arguments_parsing::help", [], [] |),
-                          []
-                        |)
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (| "program_arguments_parsing::help", [], [] |),
+                        []
                       |) in
                     M.alloc (| Value.Tuple [] |)))
               ]

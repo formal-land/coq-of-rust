@@ -235,7 +235,7 @@ Module iter.
                           []
                           I
                           "Item" :=
-                      M.copy (|
+                      M.read (|
                         M.match_operator (|
                           Some
                             (Ty.associated_in_trait
