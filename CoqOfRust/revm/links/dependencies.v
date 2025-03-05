@@ -108,7 +108,7 @@ Module ruint.
     
       Definition run_lt :
         forall (BITS LIMBS : Usize.t),
-        forall (x1 x2 : ruint.Uint.t BITS LIMBS),
+        forall (x1 x2 : Ref.t Pointer.Kind.Ref (ruint.Uint.t BITS LIMBS)),
         {{ lt (φ BITS) (φ LIMBS) [] [] [ φ x1; φ x2 ] 🔽 bool }}.
       Admitted.
     

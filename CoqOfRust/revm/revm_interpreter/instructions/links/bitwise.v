@@ -66,8 +66,15 @@ Proof.
     + simpl.
       reflexivity.
   - run_symbolic.
-    + 
-
+    + constructor.
+      apply (Impl_PartialOrd_for_Uint.run_lt
+        {| Integer.value := 256 |}  (* BITS *)
+        {| Integer.value := 4 |}    (* LIMBS *)
+        (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
+        (Ref.cast_to Pointer.Kind.Ref value0)
+      ).
+    + constructor.
+    apply (Impl_from_Uint.run_from {| Integer.value := 256 |} {| Integer.value := 4 |} output1).
 Qed.
   
   
