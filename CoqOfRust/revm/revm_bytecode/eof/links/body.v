@@ -14,8 +14,6 @@ Require Import revm.revm_bytecode.links.eof.
 Require Import revm_bytecode.eof.body.
 Require Import core.slice.links.mod.
 
-Import Run.
-
 Module EofBody.
   Record t : Set := {
     types_section: Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t;
@@ -244,8 +242,9 @@ Module Impl_EofBody.
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
   Proof.
     constructor.
-    run_symbolic. 
+    run_symbolic.
   Admitted.
+
   
   (*
     pub fn encode(&self, buffer: &mut Vec<u8>)
@@ -284,5 +283,8 @@ Module Impl_EofBody.
   *)
   Instance run_decode (input : Ref.t Pointer.Kind.Ref alloy_primitives.links.bytes_.Bytes.t) (header : Ref.t Pointer.Kind.Ref EofHeader.t) :
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.decode [] [] [φ input; φ header] (Result.t EofBody.t EofDecodeError.t).
+  Proof.  
+    constructor.
+    run_symbolic.
   Admitted.
 End Impl_EofBody.
