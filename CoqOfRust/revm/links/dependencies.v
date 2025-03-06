@@ -68,6 +68,7 @@ Module ruint.
         (array.t U8.t BYTES).
     Admitted.
   End Impl_Uint.
+
   Module Impl_from_Uint.
     Definition Self (BITS LIMBS : Usize.t) : Set :=
       ruint.Uint.t BITS LIMBS.
@@ -86,10 +87,11 @@ Module ruint.
         (from BITS LIMBS).
     Admitted.
   
-    Parameter run_from :
+    Global Instance run_from :
       forall (BITS LIMBS : Usize.t) (value : Usize.t),
-      {{ from (φ BITS) (φ LIMBS) [] [] [ φ value ] 🔽 Self BITS LIMBS }}.
-    End Impl_from_Uint.
+      Run.Trait (from (φ BITS) (φ LIMBS)) [] [] [ φ value ] (Self BITS LIMBS).
+    Admitted.
+  End Impl_from_Uint.
 
     Module Impl_PartialOrd_for_Uint.
       Definition Self (BITS LIMBS : Value.t) : Ty.t :=
