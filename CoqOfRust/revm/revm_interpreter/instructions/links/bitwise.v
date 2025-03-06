@@ -10,24 +10,14 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.bitwise.
 
-Import Run.
+Import Impl_Gas.
+
 (*
 pub fn lt<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     _host: &mut H,
 )
 *)
-
-Ltac solve_one_branch e :=
-  constructor;
-  cbn;
-  eapply Run.Rewrite; [
-    repeat erewrite IsTraitAssociatedType_eq by apply e;
-    reflexivity
-  |
-  ];
-  run_symbolic.
-
 Instance run_lt
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -50,9 +40,7 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct gas as [gas [H_gas run_gas]].
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-  run_symbolic. {
-    repeat solve_one_branch run_InterpreterTypes_for_WIRE.
-  }
+  run_symbolic.
   eapply Run.CallPrimitiveGetTraitMethod.
   - eapply IsTraitMethod.Defined.
     + specialize (Impl_PartialOrd_for_Uint.Implements
