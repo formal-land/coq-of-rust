@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.alloc.vec.links.mod.
 Require Import CoqOfRust.core.links.array.
 Require Import CoqOfRust.revm.links.dependencies.
+Require Import alloc.links.alloc.
 
 (*
   /// EVM stack with [STACK_LIMIT] capacity of words.
@@ -16,7 +17,7 @@ Require Import CoqOfRust.revm.links.dependencies.
 
 Module Stack.
   Record t : Set := {
-    data : Vec.t U256.t;
+    data : Vec.t U256.t Global.t;
   }.
 
   Global Instance IsLink : Link t := {

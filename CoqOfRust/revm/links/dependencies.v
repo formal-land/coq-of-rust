@@ -1,7 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import core.links.array.
 Require Import core.convert.links.mod.
+Require Import core.links.array.
+Require core.links.clone.
+Require core.links.default.
+Import Run.
 
 Module ruint.
   Module Uint.
@@ -184,6 +187,56 @@ Module alloy_primitives.
         Global Instance run_new : Run.Trait new [] [] [] Bytes.t.
         Admitted.
       End Impl_Bytes.
+      
+      Module Impl_Clone_for_Bytes.
+        Definition Self : Ty.t := Ty.path "alloy_primitives::bytes_::Bytes".
+
+        Parameter clone : PolymorphicFunction.t.
+
+        Axiom Implements :
+          M.IsTraitInstance
+            "core::clone::Clone"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) []
+            Self
+            (* Instance *) [ ("clone", InstanceField.Method clone) ].
+
+        Definition run_clone : clone.Clone.Run_clone Bytes.t.
+        Admitted.
+      
+        Definition run : clone.Clone.Run Bytes.t.
+        Proof.
+          constructor.
+          { (* clone *)
+            exact run_clone.
+          }
+        Defined.
+      End Impl_Clone_for_Bytes.
+
+      Module Impl_Default_for_Bytes.
+        Definition Self : Ty.t := Ty.path "alloy_primitives::bytes_::Bytes".
+
+        Parameter default : PolymorphicFunction.t.
+
+        Axiom Implements :
+          M.IsTraitInstance
+            "default::default::Default"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) []
+            Self
+            (* Instance *) [ ("default", InstanceField.Method default) ].
+
+        Definition run_default : default.Default.Run_default Bytes.t.
+        Admitted.
+      
+        Definition run : default.Default.Run Bytes.t.
+        Proof.
+          constructor.
+          { (* clone *)
+            exact run_default.
+          }
+        Defined.
+      End Impl_Default_for_Bytes.
     End bytes_.
   End links.
 End alloy_primitives.

@@ -1,15 +1,14 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require alloc.links.alloc.
-Require alloc.links.vec.
 Require Import revm.links.dependencies.
-Require revm.revm_bytecode.eof.links.body.
+Require Import revm.revm_bytecode.eof.links.body_EofBody.
 Require revm.revm_bytecode.eof.links.header.
 
 Module Eof.
   Record t : Set := {
     header: revm_bytecode.eof.links.header.EofHeader.t;
-    body: revm_bytecode.eof.links.body.EofBody.t;
+    body: EofBody.t;
     raw: alloy_primitives.links.bytes_.Bytes.t;
   }.
 
