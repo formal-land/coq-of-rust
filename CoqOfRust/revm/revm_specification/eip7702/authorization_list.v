@@ -341,30 +341,24 @@ Module eip7702.
             let other := M.alloc (| other |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               let~ __arg1_discr : Ty.path "isize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList" ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
                 LogicalOp.and (|
@@ -1670,34 +1664,30 @@ Module eip7702.
             let other := M.alloc (| other |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [
-                        Ty.path
-                          "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [
+                      Ty.path
+                        "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                    ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               let~ __arg1_discr : Ty.path "isize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [
-                        Ty.path
-                          "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [
+                      Ty.path
+                        "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                    ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
@@ -1755,19 +1745,17 @@ Module eip7702.
             let state := M.alloc (| state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "isize",
-                    M.get_function (|
-                      "core::intrinsics::discriminant_value",
-                      [],
-                      [
-                        Ty.path
-                          "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                      ]
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "isize",
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [],
+                    [
+                      Ty.path
+                        "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                    ]
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1825,7 +1813,7 @@ Module eip7702.
             let f := M.alloc (| f |) in
             M.read (|
               let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Some (Ty.apply (Ty.path "&") [] [ Ty.path "str" ]),
                     self,

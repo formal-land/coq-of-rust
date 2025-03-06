@@ -1363,7 +1363,7 @@ Ltac rewrite_cast_integer :=
 Ltac run_symbolic_let :=
   unshelve eapply Run.Let; [
     repeat smpl of_ty |
-    try run_symbolic_state_alloc |
+    |
     cbn; intros []
   ].
 

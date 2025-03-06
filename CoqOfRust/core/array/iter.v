@@ -66,25 +66,23 @@ Module array.
                     (Ty.path "array")
                     [ N ]
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ N ]
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                    M.get_function (|
-                      "core::intrinsics::transmute_unchecked",
-                      [],
-                      [
-                        Ty.apply (Ty.path "array") [ N ] [ T ];
-                        Ty.apply
-                          (Ty.path "array")
-                          [ N ]
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ]
-                    |),
-                    [ M.read (| self |) ]
-                  |)
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ N ]
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                  M.get_function (|
+                    "core::intrinsics::transmute_unchecked",
+                    [],
+                    [
+                      Ty.apply (Ty.path "array") [ N ] [ T ];
+                      Ty.apply
+                        (Ty.path "array")
+                        [ N ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                    ]
+                  |),
+                  [ M.read (| self |) ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -191,32 +189,30 @@ Module array.
             let initialized := M.alloc (| initialized |) in
             M.read (|
               let~ alive : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.path "core::ops::index_range::IndexRange",
+                  M.get_associated_function (|
                     Ty.path "core::ops::index_range::IndexRange",
-                    M.get_associated_function (|
-                      Ty.path "core::ops::index_range::IndexRange",
-                      "new_unchecked",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          initialized,
-                          "core::ops::range::Range",
-                          "start"
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          initialized,
-                          "core::ops::range::Range",
-                          "end"
-                        |)
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        initialized,
+                        "core::ops::range::Range",
+                        "start"
                       |)
-                    ]
-                  |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        initialized,
+                        "core::ops::range::Range",
+                        "end"
+                      |)
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -260,22 +256,18 @@ Module array.
                     (Ty.path "array")
                     [ N ]
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                M.alloc (|
-                  repeat (|
-                    M.read (| M.get_constant "core::array::iter::empty_discriminant" |),
-                    N
-                  |)
+                repeat (|
+                  M.read (| M.get_constant "core::array::iter::empty_discriminant" |),
+                  N
                 |) in
               let~ initialized :
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
-                M.alloc (|
-                  Value.StructRecord
-                    "core::ops::range::Range"
-                    [
-                      ("start", Value.Integer IntegerKind.Usize 0);
-                      ("end_", Value.Integer IntegerKind.Usize 0)
-                    ]
-                |) in
+                Value.StructRecord
+                  "core::ops::range::Range"
+                  [
+                    ("start", Value.Integer IntegerKind.Usize 0);
+                    ("end_", Value.Integer IntegerKind.Usize 0)
+                  ] in
               M.alloc (|
                 M.call_closure (|
                   Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
@@ -330,59 +322,57 @@ Module array.
                         []
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "slice")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ],
-                    M.get_associated_function (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
                       Ty.apply
                         (Ty.path "slice")
                         []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                      "get_unchecked",
-                      [],
-                      [ Ty.path "core::ops::index_range::IndexRange" ]
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::array::iter::IntoIter",
-                          "data"
-                        |)
-                      |);
-                      M.call_closure (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        M.get_trait_method (|
-                          "core::clone::Clone",
-                          Ty.path "core::ops::index_range::IndexRange",
-                          [],
-                          [],
-                          "clone",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::array::iter::IntoIter",
-                              "alive"
-                            |)
-                          |)
-                        ]
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                    ],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                    "get_unchecked",
+                    [],
+                    [ Ty.path "core::ops::index_range::IndexRange" ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::array::iter::IntoIter",
+                        "data"
                       |)
-                    ]
-                  |)
+                    |);
+                    M.call_closure (|
+                      Ty.path "core::ops::index_range::IndexRange",
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.path "core::ops::index_range::IndexRange",
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::iter::IntoIter",
+                            "alive"
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.borrow (|
@@ -450,65 +440,59 @@ Module array.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                             ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ]
-                              ],
-                            M.get_associated_function (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
                               Ty.apply
                                 (Ty.path "slice")
                                 []
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ],
-                              "get_unchecked_mut",
-                              [],
-                              [ Ty.path "core::ops::index_range::IndexRange" ]
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::array::iter::IntoIter",
-                                  "data"
-                                |)
-                              |);
-                              M.call_closure (|
-                                Ty.path "core::ops::index_range::IndexRange",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.path "core::ops::index_range::IndexRange",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::array::iter::IntoIter",
-                                      "alive"
-                                    |)
-                                  |)
                                 ]
+                            ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
+                            "get_unchecked_mut",
+                            [],
+                            [ Ty.path "core::ops::index_range::IndexRange" ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::array::iter::IntoIter",
+                                "data"
                               |)
-                            ]
-                          |)
+                            |);
+                            M.call_closure (|
+                              Ty.path "core::ops::index_range::IndexRange",
+                              M.get_trait_method (|
+                                "core::clone::Clone",
+                                Ty.path "core::ops::index_range::IndexRange",
+                                [],
+                                [],
+                                "clone",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::array::iter::IntoIter",
+                                    "alive"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
                         |) in
                       M.alloc (|
                         M.borrow (|
@@ -708,20 +692,18 @@ Module array.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ len : Ty.path "usize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_trait_method (|
-                      "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                      [],
-                      [],
-                      "len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_trait_method (|
+                    "core::iter::traits::exact_size::ExactSizeIterator",
+                    Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                    [],
+                    [],
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -773,14 +755,12 @@ Module array.
                         [ N ]
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.SubPointer.get_struct_record_field (|
-                      self,
-                      "core::array::iter::IntoIter",
-                      "data"
-                    |)
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::array::iter::IntoIter",
+                    "data"
                   |)
                 |) in
               M.alloc (|
@@ -1021,56 +1001,52 @@ Module array.
             let n := M.alloc (| n |) in
             M.read (|
               let~ range_to_drop : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.path "core::ops::index_range::IndexRange",
+                  M.get_associated_function (|
                     Ty.path "core::ops::index_range::IndexRange",
+                    "take_prefix",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::array::iter::IntoIter",
+                        "alive"
+                      |)
+                    |);
+                    M.read (| n |)
+                  ]
+                |) in
+              let~ remaining : Ty.path "usize" :=
+                BinOp.Wrap.sub (|
+                  M.read (| n |),
+                  M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
-                      "take_prefix",
+                      "len",
                       [],
                       []
                     |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::array::iter::IntoIter",
-                          "alive"
-                        |)
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
-                |) in
-              let~ remaining : Ty.path "usize" :=
-                M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| n |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
-                    |)
+                    [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                let~ slice :
-                    Ty.apply
-                      (Ty.path "&mut")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "slice")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ] :=
-                  M.alloc (|
+                M.read (|
+                  let~ slice :
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ] :=
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "&mut")
@@ -1101,10 +1077,8 @@ Module array.
                         |);
                         M.read (| range_to_drop |)
                       ]
-                    |)
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.alloc (|
+                    |) in
+                  let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (|
@@ -1130,9 +1104,9 @@ Module array.
                           |)
                         |)
                       ]
-                    |)
-                  |) in
-                M.alloc (| Value.Tuple [] |) in
+                    |) in
+                  M.alloc (| Value.Tuple [] |)
+                |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -1520,14 +1494,12 @@ Module array.
                         [ N ]
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.SubPointer.get_struct_record_field (|
-                      self,
-                      "core::array::iter::IntoIter",
-                      "data"
-                    |)
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    self,
+                    "core::array::iter::IntoIter",
+                    "data"
                   |)
                 |) in
               M.alloc (|
@@ -1702,56 +1674,52 @@ Module array.
             let n := M.alloc (| n |) in
             M.read (|
               let~ range_to_drop : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.path "core::ops::index_range::IndexRange",
+                  M.get_associated_function (|
                     Ty.path "core::ops::index_range::IndexRange",
+                    "take_suffix",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::array::iter::IntoIter",
+                        "alive"
+                      |)
+                    |);
+                    M.read (| n |)
+                  ]
+                |) in
+              let~ remaining : Ty.path "usize" :=
+                BinOp.Wrap.sub (|
+                  M.read (| n |),
+                  M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::ops::index_range::IndexRange",
-                      "take_suffix",
+                      "len",
                       [],
                       []
                     |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::array::iter::IntoIter",
-                          "alive"
-                        |)
-                      |);
-                      M.read (| n |)
-                    ]
-                  |)
-                |) in
-              let~ remaining : Ty.path "usize" :=
-                M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| n |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
-                    |)
+                    [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                let~ slice :
-                    Ty.apply
-                      (Ty.path "&mut")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "slice")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ] :=
-                  M.alloc (|
+                M.read (|
+                  let~ slice :
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ] :=
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "&mut")
@@ -1782,10 +1750,8 @@ Module array.
                         |);
                         M.read (| range_to_drop |)
                       ]
-                    |)
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.alloc (|
+                    |) in
+                  let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_function (|
@@ -1811,9 +1777,9 @@ Module array.
                           |)
                         |)
                       ]
-                    |)
-                  |) in
-                M.alloc (| Value.Tuple [] |) in
+                    |) in
+                  M.alloc (| Value.Tuple [] |)
+                |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.apply
@@ -2151,46 +2117,33 @@ Module array.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ new : Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ] :=
-                M.alloc (|
-                  Value.StructRecord
-                    "core::array::iter::IntoIter"
-                    [
-                      ("data",
-                        repeat (|
-                          M.read (| M.get_constant "core::array::iter::clone_discriminant" |),
-                          N
-                        |));
-                      ("alive",
-                        M.call_closure (|
-                          Ty.path "core::ops::index_range::IndexRange",
-                          M.get_associated_function (|
-                            Ty.path "core::ops::index_range::IndexRange",
-                            "zero_to",
-                            [],
-                            []
-                          |),
-                          [ Value.Integer IntegerKind.Usize 0 ]
-                        |))
-                    ]
-                |) in
-              let~ _ : Ty.tuple [] :=
-                M.use
-                  (M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (|
+                Value.StructRecord
+                  "core::array::iter::IntoIter"
+                  [
+                    ("data",
+                      repeat (|
+                        M.read (| M.get_constant "core::array::iter::clone_discriminant" |),
+                        N
+                      |));
+                    ("alive",
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::zip::Zip")
+                        Ty.path "core::ops::index_range::IndexRange",
+                        M.get_associated_function (|
+                          Ty.path "core::ops::index_range::IndexRange",
+                          "zero_to",
+                          [],
                           []
-                          [
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
-                            Ty.apply
-                              (Ty.path "core::slice::iter::IterMut")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                          ],
-                        M.get_trait_method (|
-                          "core::iter::traits::collect::IntoIterator",
+                        |),
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                      |))
+                  ] in
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.use
+                    (M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "core::iter::adapters::zip::Zip")
                             []
@@ -2202,14 +2155,8 @@ Module array.
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ]
                             ],
-                          [],
-                          [],
-                          "into_iter",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::zip::Zip")
                               []
@@ -2225,222 +2172,255 @@ Module array.
                                       [ T ]
                                   ]
                               ],
-                            M.get_function (|
-                              "core::iter::adapters::zip::zip",
-                              [],
-                              [
-                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ N ]
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ]
-                                  ]
-                              ]
-                            |),
-                            [
-                              M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                                  "as_slice",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_record_field (|
-                                  new,
-                                  "core::array::iter::IntoIter",
-                                  "data"
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
-                          M.loop (|
-                            Ty.tuple [],
-                            ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
-                                M.match_operator (|
-                                  Some (Ty.tuple []),
-                                  M.alloc (|
-                                    M.call_closure (|
+                            [],
+                            [],
+                            "into_iter",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::zip::Zip")
+                                []
+                                [
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::IterMut")
+                                    []
+                                    [
                                       Ty.apply
-                                        (Ty.path "core::option::Option")
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                         []
+                                        [ T ]
+                                    ]
+                                ],
+                              M.get_function (|
+                                "core::iter::adapters::zip::zip",
+                                [],
+                                [
+                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ N ]
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ]
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                                    "as_slice",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    new,
+                                    "core::array::iter::IntoIter",
+                                    "data"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let iter := M.copy (| γ |) in
+                            M.loop (|
+                              Ty.tuple [],
+                              ltac:(M.monadic
+                                (let~ _ : Ty.tuple [] :=
+                                  M.read (|
+                                    M.match_operator (|
+                                      Some (Ty.tuple []),
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
                                             [
-                                              Ty.apply (Ty.path "&") [] [ T ];
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
+                                              Ty.tuple
                                                 [
+                                                  Ty.apply (Ty.path "&") [] [ T ];
                                                   Ty.apply
-                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    (Ty.path "&mut")
                                                     []
-                                                    [ T ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ T ]
+                                                    ]
                                                 ]
-                                            ]
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::iter::adapters::zip::Zip")
-                                          []
-                                          [
-                                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
+                                            ],
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
                                             Ty.apply
-                                              (Ty.path "core::slice::iter::IterMut")
+                                              (Ty.path "core::iter::adapters::zip::Zip")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  (Ty.path "core::slice::iter::Iter")
                                                   []
-                                                  [ T ]
-                                              ]
-                                          ],
-                                        [],
-                                        [],
-                                        "next",
-                                        [],
-                                        []
+                                                  [ T ];
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::IterMut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ T ]
+                                                  ]
+                                              ],
+                                            [],
+                                            [],
+                                            "next",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            |)
+                                          ]
+                                        |)
                                       |),
                                       [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                        M.alloc (|
-                                          M.never_to_any (| M.read (| M.break (||) |) |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::option::Option::Some",
-                                            0
-                                          |) in
-                                        let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                        let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                        let src := M.copy (| γ1_0 |) in
-                                        let dst := M.copy (| γ1_1 |) in
-                                        let~ _ : Ty.apply (Ty.path "&mut") [] [ T ] :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              Ty.apply (Ty.path "&mut") [] [ T ],
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                  []
-                                                  [ T ],
-                                                "write",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| dst |) |)
-                                                |);
-                                                M.call_closure (|
-                                                  T,
-                                                  M.get_trait_method (|
-                                                    "core::clone::Clone",
-                                                    T,
-                                                    [],
-                                                    [],
-                                                    "clone",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| src |) |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          |) in
-                                        let~ _ : Ty.tuple [] :=
-                                          M.alloc (|
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                new,
-                                                "core::array::iter::IntoIter",
-                                                "alive"
-                                              |),
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.alloc (|
+                                              M.never_to_any (| M.read (| M.break (||) |) |)
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
+                                              |) in
+                                            let γ1_0 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                            let γ1_1 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                            let src := M.copy (| γ1_0 |) in
+                                            let dst := M.copy (| γ1_1 |) in
+                                            let~ _ : Ty.apply (Ty.path "&mut") [] [ T ] :=
                                               M.call_closure (|
-                                                Ty.path "core::ops::index_range::IndexRange",
+                                                Ty.apply (Ty.path "&mut") [] [ T ],
                                                 M.get_associated_function (|
-                                                  Ty.path "core::ops::index_range::IndexRange",
-                                                  "zero_to",
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ],
+                                                  "write",
                                                   [],
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Wrap.add (|
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::ops::index_range::IndexRange",
-                                                        "end",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            new,
-                                                            "core::array::iter::IntoIter",
-                                                            "alive"
-                                                          |)
-                                                        |)
-                                                      ]
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (| M.read (| dst |) |)
+                                                  |);
+                                                  M.call_closure (|
+                                                    T,
+                                                    M.get_trait_method (|
+                                                      "core::clone::Clone",
+                                                      T,
+                                                      [],
+                                                      [],
+                                                      "clone",
+                                                      [],
+                                                      []
                                                     |),
-                                                    Value.Integer IntegerKind.Usize 1
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| src |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 ]
-                                              |)
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          |)))
-                    ]
-                  |)) in
+                                              |) in
+                                            let~ _ : Ty.tuple [] :=
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  new,
+                                                  "core::array::iter::IntoIter",
+                                                  "alive"
+                                                |),
+                                                M.call_closure (|
+                                                  Ty.path "core::ops::index_range::IndexRange",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::ops::index_range::IndexRange",
+                                                    "zero_to",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    BinOp.Wrap.add (|
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "core::ops::index_range::IndexRange",
+                                                          "end",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              new,
+                                                              "core::array::iter::IntoIter",
+                                                              "alive"
+                                                            |)
+                                                          |)
+                                                        ]
+                                                      |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
+                                                  ]
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)))
+                                      ]
+                                    |)
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)))
+                            |)))
+                      ]
+                    |))
+                |) in
               new
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

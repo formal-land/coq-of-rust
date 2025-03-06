@@ -201,26 +201,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "char";
                 Ty.path "bool"
               ] :=
-          M.alloc (|
-            Value.Tuple
-              [
-                Value.Integer IntegerKind.U8 1;
-                Value.Integer IntegerKind.U16 2;
-                Value.Integer IntegerKind.U32 3;
-                Value.Integer IntegerKind.U64 4;
-                Value.Integer IntegerKind.I8 (-1);
-                Value.Integer IntegerKind.I16 (-2);
-                Value.Integer IntegerKind.I32 (-3);
-                Value.Integer IntegerKind.I64 (-4);
-                M.read (| UnsupportedLiteral |);
-                M.read (| UnsupportedLiteral |);
-                Value.UnicodeChar 97;
-                Value.Bool true
-              ]
-          |) in
+          Value.Tuple
+            [
+              Value.Integer IntegerKind.U8 1;
+              Value.Integer IntegerKind.U16 2;
+              Value.Integer IntegerKind.U32 3;
+              Value.Integer IntegerKind.U64 4;
+              Value.Integer IntegerKind.I8 (-1);
+              Value.Integer IntegerKind.I16 (-2);
+              Value.Integer IntegerKind.I32 (-3);
+              Value.Integer IntegerKind.I64 (-4);
+              M.read (| UnsupportedLiteral |);
+              M.read (| UnsupportedLiteral |);
+              Value.UnicodeChar 97;
+              Value.Bool true
+            ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -286,12 +284,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -357,9 +355,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ tuple_of_tuples :
             Ty.tuple
               [
@@ -367,22 +365,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Ty.tuple [ Ty.path "u64"; Ty.path "i8" ];
                 Ty.path "i16"
               ] :=
-          M.alloc (|
-            Value.Tuple
-              [
-                Value.Tuple
-                  [
-                    Value.Integer IntegerKind.U8 1;
-                    Value.Integer IntegerKind.U16 2;
-                    Value.Integer IntegerKind.U32 2
-                  ];
-                Value.Tuple [ Value.Integer IntegerKind.U64 4; Value.Integer IntegerKind.I8 (-1) ];
-                Value.Integer IntegerKind.I16 (-2)
-              ]
-          |) in
+          Value.Tuple
+            [
+              Value.Tuple
+                [
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U16 2;
+                  Value.Integer IntegerKind.U32 2
+                ];
+              Value.Tuple [ Value.Integer IntegerKind.U64 4; Value.Integer IntegerKind.I8 (-1) ];
+              Value.Integer IntegerKind.I16 (-2)
+            ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -452,14 +448,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ pair_ : Ty.tuple [ Ty.path "i32"; Ty.path "bool" ] :=
-          M.alloc (| Value.Tuple [ Value.Integer IntegerKind.I32 1; Value.Bool true ] |) in
+          Value.Tuple [ Value.Integer IntegerKind.I32 1; Value.Bool true ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -520,12 +516,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -597,12 +593,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -670,12 +666,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -741,9 +737,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ tuple :
             Ty.tuple
               [
@@ -752,15 +748,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 Ty.path "f64";
                 Ty.path "bool"
               ] :=
-          M.alloc (|
-            Value.Tuple
-              [
-                Value.Integer IntegerKind.I32 1;
-                M.read (| Value.String "hello" |);
-                M.read (| UnsupportedLiteral |);
-                Value.Bool true
-              ]
-          |) in
+          Value.Tuple
+            [
+              Value.Integer IntegerKind.I32 1;
+              M.read (| Value.String "hello" |);
+              M.read (| UnsupportedLiteral |);
+              Value.Bool true
+            ] in
         M.match_operator (|
           None,
           tuple,
@@ -776,8 +770,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let c := M.copy (| γ0_2 |) in
                 let d := M.copy (| γ0_3 |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -887,23 +881,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ matrix : Ty.path "tuples::Matrix" :=
-                  M.alloc (|
-                    Value.StructTuple
-                      "tuples::Matrix"
-                      [
-                        M.read (| UnsupportedLiteral |);
-                        M.read (| UnsupportedLiteral |);
-                        M.read (| UnsupportedLiteral |);
-                        M.read (| UnsupportedLiteral |)
-                      ]
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
                   |) in
+                let~ matrix : Ty.path "tuples::Matrix" :=
+                  Value.StructTuple
+                    "tuples::Matrix"
+                    [
+                      M.read (| UnsupportedLiteral |);
+                      M.read (| UnsupportedLiteral |);
+                      M.read (| UnsupportedLiteral |);
+                      M.read (| UnsupportedLiteral |)
+                    ] in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -967,9 +959,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
         |)

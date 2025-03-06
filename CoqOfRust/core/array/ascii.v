@@ -128,9 +128,7 @@ Module array.
                     (Ty.path "*const")
                     []
                     [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] :=
-                M.alloc (|
-                  M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
-                |) in
+                M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |) in
               let~ ascii_ptr :
                   Ty.apply
                     (Ty.path "*const")
@@ -141,19 +139,17 @@ Module array.
                         [ N ]
                         [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     ] :=
-                M.alloc (|
-                  M.cast
-                    (Ty.apply
-                      (Ty.path "*const")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ N ]
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                      ])
-                    (M.read (| byte_ptr |))
-                |) in
+                M.cast
+                  (Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ N ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    ])
+                  (M.read (| byte_ptr |)) in
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,

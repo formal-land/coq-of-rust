@@ -82,14 +82,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "struct_visibility::my::OpenBox")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (|
-            Value.StructRecord
-              "struct_visibility::my::OpenBox"
-              [ ("contents", M.read (| Value.String "public information" |)) ]
-          |) in
+          Value.StructRecord
+            "struct_visibility::my::OpenBox"
+            [ ("contents", M.read (| Value.String "public information" |)) ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -159,31 +157,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _closed_box :
             Ty.apply
               (Ty.path "struct_visibility::my::ClosedBox")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "struct_visibility::my::ClosedBox")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "struct_visibility::my::ClosedBox")
                 []
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "struct_visibility::my::ClosedBox")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                "new",
-                [],
-                []
-              |),
-              [ M.read (| Value.String "classified information" |) ]
-            |)
+              "new",
+              [],
+              []
+            |),
+            [ M.read (| Value.String "classified information" |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -20,9 +20,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.read (|
             let~ number_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-              M.copy (| Value.String "10" |) in
+              M.read (| Value.String "10" |) in
             let~ number : Ty.path "i32" :=
-              M.copy (|
+              M.read (|
                 M.match_operator (|
                   Some (Ty.path "i32"),
                   M.alloc (|
@@ -68,8 +68,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -127,9 +127,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
           |)))
       |)))
