@@ -34,8 +34,14 @@ Module EofHeader.
 End EofHeader.
 
 Module Impl_EofHeader.
-
   Definition Self : Set := EofHeader.t.
+
+  (*
+    pub fn size(&self) -> usize
+  *)
+  Instance run_size (self : Ref.t Pointer.Kind.Ref Self) : 
+    Run.Trait header.eof.header.Impl_revm_bytecode_eof_header_EofHeader.size [] [] [φ self] Usize.t.
+  Admitted.
 
   (*
     pub fn encode(&self, buffer: &mut Vec<u8>)
