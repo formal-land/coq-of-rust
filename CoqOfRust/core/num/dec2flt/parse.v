@@ -2458,11 +2458,6 @@ Module num.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
-                                  M.read (| γ0_0 |),
-                                  Value.Integer IntegerKind.U64 4607561
-                                |) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 3
                                 |) in
@@ -2473,11 +2468,6 @@ Module num.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
-                                  M.read (| γ0_0 |),
-                                  Value.Integer IntegerKind.U64 6436850368004902473
-                                |) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.Usize 8
                                 |) in
@@ -2486,11 +2476,6 @@ Module num.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ0_0 |),
-                                  Value.Integer IntegerKind.U64 5128526
-                                |) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ0_1 |),

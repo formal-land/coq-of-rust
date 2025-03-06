@@ -409,7 +409,8 @@ Module ops.
       (*
           pub const fn len(&self) -> usize {
               // SAFETY: By invariant, this cannot wrap
-              unsafe { self.end.unchecked_sub(self.start) }
+              // Using the intrinsic because a UB check here impedes LLVM optimization. (#131563)
+              unsafe { crate::intrinsics::unchecked_sub(self.end, self.start) }
           }
       *)
       Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -419,7 +420,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.call_closure (|
               Ty.path "usize",
-              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
+              M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -680,7 +681,8 @@ Module ops.
               let mid = if n <= self.len() {
                   // SAFETY: We just checked that this will be between start and end,
                   // and thus the addition cannot overflow.
-                  unsafe { self.start.unchecked_add(n) }
+                  // Using the intrinsic avoids a superfluous UB check.
+                  unsafe { crate::intrinsics::unchecked_add(self.start, n) }
               } else {
                   self.end
               };
@@ -732,11 +734,10 @@ Module ops.
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.path "usize",
-                                "unchecked_add",
+                              M.get_function (|
+                                "core::intrinsics::unchecked_add",
                                 [],
-                                []
+                                [ Ty.path "usize" ]
                               |),
                               [
                                 M.read (|
@@ -801,8 +802,9 @@ Module ops.
           pub fn take_suffix(&mut self, n: usize) -> Self {
               let mid = if n <= self.len() {
                   // SAFETY: We just checked that this will be between start and end,
-                  // and thus the addition cannot overflow.
-                  unsafe { self.end.unchecked_sub(n) }
+                  // and thus the subtraction cannot overflow.
+                  // Using the intrinsic avoids a superfluous UB check.
+                  unsafe { crate::intrinsics::unchecked_sub(self.end, n) }
               } else {
                   self.start
               };
@@ -854,11 +856,10 @@ Module ops.
                           M.alloc (|
                             M.call_closure (|
                               Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.path "usize",
-                                "unchecked_sub",
+                              M.get_function (|
+                                "core::intrinsics::unchecked_sub",
                                 [],
-                                []
+                                [ Ty.path "usize" ]
                               |),
                               [
                                 M.read (|

@@ -2360,6 +2360,25 @@ Module net.
       Global Typeclasses Opaque octets.
       
       (*
+          pub const fn from_octets(octets: [u8; 4]) -> Ipv4Addr {
+              Ipv4Addr { octets }
+          }
+      *)
+      Definition from_octets (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
+          ltac:(M.monadic
+            (let octets := M.alloc (| octets |) in
+            Value.StructRecord "core::net::ip_addr::Ipv4Addr" [ ("octets", M.read (| octets |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_octets :
+        M.IsAssociatedFunction.Trait Self "from_octets" from_octets.
+      Admitted.
+      Global Typeclasses Opaque from_octets.
+      
+      (*
           pub const fn is_unspecified(&self) -> bool {
               u32::from_be_bytes(self.octets) == 0
           }
@@ -5258,6 +5277,72 @@ Module net.
       Global Typeclasses Opaque segments.
       
       (*
+          pub const fn from_segments(segments: [u16; 8]) -> Ipv6Addr {
+              let [a, b, c, d, e, f, g, h] = segments;
+              Ipv6Addr::new(a, b, c, d, e, f, g, h)
+          }
+      *)
+      Definition from_segments (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ segments ] =>
+          ltac:(M.monadic
+            (let segments := M.alloc (| segments |) in
+            M.read (|
+              M.match_operator (|
+                None,
+                segments,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                      let a := M.copy (| γ0_0 |) in
+                      let b := M.copy (| γ0_1 |) in
+                      let c := M.copy (| γ0_2 |) in
+                      let d := M.copy (| γ0_3 |) in
+                      let e := M.copy (| γ0_4 |) in
+                      let f := M.copy (| γ0_5 |) in
+                      let g := M.copy (| γ0_6 |) in
+                      let h := M.copy (| γ0_7 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "core::net::ip_addr::Ipv6Addr",
+                          M.get_associated_function (|
+                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| a |);
+                            M.read (| b |);
+                            M.read (| c |);
+                            M.read (| d |);
+                            M.read (| e |);
+                            M.read (| f |);
+                            M.read (| g |);
+                            M.read (| h |)
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_segments :
+        M.IsAssociatedFunction.Trait Self "from_segments" from_segments.
+      Admitted.
+      Global Typeclasses Opaque from_segments.
+      
+      (*
           pub const fn is_unspecified(&self) -> bool {
               u128::from_be_bytes(self.octets()) == u128::from_be_bytes(Ipv6Addr::UNSPECIFIED.octets())
           }
@@ -7253,6 +7338,25 @@ Module net.
       Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.Trait Self "octets" octets.
       Admitted.
       Global Typeclasses Opaque octets.
+      
+      (*
+          pub const fn from_octets(octets: [u8; 16]) -> Ipv6Addr {
+              Ipv6Addr { octets }
+          }
+      *)
+      Definition from_octets (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
+          ltac:(M.monadic
+            (let octets := M.alloc (| octets |) in
+            Value.StructRecord "core::net::ip_addr::Ipv6Addr" [ ("octets", M.read (| octets |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_octets :
+        M.IsAssociatedFunction.Trait Self "from_octets" from_octets.
+      Admitted.
+      Global Typeclasses Opaque from_octets.
     End Impl_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_fmt_Display_for_core_net_ip_addr_Ipv6Addr.

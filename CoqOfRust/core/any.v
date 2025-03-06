@@ -154,13 +154,13 @@ Module any.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::any::Any::Trait", []);
-          ("core::marker::Send::AutoTrait", []);
-          ("core::marker::Sync::AutoTrait", [])
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
         ].
     
     (*
@@ -216,7 +216,7 @@ Module any.
         (* Trait polymorphic types *) []
         Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_any_Any_Trait.
     Definition Self : Ty.t := Ty.dyn [ ("core::any::Any::Trait", []) ].
@@ -831,13 +831,13 @@ Module any.
     Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  Module Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::any::Any::Trait", []);
-          ("core::marker::Send::AutoTrait", []);
-          ("core::marker::Sync::AutoTrait", [])
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
         ].
     
     (*
@@ -1000,7 +1000,7 @@ Module any.
       M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_mut_unchecked.
-  End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  End Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   (* StructRecord
     {

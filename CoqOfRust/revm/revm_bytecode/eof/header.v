@@ -5689,16 +5689,7 @@ Module eof.
                                                                                 [
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
-                                                                                      (let _ :=
-                                                                                        M.is_constant_or_break_match (|
-                                                                                          M.read (|
-                                                                                            γ
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.U8
-                                                                                            3
-                                                                                        |) in
-                                                                                      M.match_operator (|
+                                                                                      (M.match_operator (|
                                                                                         None,
                                                                                         M.match_operator (|
                                                                                           Some
@@ -6514,16 +6505,7 @@ Module eof.
                                                                                       |)));
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
-                                                                                      (let _ :=
-                                                                                        M.is_constant_or_break_match (|
-                                                                                          M.read (|
-                                                                                            γ
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.U8
-                                                                                            4
-                                                                                        |) in
-                                                                                      M.alloc (|
+                                                                                      (M.alloc (|
                                                                                         M.borrow (|
                                                                                           Pointer.Kind.Ref,
                                                                                           M.deref (|

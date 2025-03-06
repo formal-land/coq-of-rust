@@ -5450,7 +5450,23 @@ Module str.
     
     (*
         pub fn replace<P: Pattern>(&self, from: P, to: &str) -> String {
-            let mut result = String::new();
+            // Fast path for replacing a single ASCII character with another.
+            if let Some(from_byte) = match from.as_utf8_pattern() {
+                Some(Utf8Pattern::StringPattern([from_byte])) => Some( *from_byte),
+                Some(Utf8Pattern::CharPattern(c)) => c.as_ascii().map(|ascii_char| ascii_char.to_u8()),
+                _ => None,
+            } {
+                if let [to_byte] = to.as_bytes() {
+                    return unsafe { replace_ascii(self.as_bytes(), from_byte, *to_byte) };
+                }
+            }
+            // Set result capacity to self.len() when from.len() <= to.len()
+            let default_capacity = match from.as_utf8_pattern() {
+                Some(Utf8Pattern::StringPattern(s)) if s.len() <= to.len() => self.len(),
+                Some(Utf8Pattern::CharPattern(c)) if c.len_utf8() <= to.len() => self.len(),
+                _ => 0,
+            };
+            let mut result = String::with_capacity(default_capacity);
             let mut last_end = 0;
             for (start, part) in self.match_indices(from) {
                 result.push_str(unsafe { self.get_unchecked(last_end..start) });
@@ -5468,248 +5484,637 @@ Module str.
           (let self := M.alloc (| self |) in
           let from := M.alloc (| from |) in
           let to := M.alloc (| to |) in
-          M.read (|
-            let~ result : Ty.path "alloc::string::String" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "alloc::string::String",
-                  M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
-                  []
-                |)
-              |) in
-            let~ last_end : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-            let~ _ : Ty.tuple [] :=
-              M.use
-                (M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
-                        Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
-                          M.get_associated_function (| Ty.path "str", "match_indices", [], [ P ] |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (| from |)
-                          ]
-                        |)
-                      ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          Ty.tuple [],
-                          ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
-                              M.match_operator (|
-                                Some (Ty.tuple []),
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.tuple
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.match_operator (|
+                              Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]),
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::str::pattern::Utf8Pattern" ],
+                                  M.get_trait_method (|
+                                    "core::str::pattern::Pattern",
+                                    P,
+                                    [],
+                                    [],
+                                    "as_utf8_pattern",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, from |) ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::option::Option::Some",
+                                        0
+                                      |) in
+                                    let γ1_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ0_0,
+                                        "core::str::pattern::Utf8Pattern::StringPattern",
+                                        0
+                                      |) in
+                                    let γ1_0 := M.read (| γ1_0 |) in
+                                    let γ3_0 := M.SubPointer.get_slice_index (| γ1_0, 0 |) in
+                                    let from_byte := M.alloc (| γ3_0 |) in
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ M.read (| M.deref (| M.read (| from_byte |) |) |) ]
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::option::Option::Some",
+                                        0
+                                      |) in
+                                    let γ1_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ0_0,
+                                        "core::str::pattern::Utf8Pattern::CharPattern",
+                                        0
+                                      |) in
+                                    let c := M.copy (| γ1_0 |) in
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u8" ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                          "map",
+                                          [],
                                           [
-                                            Ty.path "usize";
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                            Ty.path "u8";
+                                            Ty.function
+                                              [
+                                                Ty.tuple
+                                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                                              ]
+                                              (Ty.path "u8")
                                           ]
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
-                                      [],
-                                      [],
-                                      "next",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                      let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                      let start := M.copy (| γ1_0 |) in
-                                      let part := M.copy (| γ1_1 |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
+                                        |),
+                                        [
                                           M.call_closure (|
-                                            Ty.tuple [],
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                                             M.get_associated_function (|
-                                              Ty.path "alloc::string::String",
-                                              "push_str",
+                                              Ty.path "char",
+                                              "as_ascii",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.Ref, c |) ]
+                                          |);
+                                          M.closure
+                                            (fun γ =>
+                                              ltac:(M.monadic
+                                                match γ with
+                                                | [ α0 ] =>
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      Some
+                                                        (Ty.function
+                                                          [
+                                                            Ty.tuple
+                                                              [
+                                                                Ty.path
+                                                                  "core::ascii::ascii_char::AsciiChar"
+                                                              ]
+                                                          ]
+                                                          (Ty.path "u8")),
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let ascii_char := M.copy (| γ |) in
+                                                            M.call_closure (|
+                                                              Ty.path "u8",
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "core::ascii::ascii_char::AsciiChar",
+                                                                "to_u8",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| ascii_char |) ]
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
+                                                end))
+                                        ]
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple "core::option::Option::None" []
+                                    |)))
+                              ]
+                            |) in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let from_byte := M.copy (| γ0_0 |) in
+                          M.match_operator (|
+                            Some (Ty.tuple []),
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "as_bytes",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| to |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |) in
+                                  let γ := M.read (| γ |) in
+                                  let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                                  let to_byte := M.alloc (| γ1_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.path "alloc::string::String",
+                                            M.get_function (|
+                                              "alloc::str::replace_ascii",
                                               [],
                                               []
                                             |),
                                             [
-                                              M.borrow (| Pointer.Kind.MutRef, result |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
-                                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                                    M.get_associated_function (|
-                                                      Ty.path "str",
-                                                      "get_unchecked",
-                                                      [],
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
                                                         Ty.apply
-                                                          (Ty.path "core::ops::range::Range")
+                                                          (Ty.path "slice")
                                                           []
-                                                          [ Ty.path "usize" ]
-                                                      ]
+                                                          [ Ty.path "u8" ]
+                                                      ],
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "as_bytes",
+                                                      [],
+                                                      []
                                                     |),
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (| M.read (| self |) |)
-                                                      |);
-                                                      Value.StructRecord
-                                                        "core::ops::range::Range"
-                                                        [
-                                                          ("start", M.read (| last_end |));
-                                                          ("end_", M.read (| start |))
-                                                        ]
+                                                      |)
                                                     ]
                                                   |)
                                                 |)
-                                              |)
+                                              |);
+                                              M.read (| from_byte |);
+                                              M.read (| M.deref (| M.read (| to_byte |) |) |)
                                             ]
                                           |)
-                                        |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.tuple [],
-                                            M.get_associated_function (|
-                                              Ty.path "alloc::string::String",
-                                              "push_str",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (| Pointer.Kind.MutRef, result |);
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| to |) |)
-                                              |)
-                                            ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                let~ default_capacity : Ty.path "usize" :=
+                  M.copy (|
+                    M.match_operator (|
+                      Some (Ty.path "usize"),
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::str::pattern::Utf8Pattern" ],
+                          M.get_trait_method (|
+                            "core::str::pattern::Pattern",
+                            P,
+                            [],
+                            [],
+                            "as_utf8_pattern",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, from |) ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::str::pattern::Utf8Pattern::StringPattern",
+                                0
+                              |) in
+                            let s := M.copy (| γ1_0 |) in
+                            let γ :=
+                              M.alloc (|
+                                BinOp.le (|
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |)
+                                    ]
+                                  |),
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| to |) |) |)
+                                    ]
+                                  |)
+                                |)
+                              |) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::str::pattern::Utf8Pattern::CharPattern",
+                                0
+                              |) in
+                            let c := M.copy (| γ1_0 |) in
+                            let γ :=
+                              M.alloc (|
+                                BinOp.le (|
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.path "char",
+                                      "len_utf8",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| c |) ]
+                                  |),
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| to |) |) |)
+                                    ]
+                                  |)
+                                |)
+                              |) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                      ]
+                    |)
+                  |) in
+                let~ result : Ty.path "alloc::string::String" :=
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "alloc::string::String",
+                      M.get_associated_function (|
+                        Ty.path "alloc::string::String",
+                        "with_capacity",
+                        [],
+                        []
+                      |),
+                      [ M.read (| default_capacity |) ]
+                    |)
+                  |) in
+                let~ last_end : Ty.path "usize" :=
+                  M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                let~ _ : Ty.tuple [] :=
+                  M.use
+                    (M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
+                          M.get_trait_method (|
+                            "core::iter::traits::collect::IntoIterator",
+                            Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
+                            [],
+                            [],
+                            "into_iter",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "core::str::iter::MatchIndices") [] [ P ],
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "match_indices",
+                                [],
+                                [ P ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.read (| from |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let iter := M.copy (| γ |) in
+                            M.loop (|
+                              Ty.tuple [],
+                              ltac:(M.monadic
+                                (let~ _ : Ty.tuple [] :=
+                                  M.match_operator (|
+                                    Some (Ty.tuple []),
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                              ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::iter::traits::iterator::Iterator",
+                                          Ty.apply
+                                            (Ty.path "core::str::iter::MatchIndices")
+                                            []
+                                            [ P ],
+                                          [],
+                                          [],
+                                          "next",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
                                           |)
-                                        |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
-                                          M.write (|
-                                            last_end,
-                                            BinOp.Wrap.add (|
-                                              M.read (| start |),
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let _ :=
+                                            M.is_struct_tuple (|
+                                              γ,
+                                              "core::option::Option::None"
+                                            |) in
+                                          M.alloc (|
+                                            M.never_to_any (| M.read (| M.break (||) |) |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::option::Option::Some",
+                                              0
+                                            |) in
+                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                          let start := M.copy (| γ1_0 |) in
+                                          let part := M.copy (| γ1_1 |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
                                               M.call_closure (|
-                                                Ty.path "usize",
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "len",
+                                                  Ty.path "alloc::string::String",
+                                                  "push_str",
                                                   [],
                                                   []
                                                 |),
                                                 [
+                                                  M.borrow (| Pointer.Kind.MutRef, result |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| part |) |)
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                                        M.get_associated_function (|
+                                                          Ty.path "str",
+                                                          "get_unchecked",
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::ops::range::Range")
+                                                              []
+                                                              [ Ty.path "usize" ]
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| self |) |)
+                                                          |);
+                                                          Value.StructRecord
+                                                            "core::ops::range::Range"
+                                                            [
+                                                              ("start", M.read (| last_end |));
+                                                              ("end_", M.read (| start |))
+                                                            ]
+                                                        ]
+                                                      |)
+                                                    |)
                                                   |)
                                                 ]
                                               |)
-                                            |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
-                |)) in
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (|
-                    Ty.path "alloc::string::String",
-                    "push_str",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.MutRef, result |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.get_associated_function (|
-                            Ty.path "str",
-                            "get_unchecked",
-                            [],
-                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            Value.StructRecord
-                              "core::ops::range::Range"
-                              [
-                                ("start", M.read (| last_end |));
-                                ("end_",
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.tuple [],
+                                                M.get_associated_function (|
+                                                  Ty.path "alloc::string::String",
+                                                  "push_str",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (| Pointer.Kind.MutRef, result |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| to |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              M.write (|
+                                                last_end,
+                                                BinOp.Wrap.add (|
+                                                  M.read (| start |),
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "str",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| part |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
                                     ]
-                                  |))
+                                  |) in
+                                M.alloc (| Value.Tuple [] |)))
+                            |)))
+                      ]
+                    |)) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.tuple [],
+                      M.get_associated_function (|
+                        Ty.path "alloc::string::String",
+                        "push_str",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, result |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                              M.get_associated_function (|
+                                Ty.path "str",
+                                "get_unchecked",
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ]
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                Value.StructRecord
+                                  "core::ops::range::Range"
+                                  [
+                                    ("start", M.read (| last_end |));
+                                    ("end_",
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.path "str",
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |))
+                                  ]
                               ]
-                          ]
+                            |)
+                          |)
                         |)
-                      |)
+                      ]
                     |)
-                  ]
-                |)
-              |) in
-            result
+                  |) in
+                result
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8342,4 +8747,160 @@ Module str.
     Axiom Constant_value_N : (M.get_constant "alloc::str::convert_while_ascii::N") = value_N.
     Global Hint Rewrite Constant_value_N : constant_rewrites.
   End convert_while_ascii.
+  
+  (*
+  unsafe fn replace_ascii(utf8_bytes: &[u8], from: u8, to: u8) -> String {
+      let result: Vec<u8> = utf8_bytes.iter().map(|b| if *b == from { to } else { *b }).collect();
+      // SAFETY: We replaced ascii with ascii on valid utf8 strings.
+      unsafe { String::from_utf8_unchecked(result) }
+  }
+  *)
+  Definition replace_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ utf8_bytes; from; to ] =>
+      ltac:(M.monadic
+        (let utf8_bytes := M.alloc (| utf8_bytes |) in
+        let from := M.alloc (| from |) in
+        let to := M.alloc (| to |) in
+        M.read (|
+          let~ result :
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
+            M.alloc (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                      Ty.function
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
+                        (Ty.path "u8")
+                    ],
+                  [],
+                  [],
+                  "collect",
+                  [],
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::map::Map")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                        Ty.function
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
+                          (Ty.path "u8")
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                      [],
+                      [],
+                      "map",
+                      [],
+                      [
+                        Ty.path "u8";
+                        Ty.function
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
+                          (Ty.path "u8")
+                      ]
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          "iter",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| utf8_bytes |) |) |) ]
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  Some
+                                    (Ty.function
+                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
+                                      (Ty.path "u8")),
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let b := M.copy (| γ |) in
+                                        M.read (|
+                                          M.match_operator (|
+                                            Some (Ty.path "u8"),
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        BinOp.eq (|
+                                                          M.read (| M.deref (| M.read (| b |) |) |),
+                                                          M.read (| from |)
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  to));
+                                              fun γ =>
+                                                ltac:(M.monadic (M.deref (| M.read (| b |) |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                ]
+              |)
+            |) in
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "alloc::string::String",
+              M.get_associated_function (|
+                Ty.path "alloc::string::String",
+                "from_utf8_unchecked",
+                [],
+                []
+              |),
+              [ M.read (| result |) ]
+            |)
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Global Instance Instance_IsFunction_replace_ascii :
+    M.IsFunction.Trait "alloc::str::replace_ascii" replace_ascii.
+  Admitted.
+  Global Typeclasses Opaque replace_ascii.
 End str.

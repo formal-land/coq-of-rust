@@ -213,10 +213,6 @@ Module iter.
       Admitted.
       Global Typeclasses Opaque copy_fold.
       
-      Module copy_fold.
-        (* Error OpaqueTy *)
-      End copy_fold.
-      
       (*
       fn copy_try_fold<T: Copy, Acc, R>(mut f: impl FnMut(Acc, T) -> R) -> impl FnMut(Acc, &T) -> R {
           move |acc, &elt| f(acc, elt)
@@ -280,10 +276,6 @@ Module iter.
         M.IsFunction.Trait "core::iter::adapters::copied::copy_try_fold" copy_try_fold.
       Admitted.
       Global Typeclasses Opaque copy_try_fold.
-      
-      Module copy_try_fold.
-        (* Error OpaqueTy *)
-      End copy_try_fold.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_for_core_iter_adapters_copied_Copied_I.
         Definition Self (I T : Ty.t) : Ty.t :=

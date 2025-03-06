@@ -114,40 +114,35 @@ Module panicking.
   
   (*
   pub const fn panic_nounwind_fmt(fmt: fmt::Arguments<'_>, force_no_backtrace: bool) -> ! {
-      #[inline] // this should always be inlined into `panic_nounwind_fmt`
-      #[track_caller]
-      fn runtime(fmt: fmt::Arguments<'_>, force_no_backtrace: bool) -> ! {
-          if cfg!(feature = "panic_immediate_abort") {
-              super::intrinsics::abort()
+      const_eval_select!(
+          @capture { fmt: fmt::Arguments<'_>, force_no_backtrace: bool } -> !:
+          if const #[track_caller] {
+              // We don't unwind anyway at compile-time so we can call the regular `panic_fmt`.
+              panic_fmt(fmt)
+          } else #[track_caller] {
+              if cfg!(feature = "panic_immediate_abort") {
+                  super::intrinsics::abort()
+              }
+  
+              // NOTE This function never crosses the FFI boundary; it's a Rust-to-Rust call
+              // that gets resolved to the `#[panic_handler]` function.
+              extern "Rust" {
+                  #[lang = "panic_impl"]
+                  fn panic_impl(pi: &PanicInfo<'_>) -> !;
+              }
+  
+              // PanicInfo with the `can_unwind` flag set to false forces an abort.
+              let pi = PanicInfo::new(
+                  &fmt,
+                  Location::caller(),
+                  /* can_unwind */ false,
+                  force_no_backtrace,
+              );
+  
+              // SAFETY: `panic_impl` is defined in safe Rust code and thus is safe to call.
+              unsafe { panic_impl(&pi) }
           }
-  
-          // NOTE This function never crosses the FFI boundary; it's a Rust-to-Rust call
-          // that gets resolved to the `#[panic_handler]` function.
-          extern "Rust" {
-              #[lang = "panic_impl"]
-              fn panic_impl(pi: &PanicInfo<'_>) -> !;
-          }
-  
-          // PanicInfo with the `can_unwind` flag set to false forces an abort.
-          let pi = PanicInfo::new(
-              &fmt,
-              Location::caller(),
-              /* can_unwind */ false,
-              force_no_backtrace,
-          );
-  
-          // SAFETY: `panic_impl` is defined in safe Rust code and thus is safe to call.
-          unsafe { panic_impl(&pi) }
-      }
-  
-      #[inline]
-      #[track_caller]
-      const fn comptime(fmt: fmt::Arguments<'_>, _force_no_backtrace: bool) -> ! {
-          // We don't unwind anyway at compile-time so we can call the regular `panic_fmt`.
-          panic_fmt(fmt);
-      }
-  
-      super::intrinsics::const_eval_select((fmt, force_no_backtrace), comptime, runtime);
+      )
   }
   *)
   Definition panic_nounwind_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -170,7 +165,7 @@ Module panicking.
           |),
           [
             Value.Tuple [ M.read (| fmt |); M.read (| force_no_backtrace |) ];
-            M.get_function (| "core::panicking::panic_nounwind_fmt.comptime", [], [] |);
+            M.get_function (| "core::panicking::panic_nounwind_fmt.compiletime", [], [] |);
             M.get_function (| "core::panicking::panic_nounwind_fmt.runtime", [], [] |)
           ]
         |)))
@@ -183,115 +178,6 @@ Module panicking.
   Global Typeclasses Opaque panic_nounwind_fmt.
   
   Module panic_nounwind_fmt.
-    (*
-        fn runtime(fmt: fmt::Arguments<'_>, force_no_backtrace: bool) -> ! {
-            if cfg!(feature = "panic_immediate_abort") {
-                super::intrinsics::abort()
-            }
-    
-            // NOTE This function never crosses the FFI boundary; it's a Rust-to-Rust call
-            // that gets resolved to the `#[panic_handler]` function.
-            extern "Rust" {
-                #[lang = "panic_impl"]
-                fn panic_impl(pi: &PanicInfo<'_>) -> !;
-            }
-    
-            // PanicInfo with the `can_unwind` flag set to false forces an abort.
-            let pi = PanicInfo::new(
-                &fmt,
-                Location::caller(),
-                /* can_unwind */ false,
-                force_no_backtrace,
-            );
-    
-            // SAFETY: `panic_impl` is defined in safe Rust code and thus is safe to call.
-            unsafe { panic_impl(&pi) }
-        }
-    *)
-    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ fmt; force_no_backtrace ] =>
-        ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          let force_no_backtrace := M.alloc (| force_no_backtrace |) in
-          M.read (|
-            let~ _ : Ty.tuple [] :=
-              M.match_operator (|
-                Some (Ty.tuple []),
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::intrinsics::abort", [], [] |),
-                            []
-                          |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            let~ pi : Ty.path "core::panic::panic_info::PanicInfo" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::panic::panic_info::PanicInfo",
-                  M.get_associated_function (|
-                    Ty.path "core::panic::panic_info::PanicInfo",
-                    "new",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, fmt |) |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
-                          M.get_associated_function (|
-                            Ty.path "core::panic::location::Location",
-                            "caller",
-                            [],
-                            []
-                          |),
-                          []
-                        |)
-                      |)
-                    |);
-                    Value.Bool false;
-                    M.read (| force_no_backtrace |)
-                  ]
-                |)
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "never",
-                M.get_function (|
-                  "core::panicking::panic_nounwind_fmt::runtime::panic_impl",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, pi |) |) |)
-                ]
-              |)
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::runtime" runtime.
-    Admitted.
-    Global Typeclasses Opaque runtime.
-    
     Module runtime.
       Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
       
@@ -299,31 +185,6 @@ Module panicking.
         M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
       Admitted.
     End runtime.
-    
-    (*
-        const fn comptime(fmt: fmt::Arguments<'_>, _force_no_backtrace: bool) -> ! {
-            // We don't unwind anyway at compile-time so we can call the regular `panic_fmt`.
-            panic_fmt(fmt);
-        }
-    *)
-    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ fmt; _force_no_backtrace ] =>
-        ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          let _force_no_backtrace := M.alloc (| _force_no_backtrace |) in
-          M.call_closure (|
-            Ty.path "never",
-            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-            [ M.read (| fmt |) ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_comptime :
-      M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::comptime" comptime.
-    Admitted.
-    Global Typeclasses Opaque comptime.
   End panic_nounwind_fmt.
   
   (*

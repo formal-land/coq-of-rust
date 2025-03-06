@@ -3819,6 +3819,55 @@ Module ffi.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
     
+    Module Impl_core_convert_From_ref_mut_core_ffi_c_str_CStr_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "alloc::boxed::Box")
+          []
+          [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ].
+      
+      (*
+          fn from(s: &mut CStr) -> Box<CStr> {
+              Self::from(&*s)
+          }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
+          ltac:(M.monadic
+            (let s := M.alloc (| s |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                [],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
+                "from",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_ref_mut_core_ffi_c_str_CStr_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
+    
     Module Impl_core_convert_From_alloc_borrow_Cow_core_ffi_c_str_CStr_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
         Ty.apply
@@ -4154,6 +4203,90 @@ Module ffi.
           Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZero_u8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
+    
+    Module Impl_core_str_traits_FromStr_for_alloc_ffi_c_str_CString.
+      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
+      
+      (*     type Err = NulError; *)
+      Definition _Err : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
+      
+      (*
+          fn from_str(s: &str) -> Result<Self, Self::Err> {
+              Self::new(s)
+          }
+      *)
+      Definition from_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
+          ltac:(M.monadic
+            (let s := M.alloc (| s |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "alloc::ffi::c_str::CString"; Ty.path "alloc::ffi::c_str::NulError" ],
+              M.get_associated_function (|
+                Ty.path "alloc::ffi::c_str::CString",
+                "new",
+                [],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+              |),
+              [ M.read (| s |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::str::traits::FromStr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *)
+          [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
+    End Impl_core_str_traits_FromStr_for_alloc_ffi_c_str_CString.
+    
+    Module Impl_core_convert_TryFrom_alloc_ffi_c_str_CString_for_alloc_string_String.
+      Definition Self : Ty.t := Ty.path "alloc::string::String".
+      
+      (*     type Error = IntoStringError; *)
+      Definition _Error : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".
+      
+      (*
+          fn try_from(value: CString) -> Result<Self, Self::Error> {
+              value.into_string()
+          }
+      *)
+      Definition try_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ value ] =>
+          ltac:(M.monadic
+            (let value := M.alloc (| value |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "alloc::ffi::c_str::IntoStringError" ],
+              M.get_associated_function (|
+                Ty.path "alloc::ffi::c_str::CString",
+                "into_string",
+                [],
+                []
+              |),
+              [ M.read (| value |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
+          Self
+          (* Instance *)
+          [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
+    End Impl_core_convert_TryFrom_alloc_ffi_c_str_CString_for_alloc_string_String.
     
     Module Impl_core_clone_Clone_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
@@ -4606,6 +4739,55 @@ Module ffi.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_sync_Arc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
+    Module Impl_core_convert_From_ref_mut_core_ffi_c_str_CStr_for_alloc_sync_Arc_core_ffi_c_str_CStr_alloc_alloc_Global.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "alloc::sync::Arc")
+          []
+          [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ].
+      
+      (*
+          fn from(s: &mut CStr) -> Arc<CStr> {
+              Arc::from(&*s)
+          }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
+          ltac:(M.monadic
+            (let s := M.alloc (| s |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::sync::Arc")
+                []
+                [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.apply
+                  (Ty.path "alloc::sync::Arc")
+                  []
+                  [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                [],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
+                "from",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_ref_mut_core_ffi_c_str_CStr_for_alloc_sync_Arc_core_ffi_c_str_CStr_alloc_alloc_Global.
+    
     Module Impl_core_convert_From_alloc_ffi_c_str_CString_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
         Ty.apply
@@ -4856,6 +5038,55 @@ Module ffi.
           Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
+    
+    Module Impl_core_convert_From_ref_mut_core_ffi_c_str_CStr_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "alloc::rc::Rc")
+          []
+          [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ].
+      
+      (*
+          fn from(s: &mut CStr) -> Rc<CStr> {
+              Rc::from(&*s)
+          }
+      *)
+      Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ s ] =>
+          ltac:(M.monadic
+            (let s := M.alloc (| s |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                []
+                [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+              M.get_trait_method (|
+                "core::convert::From",
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                [],
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
+                "from",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
+          (* Instance *) [ ("from", InstanceField.Method from) ].
+    End Impl_core_convert_From_ref_mut_core_ffi_c_str_CStr_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
     Module Impl_core_default_Default_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=

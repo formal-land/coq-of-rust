@@ -160,30 +160,49 @@ Module ops.
     (* Trait *)
     (* Empty module 'Receiver' *)
     
-    Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref__T.
+    Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_P_where_core_marker_Sized_T_where_core_ops_deref_Deref_P_for_P.
+      Definition Self (P T : Ty.t) : Ty.t := P.
+      
+      (*     type Target = T; *)
+      Definition _Target (P T : Ty.t) : Ty.t := T.
+      
+      Axiom Implements :
+        forall (P T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::deref::Receiver"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          (Self P T)
+          (* Instance *) [ ("Target", InstanceField.Ty (_Target P T)) ].
+    End Impl_core_ops_deref_Receiver_where_core_marker_Sized_P_where_core_marker_Sized_T_where_core_ops_deref_Deref_P_for_P.
+    
+    (* Trait *)
+    (* Empty module 'LegacyReceiver' *)
+    
+    Module Impl_core_ops_deref_LegacyReceiver_where_core_marker_Sized_T_for_ref__T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
         M.IsTraitInstance
-          "core::ops::deref::Receiver"
+          "core::ops::deref::LegacyReceiver"
           (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *) [].
-    End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref__T.
+    End Impl_core_ops_deref_LegacyReceiver_where_core_marker_Sized_T_for_ref__T.
     
-    Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref_mut_T.
+    Module Impl_core_ops_deref_LegacyReceiver_where_core_marker_Sized_T_for_ref_mut_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       Axiom Implements :
         forall (T : Ty.t),
         M.IsTraitInstance
-          "core::ops::deref::Receiver"
+          "core::ops::deref::LegacyReceiver"
           (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *) [].
-    End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_ref_mut_T.
+    End Impl_core_ops_deref_LegacyReceiver_where_core_marker_Sized_T_for_ref_mut_T.
   End deref.
 End ops.

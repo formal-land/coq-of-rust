@@ -128,10 +128,6 @@ Global Instance Instance_IsFunction_create_fn :
 Admitted.
 Global Typeclasses Opaque create_fn.
 
-Module create_fn.
-  (* Error OpaqueTy *)
-End create_fn.
-
 (*
 fn create_fnmut() -> impl FnMut() {
     let text = "FnMut".to_owned();
@@ -259,10 +255,6 @@ Global Instance Instance_IsFunction_create_fnmut :
 Admitted.
 Global Typeclasses Opaque create_fnmut.
 
-Module create_fnmut.
-  (* Error OpaqueTy *)
-End create_fnmut.
-
 (*
 fn create_fnonce() -> impl FnOnce() {
     let text = "FnOnce".to_owned();
@@ -389,10 +381,6 @@ Global Instance Instance_IsFunction_create_fnonce :
   M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
 Admitted.
 Global Typeclasses Opaque create_fnonce.
-
-Module create_fnonce.
-  (* Error OpaqueTy *)
-End create_fnonce.
 
 (*
 fn main() {

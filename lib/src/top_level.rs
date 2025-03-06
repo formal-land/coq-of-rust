@@ -452,9 +452,6 @@ fn compile_top_level_item_without_local_items<'a>(
             const_params: get_const_params(env, generics),
             ty_params: get_ty_params(env, generics),
         })],
-        ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error {
-            message: "OpaqueTy".to_string(),
-        })],
         ItemKind::Enum(enum_def, generics) => {
             let const_params = get_const_params(env, generics);
             let ty_params = get_ty_params(env, generics);
@@ -1008,8 +1005,8 @@ fn get_where_predicates<'a>(
     generics
         .predicates
         .iter()
-        .flat_map(|predicate| match predicate {
-            rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+        .flat_map(|predicate| match predicate.kind {
+            rustc_hir::WherePredicateKind::BoundPredicate(predicate) => {
                 let names_and_ty_params =
                     compile_generic_bounds(env, local_def_id, predicate.bounds);
 
@@ -1042,7 +1039,7 @@ fn compile_generic_bounds<'a>(
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
-            GenericBound::Trait(ptraitref, _) => {
+            GenericBound::Trait(ptraitref) => {
                 Some(TraitBound::compile(env, local_def_id, ptraitref))
             }
             // we ignore lifetimes

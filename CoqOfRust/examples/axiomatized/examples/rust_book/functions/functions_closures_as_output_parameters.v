@@ -7,29 +7,17 @@ Global Instance Instance_IsFunction_create_fn :
   M.IsFunction.Trait "functions_closures_as_output_parameters::create_fn" create_fn.
 Admitted.
 
-Module create_fn.
-  (* Error OpaqueTy *)
-End create_fn.
-
 Parameter create_fnmut : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_create_fnmut :
   M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnmut" create_fnmut.
 Admitted.
 
-Module create_fnmut.
-  (* Error OpaqueTy *)
-End create_fnmut.
-
 Parameter create_fnonce : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_create_fnonce :
   M.IsFunction.Trait "functions_closures_as_output_parameters::create_fnonce" create_fnonce.
 Admitted.
-
-Module create_fnonce.
-  (* Error OpaqueTy *)
-End create_fnonce.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

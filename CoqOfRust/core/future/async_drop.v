@@ -670,7 +670,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14457 ~ core[e9d2]::future::async_drop::surface_async_drop_in_place::{closure#0}),
+    DefId(0:14732 ~ core[f862]::future::async_drop::surface_async_drop_in_place::{closure#0}),
     [
         T/#0,
         (),
@@ -678,7 +678,7 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14457 ~ core[e9d2]::future::async_drop::surface_async_drop_in_place::{closure#0}),
+            DefId(0:14732 ~ core[f862]::future::async_drop::surface_async_drop_in_place::{closure#0}),
             [
                 T/#0,
             ],
@@ -922,10 +922,6 @@ Module future.
     Admitted.
     Global Typeclasses Opaque surface_async_drop_in_place.
     
-    Module surface_async_drop_in_place.
-      (* Error OpaqueTy *)
-    End surface_async_drop_in_place.
-    
     (*
     async unsafe fn surface_drop_in_place<T: Drop + ?Sized>(ptr: *mut T) {
         // SAFETY: We call this from async drop `async_drop_in_place_raw`
@@ -947,7 +943,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14461 ~ core[e9d2]::future::async_drop::surface_drop_in_place::{closure#0}),
+    DefId(0:14736 ~ core[f862]::future::async_drop::surface_drop_in_place::{closure#0}),
     [
         T/#0,
         (),
@@ -955,7 +951,7 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14461 ~ core[e9d2]::future::async_drop::surface_drop_in_place::{closure#0}),
+            DefId(0:14736 ~ core[f862]::future::async_drop::surface_drop_in_place::{closure#0}),
             [
                 T/#0,
             ],
@@ -1004,10 +1000,6 @@ Module future.
       M.IsFunction.Trait "core::future::async_drop::surface_drop_in_place" surface_drop_in_place.
     Admitted.
     Global Typeclasses Opaque surface_drop_in_place.
-    
-    Module surface_drop_in_place.
-      (* Error OpaqueTy *)
-    End surface_drop_in_place.
     
     (* StructRecord
       {
@@ -1246,7 +1238,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14474 ~ core[e9d2]::future::async_drop::slice::{closure#0}),
+    DefId(0:14749 ~ core[f862]::future::async_drop::slice::{closure#0}),
     [
         T/#0,
         (),
@@ -1254,7 +1246,7 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14474 ~ core[e9d2]::future::async_drop::slice::{closure#0}),
+            DefId(0:14749 ~ core[f862]::future::async_drop::slice::{closure#0}),
             [
                 T/#0,
             ],
@@ -1640,10 +1632,6 @@ Module future.
     Admitted.
     Global Typeclasses Opaque slice.
     
-    Module slice.
-      (* Error OpaqueTy *)
-    End slice.
-    
     (*
     async fn chain<F, G>(first: F, last: G)
     where
@@ -1669,7 +1657,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14479 ~ core[e9d2]::future::async_drop::chain::{closure#0}),
+    DefId(0:14754 ~ core[f862]::future::async_drop::chain::{closure#0}),
     [
         F/#0,
         G/#1,
@@ -1678,7 +1666,7 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14479 ~ core[e9d2]::future::async_drop::chain::{closure#0}),
+            DefId(0:14754 ~ core[f862]::future::async_drop::chain::{closure#0}),
             [
                 F/#0,
                 G/#1,
@@ -2040,10 +2028,6 @@ Module future.
     Admitted.
     Global Typeclasses Opaque chain.
     
-    Module chain.
-      (* Error OpaqueTy *)
-    End chain.
-    
     (*
     async unsafe fn defer<T: ?Sized>(to_drop: *mut T) {
         // SAFETY: same safety requirements as `async_drop_in_place`
@@ -2064,7 +2048,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14483 ~ core[e9d2]::future::async_drop::defer::{closure#0}),
+    DefId(0:14758 ~ core[f862]::future::async_drop::defer::{closure#0}),
     [
         T/#0,
         (),
@@ -2072,7 +2056,7 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14483 ~ core[e9d2]::future::async_drop::defer::{closure#0}),
+            DefId(0:14758 ~ core[f862]::future::async_drop::defer::{closure#0}),
             [
                 T/#0,
             ],
@@ -2275,10 +2259,6 @@ Module future.
     Admitted.
     Global Typeclasses Opaque defer.
     
-    Module defer.
-      (* Error OpaqueTy *)
-    End defer.
-    
     (*
     async unsafe fn either<O: IntoFuture<Output = ()>, M: IntoFuture<Output = ()>, T>(
         other: O,
@@ -2313,7 +2293,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14489 ~ core[e9d2]::future::async_drop::either::{closure#0}),
+    DefId(0:14764 ~ core[f862]::future::async_drop::either::{closure#0}),
     [
         O/#0,
         M/#1,
@@ -2323,14 +2303,14 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14489 ~ core[e9d2]::future::async_drop::either::{closure#0}),
+            DefId(0:14764 ~ core[f862]::future::async_drop::either::{closure#0}),
             [
                 O/#0,
                 M/#1,
                 T/#2,
             ],
         ),
-        (O/#0, M/#1, *mut T/#2, Alias(Projection, AliasTy { args: [T/#2], def_id: DefId(0:3442 ~ core[e9d2]::marker::DiscriminantKind::Discriminant), .. })),
+        (O/#0, M/#1, *mut T/#2, Alias(Projection, AliasTy { args: [T/#2], def_id: DefId(0:3484 ~ core[f862]::marker::DiscriminantKind::Discriminant), .. })),
     ],
 ) not yet handled,
                       M.alloc (| α0 |),
@@ -2783,10 +2763,6 @@ Module future.
     Admitted.
     Global Typeclasses Opaque either.
     
-    Module either.
-      (* Error OpaqueTy *)
-    End either.
-    
     (*
     async unsafe fn deferred_drop_in_place<T>(to_drop: *mut T) {
         // SAFETY: same safety requirements as with drop_in_place (implied by
@@ -2808,7 +2784,7 @@ Module future.
                     (M.match_operator (|
                       Some
                         type Coroutine(
-    DefId(0:14493 ~ core[e9d2]::future::async_drop::deferred_drop_in_place::{closure#0}),
+    DefId(0:14768 ~ core[f862]::future::async_drop::deferred_drop_in_place::{closure#0}),
     [
         T/#0,
         (),
@@ -2816,7 +2792,7 @@ Module future.
         (),
         (),
         CoroutineWitness(
-            DefId(0:14493 ~ core[e9d2]::future::async_drop::deferred_drop_in_place::{closure#0}),
+            DefId(0:14768 ~ core[f862]::future::async_drop::deferred_drop_in_place::{closure#0}),
             [
                 T/#0,
             ],
@@ -2852,10 +2828,6 @@ Module future.
       M.IsFunction.Trait "core::future::async_drop::deferred_drop_in_place" deferred_drop_in_place.
     Admitted.
     Global Typeclasses Opaque deferred_drop_in_place.
-    
-    Module deferred_drop_in_place.
-      (* Error OpaqueTy *)
-    End deferred_drop_in_place.
     
     (* StructTuple
       {

@@ -167,20 +167,7 @@ Module ptr.
               Some (Ty.path "bool"),
               a,
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::ptr::alignment::Alignment",
-                        0
-                      |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ0_0,
-                        "core::ptr::alignment::AlignmentEnum::_Align1Shl0"
-                      |) in
-                    M.alloc (| Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)

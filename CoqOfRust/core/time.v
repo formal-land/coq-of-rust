@@ -1076,11 +1076,9 @@ Module time.
                 // SAFETY: nanos < NANOS_PER_SEC, therefore nanos is within the valid range
                 Duration { secs, nanos: unsafe { Nanoseconds(nanos) } }
             } else {
-                // FIXME(const-hack): use `.expect` once that is possible.
-                let secs = match secs.checked_add((nanos / NANOS_PER_SEC) as u64) {
-                    Some(secs) => secs,
-                    None => panic!("overflow in Duration::new"),
-                };
+                let secs = secs
+                    .checked_add((nanos / NANOS_PER_SEC) as u64)
+                    .expect("overflow in Duration::new");
                 let nanos = nanos % NANOS_PER_SEC;
                 // SAFETY: nanos % NANOS_PER_SEC < NANOS_PER_SEC, therefore nanos is within the valid range
                 Duration { secs, nanos: unsafe { Nanoseconds(nanos) } }
@@ -1121,10 +1119,16 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let~ secs : Ty.path "u64" :=
-                      M.copy (|
-                        M.match_operator (|
-                          Some (Ty.path "u64"),
-                          M.alloc (|
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                            "expect",
+                            [],
+                            []
+                          |),
+                          [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                               M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
@@ -1137,59 +1141,11 @@ Module time.
                                     M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                   |))
                               ]
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "overflow in Duration::new" |) |)
                             |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::option::Option::Some",
-                                    0
-                                  |) in
-                                let secs := M.copy (| γ0_0 |) in
-                                secs));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::Arguments",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            [ Value.Integer IntegerKind.Usize 1 ],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String "overflow in Duration::new"
-                                                        |)
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)
-                                |)))
                           ]
                         |)
                       |) in

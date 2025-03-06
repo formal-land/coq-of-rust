@@ -1741,18 +1741,18 @@ Module pin.
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_ops_deref_DerefPure_Ptr_for_core_pin_Pin_Ptr.
   
-  Module Impl_core_ops_deref_Receiver_where_core_ops_deref_Receiver_Ptr_for_core_pin_Pin_Ptr.
+  Module Impl_core_ops_deref_LegacyReceiver_where_core_ops_deref_LegacyReceiver_Ptr_for_core_pin_Pin_Ptr.
     Definition Self (Ptr : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].
     
     Axiom Implements :
       forall (Ptr : Ty.t),
       M.IsTraitInstance
-        "core::ops::deref::Receiver"
+        "core::ops::deref::LegacyReceiver"
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
         (Self Ptr)
         (* Instance *) [].
-  End Impl_core_ops_deref_Receiver_where_core_ops_deref_Receiver_Ptr_for_core_pin_Pin_Ptr.
+  End Impl_core_ops_deref_LegacyReceiver_where_core_ops_deref_LegacyReceiver_Ptr_for_core_pin_Pin_Ptr.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_Ptr_for_core_pin_Pin_Ptr.
     Definition Self (Ptr : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].

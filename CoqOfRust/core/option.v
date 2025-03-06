@@ -5918,4 +5918,60 @@ Module option.
     Admitted.
     Global Typeclasses Opaque flatten.
   End Impl_core_option_Option_core_option_Option_T.
+  
+  Module Impl_array_N_core_option_Option_T.
+    Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ].
+    
+    (*
+        pub fn transpose(self) -> Option<[T; N]> {
+            self.try_map(core::convert::identity)
+        }
+    *)
+    Definition transpose
+        (N : Value.t)
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self N T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "array")
+                [ N ]
+                [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+              "try_map",
+              [],
+              [
+                Ty.apply (Ty.path "core::option::Option") [] [ T ];
+                Ty.function
+                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                  (Ty.apply (Ty.path "core::option::Option") [] [ T ])
+              ]
+            |),
+            [
+              M.read (| self |);
+              M.get_function (|
+                "core::convert::identity",
+                [],
+                [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_transpose :
+      forall (N : Value.t) (T : Ty.t),
+      M.IsAssociatedFunction.Trait (Self N T) "transpose" (transpose N T).
+    Admitted.
+    Global Typeclasses Opaque transpose.
+  End Impl_array_N_core_option_Option_T.
 End option.

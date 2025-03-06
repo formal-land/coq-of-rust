@@ -2311,10 +2311,6 @@ Module vec.
     Admitted.
     Global Typeclasses Opaque write_in_place_with_drop.
     
-    Module write_in_place_with_drop.
-      (* Error OpaqueTy *)
-    End write_in_place_with_drop.
-    
     (* Trait *)
     (* Empty module 'SpecInPlaceCollect' *)
     

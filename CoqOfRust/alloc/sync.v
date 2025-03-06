@@ -3557,7 +3557,7 @@ Module sync.
                 // observe a non-zero strong count. Therefore we need at least "Release" ordering
                 // in order to synchronize with the `compare_exchange_weak` in `Weak::upgrade`.
                 //
-                // "Acquire" ordering is not required. When considering the possible behaviours
+                // "Acquire" ordering is not required. When considering the possible behaviors
                 // of `data_fn` we only need to look at what it could do with a reference to a
                 // non-upgradeable `Weak`:
                 // - It can *clone* the `Weak`, increasing the weak reference count.
@@ -6297,7 +6297,7 @@ Module sync.
         pub fn as_ptr(this: &Self) -> *const T {
             let ptr: *mut ArcInner<T> = NonNull::as_ptr(this.ptr);
     
-            // SAFETY: This cannot go through Deref::deref or RcBoxPtr::inner because
+            // SAFETY: This cannot go through Deref::deref or RcInnerPtr::inner because
             // this is required to retain raw/mut provenance such that e.g. `get_mut` can
             // write through the pointer after the Rc is recovered through `from_raw`.
             unsafe { &raw mut ( *ptr).data }
@@ -7276,15 +7276,17 @@ Module sync.
     
     (*
         unsafe fn drop_slow(&mut self) {
+            // Drop the weak ref collectively held by all strong references when this
+            // variable goes out of scope. This ensures that the memory is deallocated
+            // even if the destructor of `T` panics.
+            // Take a reference to `self.alloc` instead of cloning because 1. it'll last long
+            // enough, and 2. you should be able to drop `Arc`s with unclonable allocators
+            let _weak = Weak { ptr: self.ptr, alloc: &self.alloc };
+    
             // Destroy the data at this time, even though we must not free the box
             // allocation itself (there might still be weak pointers lying around).
-            unsafe { ptr::drop_in_place(Self::get_mut_unchecked(self)) };
-    
-            // Drop the weak ref collectively held by all strong references
-            // Take a reference to `self.alloc` instead of cloning because 1. it'll
-            // last long enough, and 2. you should be able to drop `Arc`s with
-            // unclonable allocators
-            drop(Weak { ptr: self.ptr, alloc: &self.alloc });
+            // We cannot use `get_mut_unchecked` here, because `self.alloc` is borrowed.
+            unsafe { ptr::drop_in_place(&mut ( *self.ptr.as_ptr()).data) };
         }
     *)
     Definition drop_slow (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -7294,6 +7296,31 @@ Module sync.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
+            let~ _weak :
+                Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; Ty.apply (Ty.path "&") [] [ A ] ] :=
+              M.alloc (|
+                Value.StructRecord
+                  "alloc::sync::Weak"
+                  [
+                    ("ptr",
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::sync::Arc",
+                          "ptr"
+                        |)
+                      |));
+                    ("alloc",
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::sync::Arc",
+                          "alloc"
+                        |)
+                      |))
+                  ]
+              |) in
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
@@ -7303,57 +7330,41 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.MutPointer,
                       M.deref (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "&mut") [] [ T ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
-                            "get_mut_unchecked",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                  "as_ptr",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::sync::Arc",
+                                      "ptr"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |),
+                            "alloc::sync::ArcInner",
+                            "data"
+                          |)
                         |)
                       |)
                     |)
-                  ]
-                |)
-              |) in
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (|
-                    "core::mem::drop",
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::sync::Weak")
-                        []
-                        [ T; Ty.apply (Ty.path "&") [] [ A ] ]
-                    ]
-                  |),
-                  [
-                    Value.StructRecord
-                      "alloc::sync::Weak"
-                      [
-                        ("ptr",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::sync::Arc",
-                              "ptr"
-                            |)
-                          |));
-                        ("alloc",
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::sync::Arc",
-                              "alloc"
-                            |)
-                          |))
-                      ]
                   ]
                 |)
               |) in
@@ -7890,7 +7901,7 @@ Module sync.
     
                 let initialized_clone = unsafe {
                     // Clone. If the clone panics, `in_progress` will be dropped and clean up.
-                    this_data_ref.clone_to_uninit(in_progress.data_ptr());
+                    this_data_ref.clone_to_uninit(in_progress.data_ptr().cast());
                     // Cast type of pointer, now that it is initialized.
                     in_progress.into_arc()
                 };
@@ -8167,17 +8178,28 @@ Module sync.
                                         M.deref (| M.read (| this_data_ref |) |)
                                       |);
                                       M.call_closure (|
-                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                         M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::sync::UniqueArcUninit")
-                                            []
-                                            [ T; A ],
-                                          "data_ptr",
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "cast",
                                           [],
-                                          []
+                                          [ Ty.path "u8" ]
                                         |),
-                                        [ M.borrow (| Pointer.Kind.MutRef, in_progress |) ]
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "*mut") [] [ T ],
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::sync::UniqueArcUninit")
+                                                []
+                                                [ T; A ],
+                                              "data_ptr",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.MutRef, in_progress |) ]
+                                          |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -11731,19 +11753,19 @@ Module sync.
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
-  Module Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
+  Module Impl_core_ops_deref_LegacyReceiver_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     Axiom Implements :
       forall (T : Ty.t),
       M.IsTraitInstance
-        "core::ops::deref::Receiver"
+        "core::ops::deref::LegacyReceiver"
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
         (Self T)
         (* Instance *) [].
-  End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
+  End Impl_core_ops_deref_LegacyReceiver_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
   
   
   
@@ -12069,7 +12091,7 @@ Module sync.
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_sync_Arc_T_A.
   
-  Module Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
+  Module Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
     Definition Self (A : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "alloc::sync::Arc")
@@ -12078,8 +12100,8 @@ Module sync.
           Ty.dyn
             [
               ("core::any::Any::Trait", []);
-              ("core::marker::Send::AutoTrait", []);
-              ("core::marker::Sync::AutoTrait", [])
+              ("core::marker::Sync::AutoTrait", []);
+              ("core::marker::Send::AutoTrait", [])
             ];
           A
         ].
@@ -12120,8 +12142,8 @@ Module sync.
                         Ty.dyn
                           [
                             ("core::any::Any::Trait", []);
-                            ("core::marker::Send::AutoTrait", []);
-                            ("core::marker::Sync::AutoTrait", [])
+                            ("core::marker::Sync::AutoTrait", []);
+                            ("core::marker::Send::AutoTrait", [])
                           ];
                         A
                       ]
@@ -12139,8 +12161,8 @@ Module sync.
                               Ty.dyn
                                 [
                                   ("core::any::Any::Trait", []);
-                                  ("core::marker::Send::AutoTrait", []);
-                                  ("core::marker::Sync::AutoTrait", [])
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
                                 ],
                               "is",
                               [],
@@ -12158,8 +12180,8 @@ Module sync.
                                         Ty.dyn
                                           [
                                             ("core::any::Any::Trait", []);
-                                            ("core::marker::Send::AutoTrait", []);
-                                            ("core::marker::Sync::AutoTrait", [])
+                                            ("core::marker::Sync::AutoTrait", []);
+                                            ("core::marker::Send::AutoTrait", [])
                                           ]
                                       ],
                                     M.get_trait_method (|
@@ -12171,8 +12193,8 @@ Module sync.
                                           Ty.dyn
                                             [
                                               ("core::any::Any::Trait", []);
-                                              ("core::marker::Send::AutoTrait", []);
-                                              ("core::marker::Sync::AutoTrait", [])
+                                              ("core::marker::Sync::AutoTrait", []);
+                                              ("core::marker::Send::AutoTrait", [])
                                             ];
                                           A
                                         ],
@@ -12207,8 +12229,8 @@ Module sync.
                                       Ty.dyn
                                         [
                                           ("core::any::Any::Trait", []);
-                                          ("core::marker::Send::AutoTrait", []);
-                                          ("core::marker::Sync::AutoTrait", [])
+                                          ("core::marker::Sync::AutoTrait", []);
+                                          ("core::marker::Send::AutoTrait", [])
                                         ]
                                     ]
                                 ];
@@ -12222,8 +12244,8 @@ Module sync.
                                 Ty.dyn
                                   [
                                     ("core::any::Any::Trait", []);
-                                    ("core::marker::Send::AutoTrait", []);
-                                    ("core::marker::Sync::AutoTrait", [])
+                                    ("core::marker::Sync::AutoTrait", []);
+                                    ("core::marker::Send::AutoTrait", [])
                                   ];
                                 A
                               ],
@@ -12271,8 +12293,8 @@ Module sync.
                                                   Ty.dyn
                                                     [
                                                       ("core::any::Any::Trait", []);
-                                                      ("core::marker::Send::AutoTrait", []);
-                                                      ("core::marker::Sync::AutoTrait", [])
+                                                      ("core::marker::Sync::AutoTrait", []);
+                                                      ("core::marker::Send::AutoTrait", [])
                                                     ]
                                                 ]
                                             ],
@@ -12346,8 +12368,8 @@ Module sync.
                               Ty.dyn
                                 [
                                   ("core::any::Any::Trait", []);
-                                  ("core::marker::Send::AutoTrait", []);
-                                  ("core::marker::Sync::AutoTrait", [])
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
                                 ]
                             ]
                         ];
@@ -12361,8 +12383,8 @@ Module sync.
                         Ty.dyn
                           [
                             ("core::any::Any::Trait", []);
-                            ("core::marker::Send::AutoTrait", []);
-                            ("core::marker::Sync::AutoTrait", [])
+                            ("core::marker::Sync::AutoTrait", []);
+                            ("core::marker::Send::AutoTrait", [])
                           ];
                         A
                       ],
@@ -12407,8 +12429,8 @@ Module sync.
                                       Ty.dyn
                                         [
                                           ("core::any::Any::Trait", []);
-                                          ("core::marker::Send::AutoTrait", []);
-                                          ("core::marker::Sync::AutoTrait", [])
+                                          ("core::marker::Sync::AutoTrait", []);
+                                          ("core::marker::Send::AutoTrait", [])
                                         ]
                                     ]
                                 ],
@@ -12433,7 +12455,7 @@ Module sync.
       M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
     Admitted.
     Global Typeclasses Opaque downcast_unchecked.
-  End Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_A.
+  End Impl_alloc_sync_Arc_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
   
   Module Impl_alloc_sync_Weak_T_alloc_alloc_Global.
     Definition Self (T : Ty.t) : Ty.t :=
@@ -12952,7 +12974,7 @@ Module sync.
                 // Otherwise, we're guaranteed the pointer came from a nondangling Weak.
                 // SAFETY: data_offset is safe to call, as ptr references a real (potentially dropped) T.
                 let offset = unsafe { data_offset(ptr) };
-                // Thus, we reverse the offset to get the whole RcBox.
+                // Thus, we reverse the offset to get the whole RcInner.
                 // SAFETY: the pointer originated from a Weak, so this offset is safe.
                 unsafe { ptr.byte_sub(offset) as *mut ArcInner<T> }
             };
@@ -15405,7 +15427,16 @@ Module sync.
     
     (*
         fn default() -> Arc<T> {
-            Arc::new(Default::default())
+            unsafe {
+                Self::from_inner(
+                    Box::leak(Box::write(Box::new_uninit(), ArcInner {
+                        strong: atomic::AtomicUsize::new(1),
+                        weak: atomic::AtomicUsize::new(1),
+                        data: T::default(),
+                    }))
+                    .into(),
+                )
+            }
         }
     *)
     Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -15417,15 +15448,151 @@ Module sync.
             Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ],
-              "new",
+              "from_inner",
               [],
               []
             |),
             [
               M.call_closure (|
-                T,
-                M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
-                []
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                M.get_trait_method (|
+                  "core::convert::Into",
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                  [],
+                  [
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
+                  ],
+                  "into",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "leak",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "write",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new_uninit",
+                                  [],
+                                  []
+                                |),
+                                []
+                              |);
+                              Value.StructRecord
+                                "alloc::sync::ArcInner"
+                                [
+                                  ("strong",
+                                    M.call_closure (|
+                                      Ty.path "core::sync::atomic::AtomicUsize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::sync::atomic::AtomicUsize",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                    |));
+                                  ("weak",
+                                    M.call_closure (|
+                                      Ty.path "core::sync::atomic::AtomicUsize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::sync::atomic::AtomicUsize",
+                                        "new",
+                                        [],
+                                        []
+                                      |),
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                    |));
+                                  ("data",
+                                    M.call_closure (|
+                                      T,
+                                      M.get_trait_method (|
+                                        "core::default::Default",
+                                        T,
+                                        [],
+                                        [],
+                                        "default",
+                                        [],
+                                        []
+                                      |),
+                                      []
+                                    |))
+                                ]
+                            ]
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)
+                ]
               |)
             ]
           |)))
@@ -16685,6 +16852,57 @@ Module sync.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
   
+  Module Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_slice_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "alloc::sync::Arc")
+        []
+        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from(v: &mut [T]) -> Arc<[T]> {
+            Arc::from(&*v)
+        }
+    *)
+    Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
+      match ε, τ, α with
+      | [], [], [ v ] =>
+        ltac:(M.monadic
+          (let v := M.alloc (| v |) in
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::sync::Arc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply
+                (Ty.path "alloc::sync::Arc")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+              [],
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+              "from",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
+        (* Instance *) [ ("from", InstanceField.Method (from T)) ].
+  End Impl_core_convert_From_where_core_clone_Clone_T_ref_mut_slice_T_for_alloc_sync_Arc_slice_T_alloc_alloc_Global.
+  
   Module Impl_core_convert_From_ref__str_for_alloc_sync_Arc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply (Ty.path "alloc::sync::Arc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
@@ -16791,6 +17009,51 @@ Module sync.
         Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_sync_Arc_str_alloc_alloc_Global.
+  
+  Module Impl_core_convert_From_ref_mut_str_for_alloc_sync_Arc_str_alloc_alloc_Global.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "alloc::sync::Arc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ].
+    
+    (*
+        fn from(v: &mut str) -> Arc<str> {
+            Arc::from(&*v)
+        }
+    *)
+    Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ v ] =>
+        ltac:(M.monadic
+          (let v := M.alloc (| v |) in
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::sync::Arc")
+              []
+              [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.apply
+                (Ty.path "alloc::sync::Arc")
+                []
+                [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              [],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              [],
+              []
+            |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ] ]
+        Self
+        (* Instance *) [ ("from", InstanceField.Method from) ].
+  End Impl_core_convert_From_ref_mut_str_for_alloc_sync_Arc_str_alloc_alloc_Global.
   
   Module Impl_core_convert_From_alloc_string_String_for_alloc_sync_Arc_str_alloc_alloc_Global.
     Definition Self : Ty.t :=
@@ -18077,7 +18340,7 @@ Module sync.
   (*
   unsafe fn data_offset<T: ?Sized>(ptr: *const T) -> usize {
       // Align the unsized value to the end of the ArcInner.
-      // Because RcBox is repr(C), it will always be the last field in memory.
+      // Because RcInner is repr(C), it will always be the last field in memory.
       // SAFETY: since the only unsized types possible are slices, trait objects,
       // and extern types, the input safety requirement is currently enough to
       // satisfy the requirements of align_of_val_raw; this is an implementation

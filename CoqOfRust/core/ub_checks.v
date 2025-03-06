@@ -135,42 +135,68 @@ Module intrinsics.
                       M.use
                         (M.alloc (|
                           UnOp.not (|
-                            LogicalOp.and (|
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (|
-                                    "core::ub_checks::is_aligned_and_not_null",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| src |); M.read (| align |) ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "core::ub_checks::is_aligned_and_not_null",
-                                      [],
-                                      []
+                            M.read (|
+                              let~ zero_size : Ty.path "bool" :=
+                                M.alloc (|
+                                  LogicalOp.or (|
+                                    BinOp.eq (|
+                                      M.read (| count |),
+                                      Value.Integer IntegerKind.Usize 0
                                     |),
-                                    [
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |));
-                                      M.read (| align |)
-                                    ]
-                                  |)))
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (| "core::ub_checks::is_nonoverlapping", [], [] |),
-                                  [
-                                    M.read (| src |);
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |));
-                                    M.read (| size |);
-                                    M.read (| count |)
-                                  ]
-                                |)))
+                                    ltac:(M.monadic
+                                      (BinOp.eq (|
+                                        M.read (| size |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
+                                  |)
+                                |) in
+                              M.alloc (|
+                                LogicalOp.and (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "core::ub_checks::maybe_is_aligned_and_not_null",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| src |); M.read (| align |); M.read (| zero_size |)
+                                      ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_function (|
+                                          "core::ub_checks::maybe_is_aligned_and_not_null",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          (* MutToConstPointer *)
+                                          M.pointer_coercion (M.read (| dst |));
+                                          M.read (| align |);
+                                          M.read (| zero_size |)
+                                        ]
+                                      |)))
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "core::ub_checks::maybe_is_nonoverlapping",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| src |);
+                                        (* MutToConstPointer *)
+                                        M.pointer_coercion (M.read (| dst |));
+                                        M.read (| size |);
+                                        M.read (| count |)
+                                      ]
+                                    |)))
+                                |)
+                              |)
                             |)
                           |)
                         |)) in
@@ -216,11 +242,12 @@ Module intrinsics.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ src; dst; align ] =>
+      | [], [], [ src; dst; align; zero_size ] =>
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           let dst := M.alloc (| dst |) in
           let align := M.alloc (| align |) in
+          let zero_size := M.alloc (| zero_size |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -236,23 +263,24 @@ Module intrinsics.
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_function (|
-                                  "core::ub_checks::is_aligned_and_not_null",
+                                  "core::ub_checks::maybe_is_aligned_and_not_null",
                                   [],
                                   []
                                 |),
-                                [ M.read (| src |); M.read (| align |) ]
+                                [ M.read (| src |); M.read (| align |); M.read (| zero_size |) ]
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (|
-                                    "core::ub_checks::is_aligned_and_not_null",
+                                    "core::ub_checks::maybe_is_aligned_and_not_null",
                                     [],
                                     []
                                   |),
                                   [
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |));
-                                    M.read (| align |)
+                                    M.read (| align |);
+                                    M.read (| zero_size |)
                                   ]
                                 |)))
                             |)
@@ -298,10 +326,11 @@ Module intrinsics.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ addr; align ] =>
+      | [], [], [ addr; align; zero_size ] =>
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           let align := M.alloc (| align |) in
+          let zero_size := M.alloc (| zero_size |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -316,11 +345,11 @@ Module intrinsics.
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (|
-                                "core::ub_checks::is_aligned_and_not_null",
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
                                 [],
                                 []
                               |),
-                              [ M.read (| addr |); M.read (| align |) ]
+                              [ M.read (| addr |); M.read (| align |); M.read (| zero_size |) ]
                             |)
                           |)
                         |)) in
@@ -384,45 +413,70 @@ Module ptr.
                       M.use
                         (M.alloc (|
                           UnOp.not (|
-                            LogicalOp.and (|
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (|
-                                    "core::ub_checks::is_aligned_and_not_null",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
-                                    M.read (| align |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "core::ub_checks::is_aligned_and_not_null",
-                                      [],
-                                      []
+                            M.read (|
+                              let~ zero_size : Ty.path "bool" :=
+                                M.alloc (|
+                                  LogicalOp.or (|
+                                    BinOp.eq (|
+                                      M.read (| size |),
+                                      Value.Integer IntegerKind.Usize 0
                                     |),
-                                    [
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
-                                      M.read (| align |)
-                                    ]
-                                  |)))
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (| "core::ub_checks::is_nonoverlapping", [], [] |),
-                                  [
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
-                                    (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
-                                    M.read (| size |);
-                                    M.read (| count |)
-                                  ]
-                                |)))
+                                    ltac:(M.monadic
+                                      (BinOp.eq (|
+                                        M.read (| count |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)))
+                                  |)
+                                |) in
+                              M.alloc (|
+                                LogicalOp.and (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "core::ub_checks::maybe_is_aligned_and_not_null",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
+                                        M.read (| align |);
+                                        M.read (| zero_size |)
+                                      ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_function (|
+                                          "core::ub_checks::maybe_is_aligned_and_not_null",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          (* MutToConstPointer *)
+                                          M.pointer_coercion (M.read (| y |));
+                                          M.read (| align |);
+                                          M.read (| zero_size |)
+                                        ]
+                                      |)))
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_function (|
+                                        "core::ub_checks::maybe_is_nonoverlapping",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
+                                        (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
+                                        M.read (| size |);
+                                        M.read (| count |)
+                                      ]
+                                    |)))
+                                |)
+                              |)
                             |)
                           |)
                         |)) in
@@ -466,10 +520,11 @@ Module ptr.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ addr; align ] =>
+      | [], [], [ addr; align; is_zst ] =>
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           let align := M.alloc (| align |) in
+          let is_zst := M.alloc (| is_zst |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -484,11 +539,11 @@ Module ptr.
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (|
-                                "core::ub_checks::is_aligned_and_not_null",
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
                                 [],
                                 []
                               |),
-                              [ M.read (| addr |); M.read (| align |) ]
+                              [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
                             |)
                           |)
                         |)) in
@@ -532,10 +587,11 @@ Module ptr.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ addr; align ] =>
+      | [], [], [ addr; align; is_zst ] =>
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           let align := M.alloc (| align |) in
+          let is_zst := M.alloc (| is_zst |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -550,11 +606,11 @@ Module ptr.
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (|
-                                "core::ub_checks::is_aligned_and_not_null",
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
                                 [],
                                 []
                               |),
-                              [ M.read (| addr |); M.read (| align |) ]
+                              [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
                             |)
                           |)
                         |)) in
@@ -598,10 +654,11 @@ Module ptr.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ addr; align ] =>
+      | [], [], [ addr; align; is_zst ] =>
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           let align := M.alloc (| align |) in
+          let is_zst := M.alloc (| is_zst |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -616,13 +673,14 @@ Module ptr.
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (|
-                                "core::ub_checks::is_aligned_and_not_null",
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
                                 [],
                                 []
                               |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| addr |));
-                                M.read (| align |)
+                                M.read (| align |);
+                                M.read (| is_zst |)
                               ]
                             |)
                           |)
@@ -667,10 +725,11 @@ Module ptr.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ addr; align ] =>
+      | [], [], [ addr; align; is_zst ] =>
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           let align := M.alloc (| align |) in
+          let is_zst := M.alloc (| is_zst |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -685,11 +744,11 @@ Module ptr.
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (|
-                                "core::ub_checks::is_aligned_and_not_null",
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
                                 [],
                                 []
                               |),
-                              [ M.read (| addr |); M.read (| align |) ]
+                              [ M.read (| addr |); M.read (| align |); M.read (| is_zst |) ]
                             |)
                           |)
                         |)) in
@@ -733,10 +792,11 @@ Module ptr.
     *)
     Definition precondition_check (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ addr; align ] =>
+      | [], [], [ addr; align; is_zst ] =>
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           let align := M.alloc (| align |) in
+          let is_zst := M.alloc (| is_zst |) in
           M.read (|
             M.match_operator (|
               Some (Ty.tuple []),
@@ -751,13 +811,14 @@ Module ptr.
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (|
-                                "core::ub_checks::is_aligned_and_not_null",
+                                "core::ub_checks::maybe_is_aligned_and_not_null",
                                 [],
                                 []
                               |),
                               [
                                 (* MutToConstPointer *) M.pointer_coercion (M.read (| addr |));
-                                M.read (| align |)
+                                M.read (| align |);
+                                M.read (| is_zst |)
                               ]
                             |)
                           |)
@@ -794,20 +855,18 @@ End ptr.
 Module ub_checks.
   (*
   pub(crate) const fn check_language_ub() -> bool {
-      #[inline]
-      fn runtime() -> bool {
-          // Disable UB checks in Miri.
-          !cfg!(miri)
-      }
-  
-      #[inline]
-      const fn comptime() -> bool {
-          // Always disable UB checks.
-          false
-      }
-  
       // Only used for UB checks so we may const_eval_select.
-      intrinsics::ub_checks() && const_eval_select((), comptime, runtime)
+      intrinsics::ub_checks()
+          && const_eval_select!(
+              @capture { } -> bool:
+              if const {
+                  // Always disable UB checks.
+                  false
+              } else {
+                  // Disable UB checks in Miri.
+                  !cfg!(miri)
+              }
+          )
   }
   *)
   Definition check_language_ub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -835,7 +894,7 @@ Module ub_checks.
               |),
               [
                 Value.Tuple [];
-                M.get_function (| "core::ub_checks::check_language_ub.comptime", [], [] |);
+                M.get_function (| "core::ub_checks::check_language_ub.compiletime", [], [] |);
                 M.get_function (| "core::ub_checks::check_language_ub.runtime", [], [] |)
               ]
             |)))
@@ -848,85 +907,70 @@ Module ub_checks.
   Admitted.
   Global Typeclasses Opaque check_language_ub.
   
-  Module check_language_ub.
-    (*
-        fn runtime() -> bool {
-            // Disable UB checks in Miri.
-            !cfg!(miri)
-        }
-    *)
-    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (UnOp.not (| Value.Bool false |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::ub_checks::check_language_ub::runtime" runtime.
-    Admitted.
-    Global Typeclasses Opaque runtime.
-    
-    (*
-        const fn comptime() -> bool {
-            // Always disable UB checks.
-            false
-        }
-    *)
-    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (Value.Bool false))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_comptime :
-      M.IsFunction.Trait "core::ub_checks::check_language_ub::comptime" comptime.
-    Admitted.
-    Global Typeclasses Opaque comptime.
-  End check_language_ub.
-  
   (*
-  pub(crate) const fn is_aligned_and_not_null(ptr: *const (), align: usize) -> bool {
-      !ptr.is_null() && ptr.is_aligned_to(align)
+  pub(crate) const fn maybe_is_aligned_and_not_null(
+      ptr: *const (),
+      align: usize,
+      is_zst: bool,
+  ) -> bool {
+      // This is just for safety checks so we can const_eval_select.
+      const_eval_select!(
+          @capture { ptr: *const (), align: usize, is_zst: bool } -> bool:
+          if const {
+              is_zst || !ptr.is_null()
+          } else {
+              ptr.is_aligned_to(align) && (is_zst || !ptr.is_null())
+          }
+      )
   }
   *)
-  Definition is_aligned_and_not_null (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition maybe_is_aligned_and_not_null
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     match ε, τ, α with
-    | [], [], [ ptr; align ] =>
+    | [], [], [ ptr; align; is_zst ] =>
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         let align := M.alloc (| align |) in
-        LogicalOp.and (|
-          UnOp.not (|
-            M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                "is_null",
-                [],
-                []
-              |),
-              [ M.read (| ptr |) ]
-            |)
+        let is_zst := M.alloc (| is_zst |) in
+        M.call_closure (|
+          Ty.path "bool",
+          M.get_function (|
+            "core::intrinsics::const_eval_select",
+            [],
+            [
+              Ty.tuple
+                [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]; Ty.path "usize"; Ty.path "bool" ];
+              Ty.function
+                [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]; Ty.path "usize"; Ty.path "bool" ]
+                (Ty.path "bool");
+              Ty.function
+                [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]; Ty.path "usize"; Ty.path "bool" ]
+                (Ty.path "bool");
+              Ty.path "bool"
+            ]
           |),
-          ltac:(M.monadic
-            (M.call_closure (|
-              Ty.path "bool",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                "is_aligned_to",
-                [],
-                []
-              |),
-              [ M.read (| ptr |); M.read (| align |) ]
-            |)))
+          [
+            Value.Tuple [ M.read (| ptr |); M.read (| align |); M.read (| is_zst |) ];
+            M.get_function (|
+              "core::ub_checks::maybe_is_aligned_and_not_null.compiletime",
+              [],
+              []
+            |);
+            M.get_function (| "core::ub_checks::maybe_is_aligned_and_not_null.runtime", [], [] |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_is_aligned_and_not_null :
-    M.IsFunction.Trait "core::ub_checks::is_aligned_and_not_null" is_aligned_and_not_null.
+  Global Instance Instance_IsFunction_maybe_is_aligned_and_not_null :
+    M.IsFunction.Trait
+      "core::ub_checks::maybe_is_aligned_and_not_null"
+      maybe_is_aligned_and_not_null.
   Admitted.
-  Global Typeclasses Opaque is_aligned_and_not_null.
+  Global Typeclasses Opaque maybe_is_aligned_and_not_null.
   
   (*
   pub(crate) const fn is_valid_allocation_size(size: usize, len: usize) -> bool {
@@ -978,37 +1022,34 @@ Module ub_checks.
   Global Typeclasses Opaque is_valid_allocation_size.
   
   (*
-  pub(crate) const fn is_nonoverlapping(
+  pub(crate) const fn maybe_is_nonoverlapping(
       src: *const (),
       dst: *const (),
       size: usize,
       count: usize,
   ) -> bool {
-      #[inline]
-      fn runtime(src: *const (), dst: *const (), size: usize, count: usize) -> bool {
-          let src_usize = src.addr();
-          let dst_usize = dst.addr();
-          let Some(size) = size.checked_mul(count) else {
-              crate::panicking::panic_nounwind(
-                  "is_nonoverlapping: `size_of::<T>() * count` overflows a usize",
-              )
-          };
-          let diff = src_usize.abs_diff(dst_usize);
-          // If the absolute distance between the ptrs is at least as big as the size of the buffer,
-          // they do not overlap.
-          diff >= size
-      }
-  
-      #[inline]
-      const fn comptime(_: *const (), _: *const (), _: usize, _: usize) -> bool {
-          true
-      }
-  
       // This is just for safety checks so we can const_eval_select.
-      const_eval_select((src, dst, size, count), comptime, runtime)
+      const_eval_select!(
+          @capture { src: *const (), dst: *const (), size: usize, count: usize } -> bool:
+          if const {
+              true
+          } else {
+              let src_usize = src.addr();
+              let dst_usize = dst.addr();
+              let Some(size) = size.checked_mul(count) else {
+                  crate::panicking::panic_nounwind(
+                      "is_nonoverlapping: `size_of::<T>() * count` overflows a usize",
+                  )
+              };
+              let diff = src_usize.abs_diff(dst_usize);
+              // If the absolute distance between the ptrs is at least as big as the size of the buffer,
+              // they do not overlap.
+              diff >= size
+          }
+      )
   }
   *)
-  Definition is_nonoverlapping (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition maybe_is_nonoverlapping (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [ src; dst; size; count ] =>
       ltac:(M.monadic
@@ -1051,158 +1092,17 @@ Module ub_checks.
           [
             Value.Tuple
               [ M.read (| src |); M.read (| dst |); M.read (| size |); M.read (| count |) ];
-            M.get_function (| "core::ub_checks::is_nonoverlapping.comptime", [], [] |);
-            M.get_function (| "core::ub_checks::is_nonoverlapping.runtime", [], [] |)
+            M.get_function (| "core::ub_checks::maybe_is_nonoverlapping.compiletime", [], [] |);
+            M.get_function (| "core::ub_checks::maybe_is_nonoverlapping.runtime", [], [] |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_is_nonoverlapping :
-    M.IsFunction.Trait "core::ub_checks::is_nonoverlapping" is_nonoverlapping.
+  Global Instance Instance_IsFunction_maybe_is_nonoverlapping :
+    M.IsFunction.Trait "core::ub_checks::maybe_is_nonoverlapping" maybe_is_nonoverlapping.
   Admitted.
-  Global Typeclasses Opaque is_nonoverlapping.
-  
-  Module is_nonoverlapping.
-    (*
-        fn runtime(src: *const (), dst: *const (), size: usize, count: usize) -> bool {
-            let src_usize = src.addr();
-            let dst_usize = dst.addr();
-            let Some(size) = size.checked_mul(count) else {
-                crate::panicking::panic_nounwind(
-                    "is_nonoverlapping: `size_of::<T>() * count` overflows a usize",
-                )
-            };
-            let diff = src_usize.abs_diff(dst_usize);
-            // If the absolute distance between the ptrs is at least as big as the size of the buffer,
-            // they do not overlap.
-            diff >= size
-        }
-    *)
-    Definition runtime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ src; dst; size; count ] =>
-        ltac:(M.monadic
-          (let src := M.alloc (| src |) in
-          let dst := M.alloc (| dst |) in
-          let size := M.alloc (| size |) in
-          let count := M.alloc (| count |) in
-          M.read (|
-            let~ src_usize : Ty.path "usize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                    "addr",
-                    [],
-                    []
-                  |),
-                  [ M.read (| src |) ]
-                |)
-              |) in
-            let~ dst_usize : Ty.path "usize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                    "addr",
-                    [],
-                    []
-                  |),
-                  [ M.read (| dst |) ]
-                |)
-              |) in
-            M.match_operator (|
-              None,
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                  M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
-                  [ M.read (| size |); M.read (| count |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let size := M.copy (| γ0_0 |) in
-                    let~ diff : Ty.path "usize" :=
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (| Ty.path "usize", "abs_diff", [], [] |),
-                          [ M.read (| src_usize |); M.read (| dst_usize |) ]
-                        |)
-                      |) in
-                    M.alloc (| BinOp.ge (| M.read (| diff |), M.read (| size |) |) |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_runtime :
-      M.IsFunction.Trait "core::ub_checks::is_nonoverlapping::runtime" runtime.
-    Admitted.
-    Global Typeclasses Opaque runtime.
-    
-    (*
-        const fn comptime(_: *const (), _: *const (), _: usize, _: usize) -> bool {
-            true
-        }
-    *)
-    Definition comptime (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ β0; β1; β2; β3 ] =>
-        ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
-          let β1 := M.alloc (| β1 |) in
-          let β2 := M.alloc (| β2 |) in
-          let β3 := M.alloc (| β3 |) in
-          M.match_operator (|
-            None,
-            β0,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    None,
-                    β1,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            None,
-                            β2,
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    None,
-                                    β3,
-                                    [ fun γ => ltac:(M.monadic (Value.Bool true)) ]
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_comptime :
-      M.IsFunction.Trait "core::ub_checks::is_nonoverlapping::comptime" comptime.
-    Admitted.
-    Global Typeclasses Opaque comptime.
-  End is_nonoverlapping.
+  Global Typeclasses Opaque maybe_is_nonoverlapping.
 End ub_checks.
 
 Module char.
@@ -1339,13 +1239,14 @@ Module slice.
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (|
-                                    "core::ub_checks::is_aligned_and_not_null",
+                                    "core::ub_checks::maybe_is_aligned_and_not_null",
                                     [],
                                     []
                                   |),
                                   [
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| data |));
-                                    M.read (| align |)
+                                    M.read (| align |);
+                                    Value.Bool false
                                   ]
                                 |),
                                 ltac:(M.monadic
@@ -1424,13 +1325,14 @@ Module slice.
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (|
-                                    "core::ub_checks::is_aligned_and_not_null",
+                                    "core::ub_checks::maybe_is_aligned_and_not_null",
                                     [],
                                     []
                                   |),
                                   [
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| data |));
-                                    M.read (| align |)
+                                    M.read (| align |);
+                                    Value.Bool false
                                   ]
                                 |),
                                 ltac:(M.monadic

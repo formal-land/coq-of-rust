@@ -896,7 +896,7 @@ Module str.
     Global Typeclasses Opaque is_empty.
     
     (*
-        pub fn is_char_boundary(&self, index: usize) -> bool {
+        pub const fn is_char_boundary(&self, index: usize) -> bool {
             // 0 is always ok.
             // Test for 0 explicitly so that it can optimize out the check
             // easily and skip reading string data for that case.
@@ -905,8 +905,8 @@ Module str.
                 return true;
             }
     
-            match self.as_bytes().get(index) {
-                // For `None` we have two options:
+            if index >= self.len() {
+                // For `true` we have two options:
                 //
                 // - index == self.len()
                 //   Empty strings are valid, so return true
@@ -915,9 +915,9 @@ Module str.
                 //
                 // The check is placed exactly here, because it improves generated
                 // code on higher opt-levels. See PR #84751 for more details.
-                None => index == self.len(),
-    
-                Some(&b) => b.is_utf8_char_boundary(),
+                index == self.len()
+            } else {
+                self.as_bytes()[index].is_utf8_char_boundary()
             }
         }
     *)
@@ -952,40 +952,25 @@ Module str.
                   |) in
                 M.match_operator (|
                   Some (Ty.path "bool"),
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        "get",
-                        [],
-                        [ Ty.path "usize" ]
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
-                        |);
-                        M.read (| index |)
-                      ]
-                    |)
-                  |),
+                  M.alloc (| Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.ge (|
+                                M.read (| index |),
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                                  ]
+                                |)
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           BinOp.eq (|
                             M.read (| index |),
@@ -998,15 +983,7 @@ Module str.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let γ0_0 := M.read (| γ0_0 |) in
-                        let b := M.copy (| γ0_0 |) in
-                        M.alloc (|
+                        (M.alloc (|
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (|
@@ -1015,7 +992,33 @@ Module str.
                               [],
                               []
                             |),
-                            [ M.read (| b |) ]
+                            [
+                              M.read (|
+                                M.SubPointer.get_array_field (|
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.get_associated_function (|
+                                        Ty.path "str",
+                                        "as_bytes",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  M.read (| index |)
+                                |)
+                              |)
+                            ]
                           |)
                         |)))
                   ]
@@ -1985,7 +1988,7 @@ Module str.
     Global Typeclasses Opaque slice_mut_unchecked.
     
     (*
-        pub fn split_at(&self, mid: usize) -> (&str, &str) {
+        pub const fn split_at(&self, mid: usize) -> (&str, &str) {
             match self.split_at_checked(mid) {
                 None => slice_error_fail(self, 0, mid),
                 Some(pair) => pair,
@@ -2064,7 +2067,7 @@ Module str.
     Global Typeclasses Opaque split_at.
     
     (*
-        pub fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) {
+        pub const fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) {
             // is_char_boundary checks that the index is in [0, .len()]
             if self.is_char_boundary(mid) {
                 // SAFETY: just checked that `mid` is on a char boundary.
@@ -2156,11 +2159,11 @@ Module str.
     Global Typeclasses Opaque split_at_mut.
     
     (*
-        pub fn split_at_checked(&self, mid: usize) -> Option<(&str, &str)> {
+        pub const fn split_at_checked(&self, mid: usize) -> Option<(&str, &str)> {
             // is_char_boundary checks that the index is in [0, .len()]
             if self.is_char_boundary(mid) {
                 // SAFETY: just checked that `mid` is on a char boundary.
-                Some(unsafe { (self.get_unchecked(0..mid), self.get_unchecked(mid..self.len())) })
+                Some(unsafe { self.split_at_unchecked(mid) })
             } else {
                 None
             }
@@ -2211,86 +2214,23 @@ Module str.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          Value.Tuple
+                          M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                              ],
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "split_at_unchecked",
+                              [],
+                              []
+                            |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "get_unchecked",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::Range")
-                                          []
-                                          [ Ty.path "usize" ]
-                                      ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |);
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
-                                        [
-                                          ("start", Value.Integer IntegerKind.Usize 0);
-                                          ("end_", M.read (| mid |))
-                                        ]
-                                    ]
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                    M.get_associated_function (|
-                                      Ty.path "str",
-                                      "get_unchecked",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ops::range::Range")
-                                          []
-                                          [ Ty.path "usize" ]
-                                      ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |);
-                                      Value.StructRecord
-                                        "core::ops::range::Range"
-                                        [
-                                          ("start", M.read (| mid |));
-                                          ("end_",
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.path "str",
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |)
-                                              ]
-                                            |))
-                                        ]
-                                    ]
-                                  |)
-                                |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                              M.read (| mid |)
                             ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -2307,7 +2247,7 @@ Module str.
     Global Typeclasses Opaque split_at_checked.
     
     (*
-        pub fn split_at_mut_checked(&mut self, mid: usize) -> Option<(&mut str, &mut str)> {
+        pub const fn split_at_mut_checked(&mut self, mid: usize) -> Option<(&mut str, &mut str)> {
             // is_char_boundary checks that the index is in [0, .len()]
             if self.is_char_boundary(mid) {
                 // SAFETY: just checked that `mid` is on a char boundary.
@@ -2395,7 +2335,125 @@ Module str.
     Global Typeclasses Opaque split_at_mut_checked.
     
     (*
-        unsafe fn split_at_mut_unchecked(&mut self, mid: usize) -> (&mut str, &mut str) {
+        const unsafe fn split_at_unchecked(&self, mid: usize) -> (&str, &str) {
+            let len = self.len();
+            let ptr = self.as_ptr();
+            // SAFETY: caller guarantees `mid` is on a char boundary.
+            unsafe {
+                (
+                    from_utf8_unchecked(slice::from_raw_parts(ptr, mid)),
+                    from_utf8_unchecked(slice::from_raw_parts(ptr.add(mid), len - mid)),
+                )
+            }
+        }
+    *)
+    Definition split_at_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; mid ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let mid := M.alloc (| mid |) in
+          M.read (|
+            let~ len : Ty.path "usize" :=
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |)
+              |) in
+            let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                  M.get_associated_function (| Ty.path "str", "as_ptr", [], [] |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.Tuple
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                        M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.get_function (|
+                                  "core::slice::raw::from_raw_parts",
+                                  [],
+                                  [ Ty.path "u8" ]
+                                |),
+                                [ M.read (| ptr |); M.read (| mid |) ]
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                        M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.get_function (|
+                                  "core::slice::raw::from_raw_parts",
+                                  [],
+                                  [ Ty.path "u8" ]
+                                |),
+                                [
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                      "add",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| ptr |); M.read (| mid |) ]
+                                  |);
+                                  BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)
+                ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_split_at_unchecked :
+      M.IsAssociatedFunction.Trait Self "split_at_unchecked" split_at_unchecked.
+    Admitted.
+    Global Typeclasses Opaque split_at_unchecked.
+    
+    (*
+        const unsafe fn split_at_mut_unchecked(&mut self, mid: usize) -> (&mut str, &mut str) {
             let len = self.len();
             let ptr = self.as_mut_ptr();
             // SAFETY: caller guarantees `mid` is on a char boundary.
@@ -5184,7 +5242,7 @@ Module str.
     Global Typeclasses Opaque as_ascii.
     
     (*
-        pub fn eq_ignore_ascii_case(&self, other: &str) -> bool {
+        pub const fn eq_ignore_ascii_case(&self, other: &str) -> bool {
             self.as_bytes().eq_ignore_ascii_case(other.as_bytes())
         }
     *)

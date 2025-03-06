@@ -827,10 +827,6 @@ Module iter.
       Admitted.
       Global Typeclasses Opaque filter_fold.
       
-      Module filter_fold.
-        (* Error OpaqueTy *)
-      End filter_fold.
-      
       (*
       fn filter_try_fold<'a, T, Acc, R: Try<Output = Acc>>(
           predicate: &'a mut impl FnMut(&T) -> bool,
@@ -968,10 +964,6 @@ Module iter.
         M.IsFunction.Trait "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
       Admitted.
       Global Typeclasses Opaque filter_try_fold.
-      
-      Module filter_try_fold.
-        (* Error OpaqueTy *)
-      End filter_try_fold.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_P_Tuple_ref__associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_filter_Filter_I_P.
         Definition Self (I P : Ty.t) : Ty.t :=

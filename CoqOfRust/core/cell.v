@@ -898,7 +898,7 @@ Module cell.
     Global Typeclasses Opaque swap.
     
     (*
-        pub fn replace(&self, val: T) -> T {
+        pub const fn replace(&self, val: T) -> T {
             // SAFETY: This can cause data races if called from a separate thread,
             // but `Cell` is `!Sync` so this won't happen.
             mem::replace(unsafe { &mut *self.value.get() }, val)
@@ -995,7 +995,7 @@ Module cell.
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
-        pub fn get(&self) -> T {
+        pub const fn get(&self) -> T {
             // SAFETY: This can cause data races if called from a separate thread,
             // but `Cell` is `!Sync` so this won't happen.
             unsafe { *self.value.get() }
@@ -1153,7 +1153,7 @@ Module cell.
     Global Typeclasses Opaque as_ptr.
     
     (*
-        pub fn get_mut(&mut self) -> &mut T {
+        pub const fn get_mut(&mut self) -> &mut T {
             self.value.get_mut()
         }
     *)
@@ -1202,7 +1202,7 @@ Module cell.
     Global Typeclasses Opaque get_mut.
     
     (*
-        pub fn from_mut(t: &mut T) -> &Cell<T> {
+        pub const fn from_mut(t: &mut T) -> &Cell<T> {
             // SAFETY: `&mut` ensures unique access.
             unsafe { &*(t as *mut T as *const Cell<T>) }
         }
@@ -1314,7 +1314,7 @@ Module cell.
       Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
     
     (*
-        pub fn as_slice_of_cells(&self) -> &[Cell<T>] {
+        pub const fn as_slice_of_cells(&self) -> &[Cell<T>] {
             // SAFETY: `Cell<T>` has the same memory layout as `T`.
             unsafe { &*(self as *const Cell<[T]> as *const [Cell<T>]) }
         }
@@ -1371,7 +1371,7 @@ Module cell.
       Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
     
     (*
-        pub fn as_array_of_cells(&self) -> &[Cell<T>; N] {
+        pub const fn as_array_of_cells(&self) -> &[Cell<T>; N] {
             // SAFETY: `Cell<T>` has the same memory layout as `T`.
             unsafe { &*(self as *const Cell<[T; N]> as *const [Cell<T>; N]) }
         }
@@ -5720,12 +5720,7 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.Isize 0
-                      |) in
-                    let~ _ : Ty.tuple [] :=
+                    (let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],

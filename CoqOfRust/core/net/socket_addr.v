@@ -2347,7 +2347,7 @@ Module net.
       Global Typeclasses Opaque ip.
       
       (*
-          pub fn set_ip(&mut self, new_ip: IpAddr) {
+          pub const fn set_ip(&mut self, new_ip: IpAddr) {
               // `match ( *self, new_ip)` would have us mutate a copy of self only to throw it away.
               match (self, new_ip) {
                   (&mut SocketAddr::V4(ref mut a), IpAddr::V4(new_ip)) => a.set_ip(new_ip),
@@ -2550,7 +2550,7 @@ Module net.
       Global Typeclasses Opaque port.
       
       (*
-          pub fn set_port(&mut self, new_port: u16) {
+          pub const fn set_port(&mut self, new_port: u16) {
               match *self {
                   SocketAddr::V4(ref mut a) => a.set_port(new_port),
                   SocketAddr::V6(ref mut a) => a.set_port(new_port),
@@ -2755,7 +2755,7 @@ Module net.
       Global Typeclasses Opaque ip.
       
       (*
-          pub fn set_ip(&mut self, new_ip: Ipv4Addr) {
+          pub const fn set_ip(&mut self, new_ip: Ipv4Addr) {
               self.ip = new_ip;
           }
       *)
@@ -2811,7 +2811,7 @@ Module net.
       Global Typeclasses Opaque port.
       
       (*
-          pub fn set_port(&mut self, new_port: u16) {
+          pub const fn set_port(&mut self, new_port: u16) {
               self.port = new_port;
           }
       *)
@@ -2906,7 +2906,7 @@ Module net.
       Global Typeclasses Opaque ip.
       
       (*
-          pub fn set_ip(&mut self, new_ip: Ipv6Addr) {
+          pub const fn set_ip(&mut self, new_ip: Ipv6Addr) {
               self.ip = new_ip;
           }
       *)
@@ -2962,7 +2962,7 @@ Module net.
       Global Typeclasses Opaque port.
       
       (*
-          pub fn set_port(&mut self, new_port: u16) {
+          pub const fn set_port(&mut self, new_port: u16) {
               self.port = new_port;
           }
       *)
@@ -3020,7 +3020,7 @@ Module net.
       Global Typeclasses Opaque flowinfo.
       
       (*
-          pub fn set_flowinfo(&mut self, new_flowinfo: u32) {
+          pub const fn set_flowinfo(&mut self, new_flowinfo: u32) {
               self.flowinfo = new_flowinfo;
           }
       *)
@@ -3078,7 +3078,7 @@ Module net.
       Global Typeclasses Opaque scope_id.
       
       (*
-          pub fn set_scope_id(&mut self, new_scope_id: u32) {
+          pub const fn set_scope_id(&mut self, new_scope_id: u32) {
               self.scope_id = new_scope_id;
           }
       *)

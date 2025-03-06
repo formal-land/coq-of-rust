@@ -1061,7 +1061,7 @@ Module vec.
     Global Typeclasses Opaque into_parts_with_alloc.
     
     (*
-        pub fn capacity(&self) -> usize {
+        pub const fn capacity(&self) -> usize {
             self.buf.capacity()
         }
     *)
@@ -1844,8 +1844,21 @@ Module vec.
     Global Typeclasses Opaque truncate.
     
     (*
-        pub fn as_slice(&self) -> &[T] {
-            self
+        pub const fn as_slice(&self) -> &[T] {
+            // SAFETY: `slice::from_raw_parts` requires pointee is a contiguous, aligned buffer of size
+            // `len` containing properly-initialized `T`s. Data must not be mutated for the returned
+            // lifetime. Further, `len * mem::size_of::<T>` <= `ISIZE::MAX`, and allocation does not
+            // "wrap" through overflowing memory addresses.
+            //
+            // * Vec API guarantees that self.buf:
+            //      * contains only properly-initialized items within 0..len
+            //      * is aligned, contiguous, and valid for `len` reads
+            //      * obeys size and address-wrapping constraints
+            //
+            // * We only construct `&mut` references to `self.buf` through `&mut self` methods; borrow-
+            //   check ensures that it is not possible to mutably alias `self.buf` within the
+            //   returned lifetime.
+            unsafe { slice::from_raw_parts(self.as_ptr(), self.len) }
         }
     *)
     Definition as_slice (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1859,16 +1872,26 @@ Module vec.
             M.deref (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
+                [
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::vec::Vec",
+                      "len"
+                    |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -1882,8 +1905,21 @@ Module vec.
     Global Typeclasses Opaque as_slice.
     
     (*
-        pub fn as_mut_slice(&mut self) -> &mut [T] {
-            self
+        pub const fn as_mut_slice(&mut self) -> &mut [T] {
+            // SAFETY: `slice::from_raw_parts_mut` requires pointee is a contiguous, aligned buffer of
+            // size `len` containing properly-initialized `T`s. Data must not be accessed through any
+            // other pointer for the returned lifetime. Further, `len * mem::size_of::<T>` <=
+            // `ISIZE::MAX` and allocation does not "wrap" through overflowing memory addresses.
+            //
+            // * Vec API guarantees that self.buf:
+            //      * contains only properly-initialized items within 0..len
+            //      * is aligned, contiguous, and valid for `len` reads
+            //      * obeys size and address-wrapping constraints
+            //
+            // * We only construct references to `self.buf` through `&self` and `&mut self` methods;
+            //   borrow-check ensures that it is not possible to construct a reference to `self.buf`
+            //   within the returned lifetime.
+            unsafe { slice::from_raw_parts_mut(self.as_mut_ptr(), self.len) }
         }
     *)
     Definition as_mut_slice
@@ -1903,18 +1939,33 @@ Module vec.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    M.get_trait_method (|
-                      "core::ops::deref::DerefMut",
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                      [],
-                      [],
-                      "deref_mut",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
+                        [
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ T ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                              "as_mut_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::Vec",
+                              "len"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
                 |)
               |)
@@ -1930,7 +1981,7 @@ Module vec.
     Global Typeclasses Opaque as_mut_slice.
     
     (*
-        pub fn as_ptr(&self) -> *const T {
+        pub const fn as_ptr(&self) -> *const T {
             // We shadow the slice method of the same name to avoid going through
             // `deref`, which creates an intermediate reference.
             self.buf.ptr()
@@ -1973,7 +2024,7 @@ Module vec.
     Global Typeclasses Opaque as_ptr.
     
     (*
-        pub fn as_mut_ptr(&mut self) -> *mut T {
+        pub const fn as_mut_ptr(&mut self) -> *mut T {
             // We shadow the slice method of the same name to avoid going through
             // `deref_mut`, which creates an intermediate reference.
             self.buf.ptr()
@@ -5106,7 +5157,7 @@ Module vec.
     Global Typeclasses Opaque clear.
     
     (*
-        pub fn len(&self) -> usize {
+        pub const fn len(&self) -> usize {
             self.len
         }
     *)
@@ -5133,7 +5184,7 @@ Module vec.
     Global Typeclasses Opaque len.
     
     (*
-        pub fn is_empty(&self) -> bool {
+        pub const fn is_empty(&self) -> bool {
             self.len() == 0
         }
     *)
@@ -8538,7 +8589,7 @@ Module vec.
     
     (*
         fn deref(&self) -> &[T] {
-            unsafe { slice::from_raw_parts(self.as_ptr(), self.len) }
+            self.as_slice()
         }
     *)
     Definition deref (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8552,26 +8603,13 @@ Module vec.
             M.deref (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
-                [
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                      "as_ptr",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |);
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloc::vec::Vec",
-                      "len"
-                    |)
-                  |)
-                ]
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                  "as_slice",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -8594,7 +8632,7 @@ Module vec.
     
     (*
         fn deref_mut(&mut self) -> &mut [T] {
-            unsafe { slice::from_raw_parts_mut(self.as_mut_ptr(), self.len) }
+            self.as_mut_slice()
         }
     *)
     Definition deref_mut (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8609,33 +8647,15 @@ Module vec.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                              "as_mut_ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
-                          |);
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::vec::Vec",
-                              "len"
-                            |)
-                          |)
-                        ]
-                      |)
-                    |)
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                      "as_mut_slice",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |)
               |)

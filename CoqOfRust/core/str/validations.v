@@ -994,10 +994,20 @@ Module str.
         let mut index = 0;
         let len = v.len();
     
-        let usize_bytes = mem::size_of::<usize>();
-        let ascii_block_size = 2 * usize_bytes;
+        const USIZE_BYTES: usize = mem::size_of::<usize>();
+    
+        let ascii_block_size = 2 * USIZE_BYTES;
         let blocks_end = if len >= ascii_block_size { len - ascii_block_size + 1 } else { 0 };
-        let align = v.as_ptr().align_offset(usize_bytes);
+        // Below, we safely fall back to a slower codepath if the offset is `usize::MAX`,
+        // so the end-to-end behavior is the same at compiletime and runtime.
+        let align = const_eval_select!(
+            @capture { v: &[u8] } -> usize:
+            if const {
+                usize::MAX
+            } else {
+                v.as_ptr().align_offset(USIZE_BYTES)
+            }
+        );
     
         while index < len {
             let old_offset = index;
@@ -1076,11 +1086,11 @@ Module str.
                 // Ascii case, try to skip forward quickly.
                 // When the pointer is aligned, read 2 words of data per iteration
                 // until we find a word containing a non-ascii byte.
-                if align != usize::MAX && align.wrapping_sub(index) % usize_bytes == 0 {
+                if align != usize::MAX && align.wrapping_sub(index) % USIZE_BYTES == 0 {
                     let ptr = v.as_ptr();
                     while index < blocks_end {
                         // SAFETY: since `align - index` and `ascii_block_size` are
-                        // multiples of `usize_bytes`, `block = ptr.add(index)` is
+                        // multiples of `USIZE_BYTES`, `block = ptr.add(index)` is
                         // always aligned with a `usize` so it's safe to dereference
                         // both `block` and `block.add(1)`.
                         unsafe {
@@ -1129,17 +1139,14 @@ Module str.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
-                let~ usize_bytes : Ty.path "usize" :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
-                      []
-                    |)
-                  |) in
                 let~ ascii_block_size : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.mul (| Value.Integer IntegerKind.Usize 2, M.read (| usize_bytes |) |)
+                    BinOp.Wrap.mul (|
+                      Value.Integer IntegerKind.Usize 2,
+                      M.read (|
+                        M.get_constant "core::str::validations::run_utf8_validation::USIZE_BYTES"
+                      |)
+                    |)
                   |) in
                 let~ blocks_end : Ty.path "usize" :=
                   M.copy (|
@@ -1173,24 +1180,48 @@ Module str.
                   M.alloc (|
                     M.call_closure (|
                       Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                        "align_offset",
+                      M.get_function (|
+                        "core::intrinsics::const_eval_select",
                         [],
-                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ];
+                          Ty.function
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ]
+                            (Ty.path "usize");
+                          Ty.function
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ]
+                            (Ty.path "usize");
+                          Ty.path "usize"
+                        ]
                       |),
                       [
-                        M.call_closure (|
-                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "as_ptr",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                        Value.Tuple [ M.read (| v |) ];
+                        M.get_function (|
+                          "core::str::validations::run_utf8_validation.compiletime",
+                          [],
+                          []
                         |);
-                        M.read (| usize_bytes |)
+                        M.get_function (|
+                          "core::str::validations::run_utf8_validation.runtime",
+                          [],
+                          []
+                        |)
                       ]
                     |)
                   |) in
@@ -2240,7 +2271,10 @@ Module str.
                                                                 M.read (| index |)
                                                               ]
                                                             |),
-                                                            M.read (| usize_bytes |)
+                                                            M.read (|
+                                                              M.get_constant
+                                                                "core::str::validations::run_utf8_validation::USIZE_BYTES"
+                                                            |)
                                                           |),
                                                           Value.Integer IntegerKind.Usize 0
                                                         |)))
@@ -2558,6 +2592,24 @@ Module str.
       M.IsFunction.Trait "core::str::validations::run_utf8_validation" run_utf8_validation.
     Admitted.
     Global Typeclasses Opaque run_utf8_validation.
+    
+    Module run_utf8_validation.
+      Definition value_USIZE_BYTES : Value.t :=
+        M.run_constant
+          ltac:(M.monadic
+            (M.alloc (|
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+                []
+              |)
+            |))).
+      
+      Axiom Constant_value_USIZE_BYTES :
+        (M.get_constant "core::str::validations::run_utf8_validation::USIZE_BYTES") =
+          value_USIZE_BYTES.
+      Global Hint Rewrite Constant_value_USIZE_BYTES : constant_rewrites.
+    End run_utf8_validation.
     
     Definition value_UTF8_CHAR_WIDTH : Value.t :=
       M.run_constant

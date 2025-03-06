@@ -43,6 +43,77 @@ Module collections.
           M.IsAssociatedFunction.Trait (Self T) "new" (new T).
         Admitted.
         Global Typeclasses Opaque new.
+        
+        (*
+            pub fn as_slices(&self) -> (&'a [T], &'a [T]) {
+                (self.i1.as_slice(), self.i2.as_slice())
+            }
+        *)
+        Definition as_slices (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              Value.Tuple
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          "as_slice",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          "as_slice",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::collections::vec_deque::iter::Iter",
+                              "i2"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Global Instance AssociatedFunction_as_slices :
+          forall (T : Ty.t),
+          M.IsAssociatedFunction.Trait (Self T) "as_slices" (as_slices T).
+        Admitted.
+        Global Typeclasses Opaque as_slices.
       End Impl_alloc_collections_vec_deque_iter_Iter_T.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_Iter_T.

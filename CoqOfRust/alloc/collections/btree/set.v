@@ -3867,7 +3867,7 @@ Module collections.
                 T: Borrow<Q> + Ord,
                 Q: Ord,
             {
-                Recover::get(&self.map, value)
+                self.map.get_key_value(value).map(|(k, _)| k)
             }
         *)
         Definition get (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3879,22 +3879,66 @@ Module collections.
               let value := M.alloc (| value |) in
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
-                M.get_trait_method (|
-                  "alloc::collections::btree::Recover",
+                M.get_associated_function (|
                   Ty.apply
-                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    (Ty.path "core::option::Option")
                     []
-                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
                   [],
-                  [ Q ],
-                  "get",
-                  [],
-                  []
+                  [
+                    Ty.apply (Ty.path "&") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ T ])
+                  ]
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                          ]
+                      ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "get_key_value",
+                      [],
+                      [ Q ]
+                    |),
+                    [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_record_field (|
@@ -3902,10 +3946,48 @@ Module collections.
                           "alloc::collections::btree::set::BTreeSet",
                           "map"
                         |)
-                      |)
-                    |)
+                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                    ]
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply (Ty.path "&") [] [ T ];
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "alloc::collections::btree::set_val::SetValZST"
+                                              ]
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.apply (Ty.path "&") [] [ T ])),
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -5750,7 +5832,7 @@ Module collections.
             where
                 T: Ord,
             {
-                Recover::replace(&mut self.map, value)
+                self.map.replace(value)
             }
         *)
         Definition replace (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5762,14 +5844,11 @@ Module collections.
               let value := M.alloc (| value |) in
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                M.get_trait_method (|
-                  "alloc::collections::btree::Recover",
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                     []
                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
-                  [],
-                  [ T ],
                   "replace",
                   [],
                   []
@@ -5777,15 +5856,10 @@ Module collections.
                 [
                   M.borrow (|
                     Pointer.Kind.MutRef,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::collections::btree::set::BTreeSet",
-                          "map"
-                        |)
-                      |)
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::collections::btree::set::BTreeSet",
+                      "map"
                     |)
                   |);
                   M.read (| value |)
@@ -5799,6 +5873,258 @@ Module collections.
           M.IsAssociatedFunction.Trait (Self T A) "replace" (replace T A).
         Admitted.
         Global Typeclasses Opaque replace.
+        
+        (*
+            pub fn get_or_insert(&mut self, value: T) -> &T
+            where
+                T: Ord,
+            {
+                self.map.entry(value).insert_entry(SetValZST).into_key()
+            }
+        *)
+        Definition get_or_insert
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "into_key",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::entry::Entry")
+                            []
+                            [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                          "insert_entry",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::entry::Entry")
+                              []
+                              [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                []
+                                [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                              "entry",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::btree::set::BTreeSet",
+                                  "map"
+                                |)
+                              |);
+                              M.read (| value |)
+                            ]
+                          |);
+                          Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                        ]
+                      |)
+                    ]
+                  |)
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Global Instance AssociatedFunction_get_or_insert :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction.Trait (Self T A) "get_or_insert" (get_or_insert T A).
+        Admitted.
+        Global Typeclasses Opaque get_or_insert.
+        
+        (*
+            pub fn get_or_insert_with<Q: ?Sized, F>(&mut self, value: &Q, f: F) -> &T
+            where
+                T: Borrow<Q> + Ord,
+                Q: Ord,
+                F: FnOnce(&Q) -> T,
+            {
+                self.map.get_or_insert_with(value, f)
+            }
+        *)
+        Definition get_or_insert_with
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [ Q; F ], [ self; value; f ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              let f := M.alloc (| f |) in
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "get_or_insert_with",
+                      [],
+                      [ Q; F ]
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |)
+                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |);
+                      M.read (| f |)
+                    ]
+                  |)
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Global Instance AssociatedFunction_get_or_insert_with :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction.Trait (Self T A) "get_or_insert_with" (get_or_insert_with T A).
+        Admitted.
+        Global Typeclasses Opaque get_or_insert_with.
+        
+        (*
+            pub fn entry(&mut self, value: T) -> Entry<'_, T, A>
+            where
+                T: Ord,
+            {
+                match self.map.entry(value) {
+                    map::Entry::Occupied(entry) => Entry::Occupied(OccupiedEntry { inner: entry }),
+                    map::Entry::Vacant(entry) => Entry::Vacant(VacantEntry { inner: entry }),
+                }
+            }
+        *)
+        Definition entry (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.read (|
+                M.match_operator (|
+                  Some
+                    (Ty.apply (Ty.path "alloc::collections::btree::set::entry::Entry") [] [ T; A ]),
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::entry::Entry")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "entry",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::btree::set::BTreeSet",
+                            "map"
+                          |)
+                        |);
+                        M.read (| value |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloc::collections::btree::map::entry::Entry::Occupied",
+                            0
+                          |) in
+                        let entry := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "alloc::collections::btree::set::entry::Entry::Occupied"
+                            [
+                              Value.StructRecord
+                                "alloc::collections::btree::set::entry::OccupiedEntry"
+                                [ ("inner", M.read (| entry |)) ]
+                            ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloc::collections::btree::map::entry::Entry::Vacant",
+                            0
+                          |) in
+                        let entry := M.copy (| γ0_0 |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "alloc::collections::btree::set::entry::Entry::Vacant"
+                            [
+                              Value.StructRecord
+                                "alloc::collections::btree::set::entry::VacantEntry"
+                                [ ("inner", M.read (| entry |)) ]
+                            ]
+                        |)))
+                  ]
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Global Instance AssociatedFunction_entry :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction.Trait (Self T A) "entry" (entry T A).
+        Admitted.
+        Global Typeclasses Opaque entry.
         
         (*
             pub fn remove<Q: ?Sized>(&mut self, value: &Q) -> bool
@@ -5876,7 +6202,7 @@ Module collections.
                 T: Borrow<Q> + Ord,
                 Q: Ord,
             {
-                Recover::take(&mut self.map, value)
+                self.map.remove_entry(value).map(|(k, _)| k)
             }
         *)
         Definition take (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5888,22 +6214,40 @@ Module collections.
               let value := M.alloc (| value |) in
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                M.get_trait_method (|
-                  "alloc::collections::btree::Recover",
+                M.get_associated_function (|
                   Ty.apply
-                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    (Ty.path "core::option::Option")
                     []
-                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                    [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
+                  "map",
                   [],
-                  [ Q ],
-                  "take",
-                  [],
-                  []
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                          ]
+                      ]
+                      T
+                  ]
                 |),
                 [
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "remove_entry",
+                      [],
+                      [ Q ]
+                    |),
+                    [
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.SubPointer.get_struct_record_field (|
@@ -5911,10 +6255,42 @@ Module collections.
                           "alloc::collections::btree::set::BTreeSet",
                           "map"
                         |)
-                      |)
-                    |)
+                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                    ]
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Some
+                                (Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.tuple
+                                          [
+                                            T;
+                                            Ty.path "alloc::collections::btree::set_val::SetValZST"
+                                          ]
+                                      ]
+                                  ]
+                                  T),
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
