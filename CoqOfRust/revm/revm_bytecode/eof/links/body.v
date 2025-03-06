@@ -4,6 +4,7 @@ Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require core.links.clone.
 Require core.links.default.
+Require Import core.links.result.
 Require Import core.links.option.
 Require Import revm.links.dependencies.
 Require Export revm.revm_bytecode.eof.links.body_EofBody.
@@ -281,4 +282,7 @@ Module Impl_EofBody.
   (*
     pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError>
   *)
+  Instance run_decode (input : Ref.t Pointer.Kind.Ref alloy_primitives.links.bytes_.Bytes.t) (header : Ref.t Pointer.Kind.Ref EofHeader.t) :
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.decode [] [] [φ input; φ header] (Result.t EofBody.t EofDecodeError.t).
+  Admitted.
 End Impl_EofBody.
