@@ -339,11 +339,6 @@ Module Unit.
 End Unit.
 
 Module Slice.
-  Record t {A : Set} : Set := {
-      value : list A;
-  }.
-  Arguments t : clear implicits.
-  
   Global Instance IsLink (A : Set) `{Link A} : Link (list A) := {
     Φ :=
       Ty.apply (Ty.path "slice") [] [ Φ A ];

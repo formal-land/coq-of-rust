@@ -140,7 +140,7 @@ Module MemoryTrait.
       forall
         (self : Ref.t Pointer.Kind.MutRef Self)
         (memory_offset data_offset len : Usize.t)
-        (data : Ref.t Pointer.Kind.Ref (Slice.t U8.t)),
+        (data : Ref.t Pointer.Kind.Ref (list U8.t)),
       {{ set_data [] [] [ φ self; φ memory_offset; φ data_offset; φ len; φ data ] 🔽 unit }}
     }.
 
@@ -150,7 +150,7 @@ Module MemoryTrait.
       forall
         (self : Ref.t Pointer.Kind.MutRef Self)
         (memory_offset : Usize.t)
-        (data : Ref.t Pointer.Kind.Ref (slice.t U8.t)),
+        (data : Ref.t Pointer.Kind.Ref (list U8.t)),
       {{ set [] [] [ φ self; φ memory_offset; φ data ] 🔽 unit }}
     }.
 
@@ -175,7 +175,7 @@ Module MemoryTrait.
       IsTraitMethod.t "revm_interpreter::interpreter_types::MemoryTrait" [] [] (Φ Self) "slice" slice *
       forall
         (Output : Set) `(Link Output)
-        (run_Deref_for_Output : deref.Deref.Run Output (Target := slice.t U8.t))
+        (run_Deref_for_Output : deref.Deref.Run Output (Target := list U8.t))
         (self : Ref.t Pointer.Kind.Ref Self)
         (range : Ref.t Pointer.Kind.Ref (range.Range.t Usize.t)),
       {{ slice [] [] [ φ self; φ range ] 🔽 Output }}
@@ -186,7 +186,7 @@ Module MemoryTrait.
       IsTraitMethod.t "revm_interpreter::interpreter_types::MemoryTrait" [] [] (Φ Self) "slice_len" slice_len *
       forall
         (Output : Set) `(Link Output)
-        (run_Deref_for_Output : deref.Deref.Run Output (Target := slice.t U8.t))
+        (run_Deref_for_Output : deref.Deref.Run Output (Target := list U8.t))
         (self : Ref.t Pointer.Kind.Ref Self)
         (offset len : Usize.t),
       {{ slice_len [] [] [ φ self; φ offset; φ len ] 🔽 Output }}
@@ -322,7 +322,7 @@ Module Immediates.
     {read_slice @
       IsTraitMethod.t "revm_interpreter::interpreter_types::Immediates" [] [] (Φ Self) "read_slice" read_slice *
       forall (self : Ref.t Pointer.Kind.Ref Self) (len : Usize.t),
-        {{ read_slice [] [] [ φ self; φ len ] 🔽 Ref.t Pointer.Kind.Ref (slice.t U8.t) }}
+        {{ read_slice [] [] [ φ self; φ len ] 🔽 Ref.t Pointer.Kind.Ref (list U8.t) }}
     }.
 
   Record Run (Self : Set) `{Link Self} : Set := {
@@ -354,7 +354,7 @@ Module LegacyBytecode.
     {bytecode_slice @
       IsTraitMethod.t "revm_interpreter::interpreter_types::LegacyBytecode" [] [] (Φ Self) "bytecode_slice" bytecode_slice *
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ bytecode_slice [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (slice.t U8.t) }}
+        {{ bytecode_slice [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (list U8.t) }}
     }.
 
   Record Run (Self : Set) `{Link Self} : Set := {
@@ -375,14 +375,14 @@ Module EofData.
     {data @
       IsTraitMethod.t "revm_interpreter::interpreter_types::EofData" [] [] (Φ Self) "data" data *
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ data [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (slice.t U8.t) }}
+        {{ data [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (list U8.t) }}
     }.
 
   Definition Run_data_slice (Self : Set) `{Link Self} : Set :=
     {data_slice @
       IsTraitMethod.t "revm_interpreter::interpreter_types::EofData" [] [] (Φ Self) "data_slice" data_slice *
       forall (self : Ref.t Pointer.Kind.Ref Self) (offset len : Usize.t),
-        {{ data_slice [] [] [ φ self; φ offset; φ len ] 🔽 Ref.t Pointer.Kind.Ref (slice.t U8.t) }}
+        {{ data_slice [] [] [ φ self; φ offset; φ len ] 🔽 Ref.t Pointer.Kind.Ref (list U8.t) }}
     }.
 
   Definition Run_data_size (Self : Set) `{Link Self} : Set :=
@@ -461,7 +461,7 @@ Module ReturnData.
     {buffer @
       IsTraitMethod.t "revm_interpreter::interpreter_types::ReturnData" [] [] (Φ Self) "buffer" buffer *
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ buffer [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (slice.t U8.t) }}
+        {{ buffer [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (list U8.t) }}
     }.
 
   Definition Run_buffer_mut (Self : Set) `{Link Self} : Set :=
@@ -504,7 +504,7 @@ Module InputsTrait.
     {input @
       IsTraitMethod.t "revm_interpreter::interpreter_types::InputsTrait" [] [] (Φ Self) "input" input *
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ input [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (slice.t U8.t) }}
+        {{ input [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref (list U8.t) }}
     }.
 
   Definition Run_call_value (Self : Set) `{Link Self} : Set :=
