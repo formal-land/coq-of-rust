@@ -103,7 +103,7 @@ Module Impl_alloc_vec_Vec_T_A.
 End Impl_alloc_vec_Vec_T_A.
 
 Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
-  Definition Self := Vec.t.  
+  Definition Self := Vec.t.
   
   (*
     fn index(&self, index: I) -> &Self::Output
@@ -112,5 +112,9 @@ Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_whe
       {self : Ref.t Pointer.Kind.Ref (Self T A)}
       {index : I} : 
     Run.Trait (vec.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.index (Φ T) (Φ I) (Φ A)) [] [Φ I] [φ self; φ index] (Ref.t Pointer.Kind.Ref Output).
+  Admitted.
+
+  Definition run {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} : 
+    index.Index.Run (Self T A) I Output.
   Admitted.
 End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.

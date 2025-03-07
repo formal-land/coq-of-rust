@@ -232,6 +232,7 @@ Module Impl_EofBody.
   Import Impl_alloc_vec_Vec_T_A.
   Import Impl_EofHeader.
   Import Impl_Slice.
+  Import Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
 
   Definition Self : Set := EofBody.t.
 
@@ -242,7 +243,7 @@ Module Impl_EofBody.
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
   Proof.
     constructor.
-    (* destruct (vec.links.mod.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.run_index). *)
+    destruct (vec.links.mod.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.run (T := Usize.t) (I := Usize.t) (A := Global.t)) as [a [b c]].
     run_symbolic.
   Admitted.
 

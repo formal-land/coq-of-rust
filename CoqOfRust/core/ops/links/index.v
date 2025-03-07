@@ -21,8 +21,8 @@ Module Index.
 
   Record Run
       (Self : Set) `{Link Self}
-      {Idx : Set} `{Link Idx}
-      {Output : Set} `{Link Output} : 
+      (Idx : Set) `{Link Idx}
+      (Output : Set) `{Link Output} : 
     Set := {
       Output_IsAssociated :
       IsTraitAssociatedType
