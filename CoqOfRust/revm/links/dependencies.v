@@ -91,6 +91,11 @@ Module ruint.
       forall (BITS LIMBS : Usize.t) (value : Usize.t),
       Run.Trait (from (φ BITS) (φ LIMBS)) [] [] [ φ value ] (Self BITS LIMBS).
     Admitted.
+
+    Global Instance run_from_bool :
+      forall (BITS LIMBS : Usize.t) (value : bool),
+      Run.Trait (from (φ BITS) (φ LIMBS)) [] [ Φ bool ] [ φ value ] (Self BITS LIMBS).
+    Admitted.
   End Impl_from_Uint.
 
     Module Impl_PartialOrd_for_Uint.
@@ -98,7 +103,8 @@ Module ruint.
         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
     
       Parameter lt : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
-    
+      Parameter gt : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+
       Axiom Implements :
         forall (BITS LIMBS : Value.t) (trait_tys : list Ty.t),
           M.IsTraitInstance
@@ -106,12 +112,18 @@ Module ruint.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) trait_tys
             (Self BITS LIMBS)
-            (* Instance *) [ ("lt", InstanceField.Method (lt BITS LIMBS)) ].
+            (* Instance *) [ ("lt", InstanceField.Method (lt BITS LIMBS)); ("gt", InstanceField.Method (gt BITS LIMBS)) ].
     
       Definition run_lt :
         forall (BITS LIMBS : Usize.t),
         forall (x1 x2 : Ref.t Pointer.Kind.Ref (ruint.Uint.t BITS LIMBS)),
         {{ lt (φ BITS) (φ LIMBS) [] [] [ φ x1; φ x2 ] 🔽 bool }}.
+      Admitted.
+
+      Definition run_gt :
+        forall (BITS LIMBS : Usize.t),
+        forall (x1 x2 : Ref.t Pointer.Kind.Ref (ruint.Uint.t BITS LIMBS)),
+        {{ gt (φ BITS) (φ LIMBS) [] [] [ φ x1; φ x2 ] 🔽 bool }}.
       Admitted.
     
       Definition run (BITS LIMBS : Value.t) :

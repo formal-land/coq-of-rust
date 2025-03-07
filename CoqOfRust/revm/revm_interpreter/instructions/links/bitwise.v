@@ -61,9 +61,53 @@ Proof.
         (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
         (Ref.cast_to Pointer.Kind.Ref value0)
       ).
-    + constructor.
-    apply (Impl_from_Uint.run_from {| Integer.value := 256 |} {| Integer.value := 4 |} output1).
 Qed.
+
+Instance run_gt
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.gt [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_symbolic.
+  eapply Run.CallPrimitiveGetTraitMethod.
+  - eapply IsTraitMethod.Defined.
+    + specialize (Impl_PartialOrd_for_Uint.Implements
+    (Value.Integer IntegerKind.Usize 256)
+    (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      unfold Impl_PartialOrd_for_Uint.Self in H3.
+      apply H3 with (trait_tys := [Ty.apply (Ty.path "ruint::Uint")
+        [Value.Integer IntegerKind.Usize 256;
+         Value.Integer IntegerKind.Usize 4] []]).
+    + simpl.
+      reflexivity.
+  - run_symbolic.
+    + constructor.
+      apply (Impl_PartialOrd_for_Uint.run_gt
+        {| Integer.value := 256 |}  (* BITS *)
+        {| Integer.value := 4 |}    (* LIMBS *)
+        (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
+        (Ref.cast_to Pointer.Kind.Ref value0)
+      ).
+Qed.
+
   
   
 

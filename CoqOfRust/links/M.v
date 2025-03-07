@@ -114,6 +114,7 @@ Module PrimitiveEq.
 End PrimitiveEq.
 
 Module Bool.
+
   Global Instance IsLink : Link bool := {
     Φ := Ty.path "bool";
     φ b := Value.Bool b;
