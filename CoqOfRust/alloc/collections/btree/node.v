@@ -9684,7 +9684,12 @@ Module collections.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 5
+                        |) in
+                      M.alloc (|
                         Value.Tuple
                           [
                             M.read (|
@@ -9697,7 +9702,12 @@ Module collections.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (|
+                      (let _ :=
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 6
+                        |) in
+                      M.alloc (|
                         Value.Tuple
                           [
                             M.read (|

@@ -5720,7 +5720,12 @@ Module cell.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Isize 0
+                      |) in
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
                           Ty.tuple [],

@@ -548,11 +548,21 @@ Module f128.
                         M.read (| γ0_0 |),
                         Value.Integer IntegerKind.U128 0
                       |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_1 |),
+                        Value.Integer IntegerKind.U128 170135991163610696904058773219554885632
+                      |) in
                     M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_1 |),
+                        Value.Integer IntegerKind.U128 170135991163610696904058773219554885632
+                      |) in
                     M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
                 fun γ =>
                   ltac:(M.monadic

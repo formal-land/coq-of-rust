@@ -230,15 +230,6 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
 
             Rc::new(Pattern::Wild)
         }
-        PatKind::ExpandedConstant { .. } => {
-            emit_warning_with_note(
-                env,
-                &pat.span,
-                "ExpandedConstant patterns are not yet supported.",
-                None,
-            );
-
-            Rc::new(Pattern::Wild)
-        }
+        PatKind::ExpandedConstant { subpattern, .. } => compile_pattern(env, subpattern),
     }
 }

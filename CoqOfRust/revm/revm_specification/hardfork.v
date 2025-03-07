@@ -829,14 +829,24 @@ Module hardfork.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 0
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 1
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
@@ -847,28 +857,48 @@ Module hardfork.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 2
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::HOMESTEAD" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 3
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::DAO_FORK" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 4
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::TANGERINE" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 5
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
@@ -879,14 +909,24 @@ Module hardfork.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 6
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::BYZANTIUM" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 7
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
@@ -897,21 +937,36 @@ Module hardfork.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 8
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::PETERSBURG" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 9
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::ISTANBUL" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 10
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::MUIR_GLACIER" []
@@ -919,21 +974,36 @@ Module hardfork.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 11
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 12
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::LONDON" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 13
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::ARROW_GLACIER" []
@@ -941,7 +1011,12 @@ Module hardfork.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 14
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::GRAY_GLACIER" []
@@ -949,42 +1024,72 @@ Module hardfork.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 15
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::MERGE" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 16
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::SHANGHAI" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 17
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::CANCUN" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 18
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::PRAGUE" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 19
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::OSAKA" [] ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 255
+                      |) in
+                    M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
                         [ Value.StructTuple "revm_specification::hardfork::SpecId::LATEST" [] ]
@@ -1243,107 +1348,167 @@ Module hardfork.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Frontier" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.String "Frontier Thawing"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER_THAWING" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Homestead" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::HOMESTEAD" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "DAO Fork" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::DAO_FORK" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Tangerine" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::TANGERINE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Spurious" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Byzantium" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::BYZANTIUM" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.String "Constantinople"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::CONSTANTINOPLE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.String "Petersburg"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::PETERSBURG" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Istanbul" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::ISTANBUL" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.String "MuirGlacier"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::MUIR_GLACIER" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Berlin" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "London" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::LONDON" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.String "Arrow Glacier"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::ARROW_GLACIER" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.String "Gray Glacier"
+                      |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::GRAY_GLACIER" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Merge" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::MERGE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Shanghai" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::SHANGHAI" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Cancun" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::CANCUN" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Prague" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::PRAGUE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "PragueEOF" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::OSAKA" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
+                    (let _ :=
+                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Latest" |) in
+                    M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::LATEST" []
                     |)));
                 fun γ =>
