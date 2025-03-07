@@ -4,6 +4,7 @@ Require Import links.M.
 Require core.links.clone.
 Require core.links.default.
 Require core.ops.links.deref.
+Require core.ops.links.index.
 
 Import Run.
 
@@ -78,9 +79,7 @@ Module Impl_alloc_vec_Vec_T_A.
   Definition Self := Vec.t.
 
   (*
-    pub const fn new() -> Self {
-      Vec { buf: RawVec::new(), len: 0 }
-    }
+    pub const fn new() -> Self 
   *)
   Instance run_new {T A : Set} `{Link T} `{Link A} : 
     Run.Trait (vec.Impl_alloc_vec_Vec_T_alloc_alloc_Global.new (Φ T)) [] [] [] (Self T A).
@@ -102,3 +101,16 @@ Module Impl_alloc_vec_Vec_T_A.
     Run.Trait (vec.Impl_alloc_vec_Vec_T_A.len (Φ T) (Φ A)) [] [] [φ self] Usize.t.
   Admitted.
 End Impl_alloc_vec_Vec_T_A.
+
+Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
+  Definition Self := Vec.t.  
+  
+  (*
+    fn index(&self, index: I) -> &Self::Output
+  *)
+  Instance run_index {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} 
+      {self : Ref.t Pointer.Kind.Ref (Self T A)}
+      {index : I} : 
+    Run.Trait (vec.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.index (Φ T) (Φ I) (Φ A)) [] [Φ I] [φ self; φ index] (Ref.t Pointer.Kind.Ref Output).
+  Admitted.
+End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.

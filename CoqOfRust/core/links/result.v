@@ -2,12 +2,17 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 
 Module Result.
-  Global Instance IsLink (A B : Set) (_ : Link A) (_ : Link B) : Link (A + B) := {
-    Φ := Ty.apply (Ty.path "core::result::Result") [] [Φ A; Φ B];
+  Inductive t {T E : Set} : Set :=
+  | Ok : T -> t
+  | Err : E -> t.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink (T E : Set) `{Link T} `{Link E} : Link (t T E) := {
+    Φ := Ty.apply (Ty.path "core::result::Result") [] [Φ T; Φ E];
     φ x :=
       match x with
-      | inl x => Value.StructTuple "core::result::Result::Ok" [φ x]
-      | inr e => Value.StructTuple "core::result::Result::Err" [φ e]
+      | Ok x => Value.StructTuple "core::result::Result::Ok" [φ x]
+      | Err x => Value.StructTuple "core::result::Result::Err" [φ x]
       end;
   }.
 End Result.
