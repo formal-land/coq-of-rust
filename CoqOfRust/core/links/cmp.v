@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.cmp.
 Require Import core.intrinsics.
+Require Import core.links.option.
 Require core.ops.links.function.
 Require Import core.links.intrinsics.
 Require Export core.links.cmpOrdering.
@@ -183,3 +184,62 @@ Module Impl_Ord_for_u64.
     }
   Defined.
 End Impl_Ord_for_u64.
+
+Module PartialOrd.
+  (*
+    pub trait PartialOrd<Rhs: ?Sized = Self>: PartialEq<Rhs> {
+      fn partial_cmp(&self, other: &Rhs) -> Option<Ordering>;
+      fn lt(&self, other: &Rhs) -> bool;
+      fn le(&self, other: &Rhs) -> bool;
+      fn gt(&self, other: &Rhs) -> bool;
+      fn ge(&self, other: &Rhs) -> bool;
+    }
+  *)
+  Definition Run_partial_cmp (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    {partial_cmp  @
+      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "partial_cmp" partial_cmp  *
+      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
+        {{ partial_cmp  [] [] [φ self; φ other] 🔽 option Ordering.t }}
+    }.
+
+  Definition Run_lt (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    {lt  @
+      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "lt" lt  *
+      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
+        {{ lt  [] [] [φ self; φ other] 🔽 bool }}
+    }.
+
+  Definition Run_le (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    {le  @
+      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "le" le  *
+      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
+        {{ le  [] [] [φ self; φ other] 🔽 bool }}
+    }.
+
+  Definition Run_gt (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    {gt  @
+      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "gt" gt  *
+      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
+        {{ gt  [] [] [φ self; φ other] 🔽 bool }}
+    }.
+
+  Definition Run_ge (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
+    {ge  @
+      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "ge" ge  *
+      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
+        {{ ge  [] [] [φ self; φ other] 🔽 bool }}
+    }.
+
+  Record Run (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set := {
+    partial_cmp : Run_partial_cmp Self Rhs;
+    lt : Run_lt Self Rhs;
+    le : Run_le Self Rhs;
+    gt : Run_gt Self Rhs;
+    ge : Run_ge Self Rhs;
+  }.
+
+  (* Instance run_partial_cmp {Self Rhs : Set} `{Link Self} `{Link Rhs}
+      (self : Ref.t Pointer.Kind.Ref Self) (other : Ref.t Pointer.Kind.Ref Rhs) :
+    Run.Trait cmp.Impl_core_cmp_PartialOrd_for_core_cmp_Ordering.partial_cmp [] [] [φ self; φ other] (option Ordering.t).
+  Admitted. *)
+End PartialOrd.

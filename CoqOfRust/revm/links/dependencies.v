@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
+Require Import core.ops.links.range.
 Require core.links.clone.
 Require core.links.default.
 Require Import ruint.links.lib.
@@ -118,6 +119,20 @@ Module alloy_primitives.
         Admitted.
 
         Global Instance run_new : Run.Trait new [] [] [] Bytes.t.
+        Admitted.
+
+        (* pub fn slice(&self, range: impl RangeBounds<usize>) -> Self *)
+        Parameter slice : PolymorphicFunction.t.
+
+        Global Instance AssociatedFunction_slice :
+          M.IsAssociatedFunction.Trait (Φ Self) "slice" slice.
+        Admitted.
+
+        Global Instance run_slice {A : Set} `{Link A} 
+          (self : Ref.t Pointer.Kind.Ref Self) 
+          (range : A) 
+          (run_RangeBounds_for_A : RangeBounds.Run A) :
+          Run.Trait slice [] [] [φ self; φ range] Self.
         Admitted.
       End Impl_Bytes.
       
