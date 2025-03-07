@@ -67,82 +67,78 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageLoad" |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            ("page loaded, r"
-                                              ++
-                                              (String.String
-                                                "233"
-                                                ("f" ++ (String.String "233" "
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          ("page loaded, r"
+                                            ++
+                                            (String.String
+                                              "233"
+                                              ("f" ++ (String.String "233" "
 "))))
-                                        |)
-                                      ]
-                                  |)
+                                      |)
+                                    ]
                                 |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageUnload" |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "page unloaded
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "page unloaded
 " |) ]
-                                  |)
                                 |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
@@ -151,69 +147,66 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
                 let c := M.copy (| γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                            ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "pressed '" |);
-                                        M.read (| Value.String "'.
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "pressed '" |);
+                                      M.read (| Value.String "'.
 " |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "char" ]
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.borrow (| Pointer.Kind.Ref, c |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |)
+                                    ]
                                 |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "char" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, c |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
@@ -222,69 +215,66 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
                 let s := M.copy (| γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                            ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "pasted """ |);
-                                        M.read (| Value.String """.
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "pasted """ |);
+                                      M.read (| Value.String """.
 " |)
-                                      ]
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |)
+                                    ]
                                 |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, s |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
@@ -296,8 +286,8 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 let x := M.copy (| γ0_0 |) in
                 let y := M.copy (| γ0_1 |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -375,9 +365,9 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
         |)
@@ -411,81 +401,62 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ pressed : Ty.path "enums::WebEvent" :=
-          M.alloc (| Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ] |) in
+          Value.StructTuple "enums::WebEvent::KeyPress" [ Value.UnicodeChar 120 ] in
         let~ pasted : Ty.path "enums::WebEvent" :=
-          M.alloc (|
-            Value.StructTuple
-              "enums::WebEvent::Paste"
-              [
-                M.call_closure (|
-                  Ty.path "alloc::string::String",
-                  M.get_trait_method (|
-                    "alloc::borrow::ToOwned",
-                    Ty.path "str",
-                    [],
-                    [],
-                    "to_owned",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "my text" |) |)
-                    |)
-                  ]
-                |)
-              ]
-          |) in
+          Value.StructTuple
+            "enums::WebEvent::Paste"
+            [
+              M.call_closure (|
+                Ty.path "alloc::string::String",
+                M.get_trait_method (|
+                  "alloc::borrow::ToOwned",
+                  Ty.path "str",
+                  [],
+                  [],
+                  "to_owned",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "my text" |) |) |)
+                ]
+              |)
+            ] in
         let~ click : Ty.path "enums::WebEvent" :=
-          M.alloc (|
-            Value.StructRecord
-              "enums::WebEvent::Click"
-              [ ("x", Value.Integer IntegerKind.I64 20); ("y", Value.Integer IntegerKind.I64 80) ]
-          |) in
-        let~ load : Ty.path "enums::WebEvent" :=
-          M.alloc (| Value.StructTuple "enums::WebEvent::PageLoad" [] |) in
+          Value.StructRecord
+            "enums::WebEvent::Click"
+            [ ("x", Value.Integer IntegerKind.I64 20); ("y", Value.Integer IntegerKind.I64 80) ] in
+        let~ load : Ty.path "enums::WebEvent" := Value.StructTuple "enums::WebEvent::PageLoad" [] in
         let~ unload : Ty.path "enums::WebEvent" :=
-          M.alloc (| Value.StructTuple "enums::WebEvent::PageUnload" [] |) in
+          Value.StructTuple "enums::WebEvent::PageUnload" [] in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "enums::inspect", [], [] |),
-              [ M.read (| pressed |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "enums::inspect", [], [] |),
+            [ M.read (| pressed |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "enums::inspect", [], [] |),
-              [ M.read (| pasted |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "enums::inspect", [], [] |),
+            [ M.read (| pasted |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "enums::inspect", [], [] |),
-              [ M.read (| click |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "enums::inspect", [], [] |),
+            [ M.read (| click |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "enums::inspect", [], [] |),
-              [ M.read (| load |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "enums::inspect", [], [] |),
+            [ M.read (| load |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "enums::inspect", [], [] |),
-              [ M.read (| unload |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "enums::inspect", [], [] |),
+            [ M.read (| unload |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

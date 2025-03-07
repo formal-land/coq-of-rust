@@ -131,7 +131,9 @@ Module Pointer.
 
   Module Core.
     Inductive t (Value : Set) : Set :=
-    | Immediate (value : Value)
+    (** The immediate value is optional in case with have a sub-pointer of an immediate pointer for
+        an enum case that is not the current one. *)
+    | Immediate (value : option Value)
     | Mutable {Address : Set} (address : Address) (path : Path.t).
     Arguments Immediate {_}.
     Arguments Mutable {_ _}.
@@ -910,13 +912,13 @@ Fixpoint run_constant (constant : M) : Value.t :=
       | Primitive.StateAlloc value =>
         Value.Pointer {|
           Pointer.kind := Pointer.Kind.Raw;
-          Pointer.core := Pointer.Core.Immediate value;
+          Pointer.core := Pointer.Core.Immediate (Some value);
         |}
       | Primitive.StateRead pointer =>
         match pointer with
         | Value.Pointer {|
             Pointer.kind := Pointer.Kind.Raw;
-            Pointer.core := Pointer.Core.Immediate value;
+            Pointer.core := Pointer.Core.Immediate (Some value);
           |} =>
           value
         | _ => Value.Error "expected an immediate raw pointer"

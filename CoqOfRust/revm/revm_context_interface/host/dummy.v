@@ -342,38 +342,36 @@ Module host.
                         [ Value.Integer IntegerKind.Usize 6 ]
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "tx" |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "block" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "cfg" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "storage" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "transient_storage" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "log" |) |)
-                              |)
-                            ]
-                        |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "tx" |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "block" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "cfg" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "storage" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "transient_storage" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "log" |) |)
+                            |)
+                          ]
                       |)
                     |)
                   |)
@@ -388,100 +386,98 @@ Module host.
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                     ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_context_interface::host::dummy::DummyHost",
-                                      "tx"
-                                    |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_context_interface::host::dummy::DummyHost",
+                                    "tx"
                                   |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_context_interface::host::dummy::DummyHost",
-                                      "block"
-                                    |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_context_interface::host::dummy::DummyHost",
+                                    "block"
                                   |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_context_interface::host::dummy::DummyHost",
-                                      "cfg"
-                                    |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_context_interface::host::dummy::DummyHost",
+                                    "cfg"
                                   |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_context_interface::host::dummy::DummyHost",
-                                      "storage"
-                                    |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_context_interface::host::dummy::DummyHost",
+                                    "storage"
                                   |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_context_interface::host::dummy::DummyHost",
-                                      "transient_storage"
-                                    |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_context_interface::host::dummy::DummyHost",
+                                    "transient_storage"
                                   |)
                                 |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "revm_context_interface::host::dummy::DummyHost",
-                                          "log"
-                                        |)
+                              |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_context_interface::host::dummy::DummyHost",
+                                        "log"
                                       |)
                                     |)
                                   |)
                                 |)
                               |)
-                            ]
-                        |)
+                            |)
+                          ]
                       |)
                     |)
                   |)
@@ -910,73 +906,67 @@ Module host.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "hashbrown::map::HashMap")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "foldhash::seed::fast::RandomState";
-                          Ty.path "hashbrown::raw::alloc::inner::Global"
-                        ],
-                      "clear",
-                      [],
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "hashbrown::map::HashMap")
                       []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_context_interface::host::dummy::DummyHost",
-                          "storage"
-                        |)
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
+                        Ty.path "foldhash::seed::fast::RandomState";
+                        Ty.path "hashbrown::raw::alloc::inner::Global"
+                      ],
+                    "clear",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::host::dummy::DummyHost",
+                        "storage"
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::log::Log")
-                            []
-                            [ Ty.path "alloy_primitives::log::LogData" ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "clear",
-                      [],
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
                       []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_context_interface::host::dummy::DummyHost",
-                          "log"
-                        |)
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::log::Log")
+                          []
+                          [ Ty.path "alloy_primitives::log::LogData" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    "clear",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::host::dummy::DummyHost",
+                        "log"
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1570,10 +1560,22 @@ Module host.
                                 ]
                                 []
                             ] :=
-                        M.alloc (|
-                          M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "&mut")
+                              (Ty.path "hashbrown::map::VacantEntry")
                               []
                               [
                                 Ty.apply
@@ -1582,36 +1584,22 @@ Module host.
                                     Value.Integer IntegerKind.Usize 256;
                                     Value.Integer IntegerKind.Usize 4
                                   ]
-                                  []
+                                  [];
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "foldhash::seed::fast::RandomState";
+                                Ty.path "hashbrown::raw::alloc::inner::Global"
                               ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "hashbrown::map::VacantEntry")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [];
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [];
-                                  Ty.path "foldhash::seed::fast::RandomState";
-                                  Ty.path "hashbrown::raw::alloc::inner::Global"
-                                ],
-                              "insert",
-                              [],
-                              []
-                            |),
-                            [ M.read (| entry |); M.read (| M.get_constant "ruint::ZERO" |) ]
-                          |)
+                            "insert",
+                            [],
+                            []
+                          |),
+                          [ M.read (| entry |); M.read (| M.get_constant "ruint::ZERO" |) ]
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -1700,52 +1688,48 @@ Module host.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         []
                     ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ],
+                  M.get_associated_function (|
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "hashbrown::map::HashMap")
                       []
                       [
                         Ty.apply
                           (Ty.path "ruint::Uint")
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []
+                          [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
+                        Ty.path "foldhash::seed::fast::RandomState";
+                        Ty.path "hashbrown::raw::alloc::inner::Global"
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "hashbrown::map::HashMap")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "foldhash::seed::fast::RandomState";
-                          Ty.path "hashbrown::raw::alloc::inner::Global"
-                        ],
-                      "insert",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_context_interface::host::dummy::DummyHost",
-                          "storage"
-                        |)
-                      |);
-                      M.read (| index |);
-                      M.read (| value |)
-                    ]
-                  |)
+                    "insert",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::host::dummy::DummyHost",
+                        "storage"
+                      |)
+                    |);
+                    M.read (| index |);
+                    M.read (| value |)
+                  ]
                 |) in
               M.alloc (|
                 Value.StructTuple
@@ -1995,52 +1979,48 @@ Module host.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         []
                     ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ],
+                  M.get_associated_function (|
                     Ty.apply
-                      (Ty.path "core::option::Option")
+                      (Ty.path "hashbrown::map::HashMap")
                       []
                       [
                         Ty.apply
                           (Ty.path "ruint::Uint")
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []
+                          [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
+                        Ty.path "foldhash::seed::fast::RandomState";
+                        Ty.path "hashbrown::raw::alloc::inner::Global"
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "hashbrown::map::HashMap")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "foldhash::seed::fast::RandomState";
-                          Ty.path "hashbrown::raw::alloc::inner::Global"
-                        ],
-                      "insert",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_context_interface::host::dummy::DummyHost",
-                          "transient_storage"
-                        |)
-                      |);
-                      M.read (| index |);
-                      M.read (| value |)
-                    ]
-                  |)
+                    "insert",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::host::dummy::DummyHost",
+                        "transient_storage"
+                      |)
+                    |);
+                    M.read (| index |);
+                    M.read (| value |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
