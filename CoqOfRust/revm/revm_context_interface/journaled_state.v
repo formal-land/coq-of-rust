@@ -220,7 +220,7 @@ Module journaled_state.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_TransferError.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_TransferError.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_journaled_state_TransferError_for_revm_context_interface_journaled_state_TransferError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::TransferError".
     
     (* PartialEq *)
@@ -264,10 +264,11 @@ Module journaled_state.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_TransferError.
+  End Impl_core_cmp_PartialEq_revm_context_interface_journaled_state_TransferError_for_revm_context_interface_journaled_state_TransferError.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_journaled_state_TransferError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::TransferError".
@@ -430,7 +431,7 @@ Module journaled_state.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_JournalCheckpoint.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_journaled_state_JournalCheckpoint_for_revm_context_interface_journaled_state_JournalCheckpoint.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::JournalCheckpoint".
     
     (* PartialEq *)
@@ -482,10 +483,11 @@ Module journaled_state.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_JournalCheckpoint.
+  End Impl_core_cmp_PartialEq_revm_context_interface_journaled_state_JournalCheckpoint_for_revm_context_interface_journaled_state_JournalCheckpoint.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_journaled_state_JournalCheckpoint.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::JournalCheckpoint".
@@ -739,7 +741,7 @@ Module journaled_state.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_StateLoad_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_revm_context_interface_journaled_state_StateLoad_T.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_revm_context_interface_journaled_state_StateLoad_T_for_revm_context_interface_journaled_state_StateLoad_T.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ].
     
@@ -800,10 +802,11 @@ Module journaled_state.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_revm_context_interface_journaled_state_StateLoad_T.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_revm_context_interface_journaled_state_StateLoad_T_for_revm_context_interface_journaled_state_StateLoad_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_revm_context_interface_journaled_state_StateLoad_T.
     Definition Self (T : Ty.t) : Ty.t :=
@@ -1284,7 +1287,7 @@ Module journaled_state.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_AccountLoad.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_AccountLoad.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_journaled_state_AccountLoad_for_revm_context_interface_journaled_state_AccountLoad.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::AccountLoad".
     
     (* PartialEq *)
@@ -1358,10 +1361,11 @@ Module journaled_state.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_journaled_state_AccountLoad.
+  End Impl_core_cmp_PartialEq_revm_context_interface_journaled_state_AccountLoad_for_revm_context_interface_journaled_state_AccountLoad.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_journaled_state_AccountLoad.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::AccountLoad".
@@ -1746,7 +1750,7 @@ Module journaled_state.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_revm_context_interface_journaled_state_Eip7702CodeLoad_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad") [] [ T ].
     
@@ -1830,10 +1834,11 @@ Module journaled_state.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_revm_context_interface_journaled_state_Eip7702CodeLoad_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_revm_context_interface_journaled_state_Eip7702CodeLoad_T.
     Definition Self (T : Ty.t) : Ty.t :=

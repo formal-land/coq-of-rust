@@ -574,7 +574,7 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_dec2flt_common_BiasedFp.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_dec2flt_common_BiasedFp.
+      Module Impl_core_cmp_PartialEq_core_num_dec2flt_common_BiasedFp_for_core_num_dec2flt_common_BiasedFp.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
         
         (* PartialEq *)
@@ -626,10 +626,10 @@ Module num.
           M.IsTraitInstance
             "core::cmp::PartialEq"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "core::num::dec2flt::common::BiasedFp" ]
             Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_dec2flt_common_BiasedFp.
+      End Impl_core_cmp_PartialEq_core_num_dec2flt_common_BiasedFp_for_core_num_dec2flt_common_BiasedFp.
       
       Module Impl_core_cmp_Eq_for_core_num_dec2flt_common_BiasedFp.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".

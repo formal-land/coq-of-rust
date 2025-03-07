@@ -2842,7 +2842,7 @@ Module ptr.
       Global Typeclasses Opaque as_slice.
     End Impl_pointer_const_array_N_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_const_T.
+    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_pointer_const_T_for_pointer_const_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       (*
@@ -2869,10 +2869,10 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_const_T.
+    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_pointer_const_T_for_pointer_const_T.
     
     Module Impl_core_cmp_Eq_where_core_marker_Sized_T_for_pointer_const_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
@@ -3009,7 +3009,7 @@ Module ptr.
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_pointer_const_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_pointer_const_T.
+    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_pointer_const_T_for_pointer_const_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
       
       (*
@@ -3128,7 +3128,7 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ T ] ]
           (Self T)
           (* Instance *)
           [
@@ -3138,6 +3138,6 @@ Module ptr.
             ("gt", InstanceField.Method (gt T));
             ("ge", InstanceField.Method (ge T))
           ].
-    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_pointer_const_T.
+    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_pointer_const_T_for_pointer_const_T.
   End const_ptr.
 End ptr.

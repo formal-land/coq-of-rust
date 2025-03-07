@@ -247,7 +247,7 @@ Module vm_status.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_vm_status_StatusType.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusType.
+  Module Impl_core_cmp_PartialEq_move_core_types_vm_status_StatusType_for_move_core_types_vm_status_StatusType.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
     
     (* PartialEq *)
@@ -291,10 +291,10 @@ Module vm_status.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::vm_status::StatusType" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusType.
+  End Impl_core_cmp_PartialEq_move_core_types_vm_status_StatusType_for_move_core_types_vm_status_StatusType.
   
   Module Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusType.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
@@ -4985,7 +4985,7 @@ Module vm_status.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_vm_status_StatusCode.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusCode.
+  Module Impl_core_cmp_PartialEq_move_core_types_vm_status_StatusCode_for_move_core_types_vm_status_StatusCode.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
     
     (* PartialEq *)
@@ -5029,12 +5029,12 @@ Module vm_status.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::vm_status::StatusCode" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusCode.
+  End Impl_core_cmp_PartialEq_move_core_types_vm_status_StatusCode_for_move_core_types_vm_status_StatusCode.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_vm_status_StatusCode.
+  Module Impl_core_cmp_PartialOrd_move_core_types_vm_status_StatusCode_for_move_core_types_vm_status_StatusCode.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
     
     (* PartialOrd *)
@@ -5101,10 +5101,10 @@ Module vm_status.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::vm_status::StatusCode" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_vm_status_StatusCode.
+  End Impl_core_cmp_PartialOrd_move_core_types_vm_status_StatusCode_for_move_core_types_vm_status_StatusCode.
   
   Module Impl_core_cmp_Ord_for_move_core_types_vm_status_StatusCode.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".

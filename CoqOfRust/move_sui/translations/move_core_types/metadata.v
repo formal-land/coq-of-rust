@@ -127,7 +127,7 @@ Module metadata.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_metadata_Metadata.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_metadata_Metadata.
+  Module Impl_core_cmp_PartialEq_move_core_types_metadata_Metadata_for_move_core_types_metadata_Metadata.
     Definition Self : Ty.t := Ty.path "move_core_types::metadata::Metadata".
     
     (* PartialEq *)
@@ -223,10 +223,10 @@ Module metadata.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::metadata::Metadata" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_metadata_Metadata.
+  End Impl_core_cmp_PartialEq_move_core_types_metadata_Metadata_for_move_core_types_metadata_Metadata.
   
   Module Impl_core_cmp_Eq_for_move_core_types_metadata_Metadata.
     Definition Self : Ty.t := Ty.path "move_core_types::metadata::Metadata".

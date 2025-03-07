@@ -540,7 +540,7 @@ Module hardfork.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_specification_hardfork_SpecId.
   
-  Module Impl_core_cmp_PartialEq_for_revm_specification_hardfork_SpecId.
+  Module Impl_core_cmp_PartialEq_revm_specification_hardfork_SpecId_for_revm_specification_hardfork_SpecId.
     Definition Self : Ty.t := Ty.path "revm_specification::hardfork::SpecId".
     
     (* PartialEq *)
@@ -584,10 +584,10 @@ Module hardfork.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_specification::hardfork::SpecId" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_specification_hardfork_SpecId.
+  End Impl_core_cmp_PartialEq_revm_specification_hardfork_SpecId_for_revm_specification_hardfork_SpecId.
   
   Module Impl_core_cmp_Eq_for_revm_specification_hardfork_SpecId.
     Definition Self : Ty.t := Ty.path "revm_specification::hardfork::SpecId".
@@ -616,7 +616,7 @@ Module hardfork.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_specification_hardfork_SpecId.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_specification_hardfork_SpecId.
+  Module Impl_core_cmp_PartialOrd_revm_specification_hardfork_SpecId_for_revm_specification_hardfork_SpecId.
     Definition Self : Ty.t := Ty.path "revm_specification::hardfork::SpecId".
     
     (* PartialOrd *)
@@ -683,10 +683,10 @@ Module hardfork.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_specification::hardfork::SpecId" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_specification_hardfork_SpecId.
+  End Impl_core_cmp_PartialOrd_revm_specification_hardfork_SpecId_for_revm_specification_hardfork_SpecId.
   
   Module Impl_core_cmp_Ord_for_revm_specification_hardfork_SpecId.
     Definition Self : Ty.t := Ty.path "revm_specification::hardfork::SpecId".

@@ -263,7 +263,7 @@ Module gas.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_gas_Gas.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_gas_Gas.
+  Module Impl_core_cmp_PartialEq_revm_interpreter_gas_Gas_for_revm_interpreter_gas_Gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
     
     (* PartialEq *)
@@ -367,10 +367,10 @@ Module gas.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_interpreter::gas::Gas" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_gas_Gas.
+  End Impl_core_cmp_PartialEq_revm_interpreter_gas_Gas_for_revm_interpreter_gas_Gas.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_gas_Gas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::Gas".
@@ -1463,7 +1463,7 @@ Module gas.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_gas_MemoryGas.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_gas_MemoryGas.
+  Module Impl_core_cmp_PartialEq_revm_interpreter_gas_MemoryGas_for_revm_interpreter_gas_MemoryGas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".
     
     (* PartialEq *)
@@ -1515,10 +1515,10 @@ Module gas.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_interpreter::gas::MemoryGas" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_gas_MemoryGas.
+  End Impl_core_cmp_PartialEq_revm_interpreter_gas_MemoryGas_for_revm_interpreter_gas_MemoryGas.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_gas_MemoryGas.
     Definition Self : Ty.t := Ty.path "revm_interpreter::gas::MemoryGas".

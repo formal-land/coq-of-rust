@@ -312,7 +312,7 @@ Module bytecode.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_bytecode_Bytecode.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_bytecode_Bytecode.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_bytecode_Bytecode_for_revm_bytecode_bytecode_Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::bytecode::Bytecode".
     
     (* PartialEq *)
@@ -540,10 +540,10 @@ Module bytecode.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::bytecode::Bytecode" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_bytecode_Bytecode.
+  End Impl_core_cmp_PartialEq_revm_bytecode_bytecode_Bytecode_for_revm_bytecode_bytecode_Bytecode.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_bytecode_Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::bytecode::Bytecode".
@@ -976,7 +976,7 @@ Module bytecode.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_revm_bytecode_bytecode_Bytecode.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_bytecode_Bytecode.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_bytecode_Bytecode_for_revm_bytecode_bytecode_Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::bytecode::Bytecode".
     
     (* PartialOrd *)
@@ -1185,10 +1185,10 @@ Module bytecode.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::bytecode::Bytecode" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_bytecode_Bytecode.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_bytecode_Bytecode_for_revm_bytecode_bytecode_Bytecode.
   
   Module Impl_core_default_Default_for_revm_bytecode_bytecode_Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::bytecode::Bytecode".

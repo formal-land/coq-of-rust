@@ -1840,7 +1840,7 @@ Module gas_algebra.
   End Impl_core_fmt_Debug_for_move_core_types_gas_algebra_GasQuantity_U.
   
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_gas_algebra_GasQuantity_U.
+  Module Impl_core_cmp_PartialEq_move_core_types_gas_algebra_GasQuantity_U_for_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ].
     
@@ -1891,10 +1891,11 @@ Module gas_algebra.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
         (Self U)
         (* Instance *) [ ("eq", InstanceField.Method (eq U)) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_gas_algebra_GasQuantity_U.
+  End Impl_core_cmp_PartialEq_move_core_types_gas_algebra_GasQuantity_U_for_move_core_types_gas_algebra_GasQuantity_U.
   
   Module Impl_core_cmp_Eq_for_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=
@@ -1910,7 +1911,7 @@ Module gas_algebra.
         (* Instance *) [].
   End Impl_core_cmp_Eq_for_move_core_types_gas_algebra_GasQuantity_U.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_gas_algebra_GasQuantity_U.
+  Module Impl_core_cmp_PartialOrd_move_core_types_gas_algebra_GasQuantity_U_for_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ].
     
@@ -1954,10 +1955,11 @@ Module gas_algebra.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
         (Self U)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp U)) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_gas_algebra_GasQuantity_U.
+  End Impl_core_cmp_PartialOrd_move_core_types_gas_algebra_GasQuantity_U_for_move_core_types_gas_algebra_GasQuantity_U.
   
   Module Impl_core_cmp_Ord_for_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=

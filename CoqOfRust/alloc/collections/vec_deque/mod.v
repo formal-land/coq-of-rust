@@ -15477,7 +15477,7 @@ Module collections.
     Admitted.
     Global Typeclasses Opaque wrap_index.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_alloc_collections_vec_deque_VecDeque_T_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
@@ -17781,10 +17781,11 @@ Module collections.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ] ]
           (Self T A)
           (* Instance *) [ ("eq", InstanceField.Method (eq T A)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_alloc_collections_vec_deque_VecDeque_T_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
@@ -17800,7 +17801,7 @@ Module collections.
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
-    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
+    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_alloc_collections_vec_deque_VecDeque_T_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ].
       
@@ -17863,10 +17864,11 @@ Module collections.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ] ]
           (Self T A)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T A)) ].
-    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
+    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_alloc_collections_vec_deque_VecDeque_T_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_VecDeque_T_A.
       Definition Self (T A : Ty.t) : Ty.t :=

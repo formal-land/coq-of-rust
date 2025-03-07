@@ -8681,7 +8681,7 @@ Module collections.
         Global Typeclasses Opaque right_edge.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
-      Module Impl_core_cmp_PartialEq_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
+      Module Impl_core_cmp_PartialEq_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
         Definition Self (BorrowType K V NodeType HandleType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
@@ -8795,10 +8795,22 @@ Module collections.
           M.IsTraitInstance
             "core::cmp::PartialEq"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [
+              Ty.apply
+                (Ty.path "alloc::collections::btree::node::Handle")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
+                    [ BorrowType; K; V; NodeType ];
+                  HandleType
+                ]
+            ]
             (Self BorrowType K V NodeType HandleType)
             (* Instance *) [ ("eq", InstanceField.Method (eq BorrowType K V NodeType HandleType)) ].
-      End Impl_core_cmp_PartialEq_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
+      End Impl_core_cmp_PartialEq_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
         Definition Self (BorrowType K V NodeType HandleType : Ty.t) : Ty.t :=

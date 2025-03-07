@@ -155,7 +155,7 @@ Module opcode.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_opcode_OpCode.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_opcode_OpCode.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_opcode_OpCode_for_revm_bytecode_opcode_OpCode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCode".
     
     (* PartialEq *)
@@ -188,10 +188,10 @@ Module opcode.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::opcode::OpCode" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_opcode_OpCode.
+  End Impl_core_cmp_PartialEq_revm_bytecode_opcode_OpCode_for_revm_bytecode_opcode_OpCode.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_opcode_OpCode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCode".
@@ -226,7 +226,7 @@ Module opcode.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_bytecode_opcode_OpCode.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_opcode_OpCode.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_opcode_OpCode_for_revm_bytecode_opcode_OpCode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCode".
     
     (* PartialOrd *)
@@ -283,10 +283,10 @@ Module opcode.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::opcode::OpCode" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_opcode_OpCode.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_opcode_OpCode_for_revm_bytecode_opcode_OpCode.
   
   Module Impl_core_cmp_Ord_for_revm_bytecode_opcode_OpCode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCode".
@@ -1590,7 +1590,7 @@ Module opcode.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_opcode_OpCodeInfo.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_opcode_OpCodeInfo.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_opcode_OpCodeInfo_for_revm_bytecode_opcode_OpCodeInfo.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCodeInfo".
     
     (* PartialEq *)
@@ -1751,10 +1751,10 @@ Module opcode.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_opcode_OpCodeInfo.
+  End Impl_core_cmp_PartialEq_revm_bytecode_opcode_OpCodeInfo_for_revm_bytecode_opcode_OpCodeInfo.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_opcode_OpCodeInfo.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCodeInfo".
@@ -1805,7 +1805,7 @@ Module opcode.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_bytecode_opcode_OpCodeInfo.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_opcode_OpCodeInfo.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_opcode_OpCodeInfo_for_revm_bytecode_opcode_OpCodeInfo.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCodeInfo".
     
     (* PartialOrd *)
@@ -2283,10 +2283,10 @@ Module opcode.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_opcode_OpCodeInfo.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_opcode_OpCodeInfo_for_revm_bytecode_opcode_OpCodeInfo.
   
   Module Impl_core_cmp_Ord_for_revm_bytecode_opcode_OpCodeInfo.
     Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::OpCodeInfo".

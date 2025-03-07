@@ -665,10 +665,28 @@ fn compile_top_level_item_without_local_items<'a>(
                                 }),
                         )
                         .collect();
-                    // We do not handle them yet. This might require going to the THIR level.
-                    let trait_const_params = vec![];
-                    let trait_ty_params =
-                        compile_path_ty_params(env, &item.owner_id.def_id, trait_ref.path);
+                    let impl_generics = env.tcx.generics_of(item.owner_id.def_id);
+                    let impl_trait_header =
+                        env.tcx.impl_trait_header(item.owner_id.def_id).unwrap();
+                    let trait_params = impl_trait_header.trait_ref.instantiate_identity().args;
+                    let trait_const_params = trait_params
+                        .iter()
+                        .skip(1)
+                        .filter_map(|generic_arg| {
+                            generic_arg.as_const().as_ref().map(|ct| {
+                                crate::thir_expression::compile_const(env, &item.span, ct)
+                            })
+                        })
+                        .collect();
+                    let trait_ty_params = trait_params
+                        .iter()
+                        .skip(1)
+                        .filter_map(|generic_arg| {
+                            generic_arg.as_type().as_ref().map(|ty| {
+                                crate::thir_ty::compile_type(env, &item.span, impl_generics, ty)
+                            })
+                        })
+                        .collect();
 
                     vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_consts,

@@ -129,7 +129,7 @@ Module cmp.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_cmp_Ordering.
   
-  Module Impl_core_cmp_PartialEq_for_core_cmp_Ordering.
+  Module Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* PartialEq *)
@@ -173,10 +173,10 @@ Module cmp.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::cmp::Ordering" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_cmp_Ordering.
+  End Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.
   
   Module Impl_core_cmp_Eq_for_core_cmp_Ordering.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
@@ -205,7 +205,7 @@ Module cmp.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_cmp_Ordering.
   
-  Module Impl_core_cmp_PartialOrd_for_core_cmp_Ordering.
+  Module Impl_core_cmp_PartialOrd_core_cmp_Ordering_for_core_cmp_Ordering.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
     
     (* PartialOrd *)
@@ -272,10 +272,10 @@ Module cmp.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::cmp::Ordering" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_cmp_Ordering.
+  End Impl_core_cmp_PartialOrd_core_cmp_Ordering_for_core_cmp_Ordering.
   
   Module Impl_core_cmp_Ord_for_core_cmp_Ordering.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
@@ -804,7 +804,7 @@ Module cmp.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_cmp_Reverse_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cmp_Reverse_T.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_cmp_Reverse_T_for_core_cmp_Reverse_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (* PartialEq *)
@@ -845,10 +845,10 @@ Module cmp.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cmp_Reverse_T.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_cmp_Reverse_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cmp_Reverse_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
@@ -1032,7 +1032,7 @@ Module cmp.
         (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_cmp_Reverse_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_cmp_Reverse_T.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_core_cmp_Reverse_T_for_core_cmp_Reverse_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
     
     (*
@@ -1230,7 +1230,7 @@ Module cmp.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ]
         (Self T)
         (* Instance *)
         [
@@ -1240,7 +1240,7 @@ Module cmp.
           ("gt", InstanceField.Method (gt T));
           ("ge", InstanceField.Method (ge T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_cmp_Reverse_T.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_core_cmp_Reverse_T_for_core_cmp_Reverse_T.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_cmp_Reverse_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ].
@@ -2605,7 +2605,7 @@ Module cmp.
   Global Typeclasses Opaque minmax_by_key.
   
   Module impls.
-    Module Impl_core_cmp_PartialEq_for_Tuple_.
+    Module Impl_core_cmp_PartialEq_Tuple__for_Tuple_.
       Definition Self : Ty.t := Ty.tuple [].
       
       (*
@@ -2642,12 +2642,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.tuple [] ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_Tuple_.
+    End Impl_core_cmp_PartialEq_Tuple__for_Tuple_.
     
-    Module Impl_core_cmp_PartialEq_for_bool.
+    Module Impl_core_cmp_PartialEq_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2682,12 +2682,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_bool.
+    End Impl_core_cmp_PartialEq_bool_for_bool.
     
-    Module Impl_core_cmp_PartialEq_for_char.
+    Module Impl_core_cmp_PartialEq_char_for_char.
       Definition Self : Ty.t := Ty.path "char".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2722,12 +2722,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_char.
+    End Impl_core_cmp_PartialEq_char_for_char.
     
-    Module Impl_core_cmp_PartialEq_for_usize.
+    Module Impl_core_cmp_PartialEq_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2762,12 +2762,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_usize.
+    End Impl_core_cmp_PartialEq_usize_for_usize.
     
-    Module Impl_core_cmp_PartialEq_for_u8.
+    Module Impl_core_cmp_PartialEq_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2802,12 +2802,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_u8.
+    End Impl_core_cmp_PartialEq_u8_for_u8.
     
-    Module Impl_core_cmp_PartialEq_for_u16.
+    Module Impl_core_cmp_PartialEq_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2842,12 +2842,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_u16.
+    End Impl_core_cmp_PartialEq_u16_for_u16.
     
-    Module Impl_core_cmp_PartialEq_for_u32.
+    Module Impl_core_cmp_PartialEq_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2882,12 +2882,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_u32.
+    End Impl_core_cmp_PartialEq_u32_for_u32.
     
-    Module Impl_core_cmp_PartialEq_for_u64.
+    Module Impl_core_cmp_PartialEq_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2922,12 +2922,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_u64.
+    End Impl_core_cmp_PartialEq_u64_for_u64.
     
-    Module Impl_core_cmp_PartialEq_for_u128.
+    Module Impl_core_cmp_PartialEq_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -2962,12 +2962,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_u128.
+    End Impl_core_cmp_PartialEq_u128_for_u128.
     
-    Module Impl_core_cmp_PartialEq_for_isize.
+    Module Impl_core_cmp_PartialEq_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3002,12 +3002,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_isize.
+    End Impl_core_cmp_PartialEq_isize_for_isize.
     
-    Module Impl_core_cmp_PartialEq_for_i8.
+    Module Impl_core_cmp_PartialEq_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3042,12 +3042,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_i8.
+    End Impl_core_cmp_PartialEq_i8_for_i8.
     
-    Module Impl_core_cmp_PartialEq_for_i16.
+    Module Impl_core_cmp_PartialEq_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3082,12 +3082,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_i16.
+    End Impl_core_cmp_PartialEq_i16_for_i16.
     
-    Module Impl_core_cmp_PartialEq_for_i32.
+    Module Impl_core_cmp_PartialEq_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3122,12 +3122,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_i32.
+    End Impl_core_cmp_PartialEq_i32_for_i32.
     
-    Module Impl_core_cmp_PartialEq_for_i64.
+    Module Impl_core_cmp_PartialEq_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3162,12 +3162,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_i64.
+    End Impl_core_cmp_PartialEq_i64_for_i64.
     
-    Module Impl_core_cmp_PartialEq_for_i128.
+    Module Impl_core_cmp_PartialEq_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3202,12 +3202,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_i128.
+    End Impl_core_cmp_PartialEq_i128_for_i128.
     
-    Module Impl_core_cmp_PartialEq_for_f16.
+    Module Impl_core_cmp_PartialEq_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3242,12 +3242,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_f16.
+    End Impl_core_cmp_PartialEq_f16_for_f16.
     
-    Module Impl_core_cmp_PartialEq_for_f32.
+    Module Impl_core_cmp_PartialEq_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3282,12 +3282,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_f32.
+    End Impl_core_cmp_PartialEq_f32_for_f32.
     
-    Module Impl_core_cmp_PartialEq_for_f64.
+    Module Impl_core_cmp_PartialEq_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3322,12 +3322,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_f64.
+    End Impl_core_cmp_PartialEq_f64_for_f64.
     
-    Module Impl_core_cmp_PartialEq_for_f128.
+    Module Impl_core_cmp_PartialEq_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*                 fn eq(&self, other: &$t) -> bool { ( *self) == ( *other) } *)
@@ -3362,10 +3362,10 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
-    End Impl_core_cmp_PartialEq_for_f128.
+    End Impl_core_cmp_PartialEq_f128_for_f128.
     
     Module Impl_core_cmp_Eq_for_Tuple_.
       Definition Self : Ty.t := Ty.tuple [].
@@ -3547,7 +3547,7 @@ Module cmp.
           (* Instance *) [].
     End Impl_core_cmp_Eq_for_i128.
     
-    Module Impl_core_cmp_PartialOrd_for_Tuple_.
+    Module Impl_core_cmp_PartialOrd_Tuple__for_Tuple_.
       Definition Self : Ty.t := Ty.tuple [].
       
       (*
@@ -3579,12 +3579,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.tuple [] ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_Tuple_.
+    End Impl_core_cmp_PartialOrd_Tuple__for_Tuple_.
     
-    Module Impl_core_cmp_PartialOrd_for_bool.
+    Module Impl_core_cmp_PartialOrd_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*
@@ -3617,12 +3617,12 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_bool.
+    End Impl_core_cmp_PartialOrd_bool_for_bool.
     
-    Module Impl_core_cmp_PartialOrd_for_f16.
+    Module Impl_core_cmp_PartialOrd_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*
@@ -3773,7 +3773,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *)
           [
@@ -3783,9 +3783,9 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_f16.
+    End Impl_core_cmp_PartialOrd_f16_for_f16.
     
-    Module Impl_core_cmp_PartialOrd_for_f32.
+    Module Impl_core_cmp_PartialOrd_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*
@@ -3936,7 +3936,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *)
           [
@@ -3946,9 +3946,9 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_f32.
+    End Impl_core_cmp_PartialOrd_f32_for_f32.
     
-    Module Impl_core_cmp_PartialOrd_for_f64.
+    Module Impl_core_cmp_PartialOrd_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*
@@ -4099,7 +4099,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *)
           [
@@ -4109,9 +4109,9 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_f64.
+    End Impl_core_cmp_PartialOrd_f64_for_f64.
     
-    Module Impl_core_cmp_PartialOrd_for_f128.
+    Module Impl_core_cmp_PartialOrd_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*
@@ -4262,7 +4262,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *)
           [
@@ -4272,7 +4272,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_f128.
+    End Impl_core_cmp_PartialOrd_f128_for_f128.
     
     Module Impl_core_cmp_Ord_for_Tuple_.
       Definition Self : Ty.t := Ty.tuple [].
@@ -4486,7 +4486,7 @@ Module cmp.
           ].
     End Impl_core_cmp_Ord_for_bool.
     
-    Module Impl_core_cmp_PartialOrd_for_char.
+    Module Impl_core_cmp_PartialOrd_char_for_char.
       Definition Self : Ty.t := Ty.path "char".
       
       (*
@@ -4579,7 +4579,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "char" ]
           Self
           (* Instance *)
           [
@@ -4589,7 +4589,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_char.
+    End Impl_core_cmp_PartialOrd_char_for_char.
     
     Module Impl_core_cmp_Ord_for_char.
       Definition Self : Ty.t := Ty.path "char".
@@ -4625,7 +4625,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_char.
     
-    Module Impl_core_cmp_PartialOrd_for_usize.
+    Module Impl_core_cmp_PartialOrd_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*
@@ -4718,7 +4718,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [
@@ -4728,7 +4728,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_usize.
+    End Impl_core_cmp_PartialOrd_usize_for_usize.
     
     Module Impl_core_cmp_Ord_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
@@ -4764,7 +4764,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_usize.
     
-    Module Impl_core_cmp_PartialOrd_for_u8.
+    Module Impl_core_cmp_PartialOrd_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*
@@ -4853,7 +4853,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [
@@ -4863,7 +4863,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_u8.
+    End Impl_core_cmp_PartialOrd_u8_for_u8.
     
     Module Impl_core_cmp_Ord_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
@@ -4899,7 +4899,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u8.
     
-    Module Impl_core_cmp_PartialOrd_for_u16.
+    Module Impl_core_cmp_PartialOrd_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*
@@ -4988,7 +4988,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [
@@ -4998,7 +4998,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_u16.
+    End Impl_core_cmp_PartialOrd_u16_for_u16.
     
     Module Impl_core_cmp_Ord_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
@@ -5034,7 +5034,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u16.
     
-    Module Impl_core_cmp_PartialOrd_for_u32.
+    Module Impl_core_cmp_PartialOrd_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*
@@ -5123,7 +5123,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [
@@ -5133,7 +5133,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_u32.
+    End Impl_core_cmp_PartialOrd_u32_for_u32.
     
     Module Impl_core_cmp_Ord_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
@@ -5169,7 +5169,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u32.
     
-    Module Impl_core_cmp_PartialOrd_for_u64.
+    Module Impl_core_cmp_PartialOrd_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*
@@ -5258,7 +5258,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [
@@ -5268,7 +5268,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_u64.
+    End Impl_core_cmp_PartialOrd_u64_for_u64.
     
     Module Impl_core_cmp_Ord_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
@@ -5304,7 +5304,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u64.
     
-    Module Impl_core_cmp_PartialOrd_for_u128.
+    Module Impl_core_cmp_PartialOrd_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*
@@ -5397,7 +5397,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [
@@ -5407,7 +5407,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_u128.
+    End Impl_core_cmp_PartialOrd_u128_for_u128.
     
     Module Impl_core_cmp_Ord_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
@@ -5443,7 +5443,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u128.
     
-    Module Impl_core_cmp_PartialOrd_for_isize.
+    Module Impl_core_cmp_PartialOrd_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*
@@ -5536,7 +5536,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [
@@ -5546,7 +5546,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_isize.
+    End Impl_core_cmp_PartialOrd_isize_for_isize.
     
     Module Impl_core_cmp_Ord_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
@@ -5582,7 +5582,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_isize.
     
-    Module Impl_core_cmp_PartialOrd_for_i8.
+    Module Impl_core_cmp_PartialOrd_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*
@@ -5671,7 +5671,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [
@@ -5681,7 +5681,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_i8.
+    End Impl_core_cmp_PartialOrd_i8_for_i8.
     
     Module Impl_core_cmp_Ord_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
@@ -5717,7 +5717,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i8.
     
-    Module Impl_core_cmp_PartialOrd_for_i16.
+    Module Impl_core_cmp_PartialOrd_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*
@@ -5806,7 +5806,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [
@@ -5816,7 +5816,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_i16.
+    End Impl_core_cmp_PartialOrd_i16_for_i16.
     
     Module Impl_core_cmp_Ord_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
@@ -5852,7 +5852,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i16.
     
-    Module Impl_core_cmp_PartialOrd_for_i32.
+    Module Impl_core_cmp_PartialOrd_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*
@@ -5941,7 +5941,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [
@@ -5951,7 +5951,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_i32.
+    End Impl_core_cmp_PartialOrd_i32_for_i32.
     
     Module Impl_core_cmp_Ord_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
@@ -5987,7 +5987,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i32.
     
-    Module Impl_core_cmp_PartialOrd_for_i64.
+    Module Impl_core_cmp_PartialOrd_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*
@@ -6076,7 +6076,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [
@@ -6086,7 +6086,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_i64.
+    End Impl_core_cmp_PartialOrd_i64_for_i64.
     
     Module Impl_core_cmp_Ord_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
@@ -6122,7 +6122,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i64.
     
-    Module Impl_core_cmp_PartialOrd_for_i128.
+    Module Impl_core_cmp_PartialOrd_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*
@@ -6215,7 +6215,7 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [
@@ -6225,7 +6225,7 @@ Module cmp.
             ("ge", InstanceField.Method ge);
             ("gt", InstanceField.Method gt)
           ].
-    End Impl_core_cmp_PartialOrd_for_i128.
+    End Impl_core_cmp_PartialOrd_i128_for_i128.
     
     Module Impl_core_cmp_Ord_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
@@ -6261,7 +6261,7 @@ Module cmp.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i128.
     
-    Module Impl_core_cmp_PartialEq_for_never.
+    Module Impl_core_cmp_PartialEq_never_for_never.
       Definition Self : Ty.t := Ty.path "never".
       
       (*
@@ -6291,10 +6291,10 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "never" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_never.
+    End Impl_core_cmp_PartialEq_never_for_never.
     
     Module Impl_core_cmp_Eq_for_never.
       Definition Self : Ty.t := Ty.path "never".
@@ -6308,7 +6308,7 @@ Module cmp.
           (* Instance *) [].
     End Impl_core_cmp_Eq_for_never.
     
-    Module Impl_core_cmp_PartialOrd_for_never.
+    Module Impl_core_cmp_PartialOrd_never_for_never.
       Definition Self : Ty.t := Ty.path "never".
       
       (*
@@ -6338,10 +6338,10 @@ Module cmp.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "never" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_never.
+    End Impl_core_cmp_PartialOrd_never_for_never.
     
     Module Impl_core_cmp_Ord_for_never.
       Definition Self : Ty.t := Ty.path "never".

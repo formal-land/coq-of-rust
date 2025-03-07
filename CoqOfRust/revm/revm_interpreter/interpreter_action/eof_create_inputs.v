@@ -341,7 +341,7 @@ Module interpreter_action.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
       
@@ -590,10 +590,11 @@ Module interpreter_action.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
       Definition Self : Ty.t :=
@@ -1167,7 +1168,7 @@ Module interpreter_action.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
       
@@ -1313,10 +1314,11 @@ Module interpreter_action.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=

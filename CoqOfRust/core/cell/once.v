@@ -1654,7 +1654,7 @@ Module cell.
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_cell_once_OnceCell_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cell_once_OnceCell_T.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_cell_once_OnceCell_T_for_core_cell_once_OnceCell_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].
       
       (*
@@ -1728,10 +1728,10 @@ Module cell.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cell_once_OnceCell_T.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_cell_once_OnceCell_T_for_core_cell_once_OnceCell_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cell_once_OnceCell_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::once::OnceCell") [] [ T ].

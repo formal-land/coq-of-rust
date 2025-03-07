@@ -357,7 +357,7 @@ Module sync.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_sync_atomic_Ordering.
     
-    Module Impl_core_cmp_PartialEq_for_core_sync_atomic_Ordering.
+    Module Impl_core_cmp_PartialEq_core_sync_atomic_Ordering_for_core_sync_atomic_Ordering.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".
       
       (* PartialEq *)
@@ -401,10 +401,10 @@ Module sync.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::sync::atomic::Ordering" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_sync_atomic_Ordering.
+    End Impl_core_cmp_PartialEq_core_sync_atomic_Ordering_for_core_sync_atomic_Ordering.
     
     Module Impl_core_hash_Hash_for_core_sync_atomic_Ordering.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".

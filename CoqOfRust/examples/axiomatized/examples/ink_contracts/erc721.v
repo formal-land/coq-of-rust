@@ -134,7 +134,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_AccountId.
 
-Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
+Module Impl_core_cmp_PartialEq_erc721_AccountId_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -143,10 +143,10 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "erc721::AccountId" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_erc721_AccountId.
+End Impl_core_cmp_PartialEq_erc721_AccountId_for_erc721_AccountId.
 
 Module Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
@@ -269,7 +269,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc721_Error.
 
-Module Impl_core_cmp_PartialEq_for_erc721_Error.
+Module Impl_core_cmp_PartialEq_erc721_Error_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -278,10 +278,10 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "erc721::Error" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_erc721_Error.
+End Impl_core_cmp_PartialEq_erc721_Error_for_erc721_Error.
 
 Module Impl_core_cmp_Eq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".

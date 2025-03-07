@@ -342,7 +342,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_types_section_TypesSection.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_types_section_TypesSection.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_eof_types_section_TypesSection_for_revm_bytecode_eof_types_section_TypesSection.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::types_section::TypesSection".
       
       (* PartialEq *)
@@ -413,10 +413,11 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_types_section_TypesSection.
+    End Impl_core_cmp_PartialEq_revm_bytecode_eof_types_section_TypesSection_for_revm_bytecode_eof_types_section_TypesSection.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_eof_types_section_TypesSection.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::types_section::TypesSection".
@@ -471,7 +472,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_Copy_for_revm_bytecode_eof_types_section_TypesSection.
     
-    Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_types_section_TypesSection.
+    Module Impl_core_cmp_PartialOrd_revm_bytecode_eof_types_section_TypesSection_for_revm_bytecode_eof_types_section_TypesSection.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::types_section::TypesSection".
       
       (* PartialOrd *)
@@ -663,10 +664,11 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_types_section_TypesSection.
+    End Impl_core_cmp_PartialOrd_revm_bytecode_eof_types_section_TypesSection_for_revm_bytecode_eof_types_section_TypesSection.
     
     Module Impl_core_cmp_Ord_for_revm_bytecode_eof_types_section_TypesSection.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::types_section::TypesSection".

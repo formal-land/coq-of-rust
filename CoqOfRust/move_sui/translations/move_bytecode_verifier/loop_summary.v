@@ -118,7 +118,7 @@ Module loop_summary.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_loop_summary_NodeId.
   
-  Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_loop_summary_NodeId.
+  Module Impl_core_cmp_PartialEq_move_bytecode_verifier_loop_summary_NodeId_for_move_bytecode_verifier_loop_summary_NodeId.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::loop_summary::NodeId".
     
     (* PartialEq *)
@@ -151,10 +151,10 @@ Module loop_summary.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_loop_summary_NodeId.
+  End Impl_core_cmp_PartialEq_move_bytecode_verifier_loop_summary_NodeId_for_move_bytecode_verifier_loop_summary_NodeId.
   
   Module Impl_core_cmp_Eq_for_move_bytecode_verifier_loop_summary_NodeId.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::loop_summary::NodeId".
@@ -189,7 +189,7 @@ Module loop_summary.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_bytecode_verifier_loop_summary_NodeId.
   
-  Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_loop_summary_NodeId.
+  Module Impl_core_cmp_PartialOrd_move_bytecode_verifier_loop_summary_NodeId_for_move_bytecode_verifier_loop_summary_NodeId.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::loop_summary::NodeId".
     
     (* PartialOrd *)
@@ -246,10 +246,10 @@ Module loop_summary.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_loop_summary_NodeId.
+  End Impl_core_cmp_PartialOrd_move_bytecode_verifier_loop_summary_NodeId_for_move_bytecode_verifier_loop_summary_NodeId.
   
   Module Impl_core_cmp_Ord_for_move_bytecode_verifier_loop_summary_NodeId.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::loop_summary::NodeId".

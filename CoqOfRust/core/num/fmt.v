@@ -100,7 +100,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_fmt_Part.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_fmt_Part.
+    Module Impl_core_cmp_PartialEq_core_num_fmt_Part_for_core_num_fmt_Part.
       Definition Self : Ty.t := Ty.path "core::num::fmt::Part".
       
       (* PartialEq *)
@@ -300,10 +300,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::fmt::Part" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_fmt_Part.
+    End Impl_core_cmp_PartialEq_core_num_fmt_Part_for_core_num_fmt_Part.
     
     Module Impl_core_cmp_Eq_for_core_num_fmt_Part.
       Definition Self : Ty.t := Ty.path "core::num::fmt::Part".

@@ -227,7 +227,7 @@ Module reference_safety.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
     
-    Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
+    Module Impl_core_cmp_PartialEq_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue".
       
@@ -338,10 +338,11 @@ Module reference_safety.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
+    End Impl_core_cmp_PartialEq_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
     
     Module Impl_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
       Definition Self : Ty.t :=
@@ -1071,7 +1072,7 @@ Module reference_safety.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
     
-    Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
+    Module Impl_core_cmp_PartialEq_move_bytecode_verifier_reference_safety_abstract_state_Label_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label".
       
@@ -1280,12 +1281,13 @@ Module reference_safety.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
+    End Impl_core_cmp_PartialEq_move_bytecode_verifier_reference_safety_abstract_state_Label_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
     
-    Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
+    Module Impl_core_cmp_PartialOrd_move_bytecode_verifier_reference_safety_abstract_state_Label_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label".
       
@@ -1488,10 +1490,11 @@ Module reference_safety.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::Label" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
+    End Impl_core_cmp_PartialOrd_move_bytecode_verifier_reference_safety_abstract_state_Label_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
     
     Module Impl_core_fmt_Display_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
       Definition Self : Ty.t :=
@@ -2195,7 +2198,7 @@ Module reference_safety.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
     
-    Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
+    Module Impl_core_cmp_PartialEq_move_bytecode_verifier_reference_safety_abstract_state_AbstractState_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState".
       
@@ -2367,10 +2370,11 @@ Module reference_safety.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
+    End Impl_core_cmp_PartialEq_move_bytecode_verifier_reference_safety_abstract_state_AbstractState_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
     
     Module Impl_core_cmp_Eq_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractState.
       Definition Self : Ty.t :=

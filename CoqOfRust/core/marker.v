@@ -616,7 +616,7 @@ Module marker.
         (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
   End Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
@@ -640,10 +640,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
@@ -658,7 +658,7 @@ Module marker.
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
@@ -684,10 +684,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
@@ -1021,7 +1021,7 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_marker_PhantomPinned.
   
-  Module Impl_core_cmp_PartialEq_for_core_marker_PhantomPinned.
+  Module Impl_core_cmp_PartialEq_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialEq *)
@@ -1039,10 +1039,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::marker::PhantomPinned" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_marker_PhantomPinned.
+  End Impl_core_cmp_PartialEq_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
   
   Module Impl_core_cmp_Ord_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
@@ -1067,7 +1067,7 @@ Module marker.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_marker_PhantomPinned.
   
-  Module Impl_core_cmp_PartialOrd_for_core_marker_PhantomPinned.
+  Module Impl_core_cmp_PartialOrd_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialOrd *)
@@ -1087,10 +1087,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::marker::PhantomPinned" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_marker_PhantomPinned.
+  End Impl_core_cmp_PartialOrd_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
   
   Module Impl_core_hash_Hash_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".

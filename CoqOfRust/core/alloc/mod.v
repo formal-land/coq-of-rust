@@ -56,7 +56,7 @@ Module alloc.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_alloc_AllocError.
   
-  Module Impl_core_cmp_PartialEq_for_core_alloc_AllocError.
+  Module Impl_core_cmp_PartialEq_core_alloc_AllocError_for_core_alloc_AllocError.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".
     
     (* PartialEq *)
@@ -74,10 +74,10 @@ Module alloc.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::alloc::AllocError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_alloc_AllocError.
+  End Impl_core_cmp_PartialEq_core_alloc_AllocError_for_core_alloc_AllocError.
   
   Module Impl_core_cmp_Eq_for_core_alloc_AllocError.
     Definition Self : Ty.t := Ty.path "core::alloc::AllocError".

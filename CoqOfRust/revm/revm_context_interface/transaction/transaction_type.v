@@ -237,7 +237,7 @@ Module transaction.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
-    Module Impl_core_cmp_PartialEq_for_revm_context_interface_transaction_transaction_type_TransactionType.
+    Module Impl_core_cmp_PartialEq_revm_context_interface_transaction_transaction_type_TransactionType_for_revm_context_interface_transaction_transaction_type_TransactionType.
       Definition Self : Ty.t :=
         Ty.path "revm_context_interface::transaction::transaction_type::TransactionType".
       
@@ -288,10 +288,11 @@ Module transaction.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_context_interface_transaction_transaction_type_TransactionType.
+    End Impl_core_cmp_PartialEq_revm_context_interface_transaction_transaction_type_TransactionType_for_revm_context_interface_transaction_transaction_type_TransactionType.
     
     Module Impl_core_cmp_Eq_for_revm_context_interface_transaction_transaction_type_TransactionType.
       Definition Self : Ty.t :=

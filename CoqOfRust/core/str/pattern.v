@@ -995,7 +995,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_pattern_Utf8Pattern.
     
-    Module Impl_core_cmp_PartialEq_for_core_str_pattern_Utf8Pattern.
+    Module Impl_core_cmp_PartialEq_core_str_pattern_Utf8Pattern_for_core_str_pattern_Utf8Pattern.
       Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
       
       (* PartialEq *)
@@ -1157,10 +1157,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::pattern::Utf8Pattern" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_str_pattern_Utf8Pattern.
+    End Impl_core_cmp_PartialEq_core_str_pattern_Utf8Pattern_for_core_str_pattern_Utf8Pattern.
     
     Module Impl_core_fmt_Debug_for_core_str_pattern_Utf8Pattern.
       Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
@@ -1381,7 +1381,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_pattern_SearchStep.
     
-    Module Impl_core_cmp_PartialEq_for_core_str_pattern_SearchStep.
+    Module Impl_core_cmp_PartialEq_core_str_pattern_SearchStep_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
       (* PartialEq *)
@@ -1581,10 +1581,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::pattern::SearchStep" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_str_pattern_SearchStep.
+    End Impl_core_cmp_PartialEq_core_str_pattern_SearchStep_for_core_str_pattern_SearchStep.
     
     Module Impl_core_fmt_Debug_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".

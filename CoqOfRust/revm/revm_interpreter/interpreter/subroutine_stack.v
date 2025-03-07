@@ -194,7 +194,7 @@ Module interpreter.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame".
       
@@ -247,10 +247,11 @@ Module interpreter.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineReturnFrame.
       Definition Self : Ty.t :=
@@ -674,7 +675,7 @@ Module interpreter.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl".
       
@@ -757,10 +758,11 @@ Module interpreter.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_subroutine_stack_SubRoutineImpl.
       Definition Self : Ty.t :=

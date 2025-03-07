@@ -23,7 +23,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_CStr.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
       
       (* PartialEq *)
@@ -70,10 +70,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
@@ -231,7 +231,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesWithNulError.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulError.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulError_for_core_ffi_c_str_FromBytesWithNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulError".
       
       (* PartialEq *)
@@ -278,10 +278,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::FromBytesWithNulError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulError.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulError_for_core_ffi_c_str_FromBytesWithNulError.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulError".
@@ -484,7 +484,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulErrorKind_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
       
       (* PartialEq *)
@@ -580,10 +580,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulErrorKind_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
@@ -915,7 +915,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesUntilNulError_for_core_ffi_c_str_FromBytesUntilNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesUntilNulError".
       
       (* PartialEq *)
@@ -962,10 +962,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::FromBytesUntilNulError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesUntilNulError_for_core_ffi_c_str_FromBytesUntilNulError.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesUntilNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesUntilNulError".
@@ -2533,7 +2533,7 @@ Module ffi.
       Global Typeclasses Opaque to_str.
     End Impl_core_ffi_c_str_CStr.
     
-    Module Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
+    Module Impl_core_cmp_PartialOrd_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
       
       (*
@@ -2610,10 +2610,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
+    End Impl_core_cmp_PartialOrd_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_Ord_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".

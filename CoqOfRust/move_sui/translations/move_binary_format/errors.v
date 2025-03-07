@@ -391,7 +391,7 @@ Module errors.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_Location.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_errors_Location.
+  Module Impl_core_cmp_PartialEq_move_binary_format_errors_Location_for_move_binary_format_errors_Location.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::Location".
     
     (* PartialEq *)
@@ -495,12 +495,12 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::Location" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_errors_Location.
+  End Impl_core_cmp_PartialEq_move_binary_format_errors_Location_for_move_binary_format_errors_Location.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_errors_Location.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_errors_Location_for_move_binary_format_errors_Location.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::Location".
     
     (* PartialOrd *)
@@ -619,10 +619,10 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::Location" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_Location.
+  End Impl_core_cmp_PartialOrd_move_binary_format_errors_Location_for_move_binary_format_errors_Location.
   
   (* StructRecord
     {
@@ -903,7 +903,7 @@ Module errors.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_ExecutionState.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_errors_ExecutionState.
+  Module Impl_core_cmp_PartialEq_move_binary_format_errors_ExecutionState_for_move_binary_format_errors_ExecutionState.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::ExecutionState".
     
     (* PartialEq *)
@@ -974,12 +974,12 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::ExecutionState" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_errors_ExecutionState.
+  End Impl_core_cmp_PartialEq_move_binary_format_errors_ExecutionState_for_move_binary_format_errors_ExecutionState.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_errors_ExecutionState.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_errors_ExecutionState_for_move_binary_format_errors_ExecutionState.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::ExecutionState".
     
     (* PartialOrd *)
@@ -1060,10 +1060,10 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::ExecutionState" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_ExecutionState.
+  End Impl_core_cmp_PartialOrd_move_binary_format_errors_ExecutionState_for_move_binary_format_errors_ExecutionState.
   
   Module Impl_move_binary_format_errors_ExecutionState.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::ExecutionState".
@@ -1304,7 +1304,7 @@ Module errors.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_VMError.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_errors_VMError.
+  Module Impl_core_cmp_PartialEq_move_binary_format_errors_VMError_for_move_binary_format_errors_VMError.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::VMError".
     
     (* PartialEq *)
@@ -1359,12 +1359,12 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::VMError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_errors_VMError.
+  End Impl_core_cmp_PartialEq_move_binary_format_errors_VMError_for_move_binary_format_errors_VMError.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_errors_VMError.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_errors_VMError_for_move_binary_format_errors_VMError.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::VMError".
     
     (* PartialOrd *)
@@ -1429,10 +1429,10 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::VMError" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_VMError.
+  End Impl_core_cmp_PartialOrd_move_binary_format_errors_VMError_for_move_binary_format_errors_VMError.
   
   (* StructRecord
     {
@@ -2271,7 +2271,7 @@ Module errors.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_errors_VMError_.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_errors_VMError_.
+  Module Impl_core_cmp_PartialEq_move_binary_format_errors_VMError__for_move_binary_format_errors_VMError_.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::VMError_".
     
     (* PartialEq *)
@@ -2568,12 +2568,12 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::VMError_" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_errors_VMError_.
+  End Impl_core_cmp_PartialEq_move_binary_format_errors_VMError__for_move_binary_format_errors_VMError_.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_errors_VMError_.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_errors_VMError__for_move_binary_format_errors_VMError_.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::VMError_".
     
     (* PartialOrd *)
@@ -3121,10 +3121,10 @@ Module errors.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::errors::VMError_" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_errors_VMError_.
+  End Impl_core_cmp_PartialOrd_move_binary_format_errors_VMError__for_move_binary_format_errors_VMError_.
   
   Module Impl_move_binary_format_errors_VMError.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::VMError".

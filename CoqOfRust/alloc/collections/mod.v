@@ -75,7 +75,7 @@ Module collections.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_collections_TryReserveError.
   
-  Module Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveError.
+  Module Impl_core_cmp_PartialEq_alloc_collections_TryReserveError_for_alloc_collections_TryReserveError.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
     
     (* PartialEq *)
@@ -122,10 +122,10 @@ Module collections.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::collections::TryReserveError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveError.
+  End Impl_core_cmp_PartialEq_alloc_collections_TryReserveError_for_alloc_collections_TryReserveError.
   
   Module Impl_core_cmp_Eq_for_alloc_collections_TryReserveError.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveError".
@@ -397,7 +397,7 @@ Module collections.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_collections_TryReserveErrorKind.
   
-  Module Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveErrorKind.
+  Module Impl_core_cmp_PartialEq_alloc_collections_TryReserveErrorKind_for_alloc_collections_TryReserveErrorKind.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".
     
     (* PartialEq *)
@@ -534,10 +534,10 @@ Module collections.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::collections::TryReserveErrorKind" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_alloc_collections_TryReserveErrorKind.
+  End Impl_core_cmp_PartialEq_alloc_collections_TryReserveErrorKind_for_alloc_collections_TryReserveErrorKind.
   
   Module Impl_core_cmp_Eq_for_alloc_collections_TryReserveErrorKind.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".

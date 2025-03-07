@@ -3222,7 +3222,7 @@ Module ptr.
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
@@ -3268,10 +3268,11 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -3351,7 +3352,7 @@ Module ptr.
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
@@ -3424,10 +3425,11 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=

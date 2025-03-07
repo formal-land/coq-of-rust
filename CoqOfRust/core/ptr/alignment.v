@@ -63,7 +63,7 @@ Module ptr.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_Alignment.
     
-    Module Impl_core_cmp_PartialEq_for_core_ptr_alignment_Alignment.
+    Module Impl_core_cmp_PartialEq_core_ptr_alignment_Alignment_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       
       (* PartialEq *)
@@ -110,10 +110,10 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ptr::alignment::Alignment" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ptr_alignment_Alignment.
+    End Impl_core_cmp_PartialEq_core_ptr_alignment_Alignment_for_core_ptr_alignment_Alignment.
     
     Module Impl_core_cmp_Eq_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
@@ -1006,7 +1006,7 @@ Module ptr.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_ptr_alignment_Alignment.
     
-    Module Impl_core_cmp_PartialOrd_for_core_ptr_alignment_Alignment.
+    Module Impl_core_cmp_PartialOrd_core_ptr_alignment_Alignment_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
       
       (*
@@ -1047,10 +1047,10 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ptr::alignment::Alignment" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_ptr_alignment_Alignment.
+    End Impl_core_cmp_PartialOrd_core_ptr_alignment_Alignment_for_core_ptr_alignment_Alignment.
     
     Module Impl_core_hash_Hash_for_core_ptr_alignment_Alignment.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::Alignment".
@@ -1573,7 +1573,7 @@ Module ptr.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ptr_alignment_AlignmentEnum.
     
-    Module Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum.
+    Module Impl_core_cmp_PartialEq_core_ptr_alignment_AlignmentEnum_for_core_ptr_alignment_AlignmentEnum.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".
       
       (* PartialEq *)
@@ -1617,10 +1617,10 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ptr::alignment::AlignmentEnum" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ptr_alignment_AlignmentEnum.
+    End Impl_core_cmp_PartialEq_core_ptr_alignment_AlignmentEnum_for_core_ptr_alignment_AlignmentEnum.
     
     Module Impl_core_cmp_Eq_for_core_ptr_alignment_AlignmentEnum.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".

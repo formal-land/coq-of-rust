@@ -2653,7 +2653,7 @@ Module ptr.
   Admitted.
   Global Typeclasses Opaque hash.
   
-  Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
+  Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.
     
     (*
@@ -2688,10 +2688,10 @@ Module ptr.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ F ]
         (Self F)
         (* Instance *) [ ("eq", InstanceField.Method (eq F)) ].
-  End Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
+  End Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_F_for_F.
   
   Module Impl_core_cmp_Eq_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.
@@ -2706,7 +2706,7 @@ Module ptr.
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_FnPtr_F_for_F.
   
-  Module Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_for_F.
+  Module Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.
     
     (*
@@ -2768,10 +2768,10 @@ Module ptr.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ F ]
         (Self F)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp F)) ].
-  End Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_for_F.
+  End Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_F_for_F.
   
   Module Impl_core_cmp_Ord_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.

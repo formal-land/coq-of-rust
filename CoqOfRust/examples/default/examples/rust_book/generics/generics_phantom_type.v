@@ -23,7 +23,7 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
-Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
+Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_generics_phantom_type_PhantomTuple_A_B_for_generics_phantom_type_PhantomTuple_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ].
   
@@ -98,10 +98,11 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *)
+      [ Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ] ]
       (Self A B)
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
-End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
+End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_generics_phantom_type_PhantomTuple_A_B_for_generics_phantom_type_PhantomTuple_A_B.
 
 (* StructRecord
   {
@@ -126,7 +127,7 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
-Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
+Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_generics_phantom_type_PhantomStruct_A_B_for_generics_phantom_type_PhantomStruct_A_B.
   Definition Self (A B : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ].
   
@@ -201,10 +202,11 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *)
+      [ Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ] ]
       (Self A B)
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
-End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
+End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_generics_phantom_type_PhantomStruct_A_B_for_generics_phantom_type_PhantomStruct_A_B.
 
 (*
 fn main() {

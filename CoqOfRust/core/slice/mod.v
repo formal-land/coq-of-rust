@@ -17076,7 +17076,7 @@ Module slice.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_slice_GetManyMutError_N.
   
-  Module Impl_core_cmp_PartialEq_for_core_slice_GetManyMutError_N.
+  Module Impl_core_cmp_PartialEq_core_slice_GetManyMutError_N_for_core_slice_GetManyMutError_N.
     Definition Self (N : Value.t) : Ty.t :=
       Ty.apply (Ty.path "core::slice::GetManyMutError") [ N ] [].
     
@@ -17126,10 +17126,10 @@ Module slice.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::slice::GetManyMutError") [ N ] [] ]
         (Self N)
         (* Instance *) [ ("eq", InstanceField.Method (eq N)) ].
-  End Impl_core_cmp_PartialEq_for_core_slice_GetManyMutError_N.
+  End Impl_core_cmp_PartialEq_core_slice_GetManyMutError_N_for_core_slice_GetManyMutError_N.
   
   Module Impl_core_cmp_Eq_for_core_slice_GetManyMutError_N.
     Definition Self (N : Value.t) : Ty.t :=

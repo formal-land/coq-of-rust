@@ -1264,7 +1264,7 @@ Module host.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_host_SStoreResult.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_host_SStoreResult.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_host_SStoreResult_for_revm_context_interface_host_SStoreResult.
     Definition Self : Ty.t := Ty.path "revm_context_interface::host::SStoreResult".
     
     (* PartialEq *)
@@ -1401,10 +1401,10 @@ Module host.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::host::SStoreResult" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_host_SStoreResult.
+  End Impl_core_cmp_PartialEq_revm_context_interface_host_SStoreResult_for_revm_context_interface_host_SStoreResult.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_host_SStoreResult.
     Definition Self : Ty.t := Ty.path "revm_context_interface::host::SStoreResult".
@@ -2025,7 +2025,7 @@ Module host.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_host_SelfDestructResult.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_host_SelfDestructResult.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_host_SelfDestructResult_for_revm_context_interface_host_SelfDestructResult.
     Definition Self : Ty.t := Ty.path "revm_context_interface::host::SelfDestructResult".
     
     (* PartialEq *)
@@ -2096,10 +2096,10 @@ Module host.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::host::SelfDestructResult" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_host_SelfDestructResult.
+  End Impl_core_cmp_PartialEq_revm_context_interface_host_SelfDestructResult_for_revm_context_interface_host_SelfDestructResult.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_host_SelfDestructResult.
     Definition Self : Ty.t := Ty.path "revm_context_interface::host::SelfDestructResult".

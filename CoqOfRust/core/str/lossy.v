@@ -224,7 +224,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_lossy_Utf8Chunk.
     
-    Module Impl_core_cmp_PartialEq_for_core_str_lossy_Utf8Chunk.
+    Module Impl_core_cmp_PartialEq_core_str_lossy_Utf8Chunk_for_core_str_lossy_Utf8Chunk.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
       
       (* PartialEq *)
@@ -305,10 +305,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::lossy::Utf8Chunk" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_str_lossy_Utf8Chunk.
+    End Impl_core_cmp_PartialEq_core_str_lossy_Utf8Chunk_for_core_str_lossy_Utf8Chunk.
     
     Module Impl_core_cmp_Eq_for_core_str_lossy_Utf8Chunk.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".

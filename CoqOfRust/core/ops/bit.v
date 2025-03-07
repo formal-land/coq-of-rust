@@ -377,7 +377,7 @@ Module ops.
     (* Trait *)
     (* Empty module 'BitAnd' *)
     
-    Module Impl_core_ops_bit_BitAnd_for_bool.
+    Module Impl_core_ops_bit_BitAnd_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             type Output = $t; *)
@@ -398,13 +398,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_bool.
+    End Impl_core_ops_bit_BitAnd_bool_for_bool.
     
-    Module Impl_core_ops_bit_BitAnd_for_usize.
+    Module Impl_core_ops_bit_BitAnd_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -425,13 +425,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_usize.
+    End Impl_core_ops_bit_BitAnd_usize_for_usize.
     
-    Module Impl_core_ops_bit_BitAnd_for_u8.
+    Module Impl_core_ops_bit_BitAnd_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -452,13 +452,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_u8.
+    End Impl_core_ops_bit_BitAnd_u8_for_u8.
     
-    Module Impl_core_ops_bit_BitAnd_for_u16.
+    Module Impl_core_ops_bit_BitAnd_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -479,13 +479,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_u16.
+    End Impl_core_ops_bit_BitAnd_u16_for_u16.
     
-    Module Impl_core_ops_bit_BitAnd_for_u32.
+    Module Impl_core_ops_bit_BitAnd_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -506,13 +506,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_u32.
+    End Impl_core_ops_bit_BitAnd_u32_for_u32.
     
-    Module Impl_core_ops_bit_BitAnd_for_u64.
+    Module Impl_core_ops_bit_BitAnd_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -533,13 +533,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_u64.
+    End Impl_core_ops_bit_BitAnd_u64_for_u64.
     
-    Module Impl_core_ops_bit_BitAnd_for_u128.
+    Module Impl_core_ops_bit_BitAnd_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -560,13 +560,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_u128.
+    End Impl_core_ops_bit_BitAnd_u128_for_u128.
     
-    Module Impl_core_ops_bit_BitAnd_for_isize.
+    Module Impl_core_ops_bit_BitAnd_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -587,13 +587,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_isize.
+    End Impl_core_ops_bit_BitAnd_isize_for_isize.
     
-    Module Impl_core_ops_bit_BitAnd_for_i8.
+    Module Impl_core_ops_bit_BitAnd_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -614,13 +614,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_i8.
+    End Impl_core_ops_bit_BitAnd_i8_for_i8.
     
-    Module Impl_core_ops_bit_BitAnd_for_i16.
+    Module Impl_core_ops_bit_BitAnd_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -641,13 +641,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_i16.
+    End Impl_core_ops_bit_BitAnd_i16_for_i16.
     
-    Module Impl_core_ops_bit_BitAnd_for_i32.
+    Module Impl_core_ops_bit_BitAnd_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -668,13 +668,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_i32.
+    End Impl_core_ops_bit_BitAnd_i32_for_i32.
     
-    Module Impl_core_ops_bit_BitAnd_for_i64.
+    Module Impl_core_ops_bit_BitAnd_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -695,13 +695,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_i64.
+    End Impl_core_ops_bit_BitAnd_i64_for_i64.
     
-    Module Impl_core_ops_bit_BitAnd_for_i128.
+    Module Impl_core_ops_bit_BitAnd_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -722,16 +722,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_i128.
+    End Impl_core_ops_bit_BitAnd_i128_for_i128.
     
     (* Trait *)
     (* Empty module 'BitOr' *)
     
-    Module Impl_core_ops_bit_BitOr_for_bool.
+    Module Impl_core_ops_bit_BitOr_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             type Output = $t; *)
@@ -752,13 +752,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_bool.
+    End Impl_core_ops_bit_BitOr_bool_for_bool.
     
-    Module Impl_core_ops_bit_BitOr_for_usize.
+    Module Impl_core_ops_bit_BitOr_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -779,13 +779,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_usize.
+    End Impl_core_ops_bit_BitOr_usize_for_usize.
     
-    Module Impl_core_ops_bit_BitOr_for_u8.
+    Module Impl_core_ops_bit_BitOr_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -806,13 +806,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_u8.
+    End Impl_core_ops_bit_BitOr_u8_for_u8.
     
-    Module Impl_core_ops_bit_BitOr_for_u16.
+    Module Impl_core_ops_bit_BitOr_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -833,13 +833,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_u16.
+    End Impl_core_ops_bit_BitOr_u16_for_u16.
     
-    Module Impl_core_ops_bit_BitOr_for_u32.
+    Module Impl_core_ops_bit_BitOr_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -860,13 +860,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_u32.
+    End Impl_core_ops_bit_BitOr_u32_for_u32.
     
-    Module Impl_core_ops_bit_BitOr_for_u64.
+    Module Impl_core_ops_bit_BitOr_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -887,13 +887,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_u64.
+    End Impl_core_ops_bit_BitOr_u64_for_u64.
     
-    Module Impl_core_ops_bit_BitOr_for_u128.
+    Module Impl_core_ops_bit_BitOr_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -914,13 +914,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_u128.
+    End Impl_core_ops_bit_BitOr_u128_for_u128.
     
-    Module Impl_core_ops_bit_BitOr_for_isize.
+    Module Impl_core_ops_bit_BitOr_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -941,13 +941,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_isize.
+    End Impl_core_ops_bit_BitOr_isize_for_isize.
     
-    Module Impl_core_ops_bit_BitOr_for_i8.
+    Module Impl_core_ops_bit_BitOr_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -968,13 +968,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_i8.
+    End Impl_core_ops_bit_BitOr_i8_for_i8.
     
-    Module Impl_core_ops_bit_BitOr_for_i16.
+    Module Impl_core_ops_bit_BitOr_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -995,13 +995,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_i16.
+    End Impl_core_ops_bit_BitOr_i16_for_i16.
     
-    Module Impl_core_ops_bit_BitOr_for_i32.
+    Module Impl_core_ops_bit_BitOr_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -1022,13 +1022,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_i32.
+    End Impl_core_ops_bit_BitOr_i32_for_i32.
     
-    Module Impl_core_ops_bit_BitOr_for_i64.
+    Module Impl_core_ops_bit_BitOr_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -1049,13 +1049,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_i64.
+    End Impl_core_ops_bit_BitOr_i64_for_i64.
     
-    Module Impl_core_ops_bit_BitOr_for_i128.
+    Module Impl_core_ops_bit_BitOr_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -1076,16 +1076,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_i128.
+    End Impl_core_ops_bit_BitOr_i128_for_i128.
     
     (* Trait *)
     (* Empty module 'BitXor' *)
     
-    Module Impl_core_ops_bit_BitXor_for_bool.
+    Module Impl_core_ops_bit_BitXor_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             type Output = $t; *)
@@ -1106,13 +1106,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_bool.
+    End Impl_core_ops_bit_BitXor_bool_for_bool.
     
-    Module Impl_core_ops_bit_BitXor_for_usize.
+    Module Impl_core_ops_bit_BitXor_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -1133,13 +1133,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_usize.
+    End Impl_core_ops_bit_BitXor_usize_for_usize.
     
-    Module Impl_core_ops_bit_BitXor_for_u8.
+    Module Impl_core_ops_bit_BitXor_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -1160,13 +1160,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_u8.
+    End Impl_core_ops_bit_BitXor_u8_for_u8.
     
-    Module Impl_core_ops_bit_BitXor_for_u16.
+    Module Impl_core_ops_bit_BitXor_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -1187,13 +1187,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_u16.
+    End Impl_core_ops_bit_BitXor_u16_for_u16.
     
-    Module Impl_core_ops_bit_BitXor_for_u32.
+    Module Impl_core_ops_bit_BitXor_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -1214,13 +1214,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_u32.
+    End Impl_core_ops_bit_BitXor_u32_for_u32.
     
-    Module Impl_core_ops_bit_BitXor_for_u64.
+    Module Impl_core_ops_bit_BitXor_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -1241,13 +1241,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_u64.
+    End Impl_core_ops_bit_BitXor_u64_for_u64.
     
-    Module Impl_core_ops_bit_BitXor_for_u128.
+    Module Impl_core_ops_bit_BitXor_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -1268,13 +1268,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_u128.
+    End Impl_core_ops_bit_BitXor_u128_for_u128.
     
-    Module Impl_core_ops_bit_BitXor_for_isize.
+    Module Impl_core_ops_bit_BitXor_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -1295,13 +1295,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_isize.
+    End Impl_core_ops_bit_BitXor_isize_for_isize.
     
-    Module Impl_core_ops_bit_BitXor_for_i8.
+    Module Impl_core_ops_bit_BitXor_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -1322,13 +1322,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_i8.
+    End Impl_core_ops_bit_BitXor_i8_for_i8.
     
-    Module Impl_core_ops_bit_BitXor_for_i16.
+    Module Impl_core_ops_bit_BitXor_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -1349,13 +1349,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_i16.
+    End Impl_core_ops_bit_BitXor_i16_for_i16.
     
-    Module Impl_core_ops_bit_BitXor_for_i32.
+    Module Impl_core_ops_bit_BitXor_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -1376,13 +1376,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_i32.
+    End Impl_core_ops_bit_BitXor_i32_for_i32.
     
-    Module Impl_core_ops_bit_BitXor_for_i64.
+    Module Impl_core_ops_bit_BitXor_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -1403,13 +1403,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_i64.
+    End Impl_core_ops_bit_BitXor_i64_for_i64.
     
-    Module Impl_core_ops_bit_BitXor_for_i128.
+    Module Impl_core_ops_bit_BitXor_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -1430,11 +1430,11 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_i128.
+    End Impl_core_ops_bit_BitXor_i128_for_i128.
     
     (* Trait *)
     (* Empty module 'Shl' *)
@@ -10373,7 +10373,7 @@ Module ops.
     (* Trait *)
     (* Empty module 'BitAndAssign' *)
     
-    Module Impl_core_ops_bit_BitAndAssign_for_bool.
+    Module Impl_core_ops_bit_BitAndAssign_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10392,12 +10392,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_bool.
+    End Impl_core_ops_bit_BitAndAssign_bool_for_bool.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_usize.
+    Module Impl_core_ops_bit_BitAndAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10416,12 +10416,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_usize.
+    End Impl_core_ops_bit_BitAndAssign_usize_for_usize.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_u8.
+    Module Impl_core_ops_bit_BitAndAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10440,12 +10440,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_u8.
+    End Impl_core_ops_bit_BitAndAssign_u8_for_u8.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_u16.
+    Module Impl_core_ops_bit_BitAndAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10464,12 +10464,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_u16.
+    End Impl_core_ops_bit_BitAndAssign_u16_for_u16.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_u32.
+    Module Impl_core_ops_bit_BitAndAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10488,12 +10488,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_u32.
+    End Impl_core_ops_bit_BitAndAssign_u32_for_u32.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_u64.
+    Module Impl_core_ops_bit_BitAndAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10512,12 +10512,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_u64.
+    End Impl_core_ops_bit_BitAndAssign_u64_for_u64.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_u128.
+    Module Impl_core_ops_bit_BitAndAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10536,12 +10536,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_u128.
+    End Impl_core_ops_bit_BitAndAssign_u128_for_u128.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_isize.
+    Module Impl_core_ops_bit_BitAndAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10560,12 +10560,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_isize.
+    End Impl_core_ops_bit_BitAndAssign_isize_for_isize.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_i8.
+    Module Impl_core_ops_bit_BitAndAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10584,12 +10584,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_i8.
+    End Impl_core_ops_bit_BitAndAssign_i8_for_i8.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_i16.
+    Module Impl_core_ops_bit_BitAndAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10608,12 +10608,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_i16.
+    End Impl_core_ops_bit_BitAndAssign_i16_for_i16.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_i32.
+    Module Impl_core_ops_bit_BitAndAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10632,12 +10632,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_i32.
+    End Impl_core_ops_bit_BitAndAssign_i32_for_i32.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_i64.
+    Module Impl_core_ops_bit_BitAndAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10656,12 +10656,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_i64.
+    End Impl_core_ops_bit_BitAndAssign_i64_for_i64.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_i128.
+    Module Impl_core_ops_bit_BitAndAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn bitand_assign(&mut self, other: $t) { *self &= other } *)
@@ -10680,15 +10680,15 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_i128.
+    End Impl_core_ops_bit_BitAndAssign_i128_for_i128.
     
     (* Trait *)
     (* Empty module 'BitOrAssign' *)
     
-    Module Impl_core_ops_bit_BitOrAssign_for_bool.
+    Module Impl_core_ops_bit_BitOrAssign_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10707,12 +10707,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_bool.
+    End Impl_core_ops_bit_BitOrAssign_bool_for_bool.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_usize.
+    Module Impl_core_ops_bit_BitOrAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10731,12 +10731,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_usize.
+    End Impl_core_ops_bit_BitOrAssign_usize_for_usize.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_u8.
+    Module Impl_core_ops_bit_BitOrAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10755,12 +10755,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_u8.
+    End Impl_core_ops_bit_BitOrAssign_u8_for_u8.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_u16.
+    Module Impl_core_ops_bit_BitOrAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10779,12 +10779,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_u16.
+    End Impl_core_ops_bit_BitOrAssign_u16_for_u16.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_u32.
+    Module Impl_core_ops_bit_BitOrAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10803,12 +10803,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_u32.
+    End Impl_core_ops_bit_BitOrAssign_u32_for_u32.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_u64.
+    Module Impl_core_ops_bit_BitOrAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10827,12 +10827,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_u64.
+    End Impl_core_ops_bit_BitOrAssign_u64_for_u64.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_u128.
+    Module Impl_core_ops_bit_BitOrAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10851,12 +10851,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_u128.
+    End Impl_core_ops_bit_BitOrAssign_u128_for_u128.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_isize.
+    Module Impl_core_ops_bit_BitOrAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10875,12 +10875,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_isize.
+    End Impl_core_ops_bit_BitOrAssign_isize_for_isize.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_i8.
+    Module Impl_core_ops_bit_BitOrAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10899,12 +10899,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_i8.
+    End Impl_core_ops_bit_BitOrAssign_i8_for_i8.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_i16.
+    Module Impl_core_ops_bit_BitOrAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10923,12 +10923,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_i16.
+    End Impl_core_ops_bit_BitOrAssign_i16_for_i16.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_i32.
+    Module Impl_core_ops_bit_BitOrAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10947,12 +10947,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_i32.
+    End Impl_core_ops_bit_BitOrAssign_i32_for_i32.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_i64.
+    Module Impl_core_ops_bit_BitOrAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10971,12 +10971,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_i64.
+    End Impl_core_ops_bit_BitOrAssign_i64_for_i64.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_i128.
+    Module Impl_core_ops_bit_BitOrAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn bitor_assign(&mut self, other: $t) { *self |= other } *)
@@ -10995,15 +10995,15 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_i128.
+    End Impl_core_ops_bit_BitOrAssign_i128_for_i128.
     
     (* Trait *)
     (* Empty module 'BitXorAssign' *)
     
-    Module Impl_core_ops_bit_BitXorAssign_for_bool.
+    Module Impl_core_ops_bit_BitXorAssign_bool_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11022,12 +11022,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_bool.
+    End Impl_core_ops_bit_BitXorAssign_bool_for_bool.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_usize.
+    Module Impl_core_ops_bit_BitXorAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11046,12 +11046,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_usize.
+    End Impl_core_ops_bit_BitXorAssign_usize_for_usize.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_u8.
+    Module Impl_core_ops_bit_BitXorAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11070,12 +11070,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_u8.
+    End Impl_core_ops_bit_BitXorAssign_u8_for_u8.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_u16.
+    Module Impl_core_ops_bit_BitXorAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11094,12 +11094,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_u16.
+    End Impl_core_ops_bit_BitXorAssign_u16_for_u16.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_u32.
+    Module Impl_core_ops_bit_BitXorAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11118,12 +11118,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_u32.
+    End Impl_core_ops_bit_BitXorAssign_u32_for_u32.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_u64.
+    Module Impl_core_ops_bit_BitXorAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11142,12 +11142,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_u64.
+    End Impl_core_ops_bit_BitXorAssign_u64_for_u64.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_u128.
+    Module Impl_core_ops_bit_BitXorAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11166,12 +11166,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_u128.
+    End Impl_core_ops_bit_BitXorAssign_u128_for_u128.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_isize.
+    Module Impl_core_ops_bit_BitXorAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11190,12 +11190,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_isize.
+    End Impl_core_ops_bit_BitXorAssign_isize_for_isize.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_i8.
+    Module Impl_core_ops_bit_BitXorAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11214,12 +11214,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_i8.
+    End Impl_core_ops_bit_BitXorAssign_i8_for_i8.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_i16.
+    Module Impl_core_ops_bit_BitXorAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11238,12 +11238,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_i16.
+    End Impl_core_ops_bit_BitXorAssign_i16_for_i16.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_i32.
+    Module Impl_core_ops_bit_BitXorAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11262,12 +11262,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_i32.
+    End Impl_core_ops_bit_BitXorAssign_i32_for_i32.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_i64.
+    Module Impl_core_ops_bit_BitXorAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11286,12 +11286,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_i64.
+    End Impl_core_ops_bit_BitXorAssign_i64_for_i64.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_i128.
+    Module Impl_core_ops_bit_BitXorAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn bitxor_assign(&mut self, other: $t) { *self ^= other } *)
@@ -11310,10 +11310,10 @@ Module ops.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_i128.
+    End Impl_core_ops_bit_BitXorAssign_i128_for_i128.
     
     (* Trait *)
     (* Empty module 'ShlAssign' *)

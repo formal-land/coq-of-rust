@@ -254,7 +254,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_control_flow_ControlFlow_B_C.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_core_ops_control_flow_ControlFlow_B_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
@@ -401,10 +401,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
           (Self B C)
           (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_core_ops_control_flow_ControlFlow_B_C_for_core_ops_control_flow_ControlFlow_B_C.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_B_where_core_cmp_Eq_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=

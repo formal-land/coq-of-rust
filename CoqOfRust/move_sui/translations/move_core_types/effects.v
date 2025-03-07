@@ -303,7 +303,7 @@ Module effects.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_effects_Op_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_move_core_types_effects_Op_T.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_move_core_types_effects_Op_T_for_move_core_types_effects_Op_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].
     
     (* PartialEq *)
@@ -439,10 +439,10 @@ Module effects.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_move_core_types_effects_Op_T.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_move_core_types_effects_Op_T_for_move_core_types_effects_Op_T.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_move_core_types_effects_Op_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].
@@ -603,7 +603,7 @@ Module effects.
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_move_core_types_effects_Op_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_move_core_types_effects_Op_T.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_move_core_types_effects_Op_T_for_move_core_types_effects_Op_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].
     
     (* PartialOrd *)
@@ -765,10 +765,10 @@ Module effects.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_move_core_types_effects_Op_T.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_move_core_types_effects_Op_T_for_move_core_types_effects_Op_T.
   
   Module Impl_move_core_types_effects_Op_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].
@@ -1331,7 +1331,7 @@ Module effects.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_effects_AccountChangeSet.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_effects_AccountChangeSet.
+  Module Impl_core_cmp_PartialEq_move_core_types_effects_AccountChangeSet_for_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
     
     (* PartialEq *)
@@ -1475,10 +1475,10 @@ Module effects.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::effects::AccountChangeSet" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_effects_AccountChangeSet.
+  End Impl_core_cmp_PartialEq_move_core_types_effects_AccountChangeSet_for_move_core_types_effects_AccountChangeSet.
   
   Module Impl_core_cmp_Ord_for_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
@@ -1630,7 +1630,7 @@ Module effects.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_effects_AccountChangeSet.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_effects_AccountChangeSet.
+  Module Impl_core_cmp_PartialOrd_move_core_types_effects_AccountChangeSet_for_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
     
     (* PartialOrd *)
@@ -1818,10 +1818,10 @@ Module effects.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::effects::AccountChangeSet" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_effects_AccountChangeSet.
+  End Impl_core_cmp_PartialOrd_move_core_types_effects_AccountChangeSet_for_move_core_types_effects_AccountChangeSet.
   
   (*
   fn squash<K, V>(map: &mut BTreeMap<K, Op<V>>, other: BTreeMap<K, Op<V>>) -> Result<()>
@@ -3972,7 +3972,7 @@ Module effects.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_effects_ChangeSet.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_effects_ChangeSet.
+  Module Impl_core_cmp_PartialEq_move_core_types_effects_ChangeSet_for_move_core_types_effects_ChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::ChangeSet".
     
     (* PartialEq *)
@@ -4035,10 +4035,10 @@ Module effects.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::effects::ChangeSet" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_effects_ChangeSet.
+  End Impl_core_cmp_PartialEq_move_core_types_effects_ChangeSet_for_move_core_types_effects_ChangeSet.
   
   Module Impl_core_cmp_Ord_for_move_core_types_effects_ChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::ChangeSet".
@@ -4109,7 +4109,7 @@ Module effects.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_effects_ChangeSet.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_effects_ChangeSet.
+  Module Impl_core_cmp_PartialOrd_move_core_types_effects_ChangeSet_for_move_core_types_effects_ChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::ChangeSet".
     
     (* PartialOrd *)
@@ -4182,10 +4182,10 @@ Module effects.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::effects::ChangeSet" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_effects_ChangeSet.
+  End Impl_core_cmp_PartialOrd_move_core_types_effects_ChangeSet_for_move_core_types_effects_ChangeSet.
   
   Module Impl_core_default_Default_for_move_core_types_effects_ChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::ChangeSet".

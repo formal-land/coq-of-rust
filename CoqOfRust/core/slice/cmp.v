@@ -128,7 +128,7 @@ Module slice.
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_slice_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_slice_T.
+    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_slice_T_for_slice_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
@@ -167,10 +167,10 @@ Module slice.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_slice_T.
+    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_slice_T_for_slice_T.
     
     (* Trait *)
     Module SlicePartialEq.

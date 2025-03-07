@@ -372,7 +372,7 @@ Module interpreter_action.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_FrameInput.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_FrameInput.
+  Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_FrameInput_for_revm_interpreter_interpreter_action_FrameInput.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
     
     (* PartialEq *)
@@ -632,10 +632,10 @@ Module interpreter_action.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_FrameInput.
+  End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_FrameInput_for_revm_interpreter_interpreter_action_FrameInput.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_FrameInput.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
@@ -1018,7 +1018,7 @@ Module interpreter_action.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_InterpreterAction.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_InterpreterAction.
+  Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_InterpreterAction_for_revm_interpreter_interpreter_action_InterpreterAction.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".
     
     (* PartialEq *)
@@ -1168,10 +1168,11 @@ Module interpreter_action.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_InterpreterAction.
+  End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_InterpreterAction_for_revm_interpreter_interpreter_action_InterpreterAction.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_InterpreterAction.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".

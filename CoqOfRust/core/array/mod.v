@@ -1520,7 +1520,7 @@ Module array.
         (* Instance *) [ ("index_mut", InstanceField.Method (index_mut N T I)) ].
   End Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_N_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_N_T.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_array_N_T_for_array_N_T.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
@@ -2013,7 +2013,7 @@ Module array.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (Self N T)
         (* Instance *)
         [
@@ -2023,7 +2023,7 @@ Module array.
           ("ge", InstanceField.Method (ge N T));
           ("gt", InstanceField.Method (gt N T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_N_T.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_array_N_T_for_array_N_T.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_N_T.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].

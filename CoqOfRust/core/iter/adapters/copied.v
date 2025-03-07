@@ -1198,7 +1198,7 @@ Module iter.
       (* Trait *)
       (* Empty module 'SpecNextChunk' *)
       
-      Module Impl_core_iter_adapters_copied_SpecNextChunk_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_T_for_I.
+      Module Impl_core_iter_adapters_copied_SpecNextChunk_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_N_T_for_I.
         Definition Self (N : Value.t) (I T : Ty.t) : Ty.t := I.
         
         (*
@@ -1273,13 +1273,13 @@ Module iter.
           forall (N : Value.t) (I T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::copied::SpecNextChunk"
-            (* Trait polymorphic consts *) []
+            (* Trait polymorphic consts *) [ N ]
             (* Trait polymorphic types *) [ T ]
             (Self N I T)
             (* Instance *) [ ("spec_next_chunk", InstanceField.Method (spec_next_chunk N I T)) ].
-      End Impl_core_iter_adapters_copied_SpecNextChunk_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_T_for_I.
+      End Impl_core_iter_adapters_copied_SpecNextChunk_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_N_T_for_I.
       
-      Module Impl_core_iter_adapters_copied_SpecNextChunk_where_core_marker_Copy_T_T_for_core_slice_iter_Iter_T.
+      Module Impl_core_iter_adapters_copied_SpecNextChunk_where_core_marker_Copy_T_N_T_for_core_slice_iter_Iter_T.
         Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ].
         
@@ -1878,11 +1878,11 @@ Module iter.
           forall (N : Value.t) (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::copied::SpecNextChunk"
-            (* Trait polymorphic consts *) []
+            (* Trait polymorphic consts *) [ N ]
             (* Trait polymorphic types *) [ T ]
             (Self N T)
             (* Instance *) [ ("spec_next_chunk", InstanceField.Method (spec_next_chunk N T)) ].
-      End Impl_core_iter_adapters_copied_SpecNextChunk_where_core_marker_Copy_T_T_for_core_slice_iter_Iter_T.
+      End Impl_core_iter_adapters_copied_SpecNextChunk_where_core_marker_Copy_T_N_T_for_core_slice_iter_Iter_T.
       
       Module Impl_core_default_Default_where_core_default_Default_I_for_core_iter_adapters_copied_Copied_I.
         Definition Self (I : Ty.t) : Ty.t :=

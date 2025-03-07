@@ -87,7 +87,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_socket_addr_SocketAddr.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddr.
+    Module Impl_core_cmp_PartialEq_core_net_socket_addr_SocketAddr_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* PartialEq *)
@@ -247,10 +247,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddr" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddr.
+    End Impl_core_cmp_PartialEq_core_net_socket_addr_SocketAddr_for_core_net_socket_addr_SocketAddr.
     
     Module Impl_core_cmp_Eq_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
@@ -413,7 +413,7 @@ Module net.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_socket_addr_SocketAddr.
     
-    Module Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddr.
+    Module Impl_core_cmp_PartialOrd_core_net_socket_addr_SocketAddr_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
       
       (* PartialOrd *)
@@ -574,10 +574,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddr" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddr.
+    End Impl_core_cmp_PartialOrd_core_net_socket_addr_SocketAddr_for_core_net_socket_addr_SocketAddr.
     
     Module Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".
@@ -877,7 +877,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_socket_addr_SocketAddrV4.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddrV4.
+    Module Impl_core_cmp_PartialEq_core_net_socket_addr_SocketAddrV4_for_core_net_socket_addr_SocketAddrV4.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* PartialEq *)
@@ -943,10 +943,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddrV4" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddrV4.
+    End Impl_core_cmp_PartialEq_core_net_socket_addr_SocketAddrV4_for_core_net_socket_addr_SocketAddrV4.
     
     Module Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddrV4.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
@@ -1068,7 +1068,7 @@ Module net.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddrV4.
     
-    Module Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddrV4.
+    Module Impl_core_cmp_PartialOrd_core_net_socket_addr_SocketAddrV4_for_core_net_socket_addr_SocketAddrV4.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
       
       (* PartialOrd *)
@@ -1193,10 +1193,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddrV4" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddrV4.
+    End Impl_core_cmp_PartialOrd_core_net_socket_addr_SocketAddrV4_for_core_net_socket_addr_SocketAddrV4.
     
     Module Impl_core_hash_Hash_for_core_net_socket_addr_SocketAddrV4.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV4".
@@ -1414,7 +1414,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_socket_addr_SocketAddrV6.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddrV6.
+    Module Impl_core_cmp_PartialEq_core_net_socket_addr_SocketAddrV6_for_core_net_socket_addr_SocketAddrV6.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* PartialEq *)
@@ -1518,10 +1518,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddrV6" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_socket_addr_SocketAddrV6.
+    End Impl_core_cmp_PartialEq_core_net_socket_addr_SocketAddrV6_for_core_net_socket_addr_SocketAddrV6.
     
     Module Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddrV6.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
@@ -1752,7 +1752,7 @@ Module net.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_socket_addr_SocketAddrV6.
     
-    Module Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddrV6.
+    Module Impl_core_cmp_PartialOrd_core_net_socket_addr_SocketAddrV6_for_core_net_socket_addr_SocketAddrV6.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".
       
       (* PartialOrd *)
@@ -2015,10 +2015,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::socket_addr::SocketAddrV6" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_net_socket_addr_SocketAddrV6.
+    End Impl_core_cmp_PartialOrd_core_net_socket_addr_SocketAddrV6_for_core_net_socket_addr_SocketAddrV6.
     
     Module Impl_core_hash_Hash_for_core_net_socket_addr_SocketAddrV6.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddrV6".

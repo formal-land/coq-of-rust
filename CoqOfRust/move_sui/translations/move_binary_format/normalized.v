@@ -1458,7 +1458,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Type.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Type.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_Type_for_move_binary_format_normalized_Type.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Type".
     
     (* PartialOrd *)
@@ -1993,10 +1993,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Type" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Type.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_Type_for_move_binary_format_normalized_Type.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Type.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Type".
@@ -2095,7 +2095,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Type.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Type.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Type_for_move_binary_format_normalized_Type.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Type".
     
     (* PartialEq *)
@@ -2568,10 +2568,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Type" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Type.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Type_for_move_binary_format_normalized_Type.
   
   Module underscore.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Type.
@@ -10618,7 +10618,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Field.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Field.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Field_for_move_binary_format_normalized_Field.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Field".
     
     (* PartialEq *)
@@ -10698,10 +10698,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Field" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Field.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Field_for_move_binary_format_normalized_Field.
   
   
   
@@ -10825,7 +10825,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Field.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Field.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_Field_for_move_binary_format_normalized_Field.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Field".
     
     (* PartialOrd *)
@@ -10949,10 +10949,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Field" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Field.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_Field_for_move_binary_format_normalized_Field.
   
   (* StructRecord
     {
@@ -11181,7 +11181,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Constant.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Constant.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Constant_for_move_binary_format_normalized_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Constant".
     
     (* PartialEq *)
@@ -11269,10 +11269,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Constant" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Constant.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Constant_for_move_binary_format_normalized_Constant.
   
   
   
@@ -11399,7 +11399,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Constant.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Constant.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_Constant_for_move_binary_format_normalized_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Constant".
     
     (* PartialOrd *)
@@ -11531,10 +11531,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Constant" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Constant.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_Constant_for_move_binary_format_normalized_Constant.
   
   (* StructRecord
     {
@@ -11842,7 +11842,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Struct.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Struct.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Struct_for_move_binary_format_normalized_Struct.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Struct".
     
     (* PartialEq *)
@@ -11983,10 +11983,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Struct" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Struct.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Struct_for_move_binary_format_normalized_Struct.
   
   
   
@@ -12176,7 +12176,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Struct.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Struct.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_Struct_for_move_binary_format_normalized_Struct.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Struct".
     
     (* PartialOrd *)
@@ -12395,10 +12395,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Struct" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Struct.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_Struct_for_move_binary_format_normalized_Struct.
   
   (* StructRecord
     {
@@ -13245,7 +13245,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Function.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Function.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_Function_for_move_binary_format_normalized_Function.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Function".
     
     (* PartialOrd *)
@@ -13706,10 +13706,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Function" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Function.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_Function_for_move_binary_format_normalized_Function.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Function.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Function".
@@ -13800,7 +13800,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Function.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Function.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Function_for_move_binary_format_normalized_Function.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Function".
     
     (* PartialEq *)
@@ -14054,10 +14054,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Function" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Function.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Function_for_move_binary_format_normalized_Function.
   
   
   
@@ -14351,7 +14351,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_FieldRef.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FieldRef.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_FieldRef_for_move_binary_format_normalized_FieldRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FieldRef".
     
     (* PartialOrd *)
@@ -14475,10 +14475,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::FieldRef" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FieldRef.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_FieldRef_for_move_binary_format_normalized_FieldRef.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_FieldRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FieldRef".
@@ -14533,7 +14533,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_FieldRef.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_FieldRef.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_FieldRef_for_move_binary_format_normalized_FieldRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FieldRef".
     
     (* PartialEq *)
@@ -14599,10 +14599,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::FieldRef" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_FieldRef.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_FieldRef_for_move_binary_format_normalized_FieldRef.
   
   
   
@@ -14896,7 +14896,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_FunctionRef.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FunctionRef.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_FunctionRef_for_move_binary_format_normalized_FunctionRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FunctionRef".
     
     (* PartialOrd *)
@@ -15020,10 +15020,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::FunctionRef" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FunctionRef.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_FunctionRef_for_move_binary_format_normalized_FunctionRef.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_FunctionRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FunctionRef".
@@ -15078,7 +15078,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_FunctionRef.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_FunctionRef.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_FunctionRef_for_move_binary_format_normalized_FunctionRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FunctionRef".
     
     (* PartialEq *)
@@ -15158,10 +15158,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::FunctionRef" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_FunctionRef.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_FunctionRef_for_move_binary_format_normalized_FunctionRef.
   
   
   
@@ -22277,7 +22277,7 @@ Module normalized.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Bytecode.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Bytecode.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_normalized_Bytecode_for_move_binary_format_normalized_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Bytecode".
     
     (* PartialOrd *)
@@ -24748,10 +24748,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Bytecode" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Bytecode.
+  End Impl_core_cmp_PartialOrd_move_binary_format_normalized_Bytecode_for_move_binary_format_normalized_Bytecode.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Bytecode".
@@ -24994,7 +24994,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Bytecode.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Bytecode.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Bytecode_for_move_binary_format_normalized_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Bytecode".
     
     (* PartialEq *)
@@ -27232,10 +27232,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Bytecode" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Bytecode.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Bytecode_for_move_binary_format_normalized_Bytecode.
   
   
   
@@ -28028,7 +28028,7 @@ Module normalized.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Module.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Module.
+  Module Impl_core_cmp_PartialEq_move_binary_format_normalized_Module_for_move_binary_format_normalized_Module.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Module".
     
     (* PartialEq *)
@@ -28366,10 +28366,10 @@ Module normalized.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::normalized::Module" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Module.
+  End Impl_core_cmp_PartialEq_move_binary_format_normalized_Module_for_move_binary_format_normalized_Module.
   
   
   

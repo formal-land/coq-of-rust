@@ -30,7 +30,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_CString.
     
-    Module Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_CString.
+    Module Impl_core_cmp_PartialEq_alloc_ffi_c_str_CString_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
       
       (* PartialEq *)
@@ -87,12 +87,12 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_CString.
+    End Impl_core_cmp_PartialEq_alloc_ffi_c_str_CString_for_alloc_ffi_c_str_CString.
     
-    Module Impl_core_cmp_PartialOrd_for_alloc_ffi_c_str_CString.
+    Module Impl_core_cmp_PartialOrd_alloc_ffi_c_str_CString_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
       
       (* PartialOrd *)
@@ -159,10 +159,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_alloc_ffi_c_str_CString.
+    End Impl_core_cmp_PartialOrd_alloc_ffi_c_str_CString_for_alloc_ffi_c_str_CString.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
@@ -491,7 +491,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_NulError.
     
-    Module Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_NulError.
+    Module Impl_core_cmp_PartialEq_alloc_ffi_c_str_NulError_for_alloc_ffi_c_str_NulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
       
       (* PartialEq *)
@@ -565,10 +565,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::NulError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_NulError.
+    End Impl_core_cmp_PartialEq_alloc_ffi_c_str_NulError_for_alloc_ffi_c_str_NulError.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_NulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
@@ -788,7 +788,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
-    Module Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
+    Module Impl_core_cmp_PartialEq_alloc_ffi_c_str_FromBytesWithNulErrorKind_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind".
       
       (* PartialEq *)
@@ -884,10 +884,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
+    End Impl_core_cmp_PartialEq_alloc_ffi_c_str_FromBytesWithNulErrorKind_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind".
@@ -1135,7 +1135,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
     
-    Module Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
+    Module Impl_core_cmp_PartialEq_alloc_ffi_c_str_FromVecWithNulError_for_alloc_ffi_c_str_FromVecWithNulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromVecWithNulError".
       
       (* PartialEq *)
@@ -1223,10 +1223,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::FromVecWithNulError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
+    End Impl_core_cmp_PartialEq_alloc_ffi_c_str_FromVecWithNulError_for_alloc_ffi_c_str_FromVecWithNulError.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromVecWithNulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromVecWithNulError".
@@ -1534,7 +1534,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_IntoStringError.
     
-    Module Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_IntoStringError.
+    Module Impl_core_cmp_PartialEq_alloc_ffi_c_str_IntoStringError_for_alloc_ffi_c_str_IntoStringError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".
       
       (* PartialEq *)
@@ -1614,10 +1614,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::IntoStringError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_IntoStringError.
+    End Impl_core_cmp_PartialEq_alloc_ffi_c_str_IntoStringError_for_alloc_ffi_c_str_IntoStringError.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_IntoStringError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".

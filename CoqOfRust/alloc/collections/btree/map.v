@@ -22056,7 +22056,7 @@ Module collections.
             (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
       End Impl_core_default_Default_for_alloc_collections_btree_map_BTreeMap_K_V_alloc_alloc_Global.
       
-      Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_K_where_core_cmp_PartialEq_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
+      Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_K_where_core_cmp_PartialEq_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_alloc_collections_btree_map_BTreeMap_K_V_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
         Definition Self (K V A : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ].
         
@@ -22270,10 +22270,11 @@ Module collections.
           M.IsTraitInstance
             "core::cmp::PartialEq"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ] ]
             (Self K V A)
             (* Instance *) [ ("eq", InstanceField.Method (eq K V A)) ].
-      End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_K_where_core_cmp_PartialEq_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
+      End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_K_where_core_cmp_PartialEq_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_alloc_collections_btree_map_BTreeMap_K_V_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
       
       Module Impl_core_cmp_Eq_where_core_cmp_Eq_K_where_core_cmp_Eq_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
         Definition Self (K V A : Ty.t) : Ty.t :=
@@ -22289,7 +22290,7 @@ Module collections.
             (* Instance *) [].
       End Impl_core_cmp_Eq_where_core_cmp_Eq_K_where_core_cmp_Eq_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
       
-      Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_K_where_core_cmp_PartialOrd_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
+      Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_K_where_core_cmp_PartialOrd_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_alloc_collections_btree_map_BTreeMap_K_V_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
         Definition Self (K V A : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ].
         
@@ -22352,10 +22353,11 @@ Module collections.
           M.IsTraitInstance
             "core::cmp::PartialOrd"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ] ]
             (Self K V A)
             (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp K V A)) ].
-      End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_K_where_core_cmp_PartialOrd_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
+      End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_K_where_core_cmp_PartialOrd_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_alloc_collections_btree_map_BTreeMap_K_V_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
       
       Module Impl_core_cmp_Ord_where_core_cmp_Ord_K_where_core_cmp_Ord_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_BTreeMap_K_V_A.
         Definition Self (K V A : Ty.t) : Ty.t :=
@@ -33647,7 +33649,7 @@ Module collections.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_alloc_collections_btree_map_UnorderedKeyError.
       
-      Module Impl_core_cmp_PartialEq_for_alloc_collections_btree_map_UnorderedKeyError.
+      Module Impl_core_cmp_PartialEq_alloc_collections_btree_map_UnorderedKeyError_for_alloc_collections_btree_map_UnorderedKeyError.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::map::UnorderedKeyError".
         
         (* PartialEq *)
@@ -33665,10 +33667,11 @@ Module collections.
           M.IsTraitInstance
             "core::cmp::PartialEq"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.path "alloc::collections::btree::map::UnorderedKeyError" ]
             Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_alloc_collections_btree_map_UnorderedKeyError.
+      End Impl_core_cmp_PartialEq_alloc_collections_btree_map_UnorderedKeyError_for_alloc_collections_btree_map_UnorderedKeyError.
       
       Module Impl_core_cmp_Eq_for_alloc_collections_btree_map_UnorderedKeyError.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::map::UnorderedKeyError".

@@ -1382,7 +1382,7 @@ Module fmt.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_Binary.
     
-    Module Impl_core_cmp_PartialEq_for_core_fmt_num_Binary.
+    Module Impl_core_cmp_PartialEq_core_fmt_num_Binary_for_core_fmt_num_Binary.
       Definition Self : Ty.t := Ty.path "core::fmt::num::Binary".
       
       (* PartialEq *)
@@ -1400,10 +1400,10 @@ Module fmt.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::fmt::num::Binary" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_fmt_num_Binary.
+    End Impl_core_cmp_PartialEq_core_fmt_num_Binary_for_core_fmt_num_Binary.
     
     (* StructTuple
       {
@@ -1447,7 +1447,7 @@ Module fmt.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_Octal.
     
-    Module Impl_core_cmp_PartialEq_for_core_fmt_num_Octal.
+    Module Impl_core_cmp_PartialEq_core_fmt_num_Octal_for_core_fmt_num_Octal.
       Definition Self : Ty.t := Ty.path "core::fmt::num::Octal".
       
       (* PartialEq *)
@@ -1465,10 +1465,10 @@ Module fmt.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::fmt::num::Octal" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_fmt_num_Octal.
+    End Impl_core_cmp_PartialEq_core_fmt_num_Octal_for_core_fmt_num_Octal.
     
     (* StructTuple
       {
@@ -1512,7 +1512,7 @@ Module fmt.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_LowerHex.
     
-    Module Impl_core_cmp_PartialEq_for_core_fmt_num_LowerHex.
+    Module Impl_core_cmp_PartialEq_core_fmt_num_LowerHex_for_core_fmt_num_LowerHex.
       Definition Self : Ty.t := Ty.path "core::fmt::num::LowerHex".
       
       (* PartialEq *)
@@ -1530,10 +1530,10 @@ Module fmt.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::fmt::num::LowerHex" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_fmt_num_LowerHex.
+    End Impl_core_cmp_PartialEq_core_fmt_num_LowerHex_for_core_fmt_num_LowerHex.
     
     (* StructTuple
       {
@@ -1577,7 +1577,7 @@ Module fmt.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_UpperHex.
     
-    Module Impl_core_cmp_PartialEq_for_core_fmt_num_UpperHex.
+    Module Impl_core_cmp_PartialEq_core_fmt_num_UpperHex_for_core_fmt_num_UpperHex.
       Definition Self : Ty.t := Ty.path "core::fmt::num::UpperHex".
       
       (* PartialEq *)
@@ -1595,10 +1595,10 @@ Module fmt.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::fmt::num::UpperHex" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_fmt_num_UpperHex.
+    End Impl_core_cmp_PartialEq_core_fmt_num_UpperHex_for_core_fmt_num_UpperHex.
     
     Module Impl_core_fmt_num_GenericRadix_for_core_fmt_num_Binary.
       Definition Self : Ty.t := Ty.path "core::fmt::num::Binary".

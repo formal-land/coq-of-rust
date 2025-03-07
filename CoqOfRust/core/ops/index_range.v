@@ -178,7 +178,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_index_range_IndexRange.
     
-    Module Impl_core_cmp_PartialEq_for_core_ops_index_range_IndexRange.
+    Module Impl_core_cmp_PartialEq_core_ops_index_range_IndexRange_for_core_ops_index_range_IndexRange.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
       
       (* PartialEq *)
@@ -230,10 +230,10 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ops::index_range::IndexRange" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ops_index_range_IndexRange.
+    End Impl_core_cmp_PartialEq_core_ops_index_range_IndexRange_for_core_ops_index_range_IndexRange.
     
     Module Impl_core_cmp_Eq_for_core_ops_index_range_IndexRange.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".

@@ -613,7 +613,7 @@ Module interpreter_action.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_inputs_CallInputs_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs".
       
@@ -925,10 +925,11 @@ Module interpreter_action.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_inputs_CallInputs_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
       Definition Self : Ty.t :=
@@ -1925,7 +1926,7 @@ Module interpreter_action.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_inputs_CallScheme_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme".
       
@@ -1970,10 +1971,11 @@ Module interpreter_action.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_inputs_CallScheme_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
       Definition Self : Ty.t :=
@@ -2441,7 +2443,7 @@ Module interpreter_action.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_inputs_CallValue_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue".
       
@@ -2634,10 +2636,11 @@ Module interpreter_action.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_inputs_CallValue_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
       Definition Self : Ty.t :=

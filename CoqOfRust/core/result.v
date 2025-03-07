@@ -50,7 +50,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_result_Result_T_E.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_for_core_result_Result_T_E.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_core_result_Result_T_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* PartialEq *)
@@ -196,12 +196,12 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
         (Self T E)
         (* Instance *) [ ("eq", InstanceField.Method (eq T E)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_for_core_result_Result_T_E.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_cmp_PartialEq_E_core_result_Result_T_E_for_core_result_Result_T_E.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_for_core_result_Result_T_E.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_core_result_Result_T_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].
     
     (* PartialOrd *)
@@ -363,10 +363,10 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
         (Self T E)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T E)) ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_for_core_result_Result_T_E.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_cmp_PartialOrd_E_core_result_Result_T_E_for_core_result_Result_T_E.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_cmp_Eq_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].

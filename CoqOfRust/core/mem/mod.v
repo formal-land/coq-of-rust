@@ -778,7 +778,7 @@ Module mem.
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_for_core_mem_Discriminant_T.
   
-  Module Impl_core_cmp_PartialEq_for_core_mem_Discriminant_T.
+  Module Impl_core_cmp_PartialEq_core_mem_Discriminant_T_for_core_mem_Discriminant_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].
     
     (*
@@ -831,10 +831,10 @@ Module mem.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_for_core_mem_Discriminant_T.
+  End Impl_core_cmp_PartialEq_core_mem_Discriminant_T_for_core_mem_Discriminant_T.
   
   Module Impl_core_cmp_Eq_for_core_mem_Discriminant_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::mem::Discriminant") [] [ T ].

@@ -1623,7 +1623,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_num_nonzero_ZeroablePrimitive_T_for_core_num_nonzero_NonZero_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -1734,11 +1734,12 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *)
           [ ("eq", InstanceField.Method (eq T)); ("ne", InstanceField.Method (ne T)) ].
-    End Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_marker_StructuralPartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_StructuralPartialEq_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -1768,7 +1769,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_Eq_T_for_core_num_nonzero_NonZero_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -2037,7 +2038,8 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *)
           [
@@ -2047,7 +2049,7 @@ Module num.
             ("gt", InstanceField.Method (gt T));
             ("ge", InstanceField.Method (ge T))
           ].
-    End Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_cmp_Ord_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_Ord_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -2388,7 +2390,7 @@ Module num.
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_num_nonzero_ZeroablePrimitive_T_core_num_nonzero_NonZero_T_for_T.
     
-    Module Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -2454,11 +2456,12 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
-    End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -2586,7 +2589,7 @@ Module num.
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
     End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_T.
     
-    Module Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -2637,10 +2640,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("bitor_assign", InstanceField.Method (bitor_assign T)) ].
-    End Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_T_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=

@@ -329,7 +329,7 @@ Module eip7702.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
     
-    Module Impl_core_cmp_PartialEq_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
+    Module Impl_core_cmp_PartialEq_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
       Definition Self : Ty.t :=
         Ty.path "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization".
       
@@ -418,10 +418,11 @@ Module eip7702.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
+    End Impl_core_cmp_PartialEq_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization_for_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
     
     Module Impl_revm_specification_eip7702_recovered_authorization_RecoveredAuthorization.
       Definition Self : Ty.t :=

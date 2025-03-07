@@ -82,7 +82,7 @@ Module opcode.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_opcode_parse_OpCodeError.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_opcode_parse_OpCodeError.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_opcode_parse_OpCodeError_for_revm_bytecode_opcode_parse_OpCodeError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::parse::OpCodeError".
       
       (* PartialEq *)
@@ -129,10 +129,10 @@ Module opcode.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::opcode::parse::OpCodeError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_opcode_parse_OpCodeError.
+    End Impl_core_cmp_PartialEq_revm_bytecode_opcode_parse_OpCodeError_for_revm_bytecode_opcode_parse_OpCodeError.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_opcode_parse_OpCodeError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::opcode::parse::OpCodeError".
